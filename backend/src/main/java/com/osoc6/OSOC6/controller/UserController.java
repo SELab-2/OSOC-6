@@ -52,4 +52,22 @@ public class UserController {
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
+
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<EntityModel<User>> updateUser(@RequestBody User userUpdate, @PathVariable Long id) {
+        User updatedUser = userRepository.findById(id)
+                .map(user -> {
+                    if (userUpdate.getEmail() != null) {
+                        user.setEmail(userUpdate.getEmail());
+                    }
+                    if (userUpdate.getRole() != null) {
+                        user.setRole(userUpdate.getRole());
+                    }
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        return ResponseEntity.ok(userModelAssembler.toModel(updatedUser));
+    }
+
 }

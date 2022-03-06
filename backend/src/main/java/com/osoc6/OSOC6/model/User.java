@@ -1,9 +1,6 @@
 package com.osoc6.OSOC6.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -12,7 +9,10 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    private String email;
     private String name;
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
     public void setId(Long id) {
         this.id = id;
@@ -22,11 +22,27 @@ public class User {
         return id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
