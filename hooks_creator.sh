@@ -10,3 +10,5 @@ echo "./gradlew task check" >> pre-commit
 echo "RESULT=$?" >> pre-commit
 echo "[ \$RESULT -ne 0 ] && exit 1" >> pre-commit
 echo "exit 0" >> pre-commit
+
+chmod u+x pre-commit
