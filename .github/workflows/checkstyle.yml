@@ -12,5 +12,4 @@ jobs:
       - name: Run linter
         run: |
           cd backend/
-          chmod u+x gradlew 
           ./gradlew task check
