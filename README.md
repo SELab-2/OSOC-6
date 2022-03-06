@@ -33,3 +33,7 @@ Documentation as proposed in [the assignment document](https://github.com/SELab-
 * Test manager: Anne Depuydt
 * Documentation manager: Kasper Demeyere
 * Customer Relations Officer: Lukas Van Rossem
+
+## Developers
+
+The `hooks_creator.sh` script will create a hook so git can do some local checks on whether the PR is possible.
