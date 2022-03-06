@@ -8,7 +8,10 @@ updates:
     # Look for `package.json` and `lock` files in the `root` directory
     directory: "/frontend/"
     # Assignees to set on pull requests
-    assignees: jitsedesmet
+    assignees:
+      - jitsedesmet
+    reviewers:
+      - jitsedesmet
     # Check the npm registry for updates every day (weekdays)
     schedule:
       interval: "daily"
@@ -18,7 +21,10 @@ updates:
     # Look for a `Dockerfile` in the `root` directory
     directory: "/backend/"
     # Assignees to set on pull requests
-    assignees: jitsedesmet
+    assignees:
+      - jitsedesmet
+    reviewers:
+      - jitsedesmet
     # Check for updates once a week
     schedule:
       interval: "weekly"
