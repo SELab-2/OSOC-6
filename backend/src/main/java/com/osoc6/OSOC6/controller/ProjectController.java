@@ -41,7 +41,7 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public Project newEmployee(@RequestBody Project newProject) {
+    public Project newProject(@RequestBody Project newProject) {
         return repository.save(newProject);
     }
 
