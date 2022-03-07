@@ -6,18 +6,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Role {
-
+public class Study {
+    /**
+     * The id of the study.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * The title of the study.
+     */
     private String title;
 
-    public Long getId() {
-        return id;
-    }
-
+    /**
+     *
+     * @return the title of the study.
+     */
     public String getTitle() {
         return title;
     }

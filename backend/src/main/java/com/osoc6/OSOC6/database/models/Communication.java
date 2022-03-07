@@ -9,26 +9,56 @@ import java.sql.Timestamp;
 @Entity
 public class Communication {
 
+    /**
+     * The id of the communication.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // TODO: Id of weak entities
+    private Long id;
 
+    /**
+     * The timestamp of the communication.
+     */
     private Timestamp timestamp;
+
+    /**
+     * The medium of the communication.
+     */
     private String medium;
+
+    /**
+     * The content of the communication.
+     */
     private String content;
 
+    /**
+     *
+     * @return the id of the communication
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @return the timestamp of the communication
+     */
     public Timestamp getTimestamp() {
         return timestamp;
     }
 
+    /**
+     *
+     * @return the medium of the communication
+     */
     public String getMedium() {
         return medium;
     }
 
+    /**
+     *
+     * @return the content of the communication
+     */
     public String getContent() {
         return content;
     }

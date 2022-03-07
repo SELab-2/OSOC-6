@@ -8,26 +8,56 @@ import javax.persistence.Id;
 @Entity
 public class User {
 
+    /**
+     * The id of the user.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * The email of the user.
+     */
     private String email;
+
+    /**
+     * The first name of the user.
+     */
     private String firstName;
+
+    /**
+     * The last name of the user.
+     */
     private String lastName;
 
+    /**
+     *
+     * @return The id of the user
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @return the email of the user
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @return The first name of the user
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     *
+     * @return The last name of the user
+     */
     public String getLastName() {
         return lastName;
     }
