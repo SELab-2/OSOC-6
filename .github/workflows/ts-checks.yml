@@ -14,7 +14,6 @@ jobs:
       - name: Run linter and prettier
         run: |
           cd frontend/
-          rm package-lock.json
           npm install
           npm run lint
           RESULT=$?
