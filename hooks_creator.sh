@@ -11,6 +11,7 @@ echo "RESULT=\$?" >> pre-commit
 echo "[ \$RESULT -ne 0 ] && echo \"Commit: FAIL\" && exit 1" >> pre-commit
 
 echo "cd ../frontend/" >> pre-commit
+echo "npm install" >> pre-commit
 echo "npm run lint" >> pre-commit
 echo "RESULT=\$?" >> pre-commit
 echo "[ \$RESULT -ne 0 ] && echo \"Commit: FAIL\" && exit 1" >> pre-commit
