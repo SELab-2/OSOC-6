@@ -12,12 +12,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UserModelAssembler implements RepresentationModelAssembler<User, EntityModel<User>> {
-
+    /**
+     * @param user the user to place in the EntityModel.
+     * @return an EntityModel containing the user and relevant links.
+     */
     @Override
     @NonNull
-    public EntityModel<User> toModel(@NonNull User user) {
+    public EntityModel<User> toModel(final @NonNull User user) {
         return EntityModel.of(user,
-                linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
-                linkTo(methodOn(UserController.class).all()).withRel("users"));
+                linkTo(methodOn(UserController.class).
+                        one(user.getId())).withSelfRel(),
+                linkTo(methodOn(UserController.class).
+                        all()).withRel("users"));
     }
 }
