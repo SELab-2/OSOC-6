@@ -9,7 +9,7 @@ public class SkillTypeEntity {
      * The type of skill.
      */
     @Id
-    private SkillType type;
+    private SkillType skillType;
 
     /**
      * The colour associated with this SkillType.
@@ -25,10 +25,10 @@ public class SkillTypeEntity {
     }
 
     /**
-     * @param skill the skill this entity is used in.
-     * @return the name of the SkillType
+     *
+     * @return the skillType enum that this entity represents
      */
-    public String getSkillName(final Skill skill) {
-        return type.getSkillName(skill);
+    public SkillType getSkillType() {
+        return skillType;
     }
 }
