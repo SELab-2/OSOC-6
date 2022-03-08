@@ -38,14 +38,6 @@ public class Project {
 
     /**
      *
-     * @return The id of the project
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     *
      * @return The name of the project
      */
     public String getName() {

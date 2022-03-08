@@ -1,9 +1,11 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Entity
 public class Skill {
 
     /**
@@ -21,22 +23,14 @@ public class Skill {
     /**
      * The description of the skill.
      */
-    private String description;
-
-    /**
-     *
-     * @return The id of the skill
-     */
-    public Long getId() {
-        return id;
-    }
+    private String additionalInfo;
 
     /**
      *
      * @return The description of the skill
      */
-    public String getDescription() {
-        return description;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
     /**

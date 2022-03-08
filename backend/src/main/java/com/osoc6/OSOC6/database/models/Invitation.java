@@ -16,11 +16,6 @@ public class Invitation {
     private Long id;
 
     /**
-     * The id of the invitation's edition.
-     */
-    private Long editionId;
-
-    /**
      * The timestamp of the invitation.
      */
     private Timestamp timestamp;
@@ -29,22 +24,6 @@ public class Invitation {
      * Whether the invitation has been used.
      */
     private boolean used;
-
-    /**
-     *
-     * @return The id of the invitation
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @return The id of the invitation's edition
-     */
-    public Long getEditionId() {
-        return editionId;
-    }
 
     /**
      *

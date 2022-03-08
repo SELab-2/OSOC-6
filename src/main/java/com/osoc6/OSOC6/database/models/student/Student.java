@@ -33,10 +33,6 @@ public class Student {
         return lastName;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public PronounsType getPronounsType() {
         return pronounsType;
     }

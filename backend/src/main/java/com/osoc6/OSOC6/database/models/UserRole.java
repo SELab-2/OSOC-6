@@ -5,12 +5,14 @@ public enum UserRole {
      * An OSOC-coach.
      */
     COACH,
+
     /**
      * An OSOC-admin.
      */
     ADMIN,
+
     /**
      * A disabled user.
      */
-    DISABLED
+    DISABLED;
 }

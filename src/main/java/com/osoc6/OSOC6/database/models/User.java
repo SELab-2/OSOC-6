@@ -16,9 +16,6 @@ public class User {
     private String firstName;
     private String lastName;
 
-    public Long getId() {
-        return id;
-    }
 
     public String getEmail() {
         return email;

@@ -17,10 +17,6 @@ public class Communication {
     private String medium;
     private String content;
 
-    public Long getId() {
-        return id;
-    }
-
     public Timestamp getTimestamp() {
         return timestamp;
     }

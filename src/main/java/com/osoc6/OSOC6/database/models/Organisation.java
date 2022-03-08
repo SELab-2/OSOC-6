@@ -20,10 +20,6 @@ public class Organisation {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getInfo() {
         return info;
     }

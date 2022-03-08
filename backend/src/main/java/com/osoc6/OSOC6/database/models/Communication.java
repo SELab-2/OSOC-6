@@ -31,13 +31,7 @@ public class Communication {
      */
     private String content;
 
-    /**
-     *
-     * @return the id of the communication
-     */
-    public Long getId() {
-        return id;
-    }
+    // Relation with CommunicationTemplate.
 
     /**
      *

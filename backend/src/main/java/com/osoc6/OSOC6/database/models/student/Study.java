@@ -17,13 +17,18 @@ public class Study {
     /**
      * The title of the study.
      */
-    private String title;
+    private String course;
+
+    /**
+     * The course studied by the student.
+     */
+    private StudyCourse studyCourse;
 
     /**
      *
      * @return the title of the study.
      */
     public String getTitle() {
-        return title;
+        return studyCourse.getCourse(this);
     }
 }

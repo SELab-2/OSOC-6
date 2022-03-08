@@ -1,35 +1,25 @@
 package com.osoc6.OSOC6.database.models;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Entity
 public class Edition {
-
     /**
-     * The id of the edition.
+     * The name of the edition.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String name;
 
     /**
      * The year of the edition.
      */
-    private Date year;
+    private int year;
 
     /**
-     * Whether or not the edition is active.
+     * Whether the edition is active.
      */
     private boolean active;
-
-    /**
-     * The name of the edition.
-     */
-    private String name;
 
     /**
      *
@@ -51,15 +41,7 @@ public class Edition {
      *
      * @return the year of the edition
      */
-    public Date getYear() {
+    public int getYear() {
         return year;
-    }
-
-    /**
-     *
-     * @return the id of the edition
-     */
-    public Long getId() {
-        return id;
     }
 }

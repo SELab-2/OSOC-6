@@ -31,12 +31,9 @@ public class User {
     private String lastName;
 
     /**
-     *
-     * @return The id of the user
+     * Role/ power this user has.
      */
-    public Long getId() {
-        return id;
-    }
+    private UserRole userRole;
 
     /**
      *
@@ -60,5 +57,13 @@ public class User {
      */
     public String getLastName() {
         return lastName;
+    }
+
+    /**
+     *
+     * @return Role/ power this user has
+     */
+    public UserRole getUserRole() {
+        return userRole;
     }
 }

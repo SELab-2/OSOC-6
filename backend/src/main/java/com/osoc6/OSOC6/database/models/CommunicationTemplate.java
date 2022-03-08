@@ -4,16 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class ConfirmationType {
+public class CommunicationTemplate {
 
     /**
-     * The name of the ConfirmationtType.
+     * The name of the CommunicationTemplate.
      */
     @Id
     private String name;
 
     /**
-     * The template of the ConfirmationType.
+     * The template for the CommunicationTemplate.
      */
     private String template;
 

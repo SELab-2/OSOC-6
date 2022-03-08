@@ -102,29 +102,17 @@ public enum PronounsType {
     CALLNAME {
         @Override
         public String getPossessive(final Student student) {
-            if (student.getCallnameType() == CallnameType.FULLNAME) {
-                return student.getFirstName() + " " + student.getLastName();
-            } else {
-                return student.getCallname();
-            }
+            return student.getCallName();
         }
 
         @Override
         public String getSubjective(final Student student) {
-            if (student.getCallnameType() == CallnameType.FULLNAME) {
-                return student.getFirstName() + " " + student.getLastName();
-            } else {
-                return student.getCallname();
-            }
+            return student.getCallName();
         }
 
         @Override
         public String getObjective(final Student student) {
-            if (student.getCallnameType() == CallnameType.FULLNAME) {
-                return student.getFirstName() + " " + student.getLastName();
-            } else {
-                return student.getCallname();
-            }
+            return student.getCallName();
         }
     },
     /**
@@ -152,17 +140,17 @@ public enum PronounsType {
     NONE {
         @Override
         public String getPossessive(final Student student) {
-            return "";
+            return student.getGender().getDefaultPronouns().getPossessive(student);
         }
 
         @Override
         public String getSubjective(final Student student) {
-            return "";
+            return student.getGender().getDefaultPronouns().getSubjective(student);
         }
 
         @Override
         public String getObjective(final Student student) {
-            return "";
+            return student.getGender().getDefaultPronouns().getObjective(student);
         }
     };
 
@@ -172,12 +160,14 @@ public enum PronounsType {
      * @return The possessive pronoun of the student.
      */
     public abstract String getPossessive(Student student);
+
     /**
      *
      * @param student the student of which the pronouns can be gotten
      * @return The subjective pronoun of the student.
      */
     public abstract String getSubjective(Student student);
+
     /**
      *
      * @param student the student of which the pronouns can be gotten

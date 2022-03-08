@@ -14,10 +14,6 @@ public class Role {
 
     private String title;
 
-    public Long getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
