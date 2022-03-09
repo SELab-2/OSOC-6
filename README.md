@@ -27,7 +27,7 @@ Documentation as proposed in [the assignment document](https://github.com/SELab-
 
 ## Team
 
-* Project leader: Jitse De Smet
+* Project leader: Jitse De Smet: Likes: oversharing, being weird, climbing. Dislikes: **mean** grammar nazis
 * System manager: Ruben Van Mello
 * API manager: Thomas Van Mullem
 * Test manager: Anne Depuydt
