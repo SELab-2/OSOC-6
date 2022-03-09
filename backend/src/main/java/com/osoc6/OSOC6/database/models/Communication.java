@@ -56,4 +56,28 @@ public class Communication {
     public String getContent() {
         return content;
     }
+
+    /**
+     *
+     * @param newTimestamp timestamp the communication happened
+     */
+    public void setTimestamp(final Timestamp newTimestamp) {
+        timestamp = newTimestamp;
+    }
+
+    /**
+     *
+     * @param newMedium medium that was used for the communication: email, sms, ...
+     */
+    public void setMedium(final String newMedium) {
+        medium = newMedium;
+    }
+
+    /**
+     *
+     * @param newContent the content of the communication. This can also be a summary of an IRL conversation.
+     */
+    public void setContent(final String newContent) {
+        content = newContent;
+    }
 }

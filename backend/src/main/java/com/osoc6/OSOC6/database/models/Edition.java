@@ -44,4 +44,28 @@ public class Edition {
     public int getYear() {
         return year;
     }
+
+    /**
+     *
+     * @param newName name of the edition
+     */
+    public void setName(final String newName) {
+        name = newName;
+    }
+
+    /**
+     *
+     * @param newYear in which the edition was held
+     */
+    public void setYear(final int newYear) {
+        year = newYear;
+    }
+
+    /**
+     *
+     * @param newActive whether the edition is currently active
+     */
+    public void setActive(final boolean newActive) {
+        active = newActive;
+    }
 }

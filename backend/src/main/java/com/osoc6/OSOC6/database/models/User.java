@@ -66,4 +66,36 @@ public class User {
     public UserRole getUserRole() {
         return userRole;
     }
+
+    /**
+     *
+     * @param newEmail email address of the user
+     */
+    public void setEmail(final String newEmail) {
+        email = newEmail;
+    }
+
+    /**
+     *
+     * @param newFirstName first name of the user
+     */
+    public void setFirstName(final String newFirstName) {
+        firstName = newFirstName;
+    }
+
+    /**
+     *
+     * @param newLastName last name of the user
+     */
+    public void setLastName(final String newLastName) {
+        lastName = newLastName;
+    }
+
+    /**
+     *
+     * @param newUserRole new roll/ privileges a user has
+     */
+    public void setUserRole(final UserRole newUserRole) {
+        userRole = newUserRole;
+    }
 }

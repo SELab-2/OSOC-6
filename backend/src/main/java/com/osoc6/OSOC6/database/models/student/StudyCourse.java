@@ -6,8 +6,13 @@ public enum StudyCourse {
      */
     BACKEND_DEVELOPMENT {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "backend development";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -16,8 +21,13 @@ public enum StudyCourse {
      */
     BUSINESS_MANAGEMENT {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "business management";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -26,8 +36,13 @@ public enum StudyCourse {
      */
     COMMUNICATION_SCIENCES {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "communication sciences";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -36,8 +51,13 @@ public enum StudyCourse {
      */
     DESIGN {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "design";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -46,8 +66,13 @@ public enum StudyCourse {
      */
     FRONTEND_DEVELOPMENT {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "frontend development";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -56,8 +81,13 @@ public enum StudyCourse {
      */
     MARKETING {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "marketing";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -66,8 +96,13 @@ public enum StudyCourse {
      */
     PHOTOGRAPHY {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "photography";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -76,8 +111,13 @@ public enum StudyCourse {
      */
     VIDEOGRAPHY {
         @Override
-        public String getCourse(final Study study) {
+        public String toString() {
             return "videography";
+        }
+
+        @Override
+        public String getCourse(final Study study) {
+            return toString();
         }
     },
 
@@ -86,8 +126,13 @@ public enum StudyCourse {
      */
     OTHER {
         @Override
+        public String toString() {
+            return "other";
+        }
+
+        @Override
         public String getCourse(final Study study) {
-            return study.getTitle();
+            return study.getCourseName();
         }
     };
 
@@ -97,4 +142,28 @@ public enum StudyCourse {
      * @return title of course taken by student
      */
     public abstract String getCourse(Study study);
+
+    /**
+     *
+     * @return string representation of the enum.
+     */
+    public abstract String toString();
+
+    /**
+     *
+     * @param course course as string that should be represented as enum
+     * @return enum type of the provided string.
+     */
+    public static StudyCourse fromString(final String course) {
+        StudyCourse[] courses = StudyCourse.values();
+        StudyCourse result = StudyCourse.OTHER;
+        int i = 0;
+        while (result == StudyCourse.OTHER && i < courses.length) {
+            if (courses[i].toString().equalsIgnoreCase(course)) {
+                result = courses[i];
+            }
+            i++;
+        }
+        return result;
+    }
 }

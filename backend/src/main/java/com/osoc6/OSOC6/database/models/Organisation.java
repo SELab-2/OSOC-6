@@ -40,4 +40,20 @@ public class Organisation {
     public String getName() {
         return name;
     }
+
+    /**
+     *
+     * @param newInfo some information about the organization
+     */
+    public void setInfo(final String newInfo) {
+        info = newInfo;
+    }
+
+    /**
+     *
+     * @param newName name of the organization
+     */
+    public void setName(final String newName) {
+        name = newName;
+    }
 }

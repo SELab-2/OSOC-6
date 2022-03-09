@@ -6,8 +6,13 @@ public enum SkillType {
      */
     FRONTEND_DEVELOPER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "front-end developer";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -16,8 +21,13 @@ public enum SkillType {
      */
     BACKEND_DEVELOPER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "back-end developer";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -26,8 +36,13 @@ public enum SkillType {
      */
     UX_UI_DESIGNER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "UX/UI designer";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -36,8 +51,13 @@ public enum SkillType {
      */
     GRAPHIC_DESIGNER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "graphic designer";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -46,8 +66,13 @@ public enum SkillType {
      */
     BUSINESS_MODELLER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "business modeller";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -56,8 +81,13 @@ public enum SkillType {
      */
     STORYTELLER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "storyteller";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -66,8 +96,13 @@ public enum SkillType {
      */
     MARKETER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "marketer";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -76,8 +111,13 @@ public enum SkillType {
      */
     COPYWRITER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "copywriter";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -86,8 +126,13 @@ public enum SkillType {
      */
     VIDEO_EDITOR {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "video editor";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -96,8 +141,13 @@ public enum SkillType {
      */
     PHOTOGRAPHER {
         @Override
-        public String getSkillName(final Skill skill) {
+        public String toString() {
             return "photographer";
+        }
+
+        @Override
+        public String getSkillName(final Skill skill) {
+            return toString();
         }
     },
 
@@ -105,6 +155,11 @@ public enum SkillType {
      * User/ student selected other and skill holds specified value.
      */
     OTHER {
+        @Override
+        public String toString() {
+            return "other";
+        }
+
         @Override
         public String getSkillName(final Skill skill) {
             return skill.getName();
@@ -116,4 +171,28 @@ public enum SkillType {
      * @return name of the provided skill
      */
     public abstract String getSkillName(Skill skill);
+
+    /**
+     *
+     * @return string representation of the enum
+     */
+    public abstract String toString();
+
+    /**
+     *
+     * @param skill as string that you want ro return as enum representation
+     * @return enum type of the provided string
+     */
+    public static SkillType fromString(final String skill) {
+        SkillType[] skillTypes = SkillType.values();
+        SkillType result = SkillType.OTHER;
+        int i = 0;
+        while (result == SkillType.OTHER && i < skillTypes.length) {
+            if (skillTypes[i].toString().equalsIgnoreCase(skill)) {
+                result = skillTypes[i];
+            }
+            i++;
+        }
+        return result;
+    }
 }

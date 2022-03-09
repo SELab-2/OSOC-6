@@ -43,4 +43,12 @@ public class Project {
     public String getName() {
         return name;
     }
+
+    /**
+     *
+     * @param newName name of the project
+     */
+    public void setName(final String newName) {
+        name = newName;
+    }
 }

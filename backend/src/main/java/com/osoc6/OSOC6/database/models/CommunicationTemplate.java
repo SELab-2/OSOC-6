@@ -32,4 +32,21 @@ public class CommunicationTemplate {
     public String getTemplate() {
         return template;
     }
+
+
+    /**
+     *
+     * @param newName name of the communication template, 'yes', 'no', 'maybe', 'invitation', ...
+     */
+    public void setName(final String newName) {
+        name = newName;
+    }
+
+    /**
+     *
+     * @param newTemplate the string template representation
+     */
+    public void setTemplate(final String newTemplate) {
+        template = newTemplate;
+    }
 }

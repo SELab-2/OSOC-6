@@ -40,4 +40,20 @@ public class Skill {
     public String getName() {
         return name;
     }
+
+    /**
+     *
+     * @param newName name of the skill/ roll
+     */
+    public void setName(final String newName) {
+        name = newName;
+    }
+
+    /**
+     *
+     * @param newAdditionalInfo additional info that can be provided. Mostly provided for skills needed in a project
+     */
+    public void setAdditionalInfo(final String newAdditionalInfo) {
+        additionalInfo = newAdditionalInfo;
+    }
 }

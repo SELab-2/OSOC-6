@@ -86,6 +86,7 @@ public class Student {
 
     /**
      * Highest level of education a student currently has.
+     * Represented as string instead of enum because only one choice can be provided and other is an option.
      */
     private String educationLevel;
 
@@ -316,5 +317,186 @@ public class Student {
      */
     public String getAdditionalStudentInfo() {
         return additionalStudentInfo;
+    }
+
+    /**
+     *
+     * @param newEmail that should be set as the email of this student
+     */
+    public void setEmail(final String newEmail) {
+        email = newEmail;
+    }
+
+    /**
+     *
+     * @param newFirstName that should be set as the first name of this student
+     */
+    public void setFirstName(final String newFirstName) {
+        firstName = newFirstName;
+    }
+
+    /**
+     *
+     * @param newLastName  that should be set as the last name of this student
+     */
+    public void setLastName(final String newLastName) {
+        lastName = newLastName;
+    }
+
+    /**
+     *
+     * @param newGender that should be set as the gender of this student
+     */
+    public void setGender(final Gender newGender) {
+        gender = newGender;
+    }
+
+    /**
+     *
+     * @param newPronounsType that should be set as the pronouns type of this student
+     */
+    public void setPronounsType(final PronounsType newPronounsType) {
+        pronounsType = newPronounsType;
+        if (newPronounsType != PronounsType.OTHER) {
+            pronouns.clear();
+        }
+    }
+
+    /**
+     *
+     * @param newCallName that should be set as the callName of this student
+     */
+    public void setCallName(final String newCallName) {
+        callName = newCallName;
+    }
+
+    /**
+     *
+     * @param newPronouns that should be set as the pronouns of this student
+     */
+    public void setPronouns(final List<String> newPronouns) {
+        pronounsType = PronounsType.OTHER;
+        pronouns = newPronouns;
+    }
+
+    /**
+     *
+     * @param newMostFluentLanguage that should be set as the most fluent language of this student
+     */
+    public void setMostFluentLanguage(final String newMostFluentLanguage) {
+        mostFluentLanguage = newMostFluentLanguage;
+    }
+
+    /**
+     *
+     * @param newEnglishProficiency that should be set as the English proficiency of this student
+     */
+    public void setEnglishProficiency(final EnglishProficiency newEnglishProficiency) {
+        englishProficiency = newEnglishProficiency;
+    }
+
+    /**
+     *
+     * @param newPhoneNumber that should be set as the phone number of this student
+     */
+    public void setPhoneNumber(final String newPhoneNumber) {
+        // Check if phone number is correct
+        phoneNumber = newPhoneNumber;
+    }
+
+    /**
+     *
+     * @param newCurriculumVitaeURI that should be set as the CV URI of this student
+     */
+    public void setCurriculumVitaeURI(final URI newCurriculumVitaeURI) {
+        curriculumVitaeURI = newCurriculumVitaeURI;
+    }
+
+    /**
+     *
+     * @param newPortfolioURI that should be set as the portfolio URI of this student
+     */
+    public void setPortfolioURI(final URI newPortfolioURI) {
+        portfolioURI = newPortfolioURI;
+    }
+
+    /**
+     *
+     * @param newMotivationURI that should be set as the motivation URI of this student
+     */
+    public void setMotivationURI(final URI newMotivationURI) {
+        motivationURI = newMotivationURI;
+    }
+
+    /**
+     *
+     * @param newWrittenMotivation that should be set as the written motivation of this student
+     */
+    public void setWrittenMotivation(final String newWrittenMotivation) {
+        writtenMotivation = newWrittenMotivation;
+    }
+
+    /**
+     *
+     * @param newEducationLevel that should be set as the highest level of education of this student
+     */
+    public void setEducationLevel(final String newEducationLevel) {
+        educationLevel = newEducationLevel;
+    }
+
+    /**
+     *
+     * @param newCurrentDiploma that should be set as the diploma the student is aiming to get
+     */
+    public void setCurrentDiploma(final String newCurrentDiploma) {
+        currentDiploma = newCurrentDiploma;
+    }
+
+    /**
+     *
+     * @param newDurationCurrentDegree the time the degree the student is getting takes
+     */
+    public void setDurationCurrentDegree(final int newDurationCurrentDegree) {
+        durationCurrentDegree = newDurationCurrentDegree;
+    }
+
+    /**
+     *
+     * @param newYearInCourse the year the student is already in this course. Example: 1st, second, last, done
+     */
+    public void setYearInCourse(final String newYearInCourse) {
+        yearInCourse = newYearInCourse;
+    }
+
+    /**
+     *
+     * @param newInstitutionName name of the collage/ university student is enrolled.
+     */
+    public void setInstitutionName(final String newInstitutionName) {
+        institutionName = newInstitutionName;
+    }
+
+    /**
+     *
+     * @param newBestSkill skill the student would describe to be their best.
+     */
+    public void setBestSkill(final String newBestSkill) {
+        bestSkill = newBestSkill;
+    }
+
+    /**
+     *
+     * @param newOsocExperience level of OSoc experience as described in @{@link OsocExperience}.
+     */
+    public void setOsocExperience(final OsocExperience newOsocExperience) {
+        osocExperience = newOsocExperience;
+    }
+
+    /**
+     *
+     * @param newAdditionalStudentInfo additional info that coaches or admins write about students.
+     */
+    public void setAdditionalStudentInfo(final String newAdditionalStudentInfo) {
+        additionalStudentInfo = newAdditionalStudentInfo;
     }
 }

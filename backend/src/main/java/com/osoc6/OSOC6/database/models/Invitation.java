@@ -40,4 +40,20 @@ public class Invitation {
     public boolean isUsed() {
         return used;
     }
+
+    /**
+     *
+     * @param newTimestamp timestamp of the creation of the invitation
+     */
+    public void setTimestamp(final Timestamp newTimestamp) {
+        timestamp = newTimestamp;
+    }
+
+    /**
+     *
+     * @param newUsed whether the invitation activated an account
+     */
+    public void setUsed(final boolean newUsed) {
+        used = newUsed;
+    }
 }

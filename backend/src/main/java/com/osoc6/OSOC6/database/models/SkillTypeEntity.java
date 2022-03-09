@@ -31,4 +31,12 @@ public class SkillTypeEntity {
     public SkillType getSkillType() {
         return skillType;
     }
+
+    /**
+     *
+     * @param newColour colour that represents the skillType
+     */
+    public void setColour(final String newColour) {
+        colour = newColour;
+    }
 }

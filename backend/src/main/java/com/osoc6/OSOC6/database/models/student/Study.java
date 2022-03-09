@@ -28,7 +28,20 @@ public class Study {
      *
      * @return the title of the study.
      */
-    public String getTitle() {
+    public String getCourseName() {
         return studyCourse.getCourse(this);
+    }
+
+    /**
+     *
+     * @param newCourse string representation of the course that should be represented
+     */
+    public void setCourseName(final String newCourse) {
+        studyCourse = StudyCourse.fromString(newCourse);
+        if (studyCourse == StudyCourse.OTHER) {
+            course = newCourse;
+        } else {
+            course = "";
+        }
     }
 }
