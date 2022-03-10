@@ -11,6 +11,13 @@ import java.util.List;
 @Entity
 public class Student {
     /**
+     * The id of the student.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    /**
      * The email of the student.
      */
     private String email;
@@ -131,13 +138,6 @@ public class Student {
      * Additional info that coaches or admins write about students.
      */
     private String additionalStudentInfo;
-
-    /**
-     * The id of the student.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     /**
      *
