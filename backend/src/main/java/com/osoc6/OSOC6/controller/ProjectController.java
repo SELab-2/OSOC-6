@@ -94,7 +94,7 @@ public class ProjectController {
     @PatchMapping("/projects/{id}")
     public ResponseEntity<EntityModel<Project>> updateProject(@RequestBody final Project projectUpdate,
                                                               @PathVariable final Long id) {
-        Project updatedUser = repository.findById(id)
+        Project updatedProject = repository.findById(id)
                 .map(project -> {
                     if (projectUpdate.getName() != null) {
                         project.setName(projectUpdate.getName());
@@ -107,7 +107,7 @@ public class ProjectController {
                 })
                 .orElseThrow(() -> new ProjectNotFoundException(id));
 
-        return ResponseEntity.ok(assembler.toModel(updatedUser));
+        return ResponseEntity.ok(assembler.toModel(updatedProject));
     }
 
 }
