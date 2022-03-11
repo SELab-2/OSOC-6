@@ -39,6 +39,14 @@ public class User {
 
     /**
      *
+     * @return The id of the user
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
      * @return the email of the user
      */
     public String getEmail() {

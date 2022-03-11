@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.model.Project;
+import com.osoc6.OSOC6.database.models.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -15,10 +15,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 class ProjectNotFoundAdvice {
 
+    /**
+     * When a project is requested but not found,
+     * render a 404 not found and throw a ProjectNotFoundException.
+     * @param ex the thrown exception
+     * @return exception message
+     */
     @ResponseBody
     @ExceptionHandler(ProjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String projectNotFoundHandler(ProjectNotFoundException ex) {
+    String projectNotFoundHandler(final ProjectNotFoundException ex) {
         return ex.getMessage();
     }
 }

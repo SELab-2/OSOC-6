@@ -46,9 +46,25 @@ public class Project {
 
     /**
      *
+     * @return The id of the project
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
      * @param newName name of the project
      */
     public void setName(final String newName) {
         name = newName;
+    }
+
+    /**
+     *
+     * @param newGoals The goals of the project
+     */
+    public void setGoals(final List<String> newGoals) {
+        goals = newGoals;
     }
 }
