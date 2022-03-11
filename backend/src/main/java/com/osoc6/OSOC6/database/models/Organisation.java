@@ -27,6 +27,14 @@ public class Organisation {
 
     /**
      *
+     * @return The id of the organisation
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
      * @return The info of the organisation
      */
     public String getInfo() {
