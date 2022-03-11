@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.assembler;
 
 import com.osoc6.OSOC6.controller.UserController;
-import com.osoc6.OSOC6.model.User;
+import com.osoc6.OSOC6.database.models.User;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.lang.NonNull;
