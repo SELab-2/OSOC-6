@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
@@ -20,21 +23,26 @@ public class User {
     /**
      * The email of the user.
      */
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Invalid email address")
     private String email;
 
     /**
      * The first name of the user.
      */
+    @NotBlank(message = "First name cannot be empty")
     private String firstName;
 
     /**
      * The last name of the user.
      */
+    @NotBlank(message = "Last name cannot be empty")
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
+    @NotNull(message = "User must have a role")
     private UserRole userRole;
 
     /**
@@ -99,5 +107,12 @@ public class User {
      */
     public void setUserRole(final UserRole newUserRole) {
         userRole = newUserRole;
+    }
+
+    /**
+     * @return The id of the user
+     */
+    public Long getId() {
+        return id;
     }
 }
