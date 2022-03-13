@@ -17,6 +17,21 @@ public class SkillTypeEntity {
     private String colour;
 
     /**
+     * SkillTypeEntity's default no-arg constructor
+     */
+    public SkillTypeEntity() {}
+
+    /**
+     *
+     * @param skillType the type of the skill
+     * @param colour the colour associated with this SkillType
+     */
+    public SkillTypeEntity(SkillType skillType, String colour) {
+        this.skillType = skillType;
+        this.colour = colour;
+    }
+
+    /**
      *
      * @return the colour associated with this SkillType
      */

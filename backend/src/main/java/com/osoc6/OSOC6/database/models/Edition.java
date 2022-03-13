@@ -22,6 +22,23 @@ public class Edition {
     private boolean active;
 
     /**
+     * Edition's default no-arg constructor
+     */
+    public Edition() {}
+
+    /**
+     *
+     * @param name the name of the OSOC-edition
+     * @param year the year in which the edition takes place
+     * @param active whether or not the edition is still active
+     */
+    public Edition(String name, int year, boolean active) {
+        this.name = name;
+        this.year = year;
+        this.active = active;
+    }
+
+    /**
      *
      * @return whether or not the edition is active
      */

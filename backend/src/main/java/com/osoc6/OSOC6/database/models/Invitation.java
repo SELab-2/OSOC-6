@@ -26,6 +26,21 @@ public class Invitation {
     private boolean used;
 
     /**
+     * Invitation's default no-arg constructor
+     */
+    public Invitation() {}
+
+    /**
+     *
+     * @param timestamp the timestamp on which the invitation was created
+     * @param used whether or not the invitation has been used
+     */
+    public Invitation(Timestamp timestamp, boolean used) {
+        this.timestamp = timestamp;
+        this.used = used;
+    }
+
+    /**
      *
      * @return The timestamp of the invitation
      */
@@ -39,14 +54,6 @@ public class Invitation {
      */
     public boolean isUsed() {
         return used;
-    }
-
-    /**
-     *
-     * @param newTimestamp timestamp of the creation of the invitation
-     */
-    public void setTimestamp(final Timestamp newTimestamp) {
-        timestamp = newTimestamp;
     }
 
     /**

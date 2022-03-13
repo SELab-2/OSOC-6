@@ -18,6 +18,21 @@ public class CommunicationTemplate {
     private String template;
 
     /**
+     * CommunicationTemplate's default no-arg constructor
+     */
+    public CommunicationTemplate() {}
+
+    /**
+     *
+     * @param name the name of the template
+     * @param template the content of the template
+     */
+    public CommunicationTemplate(String name, String template) {
+        this.name = name;
+        this.template = template;
+    }
+
+    /**
      *
      * @return the name of the ConfirmationType
      */

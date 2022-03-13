@@ -33,9 +33,28 @@ public class User {
     private String lastName;
 
     /**
-     * Role/ power this user has.
+     * Role/power this user has.
      */
     private UserRole userRole;
+
+    /**
+     * User's default no-arg constructor
+     */
+    public User() {}
+
+    /**
+     *
+     * @param email the email of the user
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param userRole the role of the user
+     */
+    public User(String email, String firstName, String lastName, UserRole userRole) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userRole = userRole;
+    }
 
     /**
      *

@@ -140,6 +140,68 @@ public class Student {
     private String additionalStudentInfo;
 
     /**
+     * Student's default no-arg constructor
+     */
+    public Student() {}
+
+    /**
+     *
+     * @param email the email of the student
+     * @param firstName the first name of the student
+     * @param lastName the last name of the student
+     * @param gender the gender of the student
+     * @param pronounsType the pronounsType of the student
+     * @param callName the callname of the student
+     * @param pronouns the pronouns of the student
+     * @param mostFluentLanguage the language in which the student is moest fluent
+     * @param englishProficiency the student's proficiency in English
+     * @param phoneNumber the phone number of the student
+     * @param curriculumVitaeURI the URI of the student's curriculum vitae
+     * @param portfolioURI the URI of the student's portfolio
+     * @param motivationURI the URI of the student's motivation
+     * @param writtenMotivation the written motivation of the student
+     * @param educationLevel the education level of the student
+     * @param currentDiploma the current diploma of the student
+     * @param durationCurrentDegree the duration of the student's current degree
+     * @param yearInCourse the current year (first, second,...) of the student's course
+     * @param institutionName the name of the institution of the student's course
+     * @param bestSkill the best skill of the student
+     * @param osocExperience the level of OSOC-experience of the student
+     * @param additionalStudentInfo additional info about the student
+     */
+    public Student(String email, String firstName, String lastName,
+                   Gender gender, PronounsType pronounsType, String callName,
+                   List<String> pronouns, String mostFluentLanguage,
+                   EnglishProficiency englishProficiency, String phoneNumber,
+                   URI curriculumVitaeURI, URI portfolioURI, URI motivationURI,
+                   String writtenMotivation, String educationLevel, String currentDiploma,
+                   int durationCurrentDegree, String yearInCourse, String institutionName,
+                   String bestSkill, OsocExperience osocExperience, String additionalStudentInfo) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.pronounsType = pronounsType;
+        this.callName = callName;
+        this.pronouns = pronouns;
+        this.mostFluentLanguage = mostFluentLanguage;
+        this.englishProficiency = englishProficiency;
+        this.phoneNumber = phoneNumber;
+        this.curriculumVitaeURI = curriculumVitaeURI;
+        this.portfolioURI = portfolioURI;
+        this.motivationURI = motivationURI;
+        this.writtenMotivation = writtenMotivation;
+        this.educationLevel = educationLevel;
+        this.currentDiploma = currentDiploma;
+        this.durationCurrentDegree = durationCurrentDegree;
+        this.yearInCourse = yearInCourse;
+        this.institutionName = institutionName;
+        this.bestSkill = bestSkill;
+        this.osocExperience = osocExperience;
+        this.additionalStudentInfo = additionalStudentInfo;
+    }
+
+    /**
      *
      * @return the email of the student
      */

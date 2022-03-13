@@ -26,6 +26,21 @@ public class Organisation {
     private String name;
 
     /**
+     * Organisation's default no-arg constructor
+     */
+    public Organisation() {}
+
+    /**
+     *
+     * @param info a string containing some info about the organisation
+     * @param name the name of the organisation
+     */
+    public Organisation(String info, String name) {
+        this.info = info;
+        this.name = name;
+    }
+
+    /**
      *
      * @return The info of the organisation
      */

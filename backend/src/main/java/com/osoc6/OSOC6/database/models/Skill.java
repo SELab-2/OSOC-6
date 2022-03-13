@@ -26,6 +26,21 @@ public class Skill {
     private String additionalInfo;
 
     /**
+     * Skill's default no-arg constructor
+     */
+    public Skill() {}
+
+    /**
+     *
+     * @param name the name of the skill
+     * @param additionalInfo a string containing additional info about the project
+     */
+    public Skill(String name, String additionalInfo) {
+        this.name = name;
+        this.additionalInfo = additionalInfo;
+    }
+
+    /**
      *
      * @return The description of the skill
      */
