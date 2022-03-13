@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -64,7 +66,7 @@ public class ProjectController {
      * @return The newly added project entity
      */
     @PostMapping("/projects")
-    public ResponseEntity<EntityModel<Project>> newProject(@RequestBody final Project newProject) {
+    public ResponseEntity<EntityModel<Project>> newProject(@Valid @RequestBody final Project newProject) {
         EntityModel<Project> entityModel = assembler.toModel(repository.save(newProject));
 
         return ResponseEntity
@@ -93,7 +95,7 @@ public class ProjectController {
      * @return The new project entity
      */
     @PatchMapping("/projects/{id}")
-    public ResponseEntity<EntityModel<Project>> updateProject(@RequestBody final Project projectUpdate,
+    public ResponseEntity<EntityModel<Project>> updateProject(@Valid @RequestBody final Project projectUpdate,
                                                               @PathVariable final Long id) {
         Project updatedProject = repository.findById(id)
                 .map(project -> {

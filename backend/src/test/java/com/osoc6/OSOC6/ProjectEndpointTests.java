@@ -11,7 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.TransactionSystemException;
 
+import javax.persistence.RollbackException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,42 @@ public class ProjectEndpointTests {
         String projectName = "TEST PROJECT";
         testProject.setName(projectName);
         testProject.setGoals(new ArrayList<>());
+        repository.save(testProject);
+
+        this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString(projectName)));
+    }
+
+    /**
+     * Check if the repository throws the right errors when the fields aren't correctly set.
+     * @exception Exception throws exception if not correctly set
+     */
+    @Test
+    public void validationNewProject() throws Exception {
+        Project testProject = new Project();
+        String projectName = "";
+        testProject.setName(projectName);
+        testProject.setGoals(new ArrayList<>());
+        // Validation blank name
+        try {
+            repository.save(testProject);
+            throw new Exception();
+        } catch (RollbackException | TransactionSystemException ex) {
+            // We should be here, RollbackException and TransactionSystemException
+            // get thrown when a transaction failes because of validation
+            projectName = "validation test";
+            testProject.setName(projectName);
+        }
+
+        // Validation goals
+        testProject.setGoals(null);
+        try {
+            repository.save(testProject);
+            throw new Exception();
+        } catch (RollbackException | TransactionSystemException ex) {
+            testProject.setGoals(new ArrayList<>());
+        }
+
         repository.save(testProject);
 
         this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
