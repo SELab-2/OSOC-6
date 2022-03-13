@@ -46,7 +46,7 @@ public class OrganisationController {
     }
 
     /**
-     *
+     * Add a new organisation via a POST.
      * @param newOrganisation The organisation entity that had to be added to the database
      * @return The newly added organisation entity
      */
@@ -60,7 +60,7 @@ public class OrganisationController {
     }
 
     /**
-     *
+     * Get all Organisation entities.
      * @return Collection of all organisations
      */
     @GetMapping("/organisations")
@@ -73,7 +73,7 @@ public class OrganisationController {
     }
 
     /**
-     *
+     * Get an organisation entity by id.
      * @param id The id of the organisation that needs to be fetched from the database
      * @return The organisation entity
      */
@@ -87,7 +87,7 @@ public class OrganisationController {
     }
 
     /**
-     *
+     * Update an organisation entity via a PATCH request.
      * @param organisationUpdate The updated entity
      * @param id The id of the organisation that needs to be updated
      * @return The new organisation entity
