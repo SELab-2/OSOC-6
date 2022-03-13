@@ -1,10 +1,27 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
+import java.util.Set;
+
+/*
+Possible annotations:
+@NotNull
+@Lob
+@Column
+@Temporal
+@JoinTable
+@NaturalId
+@Size
+@Transient
+@Query
+ */
 
 @Entity
 @Table(name = "users")
@@ -20,22 +37,41 @@ public class User {
     /**
      * The email of the user.
      */
+    @Basic
     private String email;
 
     /**
      * The first name of the user.
      */
+    @Basic
     private String firstName;
 
     /**
      * The last name of the user.
      */
+    @Basic
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
+    @Basic
     private UserRole userRole;
+
+    // TODO: think about cascade! + How do we say this is reverse of issuer?
+    @OneToMany(mappedBy = "Invitation_issuer", orphanRemoval = true)
+    private Set<Invitation> sendInvitations;
+
+    // TODO: required field!
+    @OneToMany(mappedBy = "Invitation_subject")
+    private Set<Invitation> receivedInvitations;
+
+    /**
+     * TODO: sorted list
+     * @return
+     */
+    @OneToMany(mappedBy = "Communication")
+    private List<Communication> communications;
 
     /**
      *

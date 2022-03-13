@@ -1,12 +1,10 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Table(indexes = {@Index(unique = false, name = "Invitation-Edition", columnList = "edition")})
 public class Invitation {
     /**
      * The id of the invitation.
@@ -24,6 +22,16 @@ public class Invitation {
      * Whether the invitation has been used.
      */
     private boolean used;
+
+    @ManyToOne(optional = false)
+    private Edition edition;
+
+    // TODO: cascade type!
+    @ManyToOne(optional = false)
+    private User issuer;
+
+    @ManyToOne
+    private User subject;
 
     /**
      *

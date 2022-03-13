@@ -1,9 +1,8 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.osoc6.OSOC6.database.models.student.Student;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -31,7 +30,18 @@ public class Communication {
      */
     private String content;
 
-    // Relation with CommunicationTemplate.
+    @ManyToOne(optional = false)
+    private Edition edition;
+
+    @ManyToOne(optional = false)
+    private CommunicationTemplate template;
+
+    @ManyToOne(optional = false)
+    private User user;
+
+    @ManyToOne(optional = false)
+    private Student student;
+
 
     /**
      *

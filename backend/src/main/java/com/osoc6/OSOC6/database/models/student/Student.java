@@ -1,12 +1,13 @@
 package com.osoc6.OSOC6.database.models.student;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
+import com.osoc6.OSOC6.database.models.Communication;
+import com.osoc6.OSOC6.database.models.Skill;
+import com.osoc6.OSOC6.database.models.Suggestion;
+
+import javax.persistence.*;
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Student {
@@ -139,6 +140,21 @@ public class Student {
      */
     private String additionalStudentInfo;
 
+    @OneToMany
+    private Set<Study> studies;
+
+    @OneToMany
+    private Set<Skill> skills;
+
+    @OneToMany
+    private Set<Suggestion> suggestions;
+
+    /**
+     * Sorted
+     */
+    @OneToMany(mappedBy = "Communication")
+    private List<Communication> communications;
+
     /**
      *
      * @return the email of the student
@@ -154,6 +170,7 @@ public class Student {
     public String getFirstName() {
         return firstName;
     }
+
 
     /**
      *

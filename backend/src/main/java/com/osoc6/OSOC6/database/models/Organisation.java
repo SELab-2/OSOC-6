@@ -1,9 +1,7 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Organisation {
@@ -24,6 +22,9 @@ public class Organisation {
      * The name of the organisation.
      */
     private String name;
+
+    @ManyToMany(mappedBy = "Project")
+    private Set<Project> projects;
 
     /**
      *
