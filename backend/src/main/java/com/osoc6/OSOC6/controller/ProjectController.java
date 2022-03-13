@@ -97,13 +97,9 @@ public class ProjectController {
                                                               @PathVariable final Long id) {
         Project updatedProject = repository.findById(id)
                 .map(project -> {
-                    if (projectUpdate.getName() != null) {
-                        project.setName(projectUpdate.getName());
-                    }
+                    project.setName(projectUpdate.getName());
+                    project.setGoals(projectUpdate.getGoals());
 
-                    if (projectUpdate.getGoals() != null) {
-                        project.setGoals(projectUpdate.getGoals());
-                    }
                     return repository.save(project);
                 })
                 .orElseThrow(() -> new ProjectNotFoundException(id));
@@ -114,9 +110,16 @@ public class ProjectController {
     /**
      * Delete a project via a DELETE.
      * @param id The id of the project that needs to be deleted
+     * @return empty response
      */
     @DeleteMapping("/projects/{id}")
-    public void deleteProject(@PathVariable final Long id) {
-        repository.deleteById(id);
+    public ResponseEntity<Object> deleteProject(@PathVariable final Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new ProjectNotFoundException(id);
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }

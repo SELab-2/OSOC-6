@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -42,30 +42,6 @@ public class ProjectEndpointTests {
     private ProjectRepository repository;
 
     /**
-     * Load database loads database with 2 projects
-     * check if first one is present.
-     * @exception Exception throws exception if not there
-     */
-    @Test
-    @Order(1)
-    public void shouldContainOSOC1() throws Exception {
-        this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("OSOC 1")));
-    }
-
-    /**
-     * Load database loads database with 2 projects
-     * check if second one is present.
-     * @exception Exception throws exception if not there
-     */
-    @Test
-    @Order(2)
-    public void shouldContainOSOC2() throws Exception {
-        this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("OSOC 2")));
-    }
-
-    /**
      * Check if the repository accepts new projects.
      * @exception Exception throws exception if not there
      */
@@ -74,6 +50,7 @@ public class ProjectEndpointTests {
         Project testProject = new Project();
         String projectName = "TEST PROJECT";
         testProject.setName(projectName);
+        testProject.setGoals(new ArrayList<>());
         repository.save(testProject);
 
         this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
@@ -89,6 +66,7 @@ public class ProjectEndpointTests {
         Project newProject = new Project();
         String projectName = "POST TEST";
         newProject.setName(projectName);
+        newProject.setGoals(new ArrayList<>());
 
         mockMvc.perform(post("/projects")
                 .content(asJsonString(newProject))

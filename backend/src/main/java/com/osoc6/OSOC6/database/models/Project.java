@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Project {
@@ -26,12 +28,14 @@ public class Project {
     /**
      * The name of the project.
      */
+    @NotBlank(message = "Project name can not be empty")
     private String name;
 
     /**
      *
      * @return The goals of the project
      */
+    @NotNull(message = "Goals can be an empty list, but not null")
     public List<String> getGoals() {
         return goals;
     }

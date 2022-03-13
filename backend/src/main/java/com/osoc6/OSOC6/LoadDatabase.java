@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+
 @Configuration
 class LoadDatabase {
 
@@ -30,11 +32,13 @@ class LoadDatabase {
             LOGGER.info("Preloading OSOC 1");
             Project osoc1 = new Project();
             osoc1.setName("OSOC 1");
+            osoc1.setGoals(new ArrayList<>());
             repository.save(osoc1);
 
             LOGGER.info("Preloading OSOC 2");
             Project osoc2 = new Project();
             osoc2.setName("OSOC 2");
+            osoc2.setGoals(new ArrayList<>());
             repository.save(osoc2);
         };
     }
