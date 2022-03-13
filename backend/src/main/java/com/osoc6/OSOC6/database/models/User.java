@@ -38,22 +38,23 @@ public class User {
     private UserRole userRole;
 
     /**
-     * User's default no-arg constructor
+     * User's default no-arg constructor.
      */
-    public User() {}
+    public User() { }
 
     /**
      *
-     * @param email the email of the user
-     * @param firstName the first name of the user
-     * @param lastName the last name of the user
-     * @param userRole the role of the user
+     * @param newEmail the email of the user
+     * @param newFirstName the first name of the user
+     * @param newLastName the last name of the user
+     * @param newUserRole the role of the user
      */
-    public User(String email, String firstName, String lastName, UserRole userRole) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userRole = userRole;
+    public User(final String newEmail, final String newFirstName,
+                final String newLastName, final UserRole newUserRole) {
+        this.email = newEmail;
+        this.firstName = newFirstName;
+        this.lastName = newLastName;
+        this.userRole = newUserRole;
     }
 
     /**

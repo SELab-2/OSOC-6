@@ -22,20 +22,20 @@ public class Edition {
     private boolean active;
 
     /**
-     * Edition's default no-arg constructor
+     * Edition's default no-arg constructor.
      */
-    public Edition() {}
+    public Edition() { }
 
     /**
      *
-     * @param name the name of the OSOC-edition
-     * @param year the year in which the edition takes place
-     * @param active whether or not the edition is still active
+     * @param newName the name of the OSOC-edition
+     * @param newYear the year in which the edition takes place
+     * @param newActive whether or not the edition is still active
      */
-    public Edition(String name, int year, boolean active) {
-        this.name = name;
-        this.year = year;
-        this.active = active;
+    public Edition(final String newName, final int newYear, final boolean newActive) {
+        this.name = newName;
+        this.year = newYear;
+        this.active = newActive;
     }
 
     /**

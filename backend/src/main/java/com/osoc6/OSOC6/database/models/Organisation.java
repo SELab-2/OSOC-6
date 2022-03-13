@@ -26,18 +26,18 @@ public class Organisation {
     private String name;
 
     /**
-     * Organisation's default no-arg constructor
+     * Organisation's default no-arg constructor.
      */
-    public Organisation() {}
+    public Organisation() { }
 
     /**
      *
-     * @param info a string containing some info about the organisation
-     * @param name the name of the organisation
+     * @param newInfo a string containing some info about the organisation
+     * @param newName the name of the organisation
      */
-    public Organisation(String info, String name) {
-        this.info = info;
-        this.name = name;
+    public Organisation(final String newInfo, final String newName) {
+        this.info = newInfo;
+        this.name = newName;
     }
 
     /**

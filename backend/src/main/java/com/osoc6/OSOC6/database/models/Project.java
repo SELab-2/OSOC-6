@@ -29,18 +29,18 @@ public class Project {
     private String name;
 
     /**
-     * Project's default no-arg constructor
+     * Project's default no-arg constructor.
      */
-    public Project() {}
+    public Project() { }
 
     /**
      *
-     * @param goals a list containing the goals of the project
-     * @param name the name of the project
+     * @param newGoals a list containing the goals of the project
+     * @param newName the name of the project
      */
-    public Project(List<String> goals, String name) {
-        this.goals = goals;
-        this.name = name;
+    public Project(final List<String> newGoals, final String newName) {
+        this.goals = newGoals;
+        this.name = newName;
     }
 
     /**

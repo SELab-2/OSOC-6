@@ -34,20 +34,20 @@ public class Communication {
     // Relation with CommunicationTemplate.
 
     /**
-     * Communication's default no-arg constructor
+     * Communication's default no-arg constructor.
      */
-    public Communication() {}
+    public Communication() { }
 
     /**
      *
-     * @param timestamp the timestamp of when the communication-instance was created
-     * @param medium the medium of the communication, such as SMS or email
-     * @param content the text content of the communication-instance
+     * @param newTimestamp the timestamp of when the communication-instance was created
+     * @param newMedium the medium of the communication, such as SMS or email
+     * @param newContent the text content of the communication-instance
      */
-    public Communication(Timestamp timestamp, String medium, String content) {
-        this.timestamp = timestamp;
-        this.medium = medium;
-        this.content = content;
+    public Communication(final Timestamp newTimestamp, final String newMedium, final String newContent) {
+        this.timestamp = newTimestamp;
+        this.medium = newMedium;
+        this.content = newContent;
     }
 
     /**
