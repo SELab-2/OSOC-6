@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class ProjectController {
     private final ProjectModelAssembler assembler;
 
     /**
-     * The constructor for for the projectController.
+     * The constructor for the projectController.
      * @param projectRepository the link to the database
      * @param projectModelAssembler used to make the API more restfull
      */
@@ -45,7 +46,7 @@ public class ProjectController {
     }
 
     /**
-     *
+     * Get the list of all projects.
      * @return Collection of all projects
      */
     @GetMapping("/projects")
@@ -58,7 +59,7 @@ public class ProjectController {
     }
 
     /**
-     *
+     * Add a new project via a POST.
      * @param newProject The project entity that had to be added to the database
      * @return The newly added project entity
      */
@@ -72,7 +73,7 @@ public class ProjectController {
     }
 
     /**
-     *
+     * Get a project by id.
      * @param id The id of the project that needs to be fetched from the database
      * @return The project entity
      */
@@ -86,7 +87,7 @@ public class ProjectController {
     }
 
     /**
-     *
+     * Update the project via a PATCH.
      * @param projectUpdate The updated entity
      * @param id The id of the project that needs to be updated
      * @return The new project entity
@@ -94,7 +95,7 @@ public class ProjectController {
     @PatchMapping("/projects/{id}")
     public ResponseEntity<EntityModel<Project>> updateProject(@RequestBody final Project projectUpdate,
                                                               @PathVariable final Long id) {
-        Project updatedUser = repository.findById(id)
+        Project updatedProject = repository.findById(id)
                 .map(project -> {
                     if (projectUpdate.getName() != null) {
                         project.setName(projectUpdate.getName());
@@ -107,7 +108,15 @@ public class ProjectController {
                 })
                 .orElseThrow(() -> new ProjectNotFoundException(id));
 
-        return ResponseEntity.ok(assembler.toModel(updatedUser));
+        return ResponseEntity.ok(assembler.toModel(updatedProject));
     }
 
+    /**
+     * Delete a project via a DELETE.
+     * @param id The id of the project that needs to be deleted
+     */
+    @DeleteMapping("/projects/{id}")
+    public void deleteProject(@PathVariable final Long id) {
+        repository.deleteById(id);
+    }
 }
