@@ -18,18 +18,18 @@ public class CommunicationTemplate {
     private String template;
 
     /**
-     * CommunicationTemplate's default no-arg constructor
+     * CommunicationTemplate's default no-arg constructor.
      */
-    public CommunicationTemplate() {}
+    public CommunicationTemplate() { }
 
     /**
      *
-     * @param name the name of the template
-     * @param template the content of the template
+     * @param newName the name of the template
+     * @param newTemplate the content of the template
      */
-    public CommunicationTemplate(String name, String template) {
-        this.name = name;
-        this.template = template;
+    public CommunicationTemplate(final String newName, final String newTemplate) {
+        this.name = newName;
+        this.template = newTemplate;
     }
 
     /**
