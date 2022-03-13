@@ -1,11 +1,15 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(indexes = {@Index(unique = false, name = "Project-Edition", columnList = "edition")})
+//TODO: @Table(indexes = {@Index(unique = false, name = "Project-Edition", columnList = "edition")})
 public class Project {
 
     /**
@@ -29,8 +33,11 @@ public class Project {
     @ManyToOne(optional = false)
     private Edition edition;
 
+    // TODO: Many to many
+    /*
     @ManyToMany(mappedBy = "Project")
     private Set<Organisation> organisations;
+     */
 
     @ManyToOne(optional = false)
     private User creator;

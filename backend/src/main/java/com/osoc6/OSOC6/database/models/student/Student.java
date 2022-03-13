@@ -152,7 +152,7 @@ public class Student {
     /**
      * Sorted
      */
-    @OneToMany(mappedBy = "Communication")
+    @OneToMany(mappedBy = "student")
     private List<Communication> communications;
 
     /**

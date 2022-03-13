@@ -59,18 +59,18 @@ public class User {
     private UserRole userRole;
 
     // TODO: think about cascade! + How do we say this is reverse of issuer?
-    @OneToMany(mappedBy = "Invitation_issuer", orphanRemoval = true)
+    @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     private Set<Invitation> sendInvitations;
 
     // TODO: required field!
-    @OneToMany(mappedBy = "Invitation_subject")
+    @OneToMany(mappedBy = "subject")
     private Set<Invitation> receivedInvitations;
 
     /**
      * TODO: sorted list
      * @return
      */
-    @OneToMany(mappedBy = "Communication")
+    @OneToMany(mappedBy = "user")
     private List<Communication> communications;
 
     /**

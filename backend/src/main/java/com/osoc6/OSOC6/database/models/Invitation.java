@@ -1,10 +1,14 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
 @Entity
-@Table(indexes = {@Index(unique = false, name = "Invitation-Edition", columnList = "edition")})
+// TODO: @Table(indexes = {@Index(unique = false, name = "Invitation-Edition", columnList = "edition")})
 public class Invitation {
     /**
      * The id of the invitation.
