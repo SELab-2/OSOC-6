@@ -57,6 +57,23 @@ public class Communication {
 
 
     /**
+     * Communication's default no-arg constructor
+     */
+    public Communication() {}
+
+    /**
+     *
+     * @param timestamp the timestamp of when the communication-instance was created
+     * @param medium the medium of the communication, such as SMS or email
+     * @param content the text content of the communication-instance
+     */
+    public Communication(Timestamp timestamp, String medium, String content) {
+        this.timestamp = timestamp;
+        this.medium = medium;
+        this.content = content;
+    }
+
+    /**
      *
      * @return the timestamp of the communication
      */

@@ -25,6 +25,21 @@ public class Study {
     private StudyCourse studyCourse;
 
     /**
+     * Study's default no-arg constructor
+     */
+    public Study() {}
+
+    /**
+     *
+     * @param course the title of the study
+     * @param studyCourse the course studied by the student
+     */
+    public Study(String course, StudyCourse studyCourse) {
+        this.course = course;
+        this.studyCourse = studyCourse;
+    }
+
+    /**
      *
      * @return the title of the study.
      */
