@@ -1,27 +1,14 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Set;
-
-/*
-Possible annotations:
-@NotNull
-@Lob
-@Column
-@Temporal
-@JoinTable
-@NaturalId
-@Size
-@Transient
-@Query
- */
 
 @Entity
 @Table(name = "users")
@@ -37,40 +24,41 @@ public class User {
     /**
      * The email of the user.
      */
-    @Basic
     private String email;
 
     /**
      * The first name of the user.
      */
-    @Basic
     private String firstName;
 
     /**
      * The last name of the user.
      */
-    @Basic
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
-    @Basic
     private UserRole userRole;
 
-    // TODO: think about cascade! + How do we say this is reverse of issuer?
+    /**
+     * {@link Set} of {@link Invitation} that was send out by the user.
+     * A user can only create invitations if it has the {@link UserRole} admin.
+     */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     private Set<Invitation> sendInvitations;
 
-    // TODO: required field!
-    @OneToMany(mappedBy = "subject")
+    /**
+     * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
+     */
+    @OneToMany(mappedBy = "subject", orphanRemoval = false)
     private Set<Invitation> receivedInvitations;
 
     /**
-     * TODO: sorted list
-     * @return
+     * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OrderColumn(name = "timestamp")
     private List<Communication> communications;
 
     /**
@@ -103,6 +91,30 @@ public class User {
      */
     public UserRole getUserRole() {
         return userRole;
+    }
+
+    /**
+     *
+     * @return Invitations send by the user
+     */
+    public Set<Invitation> getSendInvitations() {
+        return sendInvitations;
+    }
+
+    /**
+     *
+     * @return Invitations received by the user
+     */
+    public Set<Invitation> getReceivedInvitations() {
+        return receivedInvitations;
+    }
+
+    /**
+     *
+     * @return communication initiated by the user
+     */
+    public List<Communication> getCommunications() {
+        return communications;
     }
 
     /**

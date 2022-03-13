@@ -34,15 +34,27 @@ public class Communication {
      */
     private String content;
 
+    /**
+     * {@link Edition} in which this communication took place.
+     */
     @ManyToOne(optional = false)
     private Edition edition;
 
+    /**
+     * {@link CommunicationTemplate} used in this communication.
+     */
     @ManyToOne(optional = false)
     private CommunicationTemplate template;
 
+    /**
+     * {@link User} that communicated with the student.
+     */
     @ManyToOne(optional = false)
     private User user;
 
+    /**
+     * Student with whom the communication took place.
+     */
     @ManyToOne(optional = false)
     private Student student;
 
@@ -73,6 +85,38 @@ public class Communication {
 
     /**
      *
+     * @return edition in which this communication took place.
+     */
+    public Edition getEdition() {
+        return edition;
+    }
+
+    /**
+     *
+     * @return communication template used in this communication.
+     */
+    public CommunicationTemplate getTemplate() {
+        return template;
+    }
+
+    /**
+     *
+     * @return User that communicated with the student.
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     *
+     * @return student with whom the communication took place
+     */
+    public Student getStudent() {
+        return student;
+    }
+
+    /**
+     *
      * @param newTimestamp timestamp the communication happened
      */
     public void setTimestamp(final Timestamp newTimestamp) {
@@ -93,5 +137,21 @@ public class Communication {
      */
     public void setContent(final String newContent) {
         content = newContent;
+    }
+
+    /**
+     *
+     * @param newTemplate the corrected template used in this communication
+     */
+    public void setTemplate(final CommunicationTemplate newTemplate) {
+        template = newTemplate;
+    }
+
+    /**
+     *
+     * @param newStudent the corrected student with whom this communication took place
+     */
+    public void setStudent(final Student newStudent) {
+        student = newStudent;
     }
 }

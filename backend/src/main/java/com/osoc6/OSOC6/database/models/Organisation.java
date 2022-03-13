@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class Organisation {
@@ -25,11 +27,11 @@ public class Organisation {
      */
     private String name;
 
-    // TODO: Many to many
-    /*
-    @ManyToMany(mappedBy = "Project")
+    /**
+     * {@link Set} of projects this Organisation is involved in.
+     */
+    @ManyToMany
     private Set<Project> projects;
-    */
 
     /**
      *
@@ -45,6 +47,14 @@ public class Organisation {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     *
+     * @return set of projects this Organisation is involved in
+     */
+    public Set<Project> getProjects() {
+        return projects;
     }
 
     /**

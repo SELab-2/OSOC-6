@@ -4,10 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-//TODO: @Table(indexes = {@Index(unique = false, name = "Skill-Edition", columnList = "edition")})
+@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
 public class Skill {
 
     /**
@@ -27,11 +29,16 @@ public class Skill {
      */
     private String additionalInfo;
 
+    /**
+     * The {@link SkillType} this Skill represents.
+     */
+    private SkillType skillType;
+
+    /**
+     * Edition within which this skill was created.
+     */
     @ManyToOne(optional = false)
     private Edition edition;
-
-    @ManyToOne(optional = false)
-    private SkillTypeEntity type;
 
     /**
      *
@@ -51,9 +58,26 @@ public class Skill {
 
     /**
      *
+     * @return edition this skill was created in
+     */
+    public Edition getEdition() {
+        return edition;
+    }
+
+    /**
+     *
+     * @return SkillType the skill represents
+     */
+    public SkillType getSkillType() {
+        return skillType;
+    }
+
+    /**
+     *
      * @param newName name of the skill/ roll
      */
     public void setName(final String newName) {
+        skillType = SkillType.fromString(newName);
         name = newName;
     }
 

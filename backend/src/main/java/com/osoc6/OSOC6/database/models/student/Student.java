@@ -4,7 +4,13 @@ import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
@@ -48,8 +54,6 @@ public class Student {
      * Special case: If callName is the empty string, the student's callName is their birth name.
      */
     private String callName;
-
-    //private Role projectRole;
 
     /**
      * The pronouns of the student.
@@ -131,28 +135,35 @@ public class Student {
      */
     private OsocExperience osocExperience;
 
-    // relationship with a Skill. In the form this is called the 'role' a student applies for
-
-    // relationship with Study
-
     /**
      * Additional info that coaches or admins write about students.
      */
     private String additionalStudentInfo;
 
-    @OneToMany
+    /**
+     * The Studies this student has done.
+     */
+    @OneToMany(orphanRemoval = true)
     private Set<Study> studies;
 
-    @OneToMany
+    /**
+     * The skills this student has.
+     * In the form this is called the 'role' a student applies for.
+     */
+    @OneToMany(orphanRemoval = true)
     private Set<Skill> skills;
 
-    @OneToMany
+    /**
+     * The suggestions made about this student.
+     */
+    @OneToMany(orphanRemoval = true)
     private Set<Suggestion> suggestions;
 
     /**
-     * Sorted
+     * Communication that this student has received sorted on the timestamp.
      */
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    @OrderColumn(name = "timestamp")
     private List<Communication> communications;
 
     /**
@@ -170,7 +181,6 @@ public class Student {
     public String getFirstName() {
         return firstName;
     }
-
 
     /**
      *
@@ -334,6 +344,38 @@ public class Student {
      */
     public String getAdditionalStudentInfo() {
         return additionalStudentInfo;
+    }
+
+    /**
+     *
+     * @return The Studies this student has done
+     */
+    public Set<Study> getStudies() {
+        return studies;
+    }
+
+    /**
+     *
+     * @return the skills this student has
+     */
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    /**
+     *
+     * @return suggestions made about this student
+     */
+    public Set<Suggestion> getSuggestions() {
+        return suggestions;
+    }
+
+    /**
+     *
+     * @return Communication that this student has received sorted on the timestamp.
+     */
+    public List<Communication> getCommunications() {
+        return communications;
     }
 
     /**
