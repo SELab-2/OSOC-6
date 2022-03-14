@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.sql.Timestamp;
 
 @Entity
@@ -44,7 +42,6 @@ public class Suggestion {
      * {@link Timestamp} of creation from the suggestion.
      */
     @Basic(optional = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp timestamp;
 
     /**
