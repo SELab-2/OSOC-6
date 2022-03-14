@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.database.models;
 
+import org.springframework.lang.NonNull;
+
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -14,11 +17,15 @@ public class Edition {
     /**
      * The year of the edition.
      */
+    @Basic(optional = false)
+    @NonNull
     private int year;
 
     /**
      * Whether the edition is active.
      */
+    @Basic
+    @NonNull
     private boolean active;
 
     /**

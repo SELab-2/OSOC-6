@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,21 +28,28 @@ public class User {
     /**
      * The email of the user.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String email;
 
     /**
      * The first name of the user.
      */
+    @Basic(optional = false)
+    @Column(length = 50)
     private String firstName;
 
     /**
      * The last name of the user.
      */
+    @Basic(optional = false)
+    @Column(length = 50)
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
+    @Basic(optional = false)
     private UserRole userRole;
 
     /**

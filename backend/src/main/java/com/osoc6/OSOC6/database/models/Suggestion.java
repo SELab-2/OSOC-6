@@ -1,10 +1,15 @@
 package com.osoc6.OSOC6.database.models;
 
+
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.sql.Timestamp;
 
 @Entity
@@ -19,11 +24,14 @@ public class Suggestion {
     /**
      * Strategy this suggestion takes.
      */
+    @Basic(optional = false)
     private SuggestionStrategy strategy;
 
     /**
      * Reason provided by the user for giving this suggestion.
      */
+    @Basic(optional = false)
+    @Lob
     private String reason;
 
     /**
@@ -35,6 +43,8 @@ public class Suggestion {
     /**
      * {@link Timestamp} of creation from the suggestion.
      */
+    @Basic(optional = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp timestamp;
 
     /**

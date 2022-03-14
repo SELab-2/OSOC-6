@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,11 +19,14 @@ public class Study {
     /**
      * The title of the study.
      */
+    @Basic(optional = true)
+    @Column(length = 100)
     private String course;
 
     /**
      * The course studied by the student.
      */
+    @Basic(optional = false)
     private StudyCourse studyCourse;
 
     /**
