@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.database.models.Communication;
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
 
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import java.net.URI;
@@ -139,6 +141,12 @@ public class Student {
      * Additional info that coaches or admins write about students.
      */
     private String additionalStudentInfo;
+
+    /**
+     * {@link Edition} in which this communication took place.
+     */
+    @ManyToOne(optional = false)
+    private Edition edition;
 
     /**
      * The Studies this student has done.

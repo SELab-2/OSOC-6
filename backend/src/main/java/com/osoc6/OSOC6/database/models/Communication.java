@@ -6,10 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
+@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
 public class Communication {
 
     /**

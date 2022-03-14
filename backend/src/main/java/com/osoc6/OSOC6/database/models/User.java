@@ -42,7 +42,7 @@ public class User {
     private UserRole userRole;
 
     /**
-     * {@link Set} of {@link Invitation} that was send out by the user.
+     * {@link Set} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
@@ -95,7 +95,7 @@ public class User {
 
     /**
      *
-     * @return Invitations send by the user
+     * @return Invitations sent by the user
      */
     public Set<Invitation> getSendInvitations() {
         return sendInvitations;
