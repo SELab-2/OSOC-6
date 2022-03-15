@@ -6,10 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -48,6 +52,32 @@ public class User {
     private UserRole userRole;
 
     /**
+     * {@link Set} of {@link Invitation} that was sent out by the user.
+     * A user can only create invitations if it has the {@link UserRole} admin.
+     */
+    @OneToMany(mappedBy = "issuer", orphanRemoval = true)
+    private Set<Invitation> sendInvitations;
+
+    /**
+     * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
+     */
+    @OneToMany(mappedBy = "subject", orphanRemoval = false)
+    private Set<Invitation> receivedInvitations;
+
+    /**
+     * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
+     */
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OrderColumn(name = "timestamp")
+    private List<Communication> communications;
+
+    /**
+     * Set of skills a user has.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Skill> skills;
+
+    /**
      *
      * @return the email of the user
      */
@@ -77,6 +107,38 @@ public class User {
      */
     public UserRole getUserRole() {
         return userRole;
+    }
+
+    /**
+     *
+     * @return Invitations sent by the user
+     */
+    public Set<Invitation> getSendInvitations() {
+        return sendInvitations;
+    }
+
+    /**
+     *
+     * @return Invitations received by the user
+     */
+    public Set<Invitation> getReceivedInvitations() {
+        return receivedInvitations;
+    }
+
+    /**
+     *
+     * @return communication initiated by the user
+     */
+    public List<Communication> getCommunications() {
+        return communications;
+    }
+
+    /**
+     *
+     * @return the Set of skills this user has
+     */
+    public Set<Skill> getSkills() {
+        return skills;
     }
 
     /**

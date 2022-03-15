@@ -26,6 +26,11 @@ public class Skill {
     private String additionalInfo;
 
     /**
+     * The {@link SkillType} this Skill represents.
+     */
+    private SkillType skillType;
+
+    /**
      *
      * @return The description of the skill
      */
@@ -43,9 +48,18 @@ public class Skill {
 
     /**
      *
+     * @return SkillType the skill represents
+     */
+    public SkillType getSkillType() {
+        return skillType;
+    }
+
+    /**
+     *
      * @param newName name of the skill/ roll
      */
     public void setName(final String newName) {
+        skillType = SkillType.fromString(newName);
         name = newName;
     }
 

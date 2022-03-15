@@ -1,12 +1,18 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.osoc6.OSOC6.database.models.student.Student;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
+@Table(indexes = {@Index(unique = false, columnList = "timestamp")})
 public class Communication {
 
     /**
@@ -31,7 +37,24 @@ public class Communication {
      */
     private String content;
 
-    // Relation with CommunicationTemplate.
+    /**
+     * {@link CommunicationTemplate} used in this communication.
+     */
+    @ManyToOne(optional = false)
+    private CommunicationTemplate template;
+
+    /**
+     * {@link User} that communicated with the student.
+     */
+    @ManyToOne(optional = false)
+    private User user;
+
+    /**
+     * Student with whom the communication took place.
+     */
+    @ManyToOne(optional = false)
+    private Student student;
+
 
     /**
      *
@@ -59,6 +82,30 @@ public class Communication {
 
     /**
      *
+     * @return communication template used in this communication.
+     */
+    public CommunicationTemplate getTemplate() {
+        return template;
+    }
+
+    /**
+     *
+     * @return User that communicated with the student.
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     *
+     * @return student with whom the communication took place
+     */
+    public Student getStudent() {
+        return student;
+    }
+
+    /**
+     *
      * @param newTimestamp timestamp the communication happened
      */
     public void setTimestamp(final Timestamp newTimestamp) {
@@ -79,5 +126,21 @@ public class Communication {
      */
     public void setContent(final String newContent) {
         content = newContent;
+    }
+
+    /**
+     *
+     * @param newTemplate the corrected template used in this communication
+     */
+    public void setTemplate(final CommunicationTemplate newTemplate) {
+        template = newTemplate;
+    }
+
+    /**
+     *
+     * @param newStudent the corrected student with whom this communication took place
+     */
+    public void setStudent(final Student newStudent) {
+        student = newStudent;
     }
 }
