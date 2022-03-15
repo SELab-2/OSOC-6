@@ -18,7 +18,7 @@ public class SkillTypeEntity {
      * The colour associated with this SkillType.
      */
     @Basic(optional = false)
-    @Column(length = 10)
+    @Column(length = RadagastNumberWizard.COLOUR_DESCRIPTION_LENGTH)
     private String colour;
 
     /**

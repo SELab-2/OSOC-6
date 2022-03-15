@@ -36,7 +36,7 @@ public class Project {
      * The name of the project.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     private String name;
 
     /**

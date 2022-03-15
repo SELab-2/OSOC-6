@@ -35,7 +35,7 @@ public class Communication {
      * The medium of the communication.
      */
     @Basic(optional = false)
-    @Column(length = 20, nullable = false)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH, nullable = false)
     private String medium;
 
     /**

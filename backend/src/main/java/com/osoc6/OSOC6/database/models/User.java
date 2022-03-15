@@ -29,21 +29,21 @@ public class User {
      * The email of the user.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
     private String email;
 
     /**
      * The first name of the user.
      */
     @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
     private String firstName;
 
     /**
      * The last name of the user.
      */
     @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
     private String lastName;
 
     /**

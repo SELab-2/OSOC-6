@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,7 @@ public class Study {
      * The title of the study.
      */
     @Basic(optional = true)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String course;
 
     /**

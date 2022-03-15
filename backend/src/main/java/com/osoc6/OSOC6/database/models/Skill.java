@@ -22,7 +22,7 @@ public class Skill {
      * The name of the skill.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String name;
 
     /**

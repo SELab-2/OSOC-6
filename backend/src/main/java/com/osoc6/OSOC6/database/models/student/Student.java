@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -36,21 +37,21 @@ public class Student {
      * The email of the student.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
     private String email;
 
     /**
      * The first name of the student.
      */
     @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
     private String firstName;
 
     /**
      * The last name of the student.
      */
     @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
     private String lastName;
 
     /**
@@ -70,7 +71,7 @@ public class Student {
      * Special case: If callName is the empty string, the student's callName is their birth name.
      */
     @Basic(optional = true)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     private String callName;
 
     /**
@@ -83,7 +84,7 @@ public class Student {
      * The most fluent language of a person. This is a formatted string.
      */
     @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String mostFluentLanguage;
 
     /**
@@ -96,7 +97,7 @@ public class Student {
      * Formatted string checking the phone number of a student.
      */
     @Basic(optional = false)
-    @Column(length = 20)
+    @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
     private String phoneNumber;
 
     /**
@@ -129,7 +130,7 @@ public class Student {
      * Represented as string instead of enum because only one choice can be provided and other is an option.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String educationLevel;
 
     /**
@@ -137,7 +138,7 @@ public class Student {
      */
 
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String currentDiploma;
 
     /**
@@ -153,21 +154,21 @@ public class Student {
      * We can therefor not just convert to an int because there are many ways to state these facts.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String yearInCourse;
 
     /**
      * Name of the collage/ university student is enrolled.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     private String institutionName;
 
     /**
      * The skill the student would describe to be their best.
      */
     @Basic(optional = false)
-    @Column(length = 100)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String bestSkill;
 
     /**
