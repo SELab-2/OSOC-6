@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
-@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
+@Table(indexes = {@Index(unique = false, columnList = "timestamp")})
 public class Communication {
 
     /**
@@ -36,12 +36,6 @@ public class Communication {
      * The content of the communication.
      */
     private String content;
-
-    /**
-     * {@link Edition} in which this communication took place.
-     */
-    @ManyToOne(optional = false)
-    private Edition edition;
 
     /**
      * {@link CommunicationTemplate} used in this communication.
@@ -84,14 +78,6 @@ public class Communication {
      */
     public String getContent() {
         return content;
-    }
-
-    /**
-     *
-     * @return edition in which this communication took place.
-     */
-    public Edition getEdition() {
-        return edition;
     }
 
     /**

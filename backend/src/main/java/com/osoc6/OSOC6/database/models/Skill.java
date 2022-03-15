@@ -4,12 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
 public class Skill {
 
     /**
@@ -35,12 +31,6 @@ public class Skill {
     private SkillType skillType;
 
     /**
-     * Edition within which this skill was created.
-     */
-    @ManyToOne(optional = false)
-    private Edition edition;
-
-    /**
      *
      * @return The description of the skill
      */
@@ -54,14 +44,6 @@ public class Skill {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     *
-     * @return edition this skill was created in
-     */
-    public Edition getEdition() {
-        return edition;
     }
 
     /**

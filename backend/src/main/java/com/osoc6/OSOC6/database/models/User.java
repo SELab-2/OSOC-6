@@ -62,6 +62,12 @@ public class User {
     private List<Communication> communications;
 
     /**
+     * Set of skills a user has.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Skill> skills;
+
+    /**
      *
      * @return the email of the user
      */
@@ -115,6 +121,14 @@ public class User {
      */
     public List<Communication> getCommunications() {
         return communications;
+    }
+
+    /**
+     *
+     * @return the Set of skills this user has
+     */
+    public Set<Skill> getSkills() {
+        return skills;
     }
 
     /**
