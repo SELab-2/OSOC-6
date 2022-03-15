@@ -1,14 +1,26 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.database.models.Communication;
+import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.Skill;
+import com.osoc6.OSOC6.database.models.Suggestion;
+
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
 public class Student {
     /**
      * The id of the student.
@@ -47,8 +59,6 @@ public class Student {
      * Special case: If callName is the empty string, the student's callName is their birth name.
      */
     private String callName;
-
-    //private Role projectRole;
 
     /**
      * The pronouns of the student.
@@ -130,14 +140,42 @@ public class Student {
      */
     private OsocExperience osocExperience;
 
-    // relationship with a Skill. In the form this is called the 'role' a student applies for
-
-    // relationship with Study
-
     /**
      * Additional info that coaches or admins write about students.
      */
     private String additionalStudentInfo;
+
+    /**
+     * {@link Edition} in which this communication took place.
+     */
+    @ManyToOne(optional = false)
+    private Edition edition;
+
+    /**
+     * The Studies this student has done.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Study> studies;
+
+    /**
+     * The skills this student has.
+     * In the form this is called the 'role' a student applies for.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Skill> skills;
+
+    /**
+     * The suggestions made about this student.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Suggestion> suggestions;
+
+    /**
+     * Communication that this student has received sorted on the timestamp.
+     */
+    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    @OrderColumn(name = "timestamp")
+    private List<Communication> communications;
 
     /**
      *
@@ -317,6 +355,38 @@ public class Student {
      */
     public String getAdditionalStudentInfo() {
         return additionalStudentInfo;
+    }
+
+    /**
+     *
+     * @return The Studies this student has done
+     */
+    public Set<Study> getStudies() {
+        return studies;
+    }
+
+    /**
+     *
+     * @return the skills this student has
+     */
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    /**
+     *
+     * @return suggestions made about this student
+     */
+    public Set<Suggestion> getSuggestions() {
+        return suggestions;
+    }
+
+    /**
+     *
+     * @return Communication that this student has received sorted on the timestamp.
+     */
+    public List<Communication> getCommunications() {
+        return communications;
     }
 
     /**
