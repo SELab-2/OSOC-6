@@ -178,6 +178,11 @@ public class Student {
     private List<Communication> communications;
 
     /**
+     * Student's default no-arg constructor.
+     */
+    public Student() { }
+
+    /**
      *
      * @return the email of the student
      */

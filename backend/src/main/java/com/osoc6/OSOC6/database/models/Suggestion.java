@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.database.models;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +36,24 @@ public class Suggestion {
      * {@link Timestamp} of creation from the suggestion.
      */
     private Timestamp timestamp;
+
+    /**
+     * Suggestion's default no-arg constructor.
+     */
+    public Suggestion() { }
+
+    /**
+     *
+     * @param newStrategy Yes, maybe or no
+     * @param newReason the reason this suggestion was made
+     * @param newCoach the coach that made the suggestion
+     */
+    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final User newCoach) {
+        this.strategy = newStrategy;
+        this.reason = newReason;
+        this.coach = newCoach;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+    }
 
     /**
      *

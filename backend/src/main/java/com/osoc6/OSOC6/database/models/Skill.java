@@ -31,6 +31,23 @@ public class Skill {
     private SkillType skillType;
 
     /**
+     * Skill's default no-arg constructor.
+     */
+    public Skill() { }
+
+    /**
+     *
+     * @param newName the name of the skill
+     * @param newAdditionalInfo the info about the skill
+     * @param newSkillType the SkillType of the Skill
+     */
+    public Skill(final String newName, final String newAdditionalInfo, final SkillType newSkillType) {
+        this.name = newName;
+        this.additionalInfo = newAdditionalInfo;
+        this.skillType = newSkillType;
+    }
+
+    /**
      *
      * @return The description of the skill
      */

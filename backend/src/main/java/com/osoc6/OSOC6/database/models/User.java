@@ -68,6 +68,11 @@ public class User {
     private Set<Skill> skills;
 
     /**
+     * User's default no-args constructor.
+     */
+    public User() { }
+
+    /**
      *
      * @return the email of the user
      */

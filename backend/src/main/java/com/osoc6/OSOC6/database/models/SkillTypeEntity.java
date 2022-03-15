@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+//@PropertySource("classpath:example.properties")
 public class SkillTypeEntity {
+
     /**
      * The type of skill.
      */
