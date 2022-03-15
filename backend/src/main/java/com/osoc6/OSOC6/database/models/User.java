@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.osoc6.OSOC6.validation.ValidationGroups;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,26 +25,26 @@ public class User {
     /**
      * The email of the user.
      */
-    @NotBlank(message = "Email cannot be empty")
-    @Email(message = "Invalid email address")
+    @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{email.notempty}")
+    @Email(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{email.valid}")
     private String email;
 
     /**
      * The first name of the user.
      */
-    @NotBlank(message = "First name cannot be empty")
+    @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{firstname.notempty}")
     private String firstName;
 
     /**
      * The last name of the user.
      */
-    @NotBlank(message = "Last name cannot be empty")
+    @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{lastname.notempty}")
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
-    @NotNull(message = "User must have a role")
+    @NotNull(groups = ValidationGroups.UserUpdateRoleGroup.class, message = "{userrole.valid}")
     private UserRole userRole;
 
     /**

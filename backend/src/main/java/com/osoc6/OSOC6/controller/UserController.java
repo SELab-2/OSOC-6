@@ -4,9 +4,11 @@ import com.osoc6.OSOC6.assembler.UserModelAssembler;
 import com.osoc6.OSOC6.database.models.User;
 import com.osoc6.OSOC6.exception.UserNotFoundException;
 import com.osoc6.OSOC6.repository.UserRepository;
+import com.osoc6.OSOC6.validation.ValidationGroups;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,20 +67,40 @@ public class UserController {
     }
 
     /**
-     * Update the user corresponding to the provided id.
-     * @param userUpdate contains the original and updated fields of the user
+     * Update the role of a user corresponding to the provided id.
+     * @param roleUser the new role of the user
      * @param id id of the user to update
      * @return the updated user
      */
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<EntityModel<User>> updateUser(@Valid @RequestBody final User userUpdate,
-                                                        @PathVariable final Long id) {
+    @PatchMapping("/users/{id}/update-role")
+    public ResponseEntity<EntityModel<User>> updateUserRole(@Validated(ValidationGroups.UserUpdateRoleGroup.class)
+                                                                @RequestBody final User roleUser,
+                                                            @PathVariable final Long id) {
         User updatedUser = userRepository.findById(id)
                 .map(user -> {
-                    user.setEmail(userUpdate.getEmail());
-                    user.setFirstName(userUpdate.getFirstName());
-                    user.setLastName(userUpdate.getLastName());
-                    user.setUserRole(userUpdate.getUserRole());
+                    user.setUserRole(roleUser.getUserRole());
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        return ResponseEntity.ok(userModelAssembler.toModel(updatedUser));
+    }
+
+    /**
+     * Update the profile (email, firstName, lastName) of a user corresponding to the provided id.
+     * @param profileUser user object containing the updated fields
+     * @param id id of the user to update
+     * @return the updated user
+     */
+    @PatchMapping("/users/{id}/update-profile")
+    public ResponseEntity<EntityModel<User>> updateUserProfile(@Validated(ValidationGroups.UserUpdateProfileGroup.class)
+                                                                   @RequestBody final User profileUser,
+                                                            @PathVariable final Long id) {
+        User updatedUser = userRepository.findById(id)
+                .map(user -> {
+                    user.setEmail(profileUser.getEmail());
+                    user.setFirstName(profileUser.getFirstName());
+                    user.setLastName(profileUser.getLastName());
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new UserNotFoundException(id));

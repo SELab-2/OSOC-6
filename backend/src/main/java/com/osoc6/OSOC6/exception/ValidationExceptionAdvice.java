@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class ValidationExceptionHandler {
+public class ValidationExceptionAdvice {
 
     /**
      * Handle all validation exceptions.
@@ -20,7 +20,7 @@ public class ValidationExceptionHandler {
      * @return a map containing the names of the invalid fields and their corresponding error messages
      */
     @ResponseBody
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     Map<String, String> handleValidationException(final MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
