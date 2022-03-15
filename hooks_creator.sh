@@ -4,25 +4,41 @@ cd "$(dirname "$0")"
 
 cd .git/hooks
 
-echo "#!/bin/bash" > pre-commit
-echo "cd backend/" >> pre-commit
-echo "./gradlew task check" >> pre-commit
-echo "RESULT=\$?" >> pre-commit
-echo "[ \$RESULT -ne 0 ] && echo \"Commit: FAIL\" && exit 1" >> pre-commit
+# Remove the pre-commit hook that used to be used by this hook.
 
-echo "cd ../frontend/" >> pre-commit
-echo "npm install" >> pre-commit
-echo "npm run lint" >> pre-commit
-echo "RESULT=\$?" >> pre-commit
-echo "[ \$RESULT -ne 0 ] && echo \"Commit: FAIL\" && exit 1" >> pre-commit
+# Create a message hook. this is a not really comatible with suggested use but we need the message so it will do.
 
-# echo "npx prettier --check ." >> pre-commit
-echo "npx prettier --write ." >> pre-commit
-echo "RESULT=\$?" >> pre-commit
-echo "[ \$RESULT -ne 0 ] && echo \"Commit: FAIL\" && exit 1" >> pre-commit
+echo "#!/bin/bash" > commit-msg
 
-echo "echo \"Commit: SUCCESS\"" >> pre-commit
+echo "failMassage=\"Commit: FAILED." >> commit-msg
+echo "If you want to commit anyway, start message with (broken).\"" >> commit-msg
+echo "succesMessage=\"Commit: SUCCESS\"" >> commit-msg
+echo "brokenMessage=\"Message contains (broken). Commit is allowed.\"" >> commit-msg
 
-echo "exit 0" >> pre-commit
+echo "" >> commit-msg
+echo "broken=\$(grep \"(broken)\" \"\$1\")" >> commit-msg
 
-chmod u+x pre-commit
+echo "" >> commit-msg
+echo "cd backend/" >> commit-msg
+echo "./gradlew task check" >> commit-msg
+echo "RESULT=\$?" >> commit-msg
+echo "[ \$RESULT -ne 0 ] && [[ -z \$broken ]] && echo \"\$failMassage\" && exit 1" >> commit-msg
+
+echo "" >> commit-msg
+echo "cd ../frontend/" >> commit-msg
+echo "npm run lint" >> commit-msg
+echo "RESULT=\$?" >> commit-msg
+echo "[ \$RESULT -ne 0 ] && [[ -z \$broken ]] && echo \"\$failMassage\" && exit 1" >> commit-msg
+
+# echo "npx prettier --check ." >> commit-msg
+echo "npx prettier --write ." >> commit-msg
+echo "RESULT=\$?" >> commit-msg
+echo "[ \$RESULT -ne 0 ] && [[ -z \$broken ]] && echo \"\$failMassage\" && exit 1" >> commit-msg
+
+echo "" >> commit-msg
+echo "[[ -n \$broken ]] && echo \"\$brokenMessage\"" >> commit-msg
+echo "[[ -z \$broken ]] && echo \"\$succesMessage\"" >> commit-msg
+
+echo "exit 0" >> commit-msg
+
+chmod u+x commit-msg
