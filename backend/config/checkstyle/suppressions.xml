@@ -4,4 +4,10 @@
         "https://checkstyle.org/dtds/suppressions_1_0.dtd">
 <suppressions>
     <suppress files="Osoc6Application.java" checks="HideUtilityClassConstructor" />
+
+    <!--  Disable the following checks for the test folder  -->
+    <suppress files="src/test" checks="JavadocVariable" />
+    <suppress files="src/test" checks="JavadocMethod" />
+    <suppress files="src/test" checks="MagicNumber" />
+    <suppress files="src/test" checks="MethodName" />
 </suppressions>
