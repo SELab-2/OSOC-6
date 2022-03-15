@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,12 @@ public class Project {
      */
     @ManyToOne(optional = false)
     private User creator;
+
+    /**
+     * The skills needed in this project.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Skill> neededSkills;
 
     /**
      * Project's default no-arg constructor.
@@ -116,6 +123,14 @@ public class Project {
      */
     public User getCreator() {
         return creator;
+    }
+
+    /**
+     *
+     * @return the needed skills in this project.
+     */
+    public Set<Skill> getNeededSkills() {
+        return neededSkills;
     }
 
     /**
