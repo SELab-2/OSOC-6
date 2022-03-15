@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -71,6 +73,25 @@ public class User {
      * User's default no-args constructor.
      */
     public User() { }
+
+    /**
+     *
+     * @param newEmail the email of the user
+     * @param newFirstName the first name of the user
+     * @param newLastName the last name of the user
+     * @param newUserRole the role of the user
+     */
+    public User(final String newEmail, final String newFirstName,
+                final String newLastName, final UserRole newUserRole) {
+        this.email = newEmail;
+        this.firstName = newFirstName;
+        this.lastName = newLastName;
+        this.userRole = newUserRole;
+        this.sendInvitations = new HashSet<>();
+        this.receivedInvitations = new HashSet<>();
+        this.communications = new ArrayList<>();
+        this.skills = new HashSet<>();
+    }
 
     /**
      *
