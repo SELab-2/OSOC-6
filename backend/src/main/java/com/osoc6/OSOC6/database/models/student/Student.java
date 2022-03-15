@@ -5,12 +5,15 @@ import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
@@ -32,32 +35,42 @@ public class Student {
     /**
      * The email of the student.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String email;
 
     /**
      * The first name of the student.
      */
+    @Basic(optional = false)
+    @Column(length = 50)
     private String firstName;
 
     /**
      * The last name of the student.
      */
+    @Basic(optional = false)
+    @Column(length = 50)
     private String lastName;
 
     /**
      * The gender of the student.
      */
+    @Basic(optional = false)
     private Gender gender;
 
     /**
      * The PronounsType of the student.
      */
+    @Basic(optional = false)
     private PronounsType pronounsType;
 
     /**
      * The callName of the student.
      * Special case: If callName is the empty string, the student's callName is their birth name.
      */
+    @Basic(optional = true)
+    @Column(length = 100)
     private String callName;
 
     /**
@@ -69,52 +82,68 @@ public class Student {
     /**
      * The most fluent language of a person. This is a formatted string.
      */
+    @Basic(optional = false)
+    @Column(length = 50)
     private String mostFluentLanguage;
 
     /**
      * English proficiency rating of a student as described in @{@link EnglishProficiency}.
      */
+    @Basic(optional = false)
     private EnglishProficiency englishProficiency;
 
     /**
      * Formatted string checking the phone number of a student.
      */
+    @Basic(optional = false)
+    @Column(length = 20)
     private String phoneNumber;
 
     /**
      * A URI pointing to the CV of a student.
      */
+    @Basic
     private URI curriculumVitaeURI;
 
     /**
      * A URI pointing to the portfolio of the student.
      */
+    @Basic
     private URI portfolioURI;
 
     /**
      * A URI pointing to the motivation of the student.
      */
+    @Basic
     private URI motivationURI;
 
     /**
      * A written motivation of the student.
      */
+    @Basic
+    @Lob
     private String writtenMotivation;
 
     /**
      * Highest level of education a student currently has.
      * Represented as string instead of enum because only one choice can be provided and other is an option.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String educationLevel;
 
     /**
      * Diploma a student is trying to get.
      */
+
+    @Basic(optional = false)
+    @Column(length = 100)
     private String currentDiploma;
 
     /**
      * Amount of years getting the current degree takes.
      */
+    @Basic(optional = false)
     private int durationCurrentDegree;
 
     /**
@@ -123,26 +152,35 @@ public class Student {
      * We can not modulate it as a string because both 'already finished' and last year are possibilities.
      * We can therefor not just convert to an int because there are many ways to state these facts.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String yearInCourse;
 
     /**
      * Name of the collage/ university student is enrolled.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String institutionName;
 
     /**
      * The skill the student would describe to be their best.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String bestSkill;
 
     /**
      * Level of OSoc experience as described in @{@link OsocExperience}.
      */
+    @Basic(optional = false)
     private OsocExperience osocExperience;
 
     /**
      * Additional info that coaches or admins write about students.
      */
+    @Basic(optional = false)
+    @Lob
     private String additionalStudentInfo;
 
     /**

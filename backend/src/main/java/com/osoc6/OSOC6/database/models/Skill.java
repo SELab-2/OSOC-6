@@ -1,13 +1,14 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
 
 @Entity
-//TODO: @Table(indexes = {@Index(unique = false, name = "Skill-Edition", columnList = "edition")})
 public class Skill {
 
     /**
@@ -20,18 +21,16 @@ public class Skill {
     /**
      * The name of the skill.
      */
+    @Basic(optional = false)
+    @Column(length = 100)
     private String name;
 
     /**
      * The description of the skill.
      */
+    @Basic(optional = true)
+    @Lob
     private String additionalInfo;
-
-    @ManyToOne(optional = false)
-    private Edition edition;
-
-    @ManyToOne(optional = false)
-    private SkillTypeEntity type;
 
     /**
      * The {@link SkillType} this Skill represents.

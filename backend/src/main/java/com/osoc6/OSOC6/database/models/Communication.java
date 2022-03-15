@@ -2,11 +2,14 @@ package com.osoc6.OSOC6.database.models;
 
 import com.osoc6.OSOC6.database.models.student.Student;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -25,16 +28,21 @@ public class Communication {
     /**
      * The timestamp of the communication.
      */
+    @Basic(optional = false)
     private Timestamp timestamp;
 
     /**
      * The medium of the communication.
      */
+    @Basic(optional = false)
+    @Column(length = 20, nullable = false)
     private String medium;
 
     /**
      * The content of the communication.
      */
+    @Basic(optional = true)
+    @Lob
     private String content;
 
     /**

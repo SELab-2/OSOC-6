@@ -33,16 +33,16 @@ public class Suggestion {
     private String reason;
 
     /**
-     * Coach that did the suggestion.
-     */
-    @ManyToOne(optional = false)
-    private User coach;
-
-    /**
      * {@link Timestamp} of creation from the suggestion.
      */
     @Basic(optional = false)
     private Timestamp timestamp;
+
+    /**
+     * Coach that did the suggestion.
+     */
+    @ManyToOne(optional = false)
+    private User coach;
 
     /**
      * Suggestion's default no-arg constructor.
