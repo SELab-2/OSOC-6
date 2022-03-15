@@ -13,4 +13,5 @@ public class Osoc6Application {
     public static void main(final String[] args) {
         SpringApplication.run(Osoc6Application.class, args);
     }
+
 }

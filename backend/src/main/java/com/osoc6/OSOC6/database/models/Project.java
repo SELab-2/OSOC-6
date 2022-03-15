@@ -1,14 +1,17 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Index;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.ElementCollection;
+import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,25 +56,31 @@ public class Project {
     private User creator;
 
     /**
+     * The skills needed in this project.
+     */
+    @OneToMany(orphanRemoval = true)
+    private Set<Skill> neededSkills;
+
+    /**
      * Project's default no-arg constructor.
      */
     public Project() { }
 
     /**
      *
-     * @param newGoals the goals of the project
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
      * @param newOrganisations the organisation that the project belongs to
      * @param newCreator the creator of the project
      */
-    public Project(final List<String> newGoals, final String newName, final Edition newEdition,
+    public Project(final String newName, final Edition newEdition,
                    final Set<Organisation> newOrganisations, final User newCreator) {
-        this.goals = newGoals;
+        this.goals = new ArrayList<>();
         this.name = newName;
         this.edition = newEdition;
         this.organisations = newOrganisations;
         this.creator = newCreator;
+        this.neededSkills = new HashSet<>();
     }
 
     /**
@@ -112,6 +121,14 @@ public class Project {
      */
     public User getCreator() {
         return creator;
+    }
+
+    /**
+     *
+     * @return the needed skills in this project.
+     */
+    public Set<Skill> getNeededSkills() {
+        return neededSkills;
     }
 
     /**

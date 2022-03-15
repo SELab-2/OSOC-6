@@ -32,11 +32,9 @@ public class Study {
     /**
      *
      * @param newCourse the title of the study
-     * @param newStudyCourse the course studied by the student
      */
-    public Study(final String newCourse, final StudyCourse newStudyCourse) {
-        this.course = newCourse;
-        this.studyCourse = newStudyCourse;
+    public Study(final String newCourse) {
+        setCourseName(newCourse);
     }
 
     /**

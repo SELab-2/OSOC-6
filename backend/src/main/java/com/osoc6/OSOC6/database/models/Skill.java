@@ -39,12 +39,10 @@ public class Skill {
      *
      * @param newName the name of the skill
      * @param newAdditionalInfo the info about the skill
-     * @param newSkillType the SkillType of the Skill
      */
-    public Skill(final String newName, final String newAdditionalInfo, final SkillType newSkillType) {
-        this.name = newName;
+    public Skill(final String newName, final String newAdditionalInfo) {
+        setName(newName);
         this.additionalInfo = newAdditionalInfo;
-        this.skillType = newSkillType;
     }
 
     /**
