@@ -2,7 +2,7 @@ package com.osoc6.OSOC6;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.repository.ProjectRepository;
+import com.osoc6.OSOC6.services.ProjectService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -41,7 +41,7 @@ public class ProjectEndpointTests {
      * Repository which is the connection to the database for Projects.
      */
     @Autowired
-    private ProjectRepository repository;
+    private ProjectService service;
 
     /**
      * Check if the repository accepts new projects.
@@ -53,7 +53,7 @@ public class ProjectEndpointTests {
         String projectName = "TEST PROJECT";
         testProject.setName(projectName);
         testProject.setGoals(new ArrayList<>());
-        repository.save(testProject);
+        this.service.createProject(testProject);
 
         this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString(projectName)));
@@ -71,7 +71,7 @@ public class ProjectEndpointTests {
         testProject.setGoals(new ArrayList<>());
         // Validation blank name
         try {
-            repository.save(testProject);
+            this.service.createProject(testProject);
             throw new Exception();
         } catch (RollbackException | TransactionSystemException ex) {
             // We should be here, RollbackException and TransactionSystemException
@@ -83,13 +83,13 @@ public class ProjectEndpointTests {
         // Validation goals
         testProject.setGoals(null);
         try {
-            repository.save(testProject);
+            this.service.createProject(testProject);
             throw new Exception();
         } catch (RollbackException | TransactionSystemException ex) {
             testProject.setGoals(new ArrayList<>());
         }
 
-        repository.save(testProject);
+        this.service.createProject(testProject);
 
         this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString(projectName)));
@@ -122,7 +122,7 @@ public class ProjectEndpointTests {
      */
     @Test
     public void deleteProject() throws Exception {
-        List<Project> projects = repository.findAll();
+        List<Project> projects = this.service.getAll();
         Project project = projects.get(0);
 
         // Is the project really in /projects

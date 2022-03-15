@@ -2,8 +2,7 @@ package com.osoc6.OSOC6.controller;
 
 import com.osoc6.OSOC6.assembler.ProjectModelAssembler;
 import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.exception.ProjectNotFoundException;
-import com.osoc6.OSOC6.repository.ProjectRepository;
+import com.osoc6.OSOC6.services.ProjectService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -30,7 +29,7 @@ public class ProjectController {
     /**
      * The link to the database.
      */
-    private final ProjectRepository repository;
+    private final ProjectService service;
 
     /**
      * Assembler, used to make the API more restfull.
@@ -39,11 +38,11 @@ public class ProjectController {
 
     /**
      * The constructor for the projectController.
-     * @param projectRepository the link to the database
+     * @param projectService the link to the database
      * @param projectModelAssembler used to make the API more restfull
      */
-    ProjectController(final ProjectRepository projectRepository, final ProjectModelAssembler projectModelAssembler) {
-        this.repository = projectRepository;
+    ProjectController(final ProjectService projectService, final ProjectModelAssembler projectModelAssembler) {
+        this.service = projectService;
         this.assembler = projectModelAssembler;
     }
 
@@ -53,7 +52,7 @@ public class ProjectController {
      */
     @GetMapping("/projects")
     public CollectionModel<EntityModel<Project>> all() {
-        List<EntityModel<Project>> projects = repository.findAll().stream()
+        List<EntityModel<Project>> projects = this.service.getAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
@@ -67,7 +66,7 @@ public class ProjectController {
      */
     @PostMapping("/projects")
     public ResponseEntity<EntityModel<Project>> newProject(@Valid @RequestBody final Project newProject) {
-        EntityModel<Project> entityModel = assembler.toModel(repository.save(newProject));
+        EntityModel<Project> entityModel = assembler.toModel(this.service.createProject(newProject));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
@@ -81,8 +80,7 @@ public class ProjectController {
      */
     @GetMapping("/projects/{id}")
     public EntityModel<Project> one(@PathVariable final Long id) {
-        Project project = repository.findById(id)
-                .orElseThrow(() -> new ProjectNotFoundException(id));
+        Project project = this.service.get(id);
 
         return assembler.toModel(project);
 
@@ -97,14 +95,7 @@ public class ProjectController {
     @PatchMapping("/projects/{id}")
     public ResponseEntity<EntityModel<Project>> updateProject(@Valid @RequestBody final Project projectUpdate,
                                                               @PathVariable final Long id) {
-        Project updatedProject = repository.findById(id)
-                .map(project -> {
-                    project.setName(projectUpdate.getName());
-                    project.setGoals(projectUpdate.getGoals());
-
-                    return repository.save(project);
-                })
-                .orElseThrow(() -> new ProjectNotFoundException(id));
+        Project updatedProject = this.service.updateProject(projectUpdate, id);
 
         return ResponseEntity.ok(assembler.toModel(updatedProject));
     }
@@ -116,12 +107,8 @@ public class ProjectController {
      */
     @DeleteMapping("/projects/{id}")
     public ResponseEntity<Object> deleteProject(@PathVariable final Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new ProjectNotFoundException(id);
-        }
+        this.service.deleteProject(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Project is deleted successsfully.");
     }
 }
