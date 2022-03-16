@@ -12,18 +12,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // TODO : differentiate between admin and coach
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        PasswordEncoder encoder = passwordEncoder();
+//        auth
+//                .inMemoryAuthentication()
+//                .withUser("user")
+//                .password(encoder.encode("password"))
+//                .roles("USER")
+//                .and()
+//                .withUser("admin")
+//                .password(encoder.encode("admin"))
+//                .roles("USER", "ADMIN");
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
+            .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+            .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .and()
-                .logout()
+            .logout()
                 .permitAll();
 
 //        .loginPage("/login.html")
