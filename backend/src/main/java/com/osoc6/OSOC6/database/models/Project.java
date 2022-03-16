@@ -9,9 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,12 +54,6 @@ public class Project {
     private User creator;
 
     /**
-     * The skills needed in this project.
-     */
-    @OneToMany(orphanRemoval = true)
-    private Set<Skill> neededSkills;
-
-    /**
      * Project's default no-arg constructor.
      */
     public Project() { }
@@ -80,7 +72,6 @@ public class Project {
         this.edition = newEdition;
         this.organisations = newOrganisations;
         this.creator = newCreator;
-        this.neededSkills = new HashSet<>();
     }
 
     /**
@@ -121,14 +112,6 @@ public class Project {
      */
     public User getCreator() {
         return creator;
-    }
-
-    /**
-     *
-     * @return the needed skills in this project.
-     */
-    public Set<Skill> getNeededSkills() {
-        return neededSkills;
     }
 
     /**
