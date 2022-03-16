@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -14,12 +15,31 @@ public class Edition {
     /**
      * The year of the edition.
      */
+    @Basic(optional = false)
     private int year;
 
     /**
      * Whether the edition is active.
      */
+    @Basic(optional = false)
     private boolean active;
+
+    /**
+     * Edition's default no-arg constructor.
+     */
+    public Edition() { }
+
+    /**
+     *
+     * @param newName the name of the OSOC-edition
+     * @param newYear the year in which the edition takes place
+     * @param newActive whether or not the edition is still active
+     */
+    public Edition(final String newName, final int newYear, final boolean newActive) {
+        name = newName;
+        year = newYear;
+        active = newActive;
+    }
 
     /**
      *

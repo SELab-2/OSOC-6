@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Invitation {
     /**
      * The timestamp of the invitation.
      */
+    @Basic(optional = false)
     private Timestamp timestamp;
 
     /**
@@ -38,6 +40,24 @@ public class Invitation {
      */
     @ManyToOne
     private User subject;
+
+    /**
+     * Invitation's default no-arg constructor.
+     */
+    public Invitation() { }
+
+    /**
+     *
+     * @param newEdition the edition of the invitation
+     * @param newIssuer user that issued the invitation
+     * @param newSubject user that accepted the invitation
+     */
+    public Invitation(final Edition newEdition, final User newIssuer, final User newSubject) {
+        timestamp = new Timestamp(System.currentTimeMillis());
+        edition = newEdition;
+        issuer = newIssuer;
+        subject = newSubject;
+    }
 
     /**
      *
@@ -77,14 +97,6 @@ public class Invitation {
      */
     public boolean isUsed() {
         return subject != null;
-    }
-
-    /**
-     *
-     * @param newTimestamp timestamp of the creation of the invitation
-     */
-    public void setTimestamp(final Timestamp newTimestamp) {
-        timestamp = newTimestamp;
     }
 
     /**

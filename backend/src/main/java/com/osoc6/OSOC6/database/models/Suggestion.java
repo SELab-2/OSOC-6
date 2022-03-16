@@ -1,10 +1,11 @@
 package com.osoc6.OSOC6.database.models;
 
-
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
@@ -20,11 +21,14 @@ public class Suggestion {
     /**
      * Strategy this suggestion takes.
      */
+    @Basic(optional = false)
     private SuggestionStrategy strategy;
 
     /**
      * Reason provided by the user for giving this suggestion.
      */
+    @Basic(optional = false)
+    @Lob
     private String reason;
 
     /**
@@ -36,7 +40,26 @@ public class Suggestion {
     /**
      * {@link Timestamp} of creation from the suggestion.
      */
+    @Basic(optional = false)
     private Timestamp timestamp;
+
+    /**
+     * Suggestion's default no-arg constructor.
+     */
+    public Suggestion() { }
+
+    /**
+     *
+     * @param newStrategy Yes, maybe or no
+     * @param newReason the reason this suggestion was made
+     * @param newCoach the coach that made the suggestion
+     */
+    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final User newCoach) {
+        strategy = newStrategy;
+        reason = newReason;
+        coach = newCoach;
+        timestamp = new Timestamp(System.currentTimeMillis());
+    }
 
     /**
      *

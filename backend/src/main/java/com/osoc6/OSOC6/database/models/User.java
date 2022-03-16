@@ -2,6 +2,8 @@ package com.osoc6.OSOC6.database.models;
 
 import com.osoc6.OSOC6.validation.ValidationGroups;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +33,8 @@ public class User {
     /**
      * The email of the user.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
     @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{email.notempty}")
     @Email(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{email.valid}")
     private String email;
@@ -36,12 +42,16 @@ public class User {
     /**
      * The first name of the user.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
     @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{firstname.notempty}")
     private String firstName;
 
     /**
      * The last name of the user.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
     @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{lastname.notempty}")
     private String lastName;
 
@@ -49,6 +59,7 @@ public class User {
      * Role/ power this user has.
      */
     @NotNull(groups = ValidationGroups.UserUpdateRoleGroup.class, message = "{userrole.valid}")
+    @Basic(optional = false)
     private UserRole userRole;
 
     /**
@@ -76,6 +87,30 @@ public class User {
      */
     @OneToMany(orphanRemoval = true)
     private Set<Skill> skills;
+
+    /**
+     * User's default no-args constructor.
+     */
+    public User() { }
+
+    /**
+     *
+     * @param newEmail the email of the user
+     * @param newFirstName the first name of the user
+     * @param newLastName the last name of the user
+     * @param newUserRole the role of the user
+     */
+    public User(final String newEmail, final String newFirstName,
+                final String newLastName, final UserRole newUserRole) {
+        email = newEmail;
+        firstName = newFirstName;
+        lastName = newLastName;
+        userRole = newUserRole;
+        sendInvitations = new HashSet<>();
+        receivedInvitations = new HashSet<>();
+        communications = new ArrayList<>();
+        skills = new HashSet<>();
+    }
 
     /**
      *
