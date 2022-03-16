@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.database.models;
 
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.database.models.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,11 +48,11 @@ public class Assignment {
     private String reason;
 
     /**
-     * The {@link User}/ Admin that executed the assignment.
+     * The {@link UserEntity}/ Admin that executed the assignment.
      */
     @ManyToOne(optional = false)
     @Getter
-    private User assigner;
+    private UserEntity assigner;
 
     /**
      * Student that gets assigned.
@@ -77,7 +78,7 @@ public class Assignment {
      * @param newProject the project the assignment belongs to
      */
     public Assignment(final boolean newIsSuggestion, final String newReason,
-                      final User newAssigner, final Student newStudent, final Project newProject) {
+                      final UserEntity newAssigner, final Student newStudent, final Project newProject) {
         super();
         isSuggestion = newIsSuggestion;
         reason = newReason;

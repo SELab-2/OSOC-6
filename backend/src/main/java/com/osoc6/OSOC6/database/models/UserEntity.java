@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-public class User {
+public class UserEntity {
 
     /**
      * The id of the user.
@@ -80,7 +80,7 @@ public class User {
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
      */
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
     @Getter
     private List<Communication> communications;
@@ -107,7 +107,7 @@ public class User {
      * @param newLastName the last name of the user
      * @param newUserRole the role of the user
      */
-    public User(final String newEmail, final String newFirstName,
+    public UserEntity(final String newEmail, final String newFirstName,
                 final String newLastName, final UserRole newUserRole) {
         email = newEmail;
         firstName = newFirstName;

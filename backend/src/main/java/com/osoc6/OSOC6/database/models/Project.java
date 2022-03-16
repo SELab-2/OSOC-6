@@ -63,11 +63,11 @@ public class Project {
     private Set<Organisation> organisations;
 
     /**
-     * The {@link User}/ admin that created the project.
+     * The {@link UserEntity}/ admin that created the project.
      */
     @ManyToOne(optional = false)
     @Getter
-    private User creator;
+    private UserEntity creator;
 
     /**
      * The skills needed in this project.
@@ -91,7 +91,7 @@ public class Project {
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final Set<Organisation> newOrganisations, final User newCreator) {
+                   final Set<Organisation> newOrganisations, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
