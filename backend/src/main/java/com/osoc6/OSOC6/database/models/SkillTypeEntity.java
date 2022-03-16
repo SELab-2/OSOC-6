@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -15,6 +17,8 @@ public class SkillTypeEntity {
     /**
      * The colour associated with this SkillType.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.COLOUR_DESCRIPTION_LENGTH)
     private String colour;
 
     /**

@@ -1,9 +1,12 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 
@@ -20,11 +23,15 @@ public class Organisation {
     /**
      * The info of the organisation.
      */
+    @Basic(optional = false)
+    @Lob
     private String info;
 
     /**
      * The name of the organisation.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     private String name;
 
     /**

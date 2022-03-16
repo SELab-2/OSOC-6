@@ -1,5 +1,9 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,11 +21,14 @@ public class Study {
     /**
      * The title of the study.
      */
+    @Basic(optional = true)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String course;
 
     /**
      * The course studied by the student.
      */
+    @Basic(optional = false)
     private StudyCourse studyCourse;
 
     /**

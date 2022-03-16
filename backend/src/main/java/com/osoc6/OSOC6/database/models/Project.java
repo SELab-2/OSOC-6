@@ -1,14 +1,16 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Index;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +35,8 @@ public class Project {
     /**
      * The name of the project.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     private String name;
 
     /**

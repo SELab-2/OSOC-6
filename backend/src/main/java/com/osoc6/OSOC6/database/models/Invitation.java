@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Invitation {
     /**
      * The timestamp of the invitation.
      */
+    @Basic(optional = false)
     private Timestamp timestamp;
 
     /**
