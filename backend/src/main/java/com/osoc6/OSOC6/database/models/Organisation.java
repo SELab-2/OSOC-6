@@ -1,9 +1,14 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class Organisation {
@@ -18,12 +23,39 @@ public class Organisation {
     /**
      * The info of the organisation.
      */
+    @Basic(optional = false)
+    @Lob
     private String info;
 
     /**
      * The name of the organisation.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     private String name;
+
+    /**
+     * {@link Set} of projects this Organisation is involved in.
+     */
+    @ManyToMany
+    private Set<Project> projects;
+
+    /**
+     * Organisation's default no-arg constructor.
+     */
+    public Organisation() { }
+
+    /**
+     *
+     * @param newInfo the info about the organisation
+     * @param newName the name of the organisation
+     * @param newProjects the projects belonging to the organisation
+     */
+    public Organisation(final String newInfo, final String newName, final Set<Project> newProjects) {
+        info = newInfo;
+        name = newName;
+        projects = newProjects;
+    }
 
     /**
      *
@@ -39,6 +71,14 @@ public class Organisation {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     *
+     * @return set of projects this Organisation is involved in
+     */
+    public Set<Project> getProjects() {
+        return projects;
     }
 
     /**

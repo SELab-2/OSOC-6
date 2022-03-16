@@ -1,7 +1,9 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class CommunicationTemplate {
@@ -15,7 +17,24 @@ public class CommunicationTemplate {
     /**
      * The template for the CommunicationTemplate.
      */
+    @Basic(optional = false)
+    @Lob
     private String template;
+
+    /**
+     * CommunicationTemplate's default no-arg constructor.
+     */
+    public CommunicationTemplate() { }
+
+    /**
+     *
+     * @param newName the name of the template
+     * @param newTemplate the content of the template
+     */
+    public CommunicationTemplate(final String newName, final String newTemplate) {
+        name = newName;
+        template = newTemplate;
+    }
 
     /**
      *

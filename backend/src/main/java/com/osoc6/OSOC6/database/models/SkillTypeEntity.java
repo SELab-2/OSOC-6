@@ -1,10 +1,13 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class SkillTypeEntity {
+
     /**
      * The type of skill.
      */
@@ -14,7 +17,24 @@ public class SkillTypeEntity {
     /**
      * The colour associated with this SkillType.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.COLOUR_DESCRIPTION_LENGTH)
     private String colour;
+
+    /**
+     * SkillTypeEntity's default no-arg constructor.
+     */
+    public SkillTypeEntity() { }
+
+    /**
+     *
+     * @param newSkillType the type of the skill
+     * @param newColour the colour associated with this SkillType
+     */
+    public SkillTypeEntity(final SkillType newSkillType, final String newColour) {
+        skillType = newSkillType;
+        colour = newColour;
+    }
 
     /**
      *

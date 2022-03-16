@@ -1,9 +1,11 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
 @Entity
@@ -18,12 +20,44 @@ public class Invitation {
     /**
      * The timestamp of the invitation.
      */
+    @Basic(optional = false)
     private Timestamp timestamp;
 
     /**
-     * Whether the invitation has been used.
+     * {@link Edition} for which this invitation was created.
      */
-    private boolean used;
+    @ManyToOne(optional = false)
+    private Edition edition;
+
+    /**
+     * User that issued the invitation.
+     */
+    @ManyToOne(optional = false)
+    private User issuer;
+
+    /**
+     * User that accepted the invitation.
+     */
+    @ManyToOne
+    private User subject;
+
+    /**
+     * Invitation's default no-arg constructor.
+     */
+    public Invitation() { }
+
+    /**
+     *
+     * @param newEdition the edition of the invitation
+     * @param newIssuer user that issued the invitation
+     * @param newSubject user that accepted the invitation
+     */
+    public Invitation(final Edition newEdition, final User newIssuer, final User newSubject) {
+        timestamp = new Timestamp(System.currentTimeMillis());
+        edition = newEdition;
+        issuer = newIssuer;
+        subject = newSubject;
+    }
 
     /**
      *
@@ -35,25 +69,41 @@ public class Invitation {
 
     /**
      *
+     * @return edition for which this invitation was created
+     */
+    public Edition getEdition() {
+        return edition;
+    }
+
+    /**
+     *
+     * @return user that created the invitation
+     */
+    public User getIssuer() {
+        return issuer;
+    }
+
+    /**
+     *
+     * @return User that accepted the invitation
+     */
+    public User getSubject() {
+        return subject;
+    }
+
+    /**
+     *
      * @return Whether the invitation has been used
      */
     public boolean isUsed() {
-        return used;
+        return subject != null;
     }
 
     /**
      *
-     * @param newTimestamp timestamp of the creation of the invitation
+     * @param newSubject User that accepts the invitation
      */
-    public void setTimestamp(final Timestamp newTimestamp) {
-        timestamp = newTimestamp;
-    }
-
-    /**
-     *
-     * @param newUsed whether the invitation activated an account
-     */
-    public void setUsed(final boolean newUsed) {
-        used = newUsed;
+    public void setSubject(final User newSubject) {
+        subject = newSubject;
     }
 }

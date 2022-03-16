@@ -1,9 +1,12 @@
 package com.osoc6.OSOC6.database.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class Skill {
@@ -18,12 +21,37 @@ public class Skill {
     /**
      * The name of the skill.
      */
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     private String name;
 
     /**
      * The description of the skill.
      */
+    @Basic(optional = true)
+    @Lob
     private String additionalInfo;
+
+    /**
+     * The {@link SkillType} this Skill represents.
+     */
+    @Basic(optional = false)
+    private SkillType skillType;
+
+    /**
+     * Skill's default no-arg constructor.
+     */
+    public Skill() { }
+
+    /**
+     *
+     * @param newName the name of the skill
+     * @param newAdditionalInfo the info about the skill
+     */
+    public Skill(final String newName, final String newAdditionalInfo) {
+        setName(newName);
+        additionalInfo = newAdditionalInfo;
+    }
 
     /**
      *
@@ -43,9 +71,18 @@ public class Skill {
 
     /**
      *
+     * @return SkillType the skill represents
+     */
+    public SkillType getSkillType() {
+        return skillType;
+    }
+
+    /**
+     *
      * @param newName name of the skill/ roll
      */
     public void setName(final String newName) {
+        skillType = SkillType.fromString(newName);
         name = newName;
     }
 
