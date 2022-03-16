@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.security;
 
+import com.osoc6.OSOC6.UserEntityDetails;
+import com.osoc6.OSOC6.service.UserEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserEntityService userDetails;
     // TODO : differentiate between admin and coach
 
 //    @Override
@@ -36,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .formLogin()
                 .loginPage("/login")
+                .usernameParameter("email")
                 .permitAll()
                 .and()
             .logout()
@@ -51,6 +57,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/perform_logout")
 //                .deleteCookies("JSESSIONID")
 //                .logoutSuccessHandler(logoutSuccessHandler());
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .userDetailsService(userDetails)
+            .passwordEncoder(passwordEncoder());
     }
 
 //    @Bean

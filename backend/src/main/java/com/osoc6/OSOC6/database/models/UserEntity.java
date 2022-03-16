@@ -35,9 +35,15 @@ public class UserEntity {
      * The email of the user.
      */
     @Basic(optional = false)
-    @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
+    @Column(length = RadagastNumberWizard.EMAIL_LENGTH, unique = true)
     @Getter @Setter
     private String email;
+
+    /**
+     * The password of the user.
+     */
+    @Getter @Setter
+    private String password;
 
     /**
      * The first name of the user.
