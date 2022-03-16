@@ -35,6 +35,7 @@ public class Skill {
     /**
      * The {@link SkillType} this Skill represents.
      */
+    @Basic(optional = false)
     private SkillType skillType;
 
     /**

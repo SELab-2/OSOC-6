@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.database.models;
 
-
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,16 +32,16 @@ public class Suggestion {
     private String reason;
 
     /**
-     * {@link Timestamp} of creation from the suggestion.
-     */
-    @Basic(optional = false)
-    private Timestamp timestamp;
-
-    /**
      * Coach that did the suggestion.
      */
     @ManyToOne(optional = false)
     private User coach;
+
+    /**
+     * {@link Timestamp} of creation from the suggestion.
+     */
+    @Basic(optional = false)
+    private Timestamp timestamp;
 
     /**
      * Suggestion's default no-arg constructor.
