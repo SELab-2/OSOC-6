@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -66,6 +68,30 @@ public class User {
      */
     @OneToMany(orphanRemoval = true)
     private Set<Skill> skills;
+
+    /**
+     * User's default no-args constructor.
+     */
+    public User() { }
+
+    /**
+     *
+     * @param newEmail the email of the user
+     * @param newFirstName the first name of the user
+     * @param newLastName the last name of the user
+     * @param newUserRole the role of the user
+     */
+    public User(final String newEmail, final String newFirstName,
+                final String newLastName, final UserRole newUserRole) {
+        email = newEmail;
+        firstName = newFirstName;
+        lastName = newLastName;
+        userRole = newUserRole;
+        sendInvitations = new HashSet<>();
+        receivedInvitations = new HashSet<>();
+        communications = new ArrayList<>();
+        skills = new HashSet<>();
+    }
 
     /**
      *

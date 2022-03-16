@@ -34,6 +34,23 @@ public class Organisation {
     private Set<Project> projects;
 
     /**
+     * Organisation's default no-arg constructor.
+     */
+    public Organisation() { }
+
+    /**
+     *
+     * @param newInfo the info about the organisation
+     * @param newName the name of the organisation
+     * @param newProjects the projects belonging to the organisation
+     */
+    public Organisation(final String newInfo, final String newName, final Set<Project> newProjects) {
+        info = newInfo;
+        name = newName;
+        projects = newProjects;
+    }
+
+    /**
      *
      * @return The info of the organisation
      */

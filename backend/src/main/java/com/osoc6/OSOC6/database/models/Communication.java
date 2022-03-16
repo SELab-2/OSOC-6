@@ -55,6 +55,29 @@ public class Communication {
     @ManyToOne(optional = false)
     private Student student;
 
+    /**
+     * Communication's default no-arg constructor.
+     */
+    public Communication() { }
+
+    /**
+     *
+     * @param newMedium the medium of the communication, such as SMS or email
+     * @param newContent the text content of the communication-instance
+     * @param newCommunicationTemplate the template for this communication
+     * @param newUser the user who communicated with the student
+     * @param newStudent the student with whom the communication took place
+     */
+    public Communication(final String newMedium, final String newContent,
+                         final CommunicationTemplate newCommunicationTemplate, final User newUser,
+                         final Student newStudent) {
+        timestamp = new Timestamp(System.currentTimeMillis());
+        medium = newMedium;
+        content = newContent;
+        template = newCommunicationTemplate;
+        user = newUser;
+        student = newStudent;
+    }
 
     /**
      *
@@ -102,14 +125,6 @@ public class Communication {
      */
     public Student getStudent() {
         return student;
-    }
-
-    /**
-     *
-     * @param newTimestamp timestamp the communication happened
-     */
-    public void setTimestamp(final Timestamp newTimestamp) {
-        timestamp = newTimestamp;
     }
 
     /**

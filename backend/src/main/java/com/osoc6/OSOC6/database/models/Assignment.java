@@ -59,6 +59,29 @@ public class Assignment {
     private Project project;
 
     /**
+     * Assignment's default no-arg constructor.
+     */
+    public Assignment() { }
+
+    /**
+     *
+     * @param newIsSuggestion whether or not this assignment is just a suggestion
+     * @param newReason the reason for this assignment
+     * @param newAssigner the assigner related to this assignment
+     * @param newStudent the student who is assigned
+     * @param newProject the project the assignment belongs to
+     */
+    public Assignment(final boolean newIsSuggestion, final String newReason,
+                      final User newAssigner, final Student newStudent, final Project newProject) {
+        isSuggestion = newIsSuggestion;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        reason = newReason;
+        assigner = newAssigner;
+        student = newStudent;
+        project = newProject;
+    }
+
+    /**
      *
      * @return {@link User}/ Admin that executed the assignment
      */

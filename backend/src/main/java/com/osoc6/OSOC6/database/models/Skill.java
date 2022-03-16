@@ -31,6 +31,21 @@ public class Skill {
     private SkillType skillType;
 
     /**
+     * Skill's default no-arg constructor.
+     */
+    public Skill() { }
+
+    /**
+     *
+     * @param newName the name of the skill
+     * @param newAdditionalInfo the info about the skill
+     */
+    public Skill(final String newName, final String newAdditionalInfo) {
+        setName(newName);
+        additionalInfo = newAdditionalInfo;
+    }
+
+    /**
      *
      * @return The description of the skill
      */

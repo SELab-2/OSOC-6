@@ -25,6 +25,19 @@ public class Study {
     private StudyCourse studyCourse;
 
     /**
+     * Study's default no-arg constructor.
+     */
+    public Study() { }
+
+    /**
+     *
+     * @param newCourse the title of the study
+     */
+    public Study(final String newCourse) {
+        setCourseName(newCourse);
+    }
+
+    /**
      *
      * @return the title of the study.
      */

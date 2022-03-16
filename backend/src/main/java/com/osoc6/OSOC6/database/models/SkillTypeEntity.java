@@ -5,6 +5,7 @@ import javax.persistence.Id;
 
 @Entity
 public class SkillTypeEntity {
+
     /**
      * The type of skill.
      */
@@ -15,6 +16,21 @@ public class SkillTypeEntity {
      * The colour associated with this SkillType.
      */
     private String colour;
+
+    /**
+     * SkillTypeEntity's default no-arg constructor.
+     */
+    public SkillTypeEntity() { }
+
+    /**
+     *
+     * @param newSkillType the type of the skill
+     * @param newColour the colour associated with this SkillType
+     */
+    public SkillTypeEntity(final SkillType newSkillType, final String newColour) {
+        skillType = newSkillType;
+        colour = newColour;
+    }
 
     /**
      *

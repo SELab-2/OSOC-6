@@ -1,14 +1,15 @@
 package com.osoc6.OSOC6.database.models;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Index;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.ElementCollection;
+import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -51,6 +52,27 @@ public class Project {
      */
     @ManyToOne(optional = false)
     private User creator;
+
+    /**
+     * Project's default no-arg constructor.
+     */
+    public Project() { }
+
+    /**
+     *
+     * @param newName the name of the project
+     * @param newEdition the edition that the project is associated with
+     * @param newOrganisations the organisation that the project belongs to
+     * @param newCreator the creator of the project
+     */
+    public Project(final String newName, final Edition newEdition,
+                   final Set<Organisation> newOrganisations, final User newCreator) {
+        goals = new ArrayList<>();
+        name = newName;
+        edition = newEdition;
+        organisations = newOrganisations;
+        creator = newCreator;
+    }
 
     /**
      *
