@@ -1,7 +1,5 @@
 package com.osoc6.OSOC6.database.models;
 
-import com.osoc6.OSOC6.validation.ValidationGroups;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -35,8 +30,6 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
-    @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{email.notempty}")
-    @Email(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{email.valid}")
     private String email;
 
     /**
@@ -44,7 +37,6 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
-    @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{firstname.notempty}")
     private String firstName;
 
     /**
@@ -52,13 +44,11 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
-    @NotBlank(groups = ValidationGroups.UserUpdateProfileGroup.class, message = "{lastname.notempty}")
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
-    @NotNull(groups = ValidationGroups.UserUpdateRoleGroup.class, message = "{userrole.valid}")
     @Basic(optional = false)
     private UserRole userRole;
 
