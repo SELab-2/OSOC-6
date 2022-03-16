@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -83,6 +84,7 @@ public class Project {
         edition = newEdition;
         organisations = newOrganisations;
         creator = newCreator;
+        neededSkills = new HashSet<>();
     }
 
     /**
