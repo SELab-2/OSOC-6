@@ -42,7 +42,7 @@ public class Skill {
      */
     public Skill(final String newName, final String newAdditionalInfo) {
         setName(newName);
-        this.additionalInfo = newAdditionalInfo;
+        additionalInfo = newAdditionalInfo;
     }
 
     /**

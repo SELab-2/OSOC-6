@@ -49,10 +49,10 @@ public class Suggestion {
      * @param newCoach the coach that made the suggestion
      */
     public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final User newCoach) {
-        this.strategy = newStrategy;
-        this.reason = newReason;
-        this.coach = newCoach;
-        this.timestamp = new Timestamp(System.currentTimeMillis());
+        strategy = newStrategy;
+        reason = newReason;
+        coach = newCoach;
+        timestamp = new Timestamp(System.currentTimeMillis());
     }
 
     /**

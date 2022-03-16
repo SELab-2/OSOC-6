@@ -45,9 +45,9 @@ public class Organisation {
      * @param newProjects the projects belonging to the organisation
      */
     public Organisation(final String newInfo, final String newName, final Set<Project> newProjects) {
-        this.info = newInfo;
-        this.name = newName;
-        this.projects = newProjects;
+        info = newInfo;
+        name = newName;
+        projects = newProjects;
     }
 
     /**

@@ -51,10 +51,10 @@ public class Invitation {
      * @param newSubject user that accepted the invitation
      */
     public Invitation(final Edition newEdition, final User newIssuer, final User newSubject) {
-        this.timestamp = new Timestamp(System.currentTimeMillis());
-        this.edition = newEdition;
-        this.issuer = newIssuer;
-        this.subject = newSubject;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        edition = newEdition;
+        issuer = newIssuer;
+        subject = newSubject;
     }
 
     /**

@@ -73,12 +73,12 @@ public class Assignment {
      */
     public Assignment(final boolean newIsSuggestion, final String newReason,
                       final User newAssigner, final Student newStudent, final Project newProject) {
-        this.isSuggestion = newIsSuggestion;
-        this.timestamp = new Timestamp(System.currentTimeMillis());
-        this.reason = newReason;
-        this.assigner = newAssigner;
-        this.student = newStudent;
-        this.project = newProject;
+        isSuggestion = newIsSuggestion;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        reason = newReason;
+        assigner = newAssigner;
+        student = newStudent;
+        project = newProject;
     }
 
     /**

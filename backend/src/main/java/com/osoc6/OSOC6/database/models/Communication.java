@@ -71,12 +71,12 @@ public class Communication {
     public Communication(final String newMedium, final String newContent,
                          final CommunicationTemplate newCommunicationTemplate, final User newUser,
                          final Student newStudent) {
-        this.timestamp = new Timestamp(System.currentTimeMillis());
-        this.medium = newMedium;
-        this.content = newContent;
-        this.template = newCommunicationTemplate;
-        this.user = newUser;
-        this.student = newStudent;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        medium = newMedium;
+        content = newContent;
+        template = newCommunicationTemplate;
+        user = newUser;
+        student = newStudent;
     }
 
     /**

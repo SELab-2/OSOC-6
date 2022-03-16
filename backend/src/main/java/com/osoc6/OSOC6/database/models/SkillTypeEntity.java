@@ -28,8 +28,8 @@ public class SkillTypeEntity {
      * @param newColour the colour associated with this SkillType
      */
     public SkillTypeEntity(final SkillType newSkillType, final String newColour) {
-        this.skillType = newSkillType;
-        this.colour = newColour;
+        skillType = newSkillType;
+        colour = newColour;
     }
 
     /**

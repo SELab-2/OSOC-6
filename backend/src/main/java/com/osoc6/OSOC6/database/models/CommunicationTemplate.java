@@ -28,8 +28,8 @@ public class CommunicationTemplate {
      * @param newTemplate the content of the template
      */
     public CommunicationTemplate(final String newName, final String newTemplate) {
-        this.name = newName;
-        this.template = newTemplate;
+        name = newName;
+        template = newTemplate;
     }
 
     /**

@@ -83,14 +83,14 @@ public class User {
      */
     public User(final String newEmail, final String newFirstName,
                 final String newLastName, final UserRole newUserRole) {
-        this.email = newEmail;
-        this.firstName = newFirstName;
-        this.lastName = newLastName;
-        this.userRole = newUserRole;
-        this.sendInvitations = new HashSet<>();
-        this.receivedInvitations = new HashSet<>();
-        this.communications = new ArrayList<>();
-        this.skills = new HashSet<>();
+        email = newEmail;
+        firstName = newFirstName;
+        lastName = newLastName;
+        userRole = newUserRole;
+        sendInvitations = new HashSet<>();
+        receivedInvitations = new HashSet<>();
+        communications = new ArrayList<>();
+        skills = new HashSet<>();
     }
 
     /**

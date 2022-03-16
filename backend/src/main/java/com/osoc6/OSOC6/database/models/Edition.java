@@ -33,9 +33,9 @@ public class Edition {
      * @param newActive whether or not the edition is still active
      */
     public Edition(final String newName, final int newYear, final boolean newActive) {
-        this.name = newName;
-        this.year = newYear;
-        this.active = newActive;
+        name = newName;
+        year = newYear;
+        active = newActive;
     }
 
     /**

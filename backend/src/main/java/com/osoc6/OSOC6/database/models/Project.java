@@ -67,11 +67,11 @@ public class Project {
      */
     public Project(final String newName, final Edition newEdition,
                    final Set<Organisation> newOrganisations, final User newCreator) {
-        this.goals = new ArrayList<>();
-        this.name = newName;
-        this.edition = newEdition;
-        this.organisations = newOrganisations;
-        this.creator = newCreator;
+        goals = new ArrayList<>();
+        name = newName;
+        edition = newEdition;
+        organisations = newOrganisations;
+        creator = newCreator;
     }
 
     /**
