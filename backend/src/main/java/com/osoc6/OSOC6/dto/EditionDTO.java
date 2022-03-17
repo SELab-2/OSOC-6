@@ -1,7 +1,6 @@
 package com.osoc6.OSOC6.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class EditionDTO {
     /**
@@ -13,13 +12,11 @@ public class EditionDTO {
     /**
      * The year of the edition.
      */
-    @NotNull(message = "An edition must have a year")
     private int year;
 
     /**
      * Whether the edition is active.
      */
-    @NotNull(message = "An edition must be active or unactive")
     private boolean active;
 
     /**
