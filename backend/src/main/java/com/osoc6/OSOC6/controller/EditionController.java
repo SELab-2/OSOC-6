@@ -2,7 +2,8 @@ package com.osoc6.OSOC6.controller;
 
 import com.osoc6.OSOC6.assembler.EditionModelAssembler;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.services.EditionService;
+import com.osoc6.OSOC6.dto.EditionDTO;
+import com.osoc6.OSOC6.service.EditionService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -65,7 +66,7 @@ public class EditionController {
          * @return The newly added edition entity
          */
         @PostMapping("/editions")
-        public ResponseEntity<EntityModel<Edition>> newProject(@Valid @RequestBody final Edition newEdition) {
+        public ResponseEntity<EntityModel<Edition>> newProject(@Valid @RequestBody final EditionDTO newEdition) {
             EntityModel<Edition> entityModel = assembler.toModel(this.service.createEdition(newEdition));
 
             return ResponseEntity
@@ -93,7 +94,7 @@ public class EditionController {
          * @return The new edition entity
          */
         @PatchMapping("/editions/{id}")
-        public ResponseEntity<EntityModel<Edition>> updateProject(@Valid @RequestBody final Edition editionUpdate,
+        public ResponseEntity<EntityModel<Edition>> updateProject(@Valid @RequestBody final EditionDTO editionUpdate,
                                                                   @PathVariable final String id) {
             Edition updatedEdition = this.service.updateEdition(editionUpdate, id);
 

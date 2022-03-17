@@ -1,6 +1,7 @@
-package com.osoc6.OSOC6.services;
+package com.osoc6.OSOC6.service;
 
 import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.dto.EditionDTO;
 import com.osoc6.OSOC6.exception.EditionNotFoundException;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,15 @@ public class EditionService {
 
     /**
      * Handle the post request.
-     * @param edition The edition that needs to be added to the database
+     * @param editionDTO The edition that needs to be added to the database
      * @return added edition
      */
-    public Edition createEdition(final Edition edition) {
-        repository.save(edition);
-        return edition;
+    public Edition createEdition(final EditionDTO editionDTO) {
+        Edition newEdition = new Edition(editionDTO.getName(),
+                                        editionDTO.getYear(),
+                                        editionDTO.isActive());
+        repository.save(newEdition);
+        return newEdition;
     }
 
     /**
@@ -64,16 +68,16 @@ public class EditionService {
 
     /**
      * Handle the patch request.
-     * @param editionUpdate The edition with what /editions/id needs to be replaced with
+     * @param editionDTO The edition with what /editions/id needs to be replaced with
      * @param id The id of the edition that needs to be replaced
      * @return the new edition
      */
-    public Edition updateEdition(final Edition editionUpdate, final String id) {
+    public Edition updateEdition(final EditionDTO editionDTO, final String id) {
         return repository.findById(id)
                 .map(edition -> {
-                    edition.setName(editionUpdate.getName());
-                    edition.setActive(editionUpdate.isActive());
-                    edition.setYear(editionUpdate.getYear());
+                    edition.setName(editionDTO.getName());
+                    edition.setActive(editionDTO.isActive());
+                    edition.setYear(editionDTO.getYear());
 
                     return repository.save(edition);
                 })
