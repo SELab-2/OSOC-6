@@ -40,9 +40,9 @@ public class AuthenticationTest {
 
     @Test
     public void loginWithValidUser() throws Exception {
-        FormLoginRequestBuilder login = formLogin().user("user").password("password");
+        FormLoginRequestBuilder login = formLogin().user("user@gmail.com").password("password");
 
-        mockMvc.perform(login).andExpect(authenticated().withUsername("user"));
+        mockMvc.perform(login).andExpect(authenticated().withUsername("user@gmail.com"));
     }
 
     @Test

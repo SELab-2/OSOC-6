@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,8 +70,12 @@ public class UserEntity {
      * Role/ power this user has.
      */
     @Basic(optional = false)
+    @Enumerated(EnumType.STRING)
     @Getter @Setter
     private UserRole userRole;
+
+    private Boolean locked = false;
+    private Boolean enabled = false;
 
     /**
      * {@link Set} of {@link Invitation} that was sent out by the user.
