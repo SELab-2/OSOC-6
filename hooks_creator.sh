@@ -29,6 +29,10 @@ echo "npm run lint" >> commit-msg
 echo "RESULT=\$?" >> commit-msg
 echo "[ \$RESULT -ne 0 ] && [[ -z \$broken ]] && echo \"\$failMassage\" && exit 1" >> commit-msg
 
+echo "npm run test" >> commit-msg
+echo "RESULT=\$?" >> commit-msg
+echo "[ \$RESULT -ne 0 ] && [[ -z \$broken ]] && echo \"\$failMassage\" && exit 1" >> commit-msg
+
 # echo "npx prettier --check ." >> commit-msg
 echo "npx prettier --check ." >> commit-msg
 echo "RESULT=\$?" >> commit-msg
