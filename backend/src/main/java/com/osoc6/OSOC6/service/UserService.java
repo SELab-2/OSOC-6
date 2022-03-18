@@ -7,7 +7,6 @@ import com.osoc6.OSOC6.exception.UserNotFoundException;
 import com.osoc6.OSOC6.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +25,7 @@ public class UserService {
      * @return list of users
      */
     public List<User> getAllUsers() {
-        return new ArrayList<>(userRepository.findAll());
+        return userRepository.findAll();
     }
 
     /**
