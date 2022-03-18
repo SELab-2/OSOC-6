@@ -54,7 +54,7 @@ public class AuthenticationTest {
 
     @Test
     public void accessUnsecuredResource() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/login"))
                 .andExpect(status().isOk());
     }
 }
