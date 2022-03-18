@@ -1,4 +1,9 @@
 /**
- * This package contains all controllers. These are used for routing and handling requests.
+ * This module contains all controllers used for the API.
+ *
+ * @since 0.0
+ * @author ruvmello, KasperDemeyere
+ * @version 0.0
  */
+
 package com.osoc6.OSOC6.controller;
