@@ -16,7 +16,7 @@ Go to the following location
 ```
 cd /etc/nginx/conf.d/
 ```
-Backup our default configuration fileto be safe you can always backup this file 
+Backup our default configuration file to be safe you can always backup this file 
 ```
 cp default.conf default.conf.backup
 ```
