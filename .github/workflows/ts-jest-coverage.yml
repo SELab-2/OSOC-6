@@ -14,7 +14,5 @@ jobs:
           rm package-lock.json
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          test-script: npm run test
           package-manager: npm
           working-directory: frontend
-
