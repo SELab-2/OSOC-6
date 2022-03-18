@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.service;
 
+import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.User;
 import com.osoc6.OSOC6.dto.UserProfileDTO;
 import com.osoc6.OSOC6.dto.UserRoleDTO;
@@ -8,6 +9,7 @@ import com.osoc6.OSOC6.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -26,6 +28,17 @@ public class UserService {
      */
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    /**
+     * Get a set of all skills of a user.
+     * @param id id of the user
+     * @return set of the skills of the user
+     */
+    public Set<Skill> getUserSkills(final Long id) {
+        return userRepository.findById(id)
+                .map(User::getSkills)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     /**
