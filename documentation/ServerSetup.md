@@ -24,7 +24,7 @@ Now we will edit the configuration
 ```
 sudo nano /etc/nginx/conf.d/default.conf
 ```
-Here you will find the configuration of our server. Seek the part where it says 
+Here you will find the configuration of our server. Locate the part where it says 
 ```
 location / {
 	...
