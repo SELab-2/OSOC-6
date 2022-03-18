@@ -133,7 +133,7 @@ Next, you can run the frontend with `npm run dev`, but we wil also make a servic
 pm2 start "npm run dev" --name giveThisAName
 pm2 save
 ```
-Your all set, everything should be up and running.
+You're all set, everything should be up and running.
 
 #### SSL Certificate
 
