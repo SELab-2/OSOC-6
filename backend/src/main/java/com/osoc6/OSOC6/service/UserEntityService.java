@@ -41,11 +41,10 @@ public class UserEntityService implements UserDetailsService {
                                 String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public String registerUser(UserEntity userEntity) {
+    public void registerUser(UserEntity userEntity) {
         boolean accountExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
 
         if (accountExists) {
-            // TODO : check whether the account was confirmed
             throw new IllegalStateException("This email-address is already assigned to an account");
         }
 
@@ -53,7 +52,5 @@ public class UserEntityService implements UserDetailsService {
         userEntity.setPassword(encodedPassword);
 
         userRepository.save(userEntity);
-
-        return "it works";
     }
 }

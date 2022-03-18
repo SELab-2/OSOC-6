@@ -20,32 +20,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserEntityService userService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return email -> {
-//            Optional<UserEntity> user = userService.findByEmail(email);
-//            if (user.isEmpty()) {
-//                throw new UsernameNotFoundException("No user found with email address: " + email);
-//            }
-//            return (UserDetails) user.get();
-//        };
-//    }
-    // TODO : differentiate between admin and coach
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        PasswordEncoder encoder = passwordEncoder();
-//        auth
-//            .inMemoryAuthentication()
-//            .withUser("user@gmail.com")
-//                .password(encoder.encode("password"))
-//                .roles("USER")
-//                .and()
-//            .withUser("admin@gmail.com")
-//                .password(encoder.encode("admin"))
-//                .roles("USER", "ADMIN");
-//    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
@@ -53,18 +27,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//            .authorizeRequests()
-//                .antMatchers("/", "/home").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//            .formLogin()
-//                .loginPage("/login")
-//                //.usernameParameter("email")
-//                .permitAll()
-//                .and()
-//            .logout()
-//                .permitAll();
         http
             .csrf().disable()
             .authorizeRequests()

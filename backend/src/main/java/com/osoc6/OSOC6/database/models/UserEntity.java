@@ -75,7 +75,6 @@ public class UserEntity {
     private UserRole userRole;
 
     private Boolean locked = false;
-    // TODO : change when working with confirmation email
     private Boolean enabled = true;
 
     /**
