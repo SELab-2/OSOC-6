@@ -123,7 +123,7 @@ But the user will be replaced with your user running locally. Run the command an
 #### Frontend
 The last part we need to configure is the frontend. To do so, go to the `/frontend` folder of our project.
 
-In there run the following command to install all depenency's.
+In there run the following command to install all dependencies.
 ```
 npm install
 ```
