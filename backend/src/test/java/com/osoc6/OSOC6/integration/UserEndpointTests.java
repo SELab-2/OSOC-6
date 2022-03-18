@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6;
+package com.osoc6.OSOC6.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osoc6.OSOC6.database.models.User;
@@ -19,6 +19,7 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,8 +65,12 @@ public class UserEndpointTests {
      */
     @AfterEach
     public void removeTestUsers() {
-        userRepository.deleteById(user1.getId());
-        userRepository.deleteById(user2.getId());
+        if (userRepository.existsById(user1.getId())) {
+            userRepository.deleteById(user1.getId());
+        }
+        if (userRepository.existsById(user2.getId())) {
+            userRepository.deleteById(user2.getId());
+        }
     }
 
     @Test
@@ -236,6 +241,13 @@ public class UserEndpointTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
                         messageSource.getMessage("lastname.notempty", null, any(Locale.class)))));
+    }
+
+    @Test
+    public void deleteTestUser1_Succeeds() throws Exception {
+        mockMvc.perform(delete("/users/" + user1.getId()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
     /**
