@@ -1,4 +1,4 @@
-import { sum } from "../src/helper/removableHelper";
+import { sum } from '../src/helper/removableHelper';
 
 describe('Test suite', () => {
     it('works on mock function', () => {

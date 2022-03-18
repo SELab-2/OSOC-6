@@ -7,5 +7,6 @@ next-env.d.ts
 next.config.js
 package-lock.json
 package.json
+coverage
 
 README.md
