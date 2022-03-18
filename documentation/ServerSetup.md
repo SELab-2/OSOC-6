@@ -118,7 +118,7 @@ This command will produce some output. You need to copy the last line of the out
 ```
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u selab2 --hp /home/selab2
 ```
-But the user will be replaced with your user running locally. Run the command and your all set.
+But the user will be replaced with your user running locally. Run the command and you're all set.
 
 #### Frontend
 The last part we need to configure is the frontend. To do so, go to the `/frontend` folder of our project.
