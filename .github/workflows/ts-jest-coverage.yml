@@ -6,5 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Go to frontend
-        run: cd frontend/
+        run: |
+          cd frontend/
+          rm package-lock.json
       - uses: ArtiomTr/jest-coverage-report-action@v2
