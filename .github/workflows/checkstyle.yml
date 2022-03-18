@@ -1,4 +1,4 @@
-name: CI-checkstyle-java-lint
+name: java-lint
 on: [pull_request]
 jobs:
   lint:

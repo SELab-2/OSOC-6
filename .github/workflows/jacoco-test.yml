@@ -1,7 +1,7 @@
-name: CI-java-test-coverage
+name: java-test-coverage
 on: [pull_request]
 jobs:
-  lint:
+  coverage:
     runs-on: self-hosted
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -19,3 +19,5 @@ jobs:
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.2
+        with:
+          paths: ${{ github.workspace }}/backend/build/reports/jacoco/testCoverage/testCoverage.xml
