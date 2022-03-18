@@ -16,3 +16,5 @@ jobs:
         with:
           test-script: npm run test
           package-manager: npm
+          working-directory: frontend
+
