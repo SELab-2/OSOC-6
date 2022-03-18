@@ -77,7 +77,7 @@ public class EditionEndpointTests {
     }
 
     /**
-     * Remove the two test ediions from the database.
+     * Remove the two test editions from the database.
      */
     @AfterEach
     public void removeTestUsers() {
