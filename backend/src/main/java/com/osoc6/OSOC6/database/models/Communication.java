@@ -78,18 +78,18 @@ public class Communication {
      * @param newMedium the medium of the communication, such as SMS or email
      * @param newContent the text content of the communication-instance
      * @param newCommunicationTemplate the template for this communication
-     * @param newUser the user who communicated with the student
+     * @param newUserEntity the user who communicated with the student
      * @param newStudent the student with whom the communication took place
      */
     public Communication(final String newMedium, final String newContent,
-                         final CommunicationTemplate newCommunicationTemplate, final UserEntity newUser,
+                         final CommunicationTemplate newCommunicationTemplate, final UserEntity newUserEntity,
                          final Student newStudent) {
         super();
         timestamp = new Timestamp(System.currentTimeMillis());
         medium = newMedium;
         content = newContent;
         template = newCommunicationTemplate;
-        userEntity = newUser;
+        userEntity = newUserEntity;
         student = newStudent;
     }
 }
