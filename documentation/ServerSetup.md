@@ -46,7 +46,7 @@ location / {
         proxy_pass http://localhost:3000;
     }
 ```
-The first and the last lines are the most important ones. `location /` tells NGINX what it needs to do when going to `our-domain.com/`. The last line tells it that it needs to give forward this to the application running on localhost on port 3000.
+The first and the last lines are the most important ones. `location /` tells NGINX what it needs to do when going to `our-domain.com/`. The last line tells it that it needs to forward this to the application running on localhost on port 3000.
 
 Next, we need to do the same for `/api`.  Right under the block for `/`, we can add the following:
 ```
