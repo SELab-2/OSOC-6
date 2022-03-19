@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.registration;
+package com.osoc6.OSOC6.request;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

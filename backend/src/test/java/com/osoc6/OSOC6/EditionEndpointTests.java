@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -104,6 +105,7 @@ public class EditionEndpointTests {
      * @exception Exception throws exception if not there
      */
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void add_new_edition() throws Exception {
         String editionName = "EDITION 2022";
         EditionDTO newEdition = new EditionDTO();
@@ -122,6 +124,7 @@ public class EditionEndpointTests {
      * @exception Exception throws exception if not there
      */
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new_edition() throws Exception {
         EditionDTO newEdition = new EditionDTO();
         String editionName = "POST EDITION";
@@ -144,6 +147,7 @@ public class EditionEndpointTests {
      * @exception Exception throws exception if not deleted
      */
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_edition() throws Exception {
         List<Edition> editions = service.getAll();
         Edition edition = editions.get(0);

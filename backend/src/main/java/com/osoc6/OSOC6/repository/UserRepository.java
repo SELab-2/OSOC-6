@@ -11,7 +11,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface UserRepository  extends JpaRepository<UserEntity, Long> {
     /**
-     * Find user with given email.
+     * This method finds the user with a given email address.
      * @param email email address of the searched user
      * @return if there is an account for the given email, the user will be returned
      */

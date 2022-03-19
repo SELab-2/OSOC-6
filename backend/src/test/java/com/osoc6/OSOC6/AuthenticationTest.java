@@ -43,9 +43,7 @@ public class AuthenticationTest {
 
     @Test
     public void loginWithInvalidUser() throws Exception {
-
         FormLoginRequestBuilder login = formLogin().user("invalid").password("invalid");
-
         mockMvc.perform(login).andExpect(unauthenticated());
     }
 

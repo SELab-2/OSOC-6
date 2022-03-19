@@ -1,8 +1,8 @@
-package com.osoc6.OSOC6.registration;
+package com.osoc6.OSOC6.service;
 
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
-import com.osoc6.OSOC6.service.UserEntityService;
+import com.osoc6.OSOC6.request.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Service;

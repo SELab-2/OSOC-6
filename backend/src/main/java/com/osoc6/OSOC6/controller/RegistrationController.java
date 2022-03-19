@@ -1,5 +1,7 @@
-package com.osoc6.OSOC6.registration;
+package com.osoc6.OSOC6.controller;
 
+import com.osoc6.OSOC6.request.RegistrationRequest;
+import com.osoc6.OSOC6.service.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
