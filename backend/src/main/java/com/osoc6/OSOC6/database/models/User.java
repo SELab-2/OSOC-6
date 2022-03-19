@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -92,6 +93,14 @@ public class User {
     private Set<Skill> skills;
 
     /**
+     * The projects this User Coaches.
+     */
+    @ManyToMany(mappedBy = "coaches")
+    @OrderColumn(name = "edition_name")
+    @Getter
+    private List<Project> projects;
+
+    /**
      *
      * @param newEmail the email of the user
      * @param newFirstName the first name of the user
@@ -108,5 +117,6 @@ public class User {
         receivedInvitations = new HashSet<>();
         communications = new ArrayList<>();
         skills = new HashSet<>();
+        projects = new ArrayList<>();
     }
 }
