@@ -20,8 +20,6 @@ jobs:
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
           echo "spring.datasource.url=jdbc:postgresql://localhost:5432/test_base" >> application.properties
           echo "spring.jpa.hibernate.ddl-auto=create"  >> application.properties
-      - name: Spoil the secret
-        run: echo "spring.datasource.password = ${{ secrets.DB_PWD }}"
       - name: Run test coverage
         run: |
           cd backend/
