@@ -1,5 +1,6 @@
 name: java-test-coverage
 on: [pull_request]
+
 jobs:
   coverage:
     runs-on: self-hosted
@@ -30,3 +31,4 @@ jobs:
         uses: madrapps/jacoco-report@v1.2
         with:
           paths: ${{ github.workspace }}/backend/build/reports/jacoco/testCoverage/testCoverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
