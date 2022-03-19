@@ -2,9 +2,15 @@ package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,46 +31,48 @@ import java.util.Set;
 
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_name")})
+@NoArgsConstructor
+@Builder @AllArgsConstructor
 public class Student {
     /**
      * The id of the student.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Getter private Long id;
 
     /**
      * The email of the student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
-    private String email;
+    @Getter @Setter private String email;
 
     /**
      * The first name of the student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
-    private String firstName;
+    @Getter @Setter private String firstName;
 
     /**
      * The last name of the student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
-    private String lastName;
+    @Getter @Setter private String lastName;
 
     /**
      * The gender of the student.
      */
     @Basic(optional = false)
-    private Gender gender;
+    @Getter @Setter private Gender gender;
 
     /**
      * The PronounsType of the student.
      */
     @Basic(optional = false)
-    private PronounsType pronounsType;
+    @Getter private PronounsType pronounsType;
 
     /**
      * The callName of the student.
@@ -78,52 +86,55 @@ public class Student {
      * The pronouns of the student.
      */
     @ElementCollection
-    private List<String> pronouns;
+    @Getter private List<String> pronouns;
 
     /**
      * The most fluent language of a person. This is a formatted string.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    private String mostFluentLanguage;
+    @Getter @Setter private String mostFluentLanguage;
 
     /**
      * English proficiency rating of a student as described in @{@link EnglishProficiency}.
      */
     @Basic(optional = false)
-    private EnglishProficiency englishProficiency;
+    @Getter @Setter private EnglishProficiency englishProficiency;
 
     /**
      * Formatted string checking the phone number of a student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
-    private String phoneNumber;
+    @Getter private String phoneNumber;
 
     /**
      * A URI pointing to the CV of a student.
      */
     @Basic
-    private URI curriculumVitaeURI;
+    @Lob
+    @Getter @Setter private URI curriculumVitaeURI;
 
     /**
      * A URI pointing to the portfolio of the student.
      */
     @Basic
-    private URI portfolioURI;
+    @Lob
+    @Getter @Setter private URI portfolioURI;
 
     /**
      * A URI pointing to the motivation of the student.
      */
     @Basic
-    private URI motivationURI;
+    @Lob
+    @Getter @Setter private URI motivationURI;
 
     /**
      * A written motivation of the student.
      */
     @Basic
     @Lob
-    private String writtenMotivation;
+    @Getter @Setter private String writtenMotivation;
 
     /**
      * Highest level of education a student currently has.
@@ -131,7 +142,7 @@ public class Student {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    private String educationLevel;
+    @Getter @Setter private String educationLevel;
 
     /**
      * Diploma a student is trying to get.
@@ -139,13 +150,13 @@ public class Student {
 
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    private String currentDiploma;
+    @Getter @Setter private String currentDiploma;
 
     /**
      * Amount of years getting the current degree takes.
      */
     @Basic(optional = false)
-    private int durationCurrentDegree;
+    @Getter @Setter private int durationCurrentDegree;
 
     /**
      * What year the student is in the course.
@@ -155,45 +166,46 @@ public class Student {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    private String yearInCourse;
+    @Getter @Setter private String yearInCourse;
 
     /**
      * Name of the collage/ university student is enrolled.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
-    private String institutionName;
+    @Getter @Setter private String institutionName;
 
     /**
      * The skill the student would describe to be their best.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    private String bestSkill;
+    @Getter @Setter private String bestSkill;
 
     /**
      * Level of OSoc experience as described in @{@link OsocExperience}.
      */
     @Basic(optional = false)
-    private OsocExperience osocExperience;
+    @Getter @Setter private OsocExperience osocExperience;
 
     /**
      * Additional info that coaches or admins write about students.
      */
     @Basic(optional = false)
     @Lob
-    private String additionalStudentInfo;
+    @Getter @Setter private String additionalStudentInfo;
 
     /**
      * {@link Edition} in which this communication took place.
      */
     @ManyToOne(optional = false)
-    private Edition edition;
+    @Getter @Setter private Edition edition;
 
     /**
      * The Studies this student has done.
      */
     @OneToMany(orphanRemoval = true)
+    @Getter @Singular
     private Set<Study> studies;
 
     /**
@@ -201,12 +213,14 @@ public class Student {
      * In the form this is called the 'role' a student applies for.
      */
     @OneToMany(orphanRemoval = true)
+    @Getter @Singular
     private Set<Skill> skills;
 
     /**
      * The suggestions made about this student.
      */
     @OneToMany(orphanRemoval = true)
+    @Getter @Singular
     private Set<Suggestion> suggestions;
 
     /**
@@ -214,60 +228,8 @@ public class Student {
      */
     @OneToMany(mappedBy = "student", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
+    @Getter @Singular
     private List<Communication> communications;
-
-    /**
-     * Student's default no-arg constructor.
-     */
-    public Student() { }
-
-    /**
-     *
-     * @return the email of the student
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     *
-     * @return the first name of the student
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     *
-     * @return the last name of the student
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     *
-     * @return gender of student
-     */
-    public Gender getGender() {
-        return gender;
-    }
-
-    /**
-     *
-     * @return the PronounsType of the student
-     */
-    public PronounsType getPronounsType() {
-        return pronounsType;
-    }
-
-    /**
-     *
-     * @return the pronouns of the student
-     */
-    public List<String> getPronouns() {
-        return pronouns;
-    }
 
     /**
      *
@@ -283,190 +245,6 @@ public class Student {
 
     /**
      *
-     * @return formatted string language that the student is most fluent in.
-     */
-    public String getMostFluentLanguage() {
-        return mostFluentLanguage;
-    }
-
-    /**
-     *
-     * @return English proficiency rating of a student as described in @{@link EnglishProficiency}
-     */
-    public EnglishProficiency getEnglishProficiency() {
-        return englishProficiency;
-    }
-
-    /**
-     *
-     * @return phone number of student
-     */
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    /**
-     *
-     * @return URI pointing to the CV of a student.
-     */
-    public URI getCurriculumVitaeURI() {
-        return curriculumVitaeURI;
-    }
-
-    /**
-     *
-     * @return URI pointing to the portfolio of the student
-     */
-    public URI getPortfolioURI() {
-        return portfolioURI;
-    }
-
-    /**
-     *
-     * @return URI pointing to the motivation of the student
-     */
-    public URI getMotivationURI() {
-        return motivationURI;
-    }
-
-    /**
-     *
-     * @return Written motivation of the student
-     */
-    public String getWrittenMotivation() {
-        return writtenMotivation;
-    }
-
-    /**
-     *
-     * @return Highest level of education a student currently has
-     */
-    public String getEducationLevel() {
-        return educationLevel;
-    }
-
-    /**
-     *
-     * @return Diploma a student is trying to get.
-     */
-    public String getCurrentDiploma() {
-        return currentDiploma;
-    }
-
-    /**
-     *
-     * @return Amount of years getting the current degree takes
-     */
-    public int getDurationCurrentDegree() {
-        return durationCurrentDegree;
-    }
-
-    /**
-     *
-     * @return What year the student is in the course.
-     */
-    public String getYearInCourse() {
-        return yearInCourse;
-    }
-
-    /**
-     *
-     * @return Name of the collage/ university student is enrolled.
-     */
-    public String getInstitutionName() {
-        return institutionName;
-    }
-
-    /**
-     *
-     * @return The skill the student would describe to be their best.
-     */
-    public String getBestSkill() {
-        return bestSkill;
-    }
-
-    /**
-     *
-     * @return Level of OSoc experience as described in @{@link OsocExperience}.
-     */
-    public OsocExperience getOsocExperience() {
-        return osocExperience;
-    }
-
-    /**
-     *
-     * @return Additional info that coaches or admins write about students
-     */
-    public String getAdditionalStudentInfo() {
-        return additionalStudentInfo;
-    }
-
-    /**
-     *
-     * @return The Studies this student has done
-     */
-    public Set<Study> getStudies() {
-        return studies;
-    }
-
-    /**
-     *
-     * @return the skills this student has
-     */
-    public Set<Skill> getSkills() {
-        return skills;
-    }
-
-    /**
-     *
-     * @return suggestions made about this student
-     */
-    public Set<Suggestion> getSuggestions() {
-        return suggestions;
-    }
-
-    /**
-     *
-     * @return Communication that this student has received sorted on the timestamp.
-     */
-    public List<Communication> getCommunications() {
-        return communications;
-    }
-
-    /**
-     *
-     * @param newEmail that should be set as the email of this student
-     */
-    public void setEmail(final String newEmail) {
-        email = newEmail;
-    }
-
-    /**
-     *
-     * @param newFirstName that should be set as the first name of this student
-     */
-    public void setFirstName(final String newFirstName) {
-        firstName = newFirstName;
-    }
-
-    /**
-     *
-     * @param newLastName  that should be set as the last name of this student
-     */
-    public void setLastName(final String newLastName) {
-        lastName = newLastName;
-    }
-
-    /**
-     *
-     * @param newGender that should be set as the gender of this student
-     */
-    public void setGender(final Gender newGender) {
-        gender = newGender;
-    }
-
-    /**
-     *
      * @param newPronounsType that should be set as the pronouns type of this student
      */
     public void setPronounsType(final PronounsType newPronounsType) {
@@ -478,7 +256,8 @@ public class Student {
 
     /**
      *
-     * @param newCallName that should be set as the callName of this student
+     * @param newCallName that should be set as the callName of this student.
+     *                    if empty, this defaults to the first name and the last name.
      */
     public void setCallName(final String newCallName) {
         callName = newCallName;
@@ -495,122 +274,10 @@ public class Student {
 
     /**
      *
-     * @param newMostFluentLanguage that should be set as the most fluent language of this student
-     */
-    public void setMostFluentLanguage(final String newMostFluentLanguage) {
-        mostFluentLanguage = newMostFluentLanguage;
-    }
-
-    /**
-     *
-     * @param newEnglishProficiency that should be set as the English proficiency of this student
-     */
-    public void setEnglishProficiency(final EnglishProficiency newEnglishProficiency) {
-        englishProficiency = newEnglishProficiency;
-    }
-
-    /**
-     *
      * @param newPhoneNumber that should be set as the phone number of this student
      */
     public void setPhoneNumber(final String newPhoneNumber) {
         // Check if phone number is correct
         phoneNumber = newPhoneNumber;
-    }
-
-    /**
-     *
-     * @param newCurriculumVitaeURI that should be set as the CV URI of this student
-     */
-    public void setCurriculumVitaeURI(final URI newCurriculumVitaeURI) {
-        curriculumVitaeURI = newCurriculumVitaeURI;
-    }
-
-    /**
-     *
-     * @param newPortfolioURI that should be set as the portfolio URI of this student
-     */
-    public void setPortfolioURI(final URI newPortfolioURI) {
-        portfolioURI = newPortfolioURI;
-    }
-
-    /**
-     *
-     * @param newMotivationURI that should be set as the motivation URI of this student
-     */
-    public void setMotivationURI(final URI newMotivationURI) {
-        motivationURI = newMotivationURI;
-    }
-
-    /**
-     *
-     * @param newWrittenMotivation that should be set as the written motivation of this student
-     */
-    public void setWrittenMotivation(final String newWrittenMotivation) {
-        writtenMotivation = newWrittenMotivation;
-    }
-
-    /**
-     *
-     * @param newEducationLevel that should be set as the highest level of education of this student
-     */
-    public void setEducationLevel(final String newEducationLevel) {
-        educationLevel = newEducationLevel;
-    }
-
-    /**
-     *
-     * @param newCurrentDiploma that should be set as the diploma the student is aiming to get
-     */
-    public void setCurrentDiploma(final String newCurrentDiploma) {
-        currentDiploma = newCurrentDiploma;
-    }
-
-    /**
-     *
-     * @param newDurationCurrentDegree the time the degree the student is getting takes
-     */
-    public void setDurationCurrentDegree(final int newDurationCurrentDegree) {
-        durationCurrentDegree = newDurationCurrentDegree;
-    }
-
-    /**
-     *
-     * @param newYearInCourse the year the student is already in this course. Example: 1st, second, last, done
-     */
-    public void setYearInCourse(final String newYearInCourse) {
-        yearInCourse = newYearInCourse;
-    }
-
-    /**
-     *
-     * @param newInstitutionName name of the collage/ university student is enrolled.
-     */
-    public void setInstitutionName(final String newInstitutionName) {
-        institutionName = newInstitutionName;
-    }
-
-    /**
-     *
-     * @param newBestSkill skill the student would describe to be their best.
-     */
-    public void setBestSkill(final String newBestSkill) {
-        bestSkill = newBestSkill;
-    }
-
-    /**
-     *
-     * @param newOsocExperience level of OSoc experience as described in @{@link OsocExperience}.
-     */
-    public void setOsocExperience(final OsocExperience newOsocExperience) {
-        osocExperience = newOsocExperience;
-    }
-
-    /**
-     *
-     * @param newAdditionalStudentInfo additional info that coaches or admins write about students.
-     */
-    public void setAdditionalStudentInfo(final String newAdditionalStudentInfo) {
-        additionalStudentInfo = newAdditionalStudentInfo;
     }
 }
