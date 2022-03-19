@@ -1,30 +1,30 @@
 package com.osoc6.OSOC6.database.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@NoArgsConstructor
 public class SkillTypeEntity {
 
     /**
      * The type of skill.
      */
     @Id
-    private SkillType skillType;
+    @Getter private SkillType skillType;
 
     /**
      * The colour associated with this SkillType.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.COLOUR_DESCRIPTION_LENGTH)
-    private String colour;
-
-    /**
-     * SkillTypeEntity's default no-arg constructor.
-     */
-    public SkillTypeEntity() { }
+    @Getter @Setter private String colour;
 
     /**
      *
@@ -33,30 +33,6 @@ public class SkillTypeEntity {
      */
     public SkillTypeEntity(final SkillType newSkillType, final String newColour) {
         skillType = newSkillType;
-        colour = newColour;
-    }
-
-    /**
-     *
-     * @return the colour associated with this SkillType
-     */
-    public String getColour() {
-        return colour;
-    }
-
-    /**
-     *
-     * @return the skillType enum that this entity represents
-     */
-    public SkillType getSkillType() {
-        return skillType;
-    }
-
-    /**
-     *
-     * @param newColour colour that represents the skillType
-     */
-    public void setColour(final String newColour) {
         colour = newColour;
     }
 }
