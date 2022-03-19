@@ -1,13 +1,9 @@
 package com.osoc6.OSOC6.request;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 import lombok.Getter;
-import lombok.ToString;
 
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class RegistrationRequest {
     /**
      * The first name of the registering user.
