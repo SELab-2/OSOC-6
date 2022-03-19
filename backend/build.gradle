@@ -22,12 +22,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-jacocoTestReport {
-	reports {
-		xml.enabled true
-	}
-}
-
 tasks.named('test') {
 	useJUnitPlatform()
 	testLogging {

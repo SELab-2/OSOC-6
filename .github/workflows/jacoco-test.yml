@@ -8,6 +8,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: configure xml report
+        run: |
+          cd backend
+          echo "jacocoTestReport {reports {xml.enabled true}}" >> build.gradle
       - uses: actions/setup-java@v2
         with:
           java-version: '17'
