@@ -11,23 +11,29 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class RegistrationService {
 
+    /**
+     * Service used to load user-specific data.
+     */
     private final UserEntityService userEntityService;
 
-    public void register(RegistrationRequest request) {
+    /**
+     * Handle userregistration requests.
+     * @param request contains the userinfo needed to register a user.
+     */
+    public void register(final RegistrationRequest request) {
         EmailValidator validator = EmailValidator.getInstance();
         if (!validator.isValid(request.getEmail())) {
             throw new IllegalStateException("Entered email-address is not valid.");
         }
 
         UserEntity registeredUser = new UserEntity(
+                request.getEmail(),
                 request.getFirstName(),
                 request.getLastName(),
-                request.getEmail(),
-                request.getPassword(),
-                UserRole.COACH
+                UserRole.COACH,
+                request.getPassword()
         );
         userEntityService.registerUser(registeredUser);
-        return;
     }
 
 }

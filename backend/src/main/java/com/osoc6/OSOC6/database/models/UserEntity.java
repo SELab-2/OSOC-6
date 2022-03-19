@@ -8,26 +8,30 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.GenerationType;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
-import javax.persistence.Table;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     /**
      * The id of the user.
@@ -74,8 +78,15 @@ public class UserEntity {
     @Getter @Setter
     private UserRole userRole;
 
-    private Boolean locked = false;
-    private Boolean enabled = true;
+    /**
+     * Indicates whether the account is locked. Needed to implement UserDetails.
+     */
+    private final Boolean locked = false;
+
+    /**
+     * Indicates whether the account is enabled. Needed to implement UserDetails.
+     */
+    private final Boolean enabled = true;
 
     /**
      * {@link Set} of {@link Invitation} that was sent out by the user.
@@ -121,13 +132,15 @@ public class UserEntity {
      * @param newFirstName the first name of the user
      * @param newLastName the last name of the user
      * @param newUserRole the role of the user
+     * @param newPassword the password of the user
      */
     public UserEntity(final String newEmail, final String newFirstName,
-                final String newLastName, final UserRole newUserRole) {
+                final String newLastName, final UserRole newUserRole, final String newPassword) {
         email = newEmail;
         firstName = newFirstName;
         lastName = newLastName;
         userRole = newUserRole;
+        password = newPassword;
         sendInvitations = new HashSet<>();
         receivedInvitations = new HashSet<>();
         communications = new ArrayList<>();
@@ -156,7 +169,7 @@ public class UserEntity {
      * @return the password of the user
      */
     public String getPassword() {
-        return email;
+        return password;
     }
 
     /**
@@ -215,6 +228,10 @@ public class UserEntity {
         return skills;
     }
 
+    /**
+     * Returns the autorities granted to the user. Being the userrole : COACH, ADMIN or DISABLED
+     * @return autorities
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
@@ -262,21 +279,37 @@ public class UserEntity {
         userRole = newUserRole;
     }
 
+    /**
+     * Indicates whether the user's account has expired. Needed to implement UserDetails.
+     * @return boolean
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * Indicates whether the user's account is locked. Needed to implement UserDetails.
+     * @return boolean
+     */
     @Override
     public boolean isAccountNonLocked() {
         return !locked;
     }
 
+    /**
+     * Indicates whether the user's password has expired. Needed to implement UserDetails.
+     * @return boolean
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * Indicates whether the user's account is enabled. Needed to implement UserDetails.
+     * @return boolean
+     */
     @Override
     public boolean isEnabled() {
         return enabled;

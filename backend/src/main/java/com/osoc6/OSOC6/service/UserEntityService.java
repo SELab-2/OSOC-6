@@ -11,37 +11,44 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+@AllArgsConstructor
 public class UserEntityService implements UserDetailsService {
 
-    private final static String USER_NOT_FOUND_MSG =
+    /**
+     * Error message for login with unregistered email.
+     */
+    private final String userNotFoundMsg =
             "user with email %s not found";
 
     /**
      * The user repository, link to the database.
      */
     private final UserRepository userRepository;
+
+    /**
+     * The encoder used to encode the passwords.
+     */
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserEntityService(final UserRepository repository, BCryptPasswordEncoder encoder) {
-        userRepository = repository;
-        passwordEncoder = encoder;
-    }
-
-
-//    @Transactional
-//    public Optional<UserEntity> findUserByEmailString(String email) throws UsernameNotFoundException {
-//        return userRepository.findByEmail(email);
-//    }
-
+    /**
+     *
+     * @param email the email of the user trying to log in
+     * @return returns the UserDetails for the user with the given email
+     * @throws UsernameNotFoundException exception is thrown when there is no user registered with the given email
+     */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
-                                String.format(USER_NOT_FOUND_MSG, email)));
+                                String.format(userNotFoundMsg, email)));
     }
 
-    public void registerUser(UserEntity userEntity) {
+    /**
+     * Register a new user.
+     * @param userEntity the user that needs to be added to the database.
+     */
+    public void registerUser(final UserEntity userEntity) {
         boolean accountExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
 
         if (accountExists) {

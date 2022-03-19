@@ -17,26 +17,45 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    /**
+     * This service is used to load user-specific data.
+     */
     private final UserEntityService userService;
+    /**
+     * The encoder is used to encode the passwords.
+     */
     private final BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * This function configures the AuthenticationManager used for the login-system.
+     * @param auth the builder used to create an AuthenticationManager
+     */
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
+    /**
+     * This method configures the HttpSecurity.
+     * @param http the HttpSecurity to modify
+     * @throws Exception due to the csrf protection
+     */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/registration")
+            .antMatchers("/registration", "/login")
             .permitAll()
             .anyRequest()
             .authenticated().and()
             .formLogin();
     }
 
+    /**
+     * This function sets up a DAO to retrieve the user details needed for the authentication process.
+     * @return a DAO for authentication
+     */
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider =
