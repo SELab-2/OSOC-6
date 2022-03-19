@@ -15,7 +15,6 @@ import javax.persistence.Lob;
 @Entity
 @NoArgsConstructor
 public class Skill {
-
     /**
      * The id of the skill.
      */
@@ -28,7 +27,7 @@ public class Skill {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter
+    @Getter @Setter
     private String name;
 
     /**
@@ -40,28 +39,13 @@ public class Skill {
     private String additionalInfo;
 
     /**
-     * The {@link SkillType} this Skill represents.
-     */
-    @Basic(optional = false)
-    @Getter
-    private SkillType skillType;
-
-    /**
      *
      * @param newName the name of the skill
      * @param newAdditionalInfo the info about the skill
      */
     public Skill(final String newName, final String newAdditionalInfo) {
-        setName(newName);
-        additionalInfo = newAdditionalInfo;
-    }
-
-    /**
-     *
-     * @param newName name of the skill/ roll
-     */
-    public void setName(final String newName) {
-        skillType = SkillType.fromString(newName);
+        super();
         name = newName;
+        additionalInfo = newAdditionalInfo;
     }
 }
