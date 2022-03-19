@@ -77,6 +77,13 @@ public class Project {
     private Set<Skill> neededSkills;
 
     /**
+     * The Users that will coach this project.
+     */
+    @ManyToMany
+    @Getter
+    private List<User> coaches;
+
+    /**
      *
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
@@ -92,5 +99,6 @@ public class Project {
         organisations = newOrganisations;
         creator = newCreator;
         neededSkills = new HashSet<>();
+        coaches = new ArrayList<>();
     }
 }
