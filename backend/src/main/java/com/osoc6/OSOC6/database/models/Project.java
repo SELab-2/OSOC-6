@@ -81,7 +81,7 @@ public class Project {
      */
     @ManyToMany
     @Getter
-    private List<User> coaches;
+    private List<UserEntity> coaches;
 
     /**
      *
