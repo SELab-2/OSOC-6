@@ -15,11 +15,11 @@ jobs:
       - name: Config properties file
         run: |
           cd backend/src/main/resources/
-          echo "spring.datasource.username = ${{ secrets.DB_PWD }}" > application.properties
+          echo "spring.datasource.username = ${{ secrets.DB_USERNAME }}" > application.properties
           echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
-          echo "spring.datasource.url=jdbc:postgresql://localhost:5432/OsocActionTest" >> application.properties
-          echo "spring.jpa.hibernate.ddl-auto=create"  >> application.properties
+          echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
+          echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
           cat application.properties
       - name: Run test coverage
         run: |
