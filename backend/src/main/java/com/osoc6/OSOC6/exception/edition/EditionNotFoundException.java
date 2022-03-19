@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.exception;
+package com.osoc6.OSOC6.exception.edition;
 
 /**
  * This error is thrown when an edition is not found, but is requested.

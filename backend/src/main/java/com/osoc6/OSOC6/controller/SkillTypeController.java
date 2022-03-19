@@ -39,8 +39,8 @@ public class SkillTypeController {
     private final SkillTypeModelAssembler assembler;
 
     /**
-     * Get the list of all editions.
-     * @return Collection of all editions
+     * Get the list of all skillTypes.
+     * @return Collection of all skillTypes
      */
     @GetMapping("/skillTypes")
     public CollectionModel<EntityModel<SkillType>> all() {
@@ -48,16 +48,16 @@ public class SkillTypeController {
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(skillTypes, linkTo(methodOn(EditionController.class).all()).withSelfRel());
+        return CollectionModel.of(skillTypes, linkTo(methodOn(SkillTypeController.class).all()).withSelfRel());
     }
 
     /**
-     * Add a new edition via a POST.
-     * @param newEdition The edition entity that had to be added to the database
-     * @return The newly added edition entity
+     * Add a new skillType via a POST.
+     * @param newSkillType The skillType entity that has to be added to the database
+     * @return The newly added skillType entity
      */
     @PostMapping("/skillTypes")
-    public ResponseEntity<EntityModel<SkillType>> newProject(@Valid @RequestBody final SkillTypeDTO newSkillType) {
+    public ResponseEntity<EntityModel<SkillType>> newSkillType(@Valid @RequestBody final SkillTypeDTO newSkillType) {
         EntityModel<SkillType> entityModel = assembler.toModel(this.service.createSkillType(newSkillType));
 
         return ResponseEntity
@@ -67,8 +67,8 @@ public class SkillTypeController {
 
     /**
      * Get a skillType by it's id.
-     * @param id The id of the edition that needs to be fetched from the database
-     * @return The edition entity
+     * @param id The id of the skillType that needs to be fetched from the database
+     * @return The skillType entity
      */
     @GetMapping("/skillTypes/{id}")
     public EntityModel<SkillType> one(@PathVariable final String id) {
@@ -79,29 +79,29 @@ public class SkillTypeController {
     }
 
     /**
-     * Update the edition via a PATCH.
-     * @param editionUpdate The updated entity
-     * @param id The id of the edition that needs to be updated
-     * @return The new edition entity
+     * Update the skillType via a PATCH.
+     * @param skillTypeUpdate The updated entity
+     * @param id The id of the skillType that needs to be updated
+     * @return The new skillType entity
      */
     @PatchMapping("/skillTypes/{id}")
-    public ResponseEntity<EntityModel<SkillType>> updateProject(@Valid @RequestBody final SkillTypeDTO skillTypeUpdate,
-                                                              @PathVariable final String id) {
-        SkillType updatedEdition = this.service.updateSkillType(skillTypeUpdate, id);
+    public ResponseEntity<EntityModel<SkillType>> updateSkillType(@Valid @RequestBody final SkillTypeDTO skillTypeUpdate,
+                                                                  @PathVariable final String id) {
+        SkillType updateSkillType = this.service.updateSkillType(skillTypeUpdate, id);
 
-        return ResponseEntity.ok(assembler.toModel(updatedEdition));
+        return ResponseEntity.ok(assembler.toModel(updateSkillType));
     }
 
     /**
-     * Delete a edition via a DELETE.
-     * @param id The id of the edition that needs to be deleted
+     * Delete a skillType via a DELETE.
+     * @param id The id of the skillType that needs to be deleted
      * @return empty response
      */
     @DeleteMapping("/skillTypes/{id}")
-    public ResponseEntity<Object> deleteProject(@PathVariable final String id) {
+    public ResponseEntity<Object> deleteSkillType(@PathVariable final String id) {
         this.service.deleteSkillType(id);
 
-        return ResponseEntity.ok("Project is deleted successsfully.");
+        return ResponseEntity.ok("SkillType is deleted successsfully.");
     }
 
 }

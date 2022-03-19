@@ -5,11 +5,12 @@ import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.dto.EditionDTO;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.service.EditionService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -150,6 +151,25 @@ public class EditionEndpointTests {
             throw new Exception();
         }
 
+    }
+
+    @Test
+    public void delete_edition_throws_not_fount() throws Exception {
+        List<Edition> editions = this.service.getAll();
+        Edition edition = editions.get(0);
+
+        // Is the project really in /editions
+        this.mockMvc.perform(get("/editions")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString(edition.getName())));
+
+        // Run the delete request
+        this.mockMvc.perform(delete("/editions/" + edition.getName())).andDo(print());
+
+        this.mockMvc.perform(delete("/editions/" + edition.getName())).andExpect(result -> {
+            Assertions.assertTrue(
+                    result.getResponse().getContentAsString().contains("Could not find edition with name Edition 1")
+            );
+        });
     }
 
     /**

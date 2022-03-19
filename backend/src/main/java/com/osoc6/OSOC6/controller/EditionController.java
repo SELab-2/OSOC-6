@@ -57,7 +57,7 @@ public class EditionController {
          * @return The newly added edition entity
          */
         @PostMapping("/editions")
-        public ResponseEntity<EntityModel<Edition>> newProject(@Valid @RequestBody final EditionDTO newEdition) {
+        public ResponseEntity<EntityModel<Edition>> newEdition(@Valid @RequestBody final EditionDTO newEdition) {
             EntityModel<Edition> entityModel = assembler.toModel(this.service.createEdition(newEdition));
 
             return ResponseEntity
@@ -85,7 +85,7 @@ public class EditionController {
          * @return The new edition entity
          */
         @PatchMapping("/editions/{id}")
-        public ResponseEntity<EntityModel<Edition>> updateProject(@Valid @RequestBody final EditionDTO editionUpdate,
+        public ResponseEntity<EntityModel<Edition>> updateEdition(@Valid @RequestBody final EditionDTO editionUpdate,
                                                                   @PathVariable final String id) {
             Edition updatedEdition = this.service.updateEdition(editionUpdate, id);
 
@@ -98,10 +98,10 @@ public class EditionController {
          * @return empty response
          */
         @DeleteMapping("/editions/{id}")
-        public ResponseEntity<Object> deleteProject(@PathVariable final String id) {
+        public ResponseEntity<Object> deleteEdition(@PathVariable final String id) {
             this.service.deleteEdition(id);
 
-            return ResponseEntity.ok("Project is deleted successsfully.");
+            return ResponseEntity.ok("Edition is deleted successsfully.");
         }
 
 }

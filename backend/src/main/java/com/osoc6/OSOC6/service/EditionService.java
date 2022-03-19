@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.service;
 
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.dto.EditionDTO;
-import com.osoc6.OSOC6.exception.EditionNotFoundException;
+import com.osoc6.OSOC6.exception.edition.EditionNotFoundException;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

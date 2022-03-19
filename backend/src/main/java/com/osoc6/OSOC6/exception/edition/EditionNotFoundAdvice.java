@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.exception;
+package com.osoc6.OSOC6.exception.edition;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
