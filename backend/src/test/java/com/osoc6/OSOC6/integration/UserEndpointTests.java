@@ -18,7 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -137,7 +136,7 @@ public class UserEndpointTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
-                        messageSource.getMessage("userrole.valid", null, any(Locale.class)))));
+                        messageSource.getMessage("userrole.valid", null, Locale.getDefault()))));
     }
 
     @Test
@@ -149,7 +148,7 @@ public class UserEndpointTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
-                        messageSource.getMessage("userrole.valid", null, any(Locale.class)))));
+                        messageSource.getMessage("userrole.valid", null, Locale.getDefault()))));
     }
 
     @Test
@@ -189,7 +188,7 @@ public class UserEndpointTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
-                        messageSource.getMessage("email.valid", null, any(Locale.class)))));
+                        messageSource.getMessage("email.valid", null, Locale.getDefault()))));
     }
 
     @Test
@@ -206,7 +205,7 @@ public class UserEndpointTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
-                        messageSource.getMessage("email.notempty", null, any(Locale.class)))));
+                        messageSource.getMessage("email.notempty", null, Locale.getDefault()))));
     }
 
     @Test
@@ -223,7 +222,7 @@ public class UserEndpointTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
-                        messageSource.getMessage("firstname.notempty", null, any(Locale.class)))));
+                        messageSource.getMessage("firstname.notempty", null, Locale.getDefault()))));
     }
 
     @Test
@@ -240,7 +239,7 @@ public class UserEndpointTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(
-                        messageSource.getMessage("lastname.notempty", null, any(Locale.class)))));
+                        messageSource.getMessage("lastname.notempty", null, Locale.getDefault()))));
     }
 
     @Test
