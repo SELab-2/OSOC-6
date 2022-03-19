@@ -6,21 +6,19 @@ import com.osoc6.OSOC6.dto.UserProfileDTO;
 import com.osoc6.OSOC6.dto.UserRoleDTO;
 import com.osoc6.OSOC6.exception.UserNotFoundException;
 import com.osoc6.OSOC6.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class UserService {
     /**
      * The user repository, link to the database.
      */
     private final UserRepository userRepository;
-
-    UserService(final UserRepository repository) {
-        userRepository = repository;
-    }
 
     /**
      * Get the list of all users.

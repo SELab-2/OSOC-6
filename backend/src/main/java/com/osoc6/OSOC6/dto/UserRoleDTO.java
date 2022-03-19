@@ -1,9 +1,11 @@
 package com.osoc6.OSOC6.dto;
 
 import com.osoc6.OSOC6.database.models.UserRole;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+@Data
 public class UserRoleDTO {
 
     /**
@@ -11,18 +13,4 @@ public class UserRoleDTO {
      */
     @NotNull(message = "{userrole.valid}")
     private UserRole userRole;
-
-    /**
-     * @return the user role
-     */
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    /**
-     * @param newUserRole the new user role
-     */
-    public void setUserRole(final UserRole newUserRole) {
-        userRole = newUserRole;
-    }
 }
