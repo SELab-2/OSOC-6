@@ -15,7 +15,7 @@ jobs:
       - name: Config properties file
         run: |
           cd backend/src/main/resources/
-          echo "spring.datasource.username = {{ secrets.DB_PWD }}" > application.properties
+          echo "spring.datasource.username = ${{ secrets.DB_PWD }}" > application.properties
           echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
           echo "spring.datasource.url=jdbc:postgresql://localhost:5432/OsocActionTest" >> application.properties
