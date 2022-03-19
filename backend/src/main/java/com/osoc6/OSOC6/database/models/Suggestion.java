@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.database.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +13,7 @@ import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
 @Entity
+@NoArgsConstructor
 public class Suggestion {
     /**
      * Automatically generated id of Suggestion.
@@ -22,6 +26,7 @@ public class Suggestion {
      * Strategy this suggestion takes.
      */
     @Basic(optional = false)
+    @Getter
     private SuggestionStrategy strategy;
 
     /**
@@ -29,24 +34,22 @@ public class Suggestion {
      */
     @Basic(optional = false)
     @Lob
+    @Getter
     private String reason;
 
     /**
      * Coach that did the suggestion.
      */
     @ManyToOne(optional = false)
+    @Getter
     private User coach;
 
     /**
      * {@link Timestamp} of creation from the suggestion.
      */
     @Basic(optional = false)
+    @Getter
     private Timestamp timestamp;
-
-    /**
-     * Suggestion's default no-arg constructor.
-     */
-    public Suggestion() { }
 
     /**
      *
@@ -59,37 +62,5 @@ public class Suggestion {
         reason = newReason;
         coach = newCoach;
         timestamp = new Timestamp(System.currentTimeMillis());
-    }
-
-    /**
-     *
-     * @return strategy this suggestion takes
-     */
-    public SuggestionStrategy getStrategy() {
-        return strategy;
-    }
-
-    /**
-     *
-     * @return reason provided by the user for giving this suggestion
-     */
-    public String getReason() {
-        return reason;
-    }
-
-    /**
-     *
-     * @return User that did the suggestion
-     */
-    public User getCoach() {
-        return coach;
-    }
-
-    /**
-     *
-     * @return timestamp of creation from the suggestion
-     */
-    public Timestamp getTimestamp() {
-        return timestamp;
     }
 }

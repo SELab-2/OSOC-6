@@ -41,10 +41,8 @@ public enum Gender {
          }
      };
 
-    /* IMPORTANT: should NEVER return None. An infinite loop will be triggered */
-
     /**
-     *
+     * IMPORTANT: should NEVER return PronounsType.None. An infinite loop will be triggered.
      * @return default pronouns for a gender if pronouns are not specified.
      */
     public abstract PronounsType getDefaultPronouns();

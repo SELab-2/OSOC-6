@@ -2,9 +2,9 @@ package com.osoc6.OSOC6.assembler;
 
 import com.osoc6.OSOC6.controller.EditionController;
 import com.osoc6.OSOC6.database.models.Edition;
+import lombok.NonNull;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
