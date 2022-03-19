@@ -20,7 +20,7 @@ public class SkillType {
     @Id
     @Column(length = RadagastNumberWizard.SMALL_DESCRIPTION_LENGTH)
     @Getter
-    private String skillType;
+    private String name;
 
     /**
      * The colour associated with this SkillType.
