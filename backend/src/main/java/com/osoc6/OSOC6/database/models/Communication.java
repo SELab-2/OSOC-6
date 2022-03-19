@@ -33,39 +33,45 @@ public class Communication {
      * The timestamp of the communication.
      */
     @Basic(optional = false)
-    @Getter private Timestamp timestamp;
+    @Getter
+    private Timestamp timestamp;
 
     /**
      * The medium of the communication.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH, nullable = false)
-    @Getter @Setter private String medium;
+    @Getter @Setter
+    private String medium;
 
     /**
      * The content of the communication.
      */
     @Basic(optional = true)
     @Lob
-    @Getter @Setter private String content;
+    @Getter @Setter
+    private String content;
 
     /**
      * {@link CommunicationTemplate} used in this communication.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter private CommunicationTemplate template;
+    @Getter @Setter
+    private CommunicationTemplate template;
 
     /**
      * {@link User} that communicated with the student.
      */
     @ManyToOne(optional = false)
-    @Getter private User user;
+    @Getter
+    private User user;
 
     /**
      * Student with whom the communication took place.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter private Student student;
+    @Getter @Setter
+    private Student student;
 
     /**
      *

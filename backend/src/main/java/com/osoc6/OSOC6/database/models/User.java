@@ -35,53 +35,61 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
-    @Getter @Setter private String email;
+    @Getter @Setter
+    private String email;
 
     /**
      * The first name of the user.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
-    @Getter @Setter private String firstName;
+    @Getter @Setter
+    private String firstName;
 
     /**
      * The last name of the user.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
-    @Getter @Setter private String lastName;
+    @Getter @Setter
+    private String lastName;
 
     /**
      * Role/ power this user has.
      */
     @Basic(optional = false)
-    @Getter @Setter private UserRole userRole;
+    @Getter @Setter
+    private UserRole userRole;
 
     /**
      * {@link Set} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
-    @Getter private Set<Invitation> sendInvitations;
+    @Getter
+    private Set<Invitation> sendInvitations;
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
     @OneToMany(mappedBy = "subject", orphanRemoval = false)
-    @Getter private Set<Invitation> receivedInvitations;
+    @Getter
+    private Set<Invitation> receivedInvitations;
 
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
      */
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
-    @Getter private List<Communication> communications;
+    @Getter
+    private List<Communication> communications;
 
     /**
      * Set of skills a user has.
      */
     @OneToMany(orphanRemoval = true)
-    @Getter private Set<Skill> skills;
+    @Getter
+    private Set<Skill> skills;
 
     /**
      *

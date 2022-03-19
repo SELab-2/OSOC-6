@@ -26,25 +26,29 @@ public class Invitation {
      * The timestamp of the invitation.
      */
     @Basic(optional = false)
-    @Getter private Timestamp timestamp;
+    @Getter
+    private Timestamp timestamp;
 
     /**
      * {@link Edition} for which this invitation was created.
      */
     @ManyToOne(optional = false)
-    @Getter private Edition edition;
+    @Getter
+    private Edition edition;
 
     /**
      * User that issued the invitation.
      */
     @ManyToOne(optional = false)
-    @Getter private User issuer;
+    @Getter
+    private User issuer;
 
     /**
      * User that accepted the invitation.
      */
     @ManyToOne
-    @Getter @Setter private User subject;
+    @Getter @Setter
+    private User subject;
 
     /**
      *

@@ -4,27 +4,28 @@ import com.osoc6.OSOC6.assembler.EditionModelAssembler;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.dto.EditionDTO;
 import com.osoc6.OSOC6.service.EditionService;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
+@AllArgsConstructor
 public class EditionController {
 
         /**
@@ -36,16 +37,6 @@ public class EditionController {
          * Assembler, used to make the API more restfull.
          */
         private final EditionModelAssembler assembler;
-
-        /**
-         * The constructor for the editionController.
-         * @param editionService the link to the database
-         * @param editionModelAssembler used to make the API more restfull
-         */
-        EditionController(final EditionService editionService, final EditionModelAssembler editionModelAssembler) {
-            this.service = editionService;
-            this.assembler = editionModelAssembler;
-        }
 
         /**
          * Get the list of all editions.

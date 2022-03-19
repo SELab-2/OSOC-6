@@ -39,40 +39,46 @@ public class Student {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Long id;
+    @Getter
+    private Long id;
 
     /**
      * The email of the student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
-    @Getter @Setter private String email;
+    @Getter @Setter
+    private String email;
 
     /**
      * The first name of the student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
-    @Getter @Setter private String firstName;
+    @Getter @Setter
+    private String firstName;
 
     /**
      * The last name of the student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
-    @Getter @Setter private String lastName;
+    @Getter @Setter
+    private String lastName;
 
     /**
      * The gender of the student.
      */
     @Basic(optional = false)
-    @Getter @Setter private Gender gender;
+    @Getter @Setter
+    private Gender gender;
 
     /**
      * The PronounsType of the student.
      */
     @Basic(optional = false)
-    @Getter private PronounsType pronounsType;
+    @Getter
+    private PronounsType pronounsType;
 
     /**
      * The callName of the student.
@@ -86,55 +92,63 @@ public class Student {
      * The pronouns of the student.
      */
     @ElementCollection
-    @Getter private List<String> pronouns;
+    @Getter
+    private List<String> pronouns;
 
     /**
      * The most fluent language of a person. This is a formatted string.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter private String mostFluentLanguage;
+    @Getter @Setter
+    private String mostFluentLanguage;
 
     /**
      * English proficiency rating of a student as described in @{@link EnglishProficiency}.
      */
     @Basic(optional = false)
-    @Getter @Setter private EnglishProficiency englishProficiency;
+    @Getter @Setter
+    private EnglishProficiency englishProficiency;
 
     /**
      * Formatted string checking the phone number of a student.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
-    @Getter private String phoneNumber;
+    @Getter
+    private String phoneNumber;
 
     /**
      * A URI pointing to the CV of a student.
      */
     @Basic
     @Lob
-    @Getter @Setter private URI curriculumVitaeURI;
+    @Getter @Setter
+    private URI curriculumVitaeURI;
 
     /**
      * A URI pointing to the portfolio of the student.
      */
     @Basic
     @Lob
-    @Getter @Setter private URI portfolioURI;
+    @Getter @Setter
+    private URI portfolioURI;
 
     /**
      * A URI pointing to the motivation of the student.
      */
     @Basic
     @Lob
-    @Getter @Setter private URI motivationURI;
+    @Getter @Setter
+    private URI motivationURI;
 
     /**
      * A written motivation of the student.
      */
     @Basic
     @Lob
-    @Getter @Setter private String writtenMotivation;
+    @Getter @Setter
+    private String writtenMotivation;
 
     /**
      * Highest level of education a student currently has.
@@ -142,7 +156,8 @@ public class Student {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter private String educationLevel;
+    @Getter @Setter
+    private String educationLevel;
 
     /**
      * Diploma a student is trying to get.
@@ -150,13 +165,15 @@ public class Student {
 
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter private String currentDiploma;
+    @Getter @Setter
+    private String currentDiploma;
 
     /**
      * Amount of years getting the current degree takes.
      */
     @Basic(optional = false)
-    @Getter @Setter private int durationCurrentDegree;
+    @Getter @Setter
+    private int durationCurrentDegree;
 
     /**
      * What year the student is in the course.
@@ -166,40 +183,46 @@ public class Student {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter private String yearInCourse;
+    @Getter @Setter
+    private String yearInCourse;
 
     /**
      * Name of the collage/ university student is enrolled.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
-    @Getter @Setter private String institutionName;
+    @Getter @Setter
+    private String institutionName;
 
     /**
      * The skill the student would describe to be their best.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter private String bestSkill;
+    @Getter @Setter
+    private String bestSkill;
 
     /**
      * Level of OSoc experience as described in @{@link OsocExperience}.
      */
     @Basic(optional = false)
-    @Getter @Setter private OsocExperience osocExperience;
+    @Getter @Setter
+    private OsocExperience osocExperience;
 
     /**
      * Additional info that coaches or admins write about students.
      */
     @Basic(optional = false)
     @Lob
-    @Getter @Setter private String additionalStudentInfo;
+    @Getter @Setter
+    private String additionalStudentInfo;
 
     /**
      * {@link Edition} in which this communication took place.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter private Edition edition;
+    @Getter @Setter
+    private Edition edition;
 
     /**
      * The Studies this student has done.

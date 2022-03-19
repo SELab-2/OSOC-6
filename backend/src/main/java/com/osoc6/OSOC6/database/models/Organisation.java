@@ -30,20 +30,23 @@ public class Organisation {
      */
     @Basic(optional = false)
     @Lob
-    @Getter @Setter private String info;
+    @Getter @Setter
+    private String info;
 
     /**
      * The name of the organisation.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
-    @Getter @Setter private String name;
+    @Getter @Setter
+    private String name;
 
     /**
      * {@link Set} of projects this Organisation is involved in.
      */
     @ManyToMany
-    @Getter private Set<Project> projects;
+    @Getter
+    private Set<Project> projects;
 
     /**
      *

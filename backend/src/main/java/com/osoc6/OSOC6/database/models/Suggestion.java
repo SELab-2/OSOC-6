@@ -26,26 +26,30 @@ public class Suggestion {
      * Strategy this suggestion takes.
      */
     @Basic(optional = false)
-    @Getter private SuggestionStrategy strategy;
+    @Getter
+    private SuggestionStrategy strategy;
 
     /**
      * Reason provided by the user for giving this suggestion.
      */
     @Basic(optional = false)
     @Lob
-    @Getter private String reason;
+    @Getter
+    private String reason;
 
     /**
      * Coach that did the suggestion.
      */
     @ManyToOne(optional = false)
-    @Getter private User coach;
+    @Getter
+    private User coach;
 
     /**
      * {@link Timestamp} of creation from the suggestion.
      */
     @Basic(optional = false)
-    @Getter private Timestamp timestamp;
+    @Getter
+    private Timestamp timestamp;
 
     /**
      *

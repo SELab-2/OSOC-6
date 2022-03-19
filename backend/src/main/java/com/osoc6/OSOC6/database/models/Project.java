@@ -37,38 +37,44 @@ public class Project {
      * The goals of the project.
      */
     @ElementCollection
-    @Getter private List<String> goals;
+    @Getter
+    private List<String> goals;
 
     /**
      * The name of the project.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
-    @Getter @Setter private String name;
+    @Getter @Setter
+    private String name;
 
     /**
      * Edition within which this project was created.
      */
     @ManyToOne(optional = false)
-    @Getter private Edition edition;
+    @Getter
+    private Edition edition;
 
     /**
      * Set of organisation that are involved in this project.
      */
     @ManyToMany(mappedBy = "projects")
-    @Getter private Set<Organisation> organisations;
+    @Getter
+    private Set<Organisation> organisations;
 
     /**
      * The {@link User}/ admin that created the project.
      */
     @ManyToOne(optional = false)
-    @Getter private User creator;
+    @Getter
+    private User creator;
 
     /**
      * The skills needed in this project.
      */
     @OneToMany(orphanRemoval = true)
-    @Getter private Set<Skill> neededSkills;
+    @Getter
+    private Set<Skill> neededSkills;
 
     /**
      *

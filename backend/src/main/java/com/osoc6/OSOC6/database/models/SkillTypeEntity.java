@@ -17,14 +17,16 @@ public class SkillTypeEntity {
      * The type of skill.
      */
     @Id
-    @Getter private SkillType skillType;
+    @Getter
+    private SkillType skillType;
 
     /**
      * The colour associated with this SkillType.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.COLOUR_DESCRIPTION_LENGTH)
-    @Getter @Setter private String colour;
+    @Getter @Setter
+    private String colour;
 
     /**
      *

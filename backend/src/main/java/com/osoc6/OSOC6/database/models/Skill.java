@@ -28,20 +28,23 @@ public class Skill {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter private String name;
+    @Getter
+    private String name;
 
     /**
      * The description of the skill.
      */
     @Basic(optional = true)
     @Lob
-    @Getter @Setter private String additionalInfo;
+    @Getter @Setter
+    private String additionalInfo;
 
     /**
      * The {@link SkillType} this Skill represents.
      */
     @Basic(optional = false)
-    @Getter private SkillType skillType;
+    @Getter
+    private SkillType skillType;
 
     /**
      *

@@ -17,14 +17,16 @@ public class CommunicationTemplate {
      * The name of the CommunicationTemplate.
      */
     @Id
-    @Getter @Setter private String name;
+    @Getter @Setter
+    private String name;
 
     /**
      * The template for the CommunicationTemplate.
      */
     @Basic(optional = false)
     @Lob
-    @Getter @Setter private String template;
+    @Getter @Setter
+    private String template;
 
     /**
      *

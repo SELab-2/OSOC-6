@@ -15,19 +15,22 @@ public class Edition {
      * The name of the edition.
      */
     @Id
-    @Getter @Setter private String name;
+    @Getter @Setter
+    private String name;
 
     /**
      * The year of the edition.
      */
     @Basic(optional = false)
-    @Getter @Setter private int year;
+    @Getter @Setter
+    private int year;
 
     /**
      * Whether the edition is active.
      */
     @Basic(optional = false)
-    @Getter @Setter private boolean active;
+    @Getter @Setter
+    private boolean active;
 
     /**
      *

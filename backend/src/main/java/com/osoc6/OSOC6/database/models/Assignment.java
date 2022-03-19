@@ -28,39 +28,45 @@ public class Assignment {
      * whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
      */
     @Basic(optional = false)
-    @Getter @Setter private boolean isSuggestion;
+    @Getter @Setter
+    private boolean isSuggestion;
 
     /**
      * The creation timestamp of the assignment.
      */
     @Basic(optional = false)
-    @Getter private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    @Getter
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /**
      * The reason the student got assigned.
      */
     @Basic(optional = false)
     @Lob
-    @Getter @Setter private String reason;
+    @Getter @Setter
+    private String reason;
 
     /**
      * The {@link User}/ Admin that executed the assignment.
      */
     @ManyToOne(optional = false)
-    @Getter private User assigner;
+    @Getter
+    private User assigner;
 
     /**
      * Student that gets assigned.
      * Fetch lazy because a student is a very big entity
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @Getter private Student student;
+    @Getter
+    private Student student;
 
     /**
      * Project that the student is assigned to.
      */
     @ManyToOne(optional = false)
-    @Getter private Project project;
+    @Getter
+    private Project project;
 
     /**
      *
@@ -74,7 +80,6 @@ public class Assignment {
                       final User newAssigner, final Student newStudent, final Project newProject) {
         super();
         isSuggestion = newIsSuggestion;
-        timestamp = new Timestamp(System.currentTimeMillis());
         reason = newReason;
         assigner = newAssigner;
         student = newStudent;
