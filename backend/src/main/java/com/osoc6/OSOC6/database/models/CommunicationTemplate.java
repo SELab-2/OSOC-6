@@ -1,17 +1,23 @@
 package com.osoc6.OSOC6.database.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
+@NoArgsConstructor
 public class CommunicationTemplate {
 
     /**
      * The name of the CommunicationTemplate.
      */
     @Id
+    @Getter @Setter
     private String name;
 
     /**
@@ -19,12 +25,8 @@ public class CommunicationTemplate {
      */
     @Basic(optional = false)
     @Lob
+    @Getter @Setter
     private String template;
-
-    /**
-     * CommunicationTemplate's default no-arg constructor.
-     */
-    public CommunicationTemplate() { }
 
     /**
      *
@@ -32,40 +34,8 @@ public class CommunicationTemplate {
      * @param newTemplate the content of the template
      */
     public CommunicationTemplate(final String newName, final String newTemplate) {
+        super();
         name = newName;
-        template = newTemplate;
-    }
-
-    /**
-     *
-     * @return the name of the ConfirmationType
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @return the template of the ConfirmationType
-     */
-    public String getTemplate() {
-        return template;
-    }
-
-
-    /**
-     *
-     * @param newName name of the communication template, 'yes', 'no', 'maybe', 'invitation', ...
-     */
-    public void setName(final String newName) {
-        name = newName;
-    }
-
-    /**
-     *
-     * @param newTemplate the string template representation
-     */
-    public void setTemplate(final String newTemplate) {
         template = newTemplate;
     }
 }

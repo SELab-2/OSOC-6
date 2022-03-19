@@ -4,25 +4,19 @@ import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.dto.EditionDTO;
 import com.osoc6.OSOC6.exception.EditionNotFoundException;
 import com.osoc6.OSOC6.repository.EditionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class EditionService {
 
     /**
      * The link to the database.
      */
     private final EditionRepository repository;
-
-    /**
-     * Constructor for the EditionService, needs a link to database.
-     * @param newRepository Connection to database
-     */
-    public EditionService(final EditionRepository newRepository) {
-        this.repository = newRepository;
-    }
 
     /**
      * Handle the post request.
