@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * This class makes it so that when an EditionNotFoundException error is thrown
- * this will render a HTTP 404.
+ * this will render a HTTP 403.
  *
  * @author jitsedesmet
  */

@@ -22,3 +22,11 @@ We use project Lombok to write cleaner code. More precicelly we will be using th
 * [Constructor](https://projectlombok.org/features/constructor)
 * [@Data](https://projectlombok.org/features/Data)
 * [@Builder](https://projectlombok.org/features/Builder)
+
+#### Jacoco
+
+We use Jacococ to generate test coverage.
+The report is created in `build/reports/jacoco/test/html` here you can find an `index.html` file.
+There are a lot of options to open this file.
+* Open it with your ide, that might help you render the web page.
+* Call `npx serve` in the directory.

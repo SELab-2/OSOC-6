@@ -66,7 +66,7 @@ public class SkillTypeService {
      * @return the new skillType
      */
     public SkillType updateSkillType(final SkillTypeDTO skillTypeDTO, final String id) {
-        if (! id.equals(skillTypeDTO.getName())) {
+        if (!id.equals(skillTypeDTO.getName())) {
             throw new IllegalSkillTypeEditException("name");
         }
         return repository.findById(id)

@@ -26,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Class testing the integration of {@link SkillType}.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -61,15 +64,15 @@ public class SkillTypeTests {
 
     private static final String SKILL_TYPES_PATH = "/skillTypes";
 
-    private static String getNotFountMessage(String id) {
+    private static String getNotFountMessage(final String id) {
         return "Could not find skillType identified by " + id + ".";
     }
 
-    private static String getIllegalEditException(String field) {
+    private static String getIllegalEditException(final String field) {
         return "Field " + field + " is not editable in SkillType.";
     }
 
-    private static final String illegalName = "Some very illegal name";
+    private static final String ILLEGAL_NAME = "Some very illegal name";
 
     /**
      * Add two test skillTypes to the database.
@@ -157,20 +160,20 @@ public class SkillTypeTests {
 
     @Test
     public void getting_illegal_skillType_fails() throws Exception {
-        mockMvc.perform(get(SKILL_TYPES_PATH + "/" + illegalName))
-                .andExpect(content().string(containsString(getNotFountMessage(illegalName))));
+        mockMvc.perform(get(SKILL_TYPES_PATH + "/" + ILLEGAL_NAME))
+                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
     public void patching_illegal_skillType_fails() throws Exception {
         SkillTypeDTO dto = new SkillTypeDTO();
-        dto.setName(illegalName);
+        dto.setName(ILLEGAL_NAME);
         dto.setColour("DF7E5C");
         mockMvc.perform(patch(SKILL_TYPES_PATH + "/" + dto.getName())
                         .content(Util.asJsonString(dto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(containsString(getNotFountMessage(illegalName))));
+                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test

@@ -26,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+/**
+ * Class testing the integration of {@link Edition}.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -61,11 +64,11 @@ public class EditionEndpointTests {
 
     private static final String EDITIONS_PATH = "/editions";
 
-    private static String getNotFountMessage(String id) {
+    private static String getNotFountMessage(final String id) {
         return "Could not find edition identified by " + id + ".";
     }
 
-    private static final String illegalName = "Some very illegal name";
+    private static final String ILLEGAL_NAME = "Some very illegal name";
 
     /**
      * Add two test editions to the database.
@@ -177,21 +180,21 @@ public class EditionEndpointTests {
 
     @Test
     public void getting_illegal_edition_fails() throws Exception {
-        mockMvc.perform(get(EDITIONS_PATH + "/" + illegalName))
-                .andExpect(content().string(containsString(getNotFountMessage(illegalName))));
+        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_NAME))
+                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
     public void patching_illegal_edition_fails() throws Exception {
         EditionDTO dto = new EditionDTO();
         dto.setActive(true);
-        dto.setName(illegalName);
+        dto.setName(ILLEGAL_NAME);
         dto.setYear(60000);
         mockMvc.perform(patch(EDITIONS_PATH + "/" + dto.getName())
                 .content(Util.asJsonString(dto))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(containsString(getNotFountMessage(illegalName))));
+                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test

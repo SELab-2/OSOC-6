@@ -85,8 +85,10 @@ public class SkillTypeController {
      * @return The new skillType entity
      */
     @PatchMapping("/skillTypes/{id}")
-    public ResponseEntity<EntityModel<SkillType>> updateSkillType(@Valid @RequestBody final SkillTypeDTO skillTypeUpdate,
-                                                                  @PathVariable final String id) {
+    public ResponseEntity<EntityModel<SkillType>> updateSkillType(
+            @Valid @RequestBody final SkillTypeDTO skillTypeUpdate,
+            @PathVariable final String id
+    ) {
         SkillType updateSkillType = service.updateSkillType(skillTypeUpdate, id);
 
         return ResponseEntity.ok(assembler.toModel(updateSkillType));
