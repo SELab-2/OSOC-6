@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * This controller handles the mappings for the registration of a user.
  */
@@ -25,7 +27,7 @@ public class RegistrationController {
      * @param request contains the userinfo needed to register a user.
      */
     @PostMapping
-    public void register(@RequestBody final RegistrationDTO request) {
+    public void register(@Valid @RequestBody final RegistrationDTO request) {
         registrationService.register(request);
     }
 }
