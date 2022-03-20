@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * The controller of {@link Edition}.
+ * This class focuses on setting up the endpoint routes for edition.
+ */
 @RestController
 @AllArgsConstructor
 public class EditionController {

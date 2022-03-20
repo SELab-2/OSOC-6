@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service for {@link SkillType} that provides controlled access to the database.
+ */
 @Service
 @AllArgsConstructor
 public class SkillTypeService {

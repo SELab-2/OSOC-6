@@ -4,6 +4,9 @@ import com.osoc6.OSOC6.database.models.SkillType;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * Data transfer Object for a {@link SkillType}.
+ */
 @Data
 public class SkillTypeDTO {
     /**

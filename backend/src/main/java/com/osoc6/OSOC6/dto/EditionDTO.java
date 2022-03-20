@@ -6,6 +6,9 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * Data transfer Object for an {@link Edition}.
+ */
 @Data
 public class EditionDTO {
     /**

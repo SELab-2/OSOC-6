@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * The controller of {@link SkillType}.
+ * This class focuses on setting up the endpoint routes for skillType.
+ */
 @RestController
 @AllArgsConstructor
 public class SkillTypeController {

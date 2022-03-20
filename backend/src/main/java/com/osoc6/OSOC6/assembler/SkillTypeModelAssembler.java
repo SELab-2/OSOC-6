@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * Assembler component used to make API more restfull.
+ * This assembler is used for the {@link SkillType} endpoints.
+ */
 @Component
 public class SkillTypeModelAssembler implements RepresentationModelAssembler<SkillType, EntityModel<SkillType>> {
 

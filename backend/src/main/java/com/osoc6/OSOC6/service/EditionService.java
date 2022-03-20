@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service for {@link Edition} that provides controlled access to the database.
+ */
 @Service
 @AllArgsConstructor
 public class EditionService {
