@@ -25,7 +25,7 @@ We use project Lombok to write cleaner code. More precicelly we will be using th
 
 #### Jacoco
 
-We use Jacococ to generate test coverage.
+We use Jacoco to generate test coverage.
 The report is created in `build/reports/jacoco/test/html` here you can find an `index.html` file.
 There are a lot of options to open this file.
 * Open it with your ide, that might help you render the web page.
