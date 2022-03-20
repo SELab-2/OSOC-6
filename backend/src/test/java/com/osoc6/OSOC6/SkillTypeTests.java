@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -104,6 +105,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not there
      */
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new_skillType() throws Exception {
         String skillTypeName = "standing on hands";
         SkillTypeDTO dto = new SkillTypeDTO();
@@ -124,6 +126,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not deleted
      */
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType() throws Exception {
         List<SkillType> skillTypes = service.getAll();
         SkillType skillType = skillTypes.get(0);
@@ -143,6 +146,7 @@ public class SkillTypeTests {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType_throws_not_fount() throws Exception {
         List<SkillType> skillTypes = service.getAll();
         SkillType skillType = skillTypes.get(0);
@@ -159,12 +163,14 @@ public class SkillTypeTests {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_skillType_fails() throws Exception {
         mockMvc.perform(get(SKILL_TYPES_PATH + "/" + ILLEGAL_NAME))
                 .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void patching_illegal_skillType_fails() throws Exception {
         SkillTypeDTO dto = new SkillTypeDTO();
         dto.setName(ILLEGAL_NAME);
@@ -177,6 +183,7 @@ public class SkillTypeTests {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void edit_skillType_colour() throws Exception {
         List<SkillType> skillTypes = service.getAll();
         SkillType skillType = skillTypes.get(0);
@@ -196,6 +203,7 @@ public class SkillTypeTests {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void editing_final_field_fails() throws Exception {
         List<SkillType> skillTypes = service.getAll();
         SkillType skillType = skillTypes.get(0);

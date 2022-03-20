@@ -65,7 +65,7 @@ public class EditionEndpointTests {
 
     private static final String EDITIONS_PATH = "/editions";
 
-    private static String getNotFountMessage(final String id) {
+    private static String getNotFoundMessage(final String id) {
         return "Could not find edition identified by " + id + ".";
     }
 
@@ -167,7 +167,8 @@ public class EditionEndpointTests {
     }
 
     @Test
-    public void delete_edition_throws_not_fount() throws Exception {
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void delete_edition_throws_not_found() throws Exception {
         List<Edition> editions = service.getAll();
         Edition edition = editions.get(0);
 
@@ -179,16 +180,18 @@ public class EditionEndpointTests {
         mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getName()));
 
         mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getName()))
-                .andExpect(content().string(containsString(getNotFountMessage(edition.getName()))));
+                .andExpect(content().string(containsString(getNotFoundMessage(edition.getName()))));
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_edition_fails() throws Exception {
         mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_NAME))
-                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
+                .andExpect(content().string(containsString(getNotFoundMessage(ILLEGAL_NAME))));
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void patching_illegal_edition_fails() throws Exception {
         EditionDTO dto = new EditionDTO();
         dto.setActive(true);
@@ -198,10 +201,11 @@ public class EditionEndpointTests {
                 .content(Util.asJsonString(dto))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
+                .andExpect(content().string(containsString(getNotFoundMessage(ILLEGAL_NAME))));
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void edition_toggle_active() throws Exception {
         List<Edition> editions = service.getAll();
         Edition edition = editions.get(0);

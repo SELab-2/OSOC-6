@@ -35,20 +35,20 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void loginAvailableForAll() throws Exception {
+    public void login_available_for_all() throws Exception {
         mockMvc
                 .perform(get("/login"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void loginWithInvalidUser() throws Exception {
+    public void login_with_invalid_user() throws Exception {
         FormLoginRequestBuilder login = formLogin().user("invalid").password("invalid");
         mockMvc.perform(login).andExpect(unauthenticated());
     }
 
     @Test
-    public void accessUnsecuredResource() throws Exception {
+    public void access_unsecured_resource() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk());
     }
