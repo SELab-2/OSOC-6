@@ -73,7 +73,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    public void listContainsBothTestUsers() throws Exception {
+    public void getListOfAllUsers_ContainsBothTestUsers() throws Exception {
         mockMvc.perform(get("/users"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    public void getDetailsOfTestUser1() throws Exception {
+    public void getDetailsOfTestUser1_Succeeds() throws Exception {
         mockMvc.perform(get("/users/" + user1.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -93,7 +93,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    public void getDetailsOfTestUser2() throws Exception {
+    public void getDetailsOfTestUser2_Succeeds() throws Exception {
         mockMvc.perform(get("/users/" + user2.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -104,7 +104,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    public void getDetailsOfNonexistingUser() throws Exception {
+    public void getDetailsOfNonexistingUser_Fails() throws Exception {
         int id = 1234;
         mockMvc.perform(get("/users/" + id))
                 .andDo(print())
