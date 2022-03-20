@@ -37,6 +37,11 @@ public final class RadagastNumberWizard {
     public static final int DEFAULT_DESCRIPTION_LENGTH = 100;
 
     /**
+     * Length the should be reserved in database for a small description.
+     */
+    public static final int SMALL_DESCRIPTION_LENGTH = 20;
+
+    /**
      * Length that should be reserved in database for the description of a colour.
      */
     public static final int COLOUR_DESCRIPTION_LENGTH = 10;
