@@ -44,7 +44,7 @@ public class SkillTypeController {
      */
     @GetMapping("/skillTypes")
     public CollectionModel<EntityModel<SkillType>> all() {
-        List<EntityModel<SkillType>> skillTypes = this.service.getAll().stream()
+        List<EntityModel<SkillType>> skillTypes = service.getAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
@@ -58,7 +58,7 @@ public class SkillTypeController {
      */
     @PostMapping("/skillTypes")
     public ResponseEntity<EntityModel<SkillType>> newSkillType(@Valid @RequestBody final SkillTypeDTO newSkillType) {
-        EntityModel<SkillType> entityModel = assembler.toModel(this.service.createSkillType(newSkillType));
+        EntityModel<SkillType> entityModel = assembler.toModel(service.createSkillType(newSkillType));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
@@ -72,7 +72,7 @@ public class SkillTypeController {
      */
     @GetMapping("/skillTypes/{id}")
     public EntityModel<SkillType> one(@PathVariable final String id) {
-        SkillType skillType = this.service.get(id);
+        SkillType skillType = service.get(id);
 
         return assembler.toModel(skillType);
 
@@ -87,7 +87,7 @@ public class SkillTypeController {
     @PatchMapping("/skillTypes/{id}")
     public ResponseEntity<EntityModel<SkillType>> updateSkillType(@Valid @RequestBody final SkillTypeDTO skillTypeUpdate,
                                                                   @PathVariable final String id) {
-        SkillType updateSkillType = this.service.updateSkillType(skillTypeUpdate, id);
+        SkillType updateSkillType = service.updateSkillType(skillTypeUpdate, id);
 
         return ResponseEntity.ok(assembler.toModel(updateSkillType));
     }
@@ -99,7 +99,7 @@ public class SkillTypeController {
      */
     @DeleteMapping("/skillTypes/{id}")
     public ResponseEntity<Object> deleteSkillType(@PathVariable final String id) {
-        this.service.deleteSkillType(id);
+        service.deleteSkillType(id);
 
         return ResponseEntity.ok("SkillType is deleted successsfully.");
     }
