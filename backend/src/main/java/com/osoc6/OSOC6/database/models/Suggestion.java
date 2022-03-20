@@ -42,7 +42,7 @@ public class Suggestion {
      */
     @ManyToOne(optional = false)
     @Getter
-    private User coach;
+    private UserEntity coach;
 
     /**
      * {@link Timestamp} of creation from the suggestion.
@@ -57,7 +57,7 @@ public class Suggestion {
      * @param newReason the reason this suggestion was made
      * @param newCoach the coach that made the suggestion
      */
-    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final User newCoach) {
+    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final UserEntity newCoach) {
         strategy = newStrategy;
         reason = newReason;
         coach = newCoach;
