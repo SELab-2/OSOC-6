@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Advice used to handle all exceptions thrown by validating user input.
+ */
 @ControllerAdvice
 public class ValidationExceptionAdvice {
 

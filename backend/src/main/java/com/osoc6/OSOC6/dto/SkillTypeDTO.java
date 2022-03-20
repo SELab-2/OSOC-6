@@ -4,6 +4,8 @@ import com.osoc6.OSOC6.database.models.SkillType;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * Data transfer Object for a {@link SkillType}.
  */
@@ -12,11 +14,13 @@ public class SkillTypeDTO {
     /**
      * The type of skill.
      */
+    @NotBlank(message = "A SkillType must have a name")
     private String name;
 
     /**
      * The colour associated with this SkillType.
      */
+    @NotBlank(message = "A colour must have a colour")
     private String colour;
 
     /**
