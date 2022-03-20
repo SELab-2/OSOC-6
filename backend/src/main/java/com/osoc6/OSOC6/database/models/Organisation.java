@@ -1,5 +1,9 @@
 package com.osoc6.OSOC6.database.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +15,7 @@ import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
 public class Organisation {
 
     /**
@@ -25,6 +30,7 @@ public class Organisation {
      */
     @Basic(optional = false)
     @Lob
+    @Getter @Setter
     private String info;
 
     /**
@@ -32,18 +38,15 @@ public class Organisation {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
+    @Getter @Setter
     private String name;
 
     /**
      * {@link Set} of projects this Organisation is involved in.
      */
     @ManyToMany
+    @Getter
     private Set<Project> projects;
-
-    /**
-     * Organisation's default no-arg constructor.
-     */
-    public Organisation() { }
 
     /**
      *
@@ -52,48 +55,9 @@ public class Organisation {
      * @param newProjects the projects belonging to the organisation
      */
     public Organisation(final String newInfo, final String newName, final Set<Project> newProjects) {
+        super();
         info = newInfo;
         name = newName;
         projects = newProjects;
-    }
-
-    /**
-     *
-     * @return The info of the organisation
-     */
-    public String getInfo() {
-        return info;
-    }
-
-    /**
-     *
-     * @return The name of the organisation
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @return set of projects this Organisation is involved in
-     */
-    public Set<Project> getProjects() {
-        return projects;
-    }
-
-    /**
-     *
-     * @param newInfo some information about the organization
-     */
-    public void setInfo(final String newInfo) {
-        info = newInfo;
-    }
-
-    /**
-     *
-     * @param newName name of the organization
-     */
-    public void setName(final String newName) {
-        name = newName;
     }
 }

@@ -1,11 +1,16 @@
 package com.osoc6.OSOC6.database.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -16,6 +21,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
 
     /**
@@ -30,6 +36,7 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.EMAIL_LENGTH)
+    @Getter @Setter
     private String email;
 
     /**
@@ -37,6 +44,7 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
+    @Getter @Setter
     private String firstName;
 
     /**
@@ -44,12 +52,14 @@ public class User {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
+    @Getter @Setter
     private String lastName;
 
     /**
      * Role/ power this user has.
      */
     @Basic(optional = false)
+    @Getter @Setter
     private UserRole userRole;
 
     /**
@@ -57,12 +67,14 @@ public class User {
      * A user can only create invitations if it has the {@link UserRole} admin.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
+    @Getter
     private Set<Invitation> sendInvitations;
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
     @OneToMany(mappedBy = "subject", orphanRemoval = false)
+    @Getter
     private Set<Invitation> receivedInvitations;
 
     /**
@@ -70,18 +82,23 @@ public class User {
      */
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
+    @Getter
     private List<Communication> communications;
 
     /**
      * Set of skills a user has.
      */
     @OneToMany(orphanRemoval = true)
+    @Getter
     private Set<Skill> skills;
 
     /**
-     * User's default no-args constructor.
+     * The projects this User Coaches.
      */
-    public User() { }
+    @ManyToMany(mappedBy = "coaches")
+    @OrderColumn(name = "edition_name")
+    @Getter
+    private List<Project> projects;
 
     /**
      *
@@ -100,109 +117,6 @@ public class User {
         receivedInvitations = new HashSet<>();
         communications = new ArrayList<>();
         skills = new HashSet<>();
-    }
-
-    /**
-     *
-     * @return The id of the user
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @return the email of the user
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     *
-     * @return The first name of the user
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     *
-     * @return The last name of the user
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     *
-     * @return Role/ power this user has
-     */
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    /**
-     *
-     * @return Invitations sent by the user
-     */
-    public Set<Invitation> getSendInvitations() {
-        return sendInvitations;
-    }
-
-    /**
-     *
-     * @return Invitations received by the user
-     */
-    public Set<Invitation> getReceivedInvitations() {
-        return receivedInvitations;
-    }
-
-    /**
-     *
-     * @return communication initiated by the user
-     */
-    public List<Communication> getCommunications() {
-        return communications;
-    }
-
-    /**
-     *
-     * @return the Set of skills this user has
-     */
-    public Set<Skill> getSkills() {
-        return skills;
-    }
-
-    /**
-     *
-     * @param newEmail email address of the user
-     */
-    public void setEmail(final String newEmail) {
-        email = newEmail;
-    }
-
-    /**
-     *
-     * @param newFirstName first name of the user
-     */
-    public void setFirstName(final String newFirstName) {
-        firstName = newFirstName;
-    }
-
-    /**
-     *
-     * @param newLastName last name of the user
-     */
-    public void setLastName(final String newLastName) {
-        lastName = newLastName;
-    }
-
-    /**
-     *
-     * @param newUserRole new roll/ privileges a user has
-     */
-    public void setUserRole(final UserRole newUserRole) {
-        userRole = newUserRole;
+        projects = new ArrayList<>();
     }
 }

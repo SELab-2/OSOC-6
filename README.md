@@ -36,4 +36,25 @@ Documentation as proposed in [the assignment document](https://github.com/SELab-
 
 ## Developers
 
-The `hooks_creator.sh` script will create a hook so git can do some local checks on whether the PR is possible.
+### Hooks
+
+Running the `hooks_creator.sh` script will create hooks that makes git check your commits.
+This way already see if a commit works locally.
+We advise marking commits that fail with a commit message starting with `(broken)`.
+A commit following this format will get tested but the commit will be executed regardless of the tests.
+
+### Git branch names
+
+We think it's important to find a branch quickly, that's why we have rules regarding branch names in this project.
+The rules are described in #37.
+We use the following structure: `{dir-name}/{issue-nr}-{description}`.
+The dir-name is a name matching the label of the issue.
+We use following names:
+* management
+* feature-frontend
+* feature-backend
+* feature-databse
+* bugfix
+* documentation
+* test
+* refactoring

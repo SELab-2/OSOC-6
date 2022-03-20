@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@NoArgsConstructor
 public class Study {
     /**
      * The id of the study.
@@ -30,11 +32,6 @@ public class Study {
      */
     @Basic(optional = false)
     private StudyCourse studyCourse;
-
-    /**
-     * Study's default no-arg constructor.
-     */
-    public Study() { }
 
     /**
      *

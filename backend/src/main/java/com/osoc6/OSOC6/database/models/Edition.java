@@ -1,33 +1,36 @@
 package com.osoc6.OSOC6.database.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@NoArgsConstructor
 public class Edition {
     /**
      * The name of the edition.
      */
     @Id
+    @Getter @Setter
     private String name;
 
     /**
      * The year of the edition.
      */
     @Basic(optional = false)
+    @Getter @Setter
     private int year;
 
     /**
      * Whether the edition is active.
      */
     @Basic(optional = false)
+    @Getter @Setter
     private boolean active;
-
-    /**
-     * Edition's default no-arg constructor.
-     */
-    public Edition() { }
 
     /**
      *
@@ -36,56 +39,9 @@ public class Edition {
      * @param newActive whether or not the edition is still active
      */
     public Edition(final String newName, final int newYear, final boolean newActive) {
+        super();
         name = newName;
         year = newYear;
-        active = newActive;
-    }
-
-    /**
-     *
-     * @return whether or not the edition is active
-     */
-    public boolean isActive() {
-        return active;
-    }
-
-    /**
-     *
-     * @return the name of the edition
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @return the year of the edition
-     */
-    public int getYear() {
-        return year;
-    }
-
-    /**
-     *
-     * @param newName name of the edition
-     */
-    public void setName(final String newName) {
-        name = newName;
-    }
-
-    /**
-     *
-     * @param newYear in which the edition was held
-     */
-    public void setYear(final int newYear) {
-        year = newYear;
-    }
-
-    /**
-     *
-     * @param newActive whether the edition is currently active
-     */
-    public void setActive(final boolean newActive) {
         active = newActive;
     }
 }

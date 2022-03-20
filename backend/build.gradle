@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'checkstyle'
+	id 'jacoco'
 }
 
 group = 'com.osoc6'
@@ -19,8 +20,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Lombok project
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	testCompileOnly 'org.projectlombok:lombok:1.18.22'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+	finalizedBy jacocoTestReport
 }

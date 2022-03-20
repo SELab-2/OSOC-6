@@ -1,6 +1,9 @@
 package com.osoc6.OSOC6.database.models;
 
 import com.osoc6.OSOC6.database.models.student.Student;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,6 +19,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "timestamp")})
+@NoArgsConstructor
 public class Communication {
 
     /**
@@ -29,6 +33,7 @@ public class Communication {
      * The timestamp of the communication.
      */
     @Basic(optional = false)
+    @Getter
     private Timestamp timestamp;
 
     /**
@@ -36,6 +41,7 @@ public class Communication {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH, nullable = false)
+    @Getter @Setter
     private String medium;
 
     /**
@@ -43,30 +49,29 @@ public class Communication {
      */
     @Basic(optional = true)
     @Lob
+    @Getter @Setter
     private String content;
 
     /**
      * {@link CommunicationTemplate} used in this communication.
      */
     @ManyToOne(optional = false)
+    @Getter @Setter
     private CommunicationTemplate template;
 
     /**
      * {@link User} that communicated with the student.
      */
     @ManyToOne(optional = false)
+    @Getter
     private User user;
 
     /**
      * Student with whom the communication took place.
      */
     @ManyToOne(optional = false)
+    @Getter @Setter
     private Student student;
-
-    /**
-     * Communication's default no-arg constructor.
-     */
-    public Communication() { }
 
     /**
      *
@@ -79,91 +84,12 @@ public class Communication {
     public Communication(final String newMedium, final String newContent,
                          final CommunicationTemplate newCommunicationTemplate, final User newUser,
                          final Student newStudent) {
+        super();
         timestamp = new Timestamp(System.currentTimeMillis());
         medium = newMedium;
         content = newContent;
         template = newCommunicationTemplate;
         user = newUser;
-        student = newStudent;
-    }
-
-    /**
-     *
-     * @return the timestamp of the communication
-     */
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    /**
-     *
-     * @return the medium of the communication
-     */
-    public String getMedium() {
-        return medium;
-    }
-
-    /**
-     *
-     * @return the content of the communication
-     */
-    public String getContent() {
-        return content;
-    }
-
-    /**
-     *
-     * @return communication template used in this communication.
-     */
-    public CommunicationTemplate getTemplate() {
-        return template;
-    }
-
-    /**
-     *
-     * @return User that communicated with the student.
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     *
-     * @return student with whom the communication took place
-     */
-    public Student getStudent() {
-        return student;
-    }
-
-    /**
-     *
-     * @param newMedium medium that was used for the communication: email, sms, ...
-     */
-    public void setMedium(final String newMedium) {
-        medium = newMedium;
-    }
-
-    /**
-     *
-     * @param newContent the content of the communication. This can also be a summary of an IRL conversation.
-     */
-    public void setContent(final String newContent) {
-        content = newContent;
-    }
-
-    /**
-     *
-     * @param newTemplate the corrected template used in this communication
-     */
-    public void setTemplate(final CommunicationTemplate newTemplate) {
-        template = newTemplate;
-    }
-
-    /**
-     *
-     * @param newStudent the corrected student with whom this communication took place
-     */
-    public void setStudent(final Student newStudent) {
         student = newStudent;
     }
 }

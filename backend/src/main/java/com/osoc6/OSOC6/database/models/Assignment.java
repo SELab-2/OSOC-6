@@ -1,6 +1,9 @@
 package com.osoc6.OSOC6.database.models;
 
 import com.osoc6.OSOC6.database.models.student.Student;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -12,6 +15,7 @@ import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
 @Entity
+@NoArgsConstructor
 public class Assignment {
     /**
      * The id of the Assignment.
@@ -24,25 +28,29 @@ public class Assignment {
      * whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
      */
     @Basic(optional = false)
+    @Getter @Setter
     private boolean isSuggestion;
 
     /**
      * The creation timestamp of the assignment.
      */
     @Basic(optional = false)
-    private Timestamp timestamp;
+    @Getter
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /**
      * The reason the student got assigned.
      */
     @Basic(optional = false)
     @Lob
+    @Getter @Setter
     private String reason;
 
     /**
      * The {@link User}/ Admin that executed the assignment.
      */
     @ManyToOne(optional = false)
+    @Getter
     private User assigner;
 
     /**
@@ -50,18 +58,15 @@ public class Assignment {
      * Fetch lazy because a student is a very big entity
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @Getter
     private Student student;
 
     /**
      * Project that the student is assigned to.
      */
     @ManyToOne(optional = false)
+    @Getter
     private Project project;
-
-    /**
-     * Assignment's default no-arg constructor.
-     */
-    public Assignment() { }
 
     /**
      *
@@ -73,75 +78,11 @@ public class Assignment {
      */
     public Assignment(final boolean newIsSuggestion, final String newReason,
                       final User newAssigner, final Student newStudent, final Project newProject) {
+        super();
         isSuggestion = newIsSuggestion;
-        timestamp = new Timestamp(System.currentTimeMillis());
         reason = newReason;
         assigner = newAssigner;
         student = newStudent;
         project = newProject;
-    }
-
-    /**
-     *
-     * @return {@link User}/ Admin that executed the assignment
-     */
-    public User getAssigner() {
-        return assigner;
-    }
-
-    /**
-     *
-     * @return student that gets assigned
-     */
-    public Student getStudent() {
-        return student;
-    }
-
-    /**
-     *
-     * @return project that the student is assigned to
-     */
-    public Project getProject() {
-        return project;
-    }
-
-    /**
-     *
-     * @return whether assignment is a suggestion (if false this is a definitive assignment made by an admin)
-     */
-    public boolean isSuggestion() {
-        return isSuggestion;
-    }
-
-    /**
-     *
-     * @return the creation timestamp of the assignment
-     */
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    /**
-     *
-     * @return the reason the student got assigned
-     */
-    public String getReason() {
-        return reason;
-    }
-
-    /**
-     *
-     * @param newReason to assign this student to the project
-     */
-    public void setReason(final String newReason) {
-        reason = newReason;
-    }
-
-    /**
-     *
-     * @param newSuggestion update whether this assignment is a suggestion of is definitive
-     */
-    public void setSuggestion(final boolean newSuggestion) {
-        isSuggestion = newSuggestion;
     }
 }

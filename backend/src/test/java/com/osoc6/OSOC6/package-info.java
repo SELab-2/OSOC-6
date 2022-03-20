@@ -1,9 +1,7 @@
 /**
- * This module is an auto-generated test module.
+ * This module contains all tests.
  *
- * @since 0.0
- * @author ruvmello
- * @version 0.0
+ * @author ruvmello, jitsedesmet
  */
 
 package com.osoc6.OSOC6;
