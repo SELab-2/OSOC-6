@@ -1,5 +1,5 @@
 /**
- * This package is the main entry point to the application.
+ * This module is the main entry point to the application.
  *
  * @author ruvmello
  */
