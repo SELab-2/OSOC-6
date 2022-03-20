@@ -107,7 +107,7 @@ public class SkillTypeController {
     public ResponseEntity<Object> deleteSkillType(@PathVariable final String id) {
         service.deleteSkillType(id);
 
-        return ResponseEntity.ok("SkillType is deleted successsfully.");
+        return ResponseEntity.ok("SkillType is deleted successfully.");
     }
 
 }

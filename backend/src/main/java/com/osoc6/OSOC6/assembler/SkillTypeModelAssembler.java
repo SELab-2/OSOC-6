@@ -29,6 +29,6 @@ public class SkillTypeModelAssembler implements RepresentationModelAssembler<Ski
     public EntityModel<SkillType> toModel(@NonNull final SkillType skillType) {
         return EntityModel.of(skillType, //
                 linkTo(methodOn(SkillTypeController.class).one(skillType.getName())).withSelfRel(),
-                linkTo(methodOn(SkillTypeController.class).all()).withRel("SkillTypes"));
+                linkTo(methodOn(SkillTypeController.class).all()).withRel("skillTypes"));
     }
 }
