@@ -1,31 +1,32 @@
-package com.osoc6.OSOC6.request;
+package com.osoc6.OSOC6.dto;
 
 import lombok.Data;
-import lombok.Getter;
 
+import javax.validation.constraints.Email;
+
+/**
+ * DTO for registrations containing the information needed to set up a user.
+ */
 @Data
-public class RegistrationRequest {
+public class RegistrationDTO {
     /**
      * The first name of the registering user.
      */
-    @Getter
     private final String firstName;
 
     /**
      * The last name of the registering user.
      */
-    @Getter
     private final String lastName;
 
     /**
      * The email address of the registering user.
      */
-    @Getter
+    @Email(message = "Entered email-address is not valid.")
     private final String email;
 
     /**
      * The password of the registering user.
      */
-    @Getter
     private final String password;
 }

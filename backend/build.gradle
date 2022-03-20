@@ -25,7 +25,6 @@ dependencies {
 	// security
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'commons-validator:commons-validator:1.7'
 	implementation 'org.springframework.security:spring-security-test'
 
 	// Lombok project

@@ -149,87 +149,16 @@ public class UserEntity implements UserDetails {
     }
 
     /**
-     *
-     * @return the email of the user
+     * Needed to implement UserDetail.
+     * @return the email of the user to login with email instead of username
      */
     public String getUsername() {
         return email;
     }
 
     /**
-     *
-     * @return the email of the user
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     *
-     * @return the password of the user
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     *
-     * @return The first name of the user
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     *
-     * @return The last name of the user
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     *
-     * @return Role/ power this user has
-     */
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    /**
-     *
-     * @return Invitations sent by the user
-     */
-    public Set<Invitation> getSendInvitations() {
-        return sendInvitations;
-    }
-
-    /**
-     *
-     * @return Invitations received by the user
-     */
-    public Set<Invitation> getReceivedInvitations() {
-        return receivedInvitations;
-    }
-
-    /**
-     *
-     * @return communication initiated by the user
-     */
-    public List<Communication> getCommunications() {
-        return communications;
-    }
-
-    /**
-     *
-     * @return the Set of skills this user has
-     */
-    public Set<Skill> getSkills() {
-        return skills;
-    }
-
-    /**
      * Returns the autorities granted to the user. Being the userrole : COACH, ADMIN or DISABLED
+     * Needed to implement UserDetails
      * @return autorities
      */
     @Override
@@ -237,46 +166,6 @@ public class UserEntity implements UserDetails {
         SimpleGrantedAuthority authority =
                 new SimpleGrantedAuthority(userRole.name());
         return Collections.singletonList(authority);
-    }
-
-    /**
-     *
-     * @param newEmail email address of the user
-     */
-    public void setEmail(final String newEmail) {
-        email = newEmail;
-    }
-
-    /**
-     *
-     * @param newPassword email address of the user
-     */
-    public void setPassword(final String newPassword) {
-        password = newPassword;
-    }
-
-    /**
-     *
-     * @param newFirstName first name of the user
-     */
-    public void setFirstName(final String newFirstName) {
-        firstName = newFirstName;
-    }
-
-    /**
-     *
-     * @param newLastName last name of the user
-     */
-    public void setLastName(final String newLastName) {
-        lastName = newLastName;
-    }
-
-    /**
-     *
-     * @param newUserRole new roll/ privileges a user has
-     */
-    public void setUserRole(final UserRole newUserRole) {
-        userRole = newUserRole;
     }
 
     /**

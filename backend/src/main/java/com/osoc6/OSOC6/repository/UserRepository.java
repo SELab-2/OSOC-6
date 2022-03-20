@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
+/**
+ * This repository takes care of the retrieval of users.
+ */
 @Repository
 @Transactional(readOnly = true)
 public interface UserRepository  extends JpaRepository<UserEntity, Long> {

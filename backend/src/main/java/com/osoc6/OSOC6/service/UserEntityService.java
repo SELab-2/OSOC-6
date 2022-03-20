@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.service;
 
 import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.exception.AccountTakenException;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * This service handles user functionalities such as finding and registering a user.
+ */
 @Service
 @AllArgsConstructor
 public class UserEntityService implements UserDetailsService {
@@ -52,7 +55,7 @@ public class UserEntityService implements UserDetailsService {
         boolean accountExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
 
         if (accountExists) {
-            throw new IllegalStateException("This email-address is already assigned to an account");
+            throw new AccountTakenException(userEntity.getEmail());
         }
 
         String encodedPassword = passwordEncoder.encode(userEntity.getPassword());

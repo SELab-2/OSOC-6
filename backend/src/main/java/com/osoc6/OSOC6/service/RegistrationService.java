@@ -2,11 +2,13 @@ package com.osoc6.OSOC6.service;
 
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
-import com.osoc6.OSOC6.request.RegistrationRequest;
+import com.osoc6.OSOC6.dto.RegistrationDTO;
 import lombok.AllArgsConstructor;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Service;
 
+/**
+ * This service handles the registration of a user.
+ */
 @Service
 @AllArgsConstructor
 public class RegistrationService {
@@ -17,15 +19,10 @@ public class RegistrationService {
     private final UserEntityService userEntityService;
 
     /**
-     * Handle userregistration requests.
+     * Handle user registration requests.
      * @param request contains the userinfo needed to register a user.
      */
-    public void register(final RegistrationRequest request) {
-        EmailValidator validator = EmailValidator.getInstance();
-        if (!validator.isValid(request.getEmail())) {
-            throw new IllegalStateException("Entered email-address is not valid.");
-        }
-
+    public void register(final RegistrationDTO request) {
         UserEntity registeredUser = new UserEntity(
                 request.getEmail(),
                 request.getFirstName(),
