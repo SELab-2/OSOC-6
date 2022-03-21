@@ -54,7 +54,7 @@ public class ProjectEndpointTests {
         Project testProject = new Project(projectName,
                 new Edition("EDITION 2022", 2022, true),
                 new HashSet<>(),
-                new User("test.email", "Ruben", "Van Mello", UserRole.COACH));
+                new UserEntity("test.email", "Ruben", "Van Mello", UserRole.COACH));
 
         this.service.createProject(testProject);
 
@@ -110,7 +110,7 @@ public class ProjectEndpointTests {
         newProject.setGoals(new ArrayList<>());
 
         mockMvc.perform(post("/projects")
-                .content(asJsonString(newProject))
+                .content(Util.asJsonString(newProject))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -138,19 +138,5 @@ public class ProjectEndpointTests {
         // Check if still there
         this.mockMvc.perform(get("/projects")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(not(containsString(project.getName()))));
-    }
-
-    /**
-     * Transforms object to json string for a request.
-     * @param obj object which needs to be converted to JSON
-     * @return JSON string which contains the object
-     */
-    public static String asJsonString(final Object obj) {
-        try {
-            final ObjectMapper objMapper = new ObjectMapper();
-            return objMapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
