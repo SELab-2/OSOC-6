@@ -17,6 +17,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
+/**
+ * The database entity for Communication.
+ * Communication is used to track the communication of an Admin to a {@link Student}.
+ */
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "timestamp")})
 @NoArgsConstructor

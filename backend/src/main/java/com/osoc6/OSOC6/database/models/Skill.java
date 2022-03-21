@@ -12,6 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+/**
+ * The database entity for a Skill.
+ * A skill is something People have or that can be looked for in people. It has a certain type, {@link SkillType}.
+ * A skill can have a small description.
+ */
 @Entity
 @NoArgsConstructor
 public class Skill {
