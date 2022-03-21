@@ -58,17 +58,8 @@ public class UserEntity implements UserDetails {
      * The first name of the user.
      */
     @Basic(optional = false)
-    @Column(length = RadagastNumberWizard.FIRST_NAME_LENGTH)
-    @Getter @Setter
-    private String firstName;
-
-    /**
-     * The last name of the user.
-     */
-    @Basic(optional = false)
-    @Column(length = RadagastNumberWizard.LAST_NAME_LENGTH)
-    @Getter @Setter
-    private String lastName;
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
+    private String callName;
 
     /**
      * Role/ power this user has.
@@ -129,16 +120,14 @@ public class UserEntity implements UserDetails {
     /**
      *
      * @param newEmail the email of the user
-     * @param newFirstName the first name of the user
-     * @param newLastName the last name of the user
+     * @param newCallName the name of the user
      * @param newUserRole the role of the user
      * @param newPassword the password of the user
      */
-    public UserEntity(final String newEmail, final String newFirstName,
-                final String newLastName, final UserRole newUserRole, final String newPassword) {
+    public UserEntity(final String newEmail, final String newCallName, final UserRole newUserRole,
+                      final String newPassword) {
         email = newEmail;
-        firstName = newFirstName;
-        lastName = newLastName;
+        callName = newCallName;
         userRole = newUserRole;
         password = newPassword;
         sendInvitations = new HashSet<>();

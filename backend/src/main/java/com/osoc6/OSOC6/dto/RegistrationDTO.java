@@ -10,14 +10,9 @@ import javax.validation.constraints.Email;
 @Data
 public class RegistrationDTO {
     /**
-     * The first name of the registering user.
+     * The call name of the registering user.
      */
-    private final String firstName;
-
-    /**
-     * The last name of the registering user.
-     */
-    private final String lastName;
+    private final String callName;
 
     /**
      * The email address of the registering user.
