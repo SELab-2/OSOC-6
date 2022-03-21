@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
 /**
- * An Enum that of every kind of course that a student can take.
+ * An Enum containing every kind of course that a student can take.
  */
 public enum StudyCourse {
     /**
