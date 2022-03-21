@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Auto generated Spring boot application.
- * This is the main entrypoint of our program and launches the backand.
+ * This is the main entrypoint of our program and launches the backend.
  * It doesn't exit until you tell it t.
  */
 @SpringBootApplication
