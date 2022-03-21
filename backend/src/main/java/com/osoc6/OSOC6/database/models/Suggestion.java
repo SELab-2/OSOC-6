@@ -12,6 +12,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
+/**
+ * The database entity for a Suggestion.
+ * A suggestion is the opinion of a {@link UserEntity} about a {@link com.osoc6.OSOC6.database.models.student.Student}
+ * and is independent of a {@link Project}.
+ */
 @Entity
 @NoArgsConstructor
 public class Suggestion {

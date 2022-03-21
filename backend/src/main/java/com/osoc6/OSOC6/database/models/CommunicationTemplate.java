@@ -9,6 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+/**
+ * The database entity for a CommunicationTemplate.
+ * A communication template is a template that can be used to send mails more quickly.
+ * A mail is not sent from within the tool but the tool can redirect you to your mail client.
+ */
 @Entity
 @NoArgsConstructor
 public class CommunicationTemplate {

@@ -12,6 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
+/**
+ * The database entity for an Invitation.
+ * An Invitation is sent by admins to coaches and allows them to activate their account for the {@link Edition}
+ * this Invitation was made for.
+ */
 @Entity
 @NoArgsConstructor
 public class Invitation {

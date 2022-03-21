@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.database.models.student;
 
+/**
+ * An enum listing the different kinds of genders a {@link Student} can have.
+ */
 public enum Gender {
     /**
      * identified gender as female.

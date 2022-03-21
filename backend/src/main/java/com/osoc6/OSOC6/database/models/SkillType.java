@@ -10,6 +10,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * The database entity for a SkillType.
+ * A SkillType is the label a skill can have. Labels include for example 'other'.
+ * A label has a color to visually distinguish them.
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

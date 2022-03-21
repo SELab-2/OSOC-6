@@ -15,6 +15,12 @@ import javax.persistence.ManyToMany;
 import java.net.URI;
 import java.util.Set;
 
+/**
+ * The database entity for an Organisation.
+ * This just represents a real world organisation,
+ * information about the organisation is held in an external tool.
+ * The URI in the organisation identifies this location.
+ */
 @Entity
 @NoArgsConstructor
 public class Organisation {

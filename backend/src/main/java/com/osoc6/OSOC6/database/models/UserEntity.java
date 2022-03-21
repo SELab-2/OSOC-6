@@ -28,6 +28,9 @@ import java.util.Set;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * The database entity for a User. This entity contains all non-Spring information we need about a user.
+ */
 @Entity
 @Table(name = "users")
 @NoArgsConstructor

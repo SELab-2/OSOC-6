@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.database.models.student;
 
+/**
+ * This enum contains the different kinds of experience a student can have in OSOC.
+ */
 public enum OsocExperience {
     /**
      * Student has not participated in OSOC.
