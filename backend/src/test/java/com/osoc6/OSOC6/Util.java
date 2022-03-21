@@ -35,7 +35,7 @@ public final class Util {
      * @return a matcher that checks if a json object contains an entry
      */
     private static Matcher<String> containsFieldWithLiteral(final String fieldName, final String valueAsString) {
-        return containsString("\"" + fieldName + "\":" + valueAsString);
+        return containsString("\"" + fieldName + "\" : " + valueAsString);
     }
 
     /**

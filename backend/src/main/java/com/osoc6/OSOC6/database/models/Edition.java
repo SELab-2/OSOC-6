@@ -2,11 +2,13 @@ package com.osoc6.OSOC6.database.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Basic;
+
 
 /**
  * The database entity for an Edition.
@@ -15,37 +17,79 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 public class Edition {
+
+    /**
+     * The id of the edition.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private Long id;
+
     /**
      * The name of the edition.
      */
-    @Id
-    @Getter @Setter
+    @Basic(optional = false)
     private String name;
 
     /**
      * The year of the edition.
      */
     @Basic(optional = false)
-    @Getter @Setter
     private int year;
 
     /**
      * Whether the edition is active.
      */
     @Basic(optional = false)
-    @Getter @Setter
     private boolean active;
 
     /**
      *
-     * @param newName the name of the OSOC-edition
-     * @param newYear the year in which the edition takes place
-     * @param newActive whether or not the edition is still active
+     * @return whether or not the edition is active
      */
-    public Edition(final String newName, final int newYear, final boolean newActive) {
-        super();
+    public boolean getActive() {
+        return active;
+    }
+
+    /**
+     *
+     * @return the name of the edition
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     * @return the year of the edition
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     *
+     * @param newName name of the edition
+     */
+    public void setName(final String newName) {
         name = newName;
+    }
+
+    /**
+     *
+     * @param newYear in which the edition was held
+     */
+    public void setYear(final int newYear) {
         year = newYear;
+    }
+
+    /**
+     *
+     * @param newActive whether the edition is currently active
+     */
+    public void setActive(final boolean newActive) {
         active = newActive;
     }
+
 }
