@@ -31,7 +31,7 @@ import java.util.Set;
 
 /**
  * The database entity for a Student.
- * A student is teh main data point of our tool. There are a lot of things a student holds.
+ * A student is the main data point of our tool. There are a lot of things a student holds.
  */
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_name")})
