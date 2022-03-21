@@ -25,7 +25,7 @@ import java.util.Set;
 
 /**
  * The database entity for a project.
- * A project something Students work on within an edition.
+ * A project is something Students work on within an edition.
  * A project has coaches to help the students and is typically done for or with help of an {@link Organisation}.
  */
 @Entity
