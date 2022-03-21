@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.controller;
 
 import com.osoc6.OSOC6.assembler.ProjectModelAssembler;
 import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.services.ProjectService;
+import com.osoc6.OSOC6.service.ProjectService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;

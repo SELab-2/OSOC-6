@@ -60,11 +60,11 @@ public class Communication {
     private CommunicationTemplate template;
 
     /**
-     * {@link User} that communicated with the student.
+     * {@link UserEntity} that communicated with the student.
      */
     @ManyToOne(optional = false)
     @Getter
-    private User user;
+    private UserEntity userEntity;
 
     /**
      * Student with whom the communication took place.
@@ -78,18 +78,18 @@ public class Communication {
      * @param newMedium the medium of the communication, such as SMS or email
      * @param newContent the text content of the communication-instance
      * @param newCommunicationTemplate the template for this communication
-     * @param newUser the user who communicated with the student
+     * @param newUserEntity the user who communicated with the student
      * @param newStudent the student with whom the communication took place
      */
     public Communication(final String newMedium, final String newContent,
-                         final CommunicationTemplate newCommunicationTemplate, final User newUser,
+                         final CommunicationTemplate newCommunicationTemplate, final UserEntity newUserEntity,
                          final Student newStudent) {
         super();
         timestamp = new Timestamp(System.currentTimeMillis());
         medium = newMedium;
         content = newContent;
         template = newCommunicationTemplate;
-        user = newUser;
+        userEntity = newUserEntity;
         student = newStudent;
     }
 }

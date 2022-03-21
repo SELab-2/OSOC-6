@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.services;
+package com.osoc6.OSOC6.service;
 
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.exception.ProjectNotFoundException;

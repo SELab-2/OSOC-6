@@ -2,7 +2,7 @@ package com.osoc6.OSOC6;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osoc6.OSOC6.database.models.*;
-import com.osoc6.OSOC6.services.ProjectService;
+import com.osoc6.OSOC6.service.ProjectService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -17,7 +17,6 @@ import javax.persistence.RollbackException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
