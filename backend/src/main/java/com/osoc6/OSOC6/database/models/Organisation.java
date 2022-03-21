@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import java.net.URI;
 import java.util.Set;
 
 @Entity
@@ -40,6 +41,14 @@ public class Organisation {
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     @Getter @Setter
     private String name;
+
+    /**
+     * A URI pointing to the website of the organisation.
+     */
+    @Basic
+    @Lob
+    @Getter @Setter
+    private URI website;
 
     /**
      * {@link Set} of projects this Organisation is involved in.

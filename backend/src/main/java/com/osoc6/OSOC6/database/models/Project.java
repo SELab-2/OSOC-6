@@ -12,10 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +49,14 @@ public class Project {
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     @Getter @Setter
     private String name;
+
+    /**
+     * A URI pointing to the version management of the project.
+     */
+    @Basic
+    @Lob
+    @Getter @Setter
+    private URI versionManagement;
 
     /**
      * Edition within which this project was created.
