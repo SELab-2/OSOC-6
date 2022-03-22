@@ -29,6 +29,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The database entity for a Student.
+ * A student is the main data point of our tool. There are a lot of things a student holds.
+ */
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_name")})
 @NoArgsConstructor

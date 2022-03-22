@@ -12,6 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
+/**
+ * The database entity for an Invitation.
+ * An Invitation is sent by admins to coaches and allows them to activate their account for the {@link Edition}
+ * this Invitation was made for.
+ */
 @Entity
 @NoArgsConstructor
 public class Invitation {
@@ -41,14 +46,14 @@ public class Invitation {
      */
     @ManyToOne(optional = false)
     @Getter
-    private User issuer;
+    private UserEntity issuer;
 
     /**
      * User that accepted the invitation.
      */
     @ManyToOne
     @Getter @Setter
-    private User subject;
+    private UserEntity subject;
 
     /**
      *
@@ -56,7 +61,7 @@ public class Invitation {
      * @param newIssuer user that issued the invitation
      * @param newSubject user that accepted the invitation
      */
-    public Invitation(final Edition newEdition, final User newIssuer, final User newSubject) {
+    public Invitation(final Edition newEdition, final UserEntity newIssuer, final UserEntity newSubject) {
         super();
         timestamp = new Timestamp(System.currentTimeMillis());
         edition = newEdition;

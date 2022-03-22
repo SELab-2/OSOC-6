@@ -1,5 +1,9 @@
 package com.osoc6.OSOC6.database.models.student;
 
+/**
+ * An enum listing the different kinds of pronouns a user can choose.
+ * This lists the most common pronouns.
+ */
 public enum PronounsType {
     /**
      * For people who prefer "SHE"-pronouns.

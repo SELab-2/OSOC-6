@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.database.models;
 
+/**
+ * Different methods to make a suggestion about a user.
+ */
 public enum SuggestionStrategy {
     /**
      * Suggesting Yes: I want this student.

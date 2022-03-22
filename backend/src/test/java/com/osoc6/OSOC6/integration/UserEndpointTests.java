@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.osoc6.OSOC6.database.models.User;
+import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -38,8 +38,8 @@ public class UserEndpointTests {
     @Autowired
     private MessageSource messageSource;
 
-    private final User user1 = new User();
-    private final User user2 = new User();
+    private final UserEntity user1 = new UserEntity();
+    private final UserEntity user2 = new UserEntity();
 
     /**
      * Add two test users to the database.

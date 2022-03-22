@@ -14,6 +14,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
+/**
+ * The database entity for an Assignment.
+ * An Assignment is the registration of a user assigning a {@link com.osoc6.OSOC6.database.models.student.Student}
+ * on a {@link Project}.
+ * The assignment can be invalid, this means the assignment was performed but is no longer looked at.
+ * The assignment can be non-suggestive, this means the project of this assignment has been locked.
+ * Every assignment has a reason.
+ */
 @Entity
 @NoArgsConstructor
 public class Assignment {
@@ -36,7 +44,7 @@ public class Assignment {
      */
     @Basic(optional = false)
     @Getter
-    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /**
      * The reason the student got assigned.
@@ -47,11 +55,11 @@ public class Assignment {
     private String reason;
 
     /**
-     * The {@link User}/ Admin that executed the assignment.
+     * The {@link UserEntity}/ Admin that executed the assignment.
      */
     @ManyToOne(optional = false)
     @Getter
-    private User assigner;
+    private UserEntity assigner;
 
     /**
      * Student that gets assigned.
@@ -77,7 +85,7 @@ public class Assignment {
      * @param newProject the project the assignment belongs to
      */
     public Assignment(final boolean newIsSuggestion, final String newReason,
-                      final User newAssigner, final Student newStudent, final Project newProject) {
+                      final UserEntity newAssigner, final Student newStudent, final Project newProject) {
         super();
         isSuggestion = newIsSuggestion;
         reason = newReason;

@@ -1,5 +1,10 @@
 package com.osoc6.OSOC6.database.models;
 
+/**
+ * The {@link RadagastNumberWizard} is a wizard that helps us in the noble quest to not use Magic numbers ourselves.
+ * Whenever a magic number is needed we will ask Radagast to cast a spell creating the magic number.
+ * Radagast will remind us of what we should use the numbers for.
+ */
 public final class RadagastNumberWizard {
     /**
      * Constructor of class. Does nothing.
@@ -35,6 +40,11 @@ public final class RadagastNumberWizard {
      * Length that should be reserved in database for a description.
      */
     public static final int DEFAULT_DESCRIPTION_LENGTH = 100;
+
+    /**
+     * Length the should be reserved in database for a small description.
+     */
+    public static final int SMALL_DESCRIPTION_LENGTH = 20;
 
     /**
      * Length that should be reserved in database for the description of a colour.

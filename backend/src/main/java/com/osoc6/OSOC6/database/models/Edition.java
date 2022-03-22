@@ -8,6 +8,10 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * The database entity for an Edition.
+ * An Edition refers to the OSOC editions.
+ */
 @Entity
 @NoArgsConstructor
 public class Edition {

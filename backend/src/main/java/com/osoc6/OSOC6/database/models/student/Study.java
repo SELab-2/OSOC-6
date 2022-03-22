@@ -10,6 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * The database entity for a Study.
+ * The study of a student can be a lot of things but to reduce duplication we use enums here.
+ */
 @Entity
 @NoArgsConstructor
 public class Study {

@@ -7,24 +7,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * This class makes it so that when an EditionNotFoundException error is thrown
- * this will render a HTTP 404.
- *
- * @author ruben
+ * This class renders a HTTP 409 when an AccountTakenException error is thrown.
  */
 @ControllerAdvice
-public class EditionNotFoundAdvice {
-
+public class RegistrationExceptionAdvice {
     /**
-     * When a edition is requested but not found,
-     * render a 404 not found and throw a EditionNotFoundException.
+     * When a user tries to register with a taken email address.
      * @param ex the thrown exception
      * @return exception message
      */
     @ResponseBody
-    @ExceptionHandler(EditionNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String editionNotFoundHandler(final EditionNotFoundException ex) {
+    @ExceptionHandler(AccountTakenException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    String registrationExceptionHandler(final AccountTakenException ex) {
         return ex.getMessage();
     }
 }

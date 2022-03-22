@@ -1,10 +1,10 @@
 package com.osoc6.OSOC6.controller;
 
 import com.osoc6.OSOC6.assembler.UserModelAssembler;
-import com.osoc6.OSOC6.database.models.User;
+import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.dto.UserProfileDTO;
 import com.osoc6.OSOC6.dto.UserRoleDTO;
-import com.osoc6.OSOC6.service.UserService;
+import com.osoc6.OSOC6.service.UserEntityService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +28,14 @@ public class UserController {
     /**
      * The service used to handle the database access.
      */
-    private final UserService userService;
+    private final UserEntityService userEntityService;
     /**
      * The user model assembler.
      */
     private final UserModelAssembler userModelAssembler;
 
-    UserController(final UserService service, final UserModelAssembler modelAssembler) {
-        userService = service;
+    UserController(final UserEntityService service, final UserModelAssembler modelAssembler) {
+        userEntityService = service;
         userModelAssembler = modelAssembler;
     }
 
@@ -44,8 +44,8 @@ public class UserController {
      * @return list of entity models of all users
      */
     @GetMapping("/users")
-    public CollectionModel<EntityModel<User>> all() {
-        List<EntityModel<User>> users = userService.getAllUsers().stream()
+    public CollectionModel<EntityModel<UserEntity>> all() {
+        List<EntityModel<UserEntity>> users = userEntityService.getAllUsers().stream()
                 .map(userModelAssembler::toModel)
                 .collect(Collectors.toList());
 
@@ -59,8 +59,8 @@ public class UserController {
      * @return entity model of the user corresponding to the provided id
      */
     @GetMapping("/users/{id}")
-    public EntityModel<User> one(@PathVariable final Long id) {
-        User user = userService.getUser(id);
+    public EntityModel<UserEntity> one(@PathVariable final Long id) {
+        UserEntity user = userEntityService.getUser(id);
         return userModelAssembler.toModel(user);
     }
 
@@ -71,9 +71,9 @@ public class UserController {
      * @return response entity containing an entity model with the updated user
      */
     @PatchMapping("/users/{id}/update-role")
-    public ResponseEntity<EntityModel<User>> updateUserRole(@Valid @RequestBody final UserRoleDTO userRoleDTO,
+    public ResponseEntity<EntityModel<UserEntity>> updateUserRole(@Valid @RequestBody final UserRoleDTO userRoleDTO,
                                                             @PathVariable final Long id) {
-        User updatedUser = userService.updateUserRole(userRoleDTO, id);
+        UserEntity updatedUser = userEntityService.updateUserRole(userRoleDTO, id);
         return ResponseEntity.ok(userModelAssembler.toModel(updatedUser));
     }
 
@@ -84,9 +84,9 @@ public class UserController {
      * @return response entity containing an entity model with the updated user
      */
     @PatchMapping("/users/{id}/update-profile")
-    public ResponseEntity<EntityModel<User>> updateUserProfile(@Valid @RequestBody final UserProfileDTO userProfileDTO,
+    public ResponseEntity<EntityModel<UserEntity>> updateUserProfile(@Valid @RequestBody final UserProfileDTO userProfileDTO,
                                                                @PathVariable final Long id) {
-        User updatedUser = userService.updateUserProfile(userProfileDTO, id);
+        UserEntity updatedUser = userEntityService.updateUserProfile(userProfileDTO, id);
         return ResponseEntity.ok(userModelAssembler.toModel(updatedUser));
     }
 
@@ -97,7 +97,7 @@ public class UserController {
      */
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable final Long id) {
-        userService.deleteUser(id);
+        userEntityService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

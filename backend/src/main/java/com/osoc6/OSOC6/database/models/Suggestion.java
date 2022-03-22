@@ -12,6 +12,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
+/**
+ * The database entity for a Suggestion.
+ * A suggestion is the opinion of a {@link UserEntity} about a {@link com.osoc6.OSOC6.database.models.student.Student}
+ * and is independent of a {@link Project}.
+ */
 @Entity
 @NoArgsConstructor
 public class Suggestion {
@@ -42,7 +47,7 @@ public class Suggestion {
      */
     @ManyToOne(optional = false)
     @Getter
-    private User coach;
+    private UserEntity coach;
 
     /**
      * {@link Timestamp} of creation from the suggestion.
@@ -57,7 +62,7 @@ public class Suggestion {
      * @param newReason the reason this suggestion was made
      * @param newCoach the coach that made the suggestion
      */
-    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final User newCoach) {
+    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final UserEntity newCoach) {
         strategy = newStrategy;
         reason = newReason;
         coach = newCoach;

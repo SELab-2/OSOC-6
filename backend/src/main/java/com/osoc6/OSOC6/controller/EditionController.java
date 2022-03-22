@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * The controller of {@link Edition}.
+ * This class focuses on setting up the endpoint routes for edition.
+ */
 @RestController
 @AllArgsConstructor
 public class EditionController {
@@ -44,7 +48,7 @@ public class EditionController {
          */
         @GetMapping("/editions")
         public CollectionModel<EntityModel<Edition>> all() {
-            List<EntityModel<Edition>> editions = this.service.getAll().stream()
+            List<EntityModel<Edition>> editions = service.getAll().stream()
                     .map(assembler::toModel)
                     .collect(Collectors.toList());
 
@@ -57,8 +61,8 @@ public class EditionController {
          * @return The newly added edition entity
          */
         @PostMapping("/editions")
-        public ResponseEntity<EntityModel<Edition>> newProject(@Valid @RequestBody final EditionDTO newEdition) {
-            EntityModel<Edition> entityModel = assembler.toModel(this.service.createEdition(newEdition));
+        public ResponseEntity<EntityModel<Edition>> newEdition(@Valid @RequestBody final EditionDTO newEdition) {
+            EntityModel<Edition> entityModel = assembler.toModel(service.createEdition(newEdition));
 
             return ResponseEntity
                     .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
@@ -72,7 +76,7 @@ public class EditionController {
          */
         @GetMapping("/editions/{id}")
         public EntityModel<Edition> one(@PathVariable final String id) {
-            Edition edition = this.service.get(id);
+            Edition edition = service.get(id);
 
             return assembler.toModel(edition);
 
@@ -85,9 +89,9 @@ public class EditionController {
          * @return The new edition entity
          */
         @PatchMapping("/editions/{id}")
-        public ResponseEntity<EntityModel<Edition>> updateProject(@Valid @RequestBody final EditionDTO editionUpdate,
+        public ResponseEntity<EntityModel<Edition>> updateEdition(@Valid @RequestBody final EditionDTO editionUpdate,
                                                                   @PathVariable final String id) {
-            Edition updatedEdition = this.service.updateEdition(editionUpdate, id);
+            Edition updatedEdition = service.updateEdition(editionUpdate, id);
 
             return ResponseEntity.ok(assembler.toModel(updatedEdition));
         }
@@ -98,10 +102,10 @@ public class EditionController {
          * @return empty response
          */
         @DeleteMapping("/editions/{id}")
-        public ResponseEntity<Object> deleteProject(@PathVariable final String id) {
-            this.service.deleteEdition(id);
+        public ResponseEntity<Object> deleteEdition(@PathVariable final String id) {
+            service.deleteEdition(id);
 
-            return ResponseEntity.ok("Project is deleted successsfully.");
+            return ResponseEntity.ok("Edition is deleted successsfully.");
         }
 
 }

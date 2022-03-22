@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6;
 
-import com.osoc6.OSOC6.database.models.User;
+import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.UserRepository;
 import org.slf4j.Logger;
@@ -27,19 +27,11 @@ class LoadDatabase {
 
         return args -> {
             LOGGER.info("Preloading user1");
-            User user1 = new User();
-            user1.setEmail("bob@tester.com");
-            user1.setFirstName("Bob");
-            user1.setLastName("Tester");
-            user1.setUserRole(UserRole.ADMIN);
+            UserEntity user1 = new UserEntity("bob@tester.com", "Bob", "Tester", UserRole.ADMIN, "123456");
             repository.save(user1);
 
             LOGGER.info("Preloading user2");
-            User user2 = new User();
-            user2.setEmail("frank@gmail.com");
-            user2.setFirstName("Frank");
-            user2.setLastName("Woods");
-            user2.setUserRole(UserRole.DISABLED);
+            UserEntity user2 = new UserEntity("frank@gmail.com", "Frank", "Woods", UserRole.DISABLED, "123456");
             repository.save(user2);
         };
     }

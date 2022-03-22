@@ -1,12 +1,12 @@
 package com.osoc6.OSOC6.unit;
 
-import com.osoc6.OSOC6.database.models.User;
+import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.dto.UserProfileDTO;
 import com.osoc6.OSOC6.dto.UserRoleDTO;
 import com.osoc6.OSOC6.exception.UserNotFoundException;
 import com.osoc6.OSOC6.repository.UserRepository;
-import com.osoc6.OSOC6.service.UserService;
+import com.osoc6.OSOC6.service.UserEntityService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,31 +25,32 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTests {
+public class UserEntityServiceTests
+{
 
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserEntityService userEntityService;
 
     @Test
     public void getAllUsers_ReturnsAllUsers() {
-        List<User> users = List.of(new User(), new User());
+        List<UserEntity> users = List.of(new UserEntity(), new UserEntity());
 
         when(userRepository.findAll()).thenReturn(users);
 
-        assertThat(userService.getAllUsers()).isEqualTo(users);
+        assertThat(userEntityService.getAllUsers()).isEqualTo(users);
     }
 
     @Test
     public void getExistingUser_ReturnsUser() {
         Long id = 5L;
-        User user = new User("test@test.com", "tester", "test", UserRole.ADMIN);
+        UserEntity user = new UserEntity("test@test.com", "tester", "test", UserRole.ADMIN, "123456");
 
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
 
-        assertThat(userService.getUser(id)).isEqualTo(user);
+        assertThat(userEntityService.getUser(id)).isEqualTo(user);
     }
 
     @Test
@@ -58,20 +59,20 @@ public class UserServiceTests {
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUser(id));
+        assertThrows(UserNotFoundException.class, () -> userEntityService.getUser(id));
     }
 
     @Test
     public void updateUserRole_ForExistingUser_ReturnsUpdatedUser() {
         Long id = 5L;
-        User user = new User("test@test.com", "tester", "test", UserRole.ADMIN);
+        UserEntity user = new UserEntity("test@test.com", "tester", "test", UserRole.ADMIN, "123456");
         UserRoleDTO userRoleDTO = new UserRoleDTO();
         userRoleDTO.setUserRole(UserRole.COACH);
 
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
         when(userRepository.save(any())).then(returnsFirstArg());
 
-        User updatedUser = userService.updateUserRole(userRoleDTO, id);
+        UserEntity updatedUser = userEntityService.updateUserRole(userRoleDTO, id);
 
         assertThat(updatedUser).isEqualTo(user);
         assertThat(updatedUser.getUserRole()).isEqualTo(userRoleDTO.getUserRole());
@@ -85,13 +86,13 @@ public class UserServiceTests {
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.updateUserRole(userRoleDTO, id));
+        assertThrows(UserNotFoundException.class, () -> userEntityService.updateUserRole(userRoleDTO, id));
     }
 
     @Test
     public void updateUserProfile_ForExistingUser_ReturnsUpdatedUser() {
         Long id = 5L;
-        User user = new User("test@test.com", "tester", "test", UserRole.ADMIN);
+        UserEntity user = new UserEntity("test@test.com", "tester", "test", UserRole.ADMIN, "123456");
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         userProfileDTO.setEmail("new@email.com");
         userProfileDTO.setFirstName("new");
@@ -100,7 +101,7 @@ public class UserServiceTests {
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
         when(userRepository.save(any())).then(returnsFirstArg());
 
-        User updatedUser = userService.updateUserProfile(userProfileDTO, id);
+        UserEntity updatedUser = userEntityService.updateUserProfile(userProfileDTO, id);
 
         assertThat(updatedUser).isEqualTo(user);
         assertThat(updatedUser.getEmail()).isEqualTo(userProfileDTO.getEmail());
@@ -118,7 +119,7 @@ public class UserServiceTests {
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.updateUserProfile(userProfileDTO, id));
+        assertThrows(UserNotFoundException.class, () -> userEntityService.updateUserProfile(userProfileDTO, id));
     }
 
     @Test
@@ -127,7 +128,7 @@ public class UserServiceTests {
 
         when(userRepository.existsById(id)).thenReturn(true);
 
-        userService.deleteUser(id);
+        userEntityService.deleteUser(id);
 
         verify(userRepository, times(1)).deleteById(id);
     }
@@ -138,7 +139,7 @@ public class UserServiceTests {
 
         when(userRepository.existsById(id)).thenReturn(false);
 
-        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(id));
+        assertThrows(UserNotFoundException.class, () -> userEntityService.deleteUser(id));
     }
 
 }

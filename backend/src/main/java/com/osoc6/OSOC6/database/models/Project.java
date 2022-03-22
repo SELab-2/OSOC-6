@@ -12,15 +12,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The database entity for a project.
+ * A project is something Students work on within an edition.
+ * A project has coaches to help the students and is typically done for or with help of an {@link Organisation}.
+ */
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_name")})
 @NoArgsConstructor
@@ -49,6 +56,14 @@ public class Project {
     private String name;
 
     /**
+     * A URI pointing to the version management of the project.
+     */
+    @Basic
+    @Lob
+    @Getter @Setter
+    private URI versionManagement;
+
+    /**
      * Edition within which this project was created.
      */
     @ManyToOne(optional = false)
@@ -63,11 +78,11 @@ public class Project {
     private Set<Organisation> organisations;
 
     /**
-     * The {@link User}/ admin that created the project.
+     * The {@link UserEntity}/ admin that created the project.
      */
     @ManyToOne(optional = false)
     @Getter
-    private User creator;
+    private UserEntity creator;
 
     /**
      * The skills needed in this project.
@@ -81,7 +96,7 @@ public class Project {
      */
     @ManyToMany
     @Getter
-    private List<User> coaches;
+    private List<UserEntity> coaches;
 
     /**
      *
@@ -91,7 +106,7 @@ public class Project {
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final Set<Organisation> newOrganisations, final User newCreator) {
+                   final Set<Organisation> newOrganisations, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
