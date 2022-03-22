@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import LoginForm from "../components/loginForm";
+import LoginForm from '../components/loginForm';
 
 const Login: NextPage = () => {
     return (
@@ -9,13 +9,13 @@ const Login: NextPage = () => {
                 <title>Open Summer of Code : Login page</title>
             </Head>
             <main className="m-4">
-                <LoginForm/>
+                <LoginForm />
             </main>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;
 
 // const Home: NextPage = () => {
 //     return (
@@ -51,5 +51,3 @@ export default Login
 // };
 
 //export default Home;
-
-
