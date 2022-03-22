@@ -15,6 +15,7 @@ public class WebConfiguration {
 
     /**
      * Get the message source application.properties file.
+     * This file contains all validation messages.
      * @return the message source
      */
     @Bean
