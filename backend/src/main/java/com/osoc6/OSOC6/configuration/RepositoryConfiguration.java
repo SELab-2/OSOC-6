@@ -19,6 +19,7 @@ public class RepositoryConfiguration implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(final RepositoryRestConfiguration config,
                                                      final CorsRegistry cors) {
+        // This configuration makes sure the id of Skilltype (it's name) is also exposed in the data sent.
         config.exposeIdsFor(SkillType.class);
     }
 }
