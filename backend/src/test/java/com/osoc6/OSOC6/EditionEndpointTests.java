@@ -208,7 +208,7 @@ public class EditionEndpointTests {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);
 
-        boolean prevActive  = edition.getActive();
+        boolean prevActive  = edition.isActive();
         edition.setActive(!prevActive);
 
         mockMvc.perform(patch(EDITIONS_PATH + "/" + edition.getId())
