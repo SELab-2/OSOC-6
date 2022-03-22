@@ -34,7 +34,7 @@ import java.util.Set;
  * A student is the main data point of our tool. There are a lot of things a student holds.
  */
 @Entity
-@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
+@Table(indexes = {@Index(unique = false, columnList = "edition_id")})
 @NoArgsConstructor
 @Builder @AllArgsConstructor
 public class Student {

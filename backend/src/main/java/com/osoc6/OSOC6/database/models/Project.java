@@ -29,7 +29,7 @@ import java.util.Set;
  * A project has coaches to help the students and is typically done for or with help of an {@link Organisation}.
  */
 @Entity
-@Table(indexes = {@Index(unique = false, columnList = "edition_name")})
+@Table(indexes = {@Index(unique = false, columnList = "edition_id")})
 @NoArgsConstructor
 public class Project {
 

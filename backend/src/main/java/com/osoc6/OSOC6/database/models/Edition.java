@@ -4,9 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Basic;
+
 
 /**
  * The database entity for an Edition.
@@ -15,37 +18,34 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 public class Edition {
+
+    /**
+     * The id of the edition.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private Long id;
+
     /**
      * The name of the edition.
      */
-    @Id
-    @Getter @Setter
+    @Basic(optional = false)
+    @Setter @Getter
     private String name;
 
     /**
      * The year of the edition.
      */
     @Basic(optional = false)
-    @Getter @Setter
+    @Setter @Getter
     private int year;
 
     /**
      * Whether the edition is active.
      */
     @Basic(optional = false)
-    @Getter @Setter
+    @Setter @Getter
     private boolean active;
 
-    /**
-     *
-     * @param newName the name of the OSOC-edition
-     * @param newYear the year in which the edition takes place
-     * @param newActive whether or not the edition is still active
-     */
-    public Edition(final String newName, final int newYear, final boolean newActive) {
-        super();
-        name = newName;
-        year = newYear;
-        active = newActive;
-    }
 }
