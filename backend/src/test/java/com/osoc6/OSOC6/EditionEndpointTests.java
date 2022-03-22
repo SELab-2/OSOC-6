@@ -47,6 +47,11 @@ public class EditionEndpointTests {
     private EditionRepository repository;
 
     /**
+     * An illegal id for edition.
+     */
+    private static final long ILLEGAL_ID = 0L;
+
+    /**
      * First sample edition that gets loaded before every test.
      */
     private final Edition edition1 = new Edition();
