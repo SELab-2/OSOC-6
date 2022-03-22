@@ -72,7 +72,7 @@ public class SkillTypeTests {
     /**
      * The actual path skillPaths are served on, with '/' as prefix.
      */
-    private static final String SKILLTYPE_PATH = "/" + DumbledorePathWizard.SKILLTYPE_PATH;
+    private static final String SKILLTYPES_PATH = "/" + DumbledorePathWizard.SKILLTYPE_PATH;
 
     /**
      * Add two test skillTypes to the database.
@@ -111,7 +111,7 @@ public class SkillTypeTests {
 
         repository.save(newSkillType);
 
-        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPES_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillTypeName)));
     }
 
@@ -126,12 +126,12 @@ public class SkillTypeTests {
         String skillTypeName = "standing on hands";
         SkillType newSkillType = new SkillType(skillTypeName, "191616");
 
-        mockMvc.perform(post(SKILLTYPE_PATH)
+        mockMvc.perform(post(SKILLTYPES_PATH)
                 .content(Util.asJsonString(newSkillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPES_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillTypeName)));
     }
 
@@ -147,11 +147,11 @@ public class SkillTypeTests {
         SkillType skillType = skillTypes.get(0);
 
         // Is the skillType really in /skillTypes
-        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPES_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillType.getName())));
 
         // Run the delete request
-        mockMvc.perform(delete(SKILLTYPE_PATH + "/" + skillType.getName()));
+        mockMvc.perform(delete(SKILLTYPES_PATH + "/" + skillType.getName()));
 
         // Check if still there
         if (repository.existsById(skillType.getName())) {
@@ -168,13 +168,13 @@ public class SkillTypeTests {
         SkillType skillType = skillTypes.get(0);
 
         // Is the skillType really in /skillTypes
-        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPES_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillType.getName())));
 
         // Run the delete request
-        mockMvc.perform(delete(SKILLTYPE_PATH + "/" + skillType.getName()));
+        mockMvc.perform(delete(SKILLTYPES_PATH + "/" + skillType.getName()));
 
-        mockMvc.perform(delete(SKILLTYPE_PATH + "/" + skillType.getName()))
+        mockMvc.perform(delete(SKILLTYPES_PATH + "/" + skillType.getName()))
                 .andExpect(status().isNotFound());
                 //.andExpect(content().string(containsString(getNotFountMessage(skillType.getName()))));
     }
@@ -182,7 +182,7 @@ public class SkillTypeTests {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_skillType_fails() throws Exception {
-        mockMvc.perform(get(SKILLTYPE_PATH + "/" + ILLEGAL_NAME))
+        mockMvc.perform(get(SKILLTYPES_PATH + "/" + ILLEGAL_NAME))
                 .andExpect(status().isNotFound());
                 //.andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
@@ -192,7 +192,7 @@ public class SkillTypeTests {
     public void patching_illegal_skillType_fails() throws Exception {
         SkillType newSkillType = new SkillType(ILLEGAL_NAME, "DF7E5C");
 
-        mockMvc.perform(patch(SKILLTYPE_PATH + "/" + newSkillType.getName())
+        mockMvc.perform(patch(SKILLTYPES_PATH + "/" + newSkillType.getName())
                         .content(Util.asJsonString(newSkillType))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -209,12 +209,12 @@ public class SkillTypeTests {
         String newColour = "DF7E5B";
         skillType.setColour(newColour);
 
-        mockMvc.perform(patch(SKILLTYPE_PATH + "/" + skillType.getName())
+        mockMvc.perform(patch(SKILLTYPES_PATH + "/" + skillType.getName())
                 .content(Util.asJsonString(skillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get(SKILLTYPE_PATH + "/" + skillType.getName()))
+        mockMvc.perform(get(SKILLTYPES_PATH + "/" + skillType.getName()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(Util.containsFieldWithValue("colour", newColour)));
     }
@@ -229,7 +229,7 @@ public class SkillTypeTests {
         String newName = "A name is final!";
         SkillType newSkillType = new SkillType(newName, skillType.getColour());
 
-        mockMvc.perform(patch(SKILLTYPE_PATH + "/" + skillType.getName())
+        mockMvc.perform(patch(SKILLTYPES_PATH + "/" + skillType.getName())
                 .content(Util.asJsonString(newSkillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print())
