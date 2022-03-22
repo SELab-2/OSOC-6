@@ -25,8 +25,7 @@ public class RegistrationService {
     public void register(final RegistrationDTO request) {
         UserEntity registeredUser = new UserEntity(
                 request.getEmail(),
-                request.getFirstName(),
-                request.getLastName(),
+                request.getCallName(),
                 UserRole.COACH,
                 request.getPassword()
         );
