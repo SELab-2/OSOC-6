@@ -2,7 +2,7 @@
  * This package contains all wizards. Wizards keep us from just using constants in our code.
  *
  * This project needs wizards to keep us sane.
- * Winterhold is the best collage for wizards, that's why this package is called Winterhold.
+ * Winterhold is the best college for wizards, that's why this package is called Winterhold.
  *
  * @author jitsedesmet
  */
