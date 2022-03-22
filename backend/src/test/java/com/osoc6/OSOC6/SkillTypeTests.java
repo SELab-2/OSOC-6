@@ -120,6 +120,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not there
      */
     @Test
+    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new_skillType() throws Exception {
         String skillTypeName = "standing on hands";
@@ -139,6 +140,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not deleted
      */
     @Test
+    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
@@ -159,6 +161,7 @@ public class SkillTypeTests {
     }
 
     @Test
+    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType_throws_not_fount() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
