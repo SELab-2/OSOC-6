@@ -181,11 +181,10 @@ public class EditionEndpointTests {
         mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID)).andExpect(status().isNotFound());
     }
 
-    // TODO right error code
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_edition_fails_name() throws Exception {
-        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_NAME)).andExpect(status().isInternalServerError());
+        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_NAME)).andExpect(status().isBadRequest());
     }
 
     @Test
