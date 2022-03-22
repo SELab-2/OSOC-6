@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.repository;
+package com.osoc6.OSOC6.configuration;
 
 import com.osoc6.OSOC6.database.models.SkillType;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
  * A class configuring the repository.
  */
 @Component
-public class RepositoryConfig implements RepositoryRestConfigurer {
+public class RepositoryConfiguration implements RepositoryRestConfigurer {
     /**
      * Function configuring the REST API.
      * @param config the configuration.
