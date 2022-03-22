@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.security;
+package com.osoc6.OSOC6.configuration;
 
 import com.osoc6.OSOC6.service.UserEntityService;
 import lombok.AllArgsConstructor;
