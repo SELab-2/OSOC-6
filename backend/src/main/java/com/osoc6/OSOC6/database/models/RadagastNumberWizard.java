@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.database.models;
 /**
  * The {@link RadagastNumberWizard} is a wizard that helps us in the noble quest to not use Magic numbers ourselves.
  * Whenever a magic number is needed we will ask Radagast to cast a spell creating the magic number.
- * Radagast will remind us of what we should use the numbers for.
+ * Radagast will remind us of what we should use the numbers for. We sure love Radagast.
  */
 public final class RadagastNumberWizard {
     /**
