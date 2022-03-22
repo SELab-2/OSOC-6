@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6;
 
-import org.junit.Before;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,7 +29,7 @@ public class AuthenticationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Before
+    @Before("")
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
