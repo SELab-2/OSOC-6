@@ -2,6 +2,7 @@ package com.osoc6.OSOC6;
 
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -15,7 +16,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EditionEndpointTests {
-
     /**
      * This mocks the server without starting it.
      */
@@ -52,6 +51,11 @@ public class EditionEndpointTests {
     private static final long ILLEGAL_ID = 0L;
 
     /**
+     * An illegal string id.
+     */
+    private static final String ILLEGAL_NAME = "Some very illegal name";
+
+    /**
      * First sample edition that gets loaded before every test.
      */
     private final Edition edition1 = new Edition();
@@ -61,13 +65,10 @@ public class EditionEndpointTests {
      */
     private final Edition edition2 = new Edition();
 
-    private static final String EDITIONS_PATH = "/editions";
-
-    private static String getNotFoundMessage(final String id) {
-        return "Could not find edition identified by " + id + ".";
-    }
-
-    private static final String ILLEGAL_NAME = "Some very illegal name";
+    /**
+     * The actual path editions are served on, with '/' as prefix.
+     */
+    private static final String EDITION_PATH = "/" + DumbledorePathWizard.EDITIONS_PATH;
 
     /**
      * Add two test editions to the database.
@@ -113,7 +114,7 @@ public class EditionEndpointTests {
 
         repository.save(newEdition);
 
-        mockMvc.perform(get(EDITIONS_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(EDITION_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(editionName)));
     }
 
@@ -130,12 +131,12 @@ public class EditionEndpointTests {
         newEdition.setYear(1);
         newEdition.setActive(true);
 
-        mockMvc.perform(post(EDITIONS_PATH)
+        mockMvc.perform(post(EDITION_PATH)
                 .content(Util.asJsonString(newEdition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get(EDITIONS_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(EDITION_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(editionName)));
 
     }
@@ -151,11 +152,11 @@ public class EditionEndpointTests {
         Edition edition = editions.get(0);
 
         // Is the edition really in /editions
-        mockMvc.perform(get(EDITIONS_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(EDITION_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(edition.getName())));
 
         // Run the delete request
-        mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()));
+        mockMvc.perform(delete(EDITION_PATH + "/" + edition.getId()));
 
         // Check if still there
         if (repository.existsById(edition.getId())) {
@@ -171,26 +172,26 @@ public class EditionEndpointTests {
         Edition edition = editions.get(0);
 
         // Is the edition really in /editions
-        mockMvc.perform(get(EDITIONS_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(EDITION_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(edition.getName())));
 
         // Run the delete request
-        mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()));
+        mockMvc.perform(delete(EDITION_PATH + "/" + edition.getId()));
 
-        mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()))
+        mockMvc.perform(delete(EDITION_PATH + "/" + edition.getId()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_edition_fails() throws Exception {
-        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID)).andExpect(status().isNotFound());
+        mockMvc.perform(get(EDITION_PATH + "/" + ILLEGAL_ID)).andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_edition_fails_name() throws Exception {
-        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_NAME)).andExpect(status().isBadRequest());
+        mockMvc.perform(get(EDITION_PATH + "/" + ILLEGAL_NAME)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -200,7 +201,7 @@ public class EditionEndpointTests {
         edition.setActive(true);
         edition.setName(ILLEGAL_NAME);
         edition.setYear(60000);
-        mockMvc.perform(patch(EDITIONS_PATH + "/" + ILLEGAL_ID)
+        mockMvc.perform(patch(EDITION_PATH + "/" + ILLEGAL_ID)
                 .content(Util.asJsonString(edition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -216,12 +217,12 @@ public class EditionEndpointTests {
         boolean prevActive  = edition.isActive();
         edition.setActive(!prevActive);
 
-        mockMvc.perform(patch(EDITIONS_PATH + "/" + edition.getId())
+        mockMvc.perform(patch(EDITION_PATH + "/" + edition.getId())
                 .content(Util.asJsonString(edition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get(EDITIONS_PATH + "/" + edition.getId())).andExpect(status().isOk())
+        mockMvc.perform(get(EDITION_PATH + "/" + edition.getId())).andExpect(status().isOk())
                 .andExpect(content().string(Util.containsFieldWithValue("active", !prevActive)));
     }
 }

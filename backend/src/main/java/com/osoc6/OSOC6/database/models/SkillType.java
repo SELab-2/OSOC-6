@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

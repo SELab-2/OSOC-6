@@ -1,9 +1,8 @@
 package com.osoc6.OSOC6;
 
 import com.osoc6.OSOC6.database.models.SkillType;
-import com.osoc6.OSOC6.dto.SkillTypeDTO;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
-import com.osoc6.OSOC6.service.SkillTypeService;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -35,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SkillTypeTests {
-
     /**
      * This mocks the server without starting it.
      */
@@ -49,12 +47,6 @@ public class SkillTypeTests {
     private SkillTypeRepository repository;
 
     /**
-     * Service which is the connection to the database for skillTypes via a repository.
-     */
-    @Autowired
-    private SkillTypeService service;
-
-    /**
      * First sample skillTypes that gets loaded before every test.
      */
     private final SkillType skillType1 = new SkillType("skillType 1", "42B37B");
@@ -64,8 +56,6 @@ public class SkillTypeTests {
      */
     private final SkillType skillType2 = new SkillType("skillType 2", "C94040");
 
-    private static final String SKILL_TYPES_PATH = "/skillTypes";
-
     private static String getNotFountMessage(final String id) {
         return "Could not find skillType identified by " + id + ".";
     }
@@ -74,7 +64,15 @@ public class SkillTypeTests {
         return "Field " + field + " is not editable in SkillType.";
     }
 
+    /**
+     * An illegal string id.
+     */
     private static final String ILLEGAL_NAME = "Some very illegal name";
+
+    /**
+     * The actual path skillPaths are served on, with '/' as prefix.
+     */
+    private static final String SKILLTYPE_PATH = "/" + DumbledorePathWizard.SKILLTYPE_PATH;
 
     /**
      * Add two test skillTypes to the database.
@@ -102,24 +100,37 @@ public class SkillTypeTests {
     }
 
     /**
+     * Check if the repository accepts new skillType.
+     * @exception Exception throws exception if not there
+     */
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void add_new_skillType() throws Exception {
+        String skillTypeName = "posted skilltype";
+        SkillType newSkillType = new SkillType(skillTypeName, "80c958");
+
+        repository.save(newSkillType);
+
+        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
+                .andExpect(content().string(containsString(skillTypeName)));
+    }
+
+    /**
      * Check if we can add an skillType via a POST request.
      * @exception Exception throws exception if not there
      */
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new_skillType() throws Exception {
         String skillTypeName = "standing on hands";
-        SkillTypeDTO dto = new SkillTypeDTO();
-        dto.setName(skillTypeName);
-        dto.setColour("191616");
+        SkillType newSkillType = new SkillType(skillTypeName, "191616");
 
-        mockMvc.perform(post(SKILL_TYPES_PATH)
-                .content(Util.asJsonString(dto))
+        mockMvc.perform(post(SKILLTYPE_PATH)
+                .content(Util.asJsonString(newSkillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get(SKILL_TYPES_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillTypeName)));
     }
 
@@ -128,18 +139,17 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not deleted
      */
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType() throws Exception {
-        List<SkillType> skillTypes = service.getAll();
+        List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
 
         // Is the skillType really in /skillTypes
-        mockMvc.perform(get(SKILL_TYPES_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillType.getName())));
 
         // Run the delete request
-        mockMvc.perform(delete(SKILL_TYPES_PATH + "/" + skillType.getName()));
+        mockMvc.perform(delete(SKILLTYPE_PATH + "/" + skillType.getName()));
 
         // Check if still there
         if (repository.existsById(skillType.getName())) {
@@ -149,76 +159,75 @@ public class SkillTypeTests {
     }
 
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType_throws_not_fount() throws Exception {
-        List<SkillType> skillTypes = service.getAll();
+        List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
 
         // Is the skillType really in /skillTypes
-        mockMvc.perform(get(SKILL_TYPES_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPE_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(skillType.getName())));
 
         // Run the delete request
-        mockMvc.perform(delete(SKILL_TYPES_PATH + "/" + skillType.getName()));
+        mockMvc.perform(delete(SKILLTYPE_PATH + "/" + skillType.getName()));
 
-        mockMvc.perform(delete(SKILL_TYPES_PATH + "/" + skillType.getName()))
-                .andExpect(content().string(containsString(getNotFountMessage(skillType.getName()))));
+        mockMvc.perform(delete(SKILLTYPE_PATH + "/" + skillType.getName()))
+                .andExpect(status().isNotFound());
+                //.andExpect(content().string(containsString(getNotFountMessage(skillType.getName()))));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_skillType_fails() throws Exception {
-        mockMvc.perform(get(SKILL_TYPES_PATH + "/" + ILLEGAL_NAME))
-                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
+        mockMvc.perform(get(SKILLTYPE_PATH + "/" + ILLEGAL_NAME))
+                .andExpect(status().isNotFound());
+                //.andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void patching_illegal_skillType_fails() throws Exception {
-        SkillTypeDTO dto = new SkillTypeDTO();
-        dto.setName(ILLEGAL_NAME);
-        dto.setColour("DF7E5C");
-        mockMvc.perform(patch(SKILL_TYPES_PATH + "/" + dto.getName())
-                        .content(Util.asJsonString(dto))
+        SkillType newSkillType = new SkillType(ILLEGAL_NAME, "DF7E5C");
+
+        mockMvc.perform(patch(SKILLTYPE_PATH + "/" + newSkillType.getName())
+                        .content(Util.asJsonString(newSkillType))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
+                .andExpect(status().isNotFound());
+                //.andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void edit_skillType_colour() throws Exception {
-        List<SkillType> skillTypes = service.getAll();
+        List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
 
-        SkillTypeDTO dto = SkillTypeDTO.fromEntity(skillType);
-
         String newColour = "DF7E5B";
-        dto.setColour(newColour);
+        skillType.setColour(newColour);
 
-        mockMvc.perform(patch(SKILL_TYPES_PATH + "/" + dto.getName())
-                .content(Util.asJsonString(dto))
+        mockMvc.perform(patch(SKILLTYPE_PATH + "/" + skillType.getName())
+                .content(Util.asJsonString(skillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get(SKILL_TYPES_PATH + "/" + dto.getName())).andExpect(status().isOk())
+        mockMvc.perform(get(SKILLTYPE_PATH + "/" + skillType.getName()))
+                .andExpect(status().isOk())
                 .andExpect(content().string(Util.containsFieldWithValue("colour", newColour)));
     }
 
     @Test
+    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void editing_final_field_fails() throws Exception {
-        List<SkillType> skillTypes = service.getAll();
+        List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
 
-        SkillTypeDTO dto = SkillTypeDTO.fromEntity(skillType);
-
         String newName = "A name is final!";
-        dto.setName(newName);
+        SkillType newSkillType = new SkillType(newName, skillType.getColour());
 
-        mockMvc.perform(patch(SKILL_TYPES_PATH + "/" + skillType.getName())
-                .content(Util.asJsonString(dto))
+        mockMvc.perform(patch(SKILLTYPE_PATH + "/" + skillType.getName())
+                .content(Util.asJsonString(newSkillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpect(content().string(containsString(getIllegalEditException("name"))));

@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
+import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import lombok.AllArgsConstructor;
