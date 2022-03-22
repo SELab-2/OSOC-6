@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * This class makes it so that when an bad request is returned when conversion fails.
+ * this will give a HTTP Bad Request.
+ *
+ * @author ruben
+ */
 @ControllerAdvice(basePackageClasses = RepositoryRestExceptionHandler.class)
 public class ConversionExceptionAdvice {
 
     /**
-     * Handle all general exceptions.
+     * Handle all conversion exceptions.
      * @param ex the thrown exception
      * @return a response entity with status code bad request
      */
