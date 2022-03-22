@@ -14,7 +14,7 @@ public final class RadagastNumberWizard {
     /**
      * Length that should be reserved in database for an email.
      */
-    public static final int EMAIL_LENGTH = 50;
+    public static final int EMAIL_LENGTH = 100;
 
     /**
      * Length that should be reserved in database for a first name.
