@@ -1,11 +1,5 @@
 name: ts-coverage
-on:
-  pull_request:
-    types:
-      - ready_for_review
-      - converted_to_draft
-      - edited
-      - synchronize
+on: [push, pull_request]
 
 jobs:
   jest:
