@@ -65,6 +65,11 @@ public final class OrganisationEndpointTests {
      */
     private static final long ILLEGAL_ID = 0L;
 
+    /**
+     * Some name for an organisation.
+     */
+    private static final String ILLEGAL_NAME = "Some name";
+
     @BeforeEach
     public void setUp() {
         organisation1.setName("Cynalco Medics");
@@ -133,6 +138,10 @@ public final class OrganisationEndpointTests {
         }
     }
 
+    /**
+     * Test if deleting non-existing organisation throws exception.
+     * @exception  Exception throws exception if not found
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_organisation_throws_not_found() throws Exception {
@@ -150,6 +159,10 @@ public final class OrganisationEndpointTests {
                 .andExpect(status().isNotFound());
     }
 
+    /**
+     * Test if getting non-existing organisation throws exception.
+     * @exception  Exception throws exception if not found
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_organisation_fails() throws Exception {
@@ -158,6 +171,10 @@ public final class OrganisationEndpointTests {
                 .andExpect(content().string(not(emptyString())));
     }
 
+    /**
+     * Test if patching non-existing organisation throws exception.
+     * @exception  Exception throws exception if not found
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void patching_illegal_organisation_fails() throws Exception {
@@ -171,5 +188,15 @@ public final class OrganisationEndpointTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(not(emptyString())));
+    }
+
+    /**
+     * Test if using string instead of long as id throws exception.
+     * @exception  Exception throws exception if bad request
+     */
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void getting_illegal_organisation_fails_name() throws Exception {
+        mockMvc.perform(get(ORGANISATIONS_PATH + "/" + ILLEGAL_NAME)).andExpect(status().isBadRequest());
     }
 }
