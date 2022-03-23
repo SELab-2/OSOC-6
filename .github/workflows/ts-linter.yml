@@ -1,6 +1,11 @@
 name: ts-linter
 on:
-  pull_request
+  pull_request:
+    types:
+      - ready_for_review
+      - converted_to_draft
+      - edited
+      - synchronize
 
 jobs:
   prettier:
