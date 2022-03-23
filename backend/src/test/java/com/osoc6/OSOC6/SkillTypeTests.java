@@ -1,11 +1,11 @@
 package com.osoc6.OSOC6;
 
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -120,7 +120,6 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not there
      */
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new_skillType() throws Exception {
         String skillTypeName = "standing on hands";
@@ -135,12 +134,26 @@ public class SkillTypeTests {
                 .andExpect(content().string(containsString(skillTypeName)));
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void post_garbage_skillType_fails() throws Exception {
+        Edition edition = new Edition();
+        edition.setName("Some edition name");
+        edition.setActive(false);
+        edition.setYear(2022);
+
+        mockMvc.perform(post(SKILLTYPES_PATH)
+                .content(Util.asJsonString(edition))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
     /**
      * Check if we can delete a skillType via a DELETE request.
      * @exception Exception throws exception if not deleted
      */
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
@@ -161,7 +174,6 @@ public class SkillTypeTests {
     }
 
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_skillType_throws_not_fount() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
@@ -174,17 +186,17 @@ public class SkillTypeTests {
         // Run the delete request
         mockMvc.perform(delete(SKILLTYPES_PATH + "/" + skillType.getName()));
 
+        // A 404 is enough here
         mockMvc.perform(delete(SKILLTYPES_PATH + "/" + skillType.getName()))
                 .andExpect(status().isNotFound());
-                //.andExpect(content().string(containsString(getNotFountMessage(skillType.getName()))));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_skillType_fails() throws Exception {
+        // A 404 is descriptive enough.
         mockMvc.perform(get(SKILLTYPES_PATH + "/" + ILLEGAL_NAME))
                 .andExpect(status().isNotFound());
-                //.andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
@@ -192,12 +204,12 @@ public class SkillTypeTests {
     public void patching_illegal_skillType_fails() throws Exception {
         SkillType newSkillType = new SkillType(ILLEGAL_NAME, "DF7E5C");
 
+        // A 404 is descriptive enough here.
         mockMvc.perform(patch(SKILLTYPES_PATH + "/" + newSkillType.getName())
                         .content(Util.asJsonString(newSkillType))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-                //.andExpect(content().string(containsString(getNotFountMessage(ILLEGAL_NAME))));
     }
 
     @Test
@@ -220,9 +232,8 @@ public class SkillTypeTests {
     }
 
     @Test
-    @Disabled
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void editing_final_field_fails() throws Exception {
+    public void editing_final_field_is_indifferent() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
 
@@ -233,6 +244,6 @@ public class SkillTypeTests {
                 .content(Util.asJsonString(newSkillType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print())
-                .andExpect(content().string(containsString(getIllegalEditException("name"))));
+                .andExpect(content().json(Util.asJsonString(skillType)));
     }
 }

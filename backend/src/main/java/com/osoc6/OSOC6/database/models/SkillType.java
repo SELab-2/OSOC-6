@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ public class SkillType {
      */
     @Id
     @Column(length = RadagastNumberWizard.SMALL_DESCRIPTION_LENGTH)
+    @ReadOnlyProperty // We need to specify this here because we expose the id. Every Spring-id is non-editable.
     @Getter
     private String name;
 
