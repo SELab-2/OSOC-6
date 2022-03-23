@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.HashSet;
 import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyString;
@@ -101,10 +103,8 @@ public final class OrganisationEndpointTests {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new_organisation() throws Exception {
-        Organisation newOrganisation = new Organisation();
         String organisationName = "Cynalco Medics";
-        newOrganisation.setName(organisationName);
-        newOrganisation.setInfo("Cynalco go go!");
+        Organisation newOrganisation = new Organisation("Cynalco go go!", organisationName, new HashSet<>());
 
         mockMvc.perform(post(ORGANISATIONS_PATH)
                 .content(Util.asJsonString(newOrganisation))
@@ -148,7 +148,7 @@ public final class OrganisationEndpointTests {
         List<Organisation> organisations = repository.findAll();
         Organisation edition = organisations.get(0);
 
-        // Check whether the organisation is really there
+        // Check if the organisation is really there
         mockMvc.perform(get(ORGANISATIONS_PATH)).andExpect(status().isOk())
                 .andExpect(content().string(containsString(edition.getName())));
 
@@ -178,9 +178,7 @@ public final class OrganisationEndpointTests {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void patching_illegal_organisation_fails() throws Exception {
-        Organisation organisation = new Organisation();
-        organisation.setName("Vandam Plastic");
-        organisation.setInfo("Dré Vandam");
+        Organisation organisation = new Organisation("Dré Vandam", "Vandam Plastic", new HashSet<>());
 
         mockMvc.perform(patch(ORGANISATIONS_PATH + "/" + ILLEGAL_ID)
                 .content(Util.asJsonString(organisation))
