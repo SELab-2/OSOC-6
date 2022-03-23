@@ -1,5 +1,16 @@
 # Front end
 
+## Setup
+
+To set up this project all you need to do is call `npm install`.
+This instruction will install all dependencies.
+After calling this, all you need to do is run `npm start`.
+
+## Tests
+
+Testing the project is easy, just run `npm run test`.
+A coverage report will be printed in your terminal.
+
 ## Development
 
 We use the [Next.js framework](https://nextjs.org/) in combination with 
