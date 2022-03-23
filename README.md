@@ -12,6 +12,9 @@ Documentation as proposed in
 
 ### Architecture
 
+We constructed diagrams to clarify our code.
+Additionally, we supply [use-cases], a [domain-model] and a [description of our API].
+
 #### Deployment diagram
 
 We provide an overview on the different layers, what technologies are used within those layers and

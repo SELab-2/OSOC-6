@@ -8,8 +8,9 @@ sudo apt install nginx
 ### Configure NGINX
 
 We will have two different applications running on the same domain. 
-To make this possible, we need to configure NGINX in a way that if we go to `www.our-domain.com/` we go to the frontend.
-However, when  we go to `www.our-domain.com/api` that information goes to the backend.
+To make this possible,
+we need to configure NGINX in a way that if we go to `www.our-domain.com/` we go to the front end.
+However, when  we go to `www.our-domain.com/api` that information goes to the back end.
 
 To configure this, follow these steps:
 
@@ -94,9 +95,9 @@ sudo ufw allow ssh
 #### Back end
 
 The easiest is to follow [this link](https://github.com/SELab-2/OSOC-6/wiki/Development-setup) first.
-After you have done that, everything to run the backend is set up.
+After you have done that, everything to run the back end is set up.
 
-To run the backend, you simply can go to the `/backend` folder and run the following command.
+To run the back end, you simply can go to the `/backend` folder and run the following command.
 ```
 ./gradlew bootRun
 ```
@@ -113,7 +114,7 @@ Now that nodejs is installed. We can install PM2.
 ```
 sudo npm install pm2@latest -g
 ```
-With that installed, we can make a service to run our backend.
+With that installed, we can make a service to run our back end.
 Replace `giveThisAName` with a name you want to add to this process.
 ```
 pm2 start "./gradlew bootRun" --name giveThisAName
@@ -139,7 +140,7 @@ In there run the following command to install all dependencies.
 npm install
 ```
 
-Next, you can run the frontend with `npm run dev`, but we wil also make a service of this.
+Next, you can run the front end with `npm run dev`, but we wil also make a service of this.
 Simply run the following commands and change `giveThisAName` accordingly.
 ```
 pm2 start "npm run dev" --name giveThisAName
@@ -162,4 +163,4 @@ sudo certbot --nginx -d your-domain.com
 ```
 Follow the steps in the command line.
 
-Congratulations, you now have an up and running instance of our backend and frontend, both with SSL certificate!
+Congratulations, you now have an up and running instance of our back end and front end, both with SSL certificate!

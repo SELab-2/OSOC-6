@@ -1,5 +1,9 @@
 # Front end
 
+## Mock-ups
+
+Mockups can be found at [Figma mock-up](https://www.figma.com/file/pvrjnLp3X2SUdeeXnbZD3W/OSOC?node-id=0%3A1).
+
 ## Setup
 
 To set up this project all you need to do is call `npm install`.
