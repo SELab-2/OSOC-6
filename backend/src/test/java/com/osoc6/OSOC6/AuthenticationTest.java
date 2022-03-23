@@ -22,11 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AuthenticationTest {
-    @Autowired
-    private WebApplicationContext context;
-
+    /**
+     * This mocks the server without starting it.
+     */
     @Autowired
     private MockMvc mockMvc;
+
+    /**
+     * the Web application context.
+     */
+    @Autowired
+    private WebApplicationContext context;
 
     @Before
     public void setUp() {
@@ -37,8 +43,7 @@ public class AuthenticationTest {
 
     @Test
     public void login_available_for_all() throws Exception {
-        mockMvc
-                .perform(get("/login"))
+        mockMvc.perform(get("/login"))
                 .andExpect(status().isOk());
     }
 

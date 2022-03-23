@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models;
+package com.osoc6.OSOC6.winterhold;
 
 /**
  * The {@link RadagastNumberWizard} is a wizard that helps us in the noble quest to not use Magic numbers ourselves.
@@ -7,7 +7,7 @@ package com.osoc6.OSOC6.database.models;
  */
 public final class RadagastNumberWizard {
     /**
-     * Constructor of class. Does nothing.
+     * Constructor of class, does nothing. Makes sure this is a util class.
      */
     private RadagastNumberWizard() { }
 

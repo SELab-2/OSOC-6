@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.database.models.student;
 
-import com.osoc6.OSOC6.database.models.RadagastNumberWizard;
+import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Basic;

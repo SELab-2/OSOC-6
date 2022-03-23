@@ -2,6 +2,7 @@ package com.osoc6.OSOC6;
 
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -16,8 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -33,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EditionEndpointTests {
-
     /**
      * This mocks the server without starting it.
      */
@@ -52,6 +53,11 @@ public class EditionEndpointTests {
     private static final long ILLEGAL_ID = 0L;
 
     /**
+     * An illegal string id.
+     */
+    private static final String ILLEGAL_NAME = "Some very illegal name";
+
+    /**
      * First sample edition that gets loaded before every test.
      */
     private final Edition edition1 = new Edition();
@@ -61,13 +67,10 @@ public class EditionEndpointTests {
      */
     private final Edition edition2 = new Edition();
 
-    private static final String EDITIONS_PATH = "/editions";
-
-    private static String getNotFoundMessage(final String id) {
-        return "Could not find edition identified by " + id + ".";
-    }
-
-    private static final String ILLEGAL_NAME = "Some very illegal name";
+    /**
+     * The actual path editions are served on, with '/' as prefix.
+     */
+    private static final String EDITIONS_PATH = "/" + DumbledorePathWizard.EDITIONS_PATH;
 
     /**
      * Add two test editions to the database.
@@ -178,13 +181,16 @@ public class EditionEndpointTests {
         mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()));
 
         mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_edition_fails() throws Exception {
-        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID)).andExpect(status().isNotFound());
+        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test
@@ -204,7 +210,8 @@ public class EditionEndpointTests {
                 .content(Util.asJsonString(edition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test
