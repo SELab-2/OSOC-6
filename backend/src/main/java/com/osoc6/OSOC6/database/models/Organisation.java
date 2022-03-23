@@ -31,6 +31,7 @@ public class Organisation {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter @Setter
     private Long id;
 
     /**
