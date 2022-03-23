@@ -42,6 +42,7 @@ public class UserEntity implements UserDetails {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -59,10 +60,11 @@ public class UserEntity implements UserDetails {
     private String password;
 
     /**
-     * The first name of the user.
+     * The call name of the user.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
+    @Getter @Setter
     private String callName;
 
     /**
