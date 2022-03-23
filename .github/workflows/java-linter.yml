@@ -1,7 +1,7 @@
-name: CI-checkstyle-java-lint
+name: java-linter
 on: [pull_request]
 jobs:
-  lint:
+  checkstyle:
     runs-on: self-hosted
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

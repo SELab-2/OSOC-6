@@ -2,7 +2,7 @@ name: java-test-coverage
 on: [pull_request]
 
 jobs:
-  coverage:
+  jacoco:
     runs-on: self-hosted
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
