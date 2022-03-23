@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -179,13 +181,16 @@ public class EditionEndpointTests {
         mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()));
 
         mockMvc.perform(delete(EDITIONS_PATH + "/" + edition.getId()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_edition_fails() throws Exception {
-        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID)).andExpect(status().isNotFound());
+        mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test
@@ -205,7 +210,8 @@ public class EditionEndpointTests {
                 .content(Util.asJsonString(edition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test

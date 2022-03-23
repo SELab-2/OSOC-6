@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -55,14 +57,6 @@ public class SkillTypeTests {
      * Second sample skillTypes that gets loaded before every test.
      */
     private final SkillType skillType2 = new SkillType("skillType 2", "C94040");
-
-    private static String getNotFountMessage(final String id) {
-        return "Could not find skillType identified by " + id + ".";
-    }
-
-    private static String getIllegalEditException(final String field) {
-        return "Field " + field + " is not editable in SkillType.";
-    }
 
     /**
      * An illegal string id.
@@ -188,7 +182,8 @@ public class SkillTypeTests {
 
         // A 404 is enough here
         mockMvc.perform(delete(SKILLTYPES_PATH + "/" + skillType.getName()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 
     @Test
@@ -196,7 +191,7 @@ public class SkillTypeTests {
     public void getting_illegal_skillType_fails() throws Exception {
         // A 404 is descriptive enough.
         mockMvc.perform(get(SKILLTYPES_PATH + "/" + ILLEGAL_NAME))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound()).andExpect(content().string(not(emptyString())));
     }
 
     @Test
@@ -209,7 +204,7 @@ public class SkillTypeTests {
                         .content(Util.asJsonString(newSkillType))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound()).andExpect(content().string(not(emptyString())));
     }
 
     @Test
