@@ -1,10 +1,11 @@
-name: 'coverage'
-on: [pull_request]
+name: ts-coverage
+on: [push, pull_request]
+
 jobs:
-  coverage:
+  jest:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
@@ -12,6 +13,7 @@ jobs:
         run: |
           cd frontend/
           rm package-lock.json
+          npm install
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: frontend
