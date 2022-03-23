@@ -16,11 +16,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Class testing the integration of {@link Organisation}.
@@ -56,6 +59,11 @@ public final class OrganisationEndpointTests {
      * Path of organisations. This must be prepended with a '/'.
      */
     private static final String ORGANISATIONS_PATH = "/" + DumbledorePathWizard.ORGANISATIONS_PATH;
+
+    /**
+     * An illegal id for an organisation.
+     */
+    private static final long ILLEGAL_ID = 0L;
 
     @BeforeEach
     public void setUp() {
@@ -140,5 +148,28 @@ public final class OrganisationEndpointTests {
 
         mockMvc.perform(delete(ORGANISATIONS_PATH + "/" + edition.getId()))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void getting_illegal_organisation_fails() throws Exception {
+        mockMvc.perform(get(ORGANISATIONS_PATH + "/" + ILLEGAL_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void patching_illegal_organisation_fails() throws Exception {
+        Organisation organisation = new Organisation();
+        organisation.setName("Vandam Plastic");
+        organisation.setInfo("Dré Vandam");
+
+        mockMvc.perform(patch(ORGANISATIONS_PATH + "/" + ILLEGAL_ID)
+                .content(Util.asJsonString(organisation))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(not(emptyString())));
     }
 }
