@@ -20,7 +20,7 @@ a [description of our API](https://selab-2.github.io/OSOC-6/) (made in swagger).
 #### Deployment diagram
 
 We provide an overview on the different layers, what technologies are used within those layers and
-how they communicate in our [deployment diagram].
+how they communicate in our [deployment diagram](documentation/OSOC-deployment-diagram.vpd.svg).
 
 #### Component overview
 
