@@ -14,7 +14,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 public class WebConfiguration {
 
     /**
-     * Get the message source application.properties file containing all the validation messages.
+     * Get the message source validation-message.properties file containing all the validation messages.
      * @return the message source
      */
     @Bean

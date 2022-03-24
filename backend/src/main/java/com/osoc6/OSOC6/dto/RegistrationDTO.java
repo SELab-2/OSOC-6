@@ -17,7 +17,7 @@ public class RegistrationDTO {
     /**
      * The email address of the registering user.
      */
-    @Email(message = "Entered email-address is not valid.")
+    @Email(message = "{email.invalid}")
     private final String email;
 
     /**

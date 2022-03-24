@@ -26,7 +26,9 @@ public class SkillType {
      */
     @Id
     @Column(length = RadagastNumberWizard.SMALL_DESCRIPTION_LENGTH)
-    @ReadOnlyProperty // We need to specify this here because we expose the id. Every Spring-id is non-editable.
+    // We need to specify this here because we explicitly expose the id.
+    // Every field with the Spring-Id annotation is non-editable.
+    @ReadOnlyProperty
     @Getter
     private String name;
 
