@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Class testing the integration of {@link Edition}.
  */
-public class EditionEndpointTests extends EndpointTest<Edition, EditionRepository> {
+public class EditionEndpointTests extends EndpointTest<Edition, EditionRepository, Long> {
 
     /**
      * The repository which saves, searches, ... in the database

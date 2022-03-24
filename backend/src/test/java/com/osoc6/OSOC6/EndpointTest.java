@@ -30,11 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @param <T> the entity of the repository using this class
  * @param <R> the repository linked to the entity
+ * @param <I> the type of id
  */
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
+public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
     /**
      * This mocks the server without starting it.
      */
@@ -67,6 +68,14 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     /**
+     * Get the mockMVC.
+     * @return the MockMVC
+     */
+    public MockMvc getMockMvc() {
+        return mockMvc;
+    }
+
+    /**
      * Create a new entity to use as test object.
      * @return Entity of class T
      */
@@ -83,7 +92,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
      * @param entity entity whose id we would like to know
      * @return the id of the entity
      */
-    public abstract Long get_id(T entity);
+    public abstract I get_id(T entity);
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -116,7 +125,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
         List<T> entities = get_repository().findAll();
         T entity = entities.get(0);
 
-        // Is the edition really in /editions
+        // Is the entity really in /entity
         check_get(entityPath, teststring);
 
         // Run the delete request
@@ -131,6 +140,9 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_entity_throws_not_found() throws Exception {
+        T newEntity = create_entity();
+        perform_post(entityPath, newEntity);
+
         List<T> entities = get_repository().findAll();
         T entity = entities.get(0);
 
@@ -218,7 +230,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
-    public ResultActions perform_delete_with_id(final String path, final Long id) throws Exception {
+    public ResultActions perform_delete_with_id(final String path, final I id) throws Exception {
         return mockMvc.perform(delete(path + "/" + id));
     }
 
