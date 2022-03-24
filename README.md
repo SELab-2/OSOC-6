@@ -19,13 +19,13 @@ a [description of our API](https://selab-2.github.io/OSOC-6/) (made in swagger).
 
 #### Deployment diagram
 
-We provide an overview on the different layers, what technologies are used within those layers and
+We provide an overview of the different layers, the technologies used within those layers and
 how they communicate in our [deployment diagram](documentation/OSOC-deployment-diagram.vpd.svg).
 
 #### Component overview
 
 An overview and small description of our most important modules,
-the layers they are used in and with what modules they communicate in
+the layers they are used in and the modules they communicate with is provided in
 our [module overview](documentation/OSOC-component-servicediagram.vpd.svg).
 
 ### Design
@@ -44,7 +44,7 @@ In our [sequence diagram](documentation/sequence-diagrams) you can see our most 
 
 ### Installation
 
-Start by cloning the repository
+Start by cloning the repository.
 Do this by pulling this project from GitHub.
 The easiest way is by just cloning the repository over https, but this might not work.
 ```
