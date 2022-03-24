@@ -258,22 +258,6 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
         return content().string(containsString(str));
     }
 
-//    /**
-//     * Convert a list of {@link String}s to a {@link ResultMatcher} that checks whether the string is contained
-//     * in the result.
-//     *
-//     * @param stringList the strings we want to look for
-//     * @return a result matcher that can be used to perform checks
-//     */
-//    public List<ResultMatcher> contains_strings(final List<String> stringList) {
-//        List<ResultMatcher> resultMatchers = new ArrayList<>();
-//
-//        for (String str: stringList) {
-//            resultMatchers.add(content().string(containsString(str)));
-//        }
-//        return resultMatchers;
-//    }
-
     /**
      * Get a {@link ResultMatcher} that checks whether the result is empty.
      *
