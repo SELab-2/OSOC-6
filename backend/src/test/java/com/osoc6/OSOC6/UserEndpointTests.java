@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
@@ -29,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserEndpointTests {
 
     /**
@@ -76,6 +76,7 @@ public class UserEndpointTests {
         user1.setEmail("user1.test@gmail.com");
         user1.setCallName("User1 Test");
         user1.setUserRole(UserRole.ADMIN);
+        user1.setPassword("123456");
         userRepository.save(user1);
 
         user2.setEmail("user2.tester@hotmail.com");
@@ -127,16 +128,39 @@ public class UserEndpointTests {
                 .andExpect(status().isForbidden());
     }
 
-//    @Test
-//    public void get_details_of_test_user1_succeeds() throws Exception {
-//        mockMvc.perform(get("/users/" + user1.getId()))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString(user1.getEmail())))
-//                .andExpect(content().string(containsString(user1.getCallName())))
-//                .andExpect(content().string(containsString(user1.getUserRole().toString())));
-//    }
-//
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void admin_get_details_of_test_user1_succeeds() throws Exception {
+        mockMvc.perform(get("/users/" + user1.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(user1.getEmail())))
+                .andExpect(content().string(containsString(user1.getCallName())))
+                .andExpect(content().string(containsString(user1.getUserRole().toString())));
+    }
+
+    @Test
+    public void coach_get_details_of_himself_succeeds() throws Exception {
+        SecurityContext securityContext = new SecurityContextImpl();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(user1, "123456"));
+        SecurityContextHolder.setContext(securityContext);
+        mockMvc.perform(get("/users/" + user1.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(user1.getEmail())))
+                .andExpect(content().string(containsString(user1.getCallName())))
+                .andExpect(content().string(containsString(user1.getUserRole().toString())));
+        SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    @WithMockUser(username = "coach", roles = {"COACH"})
+    public void coach_get_details_of_other_user_fails() throws Exception {
+        mockMvc.perform(get("/users/" + user1.getId()))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
 //    @Test
 //    public void get_details_of_test_user2_succeeds() throws Exception {
 //        mockMvc.perform(get("/users/" + user2.getId()))
