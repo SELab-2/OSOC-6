@@ -22,25 +22,25 @@ a [description of our API](https://selab-2.github.io/OSOC-6/) (made in swagger).
 We provide an overview on the different layers, what technologies are used within those layers and
 how they communicate in our [deployment diagram].
 
-#### Component/module overview
+#### Component overview
 
 An overview and small description of our most important modules,
-the layers they are used in and with what modules they communicate in our [module overview].
-
+the layers they are used in and with what modules they communicate in
+our [module overview](documentation/OSOC-component-servicediagram.vpd.svg).
 
 ### Design
 
-Besides a class diagrams and Interaction Diagrams,
+Besides class diagrams and interaction diagrams,
 we also [provide a detailed documentation of our back end packages and Types](backend-java-api).
 You can check this documentation in the browser by running `npx serve` in the `backend-java-api` folder.
 
 #### Class diagrams
 
-We provide [class diagrams] to show the structure of our most important classes.
+We provide [class diagrams](documentation/class-diagrams) to show the structure of our most important classes.
 
-#### Interaction or sequence diagrams
+#### Sequence Diagrams
 
-In our [interaction diagram] you can see our most important object interactions.
+In our [sequence diagram](documentation/sequence-diagrams) you can see our most important object interactions.
 
 ### Installation
 
