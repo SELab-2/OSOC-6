@@ -6,7 +6,7 @@ We use the [Spring framework](https://spring.io/) to implement our back end.
 
 ### The Database
 
-First, install postgresql using the following command.
+First, install PostgreSQL using the following command.
 This will be the software used for the database.
 ```
 sudo apt install postgresql
@@ -38,7 +38,7 @@ sudo apt-get install openjdk-17-jdk
 
 We assume you cloned the repository on your local machine.
 If you did not please refer to [the root README](../README.md#installation) to close this repository.
-We need to do link our database with our project.
+We need to link our database with our project.
 Go to `./src/main/resources`, here you will find a file named `application.properties.example`.
 Open the file and change the username to postgres.
 ```
