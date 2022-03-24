@@ -52,6 +52,21 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     private static final String ILLEGAL_NAME = "Some very illegal name";
 
     /**
+     * The actual path the entity is served on, with '/' as prefix.
+     */
+    private final String entityPath;
+
+    /**
+     * The string used to test whether an entity can be found in the return value.
+     */
+    private final String teststring;
+
+    public EndpointTest(final String path, final String testString) {
+        this.entityPath = path;
+        this.teststring = testString;
+    }
+
+    /**
      * Create a new entity to use as test object.
      * @return Entity of class T
      */
@@ -62,18 +77,6 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
      * @return a repository from entity T
      */
     public abstract R get_repository();
-
-    /**
-     * Get the path this entity is served on, with '/' as prefix.
-     * @return return the path as a {@link String}
-     */
-    public abstract String get_path();
-
-    /**
-     * Get the string used to test whether an entity can be found in the return value.
-     * @return string eg. "EDITION 2022"
-     */
-    public abstract String get_teststring();
 
     /**
      * Get the id from an entity, this can be used for multiple purposes.
@@ -89,7 +92,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
 
         get_repository().save(entity);
 
-        check_get(get_path(), get_teststring());
+        check_get(entityPath, teststring);
 
         get_repository().delete(entity);
     }
@@ -99,8 +102,8 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     public void post_new() throws Exception {
         T entity = create_entity();
 
-        perform_post(get_path(), entity);
-        check_get(get_path(), get_teststring());
+        perform_post(entityPath, entity);
+        check_get(entityPath, teststring);
         get_repository().delete(entity);
     }
 
@@ -108,16 +111,16 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_new() throws Exception {
         T newEntity = create_entity();
-        perform_post(get_path(), newEntity);
+        perform_post(entityPath, newEntity);
 
         List<T> entities = get_repository().findAll();
         T entity = entities.get(0);
 
         // Is the edition really in /editions
-        check_get(get_path(), get_teststring());
+        check_get(entityPath, teststring);
 
         // Run the delete request
-        perform_delete_with_id(get_path(), get_id(entity));
+        perform_delete_with_id(entityPath, get_id(entity));
 
         // Check if still there
         if (get_repository().existsById(get_id(entity))) {
@@ -132,12 +135,12 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
         T entity = entities.get(0);
 
         // Is the edition really in /editions
-        check_get(get_path(), get_teststring());
+        check_get(entityPath, teststring);
 
         // Run the delete request
-        perform_delete_with_id(get_path(), get_id(entity));
+        perform_delete_with_id(entityPath, get_id(entity));
 
-        perform_delete_with_id(get_path(), get_id(entity))
+        perform_delete_with_id(entityPath, get_id(entity))
                 .andExpect(status().isNotFound())
                 .andExpect(string_not_empty());
     }
@@ -145,7 +148,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_entity_fails() throws Exception {
-        perform_get(get_path() + "/" + ILLEGAL_ID)
+        perform_get(entityPath + "/" + ILLEGAL_ID)
                 .andExpect(status().isNotFound())
                 .andExpect(string_not_empty());
     }
@@ -153,7 +156,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void getting_illegal_entity_fails_name() throws Exception {
-        perform_get(get_path() + "/" + ILLEGAL_NAME)
+        perform_get(entityPath + "/" + ILLEGAL_NAME)
                 .andExpect(status().isBadRequest());
     }
 
@@ -162,7 +165,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     public void patching_illegal_entity_fails() throws Exception {
         T entity = create_entity();
 
-        perform_patch(get_path() + "/" + ILLEGAL_ID, entity)
+        perform_patch(entityPath + "/" + ILLEGAL_ID, entity)
                 .andExpect(status().isNotFound())
                 .andExpect(string_not_empty());
     }

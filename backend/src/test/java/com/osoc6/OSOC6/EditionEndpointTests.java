@@ -47,7 +47,7 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
     private static final String EDITIONS_PATH = "/" + DumbledorePathWizard.EDITIONS_PATH;
 
     public EditionEndpointTests() {
-        super();
+        super(EDITIONS_PATH, "EDITION 2022");
     }
 
     /**
@@ -91,16 +91,6 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
     @Override
     public final EditionRepository get_repository() {
         return repository;
-    }
-
-    @Override
-    public final String get_path() {
-        return EDITIONS_PATH;
-    }
-
-    @Override
-    public final String get_teststring() {
-        return "EDITION 2022";
     }
 
     @Override
