@@ -1,16 +1,18 @@
 package com.osoc6.OSOC6;
 
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -27,11 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Abstract class to help with testing the integration of endpoints.
  *
  * @param <T> the entity of the repository using this class
+ * @param <R> the repository linked to the entity
  */
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public abstract class EndpointTest<T> {
+public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     /**
      * This mocks the server without starting it.
      */
@@ -39,29 +42,129 @@ public abstract class EndpointTest<T> {
     private MockMvc mockMvc;
 
     /**
-     * Return the {@link MockMvc}.
-     * @return mockMvc
+     * An illegal id for edition.
      */
-    public MockMvc getMockMvc() {
-        return mockMvc;
-    }
+    private static final long ILLEGAL_ID = 0L;
 
     /**
-     * Check every result matcher for an action, if it fails, throw an error.
-     * These result matcher check if the result has ex. the right status, contains a certain string,...
-     *
-     * @param actions  the action we want to perform the checks on
-     * @param matchers result matchers used to perform the checks
-     * @return a result action can be used for more checks
-     * @throws Exception throws exception if a check fails
+     * An illegal string id.
      */
-    private ResultActions check_matchers(final ResultActions actions, final List<ResultMatcher> matchers)
-            throws Exception {
-        ResultActions resultAction = actions;
-        for (ResultMatcher resultMatcher : matchers) {
-            resultAction = resultAction.andExpect(resultMatcher);
+    private static final String ILLEGAL_NAME = "Some very illegal name";
+
+    /**
+     * Create a new entity to use as test object.
+     * @return Entity of class T
+     */
+    public abstract T create_entity();
+
+    /**
+     * Get the repository connected to entity T.
+     * @return a repository from entity T
+     */
+    public abstract R get_repository();
+
+    /**
+     * Get the path this entity is served on, with '/' as prefix.
+     * @return return the path as a {@link String}
+     */
+    public abstract String get_path();
+
+    /**
+     * Get the string used to test whether an entity can be found in the return value.
+     * @return string eg. "EDITION 2022"
+     */
+    public abstract String get_teststring();
+
+    /**
+     * Get the id from an entity, this can be used for multiple purposes.
+     * @param entity entity whose id we would like to know
+     * @return the id of the entity
+     */
+    public abstract Long get_id(T entity);
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void add_new() throws Exception {
+        T entity = create_entity();
+
+        get_repository().save(entity);
+
+        check_get(get_path(), get_teststring());
+
+        get_repository().delete(entity);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void post_new() throws Exception {
+        T entity = create_entity();
+
+        perform_post(get_path(), entity);
+        check_get(get_path(), get_teststring());
+        get_repository().delete(entity);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void delete_new() throws Exception {
+        T newEntity = create_entity();
+        perform_post(get_path(), newEntity);
+
+        List<T> entities = get_repository().findAll();
+        T entity = entities.get(0);
+
+        // Is the edition really in /editions
+        check_get(get_path(), get_teststring());
+
+        // Run the delete request
+        perform_delete_with_id(get_path(), get_id(entity));
+
+        // Check if still there
+        if (get_repository().existsById(get_id(entity))) {
+            throw new Exception();
         }
-        return resultAction;
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void delete_entity_throws_not_found() throws Exception {
+        List<T> entities = get_repository().findAll();
+        T entity = entities.get(0);
+
+        // Is the edition really in /editions
+        check_get(get_path(), get_teststring());
+
+        // Run the delete request
+        perform_delete_with_id(get_path(), get_id(entity));
+
+        perform_delete_with_id(get_path(), get_id(entity))
+                .andExpect(status().isNotFound())
+                .andExpect(string_not_empty());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void getting_illegal_entity_fails() throws Exception {
+        perform_get(get_path() + "/" + ILLEGAL_ID)
+                .andExpect(status().isNotFound())
+                .andExpect(string_not_empty());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void getting_illegal_entity_fails_name() throws Exception {
+        perform_get(get_path() + "/" + ILLEGAL_NAME)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void patching_illegal_entity_fails() throws Exception {
+        T entity = create_entity();
+
+        perform_patch(get_path() + "/" + ILLEGAL_ID, entity)
+                .andExpect(status().isNotFound())
+                .andExpect(string_not_empty());
     }
 
     /**
@@ -72,26 +175,22 @@ public abstract class EndpointTest<T> {
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
-    public ResultActions perform_post(final String path, final T entity, final List<ResultMatcher> matchers)
-            throws Exception {
-        ResultActions actions =  mockMvc.perform(post(path)
+    public ResultActions perform_post(final String path, final T entity) throws Exception {
+        return mockMvc.perform(post(path)
                 .content(Util.asJsonString(entity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-        return check_matchers(actions, matchers);
     }
 
     /**
      * Perform a GET request.
      *
      * @param path     the path the entity is served on, with '/' as prefix
-     * @param matchers result matchers used to perform checks on the request
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
-    public ResultActions perform_get(final String path, final List<ResultMatcher> matchers) throws Exception {
-        ResultActions actions = mockMvc.perform(get(path));
-        return check_matchers(actions, matchers);
+    public ResultActions perform_get(final String path) throws Exception {
+        return mockMvc.perform(get(path));
     }
 
     /**
@@ -103,10 +202,9 @@ public abstract class EndpointTest<T> {
      * @throws Exception throws exception if the request or a check fails
      */
     public ResultActions check_get(final String path, final String check) throws Exception {
-        List<ResultMatcher> resultMatchers = new ArrayList<>();
-        resultMatchers.add(status().isOk());
-        resultMatchers.add(string_to_contains_string(check));
-        return perform_get(path, resultMatchers);
+        return perform_get(path)
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(check));
     }
 
     /**
@@ -114,14 +212,11 @@ public abstract class EndpointTest<T> {
      *
      * @param path     the path the entity is served on, with '/' as prefix
      * @param id       the id of the entity we want to remove
-     * @param matchers result matchers used to perform checks on the request
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
-    public ResultActions perform_delete_with_id(final String path, final Long id, final List<ResultMatcher> matchers)
-            throws Exception {
-        ResultActions actions = mockMvc.perform(delete(path + "/" + id));
-        return check_matchers(actions, matchers);
+    public ResultActions perform_delete_with_id(final String path, final Long id) throws Exception {
+        return mockMvc.perform(delete(path + "/" + id));
     }
 
     /**
@@ -129,16 +224,13 @@ public abstract class EndpointTest<T> {
      *
      * @param path   The path the entity is served on, with '/' as prefix
      * @param entity The entity we want to post
-     * @param matchers result matchers used to perform checks on the request
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
-    public ResultActions perform_patch(final String path, final T entity, final List<ResultMatcher> matchers)
-            throws Exception {
-        ResultActions actions = mockMvc.perform(patch(path).content(Util.asJsonString(entity))
+    public ResultActions perform_patch(final String path, final T entity) throws Exception {
+        return mockMvc.perform(patch(path).content(Util.asJsonString(entity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-        return check_matchers(actions, matchers);
     }
 
     /**
@@ -151,21 +243,21 @@ public abstract class EndpointTest<T> {
         return content().string(containsString(str));
     }
 
-    /**
-     * Convert a list of {@link String}s to a {@link ResultMatcher} that checks whether the string is contained
-     * in the result.
-     *
-     * @param stringList the strings we want to look for
-     * @return a result matcher that can be used to perform checks
-     */
-    public List<ResultMatcher> contains_strings(final List<String> stringList) {
-        List<ResultMatcher> resultMatchers = new ArrayList<>();
-
-        for (String str: stringList) {
-            resultMatchers.add(content().string(containsString(str)));
-        }
-        return resultMatchers;
-    }
+//    /**
+//     * Convert a list of {@link String}s to a {@link ResultMatcher} that checks whether the string is contained
+//     * in the result.
+//     *
+//     * @param stringList the strings we want to look for
+//     * @return a result matcher that can be used to perform checks
+//     */
+//    public List<ResultMatcher> contains_strings(final List<String> stringList) {
+//        List<ResultMatcher> resultMatchers = new ArrayList<>();
+//
+//        for (String str: stringList) {
+//            resultMatchers.add(content().string(containsString(str)));
+//        }
+//        return resultMatchers;
+//    }
 
     /**
      * Get a {@link ResultMatcher} that checks whether the result is empty.
