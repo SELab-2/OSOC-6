@@ -1,0 +1,38 @@
+name: java-test-coverage
+on: [push, pull_request]
+
+jobs:
+  jacoco:
+    runs-on: self-hosted
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: configure xml report
+        run: |
+          cd backend
+          echo "jacocoTestReport {reports {xml.enabled true}}" >> build.gradle
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      # Runs a set of commands using the runners shell
+      - name: Config properties file
+        run: |
+          cd backend/src/main/resources/
+          echo "spring.datasource.username = ${{ secrets.DB_USERNAME }}" > application.properties
+          echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
+          echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
+          echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
+          echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
+          cat application.properties
+      - name: Run test coverage
+        run: |
+          cd backend/
+          ./gradlew task test
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.2
+        with:
+          paths: ${{ github.workspace }}/backend/build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
