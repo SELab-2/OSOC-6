@@ -2,7 +2,7 @@
 
 ## Manual
 
-A [manual on how to use the tool](OSOC-tool-manual.pdf) is available as a pdf.
+A [manual on how to use the tool](documentation/OSOC-tool-manual.pdf) is available as a pdf.
 It doesn't contain a lot of information since we have not yet started working on the front end.
 
 ## Documentation
@@ -13,7 +13,9 @@ Documentation as proposed in
 ### Architecture
 
 We constructed diagrams to clarify our code.
-Additionally, we supply [use-cases], a [domain-model] and a [description of our API].
+Additionally, we supply [use-cases](documentation/use-case.pdf),
+a [domain-model](documentation/domain-model.html) (made in drawio) and
+a [description of our API](https://selab-2.github.io/OSOC-6/) (made in swagger).
 
 #### Deployment diagram
 
