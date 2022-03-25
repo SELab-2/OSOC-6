@@ -207,7 +207,7 @@ public class Student {
     private String bestSkill;
 
     /**
-     * Level of OSoc experience as described in @{@link OsocExperience}.
+     * Level of Osoc experience as described in @{@link OsocExperience}.
      */
     @Basic(optional = false)
     @Getter @Setter

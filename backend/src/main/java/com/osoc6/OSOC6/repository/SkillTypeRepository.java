@@ -9,7 +9,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 /**
- * This is a simple class that defines a repository for SkillType, this is needed for the database.
+ * This is a simple class that defines a repository for {@link SkillType},
+ * this is needed for the database.
  *
  * @author jitsedesmet
  */
