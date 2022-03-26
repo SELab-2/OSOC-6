@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6;
 
+import com.osoc6.OSOC6.database.models.SkillType;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -62,6 +63,11 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
      */
     private final String teststring;
 
+    /**
+     * Illegal entity to check if repository only accepts its own entities.
+     */
+    private final SkillType illegalEdition = new SkillType();
+
     public EndpointTest(final String path, final String testString) {
         this.entityPath = path;
         this.teststring = testString;
@@ -108,12 +114,39 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void getting_illegal_entity_fails() throws Exception {
+        perform_get(entityPath + "/" + ILLEGAL_ID)
+                .andExpect(status().isNotFound())
+                .andExpect(string_not_empty());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void getting_illegal_entity_fails_name() throws Exception {
+        perform_get(entityPath + "/" + ILLEGAL_NAME)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_new() throws Exception {
         T entity = create_entity();
 
         perform_post(entityPath, entity);
         check_get(entityPath, teststring);
         get_repository().delete(entity);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void post_illegal_entity() throws Exception {
+        // Errors for entities where name is the id and name is empty
+        System.out.println(Util.asJsonString(illegalEdition));
+        mockMvc.perform(post(entityPath)
+                .content(Util.asJsonString(illegalEdition))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -159,17 +192,15 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void getting_illegal_entity_fails() throws Exception {
-        perform_get(entityPath + "/" + ILLEGAL_ID)
-                .andExpect(status().isNotFound())
-                .andExpect(string_not_empty());
-    }
+    public void patch_changes_value() throws  Exception {
+        T newEntity = create_entity();
 
-    @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void getting_illegal_entity_fails_name() throws Exception {
-        perform_get(entityPath + "/" + ILLEGAL_NAME)
-                .andExpect(status().isBadRequest());
+        List<T> entities = get_repository().findAll();
+        T entity = entities.get(0);
+
+        perform_patch(entityPath + "/" + get_id(entity), newEntity)
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(teststring));
     }
 
     @Test

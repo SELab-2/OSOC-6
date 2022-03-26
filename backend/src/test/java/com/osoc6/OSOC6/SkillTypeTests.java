@@ -98,21 +98,6 @@ public class SkillTypeTests extends EndpointTest<SkillType, SkillTypeRepository,
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void post_garbage_skillType_fails() throws Exception {
-        Edition edition = new Edition();
-        edition.setName("Some edition name");
-        edition.setActive(false);
-        edition.setYear(2022);
-
-        getMockMvc().perform(post(SKILLTYPES_PATH)
-                .content(Util.asJsonString(edition))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void edit_skillType_colour() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);

@@ -104,7 +104,7 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);
 
-        boolean prevActive  = edition.isActive();
+        boolean prevActive  = edition.getActive();
         edition.setActive(!prevActive);
 
         perform_patch(EDITIONS_PATH + "/" + edition.getId(), edition);
