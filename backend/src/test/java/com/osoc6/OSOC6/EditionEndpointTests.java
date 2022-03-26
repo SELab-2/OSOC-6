@@ -106,7 +106,7 @@ public class EditionEndpointTests {
      * @exception Exception throws exception if not there
      */
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void add_new_edition() throws Exception {
         String editionName = "EDITION 2022";
         Edition newEdition = new Edition();
@@ -125,7 +125,7 @@ public class EditionEndpointTests {
      * @exception Exception throws exception if not there
      */
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_new_edition() throws Exception {
         Edition newEdition = new Edition();
         String editionName = "POST EDITION";
@@ -148,7 +148,7 @@ public class EditionEndpointTests {
      * @exception Exception throws exception if not deleted
      */
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_edition() throws Exception {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);
@@ -168,7 +168,7 @@ public class EditionEndpointTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_edition_throws_not_found() throws Exception {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);
@@ -186,7 +186,7 @@ public class EditionEndpointTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_edition_fails() throws Exception {
         mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_ID))
                 .andExpect(status().isNotFound())
@@ -194,13 +194,13 @@ public class EditionEndpointTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_edition_fails_name() throws Exception {
         mockMvc.perform(get(EDITIONS_PATH + "/" + ILLEGAL_NAME)).andExpect(status().isBadRequest());
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patching_illegal_edition_fails() throws Exception {
         Edition edition = new Edition();
         edition.setActive(true);
@@ -215,7 +215,7 @@ public class EditionEndpointTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void edition_toggle_active() throws Exception {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);
