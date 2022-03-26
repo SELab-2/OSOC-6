@@ -16,7 +16,6 @@ import java.util.Optional;
  * It accepts requests and sends answers in a REST-full way.
  */
 @Repository
-//@Transactional(readOnly = true)
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
 @PreAuthorize("hasAuthority('ADMIN')")
