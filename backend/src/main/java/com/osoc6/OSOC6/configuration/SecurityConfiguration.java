@@ -4,6 +4,8 @@ import com.osoc6.OSOC6.service.UserEntityService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -49,10 +51,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/registration", "/login")
-            .permitAll()
-            .anyRequest()
-            .authenticated().and()
+                .antMatchers("/registration", "/login").permitAll()
+                .anyRequest().authenticated()
+                .and()
             .formLogin();
     }
 
@@ -66,5 +67,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
+    }
+
+    /**
+     * Set up the role hierarchy.
+     * @return the configured role hierarchy
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "ADMIN > COACH";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
     }
 }

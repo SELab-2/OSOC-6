@@ -98,7 +98,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not there
      */
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void add_new_skillType() throws Exception {
         String skillTypeName = "posted skilltype";
         SkillType newSkillType = new SkillType(skillTypeName, "80c958");
@@ -114,7 +114,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not there
      */
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_new_skillType() throws Exception {
         String skillTypeName = "standing on hands";
         SkillType newSkillType = new SkillType(skillTypeName, "191616");
@@ -129,7 +129,7 @@ public class SkillTypeTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_garbage_skillType_fails() throws Exception {
         Edition edition = new Edition();
         edition.setName("Some edition name");
@@ -148,7 +148,7 @@ public class SkillTypeTests {
      * @exception Exception throws exception if not deleted
      */
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_skillType() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
@@ -168,7 +168,7 @@ public class SkillTypeTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_skillType_throws_not_fount() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
@@ -187,7 +187,7 @@ public class SkillTypeTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_skillType_fails() throws Exception {
         // A 404 is descriptive enough.
         mockMvc.perform(get(SKILLTYPES_PATH + "/" + ILLEGAL_NAME))
@@ -195,7 +195,7 @@ public class SkillTypeTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patching_illegal_skillType_fails() throws Exception {
         SkillType newSkillType = new SkillType(ILLEGAL_NAME, "DF7E5C");
 
@@ -208,7 +208,7 @@ public class SkillTypeTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void edit_skillType_colour() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);
@@ -227,7 +227,7 @@ public class SkillTypeTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void editing_final_field_is_indifferent() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);

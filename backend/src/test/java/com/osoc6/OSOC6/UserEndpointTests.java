@@ -10,16 +10,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Map;
+
+import static com.osoc6.OSOC6.Util.asJsonString;
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,22 +49,19 @@ public class UserEndpointTests {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private MessageSource messageSource;
-
     /**
      * The actual path users are served on, with '/' as prefix.
      */
     private static final String USERS_PATH = "/" + DumbledorePathWizard.USERS_PATH;
 
     /**
-     * First sample user that gets loaded before every test.
+     * The admin sample user that gets loaded before every test.
      */
-    private final UserEntity user1 = new UserEntity();
+    private final UserEntity adminUser = new UserEntity();
     /**
-     * Second sample user that gets loaded before every test.
+     * The coach sample user that gets loaded before every test.
      */
-    private final UserEntity user2 = new UserEntity();
+    private final UserEntity coachUser = new UserEntity();
 
     /**
      * Fill in the data of the test users and add them to the database.
@@ -69,19 +72,20 @@ public class UserEndpointTests {
         // we need to create a temporary authentication token to be able to save the test users
         SecurityContext securityContext = new SecurityContextImpl();
         securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ROLE_ADMIN"));
+                new TestingAuthenticationToken(null, null, "ADMIN"));
         SecurityContextHolder.setContext(securityContext);
 
-        user1.setEmail("user1.test@gmail.com");
-        user1.setCallName("User1 Test");
-        user1.setUserRole(UserRole.ADMIN);
-        user1.setPassword("123456");
-        userRepository.save(user1);
+        adminUser.setEmail("admin.test@gmail.com");
+        adminUser.setCallName("Admin Test");
+        adminUser.setUserRole(UserRole.ADMIN);
+        adminUser.setPassword("123456");
+        userRepository.save(adminUser);
 
-        user2.setEmail("user2.tester@hotmail.com");
-        user2.setCallName("User2 Test");
-        user2.setUserRole(UserRole.DISABLED);
-        userRepository.save(user2);
+        coachUser.setEmail("coach.test@gmail.com");
+        coachUser.setCallName("Coach Test");
+        coachUser.setUserRole(UserRole.COACH);
+        coachUser.setPassword("123456");
+        userRepository.save(coachUser);
 
         // After saving the test users, we clear the security context as to not interfere with any remaining tests.
         SecurityContextHolder.clearContext();
@@ -95,14 +99,14 @@ public class UserEndpointTests {
         // Since the userRepository is secured,
         // we need to create a temporary authentication token to be able to delete the test users
         SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(new TestingAuthenticationToken(null, null, "ROLE_ADMIN"));
+        securityContext.setAuthentication(new TestingAuthenticationToken(null, null, "ADMIN"));
         SecurityContextHolder.setContext(securityContext);
 
-        if (userRepository.existsById(user1.getId())) {
-            userRepository.deleteById(user1.getId());
+        if (userRepository.existsById(adminUser.getId())) {
+            userRepository.deleteById(adminUser.getId());
         }
-        if (userRepository.existsById(user2.getId())) {
-            userRepository.deleteById(user2.getId());
+        if (userRepository.existsById(coachUser.getId())) {
+            userRepository.deleteById(coachUser.getId());
         }
 
         // After deleting the test users, we clear the security context as to not interfere with any remaining tests.
@@ -110,191 +114,278 @@ public class UserEndpointTests {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_list_of_all_users_contains_both_test_users() throws Exception {
         mockMvc.perform(get(USERS_PATH))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user1.getEmail())))
-                .andExpect(content().string(containsString(user2.getEmail())));
+                .andExpect(content().string(containsString(adminUser.getEmail())))
+                .andExpect(content().string(containsString(coachUser.getEmail())));
     }
 
     @Test
-    @WithMockUser(username = "coach", roles = {"COACH"})
-    public void coach_get_list_of_all_users_fails() throws Exception {
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_get_list_of_all_users_is_forbidden() throws Exception {
         mockMvc.perform(get(USERS_PATH))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void admin_get_details_of_test_user1_succeeds() throws Exception {
-        mockMvc.perform(get("/users/" + user1.getId()))
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_get_details_of_himself_succeeds() throws Exception {
+        mockMvc.perform(get("/users/" + adminUser.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user1.getEmail())))
-                .andExpect(content().string(containsString(user1.getCallName())))
-                .andExpect(content().string(containsString(user1.getUserRole().toString())));
+                .andExpect(content().string(containsString(adminUser.getEmail())))
+                .andExpect(content().string(containsString(adminUser.getCallName())))
+                .andExpect(content().string(containsString(adminUser.getUserRole().toString())));
     }
 
     @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_details_of_himself_succeeds() throws Exception {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(user1, "123456"));
-        SecurityContextHolder.setContext(securityContext);
-        mockMvc.perform(get("/users/" + user1.getId()))
+        mockMvc.perform(get("/users/" + coachUser.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(user1.getEmail())))
-                .andExpect(content().string(containsString(user1.getCallName())))
-                .andExpect(content().string(containsString(user1.getUserRole().toString())));
-        SecurityContextHolder.clearContext();
+                .andExpect(content().string(containsString(coachUser.getEmail())))
+                .andExpect(content().string(containsString(coachUser.getCallName())))
+                .andExpect(content().string(containsString(coachUser.getUserRole().toString())));
     }
 
     @Test
-    @WithMockUser(username = "coach", roles = {"COACH"})
-    public void coach_get_details_of_other_user_fails() throws Exception {
-        mockMvc.perform(get("/users/" + user1.getId()))
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_get_details_of_other_user_succeeds() throws Exception {
+        mockMvc.perform(get("/users/" + coachUser.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(coachUser.getEmail())))
+                .andExpect(content().string(containsString(coachUser.getCallName())))
+                .andExpect(content().string(containsString(coachUser.getUserRole().toString())));
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_get_details_of_other_user_is_forbidden() throws Exception {
+        mockMvc.perform(get("/users/" + adminUser.getId()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
-//    @Test
-//    public void get_details_of_test_user2_succeeds() throws Exception {
-//        mockMvc.perform(get("/users/" + user2.getId()))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString(user2.getEmail())))
-//                .andExpect(content().string(containsString(user2.getCallName())))
-//                .andExpect(content().string(containsString(user2.getUserRole().toString())));
-//    }
-//
-//    @Test
-//    public void get_details_of_nonexisting_user_fails() throws Exception {
-//        int id = 1234;
-//        mockMvc.perform(get("/users/" + id))
-//                .andDo(print())
-//                .andExpect(status().isNotFound());
-//    }
-//
-//    @Test
-//    public void update_role_test_user1_with_valid_role_succeeds() throws Exception {
-//        String newRole = "COACH";
-//        Map<String, String> map = Map.of("userRole", newRole);
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-role")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString(user1.getEmail())))
-//                .andExpect(content().string(containsString(user1.getCallName())))
-//                .andExpect(content().string(containsString(newRole)));
-//    }
-//
-//    @Test
-//    public void update_role_test_user1_with_invalid_role_fails() throws Exception {
-//        String newRole = "LORD";
-//        Map<String, String> map = Map.of("userRole", newRole);
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-role")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(content().string(containsString(
-//                        messageSource.getMessage("userrole.valid", null, Locale.getDefault()))));
-//    }
-//
-//    @Test
-//    public void update_role_test_user1_without_role_fails() throws Exception {
-//        Map<String, String> map = Map.of("something", "else");
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-role")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(content().string(containsString(
-//                        messageSource.getMessage("userrole.valid", null, Locale.getDefault()))));
-//    }
-//
-//    @Test
-//    public void update_profile_test_user1_with_valid_data_succeeds() throws Exception {
-//        String newEmail = "newemail.test@gmail.com";
-//        String newFirstName = "newFirstName";
-//        String newLastName = "newLastName";
-//        Map<String, String> map = Map.of(
-//                "email", newEmail,
-//                "firstName", newFirstName,
-//                "lastName", newLastName
-//        );
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-profile")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString(newEmail)))
-//                .andExpect(content().string(containsString(newFirstName)))
-//                .andExpect(content().string(containsString(newLastName)))
-//                .andExpect(content().string(containsString(user1.getUserRole().toString())));
-//    }
-//
-//    @Test
-//    public void update_profile_test_user1_with_invalid_email_fails() throws Exception {
-//        String newEmail = "notanemail";
-//        String newFirstName = "newFirstName";
-//        String newLastName = "newLastName";
-//        Map<String, String> map = Map.of(
-//                "email", newEmail,
-//                "firstName", newFirstName,
-//                "lastName", newLastName
-//        );
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-profile")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(content().string(containsString(
-//                        messageSource.getMessage("email.valid", null, Locale.getDefault()))));
-//    }
-//
-//    @Test
-//    public void update_profile_test_user1_without_email_fails() throws Exception {
-//        String newFirstName = "newFirstName";
-//        String newLastName = "newLastName";
-//        Map<String, String> map = Map.of(
-//                "firstName", newFirstName,
-//                "lastName", newLastName
-//        );
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-profile")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(content().string(containsString(
-//                        messageSource.getMessage("email.notempty", null, Locale.getDefault()))));
-//    }
-//
-//    @Test
-//    public void update_profile_test_user1_without_callname_fails() throws Exception {
-//        String newEmail = "newemail.test@gmail.com";
-//        String newCallName = "Call name";
-//        Map<String, String> map = Map.of(
-//                "email", newEmail,
-//                "callName", newCallName
-//        );
-//        mockMvc.perform(patch("/users/" + user1.getId() + "/update-profile")
-//                        .content(asJsonString(map))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andExpect(content().string(containsString(
-//                        messageSource.getMessage("firstname.notempty", null, Locale.getDefault()))));
-//    }
-//
-//    @Test
-//    public void delete_test_user1_succeeds() throws Exception {
-//        mockMvc.perform(delete("/users/" + user1.getId()))
-//                .andDo(print())
-//                .andExpect(status().isNoContent());
-//    }
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_get_details_of_nonexisting_user_is_not_found() throws Exception {
+        int id = 1234;
+        mockMvc.perform(get("/users/" + id))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_get_details_of_nonexisting_user_is_forbidden() throws Exception {
+        int id = 1234;
+        mockMvc.perform(get("/users/" + id))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_update_role_with_valid_role_succeeds() throws Exception {
+        UserRole newRole = UserRole.ADMIN;
+        Map<String, String> map = Map.of("userRole", newRole.toString());
+        mockMvc.perform(patch("/users/" + coachUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+
+        mockMvc.perform(get("/users/" + coachUser.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(coachUser.getEmail())))
+                .andExpect(content().string(containsString(coachUser.getCallName())))
+                .andExpect(content().string(containsString(newRole.toString())));
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_role_with_valid_role_is_forbidden() throws Exception {
+        UserRole newRole = UserRole.COACH;
+        Map<String, String> map = Map.of("userRole", newRole.toString());
+        mockMvc.perform(patch("/users/" + adminUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_update_role_with_invalid_role_is_bad_request() throws Exception {
+        String newRole = "LORD";
+        Map<String, String> map = Map.of("userRole", newRole);
+        mockMvc.perform(patch("/users/" + adminUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_role_with_invalid_role_is_forbidden() throws Exception {
+        String newRole = "LORD";
+        Map<String, String> map = Map.of("userRole", newRole);
+        mockMvc.perform(patch("/users/" + adminUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_update_profile_of_himself_succeeds() throws Exception {
+        String newEmail = "newemail.test@gmail.com";
+        String newCallName = "newCallName";
+        Map<String, String> map = Map.of(
+                "email", newEmail,
+                "callName", newCallName
+        );
+        mockMvc.perform(patch("/users/" + adminUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+
+        mockMvc.perform(get("/users/" + adminUser.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(newEmail)))
+                .andExpect(content().string(containsString(newCallName)))
+                .andExpect(content().string(containsString(adminUser.getUserRole().toString())));
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_profile_of_himself_succeeds() throws Exception {
+        String newEmail = "newemail.test@gmail.com";
+        String newCallName = "newCallName";
+        Map<String, String> map = Map.of(
+                "email", newEmail,
+                "callName", newCallName
+        );
+        mockMvc.perform(patch("/users/" + coachUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+
+        mockMvc.perform(get("/users/" + coachUser.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(newEmail)))
+                .andExpect(content().string(containsString(newCallName)))
+                .andExpect(content().string(containsString(coachUser.getUserRole().toString())));
+    }
+
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_update_profile_of_other_user_succeeds() throws Exception {
+        String newEmail = "newemail.test@gmail.com";
+        String newCallName = "newCallName";
+        Map<String, String> map = Map.of(
+                "email", newEmail,
+                "callName", newCallName
+        );
+        mockMvc.perform(patch("/users/" + coachUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+
+        mockMvc.perform(get("/users/" + coachUser.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(newEmail)))
+                .andExpect(content().string(containsString(newCallName)))
+                .andExpect(content().string(containsString(coachUser.getUserRole().toString())));
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_profile_of_other_user_is_forbidden() throws Exception {
+        String newEmail = "newemail.test@gmail.com";
+        String newCallName = "newCallName";
+        Map<String, String> map = Map.of(
+                "email", newEmail,
+                "callName", newCallName
+        );
+        mockMvc.perform(patch("/users/" + adminUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_update_profile_and_role_succeeds() throws Exception {
+        String newEmail = "newemail.test@gmail.com";
+        String newCallName = "newCallName";
+        UserRole newRole = UserRole.COACH;
+        Map<String, String> map = Map.of(
+                "email", newEmail,
+                "callName", newCallName,
+                "userRole", newRole.toString()
+        );
+        mockMvc.perform(patch("/users/" + adminUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+
+        mockMvc.perform(get("/users/" + adminUser.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(newEmail)))
+                .andExpect(content().string(containsString(newCallName)))
+                .andExpect(content().string(containsString(newRole.toString())));
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_profile_and_role_is_forbidden() throws Exception {
+        String newEmail = "newemail.test@gmail.com";
+        String newCallName = "newCallName";
+        UserRole newRole = UserRole.ADMIN;
+        Map<String, String> map = Map.of(
+                "email", newEmail,
+                "callName", newCallName,
+                "userRole", newRole.toString()
+        );
+        mockMvc.perform(patch("/users/" + coachUser.getId())
+                        .content(asJsonString(map))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_delete_user_succeeds() throws Exception {
+        mockMvc.perform(delete("/users/" + coachUser.getId()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_delete_user_is_forbidden() throws Exception {
+        mockMvc.perform(delete("/users/" + adminUser.getId()))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
 }
