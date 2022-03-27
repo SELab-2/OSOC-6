@@ -102,7 +102,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     public abstract Long get_id(T entity);
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void add_new() throws Exception {
         T entity = create_entity();
 
@@ -114,7 +114,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_entity_fails() throws Exception {
         perform_get(entityPath + "/" + ILLEGAL_ID)
                 .andExpect(status().isNotFound())
@@ -122,14 +122,14 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_entity_fails_name() throws Exception {
         perform_get(entityPath + "/" + ILLEGAL_NAME)
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_new() throws Exception {
         T entity = create_entity();
 
@@ -139,7 +139,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_illegal_entity() throws Exception {
         // Errors for entities where name is the id and name is empty
         System.out.println(Util.asJsonStringNoEmptyId(illegalEdition));
@@ -151,7 +151,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void posting_empty_object_is_user_error() throws Exception {
         mockMvc.perform(post(entityPath)
                         .content("{ }")
@@ -161,7 +161,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_new() throws Exception {
         T newEntity = create_entity();
         perform_post(entityPath, newEntity);
@@ -182,7 +182,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_entity_throws_not_found() throws Exception {
         T newEntity = create_entity();
         perform_post(entityPath, newEntity);
@@ -202,7 +202,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patch_changes_value() throws  Exception {
         List<T> entities = get_repository().findAll();
         T entity = entities.get(0);
@@ -215,7 +215,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patching_illegal_entity_fails() throws Exception {
         T entity = create_entity();
 
@@ -225,7 +225,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patch_changes_with_null_id_gives_409() throws Exception {
         List<T> entities = get_repository().findAll();
         T entity = entities.get(0);
