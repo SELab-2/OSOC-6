@@ -86,6 +86,12 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
      */
     public abstract T create_entity();
 
+    /**
+     * Change the entity to have a different field value.
+     * This will be used to test whether a patch request works.
+     * @param startEntity the entity we would like to change
+     * @return an entity with a new value for a field
+     */
     public abstract T change_entity(T startEntity);
 
     /**
