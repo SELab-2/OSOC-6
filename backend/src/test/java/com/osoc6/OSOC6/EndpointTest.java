@@ -269,7 +269,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     }
 
     /**
-     * Perform a GET request.
+     * Perform a GET request that checks whether the entity is in the database.
      *
      * @param path     the path the entity is served on, with '/' as prefix
      * @param check result matchers used to perform checks on the request
