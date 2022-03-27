@@ -18,18 +18,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Class testing the integration of {@link Edition}.
  */
-public class EditionEndpointTests extends EndpointTest<Edition, EditionRepository, Long> {
+public class EditionEndpointTests extends EndpointTest<Edition, EditionRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
      */
     @Autowired
     private EditionRepository repository;
-
-    /**
-     * A new edition.
-     */
-    private final Edition newEdition = new Edition();
 
     /**
      * First sample edition that gets loaded before every test.
@@ -46,8 +41,14 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
      */
     private static final String EDITIONS_PATH = "/" + DumbledorePathWizard.EDITIONS_PATH;
 
+    /**
+     * The string that will be set on a patch and will be looked for.
+     * This string should be unique.
+     */
+    private static final String TEST_STRING = "EDITION 2022";
+
     public EditionEndpointTests() {
-        super(EDITIONS_PATH, "EDITION 2022");
+        super(EDITIONS_PATH, TEST_STRING);
     }
 
     /**
@@ -81,11 +82,16 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
 
     @Override
     public final Edition create_entity() {
-        String editionName = "EDITION 2022";
-        newEdition.setName(editionName);
-        newEdition.setYear(1);
-        newEdition.setActive(true);
-        return newEdition;
+        Edition postEdition = new Edition();
+        postEdition.setName(TEST_STRING);
+        postEdition.setYear(1);
+        postEdition.setActive(true);
+        return postEdition;
+    }
+
+    @Override
+    public final Edition change_entity(final Edition edition) {
+        return create_entity();
     }
 
     @Override

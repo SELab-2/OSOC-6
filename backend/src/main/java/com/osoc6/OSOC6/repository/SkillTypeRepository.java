@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.SKILLTYPE_PATH,
         path = DumbledorePathWizard.SKILLTYPE_PATH)
-public interface SkillTypeRepository extends JpaRepository<SkillType, String> {
+public interface SkillTypeRepository extends JpaRepository<SkillType, Long> {
     /**
      * search by using the following: /{DumbledorePathWizard.SKILLTYPE_PATH}/search/findByName?name=nameOfSkillType.
      * @param name the searched name

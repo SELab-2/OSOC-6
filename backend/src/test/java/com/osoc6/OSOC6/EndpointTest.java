@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6;
 
-import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.database.models.Edition;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -31,12 +31,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @param <T> the entity of the repository using this class
  * @param <R> the repository linked to the entity
- * @param <I> the type of id
  */
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
+public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     /**
      * This mocks the server without starting it.
      */
@@ -66,7 +65,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
     /**
      * Illegal entity to check if repository only accepts its own entities.
      */
-    private final SkillType illegalEdition = new SkillType();
+    private final Edition illegalEdition = new Edition();
 
     public EndpointTest(final String path, final String testString) {
         this.entityPath = path;
@@ -87,6 +86,8 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
      */
     public abstract T create_entity();
 
+    public abstract T change_entity(T startEntity);
+
     /**
      * Get the repository connected to entity T.
      * @return a repository from entity T
@@ -98,7 +99,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
      * @param entity entity whose id we would like to know
      * @return the id of the entity
      */
-    public abstract I get_id(T entity);
+    public abstract Long get_id(T entity);
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -141,11 +142,21 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void post_illegal_entity() throws Exception {
         // Errors for entities where name is the id and name is empty
-        System.out.println(Util.asJsonString(illegalEdition));
+        System.out.println(Util.asJsonStringNoEmptyId(illegalEdition));
         mockMvc.perform(post(entityPath)
-                .content(Util.asJsonString(illegalEdition))
+                .content(Util.asJsonStringNoEmptyId(illegalEdition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void posting_empty_object_is_user_error() throws Exception {
+        mockMvc.perform(post(entityPath)
+                        .content("{ }")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
     }
 
@@ -193,10 +204,10 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void patch_changes_value() throws  Exception {
-        T newEntity = create_entity();
-
         List<T> entities = get_repository().findAll();
         T entity = entities.get(0);
+
+        T newEntity = change_entity(entity);
 
         perform_patch(entityPath + "/" + get_id(entity), newEntity)
                 .andExpect(status().isOk())
@@ -213,6 +224,18 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
                 .andExpect(string_not_empty());
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void patch_changes_with_null_id_gives_409() throws Exception {
+        List<T> entities = get_repository().findAll();
+        T entity = entities.get(0);
+
+        T newEntity = change_entity(entity);
+
+        perform_patch_with_nullable_id(entityPath + "/" + get_id(entity), newEntity)
+                .andExpect(status().isConflict());
+    }
+
     /**
      * Perform a POST request.
      *
@@ -223,7 +246,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
      */
     public ResultActions perform_post(final String path, final T entity) throws Exception {
         return mockMvc.perform(post(path)
-                .content(Util.asJsonString(entity))
+                .content(Util.asJsonStringNoEmptyId(entity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
@@ -261,12 +284,13 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
-    public ResultActions perform_delete_with_id(final String path, final I id) throws Exception {
+    public ResultActions perform_delete_with_id(final String path, final Long id) throws Exception {
         return mockMvc.perform(delete(path + "/" + id));
     }
 
     /**
      * Perform a Patch request.
+     * An id with value null will be removed to avoid exceptions.
      *
      * @param path   The path the entity is served on, with '/' as prefix
      * @param entity The entity we want to post
@@ -274,7 +298,39 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, I>, I> {
      * @throws Exception throws exception if the request or a check fails
      */
     public ResultActions perform_patch(final String path, final T entity) throws Exception {
+        return mockMvc.perform(patch(path).content(Util.asJsonStringNoEmptyId(entity))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /**
+     * Perform a Patch request.
+     * An id with value null will not be removed it's up to you to handle this.
+     *
+     * @param path The path the entity is served on, with '/' as prefix
+     * @param entity The entity we want to post
+     * @return a result action that can be used for more checks
+     * @throws Exception throws exception if the request or a check fails
+     */
+    public ResultActions perform_patch_with_nullable_id(final String path, final T entity) throws Exception {
+        String test = Util.asJsonString(entity);
         return mockMvc.perform(patch(path).content(Util.asJsonString(entity))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /**
+     * performs a patch on a single field on the provided path.
+     *
+     * @param path The path the entity is served on, with '/' as prefix
+     * @param field the field that must be patched.
+     * @param jsonValue the patch value in json format. This means that when the value is a string you should add "".
+     * @return a {@link ResultActions} that can be used for additional checks
+     * @throws Exception throws exception if the request or a check fails
+     */
+    public ResultActions perform_field_patch(
+            final String path, final String field, final String jsonValue) throws Exception {
+        return mockMvc.perform(patch(path).content("{\"" + field + "\":" + jsonValue + "}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }

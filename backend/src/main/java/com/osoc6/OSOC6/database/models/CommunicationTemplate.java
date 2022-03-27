@@ -3,9 +3,12 @@ package com.osoc6.OSOC6.database.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
@@ -17,11 +20,17 @@ import javax.persistence.Lob;
 @Entity
 @NoArgsConstructor
 public class CommunicationTemplate {
+    /**
+     * The id of the CommunicationTemplate.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     /**
      * The name of the CommunicationTemplate.
      */
-    @Id
+    @NaturalId
     @Getter @Setter
     private String name;
 
