@@ -1,7 +1,7 @@
 import { Formik, Field, Form } from 'formik';
 import styles from '../styles/loginForm.module.css';
 import axios from 'axios';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 interface Values {
     username: string;
@@ -18,7 +18,7 @@ export default function LoginForm() {
                     username: '',
                     password: '',
                 }}
-                onSubmit={ async (values : Values) => {
+                onSubmit={async (values: Values) => {
                     // store the states in the form data
                     const loginFormData = new FormData();
                     loginFormData.append('username', values.username);
@@ -32,12 +32,12 @@ export default function LoginForm() {
                             'Content-Type': 'multipart/form-data',
                             'access-control-allow-origin': '*',
                         },
-                    }).then(response => {
-                        console.log(response.request.responseURL)
-                        router.push(response.request.responseURL)
+                    }).then((response) => {
+                        console.log(response.request.responseURL);
+                        router.push(response.request.responseURL);
                     });
                     console.log(response);
-                } }
+                }}
             >
                 <Form>
                     <Field
