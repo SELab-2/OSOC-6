@@ -2,9 +2,9 @@ package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
@@ -176,8 +177,8 @@ public class Student {
      * Amount of years getting the current degree takes.
      */
     @Basic(optional = false)
-    @Getter @Setter
-    private int durationCurrentDegree;
+    @NotNull @Getter @Setter
+    private Integer durationCurrentDegree;
 
     /**
      * What year the student is in the course.

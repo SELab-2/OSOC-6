@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 /**
@@ -38,8 +39,8 @@ public class Assignment {
      * whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
      */
     @Basic(optional = false)
-    @Getter @Setter
-    private boolean isSuggestion;
+    @NotNull @Getter @Setter
+    private Boolean isSuggestion;
 
     /**
      * The creation timestamp of the assignment.
