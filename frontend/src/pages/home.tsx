@@ -1,18 +1,17 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import LoginForm from '../components/loginForm';
 
-const Login: NextPage = () => {
+const Home: NextPage = () => {
     return (
         <div>
             <Head>
-                <title>Open Summer of Code : Login page</title>
+                <title>Open Summer of Code : Logged in</title>
             </Head>
             <main className="m-4">
-                <LoginForm />
+                <h1>User is logged in</h1>
             </main>
         </div>
     );
 };
 
-export default Login;
+export default Home;

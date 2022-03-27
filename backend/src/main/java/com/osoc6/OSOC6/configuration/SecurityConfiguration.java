@@ -49,16 +49,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/registration", "/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginProcessingUrl("/login-processing")
-                .defaultSuccessUrl("/");
+            .csrf().disable()
+            .httpBasic()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/registration", "/login").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .loginProcessingUrl("/login-processing")
+            .defaultSuccessUrl("/auth/home", true).permitAll();
     }
 
     /**
