@@ -5,6 +5,7 @@ import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ public class Communication {
      */
     @Basic(optional = false)
     @Getter
+    @CreationTimestamp
     private Timestamp timestamp;
 
     /**

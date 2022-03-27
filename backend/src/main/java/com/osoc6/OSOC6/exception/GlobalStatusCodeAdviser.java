@@ -18,7 +18,7 @@ public class GlobalStatusCodeAdviser {
      * @return the message sent to the user.
      */
     @ResponseBody
-    @ExceptionHandler
+    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String handleNotFound(final ResourceNotFoundException ex) {
         if (ex.getMessage().isEmpty()) {

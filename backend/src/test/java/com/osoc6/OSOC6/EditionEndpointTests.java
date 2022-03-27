@@ -105,7 +105,7 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void edition_toggle_active() throws Exception {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);

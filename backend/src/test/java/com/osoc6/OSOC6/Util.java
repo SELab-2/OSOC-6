@@ -54,7 +54,7 @@ public final class Util {
 
 
     /**
-     *
+     * Get a matcher that checks whether a json object contains an entry of fieldName.
      * @param fieldName the field or keyName that is looked for
      * @param valueAsString the value as a literal string that is being looked for
      * @return a matcher that checks if a json object contains an entry
@@ -64,7 +64,7 @@ public final class Util {
     }
 
     /**
-     *
+     * Get a matcher that checks whether a json object contains an entry of fieldName.
      * @param fieldName the field or keyName that is looked for
      * @param booleanValue the value as a boolean
      * @return a matcher that checks if a json object contains an entry
@@ -74,7 +74,7 @@ public final class Util {
     }
 
     /**
-     *
+     * Get a matcher that checks whether a json object contains an entry of fieldName.
      * @param fieldName the field or keyName that is looked for
      * @param stringValue the value as a string
      * @return a matcher that checks if a json object contains an entry

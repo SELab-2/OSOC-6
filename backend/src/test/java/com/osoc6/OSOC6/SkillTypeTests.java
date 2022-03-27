@@ -107,7 +107,7 @@ public class SkillTypeTests extends EndpointTest<SkillType, SkillTypeRepository>
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void editing_final_field_is_indifferent() throws Exception {
         List<SkillType> skillTypes = repository.findAll();
         SkillType skillType = skillTypes.get(0);

@@ -4,11 +4,18 @@ import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * This service handles user functionalities such as finding and registering a user.
@@ -41,10 +48,21 @@ public class UserEntityService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
+        //REMOVE remove this manual security manipulation!!!!!
+        SecurityContext securityContext = new SecurityContextImpl();
+        securityContext.setAuthentication(
+                new UsernamePasswordAuthenticationToken(null, null, List.of(new SimpleGrantedAuthority("ADMIN"))));
+        SecurityContextHolder.setContext(securityContext);
+
+        UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 String.format(userNotFoundMsg, email)));
+
+        //REMOVE remove this manual security manipulation!!!!!
+        SecurityContextHolder.clearContext();
+
+        return userEntity;
     }
 
     /**
@@ -52,6 +70,12 @@ public class UserEntityService implements UserDetailsService {
      * @param userEntity the user that needs to be added to the database.
      */
     public void registerUser(final UserEntity userEntity) {
+        //REMOVE remove this manual security manipulation!!!!!
+        SecurityContext securityContext = new SecurityContextImpl();
+        securityContext.setAuthentication(
+                new UsernamePasswordAuthenticationToken(null, null, List.of(new SimpleGrantedAuthority("ADMIN"))));
+        SecurityContextHolder.setContext(securityContext);
+
         boolean accountExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
 
         if (accountExists) {
@@ -62,5 +86,8 @@ public class UserEntityService implements UserDetailsService {
         userEntity.setPassword(encodedPassword);
 
         userRepository.save(userEntity);
+
+        //REMOVE remove this manual security manipulation!!!!!
+        SecurityContextHolder.clearContext();
     }
 }

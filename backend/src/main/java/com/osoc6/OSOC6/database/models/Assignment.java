@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -45,6 +46,7 @@ public class Assignment {
      */
     @Basic(optional = false)
     @Getter
+    @CreationTimestamp
     private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /**
