@@ -60,16 +60,16 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
     /**
      * The string used to test whether an entity can be found in the return value.
      */
-    private final String teststring;
+    private final String testString;
 
     /**
      * Illegal entity to check if repository only accepts its own entities.
      */
     private final Edition illegalEdition = new Edition();
 
-    public EndpointTest(final String path, final String testString) {
-        this.entityPath = path;
-        this.teststring = testString;
+    public EndpointTest(final String path, final String newTestString) {
+        entityPath = path;
+        testString = newTestString;
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
 
         get_repository().save(entity);
 
-        check_get(entityPath, teststring);
+        check_get(entityPath, testString);
 
         get_repository().delete(entity);
     }
@@ -134,7 +134,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
         T entity = create_entity();
 
         perform_post(entityPath, entity);
-        check_get(entityPath, teststring);
+        check_get(entityPath, testString);
         get_repository().delete(entity);
     }
 
@@ -170,7 +170,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
         T entity = entities.get(0);
 
         // Is the entity really in /entity
-        check_get(entityPath, teststring);
+        check_get(entityPath, testString);
 
         // Run the delete request
         perform_delete_with_id(entityPath, get_id(entity));
@@ -191,7 +191,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
         T entity = entities.get(0);
 
         // Is the edition really in /editions
-        check_get(entityPath, teststring);
+        check_get(entityPath, testString);
 
         // Run the delete request
         perform_delete_with_id(entityPath, get_id(entity));
@@ -211,7 +211,7 @@ public abstract class EndpointTest<T, R extends JpaRepository<T, Long>> {
 
         perform_patch(entityPath + "/" + get_id(entity), newEntity)
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(teststring));
+                .andExpect(string_to_contains_string(testString));
     }
 
     @Test
