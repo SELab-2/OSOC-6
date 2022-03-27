@@ -15,6 +15,30 @@ public final class Util {
     private Util() { }
 
     /**
+     * Transforms object to json string for a request and remove null id.
+     * @param obj object which needs to be converted to JSON
+     * @return JSON string which contains the object
+     */
+    public static String asJsonStringNoEmptyId(final Object obj) {
+        String res = asJsonString(obj);
+        return res.replace("\"id\":null,", "");
+    }
+
+    /**
+     * Transforms object to json string for a request and removes needed fields.
+     * @param obj object which needs to be converted to JSON
+     * @param fields list of fields that need to be removed from the json object.
+     * @return JSON string which contains the object
+     */
+    public static String asJsonStringExcludingFields(final Object obj, final String... fields) {
+        String res = asJsonString(obj);
+        for (String fieldName: fields) {
+            res = res.replaceAll("\"" + fieldName + "\":[^,]*,", "");
+        }
+        return res;
+    }
+
+    /**
      * Transforms object to json string for a request.
      * @param obj object which needs to be converted to JSON
      * @return JSON string which contains the object
@@ -27,6 +51,7 @@ public final class Util {
             throw new RuntimeException(e);
         }
     }
+
 
     /**
      * Get a matcher that checks whether a json object contains an entry of fieldName.

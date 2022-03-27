@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Basic;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -38,14 +39,16 @@ public class Edition {
      * The year of the edition.
      */
     @Basic(optional = false)
+    @NotNull
     @Setter @Getter
-    private int year;
+    private Integer year;
 
     /**
      * Whether the edition is active.
      */
     @Basic(optional = false)
+    @NotNull
     @Setter @Getter
-    private boolean active;
+    private Boolean active;
 
 }
