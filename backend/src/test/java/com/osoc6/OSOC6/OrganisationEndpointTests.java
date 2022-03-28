@@ -7,8 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
-
 /**
  * Class testing the integration of {@link Organisation}.
  */
@@ -56,7 +54,7 @@ public class OrganisationEndpointTests extends EndpointTest<Organisation, Organi
     @BeforeEach
     public void setUp() {
         organisation1.setName("Cynalco Medics");
-        organisation1.setInfo("Cynaco go go!");
+        organisation1.setInfo("Cynalco go go!");
         repository.save(organisation1);
 
         organisation2.setName("Apple");
@@ -79,7 +77,7 @@ public class OrganisationEndpointTests extends EndpointTest<Organisation, Organi
 
     @Override
     public final Organisation create_entity() {
-        Organisation postOrganisation = new Organisation(ORGANISATION_INFO, TEST_STRING, new HashSet<>());
+        Organisation postOrganisation = new Organisation(ORGANISATION_INFO, TEST_STRING, null);
         return postOrganisation;
     }
 

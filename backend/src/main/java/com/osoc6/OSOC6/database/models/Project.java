@@ -5,19 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
+import javax.persistence.Basic;
 import javax.persistence.Lob;
+import javax.persistence.Column;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Index;
+import javax.persistence.ElementCollection;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ public class Project {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -72,11 +74,11 @@ public class Project {
     private Edition edition;
 
     /**
-     * Set of organisation that are involved in this project.
+     * Organisation that is involved in this project.
      */
-    @ManyToMany(mappedBy = "projects")
+    @OneToOne(mappedBy = "project")
     @Getter
-    private Set<Organisation> organisations;
+    private Organisation partner;
 
     /**
      * The {@link UserEntity}/ admin that created the project.
@@ -103,16 +105,16 @@ public class Project {
      *
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
-     * @param newOrganisations the organisation that the project belongs to
+     * @param newPartner the organisation that the project belongs to
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final Set<Organisation> newOrganisations, final UserEntity newCreator) {
+                   final Organisation newPartner, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
         edition = newEdition;
-        organisations = newOrganisations;
+        partner = newPartner;
         creator = newCreator;
         neededSkills = new HashSet<>();
         coaches = new ArrayList<>();

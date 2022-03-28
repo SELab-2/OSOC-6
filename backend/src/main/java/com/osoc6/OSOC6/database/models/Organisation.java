@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Basic;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.Column;
+import javax.persistence.OneToOne;
 import java.net.URI;
-import java.util.Set;
 
 /**
  * The database entity for an Organisation.
@@ -59,22 +58,22 @@ public class Organisation {
     private URI website;
 
     /**
-     * {@link Set} of projects this Organisation is involved in.
+     * {@link Project} this Organisation is involved in.
      */
-    @ManyToMany
-    @Getter
-    private Set<Project> projects;
+    @OneToOne
+    @Getter @Setter
+    private Project project;
 
     /**
      *
      * @param newInfo the info about the organisation
      * @param newName the name of the organisation
-     * @param newProjects the projects belonging to the organisation
+     * @param newProject the project belonging to the organisation
      */
-    public Organisation(final String newInfo, final String newName, final Set<Project> newProjects) {
+    public Organisation(final String newInfo, final String newName, final Project newProject) {
         super();
         info = newInfo;
         name = newName;
-        projects = newProjects;
+        project = newProject;
     }
 }
