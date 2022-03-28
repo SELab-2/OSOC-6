@@ -1,10 +1,10 @@
-package com.osoc6.OSOC6;
+package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class SkillTypeTests extends EndpointTest<SkillType, SkillTypeRepository> {
+public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -53,7 +53,7 @@ public class SkillTypeTests extends EndpointTest<SkillType, SkillTypeRepository>
      */
     private static final String TEST_STRING = "a1bab8";
 
-    public SkillTypeTests() {
+    public AdminSkillTypeTests() {
         super(SKILLTYPES_PATH, TEST_STRING);
     }
 
@@ -84,8 +84,8 @@ public class SkillTypeTests extends EndpointTest<SkillType, SkillTypeRepository>
     /**
      * Add two test skillTypes to the database.
      */
-    @BeforeEach
-    public void setUp() {
+    @Override
+    public void setUpRepository() {
         skillType1.setColour("42B37B");
         repository.save(skillType1);
 
