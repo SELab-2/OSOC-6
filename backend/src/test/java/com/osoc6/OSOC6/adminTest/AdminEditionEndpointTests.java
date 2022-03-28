@@ -1,10 +1,10 @@
-package com.osoc6.OSOC6;
+package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Class testing the integration of {@link Edition}.
  */
-public class EditionEndpointTests extends EndpointTest<Edition, EditionRepository> {
+public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, EditionRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -47,15 +47,15 @@ public class EditionEndpointTests extends EndpointTest<Edition, EditionRepositor
      */
     private static final String TEST_STRING = "EDITION 2022";
 
-    public EditionEndpointTests() {
+    public AdminEditionEndpointTests() {
         super(EDITIONS_PATH, TEST_STRING);
     }
 
     /**
      * Add two test editions to the database.
      */
-    @BeforeEach
-    public void setUp() {
+    @Override
+    public void setUpRepository() {
         edition1.setName("Edition 1");
         edition1.setYear(0);
         edition1.setActive(false);
