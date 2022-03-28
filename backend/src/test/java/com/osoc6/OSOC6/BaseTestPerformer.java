@@ -1,9 +1,14 @@
 package com.osoc6.OSOC6;
 
 import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -28,12 +33,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @param <I> the id type of the entity
  * @param <R> the repository linked to the entity
  */
-public class BaseTestPerformer<T, I extends Serializable, R extends JpaRepository<T, I>> {
+public abstract class BaseTestPerformer<T, I extends Serializable, R extends JpaRepository<T, I>> {
     /**
      * This mocks the server without starting it.
      */
     @Autowired @Getter
     private MockMvc mockMvc;
+
+    /**
+     * Get the id from an entity, this can be used for multiple purposes.
+     * @param entity entity whose id we would like to know
+     * @return the id of the entity
+     */
+    public abstract I get_id(T entity);
+
+    /**
+     * Get the repository connected to entity T.
+     * @return a repository from entity T
+     */
+    public abstract R get_repository();
+
+    public abstract void setUpRepository();
+
+    /**
+     * Add two test editions to the database.
+     */
+    @BeforeEach
+    public void setUp() {
+        SecurityContext securityContext = new SecurityContextImpl();
+        securityContext.setAuthentication(
+                new TestingAuthenticationToken(null, null, "ADMIN"));
+        SecurityContextHolder.setContext(securityContext);
+        try {
+            setUpRepository();
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
+    }
 
     /**
      * Perform a POST request.

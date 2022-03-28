@@ -3,7 +3,6 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.BaseTestPerformer;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -11,10 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.io.Serializable;
@@ -81,37 +76,6 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
      */
     public abstract T change_entity(T startEntity);
 
-    /**
-     * Get the repository connected to entity T.
-     * @return a repository from entity T
-     */
-    public abstract R get_repository();
-
-    /**
-     * Get the id from an entity, this can be used for multiple purposes.
-     * @param entity entity whose id we would like to know
-     * @return the id of the entity
-     */
-    public abstract I get_id(T entity);
-
-    public abstract void setUpRepository();
-
-    /**
-     * Add two test editions to the database.
-     */
-    @BeforeEach
-    public void setUp() {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-        try {
-            setUpRepository();
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
-    }
-
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void add_new() throws Exception {
@@ -155,9 +119,9 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
         // Errors for entities where name is the id and name is empty
         System.out.println(Util.asJsonStringNoEmptyId(illegalEdition));
         getMockMvc().perform(post(entityPath)
-                .content(Util.asJsonStringNoEmptyId(illegalEdition))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(Util.asJsonStringNoEmptyId(illegalEdition))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
     }
 
