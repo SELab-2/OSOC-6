@@ -20,9 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The database entity for a project.
@@ -76,7 +74,7 @@ public class Project {
      */
     @ManyToMany(mappedBy = "projects")
     @Getter
-    private Set<Organisation> organisations;
+    private List<Organisation> organisations;
 
     /**
      * The {@link UserEntity}/ admin that created the project.
@@ -90,7 +88,7 @@ public class Project {
      */
     @OneToMany(orphanRemoval = true)
     @Getter
-    private Set<Skill> neededSkills;
+    private List<Skill> neededSkills;
 
     /**
      * The Users that will coach this project.
@@ -107,14 +105,14 @@ public class Project {
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final Set<Organisation> newOrganisations, final UserEntity newCreator) {
+                   final List<Organisation> newOrganisations, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
         edition = newEdition;
         organisations = newOrganisations;
         creator = newCreator;
-        neededSkills = new HashSet<>();
+        neededSkills = new ArrayList<>();
         coaches = new ArrayList<>();
     }
 }
