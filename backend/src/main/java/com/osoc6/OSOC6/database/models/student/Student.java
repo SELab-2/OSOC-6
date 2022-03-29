@@ -28,7 +28,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The database entity for a Student.
@@ -232,9 +231,10 @@ public class Student {
     /**
      * The Studies this student has done.
      */
-    @OneToMany(orphanRemoval = true)
+    @ElementCollection
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     @Getter @Singular
-    private Set<Study> studies;
+    private List<String> studies;
 
     /**
      * The skills this student has.
@@ -242,14 +242,14 @@ public class Student {
      */
     @OneToMany(orphanRemoval = true)
     @Getter @Singular
-    private Set<Skill> skills;
+    private List<Skill> skills;
 
     /**
      * The suggestions made about this student.
      */
     @OneToMany(orphanRemoval = true)
     @Getter @Singular
-    private Set<Suggestion> suggestions;
+    private List<Suggestion> suggestions;
 
     /**
      * Communication that this student has received sorted on the timestamp.
