@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import java.net.URI;
-import java.util.Set;
+import java.util.List;
 
 /**
  * The database entity for an Organisation.
@@ -62,7 +62,7 @@ public class Organisation {
      */
     @ManyToMany
     @Getter
-    private Set<Project> projects;
+    private List<Project> projects;
 
     /**
      *
@@ -70,7 +70,7 @@ public class Organisation {
      * @param newName the name of the organisation
      * @param newProjects the projects belonging to the organisation
      */
-    public Organisation(final String newInfo, final String newName, final Set<Project> newProjects) {
+    public Organisation(final String newInfo, final String newName, final List<Project> newProjects) {
         super();
         info = newInfo;
         name = newName;
