@@ -4,30 +4,26 @@ import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.GenerationType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Enumerated;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
-
+import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * The database entity for a User. This entity contains all non-Spring information we need about a user.
@@ -86,19 +82,19 @@ public class UserEntity implements UserDetails {
     private final Boolean enabled = true;
 
     /**
-     * {@link Set} of {@link Invitation} that was sent out by the user.
+     * {@link List} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
-    private Set<Invitation> sendInvitations;
+    private List<Invitation> sendInvitations;
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
     @OneToMany(mappedBy = "subject", orphanRemoval = false)
     @Getter
-    private Set<Invitation> receivedInvitations;
+    private List<Invitation> receivedInvitations;
 
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
@@ -113,7 +109,7 @@ public class UserEntity implements UserDetails {
      */
     @OneToMany(orphanRemoval = true)
     @Getter
-    private Set<Skill> skills;
+    private List<Skill> skills;
 
     /**
      * The projects this User Coaches.
@@ -136,10 +132,10 @@ public class UserEntity implements UserDetails {
         callName = newCallName;
         userRole = newUserRole;
         password = newPassword;
-        sendInvitations = new HashSet<>();
-        receivedInvitations = new HashSet<>();
+        sendInvitations = new ArrayList<>();
+        receivedInvitations = new ArrayList<>();
         communications = new ArrayList<>();
-        skills = new HashSet<>();
+        skills = new ArrayList<>();
         projects = new ArrayList<>();
     }
 
