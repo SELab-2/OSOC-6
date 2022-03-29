@@ -232,9 +232,10 @@ public class Student {
     /**
      * The Studies this student has done.
      */
-    @OneToMany(orphanRemoval = true)
+    @ElementCollection
+    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     @Getter @Singular
-    private Set<Study> studies;
+    private Set<String> studies;
 
     /**
      * The skills this student has.
