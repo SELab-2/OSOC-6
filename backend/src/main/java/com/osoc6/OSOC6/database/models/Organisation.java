@@ -61,7 +61,7 @@ public class Organisation {
      * {@link Project} this Organisation is involved in.
      */
     @OneToOne
-    @Getter
+    @Getter @Setter
     private Project project;
 
     /**

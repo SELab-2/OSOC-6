@@ -31,4 +31,9 @@ public final class DumbledorePathWizard {
      * Path that {@link com.osoc6.OSOC6.database.models.Organisation} is served on.
      */
     public static final String ORGANISATIONS_PATH = "organisations";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Project} is served on.
+     */
+    public static final String PROJECTS_PATH = "projects";
 }
