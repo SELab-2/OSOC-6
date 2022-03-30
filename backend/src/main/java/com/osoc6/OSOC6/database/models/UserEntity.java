@@ -79,10 +79,11 @@ public class UserEntity implements UserDetails {
     /**
      * Indicates whether the account is enabled. Needed to implement UserDetails.
      */
-    private final Boolean enabled = true;
+    @Setter
+    private Boolean enabled = true;
 
     /**
-     * {@link Set} of {@link Invitation} that was sent out by the user.
+     * {@link List} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
