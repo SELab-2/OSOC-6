@@ -17,6 +17,7 @@
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-bootstrap": "^2.2.2",
     "react-i18next": "^11.16.2"
   },
   "devDependencies": {

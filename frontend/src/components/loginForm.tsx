@@ -12,7 +12,6 @@ export default function LoginForm() {
     const router = useRouter();
     return (
         <div className={styles.login_box}>
-            <h1 className="display-6 mb-3">Open Summer of Code</h1>
             <Formik
                 initialValues={{
                     username: '',
@@ -24,7 +23,7 @@ export default function LoginForm() {
                     loginFormData.append('username', values.username);
                     loginFormData.append('password', values.password);
 
-                    const response = await axios({
+                    await axios({
                         method: 'post',
                         url: '/api/login-processing',
                         data: loginFormData,
@@ -36,7 +35,6 @@ export default function LoginForm() {
                         console.log(response.request.responseURL);
                         router.push(response.request.responseURL);
                     });
-                    console.log(response);
                 }}
             >
                 <Form>

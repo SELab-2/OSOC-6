@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * This class sets up the configuration to handle the authentication process.
  */
@@ -49,16 +51,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .httpBasic()
+            .csrf().disable().httpBasic()
             .and()
             .authorizeRequests()
-            .antMatchers("/registration", "/login").permitAll()
-            .anyRequest().authenticated()
+                .antMatchers("/registration", "/login*", "/auth/*").permitAll()
+                .anyRequest().authenticated()
             .and()
-            .formLogin()
-            .loginProcessingUrl("/login-processing")
-            .defaultSuccessUrl("/auth/home", true).permitAll();
+                .formLogin()
+                    .loginProcessingUrl("/login-processing")
+                    .defaultSuccessUrl("/auth/home", true)
+                    .failureForwardUrl("/auth/failure");
     }
 
     /**
