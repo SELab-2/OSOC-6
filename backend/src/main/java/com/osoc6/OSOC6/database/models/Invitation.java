@@ -26,6 +26,7 @@ public class Invitation {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**

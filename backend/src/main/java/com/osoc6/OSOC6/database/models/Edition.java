@@ -51,4 +51,16 @@ public class Edition {
     @Setter @Getter
     private Boolean active;
 
+    /**
+     * Constructor for Edition.
+     * @param newName the name of the OSOC-edition
+     * @param newYear the year in which the edition takes place
+     * @param newActive whether or not the edition is still active
+     */
+    public Edition(final String newName, final int newYear, final boolean newActive) {
+        name = newName;
+        year = newYear;
+        active = newActive;
+    }
+
 }

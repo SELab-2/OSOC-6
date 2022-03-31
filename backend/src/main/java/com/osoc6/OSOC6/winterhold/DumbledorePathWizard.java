@@ -13,6 +13,11 @@ public final class DumbledorePathWizard {
     private DumbledorePathWizard() { }
 
     /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Invitation} is served on.
+     */
+    public static final String INVITATION_PATH = "invitations";
+
+    /**
      * Path that {@link com.osoc6.OSOC6.database.models.Edition} is served on.
      */
     public static final String EDITIONS_PATH = "editions";
