@@ -4,10 +4,7 @@ import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
 
     /**
@@ -96,8 +92,8 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
     /**
      * Remove the two test skillTypes from the database.
      */
-    @AfterEach
-    public void removeTestSkillTypes() {
+    @Override
+    public void removeSetUpRepository() {
         if (repository.existsById(skillType1.getId())) {
             repository.deleteById(skillType1.getId());
         }
@@ -114,6 +110,6 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
 
         perform_field_patch(SKILLTYPES_PATH + "/" + skillType.getId(), "name", "\"A name is final!\"")
                 .andExpect(status().isOk())
-                .andExpect(content().json(Util.asJsonStringExcludingFields(skillType, "id")));
+                .andExpect(content().json(Util.removeFieldsFromJson(transform_to_json(skillType), "id")));
     }
 }

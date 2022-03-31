@@ -11,9 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,11 +81,11 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     public void add_new() throws Exception {
         T entity = create_entity();
 
-        get_repository().save(entity);
+        save_repository_entity(entity);
 
         check_get(entityPath, testString);
 
-        get_repository().delete(entity);
+        delete_repository_entity(entity);
     }
 
     @Test
@@ -110,18 +110,18 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
 
         perform_post(entityPath, entity);
         check_get(entityPath, testString);
-        get_repository().delete(entity);
+        delete_repository_entity(entity);
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_illegal_entity() throws Exception {
         // Errors for entities where name is the id and name is empty
-        System.out.println(Util.asJsonStringNoEmptyId(illegalEdition));
+        System.out.println(Util.asJsonString(illegalEdition));
         getMockMvc().perform(post(entityPath)
-                        .content(Util.asJsonStringNoEmptyId(illegalEdition))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .content(Util.asJsonString(illegalEdition))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
     }
 
@@ -141,8 +141,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
         T newEntity = create_entity();
         perform_post(entityPath, newEntity);
 
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+        T entity = get_random_repository_entity();
 
         // Is the entity really in /entity
         check_get(entityPath, testString);
@@ -151,7 +150,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
         perform_delete_with_id(entityPath, get_id(entity));
 
         // Check if still there
-        if (get_repository().existsById(get_id(entity))) {
+        if (repository_entity_exists(entity)) {
             throw new Exception();
         }
     }
@@ -162,8 +161,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
         T newEntity = create_entity();
         perform_post(entityPath, newEntity);
 
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+        T entity = get_random_repository_entity();
 
         // Is the edition really in /editions
         check_get(entityPath, testString);
@@ -178,36 +176,34 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void patch_changes_value() throws  Exception {
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+    @Transactional
+    public void put_changes_value() throws  Exception {
+        T entity = get_random_repository_entity();
 
         T newEntity = change_entity(entity);
 
-        perform_patch(entityPath + "/" + get_id(entity), newEntity)
+        perform_put(entityPath + "/" + get_id(entity), newEntity)
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testString));
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void patching_illegal_entity_fails() throws Exception {
+    public void patching_entity_to_illegal_id_fails() throws Exception {
         T entity = create_entity();
 
-        perform_patch(entityPath + "/" + ILLEGAL_ID, entity)
+        perform_entity_patch(entityPath + "/" + ILLEGAL_ID, entity)
                 .andExpect(status().isNotFound())
                 .andExpect(string_not_empty());
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void patch_changes_with_null_id_gives_409() throws Exception {
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+    public void patching_entity_to_illegal_string_id_fails() throws Exception {
+        T entity = create_entity();
 
-        T newEntity = change_entity(entity);
-
-        perform_patch_with_nullable_id(entityPath + "/" + get_id(entity), newEntity)
-                .andExpect(status().isConflict());
+        perform_entity_patch(entityPath + "/" + ILLEGAL_NAME, entity)
+                .andExpect(status().isBadRequest())
+                .andExpect(string_not_empty());
     }
 }

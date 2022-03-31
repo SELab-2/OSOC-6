@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -80,13 +79,14 @@ public class UserEntity implements UserDetails {
     /**
      * Indicates whether the account is enabled. Needed to implement UserDetails.
      */
-    private final Boolean enabled = true;
+    @Setter
+    private Boolean enabled = true;
 
     /**
      * {@link List} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
      */
-    @OneToMany(mappedBy = "issuer", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
     private List<Invitation> sendInvitations;
 
@@ -100,7 +100,7 @@ public class UserEntity implements UserDetails {
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
      */
-    @OneToMany(mappedBy = "userEntity", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
     @Getter
     private List<Communication> communications;
@@ -108,7 +108,7 @@ public class UserEntity implements UserDetails {
     /**
      * Set of skills a user has.
      */
-    @OneToMany(cascade = {CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true)
     @Getter
     private List<Skill> skills;
 

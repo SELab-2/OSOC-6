@@ -157,7 +157,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      * Remove the test entities from the database.
      */
     @AfterEach
-    public void remove_test_entities() {
+    public void removeSetUpRepository() {
         initialize_security();
 
         if (projectRepository.existsById(project1.getId())) {
