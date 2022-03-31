@@ -15,8 +15,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyString;
@@ -62,19 +63,27 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     public abstract void removeSetUpRepository();
 
     /**
+     * Execute the given lambda with admin authorization.
+     * @param lambda the lambda to execute
+     */
+    private void performAsAdmin(final Runnable lambda) {
+        try {
+            SecurityContext securityContext = new SecurityContextImpl();
+            securityContext.setAuthentication(
+                    new TestingAuthenticationToken(null, null, "ADMIN"));
+            SecurityContextHolder.setContext(securityContext);
+            lambda.run();
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
+    }
+
+    /**
      * Set up the repository, with admin authority.
      */
     @BeforeEach
     public void setUp() {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-        try {
-            setUpRepository();
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
+        performAsAdmin(this::setUpRepository);
     }
 
     /**
@@ -82,15 +91,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @AfterEach
     public void removeSetUp() {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-        try {
-            removeSetUpRepository();
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
+        performAsAdmin(this::removeSetUpRepository);
     }
 
     /**
@@ -113,7 +114,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public ResultActions perform_post(final String path, final T entity) throws Exception {
         return mockMvc.perform(post(path)
-                .content(Util.removeEmptyIdFromJson(transform_to_json(entity)))
+                .content(transform_to_json(entity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
@@ -165,13 +166,13 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @throws Exception throws exception if the request or a check fails
      */
     public ResultActions perform_put(final String path, final T entity) throws Exception {
-        return mockMvc.perform(put(path).content(Util.removeEmptyIdFromJson(transform_to_json(entity)))
+        return mockMvc.perform(put(path).content(transform_to_json(entity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
 
     /**
-     * Perform a PATCH request.
+     * Perform a PATCH request with select fields.
      *
      * @param path The path the entity is served on, with '/' as prefix
      * @param map A map representing the content body (json)
@@ -180,6 +181,20 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public ResultActions perform_patch(final String path, final Map<String, String> map) throws Exception {
         return mockMvc.perform(patch(path).content(Util.asJsonString(map))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /**
+     * Perform a PATCH request with the (full) entity.
+     *
+     * @param path The path the entity is served on, with '/' as prefix
+     * @param entity The entity to patch
+     * @return a result action that can be used for more checks
+     * @throws Exception throws exception if the request or a check fails
+     */
+    public ResultActions perform_entity_patch(final String path, final T entity) throws Exception {
+        return mockMvc.perform(patch(path).content(transform_to_json(entity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
@@ -224,19 +239,9 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @return a random entity.
      */
     public T get_random_repository_entity() {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-
-        List<T> entities;
-        try {
-            entities = get_repository().findAll();
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
-
-        return entities.get(0);
+        AtomicReference<T> entity = new AtomicReference<>();
+        performAsAdmin(() -> entity.set(get_repository().findAll().get(0)));
+        return entity.get();
     }
 
     /**
@@ -244,16 +249,8 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @param entity entity to save
      */
     public void save_repository_entity(final T entity) {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
+        performAsAdmin(() -> get_repository().save(entity));
 
-        try {
-            get_repository().save(entity);
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
     }
 
     /**
@@ -261,16 +258,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @param entity entity to delete
      */
     public void delete_repository_entity(final T entity) {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-
-        try {
-            get_repository().delete(entity);
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
+        performAsAdmin(() -> get_repository().delete(entity));
     }
 
     /**
@@ -279,18 +267,8 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @return boolean whether the entity exists or not
      */
     public boolean repository_entity_exists(final T entity) {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-
-        boolean exists;
-        try {
-            exists = get_repository().existsById(get_id(entity));
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
-
-        return exists;
+        AtomicBoolean exists = new AtomicBoolean(false);
+        performAsAdmin(() -> exists.set(get_repository().existsById(get_id(entity))));
+        return exists.get();
     }
 }

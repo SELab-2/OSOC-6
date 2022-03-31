@@ -15,15 +15,6 @@ public final class Util {
     private Util() { }
 
     /**
-     * Remove the null id field from a JSON object.
-     * @param json JSON object to remove null id field from
-     * @return JSON string which contains the updated JSON object
-     */
-    public static String removeEmptyIdFromJson(final String json) {
-        return json.replace("\"id\":null,", "");
-    }
-
-    /**
      * Remove the specified fields from the JSON object.
      * @param json JSON object to remove fields from
      * @param fields list of fields that need to be removed from the json object.

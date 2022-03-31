@@ -117,9 +117,9 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_illegal_entity() throws Exception {
         // Errors for entities where name is the id and name is empty
-        System.out.println(Util.removeEmptyIdFromJson(Util.asJsonString(illegalEdition)));
+        System.out.println(Util.asJsonString(illegalEdition));
         getMockMvc().perform(post(entityPath)
-                .content(Util.removeEmptyIdFromJson(Util.asJsonString(illegalEdition)))
+                .content(Util.asJsonString(illegalEdition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
@@ -185,5 +185,25 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
         perform_put(entityPath + "/" + get_id(entity), newEntity)
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testString));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void patching_entity_to_illegal_id_fails() throws Exception {
+        T entity = create_entity();
+
+        perform_entity_patch(entityPath + "/" + ILLEGAL_ID, entity)
+                .andExpect(status().isNotFound())
+                .andExpect(string_not_empty());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void patching_entity_to_illegal_string_id_fails() throws Exception {
+        T entity = create_entity();
+
+        perform_entity_patch(entityPath + "/" + ILLEGAL_NAME, entity)
+                .andExpect(status().isBadRequest())
+                .andExpect(string_not_empty());
     }
 }
