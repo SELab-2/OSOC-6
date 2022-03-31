@@ -11,6 +11,6 @@ export default {
     collectCoverageFrom: ['<rootDir>/src/**'],
     moduleFileExtensions: ['ts', 'js', 'tsx'],
     moduleNameMapper: {
-        "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    }
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    },
 };
