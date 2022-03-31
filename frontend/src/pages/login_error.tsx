@@ -13,9 +13,7 @@ const LoginError: NextPage = () => {
             <main className="m-4">
                 <Card>
                     <Card.Body>
-                        <Card.Text>
-                            Invalid username and/or password.
-                        </Card.Text>
+                        <Card.Text>Invalid username and/or password.</Card.Text>
                     </Card.Body>
                 </Card>
                 <LoginForm />

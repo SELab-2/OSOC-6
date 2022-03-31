@@ -4,10 +4,13 @@
  */
 
 export default {
-    testEnvironment: 'node',
+    testEnvironment: 'jsdom',
     preset: 'ts-jest',
     collectCoverage: true,
-    //testPathIgnorePatterns: ['<rootDir>/.node/'],
+    testPathIgnorePatterns: ['<rootDir>/.node/'],
     collectCoverageFrom: ['<rootDir>/src/**'],
     moduleFileExtensions: ['ts', 'js', 'tsx'],
+    moduleNameMapper: {
+        "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    }
 };
