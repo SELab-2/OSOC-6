@@ -95,6 +95,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
 
     /**
      * Transform the entity to a JSON object.
+     * A super class can override this function to alter the JSON format of the entity.
      * @param entity entity to transform
      * @return the JSON object
      */
