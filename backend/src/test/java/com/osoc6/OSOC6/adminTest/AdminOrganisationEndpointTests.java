@@ -66,7 +66,7 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
      * Remove the two test organisations from the database.
      */
     @AfterEach
-    public void remove_test_organisations() {
+    public void removeSetUpRepository() {
         if (repository.existsById(organisation1.getId())) {
             repository.deleteById(organisation1.getId());
         }

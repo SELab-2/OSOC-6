@@ -75,7 +75,7 @@ public class Project {
     /**
      * Partner that is involved in this project.
      */
-    @OneToOne(mappedBy = "project")
+    @OneToOne
     @Getter
     private Organisation partner;
 
