@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.database.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -25,13 +26,14 @@ public class Suggestion {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
      * Strategy this suggestion takes.
      */
     @Basic(optional = false)
-    @Getter
+    @Getter @Setter
     private SuggestionStrategy strategy;
 
     /**
@@ -39,7 +41,7 @@ public class Suggestion {
      */
     @Basic(optional = false)
     @Lob
-    @Getter
+    @Getter @Setter
     private String reason;
 
     /**
