@@ -6,20 +6,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+/**
+ * This class handles the redirects caused by the login system.
+ */
 @RequestMapping("/auth")
 @RestController
 public class LoginController {
+    /**
+     * Upon a successful authentication the user is redirected to the home page.
+     * @param response response to the get request
+     */
     @GetMapping("/home")
-    public void succesfullAuthentication(HttpServletResponse response) {
+    public void succesfulAuthentication(final HttpServletResponse response) {
         response.setHeader("Location", "/home");
-        response.setStatus(302);
+        response.setStatus(HttpServletResponse.SC_FOUND);
     }
 
+    /**
+     * Upon a failed authentication the user is redirected to the login_error page.
+     * @param response response to the post request
+     */
     @PostMapping("/failure")
-    public void handleFailure(HttpServletResponse response) {
+    public void handleFailure(final HttpServletResponse response) {
         response.setHeader("Location", "/login_error");
-        response.setStatus(302);
+        response.setStatus(HttpServletResponse.SC_FOUND);
     }
 }
