@@ -7,6 +7,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class testing the integration of {@link Organisation}.
  */
@@ -82,8 +85,8 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
     }
 
     @Override
-    public final Organisation change_entity(final Organisation organisation) {
-        return create_entity();
+    public final Map<String, String> change_entity(final Organisation organisation) {
+        return new HashMap<>();
     }
 
     @Override

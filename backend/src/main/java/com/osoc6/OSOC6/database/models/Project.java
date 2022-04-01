@@ -75,8 +75,8 @@ public class Project {
     /**
      * Partner that is involved in this project.
      */
-    @OneToOne
-    @Getter
+    @OneToOne(optional = true)
+    @Getter @Setter
     private Organisation partner;
 
     /**

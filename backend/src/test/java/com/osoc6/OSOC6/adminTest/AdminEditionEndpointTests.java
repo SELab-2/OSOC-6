@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,8 +91,8 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     }
 
     @Override
-    public final Edition change_entity(final Edition edition) {
-        return create_entity();
+    public final Map<String, String> change_entity(final Edition edition) {
+        return new HashMap<>();
     }
 
     @Override

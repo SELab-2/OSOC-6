@@ -17,14 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.test.web.servlet.ResultActions;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class testing the integration of {@link Project}.
@@ -77,12 +72,12 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     /**
      * First sample project that gets loaded before every test.
      */
-    private final Project project1 = new Project("Facebook", edition, null, user1);
+    private final Project project1 = new Project();
 
     /**
      * Second sample project that gets loaded before every test.
      */
-    private final Project project2 = new Project("Instagram", edition, null, user1);
+    private final Project project2 = new Project();
 
     /**
      * Sample organisation that gets loaded before every test.
@@ -105,29 +100,10 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     /**
-     * Since the UserRepository is secured, we need to do this to save users.
-     */
-    public void initialize_security() {
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-    }
-
-    /**
-     * After the users are saved, the context can be cleared.
-     */
-    public void remove_security() {
-        SecurityContextHolder.clearContext();
-    }
-
-    /**
      * Add two test projects, a user and an edition to the database.
      */
     @Override
     public void setUpRepository() {
-        initialize_security();
-
         organisationRepository.save(organisation);
 
         edition.setActive(true);
@@ -136,7 +112,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
         editionRepository.save(edition);
 
-        initialize_security();
         user1.setEmail("lukas@gmail.com");
         user1.setCallName("Lukas");
         user1.setUserRole(UserRole.ADMIN);
@@ -144,10 +119,18 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
         userRepository.save(user1);
 
+        project1.setName("Facebook");
+        project1.setEdition(edition);
+        project1.setPartner(null);
+        project1.setCreator(user1);
+
+        project2.setName("Instagram");
+        project2.setEdition(edition);
+        project2.setPartner(organisation);
+        project2.setCreator(user1);
+
         projectRepository.save(project1);
         projectRepository.save(project2);
-
-        remove_security();
     }
 
     /**
@@ -155,35 +138,26 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        initialize_security();
+        organisationRepository.deleteAll();
+
         projectRepository.deleteAll();
 
-        if (editionRepository.existsById(edition.getId())) {
-            editionRepository.deleteById(edition.getId());
-        }
-        if (userRepository.existsById(user1.getId())) {
-            userRepository.deleteById(user1.getId());
-        }
-        if (organisationRepository.existsById(organisation.getId())) {
-            organisationRepository.deleteById(organisation.getId());
-        }
-        remove_security();
+        userRepository.deleteAll();
+
+        editionRepository.deleteAll();
     }
 
     @Override
     public final Project create_entity() {
         // Setting organisation to null makes more tests pass, but kind of defeats the purpose of testing...
-        return new Project(TEST_STRING, edition, organisation, user1);
+        return new Project(TEST_STRING, edition, null, user1);
     }
 
     @Override
-    public final Project change_entity(final Project project) {
-        Project changed = new Project(project.getName(),
-                           project.getEdition(),
-                           project.getPartner(),
-                           project.getCreator());
-        changed.setName(TEST_STRING);
-        return changed;
+    public final Map<String, String> change_entity(final Project project) {
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("name", TEST_STRING);
+        return patchMap;
     }
 
     @Override
@@ -197,27 +171,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     @Override
-    public final ResultActions perform_post(final String path, final Project entity) throws Exception {
-        return getMockMvc().perform(post(PROJECTS_PATH)
-                .content(projectToString(entity))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-    }
-
-    @Override
-    public final ResultActions perform_put(final String path, final Project entity) throws Exception {
-        return getMockMvc().perform(put(path)
-                .content(projectToString(entity))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-    }
-
-    /**
-     *
-     * @param entity the Project of which we want the JSON
-     * @return a string of the JSON representation with the edition and creator replaced by URI's instead of more JSON's
-     */
-    public String projectToString(final Project entity) {
+    public String transform_to_json(Project entity) {
         String json = Util.asJsonStringNoEmptyId(entity);
 
         String editionToUrl = entityLinks.linkToItemResource(Edition.class, edition.getId().toString()).getHref();
@@ -228,5 +182,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
         return json;
     }
+
 }
 
