@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public final class CoachSkillTypeTests extends TestFunctionProvider<SkillType, Long, SkillTypeRepository> {
+public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<SkillType, Long, SkillTypeRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -47,7 +47,7 @@ public final class CoachSkillTypeTests extends TestFunctionProvider<SkillType, L
      */
     private static final String TEST_STRING = "a1bab8";
 
-    public CoachSkillTypeTests() {
+    public CoachSkillTypeEndpointTests() {
         super(SKILLTYPES_PATH, TEST_STRING);
     }
 

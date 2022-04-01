@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
+public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -47,7 +47,7 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
      */
     private static final String TEST_STRING = "a1bab8";
 
-    public AdminSkillTypeTests() {
+    public AdminSkillTypeEndpointTests() {
         super(SKILLTYPES_PATH, TEST_STRING);
     }
 
