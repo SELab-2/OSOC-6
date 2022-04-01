@@ -64,9 +64,14 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
 
     @Override
     public final Map<String, String> change_entity(final SkillType skillType) {
+        /*
         SkillType changedSkillType = new SkillType(skillType.getName());
         changedSkillType.setColour(TEST_STRING);
-        return new HashMap<>();
+
+         */
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("colour", TEST_STRING);
+        return patchMap;
     }
 
     @Override

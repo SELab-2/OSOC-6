@@ -138,9 +138,9 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        organisationRepository.deleteAll();
-
         projectRepository.deleteAll();
+
+        organisationRepository.deleteAll();
 
         userRepository.deleteAll();
 
@@ -170,8 +170,13 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         return project.getId();
     }
 
+    /**
+     * Transforms a Project-JSON to its String-representation.
+     * @param entity entity to transform
+     * @return the string representation
+     */
     @Override
-    public String transform_to_json(Project entity) {
+    public String transform_to_json(final Project entity) {
         String json = Util.asJsonStringNoEmptyId(entity);
 
         String editionToUrl = entityLinks.linkToItemResource(Edition.class, edition.getId().toString()).getHref();

@@ -100,7 +100,9 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
 
     @Override
     public final Map<String, String> change_entity(final UserEntity startEntity) {
-        return new HashMap<>();
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("callName", TEST_STRING);
+        return patchMap;
     }
 
     @Override
