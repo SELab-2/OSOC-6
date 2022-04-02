@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Class testing the integration of {@link CommunicationTemplate} with admin privileges.
  */
-public final class AdminCommunicationTemplateTest extends
+public final class AdminCommunicationTemplateEndpointTests extends
         AdminEndpointTest<CommunicationTemplate, Long, CommunicationTemplateRepository> {
 
     /**
@@ -38,7 +38,7 @@ public final class AdminCommunicationTemplateTest extends
      */
     private static final String TEST_STRING = "Dear sir, madam, I think I'm in love with you.";
 
-    public AdminCommunicationTemplateTest() {
+    public AdminCommunicationTemplateEndpointTests() {
         super(COMMUNICATION_TEMPLATE_PATH, TEST_STRING);
     }
 
