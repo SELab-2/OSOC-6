@@ -3,8 +3,6 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.database.models.Organisation;
 import com.osoc6.OSOC6.repository.OrganisationRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -54,7 +52,7 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
     /**
      * Add two test organisations to the database.
      */
-    @BeforeEach
+    @Override
     public void setUpRepository() {
         organisation1.setName("Cynalco Medics");
         organisation1.setInfo("Cynalco go go!");
@@ -68,7 +66,7 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
     /**
      * Remove the two test organisations from the database.
      */
-    @AfterEach
+    @Override
     public void removeSetUpRepository() {
         if (repository.existsById(organisation1.getId())) {
             repository.deleteById(organisation1.getId());
