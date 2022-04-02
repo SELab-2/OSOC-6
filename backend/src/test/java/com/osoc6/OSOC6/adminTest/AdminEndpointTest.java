@@ -14,6 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,9 +46,9 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
      * Change the entity to have a different field value.
      * This will be used to test whether a patch request works.
      * @param startEntity the entity we would like to change
-     * @return an entity with a new value for a field
+     * @return an map containing names of fields and new values
      */
-    public abstract T change_entity(T startEntity);
+    public abstract Map<String, String> change_entity(T startEntity);
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
@@ -153,12 +154,12 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Transactional
-    public void put_changes_value() throws  Exception {
+    public void patch_changes_value() throws  Exception {
         T entity = get_random_repository_entity();
 
-        T newEntity = change_entity(entity);
+        Map<String, String> patchMap = change_entity(entity);
 
-        perform_put(getEntityPath() + "/" + get_id(entity), newEntity)
+        perform_patch(this.getEntityPath() + "/" + get_id(entity), patchMap)
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getTestString()));
     }

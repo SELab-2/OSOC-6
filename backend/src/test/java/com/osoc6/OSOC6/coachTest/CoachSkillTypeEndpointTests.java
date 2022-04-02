@@ -11,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -126,7 +129,11 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     @WithMockUser(username = "coach", authorities = {"COACH"})
     public void patching_skilltype_fails() throws Exception {
         SkillType entity = get_random_repository_entity();
-        perform_entity_patch(SKILLTYPES_PATH + "/" + entity.getId(), entity)
+
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("colour", TEST_STRING);
+
+        perform_patch(SKILLTYPES_PATH + "/" + entity.getId(), patchMap)
                 .andExpect(status().isForbidden());
     }
 
