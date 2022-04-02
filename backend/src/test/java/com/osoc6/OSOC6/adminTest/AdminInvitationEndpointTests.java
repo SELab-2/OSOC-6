@@ -19,6 +19,12 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Class testing the integration of {@link Invitation}.
@@ -26,7 +32,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, Long, InvitationRepository>{
+public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, Long, InvitationRepository> {
 
     /**
      * The actual path invitations are served on, with '/' as prefix.
@@ -98,7 +104,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     }
 
     @Override
-    public final Long get_id(Invitation entity) {
+    public final Long get_id(final Invitation entity) {
         return entity.getId();
     }
 
@@ -107,6 +113,9 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
         return repository;
     }
 
+    /**
+     * Add two test invitations to the database.
+     */
     @Override
     public void setUpRepository() {
         // Since the userRepository is secured,
@@ -119,6 +128,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
         // Needed for database relation
         userRepository.save(issuer);
         userRepository.save(subject);
+        userRepository.save(testSubject);
 
         // After saving the test users, we clear the security context as to not interfere with any remaining tests.
         SecurityContextHolder.clearContext();
@@ -155,19 +165,108 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
         if (userRepository.existsById(subject.getId())) {
             userRepository.deleteById(subject.getId());
         }
+        if (userRepository.existsById(testSubject.getId())) {
+            userRepository.deleteById(testSubject.getId());
+        }
 
         // After deleting the test users, we clear the security context as to not interfere with any remaining tests.
         SecurityContextHolder.clearContext();
     }
 
     @Override
-    public Invitation create_entity() {
+    public final Invitation create_entity() {
         return new Invitation(edition, issuer, testSubject);
     }
 
     @Override
-    public Invitation change_entity(Invitation startEntity) {
+    public final Invitation change_entity(final Invitation startEntity) {
         startEntity.setSubject(testSubject);
         return startEntity;
+    }
+
+    @Override
+    public final void add_new() throws Exception {
+        Invitation entity = create_entity();
+
+        get_repository().save(entity);
+
+        check_get(INVITATION_PATH, entity.getTimestamp().toString());
+
+        get_repository().delete(entity);
+    }
+
+    @Override
+    public final void post_new() throws Exception {
+        Invitation entity = create_entity();
+
+        perform_post(INVITATION_PATH, entity);
+        check_get(INVITATION_PATH, entity.getTimestamp().toString());
+        get_repository().delete(entity);
+    }
+
+    @Override
+    public final void delete_entity_throws_not_found() throws Exception {
+        Invitation newEntity = create_entity();
+        perform_post(INVITATION_PATH, newEntity);
+
+        List<Invitation> entities = get_repository().findAll();
+        Invitation entity = entities.get(0);
+
+        // Is the invitation really in /invitations
+        check_get(INVITATION_PATH, newEntity.getTimestamp().toString());
+
+        // Run the delete request
+        perform_delete_with_id(INVITATION_PATH, get_id(entity));
+
+        perform_delete_with_id(INVITATION_PATH, get_id(entity))
+                .andExpect(status().isNotFound())
+                .andExpect(string_not_empty());
+    }
+
+    @Override
+    public final void delete_new() throws Exception {
+        Invitation newEntity = create_entity();
+        perform_post(INVITATION_PATH, newEntity);
+
+        List<Invitation> entities = get_repository().findAll();
+        Invitation entity = entities.get(0);
+
+        // Is the entity really in /entity
+        check_get(INVITATION_PATH, newEntity.getTimestamp().toString());
+
+        // Run the delete request
+        perform_delete_with_id(INVITATION_PATH, get_id(entity));
+
+        // Check if still there
+        if (get_repository().existsById(get_id(entity))) {
+            throw new Exception();
+        }
+    }
+
+    /**
+     * Transactional is needed because a user gets fetched lazily.
+     */
+    @Override
+    @Transactional
+    public ResultActions perform_patch_with_nullable_id(final String path, final Invitation entity) throws Exception {
+        return super.perform_patch_with_nullable_id(path, entity);
+    }
+
+    /**
+     * Transactional is needed because a user gets fetched lazily.
+     */
+    @Override
+    @Transactional
+    public void patch_changes_value() throws Exception {
+        super.patch_changes_value();
+    }
+
+    /**
+     * Transactional is needed because a user gets fetched lazily.
+     */
+    @Override
+    @Transactional
+    public void patch_changes_with_null_id_gives_409() throws Exception {
+        super.patch_changes_with_null_id_gives_409();
     }
 }
