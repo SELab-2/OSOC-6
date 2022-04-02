@@ -23,6 +23,6 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
      * @param name the name of the searched organisation
      * @return list of matched organisations
      */
-//    @PostFilter("filterObject.project.edition == 53553")
+    @PostFilter("filterObject.project.edition == 53553")
     List<Organisation> findByName(@Param("name") String name);
 }

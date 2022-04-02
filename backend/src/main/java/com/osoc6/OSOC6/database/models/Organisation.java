@@ -63,7 +63,7 @@ public class Organisation {
     /**
      * {@link Project} this Organisation is involved in.
      */
-    @OneToOne(mappedBy = "partner", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "partner")
     @Getter @Setter
     private Project project;
 

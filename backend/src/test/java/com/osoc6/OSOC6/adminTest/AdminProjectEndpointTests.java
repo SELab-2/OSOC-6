@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 /**
  * Class testing the integration of {@link Project}.
  */
@@ -140,9 +142,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
         projectRepository.save(project1);
         projectRepository.save(project2);
-
-        organisationRepository.flush();
-        projectRepository.flush();
     }
 
     @Test
@@ -156,7 +155,11 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
             SecurityContextHolder.setContext(securityContext);
             List<Project> projects = projectRepository.findByName(project2.getName());
             List<Organisation> organisations = organisationRepository.findByName(organisation.getName());
-            organisations.contains(organisation);
+            perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH)
+                    .andDo(print());
+            assert organisations.get(0).getProject().equals(project2);
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             SecurityContextHolder.clearContext();
         }
@@ -168,13 +171,13 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-//        projectRepository.deleteAll();
-//
-//        organisationRepository.deleteAll();
-//
-//        userRepository.deleteAll();
-//
-//        editionRepository.deleteAll();
+        projectRepository.deleteAll();
+
+        organisationRepository.deleteAll();
+
+        userRepository.deleteAll();
+
+        editionRepository.deleteAll();
     }
 
     @Override

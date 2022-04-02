@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -78,8 +79,8 @@ public class Project {
     /**
      * Partner that is involved in this project.
      */
-    @OneToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "project")
+    @OneToOne(optional = true)
+    @JoinColumn(name = "partner_id")
     @Getter @Setter
     private Organisation partner;
 
