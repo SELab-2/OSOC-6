@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
@@ -25,7 +26,7 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
     /**
      * An illegal Long id.
      */
-    private static final long ILLEGAL_ID = 99999999L;
+    private static final long ILLEGAL_ID = 0L;
 
     /**
      * An illegal string id.
@@ -49,6 +50,14 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
      * @return Entity of class T
      */
     public abstract T create_entity();
+
+    /**
+     * Change the entity to have a different field value.
+     * This will be used to test whether a patch request works.
+     * @param startEntity the entity we would like to change
+     * @return an map containing names of fields and new values
+     */
+    public abstract Map<String, String> change_entity(T startEntity);
 
     public TestFunctionProvider(final String path, final String newTestString) {
         entityPath = path;

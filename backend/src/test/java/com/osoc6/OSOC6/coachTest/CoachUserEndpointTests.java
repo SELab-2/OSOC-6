@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,6 +59,13 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
         userEntity.setPassword("123456");
         userEntity.setUserRole(UserRole.COACH);
         return userEntity;
+    }
+
+    @Override
+    public Map<String, String> change_entity(final UserEntity startEntity) {
+        Map<String, String> changeMap = new HashMap<>();
+        changeMap.put("callName", TEST_STRING);
+        return changeMap;
     }
 
     public CoachUserEndpointTests() {

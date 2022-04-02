@@ -61,6 +61,7 @@ public final class CoachCommunicationTemplateEndpointTests
         return repository;
     }
 
+    @Override
     public Map<String, String> change_entity(final CommunicationTemplate startEntity) {
         Map<String, String> changeMap = new HashMap<>();
         changeMap.put("template", TEST_STRING);

@@ -42,14 +42,6 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
         super(path, newTestString);
     }
 
-    /**
-     * Change the entity to have a different field value.
-     * This will be used to test whether a patch request works.
-     * @param startEntity the entity we would like to change
-     * @return an map containing names of fields and new values
-     */
-    public abstract Map<String, String> change_entity(T startEntity);
-
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void add_new() throws Exception {
