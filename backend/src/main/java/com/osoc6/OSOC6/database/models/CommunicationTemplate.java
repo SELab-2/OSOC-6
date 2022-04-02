@@ -25,6 +25,7 @@ public class CommunicationTemplate {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**

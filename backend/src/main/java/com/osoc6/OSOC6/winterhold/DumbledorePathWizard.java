@@ -26,4 +26,9 @@ public final class DumbledorePathWizard {
      * Path that {@link com.osoc6.OSOC6.database.models.UserEntity} is served on.
      */
     public static final String USERS_PATH = "users";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.CommunicationTemplate} is served on.
+     */
+    public static final String COMMUNICATION_TEMPLATE_PATH = "communicationTemplates";
 }
