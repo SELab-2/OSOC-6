@@ -62,6 +62,13 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     }
 
     @Override
+    public Map<String, String> change_entity(final SkillType startEntity) {
+        Map<String, String> changeMap = new HashMap<>();
+        changeMap.put("colour", TEST_STRING);
+        return changeMap;
+    }
+
+    @Override
     public SkillTypeRepository get_repository() {
         return repository;
     }
