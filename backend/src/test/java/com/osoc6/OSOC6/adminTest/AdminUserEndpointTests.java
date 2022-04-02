@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,8 +99,10 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Override
-    public final UserEntity change_entity(final UserEntity startEntity) {
-        return create_entity();
+    public final Map<String, String> change_entity(final UserEntity startEntity) {
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("callName", TEST_STRING);
+        return patchMap;
     }
 
     @Override

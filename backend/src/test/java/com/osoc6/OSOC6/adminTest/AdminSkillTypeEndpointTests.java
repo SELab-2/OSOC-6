@@ -10,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -59,10 +62,10 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
     }
 
     @Override
-    public final SkillType change_entity(final SkillType skillType) {
-        SkillType changedSkillType = new SkillType(skillType.getName());
-        changedSkillType.setColour(TEST_STRING);
-        return changedSkillType;
+    public final Map<String, String> change_entity(final SkillType skillType) {
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("colour", TEST_STRING);
+        return patchMap;
     }
 
     @Override
