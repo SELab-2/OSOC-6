@@ -79,6 +79,8 @@ public class CoachOrganisationEndpointTests
      */
     @Override
     public void setUpRepository() {
+        repository.deleteAll();
+
         organisation.setName("Cynalco Medics");
         organisation.setInfo("Cynalco go go!");
 
