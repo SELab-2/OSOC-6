@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
-import com.osoc6.OSOC6.BaseTestPerformer;
+import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.UserRepository;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CoachUserEndpointTests extends BaseTestPerformer<UserEntity, Long, UserRepository> {
+public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntity, Long, UserRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -38,18 +38,39 @@ public class CoachUserEndpointTests extends BaseTestPerformer<UserEntity, Long, 
      * The admin sample user that gets loaded before every test.
      */
     private final UserEntity adminUser = new UserEntity();
+
     /**
      * The coach sample user that gets loaded before every test.
      */
     private final UserEntity coachUser = new UserEntity();
 
+    /**
+     * The string that will be set on a POST or PATCH and will be looked for.
+     * This string should be unique.
+     */
+    private static final String TEST_STRING = "Test Callname";
+
     @Override
-    public final Long get_id(final UserEntity entity) {
+    public UserEntity create_entity() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail("test@test.com");
+        userEntity.setCallName(TEST_STRING);
+        userEntity.setPassword("123456");
+        userEntity.setUserRole(UserRole.COACH);
+        return userEntity;
+    }
+
+    public CoachUserEndpointTests() {
+        super(USERS_PATH, TEST_STRING);
+    }
+
+    @Override
+    public Long get_id(final UserEntity entity) {
         return entity.getId();
     }
 
     @Override
-    public final UserRepository get_repository() {
+    public UserRepository get_repository() {
         return userRepository;
     }
 

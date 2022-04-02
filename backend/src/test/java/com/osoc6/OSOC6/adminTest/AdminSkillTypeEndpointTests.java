@@ -10,17 +10,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class testing the integration of {@link SkillType}.
+ * Class testing the integration of {@link SkillType} for an Admin.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
+public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -49,7 +50,7 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
      */
     private static final String TEST_STRING = "a1bab8";
 
-    public AdminSkillTypeTests() {
+    public AdminSkillTypeEndpointTests() {
         super(SKILLTYPES_PATH, TEST_STRING);
     }
 
@@ -61,10 +62,10 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
     }
 
     @Override
-    public final SkillType change_entity(final SkillType skillType) {
-        SkillType changedSkillType = new SkillType(skillType.getName());
-        changedSkillType.setColour(TEST_STRING);
-        return changedSkillType;
+    public final Map<String, String> change_entity(final SkillType skillType) {
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("colour", TEST_STRING);
+        return patchMap;
     }
 
     @Override
@@ -105,11 +106,18 @@ public class AdminSkillTypeTests extends AdminEndpointTest<SkillType, Long, Skil
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void editing_final_field_is_indifferent() throws Exception {
-        List<SkillType> skillTypes = repository.findAll();
-        SkillType skillType = skillTypes.get(0);
+        SkillType skillType = get_random_repository_entity();
 
         perform_field_patch(SKILLTYPES_PATH + "/" + skillType.getId(), "name", "\"A name is final!\"")
                 .andExpect(status().isOk())
                 .andExpect(content().json(Util.removeFieldsFromJson(transform_to_json(skillType), "id")));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void find_by_name_works() throws Exception {
+        SkillType skillType = get_random_repository_entity();
+        base_test_all_queried_assertions(
+                SKILLTYPES_PATH + "/search/findByName", "name", skillType.getName());
     }
 }
