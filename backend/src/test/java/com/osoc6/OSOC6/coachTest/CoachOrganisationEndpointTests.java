@@ -106,6 +106,18 @@ public class CoachOrganisationEndpointTests
         return new Organisation(ORGANISATION_INFO, TEST_STRING, null);
     }
 
+    /**
+     * Get a map telling us what fields to change to which values.
+     * @param startEntity the entity we would like to change
+     * @return a map with field names and new values
+     */
+    @Override
+    public Map<String, String> change_entity(final Organisation startEntity) {
+        Map<String, String> changeMap = new HashMap<>();
+        changeMap.put("name", TEST_STRING);
+        return changeMap;
+    }
+
     @Test
     @WithMockUser(username = "coach", authorities = {"COACH"})
     @Transactional
