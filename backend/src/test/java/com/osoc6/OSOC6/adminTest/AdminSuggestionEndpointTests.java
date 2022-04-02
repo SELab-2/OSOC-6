@@ -8,6 +8,7 @@ import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,11 +109,12 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         // Needed for database relation
         userRepository.save(user1);
 
-        // After saving the test users, we clear the security context as to not interfere with any remaining tests.
-        SecurityContextHolder.clearContext();
 
         repository.save(suggestion1);
         repository.save(suggestion2);
+
+        // After saving the test users, we clear the security context as to not interfere with any remaining tests.
+        SecurityContextHolder.clearContext();
     }
 
     @Override
@@ -161,8 +164,10 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     /**
      * Transactional is needed because a user gets fetched lazily.
      */
+    @Test
     @Override
     @Transactional
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patch_changes_value() throws Exception {
         super.patch_changes_value();
     }
