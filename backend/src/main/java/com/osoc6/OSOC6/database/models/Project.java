@@ -79,8 +79,8 @@ public class Project {
     /**
      * Partner that is involved in this project.
      */
-    @OneToOne(optional = true)
-    @JoinColumn(name = "partner_id")
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "partner_id", referencedColumnName = "id")
     @Getter @Setter
     private Organisation partner;
 

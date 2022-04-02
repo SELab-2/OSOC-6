@@ -42,7 +42,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     private static final String USERS_PATH = "/" + DumbledorePathWizard.USERS_PATH;
 
     /**
-     * The string that will be set on a patch and will be looked for.
+     * The string that will be set on a POST or PATCH and will be looked for.
      * This string should be unique.
      */
     private static final String TEST_STRING = "Test Callname";

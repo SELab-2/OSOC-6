@@ -18,19 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Class testing the integration of {@link Project}.
@@ -115,7 +110,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void setUpRepository() {
-        organisationRepository.save(organisation);
+//        organisationRepository.save(organisation);
 
         edition.setActive(true);
         edition.setName("OSOC2022");
@@ -145,24 +140,12 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     @Test
-    @Transactional
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void test_if_works() {
-        try {
-            SecurityContext securityContext = new SecurityContextImpl();
-            securityContext.setAuthentication(
-                    new TestingAuthenticationToken(null, null, "ADMIN"));
-            SecurityContextHolder.setContext(securityContext);
-            List<Project> projects = projectRepository.findByName(project2.getName());
-            List<Organisation> organisations = organisationRepository.findByName(organisation.getName());
-            perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH)
-                    .andDo(print());
-            assert organisations.get(0).getProject().equals(project2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            SecurityContextHolder.clearContext();
-        }
+    public void test_if_works() throws Exception {
+//        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
+        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH)
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
 

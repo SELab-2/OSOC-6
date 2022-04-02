@@ -92,7 +92,9 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
 
     @Override
     public final Map<String, String> change_entity(final Edition edition) {
-        return new HashMap<>();
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("name", TEST_STRING);
+        return patchMap;
     }
 
     @Override
