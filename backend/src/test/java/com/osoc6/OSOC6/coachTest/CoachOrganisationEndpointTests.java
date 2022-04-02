@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public final class CoachOrganisationEndpointTests
+public class CoachOrganisationEndpointTests
         extends TestFunctionProvider<Organisation, Long, OrganisationRepository> {
 
     /**
@@ -55,11 +55,20 @@ public final class CoachOrganisationEndpointTests
         super(ORGANISATIONS_PATH, TEST_STRING);
     }
 
+    /**
+     * Returns the OrganisationRepository that's being used.
+     * @return the OrganisationRepository
+     */
     @Override
     public OrganisationRepository get_repository() {
         return repository;
     }
 
+    /**
+     *
+     * @param entity entity whose id we would like to know
+     * @return the id of the Organisation
+     */
     @Override
     public Long get_id(final Organisation entity) {
         return entity.getId();
@@ -86,6 +95,10 @@ public final class CoachOrganisationEndpointTests
         }
     }
 
+    /**
+     * Creates a new Organisation.
+     * @return a new Organisation
+     */
     @Override
     public Organisation create_entity() {
         return new Organisation(ORGANISATION_INFO, TEST_STRING, null);
