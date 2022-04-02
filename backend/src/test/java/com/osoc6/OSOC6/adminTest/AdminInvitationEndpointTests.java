@@ -118,6 +118,9 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
      */
     @Override
     public void setUpRepository() {
+        // Save edition
+        editionRepository.save(edition);
+
         // Since the userRepository is secured,
         // we need to create a temporary authentication token to be able to save the test users
         SecurityContext securityContext = new SecurityContextImpl();
@@ -130,15 +133,12 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
         userRepository.save(subject);
         userRepository.save(testSubject);
 
-        // After saving the test users, we clear the security context as to not interfere with any remaining tests.
-        SecurityContextHolder.clearContext();
-
-        // Save edition
-        editionRepository.save(edition);
-
         // Save invitations
         repository.save(invitation1);
         repository.save(invitation2);
+
+        // After saving the test users, we clear the security context as to not interfere with any remaining tests.
+        SecurityContextHolder.clearContext();
     }
 
     /**
