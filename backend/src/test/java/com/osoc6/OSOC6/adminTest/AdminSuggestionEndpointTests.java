@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.adminTest;
 
-import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.UserEntity;
@@ -8,7 +7,6 @@ import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -113,11 +114,8 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         repository.save(suggestion2);
     }
 
-    /**
-     * Remove the two test suggestions from the database.
-     */
-    @AfterEach
-    public void removeTestSuggestions() {
+    @Override
+    public final void removeSetUpRepository() {
         // All suggestions need to be deleted,
         // Otherwise there will be a relation with the user
         repository.deleteAll();
@@ -143,34 +141,21 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     }
 
     @Override
-    public final Suggestion change_entity(final Suggestion startEntity) {
-        Suggestion changedSuggestion = new Suggestion(
-                                            startEntity.getStrategy(),
-                                            startEntity.getReason(),
-                                            startEntity.getCoach()
-                                            );
-        changedSuggestion.setReason(TEST_STRING);
-        return changedSuggestion;
+    public final Map<String, String> change_entity(final Suggestion startEntity) {
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("reason", TEST_STRING);
+        return patchMap;
     }
 
     @Override
     public final ResultActions perform_post(final String path, final Suggestion entity) throws Exception {
-        String json = Util.asJsonStringNoEmptyId(entity);
+        String json = transform_to_json(entity);
         String entityToUrl = entityLinks.linkToItemResource(Suggestion.class, user1.getId().toString()).getHref();
         json = json.replaceAll("coach\":.*},", "coach\":\"" + entityToUrl + "\",");
         return getMockMvc().perform(post(SUGGESTION_PATH)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-    }
-
-    /**
-     * Transactional is needed because a user gets fetched lazily.
-     */
-    @Override
-    @Transactional
-    public void patch_changes_with_null_id_gives_409() throws Exception {
-        super.patch_changes_with_null_id_gives_409();
     }
 
     /**
