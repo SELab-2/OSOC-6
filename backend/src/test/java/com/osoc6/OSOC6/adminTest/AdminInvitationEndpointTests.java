@@ -180,8 +180,11 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
 
     @Override
     public final Invitation change_entity(final Invitation startEntity) {
-        startEntity.setSubject(testSubject);
-        return startEntity;
+        Invitation newInvitation = new Invitation(startEntity.getEdition(),
+                                                    startEntity.getIssuer(),
+                                                    startEntity.getSubject());
+        newInvitation.setSubject(testSubject);
+        return newInvitation;
     }
 
     @Override
