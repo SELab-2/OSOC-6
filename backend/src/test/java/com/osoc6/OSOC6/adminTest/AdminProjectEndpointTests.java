@@ -12,13 +12,22 @@ import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -131,20 +140,41 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
         projectRepository.save(project1);
         projectRepository.save(project2);
+
+        organisationRepository.flush();
+        projectRepository.flush();
     }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void test_if_works() {
+        try {
+            SecurityContext securityContext = new SecurityContextImpl();
+            securityContext.setAuthentication(
+                    new TestingAuthenticationToken(null, null, "ADMIN"));
+            SecurityContextHolder.setContext(securityContext);
+            List<Project> projects = projectRepository.findByName(project2.getName());
+            List<Organisation> organisations = organisationRepository.findByName(organisation.getName());
+            organisations.contains(organisation);
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
+    }
+
 
     /**
      * Remove the test entities from the database.
      */
     @Override
     public void removeSetUpRepository() {
-        projectRepository.deleteAll();
-
-        organisationRepository.deleteAll();
-
-        userRepository.deleteAll();
-
-        editionRepository.deleteAll();
+//        projectRepository.deleteAll();
+//
+//        organisationRepository.deleteAll();
+//
+//        userRepository.deleteAll();
+//
+//        editionRepository.deleteAll();
     }
 
     @Override
