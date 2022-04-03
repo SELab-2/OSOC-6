@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import LoginForm, {submitHandler} from '../components/loginForm';
+import LoginForm, { submitHandler } from '../components/loginForm';
 
 const Login: NextPage = () => {
     return (
@@ -10,7 +10,7 @@ const Login: NextPage = () => {
             </Head>
             <main className="m-4">
                 <h1 className="display-6 mb-3">Open Summer of Code</h1>
-                <LoginForm submitHandler={submitHandler}/>
+                <LoginForm submitHandler={submitHandler} />
             </main>
         </div>
     );
