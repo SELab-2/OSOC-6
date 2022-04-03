@@ -14,10 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -104,13 +100,6 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
      */
     @Override
     public void setUpRepository() {
-        // Since the userRepository is secured,
-        // we need to create a temporary authentication token to be able to save the test users
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-
         // Needed for database relation
         userRepository.save(user1);
         userRepository.save(user2);
@@ -118,9 +107,6 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
         repository.save(suggestion1);
         repository.save(suggestion2);
-
-        // After saving the test users, we clear the security context as to not interfere with any remaining tests.
-        SecurityContextHolder.clearContext();
     }
 
     @Override
@@ -129,22 +115,12 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
         // Otherwise there will be a relation with the user
         repository.deleteAll();
 
-        // Since the userRepository is secured,
-        // we need to create a temporary authentication token to be able to save the test users
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new TestingAuthenticationToken(null, null, "ADMIN"));
-        SecurityContextHolder.setContext(securityContext);
-
         if (userRepository.existsById(user1.getId())) {
             userRepository.deleteById(user1.getId());
         }
         if (userRepository.existsById(user2.getId())) {
             userRepository.deleteById(user2.getId());
         }
-
-        // After deleting the test users, we clear the security context as to not interfere with any remaining tests.
-        SecurityContextHolder.clearContext();
     }
 
     @Override
@@ -163,7 +139,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     public final ResultActions perform_post(final String path, final Suggestion entity) throws Exception {
         String json = transform_to_json(entity);
         String entityToUrl = entityLinks.linkToItemResource(Suggestion.class, user1.getId().toString()).getHref();
+
+        // The regex replaces the whole UserEntity object (as json) with a url which points to the right entity.
         json = json.replaceAll("coach\":.*},", "coach\":\"" + entityToUrl + "\",");
+
         return getMockMvc().perform(post(SUGGESTION_PATH)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
