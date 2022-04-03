@@ -13,7 +13,7 @@ public class Filtertest {
     public List<Long> userEditions(final UserEntity entity) {
         List<Long> result = new ArrayList<>();
         for (Invitation invitation: entity.getReceivedInvitations()) {
-            result.add(invitation.getEdition().getId()+1);
+            result.add(invitation.getEdition().getId());
         }
         return result;
     }

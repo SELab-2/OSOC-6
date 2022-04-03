@@ -31,14 +31,14 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
     List<Organisation> findByName(@Param("name") String name);
 
     @Override
-    @PostAuthorize("!returnObject.present or returnObject.get.project == null or " +
-            "@myFilterTest.userEditions(authentication.principal).contains(returnObject.get.project.edition.id)")
+    @PostAuthorize("!returnObject.present or returnObject.get.project == null or "
+            + "@myFilterTest.userEditions(authentication.principal).contains(returnObject.get.project.edition.id)")
     @NonNull
     Optional<Organisation> findById(@NonNull Long aLong);
 
     @Override
-    @Query("SELECT o from Organisation o where :#{@myFilterTest.hasFullAccess(authentication.principal)} = true or " +
-            "o.project is null or o.project.edition.id in :#{@myFilterTest.userEditions(authentication.principal)}")
+    @Query("SELECT o from Organisation o where :#{@myFilterTest.hasFullAccess(authentication.principal)} = true or "
+            + "o.project is null or o.project.edition.id in :#{@myFilterTest.userEditions(authentication.principal)}")
     @NonNull
     Page<Organisation> findAll(@NonNull Pageable pageable);
 }

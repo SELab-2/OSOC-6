@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
@@ -47,20 +48,21 @@ public class Invitation {
      * {@link Edition} for which this invitation was created.
      */
     @ManyToOne(optional = false)
-    @Getter
+    @Getter @Setter
     private Edition edition;
 
     /**
      * User that issued the invitation.
      */
     @ManyToOne(optional = false)
-    @Getter
+    @Getter @Setter
     private UserEntity issuer;
 
     /**
      * User that accepted the invitation.
      */
     @ManyToOne(optional = true)
+    @JoinColumn(name = "subject_id", referencedColumnName = "id")
     @Getter @Setter
     private UserEntity subject;
 

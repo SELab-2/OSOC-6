@@ -8,6 +8,7 @@ import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.repository.OrganisationRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
@@ -21,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +62,12 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     private UserRepository userRepository;
 
     /**
+     * The repository which saves, searches, ... Invitations in the database
+     */
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+    /**
      * Entity links, needed to get to link of an entity.
      */
     @Autowired
@@ -91,6 +97,11 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      * Sample organisation that gets loaded before every test.
      */
     private final Organisation organisation = new Organisation("Experience what's inside", "Intel", null);
+
+    /**
+     * Sample invitation that gets loaded before every test.
+     */
+    private final Invitation invitation = new Invitation(edition, user1, user1);
 
     /**
      * The actual path projects are served on, with '/' as prefix.
@@ -123,10 +134,15 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         user1.setEmail("lukas@gmail.com");
         user1.setCallName("Lukas");
         user1.setUserRole(UserRole.COACH);
-        user1.getReceivedInvitations().add(new Invitation(edition, user1, user1));
+        user1.getReceivedInvitations().add(invitation); //new Invitation(edition, user1, user1)
         user1.setPassword("mettn");
 
         userRepository.save(user1);
+
+        invitation.setEdition(edition);
+        invitation.setIssuer(user1);
+        invitation.setSubject(user1);
+        invitationRepository.save(invitation);
 
         project1.setName("Facebook");
         project1.setEdition(edition);
@@ -143,7 +159,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     @Test
-    @Transactional
+//    @Transactional
     @WithUserDetails(value = "lukas@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void test_if_works() throws Exception {
 //        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
@@ -153,7 +169,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     @Test
-    @Transactional
+//    @Transactional
     @WithUserDetails(value = "lukas@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void test_if_works_with_id() throws Exception {
         perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
