@@ -2,6 +2,7 @@ package com.osoc6.OSOC6;
 
 import lombok.Getter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -82,6 +83,16 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
         getMockMvc().perform(get(path).queryParam(paramName, "Banana" + value + "Apple"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString(value))));
+    }
+
+    /**
+     * Test if all entities can be found.
+     * @return a result action that can be used for more checks
+     * @throws Exception throws exception if the request fails
+     */
+    public ResultActions base_get_all_entities_succeeds() throws Exception {
+        return perform_get(entityPath)
+                .andExpect(status().isOk());
     }
 
     /**

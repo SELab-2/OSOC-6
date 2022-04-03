@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,20 +31,22 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
      * @param pageable the pageable telling what page to get
      * @return list of matched organisations
      */
-    @PreAuthorize("hasAnyAuthority('COACH')")
-    @Query("SELECT o from Organisation o where (:#{@hasAuthority('ADMIN')} = true or o.project is null "
-            + "or o.project.edition.id in :#{@authorizationUtil.userEditions(authentication.principal)}) "
-            + "and o.name like :name")
+    @Transactional
+    @PreAuthorize("hasAuthority('COACH')")
+    @Query("SELECT o from Organisation o where o.name LIKE :name and (:#{hasAuthority('ADMIN')} is true "
+            + "or o.project.edition.id in :#{@authorizationUtil.userEditions(authentication.principal)}) ")
     Page<Organisation> findByName(@Param("name") String name, Pageable pageable);
 
     @Override
-    @PostAuthorize("!returnObject.present or returnObject.get.project == null or "
+    @PreAuthorize("hasAuthority('COACH')")
+    @PostAuthorize("hasAuthority('ADMIN') or !returnObject.present or returnObject.get.project == null or "
             + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.project.edition.id)")
     @NonNull
     Optional<Organisation> findById(@NonNull Long id);
 
     @Override
-    @Query("SELECT o from Organisation o where :#{@hasAuthority('ADMIN')} = true or o.project is null "
+    @PreAuthorize("hasAuthority('COACH')")
+    @Query("SELECT o from Organisation o where :#{hasAuthority('ADMIN')} is true "
             + "or o.project.edition.id in :#{@authorizationUtil.userEditions(authentication.principal)}")
     @NonNull
     Page<Organisation> findAll(@NonNull Pageable pageable);

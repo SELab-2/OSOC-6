@@ -56,6 +56,8 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Override
     public void setUpRepository() {
+        loadUser();
+
         adminUser.setEmail("admin.test@gmail.com");
         adminUser.setCallName("Admin Test");
         adminUser.setUserRole(UserRole.ADMIN);
@@ -74,12 +76,9 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        if (userRepository.existsById(adminUser.getId())) {
-            userRepository.deleteById(adminUser.getId());
-        }
-        if (userRepository.existsById(coachUser.getId())) {
-            userRepository.deleteById(coachUser.getId());
-        }
+        removeUser();
+
+        userRepository.deleteAll();
     }
 
     @Override

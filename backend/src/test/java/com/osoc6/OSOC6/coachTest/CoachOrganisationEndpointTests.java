@@ -1,10 +1,16 @@
 package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
+import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.Organisation;
+import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.repository.OrganisationRepository;
+import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -13,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,27 +34,59 @@ public class CoachOrganisationEndpointTests
         extends TestFunctionProvider<Organisation, Long, OrganisationRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The organisation repository which saves, searches, ... in the database
      */
     @Autowired
     private OrganisationRepository organisationRepository;
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The project repository which saves, searches, ... in the database
+     */
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    /**
+     * The edition repository which saves, searches, ... in the database
+     */
+    @Autowired
+    private EditionRepository editionRepository;
+
+    /**
+     * The invitation repository which saves, searches, ... in the database
+     */
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+    /**
+     * The user repository which saves, searches, ... in the database
      */
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * First sample organisation that gets loaded before every test.
+     * Sample organisation that gets loaded before every test.
      */
     private final Organisation organisation = new Organisation();
+
+    /**
+     * Sample edition that gets loaded before every test.
+     */
+    private final Edition edition = new Edition();
+
+    /**
+     * Sample project that gets loaded before every test.
+     */
+    private final Project project = new Project();
 
     /**
      * The coach sample user that gets loaded before every test.
      */
     private final UserEntity coachUser = new UserEntity();
 
+    /**
+     * Sample invitation that gets loaded before every test.
+     */
+    private final Invitation invitation = new Invitation(edition, coachUser, coachUser);
 
     /**
      * The actual path organisations are served on, with '/' as prefix.
@@ -95,17 +132,34 @@ public class CoachOrganisationEndpointTests
      */
     @Override
     public void setUpRepository() {
+        organisation.setName("Cynalco Medics");
+        organisation.setInfo("Cynalco go go!");
+
+        edition.setActive(true);
+        edition.setName("OSOC2022");
+        edition.setYear(2022);
+
+        editionRepository.save(edition);
+
         coachUser.setEmail("test@mail.com");
         coachUser.setCallName("test coach");
         coachUser.setUserRole(UserRole.COACH);
+        coachUser.getReceivedInvitations().add(invitation);
         coachUser.setPassword("password");
 
         userRepository.save(coachUser);
 
-        organisation.setName("Cynalco Medics");
-        organisation.setInfo("Cynalco go go!");
+        invitation.setEdition(edition);
+        invitation.setIssuer(coachUser);
+        invitation.setSubject(coachUser);
+        invitationRepository.save(invitation);
 
-        organisationRepository.save(organisation);
+        project.setName("Facebook");
+        project.setEdition(edition);
+        project.setPartner(organisation);
+        project.setCreator(coachUser);
+
+        projectRepository.save(project);
     }
 
     /**
@@ -113,8 +167,11 @@ public class CoachOrganisationEndpointTests
      */
     @Override
     public void removeSetUpRepository() {
-        userRepository.deleteAll();
         organisationRepository.deleteAll();
+        projectRepository.deleteAll();
+        userRepository.deleteAll();
+        invitationRepository.deleteAll();
+        editionRepository.deleteAll();
     }
 
     /**
@@ -140,7 +197,13 @@ public class CoachOrganisationEndpointTests
 
     @Test
     @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @Transactional
+    public void find_all_works() throws Exception {
+        base_get_all_entities_succeeds()
+                .andExpect(string_to_contains_string(organisation.getName()));
+    }
+
+    @Test
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         Organisation randomOrganisation = get_random_repository_entity();
         base_test_all_queried_assertions(
@@ -183,8 +246,7 @@ public class CoachOrganisationEndpointTests
     @Test
     @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails() throws Exception {
-        perform_get(getEntityPath() + "/" + getILLEGAL_ID())
-                .andExpect(status().isForbidden());
+        base_getting_illegal_entity_fails();
     }
 
     @Test
@@ -196,10 +258,7 @@ public class CoachOrganisationEndpointTests
     @Test
     @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_id_fails() throws Exception {
-        Organisation entity = create_entity();
-
-        perform_entity_patch(getEntityPath() + "/" + getILLEGAL_ID(), entity)
-                .andExpect(status().isForbidden());
+        base_patching_entity_to_illegal_id_fails();
     }
 
     @Test

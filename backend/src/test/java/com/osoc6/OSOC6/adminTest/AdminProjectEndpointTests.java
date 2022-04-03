@@ -26,9 +26,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 /**
  * Class testing the integration of {@link Project}.
  */
@@ -123,6 +120,8 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void setUpRepository() {
+        loadUser();
+
         edition.setActive(true);
         edition.setName("OSOC2022");
         edition.setYear(2022);
@@ -156,29 +155,13 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         projectRepository.save(project2);
     }
 
-    @Test
-    @WithUserDetails(value = "lukas@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void test_if_works() throws Exception {
-//        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
-        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH)
-                .andDo(print())
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @WithUserDetails(value = "lukas@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void test_if_works_with_id() throws Exception {
-        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
-                .andDo(print())
-                .andExpect(status().isForbidden());
-    }
-
-
     /**
      * Remove the test entities from the database.
      */
     @Override
     public void removeSetUpRepository() {
+        removeUser();
+
         projectRepository.deleteAll();
 
         organisationRepository.deleteAll();
@@ -229,5 +212,12 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         return json;
     }
 
+    @Test
+    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_all_entities_succeeds() throws Exception {
+        base_get_all_entities_succeeds()
+                .andExpect(string_to_contains_string(project1.getName()))
+                .andExpect(string_to_contains_string(project2.getName()));
+    }
 }
 

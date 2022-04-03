@@ -57,6 +57,8 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void setUpRepository() {
+        loadUser();
+
         edition1.setName("Edition 1");
         edition1.setYear(0);
         edition1.setActive(false);
@@ -73,12 +75,9 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        if (repository.existsById(edition1.getId())) {
-            repository.deleteById(edition1.getId());
-        }
-        if (repository.existsById(edition2.getId())) {
-            repository.deleteById(edition2.getId());
-        }
+        removeUser();
+
+        repository.deleteAll();
     }
 
     @Override

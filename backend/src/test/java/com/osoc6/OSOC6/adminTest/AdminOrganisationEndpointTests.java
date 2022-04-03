@@ -1,9 +1,16 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Organisation;
+import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.OrganisationRepository;
+import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +21,27 @@ import java.util.Map;
 public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisation, Long, OrganisationRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The organisation repository which saves, searches, ... in the database
      */
     @Autowired
-    private OrganisationRepository repository;
+    private OrganisationRepository organisationRepository;
+
+    /**
+     * The project repository which saves, searches, ... in the database
+     */
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    /**
+     * The edition repository which saves, searches, ... in the database
+     */
+    @Autowired
+    private EditionRepository editionRepository;
+
+    /**
+     * Sample edition that gets loaded before every test.
+     */
+    private final Edition edition = new Edition();
 
     /**
      * First sample organisation that gets loaded before every test.
@@ -28,6 +52,16 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
      * Second sample organisation that gets loaded before every test.
      */
     private final Organisation organisation2 = new Organisation();
+
+    /**
+     * First sample project that gets loaded before every test.
+     */
+    private final Project project1 = new Project();
+
+    /**
+     * Second sample project that gets loaded before every test.
+     */
+    private final Project project2 = new Project();
 
     /**
      * The actual path organisations are served on, with '/' as prefix.
@@ -54,13 +88,31 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
      */
     @Override
     public void setUpRepository() {
+        loadUser();
+
         organisation1.setName("Cynalco Medics");
         organisation1.setInfo("Cynalco go go!");
-        repository.save(organisation1);
+
+        edition.setActive(true);
+        edition.setName("OSOC2022");
+        edition.setYear(2022);
+
+        editionRepository.save(edition);
+
+        project1.setName("Facebook");
+        project1.setEdition(edition);
+        project1.setPartner(organisation1);
+        project1.setCreator(getAdminUser());
+        projectRepository.save(project1);
 
         organisation2.setName("Apple");
         organisation2.setInfo("Think different");
-        repository.save(organisation2);
+
+        project2.setName("New chip");
+        project2.setEdition(edition);
+        project2.setPartner(organisation2);
+        project2.setCreator(getAdminUser());
+        projectRepository.save(project2);
     }
 
     /**
@@ -68,12 +120,10 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
      */
     @Override
     public void removeSetUpRepository() {
-        if (repository.existsById(organisation1.getId())) {
-            repository.deleteById(organisation1.getId());
-        }
-        if (repository.existsById(organisation2.getId())) {
-            repository.deleteById(organisation2.getId());
-        }
+        organisationRepository.deleteAll();
+        projectRepository.deleteAll();
+        removeUser();
+        editionRepository.deleteAll();
     }
 
     @Override
@@ -91,11 +141,19 @@ public class AdminOrganisationEndpointTests extends AdminEndpointTest<Organisati
 
     @Override
     public final OrganisationRepository get_repository() {
-        return repository;
+        return organisationRepository;
     }
 
     @Override
     public final Long get_id(final Organisation organisation) {
         return organisation.getId();
+    }
+
+    @Test
+    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_all_works() throws Exception {
+        base_get_all_entities_succeeds()
+                .andExpect(string_to_contains_string(organisation1.getName()))
+                .andExpect(string_to_contains_string(organisation2.getName()));
     }
 }
