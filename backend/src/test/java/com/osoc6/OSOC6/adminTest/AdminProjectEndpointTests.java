@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.Organisation;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.UserEntity;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,6 +123,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         user1.setEmail("lukas@gmail.com");
         user1.setCallName("Lukas");
         user1.setUserRole(UserRole.ADMIN);
+        user1.getReceivedInvitations().add(new Invitation(edition, user1, user1));
         user1.setPassword("mettn");
 
         userRepository.save(user1);
@@ -140,6 +143,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     @Test
+    @Transactional
     @WithUserDetails(value = "lukas@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void test_if_works() throws Exception {
 //        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())

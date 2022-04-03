@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * The database entity for an Invitation.
@@ -28,13 +30,18 @@ public class Invitation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Basic(optional = false)
+    @Column(unique = true, updatable = false)
+    @Getter
+    private final String token = new Base64StringKeyGenerator().generateKey();
+
     /**
      * The timestamp of the invitation.
      */
     @Basic(optional = false)
+    @CreationTimestamp @Column(updatable = false)
     @Getter
-    @CreationTimestamp
-    private Timestamp timestamp;
+    private LocalDateTime creationTimestamp;
 
     /**
      * {@link Edition} for which this invitation was created.
@@ -53,7 +60,7 @@ public class Invitation {
     /**
      * User that accepted the invitation.
      */
-    @ManyToOne
+    @ManyToOne(optional = true)
     @Getter @Setter
     private UserEntity subject;
 
@@ -65,7 +72,6 @@ public class Invitation {
      */
     public Invitation(final Edition newEdition, final UserEntity newIssuer, final UserEntity newSubject) {
         super();
-        timestamp = new Timestamp(System.currentTimeMillis());
         edition = newEdition;
         issuer = newIssuer;
         subject = newSubject;
@@ -77,5 +83,9 @@ public class Invitation {
      */
     public boolean isUsed() {
         return subject != null;
+    }
+
+    public boolean isValid() {
+        return !isUsed() && creationTimestamp.plusDays(7).isBefore(LocalDateTime.now());
     }
 }
