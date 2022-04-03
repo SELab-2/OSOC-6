@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.database.models.UserRole;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,8 +13,12 @@ public class Filtertest {
     public List<Long> testField(final UserEntity entity) {
         List<Long> result = new ArrayList<>();
         for (Invitation invitation: entity.getReceivedInvitations()) {
-            result.add(invitation.getEdition().getId());
+            result.add(invitation.getEdition().getId()+1);
         }
         return result;
+    }
+
+    public boolean hasFullAccess(final UserEntity entity) {
+        return entity.getUserRole() == UserRole.ADMIN;
     }
 }

@@ -29,7 +29,8 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
     List<Organisation> findByName(@Param("name") String name);
 
     @Override
-    @Query("SELECT o from Organisation o where o.project is NOT null and o.project.edition.id in :#{@myFilterTest.testField(authentication.principal)}")
+    @Query("SELECT o from Organisation o where :#{@myFilterTest.hasFullAccess(authentication.principal)} = true or" +
+            "(o.project is NOT null and o.project.edition.id in :#{@myFilterTest.testField(authentication.principal)})")
     @NonNull
     Page<Organisation> findAll(@NonNull Pageable pageable);
 
