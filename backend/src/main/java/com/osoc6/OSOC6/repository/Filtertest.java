@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component("myFilterTest")
 public class Filtertest {
-    public List<Long> testField(final UserEntity entity) {
+    public List<Long> userEditions(final UserEntity entity) {
         List<Long> result = new ArrayList<>();
         for (Invitation invitation: entity.getReceivedInvitations()) {
             result.add(invitation.getEdition().getId()+1);

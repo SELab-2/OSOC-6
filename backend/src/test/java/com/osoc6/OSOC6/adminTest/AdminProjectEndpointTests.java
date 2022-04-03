@@ -122,7 +122,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
         user1.setEmail("lukas@gmail.com");
         user1.setCallName("Lukas");
-        user1.setUserRole(UserRole.ADMIN);
+        user1.setUserRole(UserRole.COACH);
         user1.getReceivedInvitations().add(new Invitation(edition, user1, user1));
         user1.setPassword("mettn");
 
@@ -148,6 +148,15 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     public void test_if_works() throws Exception {
 //        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
         perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH)
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails(value = "lukas@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void test_if_works_with_id() throws Exception {
+        perform_get("/" + DumbledorePathWizard.ORGANISATIONS_PATH + "/" + organisation.getId())
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
