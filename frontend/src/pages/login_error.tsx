@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import LoginForm from '../components/loginForm';
+import LoginForm, {submitHandler} from '../components/loginForm';
 import { Card } from 'react-bootstrap';
 
 const LoginError: NextPage = () => {
@@ -16,7 +16,7 @@ const LoginError: NextPage = () => {
                         <Card.Text>Invalid username and/or password.</Card.Text>
                     </Card.Body>
                 </Card>
-                <LoginForm />
+                <LoginForm submitHandler={submitHandler}/>
             </main>
         </div>
     );
