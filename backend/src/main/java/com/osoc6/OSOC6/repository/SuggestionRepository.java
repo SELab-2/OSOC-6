@@ -18,14 +18,24 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
 
     /**
-     * Update a {@link Suggestion}.
+     * Update/create a {@link Suggestion}.
      * @apiNote
      * An admin can update everything about every suggestion.
      * A coach can only update their own suggestions.
      */
     @Override
-    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #suggestion.coach.id")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.username == #suggestion.coach.email")
     @NonNull
     <S extends Suggestion> S save(@NonNull S suggestion);
+
+    /**
+     * delete a {@link Suggestion}.
+     * @apiNote
+     * An admin can delete everything about every suggestion.
+     * A coach can only delete their own suggestions.
+     */
+    @Override
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.username == #suggestion.coach.email")
+    void delete(@NonNull Suggestion suggestion);
 }
 
