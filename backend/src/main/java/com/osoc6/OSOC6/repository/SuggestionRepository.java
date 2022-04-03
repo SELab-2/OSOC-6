@@ -46,7 +46,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
 
     @Override
     @NonNull
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('COACH')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
     Page<Suggestion> findAll(@NonNull Pageable pageable);
 }
 
