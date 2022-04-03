@@ -2,13 +2,17 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.database.models.Organisation;
+import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.OrganisationRepository;
+import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -28,12 +32,24 @@ public class CoachOrganisationEndpointTests
      * The repository which saves, searches, ... in the database
      */
     @Autowired
-    private OrganisationRepository repository;
+    private OrganisationRepository organisationRepository;
+
+    /**
+     * The repository which saves, searches, ... in the database
+     */
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * First sample organisation that gets loaded before every test.
      */
     private final Organisation organisation = new Organisation();
+
+    /**
+     * The coach sample user that gets loaded before every test.
+     */
+    private final UserEntity coachUser = new UserEntity();
+
 
     /**
      * The actual path organisations are served on, with '/' as prefix.
@@ -61,7 +77,7 @@ public class CoachOrganisationEndpointTests
      */
     @Override
     public OrganisationRepository get_repository() {
-        return repository;
+        return organisationRepository;
     }
 
     /**
@@ -79,12 +95,17 @@ public class CoachOrganisationEndpointTests
      */
     @Override
     public void setUpRepository() {
-        repository.deleteAll();
+        coachUser.setEmail("test@mail.com");
+        coachUser.setCallName("test coach");
+        coachUser.setUserRole(UserRole.COACH);
+        coachUser.setPassword("password");
+
+        userRepository.save(coachUser);
 
         organisation.setName("Cynalco Medics");
         organisation.setInfo("Cynalco go go!");
 
-        repository.save(organisation);
+        organisationRepository.save(organisation);
     }
 
     /**
@@ -92,9 +113,8 @@ public class CoachOrganisationEndpointTests
      */
     @Override
     public void removeSetUpRepository() {
-        if (repository.existsById(organisation.getId())) {
-            repository.deleteById(organisation.getId());
-        }
+        userRepository.deleteAll();
+        organisationRepository.deleteAll();
     }
 
     /**
@@ -119,7 +139,7 @@ public class CoachOrganisationEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Transactional
     public void find_by_name_works() throws Exception {
         Organisation randomOrganisation = get_random_repository_entity();
@@ -128,14 +148,14 @@ public class CoachOrganisationEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new_organisation_fails() throws Exception {
         Organisation randomOrganisation = create_entity();
         perform_post(ORGANISATIONS_PATH, randomOrganisation).andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void delete_organisation_fails() throws Exception {
         Organisation randomOrganisation = get_random_repository_entity();
         perform_delete_with_id(ORGANISATIONS_PATH, randomOrganisation.getId())
@@ -143,13 +163,13 @@ public class CoachOrganisationEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_legal_entity_succeeds() throws Exception {
         base_getting_legal_entity_succeeds();
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_organisation_fails() throws Exception {
         Organisation randomOrganisation = get_random_repository_entity();
 
@@ -161,25 +181,29 @@ public class CoachOrganisationEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails() throws Exception {
-        base_getting_illegal_entity_fails();
+        perform_get(getEntityPath() + "/" + getILLEGAL_ID())
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails_name() throws Exception {
         base_getting_illegal_entity_fails_name();
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_id_fails() throws Exception {
-        base_patching_entity_to_illegal_id_fails();
+        Organisation entity = create_entity();
+
+        perform_entity_patch(getEntityPath() + "/" + getILLEGAL_ID(), entity)
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = "test@mail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
     }

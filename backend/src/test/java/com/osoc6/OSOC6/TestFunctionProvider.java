@@ -26,6 +26,7 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
     /**
      * An illegal Long id.
      */
+    @Getter
     private static final long ILLEGAL_ID = 0L;
 
     /**

@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -93,7 +94,7 @@ public class UserEntity implements UserDetails {
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
-    @OneToMany(mappedBy = "subject", orphanRemoval = false)
+    @OneToMany(mappedBy = "subject", orphanRemoval = false, fetch = FetchType.EAGER)
     @Getter
     private List<Invitation> receivedInvitations;
 

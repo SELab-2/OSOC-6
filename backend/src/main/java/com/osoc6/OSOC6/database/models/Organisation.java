@@ -60,8 +60,8 @@ public class Organisation {
     /**
      * {@link Project} this Organisation is involved in.
      */
-    @OneToOne
-    @Getter
+    @OneToOne(mappedBy = "partner")
+    @Getter @Setter
     private Project project;
 
     /**

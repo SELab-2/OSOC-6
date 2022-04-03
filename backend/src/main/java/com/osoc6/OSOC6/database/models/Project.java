@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -38,6 +40,7 @@ public class Project {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -67,28 +70,29 @@ public class Project {
      * Edition within which this project was created.
      */
     @ManyToOne(optional = false)
-    @Getter
+    @Getter @Setter
     private Edition edition;
 
     /**
      * Partner that is involved in this project.
      */
-    @OneToOne(mappedBy = "project")
-    @Getter
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "partner_id", referencedColumnName = "id")
+    @Getter @Setter
     private Organisation partner;
 
     /**
      * The {@link UserEntity}/ admin that created the project.
      */
     @ManyToOne(optional = false)
-    @Getter
+    @Getter @Setter
     private UserEntity creator;
 
     /**
      * The skills needed in this project.
      */
     @OneToMany(orphanRemoval = true)
-    @Getter
+    @Getter @Setter
     private List<Skill> neededSkills;
 
     /**
