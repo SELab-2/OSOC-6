@@ -10,6 +10,7 @@ import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,10 +20,12 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -144,8 +147,8 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     /**
      * Remove the two test invitations from the database.
      */
-    @AfterEach
-    public void removeTestSuggestions() {
+    @Override
+    public void removeSetUpRepository() {
         // All invitations need to be deleted,
         // Otherwise there will be a relation with the user
         repository.deleteAll();
@@ -179,26 +182,29 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     }
 
     @Override
-    public final Invitation change_entity(final Invitation startEntity) {
-        Invitation newInvitation = new Invitation(startEntity.getEdition(),
-                                                    startEntity.getIssuer(),
-                                                    startEntity.getSubject());
-        newInvitation.setSubject(testSubject);
-        return newInvitation;
+    public final Map<String, String> change_entity(final Invitation startEntity) {
+        Map<String, String> patchMap = new HashMap<>();
+        String entityToUrl = entityLinks.linkToItemResource(Invitation.class, testSubject.getId().toString()).getHref();
+        patchMap.put("subject", entityToUrl);
+        return patchMap;
     }
 
+    @Test
     @Override
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public final void add_new() throws Exception {
         Invitation entity = create_entity();
 
-        get_repository().save(entity);
+        save_repository_entity(entity);
 
-        check_get(INVITATION_PATH, entity.getTimestamp().toString());
+        check_get(getEntityPath(), entity.getTimestamp().toString());
 
-        get_repository().delete(entity);
+        delete_repository_entity(entity);
     }
 
+    @Test
     @Override
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public final void post_new() throws Exception {
         Invitation entity = create_entity();
 
@@ -207,6 +213,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
         get_repository().delete(entity);
     }
 
+    @Test
     @Override
     public final void delete_entity_throws_not_found() throws Exception {
         Invitation newEntity = create_entity();
@@ -226,7 +233,9 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
                 .andExpect(string_not_empty());
     }
 
+    @Test
     @Override
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public final void delete_new() throws Exception {
         Invitation newEntity = create_entity();
         perform_post(INVITATION_PATH, newEntity);
@@ -249,27 +258,11 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     /**
      * Transactional is needed because a user gets fetched lazily.
      */
+    @Test
     @Override
     @Transactional
-    public ResultActions perform_patch_with_nullable_id(final String path, final Invitation entity) throws Exception {
-        return super.perform_patch_with_nullable_id(path, entity);
-    }
-
-    /**
-     * Transactional is needed because a user gets fetched lazily.
-     */
-    @Override
-    @Transactional
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patch_changes_value() throws Exception {
         super.patch_changes_value();
-    }
-
-    /**
-     * Transactional is needed because a user gets fetched lazily.
-     */
-    @Override
-    @Transactional
-    public void patch_changes_with_null_id_gives_409() throws Exception {
-        super.patch_changes_with_null_id_gives_409();
     }
 }

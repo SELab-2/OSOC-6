@@ -15,16 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.INVITATION_PATH,
         path = DumbledorePathWizard.INVITATION_PATH)
+@PreAuthorize("hasAuthority('ADMIN')")
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
-
-    /**
-     * Update/Create a {@link Invitation}.
-     * @apiNote
-     * An admin can update everything about every invitation.
-     * A coach can not send new invitations.
-     */
-    @Override
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @NonNull
-    <S extends Invitation> S save(@NonNull S invitation);
 }

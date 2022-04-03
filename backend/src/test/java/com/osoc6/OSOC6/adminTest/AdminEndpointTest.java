@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
-import com.osoc6.OSOC6.BaseTestPerformer;
+import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import org.junit.jupiter.api.MethodOrderer;
@@ -11,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,27 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class AdminEndpointTest<T, I extends Serializable, R extends JpaRepository<T, I>>
-        extends BaseTestPerformer<T, I, R> {
-
-    /**
-     * An illegal id for edition.
-     */
-    private static final long ILLEGAL_ID = 0L;
-
-    /**
-     * An illegal string id.
-     */
-    private static final String ILLEGAL_NAME = "Some very illegal name";
-
-    /**
-     * The actual path the entity is served on, with '/' as prefix.
-     */
-    private final String entityPath;
-
-    /**
-     * The string used to test whether an entity can be found in the return value.
-     */
-    private final String testString;
+        extends TestFunctionProvider<T, I, R> {
 
     /**
      * Illegal entity to check if repository only accepts its own entities.
@@ -58,49 +39,37 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     private final Edition illegalEdition = new Edition();
 
     public AdminEndpointTest(final String path, final String newTestString) {
-        entityPath = path;
-        testString = newTestString;
+        super(path, newTestString);
     }
-
-    /**
-     * Create a new entity to use as test object.
-     * @return Entity of class T
-     */
-    public abstract T create_entity();
-
-    /**
-     * Change the entity to have a different field value.
-     * This will be used to test whether a patch request works.
-     * @param startEntity the entity we would like to change
-     * @return an entity with a new value for a field
-     */
-    public abstract T change_entity(T startEntity);
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void add_new() throws Exception {
         T entity = create_entity();
 
-        get_repository().save(entity);
+        save_repository_entity(entity);
 
-        check_get(entityPath, testString);
+        check_get(getEntityPath(), getTestString());
 
-        get_repository().delete(entity);
+        delete_repository_entity(entity);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void getting_legal_entity_succeeds() throws Exception {
+        base_getting_legal_entity_succeeds();
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_entity_fails() throws Exception {
-        perform_get(entityPath + "/" + ILLEGAL_ID)
-                .andExpect(status().isNotFound())
-                .andExpect(string_not_empty());
+        base_getting_illegal_entity_fails();
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void getting_illegal_entity_fails_name() throws Exception {
-        perform_get(entityPath + "/" + ILLEGAL_NAME)
-                .andExpect(status().isBadRequest());
+        base_getting_illegal_entity_fails_name();
     }
 
     @Test
@@ -108,18 +77,18 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     public void post_new() throws Exception {
         T entity = create_entity();
 
-        perform_post(entityPath, entity);
-        check_get(entityPath, testString);
-        get_repository().delete(entity);
+        perform_post(getEntityPath(), entity);
+        check_get(getEntityPath(), getTestString());
+        delete_repository_entity(entity);
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void post_illegal_entity() throws Exception {
         // Errors for entities where name is the id and name is empty
-        System.out.println(Util.asJsonStringNoEmptyId(illegalEdition));
-        getMockMvc().perform(post(entityPath)
-                .content(Util.asJsonStringNoEmptyId(illegalEdition))
+        System.out.println(Util.asJsonString(illegalEdition));
+        getMockMvc().perform(post(getEntityPath())
+                .content(Util.asJsonString(illegalEdition))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
@@ -128,7 +97,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void posting_empty_object_is_user_error() throws Exception {
-        getMockMvc().perform(post(entityPath)
+        getMockMvc().perform(post(getEntityPath())
                         .content("{ }")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -139,19 +108,18 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_new() throws Exception {
         T newEntity = create_entity();
-        perform_post(entityPath, newEntity);
+        perform_post(getEntityPath(), newEntity);
 
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+        T entity = get_random_repository_entity();
 
         // Is the entity really in /entity
-        check_get(entityPath, testString);
+        check_get(getEntityPath(), getTestString());
 
         // Run the delete request
-        perform_delete_with_id(entityPath, get_id(entity));
+        perform_delete_with_id(getEntityPath(), get_id(entity));
 
         // Check if still there
-        if (get_repository().existsById(get_id(entity))) {
+        if (repository_entity_exists(entity)) {
             throw new Exception();
         }
     }
@@ -160,54 +128,43 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void delete_entity_throws_not_found() throws Exception {
         T newEntity = create_entity();
-        perform_post(entityPath, newEntity);
+        perform_post(getEntityPath(), newEntity);
 
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+        T entity = get_random_repository_entity();
 
         // Is the edition really in /editions
-        check_get(entityPath, testString);
+        check_get(getEntityPath(), getTestString());
 
         // Run the delete request
-        perform_delete_with_id(entityPath, get_id(entity));
+        perform_delete_with_id(getEntityPath(), get_id(entity));
 
-        perform_delete_with_id(entityPath, get_id(entity))
+        perform_delete_with_id(getEntityPath(), get_id(entity))
                 .andExpect(status().isNotFound())
                 .andExpect(string_not_empty());
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @Transactional
     public void patch_changes_value() throws  Exception {
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
+        T entity = get_random_repository_entity();
 
-        T newEntity = change_entity(entity);
+        Map<String, String> patchMap = change_entity(entity);
 
-        perform_patch(entityPath + "/" + get_id(entity), newEntity)
+        perform_patch(this.getEntityPath() + "/" + get_id(entity), patchMap)
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(testString));
+                .andExpect(string_to_contains_string(getTestString()));
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void patching_illegal_entity_fails() throws Exception {
-        T entity = create_entity();
-
-        perform_patch(entityPath + "/" + ILLEGAL_ID, entity)
-                .andExpect(status().isNotFound())
-                .andExpect(string_not_empty());
+    public void patching_entity_to_illegal_id_fails() throws Exception {
+        base_patching_entity_to_illegal_id_fails();
     }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void patch_changes_with_null_id_gives_409() throws Exception {
-        List<T> entities = get_repository().findAll();
-        T entity = entities.get(0);
-
-        T newEntity = change_entity(entity);
-
-        perform_patch_with_nullable_id(entityPath + "/" + get_id(entity), newEntity)
-                .andExpect(status().isConflict());
+    public void patching_entity_to_illegal_string_id_fails() throws Exception {
+        base_patching_entity_to_illegal_string_id_fails();
     }
 }

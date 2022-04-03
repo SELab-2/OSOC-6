@@ -4,12 +4,13 @@ import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,8 +71,8 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     /**
      * Remove the two test editions from the database.
      */
-    @AfterEach
-    public void remove_test_editions() {
+    @Override
+    public void removeSetUpRepository() {
         if (repository.existsById(edition1.getId())) {
             repository.deleteById(edition1.getId());
         }
@@ -90,8 +91,10 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     }
 
     @Override
-    public final Edition change_entity(final Edition edition) {
-        return create_entity();
+    public final Map<String, String> change_entity(final Edition edition) {
+        Map<String, String> patchMap = new HashMap<>();
+        patchMap.put("name", TEST_STRING);
+        return patchMap;
     }
 
     @Override
@@ -113,7 +116,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
         boolean prevActive  = edition.getActive();
         edition.setActive(!prevActive);
 
-        perform_patch(EDITIONS_PATH + "/" + edition.getId(), edition);
+        perform_put(EDITIONS_PATH + "/" + edition.getId(), edition);
 
         perform_get(EDITIONS_PATH + "/" + edition.getId())
                 .andExpect(status().isOk())
