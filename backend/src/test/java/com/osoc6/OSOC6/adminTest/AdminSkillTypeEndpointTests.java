@@ -84,7 +84,7 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
      */
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
 
         skillType1.setColour("42B37B");
         repository.save(skillType1);
@@ -104,7 +104,7 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void editing_final_field_is_indifferent() throws Exception {
         SkillType skillType = get_random_repository_entity();
 
@@ -114,7 +114,7 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         SkillType skillType = get_random_repository_entity();
         base_test_all_queried_assertions(

@@ -55,7 +55,7 @@ public final class AdminCommunicationTemplateEndpointTests extends
 
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
 
         communicationTemplate.setName("A well deserved yes");
         communicationTemplate.setTemplate(
@@ -83,7 +83,7 @@ public final class AdminCommunicationTemplateEndpointTests extends
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         CommunicationTemplate template = get_random_repository_entity();
         base_test_all_queried_assertions(

@@ -59,7 +59,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
 
         edition1.setName("Edition 1");
         edition1.setYear(0);
@@ -121,7 +121,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void edition_toggle_active() throws Exception {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);

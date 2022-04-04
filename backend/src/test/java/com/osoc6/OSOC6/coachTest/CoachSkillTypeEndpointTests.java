@@ -84,7 +84,7 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
      */
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
 
         skillType1.setColour("42B37B");
         repository.save(skillType1);
@@ -104,7 +104,7 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         SkillType skillType = get_random_repository_entity();
         base_test_all_queried_assertions(
@@ -112,14 +112,14 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new_skilltype_fails() throws Exception {
         SkillType entity = create_entity();
         perform_post(SKILLTYPES_PATH, entity).andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void delete_skilltype_fails() throws Exception {
         SkillType entity = get_random_repository_entity();
         perform_delete_with_id(SKILLTYPES_PATH, entity.getId())
@@ -127,13 +127,13 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_legal_entity_succeeds() throws Exception {
         base_getting_legal_entity_succeeds();
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_skilltype_fails() throws Exception {
         SkillType entity = get_random_repository_entity();
 
@@ -145,25 +145,25 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails() throws Exception {
         base_getting_illegal_entity_fails();
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails_name() throws Exception {
         base_getting_illegal_entity_fails_name();
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_id_fails() throws Exception {
         base_patching_entity_to_illegal_id_fails();
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
     }

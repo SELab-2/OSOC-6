@@ -43,7 +43,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     private final Edition illegalEdition = new Edition();
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void add_new() throws Exception {
         T entity = create_entity();
 
@@ -55,25 +55,25 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_legal_entity_succeeds() throws Exception {
         base_getting_legal_entity_succeeds();
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails() throws Exception {
         base_getting_illegal_entity_fails();
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails_name() throws Exception {
         base_getting_illegal_entity_fails_name();
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new() throws Exception {
         T entity = create_entity();
 
@@ -83,7 +83,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_illegal_entity() throws Exception {
         // Errors for entities where name is the id and name is empty
         System.out.println(Util.asJsonString(illegalEdition));
@@ -95,7 +95,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void posting_empty_object_is_user_error() throws Exception {
         getMockMvc().perform(post(getEntityPath())
                         .content("{ }")
@@ -105,7 +105,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void delete_new() throws Exception {
         T newEntity = create_entity();
         perform_post(getEntityPath(), newEntity);
@@ -125,7 +125,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void delete_entity_throws_not_found() throws Exception {
         T newEntity = create_entity();
         perform_post(getEntityPath(), newEntity);
@@ -144,7 +144,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patch_changes_value() throws  Exception {
         T entity = get_random_repository_entity();
 
@@ -156,13 +156,13 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_id_fails() throws Exception {
         base_patching_entity_to_illegal_id_fails();
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
     }

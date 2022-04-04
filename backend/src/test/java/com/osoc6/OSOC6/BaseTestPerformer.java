@@ -40,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Abstract class to help with testing the integration of endpoints.
  * Implements basic functions to be used when creating endpoint tests.
+ * Provides an edition, coachUser, adminUser and invitation when
+ * base setup and base removed are called in the setup and remove functions.
  *
  * @param <T> the entity of the repository using this class
  * @param <I> the id type of the entity
@@ -74,32 +76,39 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * The test edition. Used so that our test users can be linked to an edition.
      */
     @Getter
-    private final Edition edition = new Edition("Basic test edition", 2022, true);
+    private final Edition baseUserEdition = new Edition("Basic test edition", 2022, true);
+
+    /**
+     * Email of the admin as a static final field. This way it can be used within annotations.
+     */
+    protected static final String ADMIN_EMAIL = "admin@test.com";
+
+    protected static final String COACH_EMAIL = "coach@test.com";
 
     /**
      * The admin test user. This is the admin user that will be used to execute the tests.
      */
     @Getter
-    private final UserEntity adminUser = new UserEntity("admin@test.com", "admin testuser",
+    private final UserEntity adminUser = new UserEntity(ADMIN_EMAIL, "admin testuser",
             UserRole.ADMIN, "123456");
 
     /**
      * The coach sample user that gets loaded before every test.
      */
     @Getter
-    private final UserEntity coachUser = new UserEntity("coach@test.com", "coach testuser",
+    private final UserEntity coachUser = new UserEntity(COACH_EMAIL, "coach testuser",
             UserRole.COACH, "123456");
 
     /**
      * The invitation for the coach user. Makes it so the user is linked to an edition.
      */
-    private final Invitation invitationForCoach = new Invitation(edition, coachUser, coachUser);
+    private final Invitation invitationForCoach = new Invitation(baseUserEdition, coachUser, coachUser);
 
     /**
      * Load the needed edition, users and invitation.
      */
-    public void loadBasicData() {
-        editionRepository.save(edition);
+    public void setupBasicData() {
+        editionRepository.save(baseUserEdition);
 
         userRepository.save(adminUser);
         userRepository.save(coachUser);
@@ -111,9 +120,9 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * Remove the edition, users and invitation.
      */
     public void removeBasicData() {
-        userRepository.deleteAll();
-
         invitationRepository.deleteAll();
+
+        userRepository.deleteAll();
 
         editionRepository.deleteAll();
     }

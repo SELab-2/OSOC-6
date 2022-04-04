@@ -69,18 +69,16 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
 
         project1.setName("New chip");
-        project1.setEdition(getEdition());
-        project1.setOrganisation("Intel");
-        project1.setAbout("Experience what's inside");
+        project1.setEdition(this.getBaseUserEdition());
+        project1.setPartnerName("Intel");
         project1.setCreator(getAdminUser());
 
         project2.setName("Instagram");
-        project2.setEdition(getEdition());
-        project2.setOrganisation("Meta");
-        project2.setAbout("Join the metaverse");
+        project2.setEdition(this.getBaseUserEdition());
+        project2.setPartnerName("Meta");
         project2.setCreator(getAdminUser());
 
         projectRepository.save(project1);
@@ -99,8 +97,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
     @Override
     public final Project create_entity() {
-        return new Project(TEST_STRING, getEdition(), "A new organisation",
-                "Some info about the organisation", getAdminUser());
+        return new Project(TEST_STRING, this.getBaseUserEdition(), "A new organisation", getAdminUser());
     }
 
     @Override
@@ -129,7 +126,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     public String transform_to_json(final Project entity) {
         String json = Util.asJsonStringNoEmptyId(entity);
 
-        String editionToUrl = entityLinks.linkToItemResource(Edition.class, getEdition().getId().toString()).getHref();
+        String editionToUrl = entityLinks.linkToItemResource(Edition.class, this.getBaseUserEdition().getId().toString()).getHref();
         String userToUrl = entityLinks.linkToItemResource(UserEntity.class,
                 getAdminUser().getId().toString()).getHref();
 
@@ -140,7 +137,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_all_entities_succeeds() throws Exception {
         base_get_all_entities_succeeds()
                 .andExpect(string_to_contains_string(project1.getName()))

@@ -1,20 +1,16 @@
 package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
-import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
-import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -39,16 +35,6 @@ import java.util.Map;
 public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, Long, SuggestionRepository> {
 
     /**
-     * Sample user.
-     */
-    private final UserEntity user1 = new UserEntity("test@mail.com", "joe", UserRole.ADMIN, "test");
-
-    /**
-     * First sample edition that gets loaded before every test.
-     */
-    private final Edition edition = new Edition();
-
-    /**
      * First sample student that gets loaded before every test.
      */
     private final Student student = Student.builder()
@@ -71,18 +57,18 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
             .yearInCourse("3")
             .pronouns(new ArrayList<>())
             .durationCurrentDegree(5)
-            .edition(edition)
+            .edition(this.getBaseUserEdition())
             .build();
 
     /**
      * First sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", user1, student);
+    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", getCoachUser(), student);
 
     /**
      * Second sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion2 = new Suggestion(SuggestionStrategy.NO, "Reason 2", user1, student);
+    private final Suggestion suggestion2 = new Suggestion(SuggestionStrategy.NO, "Reason 2", getAdminUser(), student);
 
     /**
      * The actual path suggestion are served on, with '/' as prefix.
@@ -100,18 +86,6 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
      */
     @Autowired
     private SuggestionRepository repository;
-
-    /**
-     * The repository which saves, searches, ... a user in the database
-     */
-    @Autowired
-    private UserRepository userRepository;
-
-    /**
-     * The repository which saves, searches, ... an edition in the database
-     */
-    @Autowired
-    private EditionRepository editionRepository;
 
     /**
      * The repository which saves, searches, ... a student in the database
@@ -145,13 +119,8 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     @Override
     public void setUpRepository() {
         // Needed for database relation
-        userRepository.save(user1);
+        setupBasicData();
 
-        edition.setName("Edition 22");
-        edition.setYear(2022);
-        edition.setActive(true);
-
-        editionRepository.save(edition);
         studentRepository.save(student);
 
         repository.save(suggestion1);
@@ -164,13 +133,13 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         // Otherwise there will be a relation with the user
         repository.deleteAll();
         studentRepository.deleteAll();
-        editionRepository.deleteAll();
-        userRepository.deleteAll();
+
+        removeBasicData();
     }
 
     @Override
     public final Suggestion create_entity() {
-        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, user1, student);
+        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, getAdminUser(), student);
     }
 
     @Override
@@ -183,7 +152,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     @Override
     public final String transform_to_json(final Suggestion entity) {
         String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class, user1.getId().toString()).getHref();
+        String userUrl = entityLinks.linkToItemResource(UserEntity.class, getAdminUser().getId().toString()).getHref();
         String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
 
         // The regex replaces the whole UserEntity and student object (as json)

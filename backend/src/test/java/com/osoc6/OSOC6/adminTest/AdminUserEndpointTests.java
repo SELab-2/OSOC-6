@@ -46,7 +46,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
     }
 
     /**
@@ -91,7 +91,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_list_of_all_users_contains_both_test_users() throws Exception {
         perform_get(USERS_PATH)
                 .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_details_of_himself_succeeds() throws Exception {
         perform_get(USERS_PATH + "/" + getAdminUser().getId())
                 .andExpect(status().isOk())
@@ -110,7 +110,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_details_of_other_user_succeeds() throws Exception {
         perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
@@ -120,7 +120,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_details_of_nonexisting_user_is_not_found() throws Exception {
         int id = 1234;
         perform_get(USERS_PATH + "/" + id)
@@ -128,7 +128,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_role_with_valid_role_succeeds() throws Exception {
         UserRole newRole = UserRole.ADMIN;
         Map<String, String> map = Map.of("userRole", newRole.toString());
@@ -143,7 +143,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_role_with_invalid_role_is_bad_request() throws Exception {
         String newRole = "LORD";
         Map<String, String> map = Map.of("userRole", newRole);
@@ -152,7 +152,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_of_himself_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -171,7 +171,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_of_other_user_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -190,7 +190,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_and_role_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -211,7 +211,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_delete_user_succeeds() throws Exception {
         perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isNoContent());

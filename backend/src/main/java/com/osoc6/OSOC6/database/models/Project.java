@@ -71,36 +71,20 @@ public class Project {
     private Edition edition;
 
     /**
-     * The name of the organisation behind the project.
+     * The name of the partner behind the project.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     @Getter @Setter
-    private String organisation;
+    private String partnerName;
 
     /**
-     * The info about the organisation.
-     */
-    @Basic(optional = false)
-    @Lob
-    @Getter @Setter
-    private String about;
-
-    /**
-     * A URI pointing to the website of the organisation.
+     * A URI pointing to the website of the partner.
      */
     @Basic
     @Lob
     @Getter @Setter
-    private URI website;
-
-//    /**
-//     * Partner that is involved in this project.
-//     */
-//    @OneToOne(optional = true, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "partner_id", referencedColumnName = "id")
-//    @Getter @Setter
-//    private Organisation partner;
+    private URI partnerWebsite;
 
     /**
      * The {@link UserEntity}/ admin that created the project.
@@ -128,17 +112,15 @@ public class Project {
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
      * @param newOrganisation the organisation that the project belongs to
-     * @param newAbout the info about the organisation
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final String newOrganisation, final String newAbout, final UserEntity newCreator) {
+                   final String newOrganisation, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
         edition = newEdition;
-        organisation = newOrganisation;
-        about = newAbout;
+        partnerName = newOrganisation;
         creator = newCreator;
         neededSkills = new ArrayList<>();
         coaches = new ArrayList<>();

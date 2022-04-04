@@ -77,7 +77,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      */
     @Override
     public void setUpRepository() {
-        loadBasicData();
+        setupBasicData();
     }
 
     /**
@@ -89,14 +89,14 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_list_of_all_users_is_forbidden() throws Exception {
         perform_get(USERS_PATH)
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_details_of_himself_succeeds() throws Exception {
         perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
@@ -106,14 +106,14 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_details_of_other_user_is_forbidden() throws Exception {
         perform_get(USERS_PATH + "/" + getAdminUser().getId())
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_details_of_nonexisting_user_is_forbidden() throws Exception {
         int id = 1234;
         perform_get(USERS_PATH + "/" + id)
@@ -121,7 +121,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_role_with_valid_role_is_forbidden() throws Exception {
         UserRole newRole = UserRole.COACH;
         Map<String, String> map = Map.of("userRole", newRole.toString());
@@ -130,7 +130,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_role_with_invalid_role_is_forbidden() throws Exception {
         String newRole = "LORD";
         Map<String, String> map = Map.of("userRole", newRole);
@@ -139,7 +139,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_profile_of_himself_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -158,7 +158,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_profile_of_other_user_is_forbidden() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -171,7 +171,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_profile_and_role_is_forbidden() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -186,7 +186,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Test
-    @WithUserDetails(value = "coach@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_delete_user_is_forbidden() throws Exception {
         perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isForbidden());
