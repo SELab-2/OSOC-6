@@ -37,6 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestion, Long, SuggestionRepository> {
 
+    /**
+     * Email of the user creating suggestions as a static final field. This way it can be used within annotations.
+     */
     private static final String SUGGESTION_EMAIL = "test@mail.com";
 
     /**

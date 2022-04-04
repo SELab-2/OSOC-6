@@ -83,6 +83,9 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     protected static final String ADMIN_EMAIL = "admin@test.com";
 
+    /**
+     * Email of the coach as a static final field. This way it can be used within annotations.
+     */
     protected static final String COACH_EMAIL = "coach@test.com";
 
     /**

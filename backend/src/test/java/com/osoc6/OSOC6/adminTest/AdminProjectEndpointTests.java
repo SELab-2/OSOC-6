@@ -126,7 +126,8 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     public String transform_to_json(final Project entity) {
         String json = Util.asJsonStringNoEmptyId(entity);
 
-        String editionToUrl = entityLinks.linkToItemResource(Edition.class, this.getBaseUserEdition().getId().toString()).getHref();
+        String editionToUrl = entityLinks.linkToItemResource(Edition.class,
+                this.getBaseUserEdition().getId().toString()).getHref();
         String userToUrl = entityLinks.linkToItemResource(UserEntity.class,
                 getAdminUser().getId().toString()).getHref();
 
