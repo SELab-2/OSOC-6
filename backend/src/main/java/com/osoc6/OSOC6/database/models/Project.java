@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * The database entity for a project.
  * A project is something Students work on within an edition.
- * A project has coaches to help the students and is typically done for or with help of an organisation.
+ * A project has coaches to help the students and is typically done for or with help of a partner.
  */
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_id")})
@@ -67,7 +68,8 @@ public class Project {
      * Edition within which this project was created.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter
+    @ReadOnlyProperty
+    @Getter
     private Edition edition;
 
     /**
@@ -90,14 +92,15 @@ public class Project {
      * The {@link UserEntity}/ admin that created the project.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter
+    @ReadOnlyProperty
+    @Getter
     private UserEntity creator;
 
     /**
      * The skills needed in this project.
      */
     @OneToMany(orphanRemoval = true)
-    @Getter @Setter
+    @Getter
     private List<Skill> neededSkills;
 
     /**
@@ -111,16 +114,16 @@ public class Project {
      *
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
-     * @param newOrganisation the organisation that the project belongs to
+     * @param newPartner the name of the partner
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final String newOrganisation, final UserEntity newCreator) {
+                   final String newPartner, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
         edition = newEdition;
-        partnerName = newOrganisation;
+        partnerName = newPartner;
         creator = newCreator;
         neededSkills = new ArrayList<>();
         coaches = new ArrayList<>();

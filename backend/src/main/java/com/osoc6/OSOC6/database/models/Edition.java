@@ -59,7 +59,7 @@ public class Edition {
      * @param newYear the year of the edition
      * @param newActive whether the edition is active
      */
-    public Edition(final String newName, final Integer newYear, final Boolean newActive) {
+    public Edition(final String newName, final Integer newYear, final boolean newActive) {
         name = newName;
         year = newYear;
         active = newActive;

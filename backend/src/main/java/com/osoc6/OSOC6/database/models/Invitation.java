@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 
 import javax.persistence.Basic;
@@ -54,14 +55,16 @@ public class Invitation {
      * {@link Edition} for which this invitation was created.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter
+    @ReadOnlyProperty
+    @Getter
     private Edition edition;
 
     /**
      * User that issued the invitation.
      */
     @ManyToOne(optional = false)
-    @Getter @Setter
+    @ReadOnlyProperty
+    @Getter
     private UserEntity issuer;
 
     /**

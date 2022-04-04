@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -121,10 +121,10 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     }
 
     @Test
+    @Transactional
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void edition_toggle_active() throws Exception {
-        List<Edition> editions = repository.findAll();
-        Edition edition = editions.get(0);
+        Edition edition = get_random_repository_entity();
 
         boolean prevActive  = edition.getActive();
         edition.setActive(!prevActive);

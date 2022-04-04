@@ -57,7 +57,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
             .yearInCourse("3")
             .pronouns(new ArrayList<>())
             .durationCurrentDegree(5)
-            .edition(this.getBaseUserEdition())
+            .edition(getBaseUserEdition())
             .build();
 
     /**

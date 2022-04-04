@@ -150,7 +150,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
 
         Map<String, String> patchMap = change_entity(entity);
 
-        perform_patch(this.getEntityPath() + "/" + get_id(entity), patchMap)
+        perform_patch(getEntityPath() + "/" + get_id(entity), patchMap)
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getTestString()));
     }

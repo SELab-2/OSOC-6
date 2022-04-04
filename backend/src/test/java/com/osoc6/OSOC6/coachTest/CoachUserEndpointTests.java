@@ -81,7 +81,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     /**
-     * Remove the two test users from the database.
+     * Remove test users from the database.
      */
     @Override
     public void removeSetUpRepository() {

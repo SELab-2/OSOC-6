@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class testing the integration of {@link Project}.
+ * Class testing the integration of {@link Project} with an admin access level.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,12 +42,12 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     /**
      * First sample project that gets loaded before every test.
      */
-    private final Project project1 = new Project();
+    private final Project project1 = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
 
     /**
      * Second sample project that gets loaded before every test.
      */
-    private final Project project2 = new Project();
+    private final Project project2 = new Project("Instagram", getBaseUserEdition(), "Meta", getAdminUser());
 
     /**
      * The actual path projects are served on, with '/' as prefix.
@@ -71,16 +71,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     public void setUpRepository() {
         setupBasicData();
 
-        project1.setName("New chip");
-        project1.setEdition(this.getBaseUserEdition());
-        project1.setPartnerName("Intel");
-        project1.setCreator(getAdminUser());
-
-        project2.setName("Instagram");
-        project2.setEdition(this.getBaseUserEdition());
-        project2.setPartnerName("Meta");
-        project2.setCreator(getAdminUser());
-
         projectRepository.save(project1);
         projectRepository.save(project2);
     }
@@ -97,7 +87,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
     @Override
     public final Project create_entity() {
-        return new Project(TEST_STRING, this.getBaseUserEdition(), "A new organisation", getAdminUser());
+        return new Project(TEST_STRING, getBaseUserEdition(), "A new organisation", getAdminUser());
     }
 
     @Override
@@ -124,10 +114,10 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public String transform_to_json(final Project entity) {
-        String json = Util.asJsonStringNoEmptyId(entity);
+        String json = Util.asJsonString(entity);
 
         String editionToUrl = entityLinks.linkToItemResource(Edition.class,
-                this.getBaseUserEdition().getId().toString()).getHref();
+                getBaseUserEdition().getId().toString()).getHref();
         String userToUrl = entityLinks.linkToItemResource(UserEntity.class,
                 getAdminUser().getId().toString()).getHref();
 
