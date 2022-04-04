@@ -206,7 +206,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     public void post_new() throws Exception {
         Suggestion entity = create_entity();
 
-        perform_post(getEntityPath(), entity).andExpect(status().isCreated());
+        perform_post(getEntityPath(), entity);
         check_get(getEntityPath(), getTestString());
     }
 

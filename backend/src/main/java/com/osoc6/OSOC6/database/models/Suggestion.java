@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -50,6 +51,7 @@ public class Suggestion {
      * {@link Timestamp} of creation from the suggestion.
      */
     @Basic(optional = false)
+    @CreationTimestamp
     @Getter
     private Timestamp timestamp;
 
@@ -81,6 +83,5 @@ public class Suggestion {
         reason = newReason;
         coach = newCoach;
         student = newStudent;
-        timestamp = new Timestamp(System.currentTimeMillis());
     }
 }

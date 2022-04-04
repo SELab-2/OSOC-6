@@ -8,7 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 /**
  * This is a simple class that defines a repository for {@link Assignment},
  * this is needed for the database.
- * Coaches don't get access to this resource since they are unable to track communication from within the tool.
  *
  * @author jitsedesmet
  */
