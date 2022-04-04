@@ -43,8 +43,14 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
      */
     private final UserEntity user1 = new UserEntity("test@mail.com", "joe", UserRole.ADMIN, "test");
 
+    /**
+     * First sample edition that gets loaded before every test.
+     */
     private final Edition edition = new Edition();
 
+    /**
+     * First sample student that gets loaded before every test.
+     */
     private final Student student = Student.builder()
             .email("jitse@mail.com")
             .additionalStudentInfo("")
@@ -175,7 +181,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     }
 
     @Override
-    public String transform_to_json(Suggestion entity) {
+    public final String transform_to_json(final Suggestion entity) {
         String json = Util.asJsonString(entity);
         String userUrl = entityLinks.linkToItemResource(UserEntity.class, user1.getId().toString()).getHref();
         String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
