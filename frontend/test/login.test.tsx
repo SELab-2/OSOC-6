@@ -63,7 +63,7 @@ it('SubmitHandler for loginForm sends post request', () => {
         statusText: '',
         headers: {},
         config: {},
-        request: {responseURL: '/home'}
+        request: { responseURL: '/home' },
     };
 
     submitHandler(values);
