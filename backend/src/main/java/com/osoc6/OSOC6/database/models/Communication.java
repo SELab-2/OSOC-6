@@ -71,7 +71,7 @@ public class Communication {
      */
     @ManyToOne(optional = false)
     @Getter
-    private UserEntity userEntity;
+    private UserEntity sender;
 
     /**
      * Student with whom the communication took place.
@@ -96,7 +96,7 @@ public class Communication {
         medium = newMedium;
         content = newContent;
         template = newCommunicationTemplate;
-        userEntity = newUserEntity;
+        sender = newUserEntity;
         student = newStudent;
     }
 }
