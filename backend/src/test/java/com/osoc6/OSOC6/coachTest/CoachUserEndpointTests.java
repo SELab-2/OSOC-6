@@ -77,6 +77,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      */
     @Override
     public void setUpRepository() {
+        loadBasicData();
     }
 
     /**
@@ -84,6 +85,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      */
     @Override
     public void removeSetUpRepository() {
+        removeBasicData();
     }
 
     @Test

@@ -46,6 +46,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Override
     public void setUpRepository() {
+        loadBasicData();
     }
 
     /**
@@ -53,6 +54,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Override
     public void removeSetUpRepository() {
+        removeBasicData();
     }
 
     @Override

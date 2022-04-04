@@ -12,6 +12,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,6 +59,8 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void setUpRepository() {
+        loadBasicData();
+
         edition1.setName("Edition 1");
         edition1.setYear(0);
         edition1.setActive(false);
@@ -74,6 +77,8 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void removeSetUpRepository() {
+        removeBasicData();
+
         repository.deleteAll();
     }
 
@@ -101,6 +106,18 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     @Override
     public final Long get_id(final Edition edition) {
         return edition.getId();
+    }
+
+    /**
+     * Get a "random" repository entity. Since there is also a basic test edition in the database because of the
+     * {@link com.osoc6.OSOC6.BaseTestPerformer}, we need to manually make sure we get a different edition.
+     * @return a "random" edition
+     */
+    @Override
+    public Edition get_random_repository_entity() {
+        AtomicReference<Edition> entity = new AtomicReference<>();
+        performAsAdmin(() -> entity.set(get_repository().getById(edition1.getId())));
+        return entity.get();
     }
 
     @Test

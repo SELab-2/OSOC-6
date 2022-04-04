@@ -73,6 +73,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     /**
      * The test edition. Used so that our test users can be linked to an edition.
      */
+    @Getter
     private final Edition edition = new Edition("Basic test edition", 2022, true);
 
     /**
@@ -88,11 +89,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     @Getter
     private final UserEntity coachUser = new UserEntity("coach@test.com", "coach testuser",
             UserRole.COACH, "123456");
-
-//    /**
-//     * The invitation for the admin user. Makes it so the user is linked to an edition.
-//     */
-//    private final Invitation invitationForAdmin = new Invitation(edition, adminUser, adminUser);
 
     /**
      * The invitation for the coach user. Makes it so the user is linked to an edition.
@@ -143,7 +139,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * Execute the given lambda with admin authorization.
      * @param lambda the lambda to execute
      */
-    private void performAsAdmin(final Runnable lambda) {
+    protected void performAsAdmin(final Runnable lambda) {
         try {
             SecurityContext securityContext = new SecurityContextImpl();
             securityContext.setAuthentication(
@@ -160,10 +156,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @BeforeEach
     public void setUp() {
-        performAsAdmin(() -> {
-            loadBasicData();
-            setUpRepository();
-        });
+        performAsAdmin(this::setUpRepository);
     }
 
     /**
@@ -171,10 +164,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @AfterEach
     public void removeSetUp() {
-        performAsAdmin(() -> {
-            removeBasicData();
-            removeSetUpRepository();
-        });
+        performAsAdmin(this::removeSetUpRepository);
     }
 
     /**

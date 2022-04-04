@@ -84,6 +84,8 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
      */
     @Override
     public void setUpRepository() {
+        loadBasicData();
+
         skillType1.setColour("42B37B");
         repository.save(skillType1);
 
@@ -96,6 +98,8 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
      */
     @Override
     public void removeSetUpRepository() {
+        removeBasicData();
+
         repository.deleteAll();
     }
 

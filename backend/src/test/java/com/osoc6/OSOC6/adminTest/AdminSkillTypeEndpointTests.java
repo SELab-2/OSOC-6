@@ -84,6 +84,8 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
      */
     @Override
     public void setUpRepository() {
+        loadBasicData();
+
         skillType1.setColour("42B37B");
         repository.save(skillType1);
 
@@ -96,6 +98,8 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
      */
     @Override
     public void removeSetUpRepository() {
+        removeBasicData();
+
         repository.deleteAll();
     }
 

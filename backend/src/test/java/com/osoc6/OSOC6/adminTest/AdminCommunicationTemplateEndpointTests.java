@@ -55,6 +55,8 @@ public final class AdminCommunicationTemplateEndpointTests extends
 
     @Override
     public void setUpRepository() {
+        loadBasicData();
+
         communicationTemplate.setName("A well deserved yes");
         communicationTemplate.setTemplate(
                 "We would like to inform you... You are the best candidate we ever had! We want you! Need you!");
@@ -63,6 +65,8 @@ public final class AdminCommunicationTemplateEndpointTests extends
 
     @Override
     public void removeSetUpRepository() {
+        removeBasicData();
+
         repository.deleteAll();
     }
 
