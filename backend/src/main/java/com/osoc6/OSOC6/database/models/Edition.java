@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +33,7 @@ public class Edition {
      * The name of the edition.
      */
     @Basic(optional = false)
+    @Column(unique = true)
     @Setter @Getter
     private String name;
 

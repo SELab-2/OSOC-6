@@ -100,7 +100,7 @@ public class UserEntity implements UserDetails {
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
      */
-    @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
+    @OneToMany(mappedBy = "sender", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
     @Getter
     private List<Communication> communications;
