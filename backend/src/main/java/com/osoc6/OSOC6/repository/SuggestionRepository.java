@@ -29,7 +29,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
      */
     @Override
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('COACH') "
-            + "and authentication.principal.username == #suggestion.coach.email)")
+            + "and authentication.principal.id == #suggestion.coach.id)")
     @NonNull
     <S extends Suggestion> S save(@Param("suggestion") @NonNull S suggestion);
 
@@ -41,7 +41,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
      */
     @Override
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('COACH') "
-            + "and authentication.principal.username == #suggestion.coach.email)")
+            + "and authentication.principal.id == #suggestion.coach.id)")
     void delete(@Param("suggestion") @NonNull Suggestion suggestion);
 
     @Override

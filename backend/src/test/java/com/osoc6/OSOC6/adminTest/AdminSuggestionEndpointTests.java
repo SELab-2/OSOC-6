@@ -1,9 +1,18 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.Util;
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
+import com.osoc6.OSOC6.database.models.student.Gender;
+import com.osoc6.OSOC6.database.models.student.OsocExperience;
+import com.osoc6.OSOC6.database.models.student.PronounsType;
+import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -14,15 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
  * Class testing the integration of {@link Suggestion}.
@@ -37,15 +43,40 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
      */
     private final UserEntity user1 = new UserEntity("test@mail.com", "joe", UserRole.ADMIN, "test");
 
+    private final Edition edition = new Edition();
+
+    private final Student student = Student.builder()
+            .email("jitse@mail.com")
+            .additionalStudentInfo("")
+            .bestSkill("standing on hands")
+            .currentDiploma("Master")
+            .educationLevel("Lower level")
+            .englishProficiency(EnglishProficiency.FLUENT)
+            .firstName("Jitse")
+            .lastName("De Smet")
+            .callName("Jitse De smet")
+            .gender(Gender.MALE)
+            .institutionName("Ghent University")
+            .mostFluentLanguage("Dutch")
+            .osocExperience(OsocExperience.NONE)
+            .phoneNumber("+324982672")
+            .pronounsType(PronounsType.HE)
+            .writtenMotivation("I love to code!")
+            .yearInCourse("3")
+            .pronouns(new ArrayList<>())
+            .durationCurrentDegree(5)
+            .edition(edition)
+            .build();
+
     /**
      * First sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", user1);
+    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", user1, student);
 
     /**
      * Second sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion2 = new Suggestion(SuggestionStrategy.NO, "Reason 2", user1);
+    private final Suggestion suggestion2 = new Suggestion(SuggestionStrategy.NO, "Reason 2", user1, student);
 
     /**
      * The actual path suggestion are served on, with '/' as prefix.
@@ -59,16 +90,28 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     private static final String TEST_STRING = "TEST REASON";
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... a suggestion in the database
      */
     @Autowired
     private SuggestionRepository repository;
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... a user in the database
      */
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * The repository which saves, searches, ... an edition in the database
+     */
+    @Autowired
+    private EditionRepository editionRepository;
+
+    /**
+     * The repository which saves, searches, ... a student in the database
+     */
+    @Autowired
+    private StudentRepository studentRepository;
 
     /**
      * Entity links, needed to get to link of an entity.
@@ -98,6 +141,12 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         // Needed for database relation
         userRepository.save(user1);
 
+        edition.setName("Edition 22");
+        edition.setYear(2022);
+        edition.setActive(true);
+
+        editionRepository.save(edition);
+        studentRepository.save(student);
 
         repository.save(suggestion1);
         repository.save(suggestion2);
@@ -108,15 +157,14 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         // All suggestions need to be deleted,
         // Otherwise there will be a relation with the user
         repository.deleteAll();
-
-        if (userRepository.existsById(user1.getId())) {
-            userRepository.deleteById(user1.getId());
-        }
+        studentRepository.deleteAll();
+        editionRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Override
     public final Suggestion create_entity() {
-        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, user1);
+        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, user1, student);
     }
 
     @Override
@@ -127,17 +175,16 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     }
 
     @Override
-    public final ResultActions perform_post(final String path, final Suggestion entity) throws Exception {
-        String json = transform_to_json(entity);
-        String entityToUrl = entityLinks.linkToItemResource(Suggestion.class, user1.getId().toString()).getHref();
+    public String transform_to_json(Suggestion entity) {
+        String json = Util.asJsonString(entity);
+        String userUrl = entityLinks.linkToItemResource(UserEntity.class, user1.getId().toString()).getHref();
+        String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
 
-        // The regex replaces the whole UserEntity object (as json) with a url which points to the right entity.
-        json = json.replaceAll("coach\":.*},", "coach\":\"" + entityToUrl + "\",");
-
-        return getMockMvc().perform(post(SUGGESTION_PATH)
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+        // The regex replaces the whole UserEntity and student object (as json)
+        // with urls that points to the right entities.
+        json = json.replaceAll("\"coach\":.*}$",
+                "\"coach\":\"" + userUrl + "\",\"student\":\"" + studentUrl + "\"}");
+        return json;
     }
 
     /**

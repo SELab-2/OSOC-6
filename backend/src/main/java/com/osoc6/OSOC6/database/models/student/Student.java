@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Skill;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import lombok.Singular;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -86,10 +88,10 @@ public class Student {
 
     /**
      * The callName of the student.
-     * Special case: If callName is the empty string, the student's callName is their birth name.
      */
-    @Basic(optional = true)
+    @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
+    @Getter @Setter
     private String callName;
 
     /**
@@ -119,7 +121,7 @@ public class Student {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
-    @Getter
+    @Getter @Setter
     private String phoneNumber;
 
     /**
@@ -224,7 +226,7 @@ public class Student {
     /**
      * {@link Edition} in which this communication took place.
      */
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = {})
     @Getter @Setter
     private Edition edition;
 
@@ -247,29 +249,24 @@ public class Student {
     /**
      * The suggestions made about this student.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy = "student")
     @Getter @Singular
     private List<Suggestion> suggestions;
 
     /**
+     * The assignments made about this student.
+     */
+    @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
+    @Getter @Singular
+    private List<Assignment> assignments;
+
+    /**
      * Communication that this student has received sorted on the timestamp.
      */
-    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     @OrderColumn(name = "timestamp")
     @Getter @Singular
     private List<Communication> communications;
-
-    /**
-     *
-     * @return the call name of the student
-     */
-    public String getCallName() {
-        if (callName.isEmpty()) {
-            return getFirstName() + " " + getLastName();
-        } else {
-            return callName;
-        }
-    }
 
     /**
      *
@@ -284,28 +281,10 @@ public class Student {
 
     /**
      *
-     * @param newCallName that should be set as the callName of this student.
-     *                    if empty, this defaults to the first name and the last name.
-     */
-    public void setCallName(final String newCallName) {
-        callName = newCallName;
-    }
-
-    /**
-     *
      * @param newPronouns that should be set as the pronouns of this student
      */
     public void setPronouns(final List<String> newPronouns) {
         pronounsType = PronounsType.OTHER;
         pronouns = newPronouns;
-    }
-
-    /**
-     *
-     * @param newPhoneNumber that should be set as the phone number of this student
-     */
-    public void setPhoneNumber(final String newPhoneNumber) {
-        // Check if phone number is correct
-        phoneNumber = newPhoneNumber;
     }
 }
