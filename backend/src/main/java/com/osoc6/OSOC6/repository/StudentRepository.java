@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * This is a simple class that defines a repository for {@link Student},
@@ -20,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.STUDENT_PATH,
         path = DumbledorePathWizard.STUDENT_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
 public interface StudentRepository extends JpaRepository<Student, Long> {
     @RestResource(path = "nameStartsWith", rel = "nameStartsWith")
     @Query("select s from Student s where s.callName like concat(:callName, '%') and s.edition.name = :edition")

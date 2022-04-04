@@ -17,6 +17,5 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.SKILL_PATH,
         path = DumbledorePathWizard.SKILL_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 }

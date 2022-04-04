@@ -15,6 +15,5 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.ASSIGNMENT_PATH,
         path = DumbledorePathWizard.ASSIGNMENT_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 }

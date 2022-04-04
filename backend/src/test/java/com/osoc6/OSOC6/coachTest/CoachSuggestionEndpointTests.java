@@ -190,9 +190,8 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
         // The regex replaces the whole UserEntity and student object (as json)
         // with urls that points to the right entities.
-        json = json.replaceAll("\"id\":null,", "");
         json = json.replaceAll("\"coach\":.*}$",
-                "\"coach\":\"" + userUrl + "\",\"student\":\"" + studentUrl + "\"}");
+        "\"coach\":\"" + userUrl + "\",\"student\":\"" + studentUrl + "\"}");
         return json;
     }
 
@@ -201,7 +200,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     public void post_new() throws Exception {
         Suggestion entity = create_entity();
 
-        perform_post(getEntityPath(), entity).andExpect(status().isOk());
+        perform_post(getEntityPath(), entity).andExpect(status().isCreated());
         check_get(getEntityPath(), getTestString());
     }
 

@@ -14,6 +14,5 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.COMMUNICATION_PATH,
         path = DumbledorePathWizard.COMMUNICATION_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
 public interface CommunicationRepository extends JpaRepository<Communication, Long> {
 }
