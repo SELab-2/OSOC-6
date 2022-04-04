@@ -7,6 +7,8 @@ import mockAxios from 'jest-mock-axios';
 import Router from 'next/router';
 import { AxiosResponse } from 'axios';
 
+jest.mock('next/router', () => require('next-router-mock'));
+
 afterEach(() => {
     mockAxios.reset();
 });
@@ -57,13 +59,12 @@ it('SubmitHandler for loginForm sends post request', () => {
     const values: Values = { username: 'test@mail.com', password: 'pass' };
     const response: AxiosResponse = {
         data: {},
-        status: 200,
-        statusText: 'OK',
+        status: 302,
+        statusText: '',
         headers: {},
         config: {},
+        request: {responseURL: '/home'}
     };
-
-    response.request.responseURL = '/home';
 
     submitHandler(values);
     mockAxios.mockResponseFor({ url: '/api/login-processing' }, response);
