@@ -3,7 +3,7 @@ import styles from '../styles/loginForm.module.css';
 import axios from 'axios';
 import Router from 'next/router';
 
-interface Values {
+export interface Values {
     username: string;
     password: string;
 }
@@ -18,7 +18,7 @@ export async function submitHandler(values: Values) {
     loginFormData.append('username', values.username);
     loginFormData.append('password', values.password);
 
-    await axios({
+    const response = await axios({
         method: 'post',
         url: '/api/login-processing',
         data: loginFormData,
@@ -26,10 +26,8 @@ export async function submitHandler(values: Values) {
             'Content-Type': 'multipart/form-data',
             'access-control-allow-origin': '*',
         },
-    }).then((response) => {
-        console.log(response.request.responseURL);
-        Router.push(response.request.responseURL);
     });
+    await Router.push(response.request.responseURL);
 }
 
 export default function LoginForm(props: Props) {
