@@ -1,11 +1,11 @@
 import Login from '../src/pages/login';
-import LoginForm, {submitHandler, Values} from '../src/components/loginForm';
+import LoginForm, { submitHandler, Values } from '../src/components/loginForm';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import mockAxios from 'jest-mock-axios';
-import Router from "next/router";
-import {AxiosResponse} from "axios";
+import Router from 'next/router';
+import { AxiosResponse } from 'axios';
 
 afterEach(() => {
     mockAxios.reset();
@@ -27,10 +27,10 @@ describe('Login page', () => {
     });
 });
 
-it("Test interface values", () => {
-    const values: Values = {username: 'test@mail.com', password: 'pass'}
-    expect(values.username).toEqual('test@mail.com')
-    expect(values.password).toEqual('pass')
+it('Test interface values', () => {
+    const values: Values = { username: 'test@mail.com', password: 'pass' };
+    expect(values.username).toEqual('test@mail.com');
+    expect(values.password).toEqual('pass');
 });
 
 test('Test whether the login sends the form', async () => {
@@ -46,27 +46,30 @@ test('Test whether the login sends the form', async () => {
     await userEvent.click(login.getByRole('button'));
 
     await waitFor(() => {
-        expect(submitLogin).toHaveBeenCalledWith({username: 'test@mail.com', password: 'pass'}, expect.any(Object));
+        expect(submitLogin).toHaveBeenCalledWith(
+            { username: 'test@mail.com', password: 'pass' },
+            expect.any(Object)
+        );
     });
 });
 
-it("SubmitHandler for loginForm sends post request", () => {
-    const values: Values = {username: 'test@mail.com', password: 'pass'};
+it('SubmitHandler for loginForm sends post request', () => {
+    const values: Values = { username: 'test@mail.com', password: 'pass' };
     const response: AxiosResponse = {
         data: {},
         status: 200,
         statusText: 'OK',
         headers: {},
         config: {},
-    }
+    };
 
-    response.request.responseURL = "/home"
+    response.request.responseURL = '/home';
 
     submitHandler(values);
-    mockAxios.mockResponseFor({url: '/api/login-processing'}, response)
+    mockAxios.mockResponseFor({ url: '/api/login-processing' }, response);
 
     waitFor(() => {
         expect(mockAxios.post).toHaveBeenCalledWith('/api/login-processing');
-        expect(Router.push).toHaveBeenCalled()
-    })
+        expect(Router.push).toHaveBeenCalled();
+    });
 });
