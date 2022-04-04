@@ -6,7 +6,8 @@ import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +58,6 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void setUpRepository() {
-        loadUser();
-
         edition1.setName("Edition 1");
         edition1.setYear(0);
         edition1.setActive(false);
@@ -75,8 +74,6 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        removeUser();
-
         repository.deleteAll();
     }
 
@@ -107,7 +104,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void edition_toggle_active() throws Exception {
         List<Edition> editions = repository.findAll();
         Edition edition = editions.get(0);

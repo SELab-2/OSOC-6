@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,8 +84,6 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
      */
     @Override
     public void setUpRepository() {
-        loadUser();
-
         skillType1.setColour("42B37B");
         repository.save(skillType1);
 
@@ -97,13 +96,11 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
      */
     @Override
     public void removeSetUpRepository() {
-        removeUser();
-
         repository.deleteAll();
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void editing_final_field_is_indifferent() throws Exception {
         SkillType skillType = get_random_repository_entity();
 
@@ -113,7 +110,7 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithUserDetails(value = "admin@test.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         SkillType skillType = get_random_repository_entity();
         base_test_all_queried_assertions(

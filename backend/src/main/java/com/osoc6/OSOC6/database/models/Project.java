@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * The database entity for a project.
  * A project is something Students work on within an edition.
- * A project has coaches to help the students and is typically done for or with help of an {@link Organisation}.
+ * A project has coaches to help the students and is typically done for or with help of an organisation.
  */
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_id")})
@@ -74,12 +74,36 @@ public class Project {
     private Edition edition;
 
     /**
-     * Partner that is involved in this project.
+     * The name of the organisation behind the project.
      */
-    @OneToOne(optional = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "partner_id", referencedColumnName = "id")
+    @Basic(optional = false)
+    @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     @Getter @Setter
-    private Organisation partner;
+    private String organisation;
+
+    /**
+     * The info about the organisation.
+     */
+    @Basic(optional = false)
+    @Lob
+    @Getter @Setter
+    private String about;
+
+    /**
+     * A URI pointing to the website of the organisation.
+     */
+    @Basic
+    @Lob
+    @Getter @Setter
+    private URI website;
+
+//    /**
+//     * Partner that is involved in this project.
+//     */
+//    @OneToOne(optional = true, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "partner_id", referencedColumnName = "id")
+//    @Getter @Setter
+//    private Organisation partner;
 
     /**
      * The {@link UserEntity}/ admin that created the project.
@@ -106,16 +130,18 @@ public class Project {
      *
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
-     * @param newPartner the organisation that the project belongs to
+     * @param newOrganisation the organisation that the project belongs to
+     * @param newAbout the info about the organisation
      * @param newCreator the creator of the project
      */
     public Project(final String newName, final Edition newEdition,
-                   final Organisation newPartner, final UserEntity newCreator) {
+                   final String newOrganisation, final String newAbout, final UserEntity newCreator) {
         super();
         goals = new ArrayList<>();
         name = newName;
         edition = newEdition;
-        partner = newPartner;
+        organisation = newOrganisation;
+        about = newAbout;
         creator = newCreator;
         neededSkills = new ArrayList<>();
         coaches = new ArrayList<>();

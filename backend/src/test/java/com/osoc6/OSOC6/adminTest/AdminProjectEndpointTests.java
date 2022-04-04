@@ -3,13 +3,11 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.Organisation;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.InvitationRepository;
-import com.osoc6.OSOC6.repository.OrganisationRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -45,12 +43,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Autowired
     private EditionRepository editionRepository;
-
-    /**
-     * The repository which saves, searches, ... Organisations in the database
-     */
-    @Autowired
-    private OrganisationRepository organisationRepository;
 
     /**
      * The repository which saves, searches, ... Users in the database
@@ -91,11 +83,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     private final Project project2 = new Project();
 
     /**
-     * Sample organisation that gets loaded before every test.
-     */
-    private final Organisation organisation = new Organisation("Experience what's inside", "Intel", null);
-
-    /**
      * Sample invitation that gets loaded before every test.
      */
     private final Invitation invitation = new Invitation(edition, user1, user1);
@@ -120,8 +107,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void setUpRepository() {
-        loadUser();
-
         edition.setActive(true);
         edition.setName("OSOC2022");
         edition.setYear(2022);
@@ -141,14 +126,16 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         invitation.setSubject(user1);
         invitationRepository.save(invitation);
 
-        project1.setName("Facebook");
+        project1.setName("New chip");
         project1.setEdition(edition);
-        project1.setPartner(null);
+        project1.setOrganisation("Intel");
+        project1.setAbout("Experience what's inside");
         project1.setCreator(user1);
 
         project2.setName("Instagram");
         project2.setEdition(edition);
-        project2.setPartner(organisation);
+        project2.setOrganisation("Meta");
+        project2.setAbout("Join the metaverse");
         project2.setCreator(user1);
 
         projectRepository.save(project1);
@@ -160,11 +147,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        removeUser();
-
         projectRepository.deleteAll();
-
-        organisationRepository.deleteAll();
 
         userRepository.deleteAll();
 
@@ -173,8 +156,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
     @Override
     public final Project create_entity() {
-        // Setting organisation to null makes more tests pass, but kind of defeats the purpose of testing...
-        return new Project(TEST_STRING, edition, null, user1);
+        return new Project(TEST_STRING, edition, "A new organisation", "Some info about the organisation", user1);
     }
 
     @Override

@@ -51,4 +51,16 @@ public class Edition {
     @Setter @Getter
     private Boolean active;
 
+    /**
+     *
+     * @param newName the name of the edition
+     * @param newYear the year of the edition
+     * @param newActive whether the edition is active
+     */
+    public Edition(final String newName, final Integer newYear, final Boolean newActive) {
+        name = newName;
+        year = newYear;
+        active = newActive;
+    }
+
 }

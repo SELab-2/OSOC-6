@@ -3,14 +3,9 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
-import com.osoc6.OSOC6.repository.UserRepository;
-import lombok.Getter;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,33 +35,6 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
 
     public AdminEndpointTest(final String path, final String newTestString) {
         super(path, newTestString);
-    }
-
-    /**
-     * The user repository which saves, searches, ... in the database
-     */
-    @Autowired
-    private UserRepository userRepository;
-
-    /**
-     * The admin test user. This is the user that will be used to execute the tests.
-     */
-    @Getter
-    private final UserEntity adminUser = new UserEntity("admin@test.com", "admin testuser",
-            UserRole.ADMIN, "123456");
-
-    /**
-     * Load the admin test user in the database.
-     */
-    public void loadUser() {
-        userRepository.save(adminUser);
-    }
-
-    /**
-     * Remove the admin test user in the database.
-     */
-    public void removeUser() {
-        userRepository.delete(adminUser);
     }
 
     /**

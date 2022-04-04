@@ -1,5 +1,12 @@
 package com.osoc6.OSOC6;
 
+import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.repository.InvitationRepository;
+import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +53,76 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     private MockMvc mockMvc;
 
     /**
+     * The edition repository which saves, searches, ... Editions in the database
+     */
+    @Autowired
+    private EditionRepository editionRepository;
+
+    /**
+     * The user repository which saves, searches, ... UserEntities in the database
+     */
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * The invitation repository which saves, searches, ... Invitations in the database
+     */
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+    /**
+     * The test edition. Used so that our test users can be linked to an edition.
+     */
+    private final Edition edition = new Edition("Basic test edition", 2022, true);
+
+    /**
+     * The admin test user. This is the admin user that will be used to execute the tests.
+     */
+    @Getter
+    private final UserEntity adminUser = new UserEntity("admin@test.com", "admin testuser",
+            UserRole.ADMIN, "123456");
+
+    /**
+     * The coach sample user that gets loaded before every test.
+     */
+    @Getter
+    private final UserEntity coachUser = new UserEntity("coach@test.com", "coach testuser",
+            UserRole.COACH, "123456");
+
+//    /**
+//     * The invitation for the admin user. Makes it so the user is linked to an edition.
+//     */
+//    private final Invitation invitationForAdmin = new Invitation(edition, adminUser, adminUser);
+
+    /**
+     * The invitation for the coach user. Makes it so the user is linked to an edition.
+     */
+    private final Invitation invitationForCoach = new Invitation(edition, coachUser, coachUser);
+
+    /**
+     * Load the needed edition, users and invitation.
+     */
+    public void loadBasicData() {
+        editionRepository.save(edition);
+
+        userRepository.save(adminUser);
+        userRepository.save(coachUser);
+
+        invitationRepository.save(invitationForCoach);
+    }
+
+    /**
+     * Remove the edition, users and invitation.
+     */
+    public void removeBasicData() {
+        userRepository.deleteAll();
+
+        invitationRepository.deleteAll();
+
+        editionRepository.deleteAll();
+    }
+
+    /**
      * Get the id from an entity, this can be used for multiple purposes.
      * @param entity entity whose id we would like to know
      * @return the id of the entity
@@ -83,7 +160,10 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @BeforeEach
     public void setUp() {
-        performAsAdmin(this::setUpRepository);
+        performAsAdmin(() -> {
+            loadBasicData();
+            setUpRepository();
+        });
     }
 
     /**
@@ -91,7 +171,10 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @AfterEach
     public void removeSetUp() {
-        performAsAdmin(this::removeSetUpRepository);
+        performAsAdmin(() -> {
+            removeBasicData();
+            removeSetUpRepository();
+        });
     }
 
     /**
