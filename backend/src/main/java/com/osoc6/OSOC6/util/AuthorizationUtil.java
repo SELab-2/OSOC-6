@@ -30,4 +30,13 @@ public final class AuthorizationUtil {
         }
         return result;
     }
+
+    public static boolean hasEditionAccess(final UserEntity userEntity, final Long editionId) {
+        for (long id : userEditions(userEntity)) {
+            if (id == editionId) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
