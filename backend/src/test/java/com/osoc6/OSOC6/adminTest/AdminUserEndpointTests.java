@@ -50,7 +50,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     /**
-     * Test user from the database.
+     * Remove test user from the database.
      */
     @Override
     public void removeSetUpRepository() {

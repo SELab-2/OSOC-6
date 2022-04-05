@@ -2,7 +2,6 @@ package com.osoc6.OSOC6.util;
 
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,14 +29,5 @@ public final class AuthorizationUtil {
             result.add(invitation.getEdition().getId());
         }
         return result;
-    }
-
-    /**
-     * Check if the user is an admin.
-     * @param userEntity the user to check
-     * @return whether the user is an admin
-     */
-    public static boolean isAdmin(final UserEntity userEntity) {
-        return userEntity.getUserRole() == UserRole.ADMIN;
     }
 }

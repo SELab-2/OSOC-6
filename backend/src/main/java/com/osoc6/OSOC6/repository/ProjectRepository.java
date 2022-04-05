@@ -29,7 +29,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findById(@NonNull Long aLong);
 
     @Override @NonNull
-    @Query("SELECT p from Project p where :#{@authorizationUtil.isAdmin(authentication.principal)} = true or "
+    @Query("SELECT p from Project p where :#{hasAuthority('ADMIN')} = true or "
             + "p.edition.id in :#{@authorizationUtil.userEditions(authentication.principal)}")
     Page<Project> findAll(@NonNull Pageable pageable);
 }
