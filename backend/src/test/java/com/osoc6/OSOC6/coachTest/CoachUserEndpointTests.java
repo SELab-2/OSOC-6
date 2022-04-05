@@ -107,17 +107,17 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void coach_get_details_of_other_user_is_forbidden() throws Exception {
+    public void coach_get_details_of_other_user_is_ok() throws Exception {
         perform_get(USERS_PATH + "/" + getAdminUser().getId())
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void coach_get_details_of_nonexisting_user_is_forbidden() throws Exception {
+    public void coach_get_details_of_nonexisting_user_is_not_found() throws Exception {
         int id = 1234;
         perform_get(USERS_PATH + "/" + id)
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -135,7 +135,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
         String newRole = "LORD";
         Map<String, String> map = Map.of("userRole", newRole);
         perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
-                .andExpect(status().isForbidden());
+                .andExpect(status().isBadRequest());
     }
 
     @Test

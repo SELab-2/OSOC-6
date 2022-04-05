@@ -6,9 +6,13 @@ import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.Optional;
 
 /**
  * This is a simple class that defines a repository for {@link Suggestion},
@@ -27,10 +31,9 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
      * An admin can update everything about every suggestion.
      * A coach can only update their own suggestions.
      */
-    @Override
-    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('COACH') "
-            + "and authentication.principal.id == #suggestion.coach.id)")
-    @NonNull
+    @Override @NonNull
+    @PreAuthorize("hasAuthority('ADMIN') or (authentication.principal.id == #suggestion.coach.id and "
+        + "@authorizationUtil.userEditions(authentication.principal).contains(#suggestion.student.edition.id))")
     <S extends Suggestion> S save(@Param("suggestion") @NonNull S suggestion);
 
     /**
@@ -40,13 +43,18 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
      * A coach can only delete their own suggestions.
      */
     @Override
-    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('COACH') "
-            + "and authentication.principal.id == #suggestion.coach.id)")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #suggestion.coach.id")
     void delete(@Param("suggestion") @NonNull Suggestion suggestion);
 
-    @Override
-    @NonNull
+    @Override @NonNull
     @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
+    @Query("select s from Suggestion s where :#{hasAuthority('ADMIN')} = true or "
+            + "s.student.edition.id in :#{@authorizationUtil.userEditions(authentication.principal)}")
     Page<Suggestion> findAll(@NonNull Pageable pageable);
+
+    @Override @NonNull
+    @PostAuthorize("!returnObject.present or hasAuthority('ADMIN') or "
+            + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.student.edition.id)")
+    Optional<Suggestion> findById(Long aLong);
 }
 

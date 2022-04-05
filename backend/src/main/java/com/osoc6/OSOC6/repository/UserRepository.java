@@ -25,6 +25,7 @@ public interface UserRepository  extends JpaRepository<UserEntity, Long> {
      * @param email email address of the searched user
      * @return if there is an account for the given email, the user will be returned
      */
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
     Optional<UserEntity> findByEmail(String email);
 
 
@@ -34,9 +35,8 @@ public interface UserRepository  extends JpaRepository<UserEntity, Long> {
      * An admin can find any user by their id.
      * A coach can only find themselves.
      */
-    @Override
-    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #id")
-    @NonNull
+    @Override @NonNull
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -66,6 +67,7 @@ public class Suggestion {
      * Student that is the subject of this suggestion.
      */
     @ManyToOne(optional = false, cascade = {})
+    @ReadOnlyProperty
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     @Getter
     private Student student;

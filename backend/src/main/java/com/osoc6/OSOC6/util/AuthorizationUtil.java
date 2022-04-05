@@ -25,9 +25,11 @@ public final class AuthorizationUtil {
      */
     public static List<Long> userEditions(final UserEntity userEntity) {
         List<Long> result = new ArrayList<>();
+        System.out.println("what's up?");
         for (Invitation invitation: userEntity.getReceivedInvitations()) {
             result.add(invitation.getEdition().getId());
         }
+        System.out.println(result);
         return result;
     }
 }

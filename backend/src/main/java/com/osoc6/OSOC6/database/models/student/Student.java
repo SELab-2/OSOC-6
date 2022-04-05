@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Singular;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -227,7 +228,8 @@ public class Student {
      * {@link Edition} in which this communication took place.
      */
     @ManyToOne(optional = false, cascade = {})
-    @Getter @Setter
+    @ReadOnlyProperty
+    @Getter
     private Edition edition;
 
     /**
