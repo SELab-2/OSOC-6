@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -93,9 +95,10 @@ public class UserEntity implements UserDetails {
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
-    @OneToMany(mappedBy = "subject", orphanRemoval = false)
+    @JsonIgnore
+    @OneToMany(mappedBy = "subject", orphanRemoval = false, fetch = FetchType.EAGER)
     @Getter
-    private List<Invitation> receivedInvitations;
+    private List<Invitation> receivedInvitations = new ArrayList<>();
 
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.

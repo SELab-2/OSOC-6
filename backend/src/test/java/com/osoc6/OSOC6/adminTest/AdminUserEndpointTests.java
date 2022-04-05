@@ -27,16 +27,6 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     private UserRepository userRepository;
 
     /**
-     * The admin sample user that gets loaded before every test.
-     */
-    private final UserEntity adminUser = new UserEntity();
-
-    /**
-     * The coach sample user that gets loaded before every test.
-     */
-    private final UserEntity coachUser = new UserEntity();
-
-    /**
      * The actual path users are served on, with '/' as prefix.
      */
     private static final String USERS_PATH = "/" + DumbledorePathWizard.USERS_PATH;
@@ -56,30 +46,15 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Override
     public void setUpRepository() {
-        adminUser.setEmail("admin.test@gmail.com");
-        adminUser.setCallName("Admin Test");
-        adminUser.setUserRole(UserRole.ADMIN);
-        adminUser.setPassword("123456");
-        userRepository.save(adminUser);
-
-        coachUser.setEmail("coach.test@gmail.com");
-        coachUser.setCallName("Coach Test");
-        coachUser.setUserRole(UserRole.COACH);
-        coachUser.setPassword("123456");
-        userRepository.save(coachUser);
+        setupBasicData();
     }
 
     /**
-     * Remove the two test user from the database.
+     * Remove test user from the database.
      */
     @Override
     public void removeSetUpRepository() {
-        if (userRepository.existsById(adminUser.getId())) {
-            userRepository.deleteById(adminUser.getId());
-        }
-        if (userRepository.existsById(coachUser.getId())) {
-            userRepository.deleteById(coachUser.getId());
-        }
+        removeBasicData();
     }
 
     @Override
@@ -116,36 +91,36 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_list_of_all_users_contains_both_test_users() throws Exception {
         perform_get(USERS_PATH)
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(adminUser.getEmail()))
-                .andExpect(string_to_contains_string(coachUser.getEmail()));
+                .andExpect(string_to_contains_string(getAdminUser().getEmail()))
+                .andExpect(string_to_contains_string(getCoachUser().getEmail()));
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_details_of_himself_succeeds() throws Exception {
-        perform_get(USERS_PATH + "/" + adminUser.getId())
+        perform_get(USERS_PATH + "/" + getAdminUser().getId())
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(adminUser.getEmail()))
-                .andExpect(string_to_contains_string(adminUser.getCallName()))
-                .andExpect(string_to_contains_string(adminUser.getUserRole().toString()));
+                .andExpect(string_to_contains_string(getAdminUser().getEmail()))
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()))
+                .andExpect(string_to_contains_string(getAdminUser().getUserRole().toString()));
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_details_of_other_user_succeeds() throws Exception {
-        perform_get(USERS_PATH + "/" + coachUser.getId())
+        perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(coachUser.getEmail()))
-                .andExpect(string_to_contains_string(coachUser.getCallName()))
-                .andExpect(string_to_contains_string(coachUser.getUserRole().toString()));
+                .andExpect(string_to_contains_string(getCoachUser().getEmail()))
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()))
+                .andExpect(string_to_contains_string(getCoachUser().getUserRole().toString()));
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_get_details_of_nonexisting_user_is_not_found() throws Exception {
         int id = 1234;
         perform_get(USERS_PATH + "/" + id)
@@ -153,31 +128,31 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_role_with_valid_role_succeeds() throws Exception {
         UserRole newRole = UserRole.ADMIN;
         Map<String, String> map = Map.of("userRole", newRole.toString());
-        perform_patch(USERS_PATH + "/" + coachUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
                 .andExpect(status().is2xxSuccessful());
 
-        perform_get(USERS_PATH + "/" + coachUser.getId())
+        perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(coachUser.getEmail()))
-                .andExpect(string_to_contains_string(coachUser.getCallName()))
+                .andExpect(string_to_contains_string(getCoachUser().getEmail()))
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()))
                 .andExpect(string_to_contains_string(newRole.toString()));
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_role_with_invalid_role_is_bad_request() throws Exception {
         String newRole = "LORD";
         Map<String, String> map = Map.of("userRole", newRole);
-        perform_patch(USERS_PATH + "/" + adminUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_of_himself_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -185,18 +160,18 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
                 "email", newEmail,
                 "callName", newCallName
         );
-        perform_patch(USERS_PATH + "/" + adminUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
                 .andExpect(status().is2xxSuccessful());
 
-        perform_get(USERS_PATH + "/" + adminUser.getId())
+        perform_get(USERS_PATH + "/" + getAdminUser().getId())
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(newEmail))
                 .andExpect(string_to_contains_string(newCallName))
-                .andExpect(string_to_contains_string(adminUser.getUserRole().toString()));
+                .andExpect(string_to_contains_string(getAdminUser().getUserRole().toString()));
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_of_other_user_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -204,18 +179,18 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
                 "email", newEmail,
                 "callName", newCallName
         );
-        perform_patch(USERS_PATH + "/" + coachUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
                 .andExpect(status().is2xxSuccessful());
 
-        perform_get(USERS_PATH + "/" + coachUser.getId())
+        perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(newEmail))
                 .andExpect(string_to_contains_string(newCallName))
-                .andExpect(string_to_contains_string(coachUser.getUserRole().toString()));
+                .andExpect(string_to_contains_string(getCoachUser().getUserRole().toString()));
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_and_role_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -225,10 +200,10 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
                 "callName", newCallName,
                 "userRole", newRole.toString()
         );
-        perform_patch(USERS_PATH + "/" + adminUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
                 .andExpect(status().is2xxSuccessful());
 
-        perform_get(USERS_PATH + "/" + adminUser.getId())
+        perform_get(USERS_PATH + "/" + getAdminUser().getId())
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(newEmail))
                 .andExpect(string_to_contains_string(newCallName))
@@ -236,9 +211,9 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     }
 
     @Test
-    @WithUserDetails(value = "admin.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_delete_user_succeeds() throws Exception {
-        perform_delete_with_id(USERS_PATH, coachUser.getId())
+        perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isNoContent());
     }
 }

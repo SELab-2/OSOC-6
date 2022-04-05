@@ -1,5 +1,12 @@
 package com.osoc6.OSOC6;
 
+import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.repository.InvitationRepository;
+import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Abstract class to help with testing the integration of endpoints.
  * Implements basic functions to be used when creating endpoint tests.
+ * Provides an edition, coachUser, adminUser and invitation when
+ * base setup and base removed are called in the setup and remove functions.
  *
  * @param <T> the entity of the repository using this class
  * @param <I> the id type of the entity
@@ -44,6 +53,82 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @Autowired @Getter
     private MockMvc mockMvc;
+
+    /**
+     * The edition repository which saves, searches, ... Editions in the database
+     */
+    @Autowired
+    private EditionRepository editionRepository;
+
+    /**
+     * The user repository which saves, searches, ... UserEntities in the database
+     */
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * The invitation repository which saves, searches, ... Invitations in the database
+     */
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+    /**
+     * The test edition. Used so that our test users can be linked to an edition.
+     */
+    @Getter
+    private final Edition baseUserEdition = new Edition("Basic test edition", 2022, true);
+
+    /**
+     * Email of the admin as a static final field. This way it can be used within annotations.
+     */
+    protected static final String ADMIN_EMAIL = "admin@test.com";
+
+    /**
+     * Email of the coach as a static final field. This way it can be used within annotations.
+     */
+    protected static final String COACH_EMAIL = "coach@test.com";
+
+    /**
+     * The admin test user. This is the admin user that will be used to execute the tests.
+     */
+    @Getter
+    private final UserEntity adminUser = new UserEntity(ADMIN_EMAIL, "admin testuser",
+            UserRole.ADMIN, "123456");
+
+    /**
+     * The coach sample user that gets loaded before every test.
+     */
+    @Getter
+    private final UserEntity coachUser = new UserEntity(COACH_EMAIL, "coach testuser",
+            UserRole.COACH, "123456");
+
+    /**
+     * The invitation for the coach user. Makes it so the user is linked to an edition.
+     */
+    private final Invitation invitationForCoach = new Invitation(baseUserEdition, coachUser, coachUser);
+
+    /**
+     * Load the needed edition, users and invitation.
+     */
+    public void setupBasicData() {
+        editionRepository.save(baseUserEdition);
+
+        userRepository.save(adminUser);
+        userRepository.save(coachUser);
+
+        invitationRepository.save(invitationForCoach);
+    }
+
+    /**
+     * Remove the edition, users and invitation.
+     */
+    public void removeBasicData() {
+        invitationRepository.deleteAll();
+
+        userRepository.deleteAll();
+
+        editionRepository.deleteAll();
+    }
 
     /**
      * Get the id from an entity, this can be used for multiple purposes.
@@ -66,7 +151,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * Execute the given lambda with admin authorization.
      * @param lambda the lambda to execute
      */
-    private void performAsAdmin(final Runnable lambda) {
+    protected void performAsAdmin(final Runnable lambda) {
         try {
             SecurityContext securityContext = new SecurityContextImpl();
             securityContext.setAuthentication(

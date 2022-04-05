@@ -33,6 +33,16 @@ public final class DumbledorePathWizard {
     public static final String COMMUNICATION_TEMPLATE_PATH = "communicationTemplates";
 
     /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Project} is served on.
+     */
+    public static final String PROJECTS_PATH = "projects";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Invitation} is served on.
+     */
+    public static final String INVITATIONS_PATH = "invitations";
+
+    /**
      * Path that {@link com.osoc6.OSOC6.database.models.Suggestion} is served on.
      */
     public static final String SUGGESTION_PATH = "suggestions";

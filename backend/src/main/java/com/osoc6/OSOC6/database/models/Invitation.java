@@ -1,17 +1,24 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Calendar;
 
 /**
  * The database entity for an Invitation.
@@ -29,17 +36,26 @@ public class Invitation {
     private Long id;
 
     /**
+     * The unique token of the invitation.
+     */
+    @Basic(optional = false)
+    @Column(unique = true, updatable = false)
+    @Getter
+    private final String token = new Base64StringKeyGenerator().generateKey();
+
+    /**
      * The timestamp of the invitation.
      */
     @Basic(optional = false)
+    @CreationTimestamp @Column(updatable = false)
     @Getter
-    @CreationTimestamp
-    private Timestamp timestamp;
+    private Timestamp creationTimestamp;
 
     /**
      * {@link Edition} for which this invitation was created.
      */
     @ManyToOne(optional = false)
+    @ReadOnlyProperty
     @Getter
     private Edition edition;
 
@@ -47,13 +63,15 @@ public class Invitation {
      * User that issued the invitation.
      */
     @ManyToOne(optional = false)
+    @ReadOnlyProperty
     @Getter
     private UserEntity issuer;
 
     /**
      * User that accepted the invitation.
      */
-    @ManyToOne
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "subject_id", referencedColumnName = "id")
     @Getter @Setter
     private UserEntity subject;
 
@@ -65,7 +83,6 @@ public class Invitation {
      */
     public Invitation(final Edition newEdition, final UserEntity newIssuer, final UserEntity newSubject) {
         super();
-        timestamp = new Timestamp(System.currentTimeMillis());
         edition = newEdition;
         issuer = newIssuer;
         subject = newSubject;
@@ -77,5 +94,15 @@ public class Invitation {
      */
     public boolean isUsed() {
         return subject != null;
+    }
+
+    /**
+     * @return Whether the invitation is still valid. An invitation is valid for a limited time.
+     */
+    public boolean isValid() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(creationTimestamp);
+        cal.add(Calendar.DAY_OF_WEEK, RadagastNumberWizard.INVITATION_EXPIRATION_DAYS);
+        return !isUsed() && cal.getTime().toInstant().isBefore(Instant.now());
     }
 }

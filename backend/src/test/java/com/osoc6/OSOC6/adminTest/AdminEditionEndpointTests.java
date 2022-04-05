@@ -6,11 +6,13 @@ import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,6 +59,8 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void setUpRepository() {
+        setupBasicData();
+
         edition1.setName("Edition 1");
         edition1.setYear(0);
         edition1.setActive(false);
@@ -73,12 +77,9 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public void removeSetUpRepository() {
-        if (repository.existsById(edition1.getId())) {
-            repository.deleteById(edition1.getId());
-        }
-        if (repository.existsById(edition2.getId())) {
-            repository.deleteById(edition2.getId());
-        }
+        removeBasicData();
+
+        repository.deleteAll();
     }
 
     @Override
@@ -107,11 +108,23 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
         return edition.getId();
     }
 
+    /**
+     * Get a "random" repository entity. Since there is also a basic test edition in the database because of the
+     * {@link com.osoc6.OSOC6.BaseTestPerformer}, we need to manually make sure we get a different edition.
+     * @return a "random" edition
+     */
+    @Override
+    public Edition get_random_repository_entity() {
+        AtomicReference<Edition> entity = new AtomicReference<>();
+        performAsAdmin(() -> entity.set(get_repository().getById(edition1.getId())));
+        return entity.get();
+    }
+
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @Transactional
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void edition_toggle_active() throws Exception {
-        List<Edition> editions = repository.findAll();
-        Edition edition = editions.get(0);
+        Edition edition = get_random_repository_entity();
 
         boolean prevActive  = edition.getActive();
         edition.setActive(!prevActive);
