@@ -15,7 +15,6 @@ import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -183,10 +180,9 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new() throws Exception {
-        Suggestion entity = create_entity();
+        Suggestion suggestion = create_entity();
 
-        perform_post(getEntityPath(), entity);
-        check_get(getEntityPath(), getTestString());
+        perform_post(getEntityPath(), suggestion).andExpect(status().isCreated());
     }
 
     @Test
@@ -194,14 +190,6 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     public void post_new_to_other_edition_fails() throws Exception {
         Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality", outsiderCoach, student);
         perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
-    }
-
-    @Test
-    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void getting_all_filters_on_my_editions() throws Exception {
-        String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
-        base_get_all_entities_succeeds().andDo(print()).andExpect(content().string(
-                Matchers.not(Matchers.containsString(studentUrl))));
     }
 
     @Test
@@ -251,5 +239,11 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_all_suggestions_fails() throws Exception {
+        perform_get(getEntityPath()).andExpect(status().isForbidden());
     }
 }

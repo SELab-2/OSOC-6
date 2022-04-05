@@ -3,10 +3,7 @@ package com.osoc6.OSOC6.repository;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import lombok.NonNull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -45,12 +42,6 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
     @Override
     @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #suggestion.coach.id")
     void delete(@Param("suggestion") @NonNull Suggestion suggestion);
-
-    @Override @NonNull
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
-    @Query("select s from Suggestion s where :#{hasAuthority('ADMIN')} = true or "
-            + "s.student.edition.id in :#{@authorizationUtil.userEditions(authentication.principal)}")
-    Page<Suggestion> findAll(@NonNull Pageable pageable);
 
     @Override @NonNull
     @PostAuthorize("!returnObject.present or hasAuthority('ADMIN') or "
