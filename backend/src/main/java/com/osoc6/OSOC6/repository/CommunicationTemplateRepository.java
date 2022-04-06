@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.CommunicationTemplate;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,7 +21,7 @@ import javax.transaction.Transactional;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.COMMUNICATION_TEMPLATE_PATH,
         path = DumbledorePathWizard.COMMUNICATION_TEMPLATE_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface CommunicationTemplateRepository extends JpaRepository<CommunicationTemplate, Long> {
     /**
      * search by using the following:
