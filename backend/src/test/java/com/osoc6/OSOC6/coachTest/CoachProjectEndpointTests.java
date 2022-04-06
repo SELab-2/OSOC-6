@@ -147,16 +147,14 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_all_returns_all_projects_of_same_edition_as_user() throws Exception {
-        perform_get(getEntityPath())
-                .andExpect(status().isOk())
+        base_get_all_entities_succeeds()
                 .andExpect(string_to_contains_string(project2.getName()));
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_all_does_not_contain_projects_of_different_edition_as_user() throws Exception {
-        perform_get(getEntityPath())
-                .andExpect(status().isOk())
+        base_get_all_entities_succeeds()
                 .andExpect(content().string(not(containsString(project1.getName()))));
     }
 
@@ -203,8 +201,20 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_illegal_entity_fails() throws Exception {
+        base_getting_illegal_entity_fails();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails_name() throws Exception {
         base_getting_illegal_entity_fails_name();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void patching_entity_to_illegal_id_fails() throws Exception {
+        base_patching_entity_to_illegal_id_fails();
     }
 
     @Test
