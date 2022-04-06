@@ -9,17 +9,17 @@ public final class MerlinSpELWizard {
     private MerlinSpELWizard() { }
 
     /**
-     * Check is the current user has the admin authority.
+     * Check if the current user has the admin authority.
      */
     public static final String ADMIN_AUTH = "hasAuthority('ADMIN')";
 
     /**
-     * Check is the current user has the admin authority. (Query notation)
+     * Check if the current user has the admin authority. (Query notation)
      */
     public static final String Q_ADMIN_AUTH = ":#{hasAuthority('ADMIN')} = true";
 
     /**
-     * Check is the current user has the coach authority.
+     * Check if the current user has the coach authority.
      */
     public static final String COACH_AUTH = "hasAuthority('COACH')";
 

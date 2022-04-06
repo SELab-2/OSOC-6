@@ -28,7 +28,6 @@ public final class AuthorizationUtil {
         for (Invitation invitation: userEntity.getReceivedInvitations()) {
             result.add(invitation.getEdition().getId());
         }
-        System.out.println(result);
         return result;
     }
 }
