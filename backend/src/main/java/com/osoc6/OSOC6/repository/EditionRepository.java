@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ import java.util.Optional;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.EDITIONS_PATH,
         path = DumbledorePathWizard.EDITIONS_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface EditionRepository extends JpaRepository<Edition, Long> {
     /**
      * search by using the following: /{DumbledorePathWizard.EDITIONS_PATH}/search/findByName?name=nameOfEdition.
@@ -30,20 +31,20 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
      * @param pageable argument needed to return a page
      * @return list of matched editions
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
-    @Query("select e from Edition e where e.name = :name and (:#{hasAuthority('ADMIN')} = true or "
-            + "e.id in :#{@authorizationUtil.userEditions(authentication.principal)})")
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @Query("select e from Edition e where e.name = :name and (" + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
+            + "e.id in " + MerlinSpELWizard.Q_USER_EDITIONS + ")")
     Page<Edition> findByName(@Param("name") String name, Pageable pageable);
 
     @Override @NonNull
-    @PreAuthorize("hasAuthority('COACH')")
-    @PostAuthorize("hasAuthority('ADMIN') or "
-            + "@authorizationUtil.hasEditionAccess(authentication.principal, returnObject.get.id)")
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or "
+            + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.id)")
     Optional<Edition> findById(Long aLong);
 
     @Override @NonNull
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
-    @Query("SELECT e from Edition e where :#{hasAuthority('ADMIN')} = true or "
-            + "e.id in :#{@authorizationUtil.userEditions(authentication.principal)}")
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @Query("SELECT e from Edition e where " + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
+            + "e.id in " + MerlinSpELWizard.Q_USER_EDITIONS)
     Page<Edition> findAll(Pageable pageable);
 }

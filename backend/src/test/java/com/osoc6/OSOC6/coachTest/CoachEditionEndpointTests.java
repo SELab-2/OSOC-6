@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CoachEditionEndpointTests extends TestFunctionProvider<Edition, Long, EditionRepository> {
+public final class CoachEditionEndpointTests extends TestFunctionProvider<Edition, Long, EditionRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -76,7 +76,7 @@ public class CoachEditionEndpointTests extends TestFunctionProvider<Edition, Lon
     }
 
     @Override
-    public final Edition create_entity() {
+    public Edition create_entity() {
         Edition edition = new Edition();
         edition.setName(TEST_STRING);
         edition.setYear(1);
@@ -85,19 +85,19 @@ public class CoachEditionEndpointTests extends TestFunctionProvider<Edition, Lon
     }
 
     @Override
-    public final Map<String, String> change_entity(final Edition edition) {
+    public Map<String, String> change_entity(final Edition edition) {
         Map<String, String> patchMap = new HashMap<>();
         patchMap.put("name", TEST_STRING);
         return patchMap;
     }
 
     @Override
-    public final EditionRepository get_repository() {
+    public EditionRepository get_repository() {
         return editionRepository;
     }
 
     @Override
-    public final Long get_id(final Edition edition) {
+    public Long get_id(final Edition edition) {
         return edition.getId();
     }
 
