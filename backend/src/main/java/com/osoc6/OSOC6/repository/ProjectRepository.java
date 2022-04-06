@@ -25,11 +25,13 @@ import java.util.Optional;
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Override @NonNull
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
             + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.edition.id)")
-    Optional<Project> findById(@NonNull Long aLong);
+    Optional<Project> findById(@NonNull Long id);
 
     @Override @NonNull
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @Query("SELECT p from Project p where " + MerlinSpELWizard.Q_ADMIN_AUTH + " or p.edition.id in "
             + MerlinSpELWizard.Q_USER_EDITIONS)
     Page<Project> findAll(@NonNull Pageable pageable);
