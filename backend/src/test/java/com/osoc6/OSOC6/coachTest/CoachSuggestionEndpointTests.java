@@ -190,8 +190,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @Test
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new_to_other_edition_fails() throws Exception {
+        // This is either forbidden because the user cannot post a suggestion no an edition that is not his.
+        // or a bad request because the user is unable to see the student in the first place.
         Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality", outsiderCoach, student);
-        perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
+        perform_post(getEntityPath(), suggestion).andExpect(status().is4xxClientError());
     }
 
     @Test

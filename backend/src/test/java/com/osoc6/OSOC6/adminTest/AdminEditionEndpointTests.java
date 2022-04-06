@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 /**
- * Class testing the integration of {@link Edition}.
+ * Class testing the integration of {@link Edition} as an admin.
  */
 public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, EditionRepository> {
 

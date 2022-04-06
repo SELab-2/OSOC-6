@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Singular;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
@@ -29,7 +28,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,8 +98,8 @@ public class Student {
      * The pronouns of the student.
      */
     @ElementCollection
-    @Getter
-    private List<String> pronouns;
+    @Getter @Builder.Default
+    private List<String> pronouns = new ArrayList<>();
 
     /**
      * The most fluent language of a person. This is a formatted string.
@@ -131,7 +130,7 @@ public class Student {
     @Basic
     @Lob
     @Getter @Setter
-    private URI curriculumVitaeURI;
+    private String curriculumVitaeURI;
 
     /**
      * A URI pointing to the portfolio of the student.
@@ -139,7 +138,7 @@ public class Student {
     @Basic
     @Lob
     @Getter @Setter
-    private URI portfolioURI;
+    private String portfolioURI;
 
     /**
      * A URI pointing to the motivation of the student.
@@ -147,7 +146,7 @@ public class Student {
     @Basic
     @Lob
     @Getter @Setter
-    private URI motivationURI;
+    private String motivationURI;
 
     /**
      * A written motivation of the student.
@@ -237,38 +236,38 @@ public class Student {
      */
     @ElementCollection
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Singular
-    private List<String> studies;
+    @Getter @Builder.Default
+    private List<String> studies = new ArrayList<>();
 
     /**
      * The skills this student has.
      * In the form this is called the 'role' a student applies for.
      */
     @OneToMany(orphanRemoval = true)
-    @Getter @Singular
-    private List<Skill> skills;
+    @Getter @Builder.Default
+    private List<Skill> skills = new ArrayList<>();
 
     /**
      * The suggestions made about this student.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student")
-    @Getter @Singular
-    private List<Suggestion> suggestions;
+    @Getter @Builder.Default
+    private List<Suggestion> suggestions = new ArrayList<>();
 
     /**
      * The assignments made about this student.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
-    @Getter @Singular
-    private List<Assignment> assignments;
+    @Getter @Builder.Default
+    private List<Assignment> assignments = new ArrayList<>();
 
     /**
      * Communication that this student has received sorted on the timestamp.
      */
     @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     @OrderColumn(name = "timestamp")
-    @Getter @Singular
-    private List<Communication> communications;
+    @Getter @Builder.Default
+    private List<Communication> communications = new ArrayList<>();
 
     /**
      *

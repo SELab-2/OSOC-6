@@ -77,7 +77,7 @@ public abstract class AdminEndpointTest<T, I extends Serializable, R extends Jpa
     public void post_new() throws Exception {
         T entity = create_entity();
 
-        perform_post(getEntityPath(), entity);
+        perform_post(getEntityPath(), entity).andExpect(status().isCreated());
         check_get(getEntityPath(), getTestString());
         delete_repository_entity(entity);
     }
