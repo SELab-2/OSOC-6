@@ -32,7 +32,7 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
      * @return list of matched editions
      */
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @Query("select e from Edition e where e.name = :name and (" + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
+    @Query("select e from Edition e where e.name LIKE concat(:name, '%') and (" + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
             + "e.id in " + MerlinSpELWizard.Q_USER_EDITIONS + ")")
     Page<Edition> findByName(@Param("name") String name, Pageable pageable);
 
