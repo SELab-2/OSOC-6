@@ -126,13 +126,32 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     public void edition_toggle_active() throws Exception {
         Edition edition = get_random_repository_entity();
 
+        Map<String, String> changeMap = new HashMap<>();
         boolean prevActive  = edition.getActive();
-        edition.setActive(!prevActive);
+        changeMap.put("active", Boolean.toString(!prevActive));
 
-        perform_put(EDITIONS_PATH + "/" + edition.getId(), edition);
+        perform_patch(EDITIONS_PATH + "/" + edition.getId(), changeMap);
 
         perform_get(EDITIONS_PATH + "/" + edition.getId())
                 .andExpect(status().isOk())
                 .andExpect(content().string(Util.containsFieldWithValue("active", !prevActive)));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void edition_needs_unique_name() throws Exception {
+        Map<String, String> changeMap = new HashMap<>();
+        changeMap.put("name", TEST_STRING);
+
+        perform_patch(getEntityPath() + "/" + edition1.getId(), changeMap).andExpect(status().isOk());
+        perform_patch(getEntityPath() + "/" + edition2.getId(), changeMap).andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_my_edition_by_name_works() throws Exception {
+        Edition edition = getBaseUserEdition();
+        base_test_all_queried_assertions(
+                getEntityPath() + "/search/findByName", "name", edition.getName());
     }
 }
