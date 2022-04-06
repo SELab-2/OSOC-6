@@ -99,9 +99,9 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
      * Tests if a random entity in the database can be found with GET.
      * @throws Exception throws exception if the request fails
      */
-    public void base_getting_legal_entity_succeeds() throws Exception {
+    public ResultActions base_getting_legal_entity_succeeds() throws Exception {
         T entity = get_random_repository_entity();
-        perform_get(entityPath + "/" + get_id(entity))
+        return perform_get(entityPath + "/" + get_id(entity))
                 .andExpect(status().isOk());
     }
 
