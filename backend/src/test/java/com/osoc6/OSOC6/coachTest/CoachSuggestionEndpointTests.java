@@ -167,8 +167,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @Override
     public final String transform_to_json(final Suggestion entity) {
         String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class, getCoachUser().getId().toString()).getHref();
-        String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
+        String userUrl = entityLinks.linkToItemResource(UserEntity.class,
+                entity.getCoach().getId().toString()).getHref();
+        String studentUrl = entityLinks.linkToItemResource(Student.class,
+                entity.getStudent().getId().toString()).getHref();
 
         // The regex replaces the whole UserEntity and student object (as json)
         // with urls that points to the right entities.
@@ -213,8 +215,16 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     }
 
     @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void delete_own_suggestion_works() throws Exception {
+        Suggestion entity = get_random_repository_entity();
+        perform_delete_with_id(SUGGESTION_PATH, entity.getId())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void delete_suggestion_fails() throws Exception {
+    public void delete_other_suggestion_fails() throws Exception {
         Suggestion entity = get_random_repository_entity();
         perform_delete_with_id(SUGGESTION_PATH, entity.getId())
                 .andExpect(status().isForbidden());
