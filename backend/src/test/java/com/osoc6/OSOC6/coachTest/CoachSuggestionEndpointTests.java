@@ -21,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.ArrayList;
@@ -40,12 +39,12 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * Email of the user creating suggestions as a static final field. This way it can be used within annotations.
      */
-    private static final String SUGGESTION_EMAIL = "test@mail.com";
+    private static final String OUTSIDER_EMAIL = "outsider@mail.com";
 
     /**
      * Sample user.
      */
-    private final UserEntity suggestionUser = new UserEntity(SUGGESTION_EMAIL, "joe", UserRole.COACH, "test");
+    private final UserEntity outsiderCoach = new UserEntity(OUTSIDER_EMAIL, "joe", UserRole.COACH, "test");
 
     /**
      * First sample student that gets loaded before every test.
@@ -76,12 +75,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * First sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", suggestionUser, student);
-
-    /**
-     * Second sample suggestions that gets loaded before every test.
-     */
-    private final Suggestion suggestion2 = new Suggestion(SuggestionStrategy.NO, "Reason 2", suggestionUser, student);
+    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", getCoachUser(), student);
 
     /**
      * The actual path suggestion are served on, with '/' as prefix.
@@ -98,7 +92,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
      * The repository which saves, searches, ... in the database
      */
     @Autowired
-    private SuggestionRepository repository;
+    private SuggestionRepository suggestionRepository;
 
     /**
      * The repository which saves, searches, ... in the database
@@ -129,7 +123,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
     @Override
     public final SuggestionRepository get_repository() {
-        return repository;
+        return suggestionRepository;
     }
 
     /**
@@ -140,19 +134,18 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
         setupBasicData();
 
         // Needed for database relation
-        userRepository.save(suggestionUser);
+        userRepository.save(outsiderCoach);
 
         studentRepository.save(student);
 
-        repository.save(suggestion1);
-        repository.save(suggestion2);
+        suggestionRepository.save(suggestion1);
     }
 
     @Override
     public final void removeSetUpRepository() {
         // All suggestions need to be deleted,
         // Otherwise there will be a relation with the user
-        repository.deleteAll();
+        suggestionRepository.deleteAll();
         studentRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -161,7 +154,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
     @Override
     public final Suggestion create_entity() {
-        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, suggestionUser, student);
+        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, getCoachUser(), student);
     }
 
     @Override
@@ -174,8 +167,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @Override
     public final String transform_to_json(final Suggestion entity) {
         String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class, suggestionUser.getId().toString()).getHref();
-        String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
+        String userUrl = entityLinks.linkToItemResource(UserEntity.class,
+                entity.getCoach().getId().toString()).getHref();
+        String studentUrl = entityLinks.linkToItemResource(Student.class,
+                entity.getStudent().getId().toString()).getHref();
 
         // The regex replaces the whole UserEntity and student object (as json)
         // with urls that points to the right entities.
@@ -185,32 +180,58 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     }
 
     @Test
-    @WithUserDetails(value = SUGGESTION_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new() throws Exception {
-        Suggestion entity = create_entity();
+        Suggestion suggestion = create_entity();
 
-        perform_post(getEntityPath(), entity);
-        check_get(getEntityPath(), getTestString());
+        perform_post(getEntityPath(), suggestion).andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void post_new_to_other_edition_fails() throws Exception {
+        Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality", outsiderCoach, student);
+        perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void post_new_other_user_fails() throws Exception {
-        Suggestion entity = create_entity();
+    public void getting_legal_with_matching_edition_works() throws Exception {
+        base_getting_legal_entity_succeeds();
+    }
 
-        perform_post(getEntityPath(), entity).andExpect(status().isBadRequest());
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_legal_with_wrong_edition_fails() throws Exception {
+        Suggestion suggestion = get_random_repository_entity();
+        perform_get(getEntityPath() + "/" + suggestion.getId()).andExpect(status().isForbidden());
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void delete_suggestion_fails() throws Exception {
+    public void posting_with_other_coach_id_fails() throws Exception {
+        Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality", outsiderCoach, student);
+        perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void delete_own_suggestion_works() throws Exception {
+        Suggestion entity = get_random_repository_entity();
+        perform_delete_with_id(SUGGESTION_PATH, entity.getId())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void delete_other_suggestion_fails() throws Exception {
         Suggestion entity = get_random_repository_entity();
         perform_delete_with_id(SUGGESTION_PATH, entity.getId())
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_fails() throws Exception {
         Suggestion entity = get_random_repository_entity();
 
@@ -219,14 +240,20 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails_name() throws Exception {
         base_getting_illegal_entity_fails_name();
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_all_suggestions_fails() throws Exception {
+        perform_get(getEntityPath()).andExpect(status().isForbidden());
     }
 }

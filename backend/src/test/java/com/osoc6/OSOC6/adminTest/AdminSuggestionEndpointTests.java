@@ -152,8 +152,10 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     @Override
     public final String transform_to_json(final Suggestion entity) {
         String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class, getAdminUser().getId().toString()).getHref();
-        String studentUrl = entityLinks.linkToItemResource(Student.class, student.getId().toString()).getHref();
+        String userUrl = entityLinks.linkToItemResource(UserEntity.class,
+                entity.getCoach().getId().toString()).getHref();
+        String studentUrl = entityLinks.linkToItemResource(Student.class,
+                entity.getStudent().getId().toString()).getHref();
 
         // The regex replaces the whole UserEntity and student object (as json)
         // with urls that points to the right entities.
