@@ -36,10 +36,10 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
     Page<Edition> findByName(@Param("name") String name, Pageable pageable);
 
     @Override @NonNull
-    @PostAuthorize("!returnObject.present or hasAuthority('ADMIN') or "
+    @PreAuthorize("hasAuthority('COACH')")
+    @PostAuthorize("hasAuthority('ADMIN') or "
             + "@authorizationUtil.hasEditionAccess(authentication.principal, returnObject.get.id)")
     Optional<Edition> findById(Long aLong);
-
 
     @Override @NonNull
     @PreAuthorize("hasAnyAuthority('ADMIN', 'COACH')")
