@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.SkillType;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ import java.util.Optional;
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.SKILLTYPE_PATH,
         path = DumbledorePathWizard.SKILLTYPE_PATH)
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface SkillTypeRepository extends JpaRepository<SkillType, Long> {
     /**
      * search by using the following: /{DumbledorePathWizard.SKILLTYPE_PATH}/search/findByName?name=nameOfSkillType.
@@ -28,11 +29,11 @@ public interface SkillTypeRepository extends JpaRepository<SkillType, Long> {
      * @param pageable argument needed to return a page
      * @return list of matched skillType
      */
-    @PreAuthorize("hasAnyAuthority('COACH')")
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Page<SkillType> findByName(@Param("name") String name, Pageable pageable);
 
     @Override
     @NonNull
-    @PreAuthorize("hasAnyAuthority('COACH')")
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Optional<SkillType> findById(@NonNull Long aLong);
 }
