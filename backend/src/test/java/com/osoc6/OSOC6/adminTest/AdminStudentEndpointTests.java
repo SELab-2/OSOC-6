@@ -166,6 +166,28 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_callName_starting_works() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"callName", "edition"},
+                new String[]{studentKasper.getCallName().substring(0, studentKasper.getCallName().length()-5),
+                        getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_callName_endsWith_works() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"callName", "edition"},
+                new String[]{studentKasper.getCallName().substring(5, studentKasper.getCallName().length()),
+                        getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void filtering_on_false_edition_works_not_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},

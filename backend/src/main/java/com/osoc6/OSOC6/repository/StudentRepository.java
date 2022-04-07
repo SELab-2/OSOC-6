@@ -75,7 +75,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             + "(:email is null or s.email = :email) and "
             + "(:firstName is null or s.firstName = :firstName) and"
             + "(:lastName is null or s.lastName = :lastName) and "
-            + "(:callName is null or s.callName = :callName) and "
+            + "(:callName is null or s.callName LIKE :#{@authorizationUtil.stringBetween(#callName)}) and "
             + "(:mostFluentLanguage is null or s.mostFluentLanguage = :mostFluentLanguage) and "
             + "(:englishProficiency is null or s.englishProficiency = :englishProficiency) and "
             + "(:phoneNumber is null or s.phoneNumber = :phoneNumber) and "
@@ -88,8 +88,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             + "(:institutionName is null or s.institutionName = :institutionName) and "
             + "(:bestSkill is null or s.bestSkill = :bestSkill) and "
             + "(:osocExperience is null or s.osocExperience = :osocExperience) and "
-            + "(:additionalStudentInfo is null or s.additionalStudentInfo = :additionalStudentInfo) and "
-            + "(:reason is null or suggest.reason = :reason or assign.reason = :reason)")
+            + "(:additionalStudentInfo is null or s.additionalStudentInfo = :additionalStudentInfo)")
+            //+ "(:reason is null or coalesce(suggest.reason, 'apple') LIKE :#{@authorizationUtil.stringBetween(#reason)})")
+            //+ "or assign.reason = :reason)")
     Page<Student> findByQuery(@Param("edition") Long edition,
                               @Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName,
                               @Param("callName") String callName, @Param("mostFluentLanguage") String mostFluentLanguage,
@@ -101,7 +102,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("bestSkill") String bestSkill,
                               @Param("osocExperience") OsocExperience osocExperience,
                               @Param("additionalStudentInfo") String additionalStudentInfo,
-                              @Param("reason") String reason,
+//                              @Param("reason") String reason,
                               Pageable pageable);
 
     @Override @NonNull
