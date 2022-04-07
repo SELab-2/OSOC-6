@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.Student;
@@ -35,6 +34,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
     String USER_EDITION_ACCESS = "@authorizationUtil.userEditions(authentication.principal).contains(#edition)";
 
+    @Override @NonNull
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @Query("select s from Student s where " + MerlinSpELWizard.Q_ADMIN_AUTH + " or s.edition.id in "
+        + MerlinSpELWizard.Q_USER_EDITIONS)
+    Page<Student> findAll(@NonNull Pageable pageable);
+
     /**
      * Query over students.
      *
@@ -60,50 +65,44 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param pageable field in student that is looked for
      * @return Page of matching students
      */
+    @Transactional
     @SuppressWarnings("checkstyle:ParameterNumber")
     @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
     @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
-    @Query("""
-            select s from Student s inner join s.suggestions suggestions inner join s.assignments assignments
-            where s.edition.id = :edition and (:email is null or s.email = :email) and
-            (:firstName is null or s.firstName = :firstName) and (:lastName is null or s.lastName = :lastName) and
-            (:callName is null or upper(s.callName) LIKE concat('%', upper(:callName), '%')) and
-            (:mostFluentLanguage is null or s.mostFluentLanguage = :mostFluentLanguage) and
-            (:englishProficiency is null or s.englishProficiency = :englishProficiency) and
-            (:phoneNumber is null or s.phoneNumber = :phoneNumber) and
-            (:curriculumVitaeURI is null or s.curriculumVitaeURI = :curriculumVitaeURI) and
-            (:portfolioURI is null or s.portfolioURI = :portfolioURI) and
-            (:motivationURI is null or s.motivationURI = :motivationURI) and
-            (:writtenMotivation is null or s.writtenMotivation = :writtenMotivation) and
-            (:educationLevel is null or s.educationLevel = :educationLevel) and
-            (:currentDiploma is null or s.currentDiploma = :currentDiploma) and
-            (:institutionName is null or s.institutionName = :institutionName) and
-            (:bestSkill is null or s.bestSkill = :bestSkill) and
-            (:osocExperience is null or s.osocExperience = :osocExperience) and
-            (:additionalStudentInfo is null or s.additionalStudentInfo = :additionalStudentInfo) and
-            (:reason is null or upper(suggestions.reason) LIKE concat('%', upper(:callName), '%') or
-                upper(assignments.reason) LIKE concat('%', upper(:callName), '%'))
-            """)
+    @Query("select s from Student s left join s.suggestions suggest left join s.assignments assign "
+            + "where s.edition.id = :edition and "
+            + "(:email is null or s.email = :email) and "
+            + "(:firstName is null or s.firstName = :firstName) and"
+            + "(:lastName is null or s.lastName = :lastName) and "
+            + "(:callName is null or s.callName = :callName) and "
+            + "(:mostFluentLanguage is null or s.mostFluentLanguage = :mostFluentLanguage) and "
+            + "(:englishProficiency is null or s.englishProficiency = :englishProficiency) and "
+            + "(:phoneNumber is null or s.phoneNumber = :phoneNumber) and "
+            + "(:curriculumVitaeURI is null or s.curriculumVitaeURI = :curriculumVitaeURI) and "
+            + "(:portfolioURI is null or s.portfolioURI = :portfolioURI) and "
+            + "(:motivationURI is null or s.motivationURI = :motivationURI) and "
+            + "(:writtenMotivation is null or s.writtenMotivation = :writtenMotivation) and "
+            + "(:educationLevel is null or s.educationLevel = :educationLevel) and "
+            + "(:currentDiploma is null or s.currentDiploma = :currentDiploma) and "
+            + "(:institutionName is null or s.institutionName = :institutionName) and "
+            + "(:bestSkill is null or s.bestSkill = :bestSkill) and "
+            + "(:osocExperience is null or s.osocExperience = :osocExperience) and "
+            + "(:additionalStudentInfo is null or s.additionalStudentInfo = :additionalStudentInfo) and "
+            + "(:reason is null or suggest.reason = :reason or assign.reason = :reason)")
     Page<Student> findByQuery(@Param("edition") Long edition,
-            @Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName,
-            @Param("callName") String callName, @Param("mostFluentLanguage") String mostFluentLanguage,
-            @Param("englishProficiency") EnglishProficiency englishProficiency,
-            @Param("phoneNumber") String phoneNumber, @Param("curriculumVitaeURI") String curriculumVitaeURI,
-            @Param("portfolioURI") String portfolioURI, @Param("motivationURI") String motivationURI,
-            @Param("writtenMotivation") String writtenMotivation, @Param("educationLevel") String educationLevel,
-            @Param("currentDiploma") String currentDiploma, @Param("institutionName") String institutionName,
-            @Param("bestSkill") String bestSkill, @Param("osocExperience") OsocExperience osocExperience,
-            @Param("additionalStudentInfo") String additionalStudentInfo,
-            @Param("reason") String reason, Pageable pageable);
-
-
-
-    @Override @NonNull
-    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @Query("select s from Student s where " + MerlinSpELWizard.Q_ADMIN_AUTH + " or s.edition.id in "
-        + MerlinSpELWizard.Q_USER_EDITIONS)
-    Page<Student> findAll(@NonNull Pageable pageable);
+                              @Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName,
+                              @Param("callName") String callName, @Param("mostFluentLanguage") String mostFluentLanguage,
+                              @Param("englishProficiency") EnglishProficiency englishProficiency,
+                              @Param("phoneNumber") String phoneNumber, @Param("curriculumVitaeURI") String curriculumVitaeURI,
+                              @Param("portfolioURI") String portfolioURI, @Param("motivationURI") String motivationURI,
+                              @Param("writtenMotivation") String writtenMotivation, @Param("educationLevel") String educationLevel,
+                              @Param("currentDiploma") String currentDiploma, @Param("institutionName") String institutionName,
+                              @Param("bestSkill") String bestSkill,
+                              @Param("osocExperience") OsocExperience osocExperience,
+                              @Param("additionalStudentInfo") String additionalStudentInfo,
+                              @Param("reason") String reason,
+                              Pageable pageable);
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)

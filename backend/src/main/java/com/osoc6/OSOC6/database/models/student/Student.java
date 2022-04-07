@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
@@ -27,7 +28,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -290,7 +290,7 @@ public final class Student implements WeakToEdition {
         pronouns = newPronouns;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return edition;
     }

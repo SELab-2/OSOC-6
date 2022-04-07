@@ -7,3 +7,7 @@ server.servlet.contextPath=/api/
 
 #drop n create table again, good for testing, comment this in production
 #spring.jpa.hibernate.ddl-auto=create
+
+# Debug query tools
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true

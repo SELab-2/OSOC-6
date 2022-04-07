@@ -32,4 +32,16 @@ public final class AuthorizationUtil {
         }
         return result;
     }
+
+    /**
+     * Need for null type safety
+     * @param orig
+     * @return
+     */
+    public static String stringBetween(final String orig) {
+        if (orig == null) {
+            return null;
+        }
+        return "%" + orig + "%";
+    }
 }
