@@ -1,7 +1,9 @@
 package com.osoc6.OSOC6.service;
 
+import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
+import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +38,11 @@ public class UserEntityService implements UserDetailsService {
     private final UserRepository userRepository;
 
     /**
+     * The invitation repository, link to the database.
+     */
+    private final InvitationRepository invitationRepository;
+
+    /**
      * The encoder used to encode the passwords.
      */
     private final BCryptPasswordEncoder passwordEncoder;
@@ -68,8 +75,9 @@ public class UserEntityService implements UserDetailsService {
     /**
      * Register a new user.
      * @param userEntity the user that needs to be added to the database.
+     * @param invitation the invitation that was used to register
      */
-    public void registerUser(final UserEntity userEntity) {
+    public void registerUser(final UserEntity userEntity, final Invitation invitation) {
         //REMOVE remove this manual security manipulation!!!!!
         SecurityContext securityContext = new SecurityContextImpl();
         securityContext.setAuthentication(
@@ -86,6 +94,8 @@ public class UserEntityService implements UserDetailsService {
         userEntity.setPassword(encodedPassword);
 
         userRepository.save(userEntity);
+
+        invitation.setSubject(userEntity);
 
         //REMOVE remove this manual security manipulation!!!!!
         SecurityContextHolder.clearContext();

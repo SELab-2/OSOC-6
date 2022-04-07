@@ -1,19 +1,20 @@
 package com.osoc6.OSOC6;
 
-import org.junit.Before;
+import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.repository.InvitationRepository;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.FormLoginRequestBuilder;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Map;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -21,41 +22,104 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthenticationTest {
-    /**
-     * This mocks the server without starting it.
-     */
-    @Autowired
-    private MockMvc mockMvc;
+public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, InvitationRepository> {
 
     /**
-     * the Web application context.
+     * The repository which saves, searches, ... in the database
      */
     @Autowired
-    private WebApplicationContext context;
+    private InvitationRepository invitationRepository;
 
-    @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
+    /**
+     * Sample invitation that gets loaded before every test.
+     */
+    private final Invitation invitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+
+    /**
+     * The actual path invitations are served on, with '/' as prefix.
+     */
+    private static final String INVITATION_PATH = "/" + DumbledorePathWizard.INVITATIONS_PATH;
+
+    public AuthenticationTest() {
+        super(INVITATION_PATH, "");
+    }
+
+    @Override
+    public final Long get_id(final Invitation entity) {
+        return entity.getId();
+    }
+
+    @Override
+    public final InvitationRepository get_repository() {
+        return invitationRepository;
+    }
+
+    /**
+     * Load test entities in the database.
+     */
+    @Override
+    public void setUpRepository() {
+        setupBasicData();
+    }
+
+    /**
+     * Remove the test entities from the database.
+     */
+    @Override
+    public void removeSetUpRepository() {
+        removeBasicData();
+    }
+
+    @Override
+    public final Invitation create_entity() {
+        return null;
+    }
+
+    @Override
+    public final Map<String, String> change_entity(final Invitation startEntity) {
+        return null;
     }
 
     @Test
     public void login_available_for_all() throws Exception {
-        mockMvc.perform(get("/login"))
+        perform_get("/login")
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void login_with_valid_user_works() throws Exception {
+        Map<String, String> loginMap = Map.of(
+                "email", getCoachUser().getEmail(),
+                "password", getCoachUser().getPassword());
+        getMockMvc().perform(post("/login")
+                    .content(loginMap.toString())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void login_with_invalid_user() throws Exception {
         FormLoginRequestBuilder login = formLogin().user("invalid").password("invalid");
-        mockMvc.perform(login).andExpect(unauthenticated());
+        getMockMvc().perform(login).andExpect(unauthenticated());
     }
 
     @Test
-    public void access_unsecured_resource() throws Exception {
-        mockMvc.perform(get("/login"))
-                .andExpect(status().isOk());
+    public void register_with_valid_invitation_token_works() {
+
+    }
+
+    @Test
+    public void register_with_nonexisting_invitation_token_fails() {
+
+    }
+
+    @Test
+    public void register_with_used_invitation_token_fails() {
+
+    }
+
+    @Test
+    public void register_with_expired_invitation_token_fails() {
+
     }
 }

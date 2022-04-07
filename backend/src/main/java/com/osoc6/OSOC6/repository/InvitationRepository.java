@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.util.Optional;
+
 /**
  * This is a simple class that defines a repository for Invitation.
  * This creates default restful endpoints and allows us to access the database in a restful manner.
@@ -22,5 +24,5 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
      * @param token the token of the invitation
      * @return found invitation
      */
-    Invitation findByToken(@Param("token") String token);
+    Optional<Invitation> findByToken(@Param("token") String token);
 }
