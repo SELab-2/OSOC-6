@@ -30,9 +30,9 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
      * A coach can only update their own suggestions.
      */
     @Override @NonNull
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or (authentication.principal.id == #suggestion.coach.id and "
-        + "@authorizationUtil.userEditions(authentication.principal).contains(#suggestion.student.edition.id))")
-    <S extends Suggestion> S save(@Param("suggestion") @NonNull S suggestion);
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or (authentication.principal.id == #entity.coach.id and "
+        + MerlinSpELWizard.USER_HAS_ACCESS_ON_ENTITY + ")")
+    <S extends Suggestion> S save(@Param("entity") @NonNull S entity);
 
     /**
      * delete a {@link Suggestion}.
@@ -46,8 +46,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
-            + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.student.edition.id)")
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + MerlinSpELWizard.USER_HAS_ACCESS_ON_OPTIONAL)
     Optional<Suggestion> findById(Long aLong);
 }
 

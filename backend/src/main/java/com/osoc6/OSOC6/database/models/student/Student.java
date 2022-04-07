@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.database.models.WeakToEdition;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +40,7 @@ import java.util.List;
 @Table(indexes = {@Index(unique = false, columnList = "edition_id")})
 @NoArgsConstructor
 @Builder @AllArgsConstructor
-public class Student {
+public final class Student implements WeakToEdition {
     /**
      * The id of the student.
      */
@@ -287,5 +288,10 @@ public class Student {
     public void setPronouns(final List<String> newPronouns) {
         pronounsType = PronounsType.OTHER;
         pronouns = newPronouns;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return edition;
     }
 }

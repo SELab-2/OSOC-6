@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.WeakToEdition;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +24,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @NoArgsConstructor
-public class StudentSkill {
+public final class StudentSkill implements WeakToEdition {
     /**
      * The id of the skill.
      */
@@ -55,5 +57,10 @@ public class StudentSkill {
         super();
         name = newName;
         student = newStudent;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return student.getControllingEdition();
     }
 }
