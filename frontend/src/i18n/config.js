@@ -6,11 +6,11 @@ i18n.use(initReactI18next).init({
     lng: 'en',
     resources: {
         en: {
-            translations: require('./locales/en/english.json')
-        }
+            translations: require('./locales/en/english.json'),
+        },
     },
     ns: ['translations'],
-    defaultNS: 'translations'
+    defaultNS: 'translations',
 });
 
 export default i18n;

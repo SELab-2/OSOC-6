@@ -11,9 +11,8 @@ const Home: NextPage = () => {
             <Head>
                 <title>OSOC-6</title>
             </Head>
-
             <main className={styles.main}>
-                <h1 className={styles.title}>{t("Tool name")}</h1>
+                <h1 className={styles.title}>{t('Tool name')}</h1>
             </main>
         </div>
     );
