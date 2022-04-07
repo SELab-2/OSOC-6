@@ -10,11 +10,16 @@ import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Class testing the integration of {@link Edition} as an admin.
@@ -141,5 +146,41 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public String transform_to_json(final Student entity) {
         StudentJsonHelper helper = new StudentJsonHelper(entity, entityLinks);
         return Util.asJsonString(helper);
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_edition_works_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH,
+                new String[]{"callName", "edition"},
+                new String[]{studentKasper.getCallName(), getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH,
+                new String[]{"callName", "edition"},
+                new String[]{"banana" + studentKasper.getCallName() + "apple", getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_edition_works_not_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH,
+                new String[]{"callName", "edition"},
+                new String[]{studentKasper.getCallName(), Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_email_works_not_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH,
+                new String[]{"callName", "edition"},
+                new String[]{studentKasper.getCallName(), Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
     }
 }

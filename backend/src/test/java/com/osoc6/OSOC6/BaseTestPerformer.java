@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -227,6 +228,15 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
         return mockMvc.perform(get(path));
     }
 
+    public ResultActions perform_queried_get(final String path, final String[] paramNames,
+                                             final String[] values)throws Exception {
+        MockHttpServletRequestBuilder builder = get(path);
+        for (int i = 0; i < paramNames.length; i++) {
+            builder = builder.queryParam(paramNames[i], values[i]);
+        }
+        return mockMvc.perform(builder);
+    }
+
     /**
      * Perform a GET request that checks whether the entity is in the database.
      *
@@ -320,6 +330,16 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public ResultMatcher string_to_contains_string(final String str) {
         return content().string(containsString(str));
+    }
+
+    /**
+     * Convert a {@link String} to a {@link ResultMatcher} that checks whether the string is not contained in the result.
+     *
+     * @param str the string we want to look for
+     * @return a result matcher that can be used to perform checks
+     */
+    public ResultMatcher string_not_to_contains_string(final String str) {
+        return content().string(not(containsString(str)));
     }
 
     /**
