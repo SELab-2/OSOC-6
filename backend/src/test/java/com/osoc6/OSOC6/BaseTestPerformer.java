@@ -320,6 +320,17 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
+     * Get an entity from the repository by its id.
+     * @param id id of the entity to fetch
+     * @return the requested entity
+     */
+    public T get_repository_entity(final I id) {
+        AtomicReference<T> entity = new AtomicReference<>();
+        performAsAdmin(() -> entity.set(get_repository().getById(id)));
+        return entity.get();
+    }
+
+    /**
      * Get a random entity from the repository.
      * @return a random entity.
      */
@@ -335,7 +346,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public void save_repository_entity(final T entity) {
         performAsAdmin(() -> get_repository().save(entity));
-
     }
 
     /**
