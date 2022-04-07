@@ -28,7 +28,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @NoArgsConstructor
-public class Assignment {
+public final class Assignment implements WeakToEdition {
     /**
      * The id of the Assignment.
      */
@@ -99,5 +99,10 @@ public class Assignment {
         assigner = newAssigner;
         student = newStudent;
         project = newProject;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return project.getControllingEdition();
     }
 }

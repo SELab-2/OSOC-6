@@ -27,7 +27,7 @@ import java.util.Calendar;
  */
 @Entity
 @NoArgsConstructor
-public class Invitation {
+public final class Invitation implements WeakToEdition {
     /**
      * The id of the invitation.
      */
@@ -104,5 +104,10 @@ public class Invitation {
         cal.setTime(creationTimestamp);
         cal.add(Calendar.DAY_OF_WEEK, RadagastNumberWizard.INVITATION_EXPIRATION_DAYS);
         return !isUsed() && cal.getTime().toInstant().isBefore(Instant.now());
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return edition;
     }
 }

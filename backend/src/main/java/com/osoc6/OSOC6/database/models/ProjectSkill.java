@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @NoArgsConstructor
-public class ProjectSkill {
+public final class ProjectSkill implements WeakToEdition {
     /**
      * The id of the skill.
      */
@@ -66,5 +66,10 @@ public class ProjectSkill {
         name = newName;
         project = newProject;
         additionalInfo = newAdditionalInfo;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return project.getControllingEdition();
     }
 }

@@ -24,7 +24,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @NoArgsConstructor
-public class Suggestion {
+public final class Suggestion implements WeakToEdition {
     /**
      * Automatically generated id of Suggestion.
      */
@@ -85,5 +85,10 @@ public class Suggestion {
         reason = newReason;
         coach = newCoach;
         student = newStudent;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return student.getEdition();
     }
 }

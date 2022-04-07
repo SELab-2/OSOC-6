@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @NoArgsConstructor
-public class UserSkill {
+public final class UserSkill {
     /**
      * The id of the skill.
      */
