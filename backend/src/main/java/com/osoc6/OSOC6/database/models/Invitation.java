@@ -39,7 +39,7 @@ public class Invitation {
      * The unique token of the invitation.
      */
     @Basic(optional = false)
-    @Column(unique = true, updatable = false)
+    @Column(unique = true) @ReadOnlyProperty
     @Getter
     private final String token = new Base64StringKeyGenerator().generateKey();
 
@@ -47,7 +47,7 @@ public class Invitation {
      * The timestamp of the invitation.
      */
     @Basic(optional = false)
-    @CreationTimestamp @Column(updatable = false)
+    @CreationTimestamp @ReadOnlyProperty
     @Getter
     private Timestamp creationTimestamp;
 
