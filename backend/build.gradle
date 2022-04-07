@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Needed to mock static methods
 	testImplementation 'org.mockito:mockito-inline'
 
 	// security

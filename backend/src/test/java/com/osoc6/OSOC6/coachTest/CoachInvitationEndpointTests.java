@@ -82,7 +82,7 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
      */
     @Override
     public final Map<String, String> change_entity(final Invitation startEntity) {
-        return null;
+        throw new RuntimeException("An invitation is not really updatable. Do not call this method.");
     }
 
     @Test
@@ -121,7 +121,7 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     public void patching_fails() throws Exception {
         Invitation entity = get_random_repository_entity();
 
-        perform_patch(getEntityPath() + "/" + entity.getId(), change_entity(entity))
+        perform_patch(getEntityPath() + "/" + entity.getId(), Map.of("field", "fails anyway"))
                 .andExpect(status().isForbidden());
     }
 

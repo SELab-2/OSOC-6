@@ -86,7 +86,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
      */
     @Override
     public final Map<String, String> change_entity(final Invitation startEntity) {
-        return null;
+        throw new RuntimeException("An invitation is not really updatable. Do not call this method.");
     }
 
     /**
@@ -107,6 +107,10 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
         assert unUsedInvitation.isValid();
     }
 
+    /**
+     * In this test we need to mock Instant.now() to be able to test
+     * whether an expired invitation is no longer valid.
+     */
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void unused_invitation_after_expiration_is_invalid() {
