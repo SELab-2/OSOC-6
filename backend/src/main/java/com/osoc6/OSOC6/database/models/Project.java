@@ -31,7 +31,7 @@ import java.util.List;
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "edition_id")})
 @NoArgsConstructor
-public class Project {
+public final class Project implements WeakToEdition {
 
     /**
      * The id of the project.
@@ -124,5 +124,10 @@ public class Project {
         edition = newEdition;
         partnerName = newPartner;
         creator = newCreator;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return edition;
     }
 }
