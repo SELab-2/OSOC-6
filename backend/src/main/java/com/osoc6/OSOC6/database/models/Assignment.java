@@ -34,6 +34,7 @@ public class Assignment {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**

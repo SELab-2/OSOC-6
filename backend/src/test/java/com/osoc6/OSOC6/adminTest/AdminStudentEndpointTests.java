@@ -1,5 +1,7 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.StudentJsonHelper;
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
@@ -9,6 +11,7 @@ import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.EntityLinks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +19,7 @@ import java.util.Map;
 /**
  * Class testing the integration of {@link Edition} as an admin.
  */
-public final class StudentEndpointTests extends AdminEndpointTest<Student, Long, StudentRepository> {
+public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, Long, StudentRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -60,7 +63,13 @@ public final class StudentEndpointTests extends AdminEndpointTest<Student, Long,
      */
     private static final String TEST_STRING = "Bananas are my signature dish";
 
-    public StudentEndpointTests() {
+    /**
+     * Entity links, needed to get to link of an entity.
+     */
+    @Autowired
+    private EntityLinks entityLinks;
+
+    public AdminStudentEndpointTests() {
         super(STUDENTS_PATH, TEST_STRING);
     }
 
@@ -121,5 +130,16 @@ public final class StudentEndpointTests extends AdminEndpointTest<Student, Long,
         Map<String, String> changeMap = new HashMap<>();
         changeMap.put("additionalStudentInfo", TEST_STRING);
         return changeMap;
+    }
+
+    /**
+     * Transforms a Student to his correct String representation.
+     * @param entity entity to transform
+     * @return the string representation
+     */
+    @Override
+    public String transform_to_json(final Student entity) {
+        StudentJsonHelper helper = new StudentJsonHelper(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 }
