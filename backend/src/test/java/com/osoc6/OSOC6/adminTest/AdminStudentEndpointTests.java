@@ -173,14 +173,4 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
     }
-
-    @Test
-    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void filtering_on_email_works_not_results() throws Exception {
-        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH,
-                new String[]{"callName", "edition"},
-                new String[]{studentKasper.getCallName(), Long.toString(getILLEGAL_ID())})
-                .andExpect(status().isOk())
-                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
-    }
 }

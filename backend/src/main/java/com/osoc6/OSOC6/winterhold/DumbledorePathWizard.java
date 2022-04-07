@@ -77,12 +77,5 @@ public final class DumbledorePathWizard {
      */
     public static final String STUDENT_PATH = "students";
 
-    public static final String STUDENT_FIND_BY_NAME_PATH = "by-name-starts-with";
-
-    public static final String STUDENT_FIND_BY_EMAIL_PATH = "by-email";
-
-    public static final String STUDENT_FIND_BY_POTENTIAL_COACH_PATH = "potential-coach";
-
-    public static final String STUDENT_FIND_BY_FREE_TEXT_PATH = "by-free-text";
-
+    public static final String STUDENT_QUERY_PATH = "by-name-starts-with";
 }

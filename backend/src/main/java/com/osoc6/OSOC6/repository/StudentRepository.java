@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.Student;
@@ -35,83 +36,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     String USER_EDITION_ACCESS = "@authorizationUtil.userEditions(authentication.principal).contains(#edition)";
 
     /**
-     * search by using the following:
-     * /{STUDENT_PATH}/search/{STUDENT_FIND_BY_NAME_PATH}?name=nameOfStudent?edition=idOfEdition.
-     * @param callName the callName of the student
-     * @param edition the id of the edition this search is restricted to.
-     * @param pageable argument needed to return a page.
-     * @return list of matched editions
-     */
-    @RestResource(path = DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH, rel = DumbledorePathWizard.STUDENT_FIND_BY_NAME_PATH)
-    @Transactional
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
-    @Query("select s from Student s where s.callName like concat(:callName, '%') and s.edition.id = :edition")
-    Page<Student> findByName(@Param("callName") String callName, @Param("edition") Long edition, Pageable pageable);
-
-    /**
-     * search by using the following:
-     * /{STUDENT_PATH}/search/{STUDENT_FIND_BY_EMAIL_PATH}?email=emailOfStudent?edition=idOfEdition.
-     * @param email the email of the student
-     * @param edition the id of the edition this search is restricted to.
-     * @param pageable argument needed to return a page.
-     * @return list of matched editions
-     */
-    @RestResource(path = DumbledorePathWizard.STUDENT_FIND_BY_EMAIL_PATH,
-            rel = DumbledorePathWizard.STUDENT_FIND_BY_EMAIL_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
-    @Query("select s from Student s where s.email LIKE :email and s.edition.id = :edition")
-    Page<Student> findByEmail(@Param("email") String email, @Param("edition") Long edition, Pageable pageable);
-
-    /**
-     * search by using the following:
-     * /{STUDENT_PATH}/search/{STUDENT_FIND_BY_POTENTIAL_COACH_PATH}?edition=idOfEdition.
-     * @param edition the id of the edition this search is restricted to.
-     * @param pageable argument needed to return a page.
-     * @return list of matched editions
-     */
-    @RestResource(path = DumbledorePathWizard.STUDENT_FIND_BY_POTENTIAL_COACH_PATH,
-            rel = DumbledorePathWizard.STUDENT_FIND_BY_POTENTIAL_COACH_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
-    @Query("select s from Student s where s.edition.id = :edition and "
-            + "s.osocExperience = :#{@studentRepoHelp.COACH_EXPERIENCE}")
-    Page<Student> potentialCoach(@Param("edition") Long edition, Pageable pageable);
-
-    /**
-     * Free text start with helper.
-     */
-    String LIKE_INPUT = "LIKE concat(:input, '%')";
-
-    /**
-     * Free text contains helper.
-     */
-    String LIKE_CONTAIN = "LIKE concat('%', :input, '%')";
-
-    /**
-     * search by using the following:
-     * /{STUDENT_PATH}/search/{STUDENT_FIND_BY_FREE_TEXT_PATH}?name=nameOfStudent?edition=idOfEdition.
-     * @param input the search input for free text search
-     * @param edition the id of the edition this search is restricted to.
-     * @param pageable argument needed to return a page.
-     * @return list of matched editions
-     */
-    @RestResource(path = DumbledorePathWizard.STUDENT_FIND_BY_FREE_TEXT_PATH,
-            rel = DumbledorePathWizard.STUDENT_FIND_BY_FREE_TEXT_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
-    @Query("select s from Student s where s.edition.id = :edition and (s.firstName " + LIKE_INPUT + " or s.lastName " + LIKE_INPUT
-            + " or s.callName " + LIKE_INPUT + " or s.phoneNumber " + LIKE_INPUT + " or s.email " + LIKE_INPUT
-            + " or s.bestSkill " + LIKE_INPUT + " or s.educationLevel " + LIKE_INPUT
-            + " or s.currentDiploma " + LIKE_INPUT + " or s.additionalStudentInfo " + LIKE_CONTAIN
-            + " or s.institutionName " + LIKE_INPUT + " or s.mostFluentLanguage " + LIKE_INPUT
-            + " or :input in s.studies or s.writtenMotivation " + LIKE_CONTAIN
-            + " or s.curriculumVitaeURI " + LIKE_INPUT + " or s.motivationURI " + LIKE_INPUT
-            + " or s.portfolioURI " + LIKE_INPUT + ")"
-            //+ " or s.gender " + LIKE_INPUT + " or s.englishProficiency " + LIKE_INPUT
-            //+ " or s.osocExperience " + LIKE_INPUT
-    )
-    Page<Student> findFreeSearch(@Param("input") String input, @Param("edition") Long edition, Pageable pageable);
-
-    /**
      * Query over students.
+     *
+     * @param edition the id of the edition this search is restricted to.
      * @param email field in student that is looked for
      * @param firstName field in student that is looked for
      * @param lastName field in student that is looked for
@@ -134,19 +61,31 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @return Page of matching students
      */
     @SuppressWarnings("checkstyle:ParameterNumber")
+    @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
+            rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
     @Query("""
             select s from Student s inner join s.suggestions suggestions inner join s.assignments assignments
-            where s.email = :email and s.firstName = :firstName and s.lastName = :lastName and
-            s.callName = :callName and s.mostFluentLanguage = :mostFluentLanguage and
-            s.englishProficiency = :englishProficiency and s.phoneNumber = :phoneNumber and
-            s.curriculumVitaeURI = :curriculumVitaeURI and s.portfolioURI = :portfolioURI and
-            s.motivationURI = :motivationURI and s.writtenMotivation = :writtenMotivation and
-            s.educationLevel = :educationLevel and s.currentDiploma = :currentDiploma and
-            s.institutionName = :institutionName and s.bestSkill = :bestSkill and s.osocExperience = :osocExperience and
-            s.additionalStudentInfo = :additionalStudentInfo and suggestions.reason = :reason
-            and assignments.reason = :reason
+            where s.edition.id = :edition and (:email is null or s.email = :email) and
+            (:firstName is null or s.firstName = :firstName) and (:lastName is null or s.lastName = :lastName) and
+            (:callName is null or upper(s.callName) LIKE concat('%', upper(:callName), '%')) and
+            (:mostFluentLanguage is null or s.mostFluentLanguage = :mostFluentLanguage) and
+            (:englishProficiency is null or s.englishProficiency = :englishProficiency) and
+            (:phoneNumber is null or s.phoneNumber = :phoneNumber) and
+            (:curriculumVitaeURI is null or s.curriculumVitaeURI = :curriculumVitaeURI) and
+            (:portfolioURI is null or s.portfolioURI = :portfolioURI) and
+            (:motivationURI is null or s.motivationURI = :motivationURI) and
+            (:writtenMotivation is null or s.writtenMotivation = :writtenMotivation) and
+            (:educationLevel is null or s.educationLevel = :educationLevel) and
+            (:currentDiploma is null or s.currentDiploma = :currentDiploma) and
+            (:institutionName is null or s.institutionName = :institutionName) and
+            (:bestSkill is null or s.bestSkill = :bestSkill) and
+            (:osocExperience is null or s.osocExperience = :osocExperience) and
+            (:additionalStudentInfo is null or s.additionalStudentInfo = :additionalStudentInfo) and
+            (:reason is null or upper(suggestions.reason) LIKE concat('%', upper(:callName), '%') or
+                upper(assignments.reason) LIKE concat('%', upper(:callName), '%'))
             """)
-    Page<Student> findByQuery(
+    Page<Student> findByQuery(@Param("edition") Long edition,
             @Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName,
             @Param("callName") String callName, @Param("mostFluentLanguage") String mostFluentLanguage,
             @Param("englishProficiency") EnglishProficiency englishProficiency,
