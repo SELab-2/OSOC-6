@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @NoArgsConstructor
-public class Edition {
+public final class Edition {
 
     /**
      * The id of the edition.
@@ -32,6 +33,7 @@ public class Edition {
      * The name of the edition.
      */
     @Basic(optional = false)
+    @Column(unique = true)
     @Setter @Getter
     private String name;
 
@@ -50,5 +52,17 @@ public class Edition {
     @NotNull
     @Setter @Getter
     private Boolean active;
+
+    /**
+     *
+     * @param newName the name of the edition
+     * @param newYear the year of the edition
+     * @param newActive whether the edition is active
+     */
+    public Edition(final String newName, final Integer newYear, final boolean newActive) {
+        name = newName;
+        year = newYear;
+        active = newActive;
+    }
 
 }

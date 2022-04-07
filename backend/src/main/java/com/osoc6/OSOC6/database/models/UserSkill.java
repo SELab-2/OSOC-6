@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,16 +12,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 /**
- * The database entity for a Skill.
- * A skill is something People have or that can be looked for in people. It has a certain type, {@link SkillType}.
- * A skill can have a small description.
+ * The database entity for a skill of a {@link UserEntity}.
+ * A UserSkill is a Skill specific for Users. It has a certain type, {@link SkillType}.
  */
 @Entity
 @NoArgsConstructor
-public class Skill {
+public final class UserSkill {
     /**
      * The id of the skill.
      */
@@ -33,7 +35,8 @@ public class Skill {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
     /**
@@ -45,13 +48,23 @@ public class Skill {
     private String additionalInfo;
 
     /**
+     * The Project that looks for this skill.
+     */
+    @ManyToOne(optional = false)
+    @ReadOnlyProperty
+    @JoinColumn(name = "user_entity_id", referencedColumnName = "id")
+    private UserEntity userEntity;
+
+    /**
      *
      * @param newName the name of the skill
-     * @param newAdditionalInfo the info about the skill
+     * @param newUserEntity the user that has this skill
+     * @param newAdditionalInfo additional info provided by the user about this skill
      */
-    public Skill(final String newName, final String newAdditionalInfo) {
+    public UserSkill(final String newName, final UserEntity newUserEntity, final String newAdditionalInfo) {
         super();
         name = newName;
+        userEntity = newUserEntity;
         additionalInfo = newAdditionalInfo;
     }
 }

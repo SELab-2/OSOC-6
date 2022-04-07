@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "timestamp")})
 @NoArgsConstructor
-public class Communication {
+public final class Communication implements WeakToEdition {
 
     /**
      * The id of the communication.
@@ -71,7 +71,7 @@ public class Communication {
      */
     @ManyToOne(optional = false)
     @Getter
-    private UserEntity userEntity;
+    private UserEntity sender;
 
     /**
      * Student with whom the communication took place.
@@ -96,7 +96,12 @@ public class Communication {
         medium = newMedium;
         content = newContent;
         template = newCommunicationTemplate;
-        userEntity = newUserEntity;
+        sender = newUserEntity;
         student = newStudent;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return student.getControllingEdition();
     }
 }

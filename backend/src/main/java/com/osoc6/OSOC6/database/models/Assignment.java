@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -27,7 +28,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @NoArgsConstructor
-public class Assignment {
+public final class Assignment implements WeakToEdition {
     /**
      * The id of the Assignment.
      */
@@ -70,6 +71,7 @@ public class Assignment {
      * Fetch lazy because a student is a very big entity
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     @Getter
     private Student student;
 
@@ -96,5 +98,10 @@ public class Assignment {
         assigner = newAssigner;
         student = newStudent;
         project = newProject;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return project.getControllingEdition();
     }
 }

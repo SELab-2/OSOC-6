@@ -1,18 +1,20 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.database.models.WeakToEdition;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Singular;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -27,6 +29,7 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +40,7 @@ import java.util.List;
 @Table(indexes = {@Index(unique = false, columnList = "edition_id")})
 @NoArgsConstructor
 @Builder @AllArgsConstructor
-public class Student {
+public final class Student implements WeakToEdition {
     /**
      * The id of the student.
      */
@@ -86,18 +89,18 @@ public class Student {
 
     /**
      * The callName of the student.
-     * Special case: If callName is the empty string, the student's callName is their birth name.
      */
-    @Basic(optional = true)
+    @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
+    @Getter @Setter
     private String callName;
 
     /**
      * The pronouns of the student.
      */
     @ElementCollection
-    @Getter
-    private List<String> pronouns;
+    @Getter @Builder.Default
+    private List<String> pronouns = new ArrayList<>();
 
     /**
      * The most fluent language of a person. This is a formatted string.
@@ -119,7 +122,7 @@ public class Student {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
-    @Getter
+    @Getter @Setter
     private String phoneNumber;
 
     /**
@@ -224,8 +227,9 @@ public class Student {
     /**
      * {@link Edition} in which this communication took place.
      */
-    @ManyToOne(optional = false)
-    @Getter @Setter
+    @ManyToOne(optional = false, cascade = {})
+    @ReadOnlyProperty
+    @Getter
     private Edition edition;
 
     /**
@@ -233,43 +237,38 @@ public class Student {
      */
     @ElementCollection
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Singular
-    private List<String> studies;
+    @Getter @Builder.Default
+    private List<String> studies = new ArrayList<>();
 
     /**
      * The skills this student has.
      * In the form this is called the 'role' a student applies for.
      */
-    @OneToMany(orphanRemoval = true)
-    @Getter @Singular
-    private List<Skill> skills;
+    @OneToMany(orphanRemoval = true, mappedBy = "student")
+    @Getter @Builder.Default
+    private List<StudentSkill> skills = new ArrayList<>();
 
     /**
      * The suggestions made about this student.
      */
-    @OneToMany(orphanRemoval = true)
-    @Getter @Singular
-    private List<Suggestion> suggestions;
+    @OneToMany(orphanRemoval = true, mappedBy = "student")
+    @Getter @Builder.Default
+    private List<Suggestion> suggestions = new ArrayList<>();
+
+    /**
+     * The assignments made about this student.
+     */
+    @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
+    @Getter @Builder.Default
+    private List<Assignment> assignments = new ArrayList<>();
 
     /**
      * Communication that this student has received sorted on the timestamp.
      */
-    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     @OrderColumn(name = "timestamp")
-    @Getter @Singular
-    private List<Communication> communications;
-
-    /**
-     *
-     * @return the call name of the student
-     */
-    public String getCallName() {
-        if (callName.isEmpty()) {
-            return getFirstName() + " " + getLastName();
-        } else {
-            return callName;
-        }
-    }
+    @Getter @Builder.Default
+    private List<Communication> communications = new ArrayList<>();
 
     /**
      *
@@ -284,15 +283,6 @@ public class Student {
 
     /**
      *
-     * @param newCallName that should be set as the callName of this student.
-     *                    if empty, this defaults to the first name and the last name.
-     */
-    public void setCallName(final String newCallName) {
-        callName = newCallName;
-    }
-
-    /**
-     *
      * @param newPronouns that should be set as the pronouns of this student
      */
     public void setPronouns(final List<String> newPronouns) {
@@ -300,12 +290,8 @@ public class Student {
         pronouns = newPronouns;
     }
 
-    /**
-     *
-     * @param newPhoneNumber that should be set as the phone number of this student
-     */
-    public void setPhoneNumber(final String newPhoneNumber) {
-        // Check if phone number is correct
-        phoneNumber = newPhoneNumber;
+    @Override
+    public Edition getControllingEdition() {
+        return edition;
     }
 }

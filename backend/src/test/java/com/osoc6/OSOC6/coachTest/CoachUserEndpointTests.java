@@ -36,16 +36,6 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     private static final String USERS_PATH = "/" + DumbledorePathWizard.USERS_PATH;
 
     /**
-     * The admin sample user that gets loaded before every test.
-     */
-    private final UserEntity adminUser = new UserEntity();
-
-    /**
-     * The coach sample user that gets loaded before every test.
-     */
-    private final UserEntity coachUser = new UserEntity();
-
-    /**
      * The string that will be set on a POST or PATCH and will be looked for.
      * This string should be unique.
      */
@@ -87,84 +77,69 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      */
     @Override
     public void setUpRepository() {
-        adminUser.setEmail("admin.test@gmail.com");
-        adminUser.setCallName("Admin Test");
-        adminUser.setUserRole(UserRole.ADMIN);
-        adminUser.setPassword("123456");
-        userRepository.save(adminUser);
-
-        coachUser.setEmail("coach.test@gmail.com");
-        coachUser.setCallName("Coach Test");
-        coachUser.setUserRole(UserRole.COACH);
-        coachUser.setPassword("123456");
-        userRepository.save(coachUser);
+        setupBasicData();
     }
 
     /**
-     * Remove the two test users from the database.
+     * Remove test users from the database.
      */
     @Override
     public void removeSetUpRepository() {
-        if (userRepository.existsById(adminUser.getId())) {
-            userRepository.deleteById(adminUser.getId());
-        }
-        if (userRepository.existsById(coachUser.getId())) {
-            userRepository.deleteById(coachUser.getId());
-        }
+        removeBasicData();
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_list_of_all_users_is_forbidden() throws Exception {
         perform_get(USERS_PATH)
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_get_details_of_himself_succeeds() throws Exception {
-        perform_get(USERS_PATH + "/" + coachUser.getId())
+        perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(coachUser.getEmail()))
-                .andExpect(string_to_contains_string(coachUser.getCallName()))
-                .andExpect(string_to_contains_string(coachUser.getUserRole().toString()));
+                .andExpect(string_to_contains_string(getCoachUser().getEmail()))
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()))
+                .andExpect(string_to_contains_string(getCoachUser().getUserRole().toString()));
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void coach_get_details_of_other_user_is_forbidden() throws Exception {
-        perform_get(USERS_PATH + "/" + adminUser.getId())
-                .andExpect(status().isForbidden());
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_get_details_of_other_user_is_ok() throws Exception {
+        perform_get(USERS_PATH + "/" + getAdminUser().getId())
+                .andExpect(status().isOk());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void coach_get_details_of_nonexisting_user_is_forbidden() throws Exception {
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_get_details_of_nonexisting_user_is_not_found() throws Exception {
         int id = 1234;
         perform_get(USERS_PATH + "/" + id)
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_role_with_valid_role_is_forbidden() throws Exception {
         UserRole newRole = UserRole.COACH;
         Map<String, String> map = Map.of("userRole", newRole.toString());
-        perform_patch(USERS_PATH +  "/" + adminUser.getId(), map)
+        perform_patch(USERS_PATH +  "/" + getAdminUser().getId(), map)
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_role_with_invalid_role_is_forbidden() throws Exception {
         String newRole = "LORD";
         Map<String, String> map = Map.of("userRole", newRole);
-        perform_patch(USERS_PATH + "/" + adminUser.getId(), map)
-                .andExpect(status().isForbidden());
+        perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_profile_of_himself_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -172,18 +147,18 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
                 "email", newEmail,
                 "callName", newCallName
         );
-        perform_patch(USERS_PATH + "/" + coachUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
                 .andExpect(status().is2xxSuccessful());
 
-        perform_get(USERS_PATH + "/" + coachUser.getId())
+        perform_get(USERS_PATH + "/" + getCoachUser().getId())
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(newEmail))
                 .andExpect(string_to_contains_string(newCallName))
-                .andExpect(string_to_contains_string(coachUser.getUserRole().toString()));
+                .andExpect(string_to_contains_string(getCoachUser().getUserRole().toString()));
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_profile_of_other_user_is_forbidden() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -191,12 +166,12 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
                 "email", newEmail,
                 "callName", newCallName
         );
-        perform_patch(USERS_PATH + "/" + adminUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_update_profile_and_role_is_forbidden() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -206,14 +181,14 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
                 "callName", newCallName,
                 "userRole", newRole.toString()
         );
-        perform_patch(USERS_PATH + "/" + coachUser.getId(), map)
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithUserDetails(value = "coach.test@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_delete_user_is_forbidden() throws Exception {
-        perform_delete_with_id(USERS_PATH, adminUser.getId())
+        perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isForbidden());
     }
 }

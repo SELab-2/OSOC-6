@@ -20,7 +20,7 @@ public final class DumbledorePathWizard {
     /**
      * Path that {@link com.osoc6.OSOC6.database.models.SkillType} is served on.
      */
-    public static final String SKILLTYPE_PATH = "skillType";
+    public static final String SKILLTYPE_PATH = "skillTypes";
 
     /**
      * Path that {@link com.osoc6.OSOC6.database.models.UserEntity} is served on.
@@ -31,4 +31,49 @@ public final class DumbledorePathWizard {
      * Path that {@link com.osoc6.OSOC6.database.models.CommunicationTemplate} is served on.
      */
     public static final String COMMUNICATION_TEMPLATE_PATH = "communicationTemplates";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Project} is served on.
+     */
+    public static final String PROJECTS_PATH = "projects";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Invitation} is served on.
+     */
+    public static final String INVITATIONS_PATH = "invitations";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Suggestion} is served on.
+     */
+    public static final String SUGGESTION_PATH = "suggestions";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.UserSkill} is served on.
+     */
+    public static final String USER_SKILL_PATH = "user-skills";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.student.StudentSkill} is served on.
+     */
+    public static final String STUDENT_SKILL_PATH = "student-skills";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.UserSkill} is served on.
+     */
+    public static final String PROJECT_SKILL_PATH = "project-skills";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Communication} is served on.
+     */
+    public static final String COMMUNICATION_PATH = "communications";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.Assignment} is served on.
+     */
+    public static final String ASSIGNMENT_PATH = "assignments";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.student.Student} is served on.
+     */
+    public static final String STUDENT_PATH = "students";
 }

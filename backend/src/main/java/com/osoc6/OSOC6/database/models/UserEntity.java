@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +33,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-public class UserEntity implements UserDetails {
+public final class UserEntity implements UserDetails {
 
     /**
      * The id of the user.
@@ -88,29 +90,30 @@ public class UserEntity implements UserDetails {
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
-    private List<Invitation> sendInvitations;
+    private List<Invitation> sendInvitations = new ArrayList<>();
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
-    @OneToMany(mappedBy = "subject", orphanRemoval = false)
+    @JsonIgnore
+    @OneToMany(mappedBy = "subject", orphanRemoval = false, fetch = FetchType.EAGER)
     @Getter
-    private List<Invitation> receivedInvitations;
+    private List<Invitation> receivedInvitations = new ArrayList<>();
 
     /**
      * List of communications this user initiated ordered on the timestamp of the {@link Communication}.
      */
-    @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
+    @OneToMany(mappedBy = "sender", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
     @Getter
-    private List<Communication> communications;
+    private List<Communication> communications = new ArrayList<>();
 
     /**
      * Set of skills a user has.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy = "userEntity")
     @Getter
-    private List<Skill> skills;
+    private List<UserSkill> skills = new ArrayList<>();
 
     /**
      * The projects this User Coaches.
@@ -118,7 +121,7 @@ public class UserEntity implements UserDetails {
     @ManyToMany(mappedBy = "coaches")
     @OrderColumn(name = "edition_name")
     @Getter
-    private List<Project> projects;
+    private List<Project> projects = new ArrayList<>();
 
     /**
      *
@@ -133,11 +136,6 @@ public class UserEntity implements UserDetails {
         callName = newCallName;
         userRole = newUserRole;
         password = newPassword;
-        sendInvitations = new ArrayList<>();
-        receivedInvitations = new ArrayList<>();
-        communications = new ArrayList<>();
-        skills = new ArrayList<>();
-        projects = new ArrayList<>();
     }
 
     /**

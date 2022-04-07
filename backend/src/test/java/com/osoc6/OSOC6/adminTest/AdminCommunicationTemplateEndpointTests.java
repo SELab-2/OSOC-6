@@ -5,7 +5,8 @@ import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,8 @@ public final class AdminCommunicationTemplateEndpointTests extends
 
     @Override
     public void setUpRepository() {
+        setupBasicData();
+
         communicationTemplate.setName("A well deserved yes");
         communicationTemplate.setTemplate(
                 "We would like to inform you... You are the best candidate we ever had! We want you! Need you!");
@@ -62,9 +65,9 @@ public final class AdminCommunicationTemplateEndpointTests extends
 
     @Override
     public void removeSetUpRepository() {
-        if (repository.existsById(communicationTemplate.getId())) {
-            repository.deleteById(communicationTemplate.getId());
-        }
+        removeBasicData();
+
+        repository.deleteAll();
     }
 
     @Override
@@ -80,7 +83,7 @@ public final class AdminCommunicationTemplateEndpointTests extends
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         CommunicationTemplate template = get_random_repository_entity();
         base_test_all_queried_assertions(

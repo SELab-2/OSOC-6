@@ -13,10 +13,5 @@ public enum UserRole {
     /**
      * An OSOC-admin.
      */
-    ADMIN,
-
-    /**
-     * A disabled user.
-     */
-    DISABLED;
+    ADMIN;
 }

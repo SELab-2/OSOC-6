@@ -2,6 +2,7 @@ package com.osoc6.OSOC6;
 
 import lombok.Getter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -26,6 +27,7 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
     /**
      * An illegal Long id.
      */
+    @Getter
     private static final long ILLEGAL_ID = 0L;
 
     /**
@@ -84,12 +86,22 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
     }
 
     /**
+     * Test if all entities can be found.
+     * @return a result action that can be used for more checks
+     * @throws Exception throws exception if the request fails
+     */
+    public ResultActions base_get_all_entities_succeeds() throws Exception {
+        return perform_get(entityPath)
+                .andExpect(status().isOk());
+    }
+
+    /**
      * Tests if a random entity in the database can be found with GET.
      * @throws Exception throws exception if the request fails
      */
-    public void base_getting_legal_entity_succeeds() throws Exception {
+    public ResultActions base_getting_legal_entity_succeeds() throws Exception {
         T entity = get_random_repository_entity();
-        perform_get(entityPath + "/" + get_id(entity))
+        return perform_get(entityPath + "/" + get_id(entity))
                 .andExpect(status().isOk());
     }
 

@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,8 @@ public final class CoachCommunicationTemplateEndpointTests
 
     @Override
     public void setUpRepository() {
+        setupBasicData();
+
         communicationTemplate.setName("A well deserved yes");
         communicationTemplate.setTemplate(
                 "We would like to inform you... You are the best candidate we ever had! We want you! Need you!");
@@ -78,9 +81,9 @@ public final class CoachCommunicationTemplateEndpointTests
 
     @Override
     public void removeSetUpRepository() {
-        if (repository.existsById(communicationTemplate.getId())) {
-            repository.deleteById(communicationTemplate.getId());
-        }
+        removeBasicData();
+
+        repository.deleteAll();
     }
 
     @Override
@@ -89,7 +92,7 @@ public final class CoachCommunicationTemplateEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_fails() throws Exception {
         CommunicationTemplate template = get_random_repository_entity();
         getMockMvc().perform(get(COMMUNICATION_TEMPLATE_PATH + "/search/findByName")
@@ -98,14 +101,14 @@ public final class CoachCommunicationTemplateEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new_skilltype_fails() throws Exception {
         CommunicationTemplate entity = create_entity();
         perform_post(COMMUNICATION_TEMPLATE_PATH, entity).andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void delete_skilltype_fails() throws Exception {
         CommunicationTemplate entity = get_random_repository_entity();
         perform_delete_with_id(COMMUNICATION_TEMPLATE_PATH, entity.getId())
@@ -113,14 +116,14 @@ public final class CoachCommunicationTemplateEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_legal_entity_fails() throws Exception {
         CommunicationTemplate entity = get_random_repository_entity();
         perform_get(COMMUNICATION_TEMPLATE_PATH + "/" + entity.getId()).andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_fails() throws Exception {
         CommunicationTemplate entity = get_random_repository_entity();
 
@@ -129,13 +132,13 @@ public final class CoachCommunicationTemplateEndpointTests
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_illegal_entity_fails_name() throws Exception {
         base_getting_illegal_entity_fails_name();
     }
 
     @Test
-    @WithMockUser(username = "coach", authorities = {"COACH"})
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
     }
