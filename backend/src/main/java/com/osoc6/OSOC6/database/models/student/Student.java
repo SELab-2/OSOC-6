@@ -3,7 +3,6 @@ package com.osoc6.OSOC6.database.models.student;
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
@@ -243,9 +242,9 @@ public class Student {
      * The skills this student has.
      * In the form this is called the 'role' a student applies for.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy = "student")
     @Getter @Builder.Default
-    private List<Skill> skills = new ArrayList<>();
+    private List<StudentSkill> skills = new ArrayList<>();
 
     /**
      * The suggestions made about this student.

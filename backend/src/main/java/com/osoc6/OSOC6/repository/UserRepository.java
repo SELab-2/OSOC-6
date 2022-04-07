@@ -7,7 +7,6 @@ import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -16,11 +15,10 @@ import java.util.Optional;
  * It exposes basic CRUD operations on the {@link UserEntity}.
  * It accepts requests and sends answers in a REST-full way.
  */
-@Repository
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
-public interface UserRepository  extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     /**
      * This method finds the user with a given email address.
      * @param email email address of the searched user

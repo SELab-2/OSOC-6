@@ -3,13 +3,13 @@ package com.osoc6.OSOC6;
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Skill;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.database.models.student.StudentSkill;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 
@@ -79,8 +79,8 @@ public final class StudentJsonHelper {
         edition = entityLinks.linkToItemResource(Edition.class, student.getEdition().getId().toString()).getHref();
 
         skills = new ArrayList<>();
-        for (Skill skill: student.getSkills()) {
-            skills.add(entityLinks.linkToItemResource(Skill.class, skill.getId().toString()).getHref());
+        for (StudentSkill skill: student.getSkills()) {
+            skills.add(entityLinks.linkToItemResource(StudentSkill.class, skill.getId().toString()).getHref());
         }
 
         suggestions = new ArrayList<>();

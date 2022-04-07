@@ -5,7 +5,6 @@ import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
@@ -35,16 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestion, Long, SuggestionRepository> {
-
-    /**
-     * Email of the user creating suggestions as a static final field. This way it can be used within annotations.
-     */
-    private static final String OUTSIDER_EMAIL = "outsider@mail.com";
-
-    /**
-     * Sample user.
-     */
-    private final UserEntity outsiderCoach = new UserEntity(OUTSIDER_EMAIL, "joe", UserRole.COACH, "test");
 
     /**
      * First sample student that gets loaded before every test.
@@ -133,9 +122,6 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     public void setUpRepository() {
         setupBasicData();
 
-        // Needed for database relation
-        userRepository.save(outsiderCoach);
-
         studentRepository.save(student);
 
         suggestionRepository.save(suggestion1);
@@ -147,7 +133,6 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
         // Otherwise there will be a relation with the user
         suggestionRepository.deleteAll();
         studentRepository.deleteAll();
-        userRepository.deleteAll();
 
         removeBasicData();
     }
@@ -192,7 +177,8 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     public void post_new_to_other_edition_fails() throws Exception {
         // This is either forbidden because the user cannot post a suggestion no an edition that is not his.
         // or a bad request because the user is unable to see the student in the first place.
-        Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality", outsiderCoach, student);
+        Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality",
+                getOutsiderCoach(), student);
         perform_post(getEntityPath(), suggestion).andExpect(status().is4xxClientError());
     }
 
@@ -212,7 +198,8 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void posting_with_other_coach_id_fails() throws Exception {
-        Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality", outsiderCoach, student);
+        Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality",
+                getOutsiderCoach(), student);
         perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
     }
 
