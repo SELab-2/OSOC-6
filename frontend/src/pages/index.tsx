@@ -9,10 +9,9 @@ const Home: NextPage = () => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>OSOC-6</title>
+                <title>{t('Home page title')}</title>
             </Head>
             <main className={styles.main}>
-
                 <h1 className={styles.title}>{t('Tool name')}</h1>
             </main>
         </div>
