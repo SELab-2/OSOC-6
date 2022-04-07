@@ -1,6 +1,8 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 export const NavBar = () => {
+    const { t } = useTranslation();
     return (
         <>
             <Navbar
@@ -14,13 +16,21 @@ export const NavBar = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ms-auto">
-                            <Nav.Link href="students">Students</Nav.Link>
-                            <Nav.Link href="users">Users</Nav.Link>
-                            <Nav.Link href="projects">Projects</Nav.Link>
-                            <Nav.Link href="assignStudents">
-                                Assign Students
+                            <Nav.Link href="students">
+                                {t('Navbar students')}
                             </Nav.Link>
-                            <Nav.Link href="profile">Profile</Nav.Link>
+                            <Nav.Link href="users">
+                                {t('Navbar users')}
+                            </Nav.Link>
+                            <Nav.Link href="projects">
+                                {t('Navbar projects')}
+                            </Nav.Link>
+                            <Nav.Link href="assignStudents">
+                                {t('Navbar assign students')}
+                            </Nav.Link>
+                            <Nav.Link href="profile">
+                                {t('Navbar profile')}
+                            </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

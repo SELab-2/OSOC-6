@@ -1,4 +1,9 @@
 {
     "Tool name": "Open Summer Of Code Tool",
-    "Home page title": "OSOC-6"
+    "Home page title": "OSOC-6",
+    "Navbar students": "Students",
+    "Navbar users": "Users",
+    "Navbar projects": "Projects",
+    "Navbar assign students": "Assign Students",
+    "Navbar profile": "Profile"
 }
