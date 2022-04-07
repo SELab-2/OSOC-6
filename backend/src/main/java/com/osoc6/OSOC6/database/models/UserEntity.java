@@ -33,7 +33,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-public class UserEntity implements UserDetails {
+public final class UserEntity implements UserDetails {
 
     /**
      * The id of the user.

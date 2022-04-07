@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @NoArgsConstructor
-public class SkillType {
+public final class SkillType {
     /**
      * The id of the SkillType.
      */
