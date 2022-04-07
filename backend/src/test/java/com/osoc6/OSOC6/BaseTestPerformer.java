@@ -347,7 +347,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public void save_repository_entity(final T entity) {
         performAsAdmin(() -> get_repository().save(entity));
-
     }
 
     /**
