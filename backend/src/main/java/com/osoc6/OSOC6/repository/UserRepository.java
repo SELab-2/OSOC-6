@@ -20,7 +20,7 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
-public interface UserRepository  extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     /**
      * This method finds the user with a given email address.
      * @param email email address of the searched user

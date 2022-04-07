@@ -99,9 +99,9 @@ public class Project {
     /**
      * The skills needed in this project.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy = "project")
     @Getter
-    private List<Skill> neededSkills;
+    private List<ProjectSkill> neededSkills;
 
     /**
      * The Users that will coach this project.
