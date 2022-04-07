@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @NoArgsConstructor
-public class Edition {
+public final class Edition {
 
     /**
      * The id of the edition.

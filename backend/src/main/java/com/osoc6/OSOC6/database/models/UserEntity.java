@@ -33,7 +33,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-public class UserEntity implements UserDetails {
+public final class UserEntity implements UserDetails {
 
     /**
      * The id of the user.
@@ -90,7 +90,7 @@ public class UserEntity implements UserDetails {
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
-    private List<Invitation> sendInvitations;
+    private List<Invitation> sendInvitations = new ArrayList<>();
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
@@ -106,14 +106,14 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "sender", orphanRemoval = true)
     @OrderColumn(name = "timestamp")
     @Getter
-    private List<Communication> communications;
+    private List<Communication> communications = new ArrayList<>();
 
     /**
      * Set of skills a user has.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy = "userEntity")
     @Getter
-    private List<Skill> skills;
+    private List<UserSkill> skills = new ArrayList<>();
 
     /**
      * The projects this User Coaches.
@@ -121,7 +121,7 @@ public class UserEntity implements UserDetails {
     @ManyToMany(mappedBy = "coaches")
     @OrderColumn(name = "edition_name")
     @Getter
-    private List<Project> projects;
+    private List<Project> projects = new ArrayList<>();
 
     /**
      *
@@ -136,11 +136,6 @@ public class UserEntity implements UserDetails {
         callName = newCallName;
         userRole = newUserRole;
         password = newPassword;
-        sendInvitations = new ArrayList<>();
-        receivedInvitations = new ArrayList<>();
-        communications = new ArrayList<>();
-        skills = new ArrayList<>();
-        projects = new ArrayList<>();
     }
 
     /**

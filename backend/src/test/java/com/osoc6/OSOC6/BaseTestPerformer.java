@@ -89,6 +89,11 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     protected static final String COACH_EMAIL = "coach@test.com";
 
     /**
+     * Email of the outsider coach as a static final field. This way it can be used within annotations.
+     */
+    public static final String OUTSIDER_EMAIL = "outsider@mail.com";
+
+    /**
      * The admin test user. This is the admin user that will be used to execute the tests.
      */
     @Getter
@@ -103,6 +108,12 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
             UserRole.COACH, "123456");
 
     /**
+     * The outsider coach sample user that gets loaded before every test.
+     */
+    @Getter
+    private final UserEntity outsiderCoach = new UserEntity(OUTSIDER_EMAIL, "joe", UserRole.COACH, "test");
+
+    /**
      * The invitation for the coach user. Makes it so the user is linked to an edition.
      */
     private final Invitation invitationForCoach = new Invitation(baseUserEdition, coachUser, coachUser);
@@ -115,6 +126,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
 
         userRepository.save(adminUser);
         userRepository.save(coachUser);
+        userRepository.save(outsiderCoach);
 
         invitationRepository.save(invitationForCoach);
     }

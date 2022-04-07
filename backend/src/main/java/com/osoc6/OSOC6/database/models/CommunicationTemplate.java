@@ -19,7 +19,7 @@ import javax.persistence.Lob;
  */
 @Entity
 @NoArgsConstructor
-public class CommunicationTemplate {
+public final class CommunicationTemplate {
     /**
      * The id of the CommunicationTemplate.
      */

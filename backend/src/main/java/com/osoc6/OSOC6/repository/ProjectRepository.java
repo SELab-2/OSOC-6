@@ -26,8 +26,7 @@ import java.util.Optional;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
-            + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.edition.id)")
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + MerlinSpELWizard.USER_HAS_ACCESS_ON_OPTIONAL)
     Optional<Project> findById(@NonNull Long id);
 
     @Override @NonNull

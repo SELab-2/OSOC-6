@@ -28,7 +28,7 @@ import java.util.Calendar;
  */
 @Entity
 @NoArgsConstructor
-public class Invitation {
+public final class Invitation implements WeakToEdition {
     /**
      * The id of the invitation.
      */
@@ -41,7 +41,7 @@ public class Invitation {
      * The unique token of the invitation.
      */
     @Basic(optional = false)
-    @Column(unique = true, updatable = false)
+    @Column(unique = true) @ReadOnlyProperty
     @Getter
     private final String token = new Base64StringKeyGenerator().generateKey();
 
@@ -49,7 +49,7 @@ public class Invitation {
      * The timestamp of the invitation.
      */
     @Basic(optional = false)
-    @CreationTimestamp @Column(updatable = false)
+    @CreationTimestamp @ReadOnlyProperty
     @Getter
     private Timestamp creationTimestamp;
 
@@ -108,5 +108,10 @@ public class Invitation {
         cal.add(Calendar.DAY_OF_WEEK, RadagastNumberWizard.INVITATION_EXPIRATION_DAYS);
         return !isUsed() && Instant.now().getEpochSecond()
                 <= cal.getTimeInMillis() / RadagastNumberWizard.MILLISECOND_IN_SECOND;
+    }
+
+    @Override
+    public Edition getControllingEdition() {
+        return edition;
     }
 }
