@@ -5,7 +5,6 @@ import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -38,31 +37,15 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     private ProjectRepository projectRepository;
 
     /**
-     * The repository which saves, searches, ... in the database
-     */
-    @Autowired
-    private EditionRepository editionRepository;
-
-    /**
      * Entity links, needed to get to link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
 
     /**
-     * Sample edition that gets loaded before every test.
-     */
-    private final Edition edition = new Edition("Another edition", 2019, false);
-
-    /**
      * First sample project that gets loaded before every test.
      */
-    private final Project project1 = new Project("New chip", edition, "Intel", getAdminUser());
-
-    /**
-     * Second sample project that gets loaded before every test.
-     */
-    private final Project project2 = new Project("Instagram", getBaseUserEdition(), "Meta", getAdminUser());
+    private final Project testProject = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -96,10 +79,7 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     public void setUpRepository() {
         setupBasicData();
 
-        editionRepository.save(edition);
-
-        projectRepository.save(project1);
-        projectRepository.save(project2);
+        projectRepository.save(testProject);
     }
 
     /**
@@ -148,28 +128,28 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_all_returns_all_projects_of_same_edition_as_user() throws Exception {
         base_get_all_entities_succeeds()
-                .andExpect(string_to_contains_string(project2.getName()));
+                .andExpect(string_to_contains_string(testProject.getName()));
     }
 
     @Test
-    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_all_does_not_contain_projects_of_different_edition_as_user() throws Exception {
         base_get_all_entities_succeeds()
-                .andExpect(content().string(not(containsString(project1.getName()))));
+                .andExpect(content().string(not(containsString(testProject.getName()))));
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_project_by_id_of_same_edition_as_user_works() throws Exception {
-        perform_get(getEntityPath() + "/" + project2.getId())
+        perform_get(getEntityPath() + "/" + testProject.getId())
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(project2.getName()));
+                .andExpect(string_to_contains_string(testProject.getName()));
     }
 
     @Test
-    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_project_by_id_of_different_edition_as_user_fails() throws Exception {
-        perform_get(getEntityPath() + "/" + project1.getId())
+        perform_get(getEntityPath() + "/" + testProject.getId())
                 .andExpect(status().isForbidden());
     }
 

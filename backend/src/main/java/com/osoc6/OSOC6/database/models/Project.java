@@ -46,7 +46,7 @@ public class Project {
      */
     @ElementCollection
     @Getter
-    private List<String> goals;
+    private List<String> goals = new ArrayList<>();
 
     /**
      * The name of the project.
@@ -101,14 +101,14 @@ public class Project {
      */
     @OneToMany(orphanRemoval = true, mappedBy = "project")
     @Getter
-    private List<ProjectSkill> neededSkills;
+    private List<ProjectSkill> neededSkills = new ArrayList<>();
 
     /**
      * The Users that will coach this project.
      */
     @ManyToMany
     @Getter
-    private List<UserEntity> coaches;
+    private List<UserEntity> coaches = new ArrayList<>();
 
     /**
      *
@@ -120,12 +120,9 @@ public class Project {
     public Project(final String newName, final Edition newEdition,
                    final String newPartner, final UserEntity newCreator) {
         super();
-        goals = new ArrayList<>();
         name = newName;
         edition = newEdition;
         partnerName = newPartner;
         creator = newCreator;
-        neededSkills = new ArrayList<>();
-        coaches = new ArrayList<>();
     }
 }
