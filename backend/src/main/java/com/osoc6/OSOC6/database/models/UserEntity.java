@@ -111,9 +111,9 @@ public class UserEntity implements UserDetails {
     /**
      * Set of skills a user has.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy = "userEntity")
     @Getter
-    private List<Skill> skills;
+    private List<UserSkill> skills;
 
     /**
      * The projects this User Coaches.
