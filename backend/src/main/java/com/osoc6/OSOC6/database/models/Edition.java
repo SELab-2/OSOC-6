@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @NoArgsConstructor
-public final class Edition {
+public final class Edition implements WeakToEdition {
 
     /**
      * The id of the edition.
@@ -65,4 +66,8 @@ public final class Edition {
         active = newActive;
     }
 
+    @Override @JsonIgnore
+    public Edition getControllingEdition() {
+        return this;
+    }
 }

@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,12 +9,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
@@ -44,7 +45,7 @@ public final class Suggestion implements WeakToEdition {
      * Reason provided by the user for giving this suggestion.
      */
     @Basic(optional = false)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String reason;
 
@@ -87,7 +88,7 @@ public final class Suggestion implements WeakToEdition {
         student = newStudent;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return student.getEdition();
     }

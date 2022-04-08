@@ -125,16 +125,25 @@ public enum PronounsType {
     OTHER {
         @Override
         public String getPossessive(final Student student) {
+            if (student.getPronouns().size() < 2) {
+                return PronounsType.NONE.getPossessive(student);
+            }
             return student.getPronouns().get(2);
         }
 
         @Override
         public String getSubjective(final Student student) {
+            if (student.getPronouns().size() < 2) {
+                return PronounsType.NONE.getSubjective(student);
+            }
             return student.getPronouns().get(0);
         }
 
         @Override
         public String getObjective(final Student student) {
+            if (student.getPronouns().size() < 2) {
+                return PronounsType.NONE.getObjective(student);
+            }
             return student.getPronouns().get(1);
         }
     },

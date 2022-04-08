@@ -26,17 +26,17 @@ public final class MerlinSpELWizard {
     /**
      * Provides a Query notated view of the id's the current user has access to. (Query notation)
      */
-    public static final String Q_USER_EDITIONS = ":#{@authorizationUtil.userEditions(authentication.principal)}";
+    public static final String Q_USER_EDITIONS = ":#{@spelUtil.userEditions(authentication.principal)}";
 
     /**
      * SpEll expression checking that a non admin user has access to the optional returnObject.
      */
     public static final String USER_HAS_ACCESS_ON_OPTIONAL = "!returnObject.present or "
-        + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.controllingEdition.id)";
+        + "@spelUtil.userEditions(authentication.principal).contains(returnObject.get.controllingEdition.id)";
 
     /**
      * SpEll expression checking that a non admin user has access to entity param.
      */
     public static final String USER_HAS_ACCESS_ON_ENTITY =
-            "@authorizationUtil.userEditions(authentication.principal).contains(#entity.student.edition.id)";
+            "@spelUtil.userEditions(authentication.principal).contains(#entity.student.edition.id)";
 }

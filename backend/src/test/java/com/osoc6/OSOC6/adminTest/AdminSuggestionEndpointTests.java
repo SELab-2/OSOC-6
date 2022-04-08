@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 /**
  * Class testing the integration of {@link Suggestion}.
  */
@@ -174,4 +176,40 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     public void patch_changes_value() throws Exception {
         super.patch_changes_value();
     }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_matching_query_over_suggest_reason_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"reason", "edition"},
+                new String[]{suggestion1.getReason(),
+                        getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(student.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_non_matching_query_over_suggest_reason_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"reason", "edition"},
+                new String[]{"apple" + suggestion1.getReason() + "banana",
+                        getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(student.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_is_contain_only_once() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_contains_times_or_less(student.getCallName(), 1));
+    }
+
 }

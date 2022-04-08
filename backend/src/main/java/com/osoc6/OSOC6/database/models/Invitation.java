@@ -110,7 +110,7 @@ public final class Invitation implements WeakToEdition {
                 <= cal.getTimeInMillis() / RadagastNumberWizard.MILLISECOND_IN_SECOND;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return edition;
     }

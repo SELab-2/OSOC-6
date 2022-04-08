@@ -18,9 +18,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -135,7 +132,7 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_all_does_not_contain_projects_of_different_edition_as_user() throws Exception {
         base_get_all_entities_succeeds()
-                .andExpect(content().string(not(containsString(testProject.getName()))));
+                .andExpect(string_not_to_contains_string(testProject.getName()));
     }
 
     @Test
