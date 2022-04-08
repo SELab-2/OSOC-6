@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import LoginForm from '../components/loginForm';
 import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
-import useTranslation from "next-translate/useTranslation";
+import useTranslation from 'next-translate/useTranslation';
 
 const Login: NextPage = () => {
     const { t } = useTranslation('translations');

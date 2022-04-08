@@ -3,7 +3,7 @@ import LoginError from '../src/pages/loginError';
 import '@testing-library/jest-dom';
 
 jest.mock('react-i18next', () => ({
-    useTranslation: () => ({t: (key:string) => key})
+    useTranslation: () => ({ t: (key: string) => key }),
 }));
 
 describe('LoginError page', () => {

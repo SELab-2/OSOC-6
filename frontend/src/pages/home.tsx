@@ -3,7 +3,6 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 
-
 const Home: NextPage = () => {
     const { t } = useTranslation('translations');
     return (

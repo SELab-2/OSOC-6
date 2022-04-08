@@ -4,7 +4,7 @@ import LoginForm from '../components/loginForm';
 import { Card } from 'react-bootstrap';
 import error_messages from '../properties/errorMessages.json';
 import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
-import useTranslation from "next-translate/useTranslation";
+import useTranslation from 'next-translate/useTranslation';
 
 const LoginError: NextPage = () => {
     const { t } = useTranslation('translations');
