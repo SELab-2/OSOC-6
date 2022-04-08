@@ -2,9 +2,9 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import LoginForm from '../components/loginForm';
 import { Card } from 'react-bootstrap';
-import error_messages from "../properties/errorMessages.json";
-import {useTranslation} from "react-i18next";
-import {loginSubmitHandler} from "../handlers/loginSubmitHandler";
+import error_messages from '../properties/errorMessages.json';
+import { useTranslation } from 'react-i18next';
+import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
 
 const LoginError: NextPage = () => {
     const { t } = useTranslation();
@@ -17,7 +17,9 @@ const LoginError: NextPage = () => {
             <main className="m-4">
                 <Card>
                     <Card.Body>
-                        <Card.Text>{error_messages.invalid_credentials}</Card.Text>
+                        <Card.Text>
+                            {error_messages.invalid_credentials}
+                        </Card.Text>
                     </Card.Body>
                 </Card>
                 <LoginForm submitHandler={loginSubmitHandler} />

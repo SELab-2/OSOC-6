@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import LoginForm from '../components/loginForm';
-import {loginSubmitHandler} from "../handlers/loginSubmitHandler";
-import {useTranslation} from "react-i18next";
+import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
+import { useTranslation } from 'react-i18next';
 
 const Login: NextPage = () => {
     const { t } = useTranslation();

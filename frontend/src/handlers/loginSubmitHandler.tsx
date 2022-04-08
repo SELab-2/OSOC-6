@@ -1,6 +1,6 @@
-import {getFormPost} from "../api/requests";
-import pathNames from "../properties/pathNames.json";
-import Router from "next/router";
+import { getFormPost } from '../api/requests';
+import pathNames from '../properties/pathNames.json';
+import Router from 'next/router';
 
 export interface LoginValues {
     username: string;

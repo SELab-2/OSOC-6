@@ -1,7 +1,7 @@
 import { Formik, Field, Form } from 'formik';
 import styles from '../styles/loginForm.module.css';
 
-import {LoginProps} from "../handlers/loginSubmitHandler";
+import { LoginProps } from '../handlers/loginSubmitHandler';
 
 export default function LoginForm(props: LoginProps) {
     return (
