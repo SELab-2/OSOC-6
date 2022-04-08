@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
+            // Cross-site request forgery protection needs to be disabled for logging in from frontend
             .csrf().disable().httpBasic()
             .and()
             .authorizeRequests()
