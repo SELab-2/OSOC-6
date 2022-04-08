@@ -2,10 +2,6 @@ import { render, screen } from '@testing-library/react';
 import LoginError from '../src/pages/loginError';
 import '@testing-library/jest-dom';
 
-jest.mock('react-i18next', () => ({
-    useTranslation: () => ({ t: (key: string) => key }),
-}));
-
 describe('LoginError page', () => {
     it('should render', async () => {
         render(<LoginError />);
