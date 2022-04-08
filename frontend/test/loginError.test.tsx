@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import LoginError from '../src/pages/login_error';
+import LoginError from '../src/pages/loginError';
 import '@testing-library/jest-dom';
 
 describe('Login_error page', () => {

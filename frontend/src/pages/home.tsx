@@ -1,14 +1,18 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import '../i18n/config';
+import { useTranslation } from 'react-i18next';
 
 const Home: NextPage = () => {
+    const { t } = useTranslation();
     return (
-        <div>
+        <div className={styles.container}>
             <Head>
-                <title>Open Summer of Code : Logged in</title>
+                <title>{t('Home page title')}</title>
             </Head>
-            <main className="m-4">
-                <h1>User is logged in</h1>
+            <main className={styles.main}>
+                <h1 className={styles.title}>{t('Tool name')}</h1>
             </main>
         </div>
     );

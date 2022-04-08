@@ -11,6 +11,7 @@ export default {
     collectCoverageFrom: ['<rootDir>/src/**'],
     moduleFileExtensions: ['ts', 'js', 'tsx'],
     moduleNameMapper: {
+        // identity-obj-proxy tells jest to mock files with the specified extentions as CSS modules
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     },
 };

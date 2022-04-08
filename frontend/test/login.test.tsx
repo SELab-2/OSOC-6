@@ -1,11 +1,14 @@
 import Login from '../src/pages/login';
-import LoginForm, { submitHandler, Values } from '../src/components/loginForm';
+import LoginForm from '../src/components/loginForm';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import mockAxios from 'jest-mock-axios';
 import Router from 'next/router';
 import { AxiosResponse } from 'axios';
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
+import {loginSubmitHandler, LoginValues} from "../src/handlers/loginSubmitHandler";
+
 
 jest.mock('next/router', () => require('next-router-mock'));
 
@@ -30,7 +33,7 @@ describe('Login page', () => {
 });
 
 it('Test interface values', () => {
-    const values: Values = { username: 'test@mail.com', password: 'pass' };
+    const values: LoginValues = { username: 'test@mail.com', password: 'pass' };
     expect(values.username).toEqual('test@mail.com');
     expect(values.password).toEqual('pass');
 });
@@ -56,17 +59,17 @@ test('Test whether the login sends the form', async () => {
 });
 
 it('SubmitHandler for loginForm sends post request', () => {
-    const values: Values = { username: 'test@mail.com', password: 'pass' };
+    const values: LoginValues = { username: 'test@mail.com', password: 'pass' };
     const response: AxiosResponse = {
         data: {},
-        status: 302,
-        statusText: '',
+        status: StatusCodes.TEMPORARY_REDIRECT,
+        statusText: ReasonPhrases.TEMPORARY_REDIRECT,
         headers: {},
         config: {},
         request: { responseURL: '/home' },
     };
 
-    submitHandler(values);
+    loginSubmitHandler(values);
     mockAxios.mockResponseFor({ url: '/api/login-processing' }, response);
 
     waitFor(() => {

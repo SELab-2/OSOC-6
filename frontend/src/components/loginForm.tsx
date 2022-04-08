@@ -1,36 +1,9 @@
 import { Formik, Field, Form } from 'formik';
 import styles from '../styles/loginForm.module.css';
-import axios from 'axios';
-import Router from 'next/router';
 
-export interface Values {
-    username: string;
-    password: string;
-}
+import {LoginProps} from "../handlers/loginSubmitHandler";
 
-export type Props = {
-    submitHandler: (values: Values) => void;
-};
-
-export async function submitHandler(values: Values) {
-    // store the states in the form data
-    const loginFormData = new FormData();
-    loginFormData.append('username', values.username);
-    loginFormData.append('password', values.password);
-
-    const response = await axios({
-        method: 'post',
-        url: '/api/login-processing',
-        data: loginFormData,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'access-control-allow-origin': '*',
-        },
-    });
-    await Router.push(response.request.responseURL);
-}
-
-export default function LoginForm(props: Props) {
+export default function LoginForm(props: LoginProps) {
     return (
         <div className={styles.login_box}>
             <Formik

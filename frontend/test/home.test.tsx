@@ -3,7 +3,7 @@ import Home from '../src/pages/home';
 import '@testing-library/jest-dom';
 
 describe('Home page', () => {
-    it('should render', async () => {
+    it('should be able to render.', async () => {
         render(<Home />);
     });
 });
