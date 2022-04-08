@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
@@ -100,7 +101,7 @@ public final class Communication implements WeakToEdition {
         student = newStudent;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return student.getControllingEdition();
     }

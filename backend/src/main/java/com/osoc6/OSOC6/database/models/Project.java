@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -126,7 +126,7 @@ public final class Project implements WeakToEdition {
         creator = newCreator;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return edition;
     }

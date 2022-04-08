@@ -10,20 +10,25 @@ import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Class testing the integration of {@link Student} for a coach.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CoachStudentEndpointTests extends TestFunctionProvider<Student, Long, StudentRepository> {
+public final class CoachStudentEndpointTests extends TestFunctionProvider<Student, Long, StudentRepository> {
 
     /**
      * The repository which saves, searches, ... in the database
@@ -36,7 +41,10 @@ public class CoachStudentEndpointTests extends TestFunctionProvider<Student, Lon
      */
     private static final String STUDENTS_PATH = "/" + DumbledorePathWizard.STUDENT_PATH;
 
-    private final Student studentKasper = Student.builder()
+    /**
+     * A test user to allowing us to write test easily.
+     */
+    private final Student testStudent = Student.builder()
             .email("kasper@mail.com")
             .additionalStudentInfo("He likes it like that")
             .bestSkill("Finding out the Spring ways")
@@ -78,7 +86,7 @@ public class CoachStudentEndpointTests extends TestFunctionProvider<Student, Lon
     }
 
     @Override
-    public Long get_id(Student entity) {
+    public Long get_id(final Student entity) {
         return entity.getId();
     }
 
@@ -91,7 +99,7 @@ public class CoachStudentEndpointTests extends TestFunctionProvider<Student, Lon
     public void setUpRepository() {
         setupBasicData();
 
-        studentRepository.save(studentKasper);
+        studentRepository.save(testStudent);
     }
 
     @Override
@@ -130,7 +138,7 @@ public class CoachStudentEndpointTests extends TestFunctionProvider<Student, Lon
     }
 
     @Override
-    public Map<String, String> change_entity(Student startEntity) {
+    public Map<String, String> change_entity(final Student startEntity) {
         Map<String, String> changeMap = new HashMap<>();
         changeMap.put("additionalStudentInfo", TEST_STRING);
         return changeMap;
@@ -148,4 +156,102 @@ public class CoachStudentEndpointTests extends TestFunctionProvider<Student, Lon
     }
 
     // ============================= Start tests =============================
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void get_all_returns_all_students_of_same_edition_as_user() throws Exception {
+        base_get_all_entities_succeeds()
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void get_all_does_not_contain_students_of_different_edition_as_user() throws Exception {
+        base_get_all_entities_succeeds()
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void get_student_by_id_of_same_edition_as_user_works() throws Exception {
+        perform_get(getEntityPath() + "/" + testStudent.getId())
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void get_student_by_id_of_different_edition_as_user_fails() throws Exception {
+        perform_get(getEntityPath() + "/" + testStudent.getId())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void post_new_fails() throws Exception {
+        Student entity = create_entity();
+
+        perform_post(getEntityPath(), entity)
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void delete_student_fails() throws Exception {
+        Student entity = get_random_repository_entity();
+        perform_delete_with_id(getEntityPath(), entity.getId())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void patching_fails() throws Exception {
+        Student entity = get_random_repository_entity();
+
+        perform_patch(getEntityPath() + "/" + entity.getId(), change_entity(entity))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_illegal_entity_fails() throws Exception {
+        base_getting_illegal_entity_fails();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_illegal_entity_fails_name() throws Exception {
+        base_getting_illegal_entity_fails_name();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void patching_entity_to_illegal_id_fails() throws Exception {
+        base_patching_entity_to_illegal_id_fails();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void patching_entity_to_illegal_string_id_fails() throws Exception {
+        base_patching_entity_to_illegal_string_id_fails();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void query_with_correct_edition_has_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void query_with_wrong_edition_is_forbidden() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isForbidden());
+    }
 }

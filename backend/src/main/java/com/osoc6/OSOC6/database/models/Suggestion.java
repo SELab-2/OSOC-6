@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -87,7 +88,7 @@ public final class Suggestion implements WeakToEdition {
         student = newStudent;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return student.getEdition();
     }

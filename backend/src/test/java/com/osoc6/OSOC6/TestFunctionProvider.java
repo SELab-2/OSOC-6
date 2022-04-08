@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,7 +80,7 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
 
         perform_queried_get(path, new String[]{paramName}, new String[]{"Banana" + value + "Apple"})
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString(value))));
+                .andExpect(string_not_to_contains_string(value));
     }
 
     /**

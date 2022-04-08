@@ -14,10 +14,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -128,7 +125,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
         getMockMvc().perform(get(getEntityPath() + "/search/findByName")
                         .queryParam("name", nonTrackedEdition.getName()))
                 .andExpect(status().isOk())
-                .andExpect(content().string(not(containsString(nonTrackedEdition.getName()))));
+                .andExpect(string_not_to_contains_string(nonTrackedEdition.getName()));
     }
 
     @Test
@@ -141,7 +138,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_all_does_not_contain_not_tracked() throws Exception {
-        base_get_all_entities_succeeds().andExpect(content().string(not(containsString(nonTrackedEdition.getName()))));
+        base_get_all_entities_succeeds().andExpect(string_not_to_contains_string(nonTrackedEdition.getName()));
     }
 
     @Test

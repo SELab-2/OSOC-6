@@ -2,7 +2,6 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.StudentJsonHelper;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
@@ -37,7 +36,10 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
      */
     private static final String STUDENTS_PATH = "/" + DumbledorePathWizard.STUDENT_PATH;
 
-    private final Student studentKasper = Student.builder()
+    /**
+     * A test user to allowing us to write test easily.
+     */
+    private final Student testStudent = Student.builder()
             .email("kasper@mail.com")
             .additionalStudentInfo("He likes it like that")
             .bestSkill("Finding out the Spring ways")
@@ -79,7 +81,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     }
 
     @Override
-    public Long get_id(Student entity) {
+    public Long get_id(final Student entity) {
         return entity.getId();
     }
 
@@ -92,7 +94,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void setUpRepository() {
         setupBasicData();
 
-        studentRepository.save(studentKasper);
+        studentRepository.save(testStudent);
     }
 
     @Override
@@ -131,7 +133,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     }
 
     @Override
-    public Map<String, String> change_entity(Student startEntity) {
+    public Map<String, String> change_entity(final Student startEntity) {
         Map<String, String> changeMap = new HashMap<>();
         changeMap.put("additionalStudentInfo", TEST_STRING);
         return changeMap;
@@ -148,20 +150,22 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
         return Util.asJsonString(helper);
     }
 
+    // ============================= Additional Tests =============================
+
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void filtering_on_edition_works_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{studentKasper.getCallName(), getBaseUserEdition().getId().toString()})
+                new String[]{testStudent.getCallName(), getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{"banana" + studentKasper.getCallName() + "apple", getBaseUserEdition().getId().toString()})
+                new String[]{"banana" + testStudent.getCallName() + "apple", getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -169,10 +173,10 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void filtering_on_callName_starting_works() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{studentKasper.getCallName().substring(0, studentKasper.getCallName().length()-5),
+                new String[]{testStudent.getCallName().substring(0, testStudent.getCallName().length() - 5),
                         getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -180,10 +184,10 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void filtering_on_callName_endsWith_works() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{studentKasper.getCallName().substring(5, studentKasper.getCallName().length()),
+                new String[]{testStudent.getCallName().substring(5, testStudent.getCallName().length()),
                         getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -191,9 +195,9 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void filtering_on_false_edition_works_not_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{studentKasper.getCallName(), Long.toString(getILLEGAL_ID())})
+                new String[]{testStudent.getCallName(), Long.toString(getILLEGAL_ID())})
                 .andExpect(status().isOk())
-                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -203,7 +207,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 new String[]{},
                 new String[]{})
                 .andExpect(status().isOk())
-                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -211,9 +215,9 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_first_name_works() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"firstName", "edition"},
-                new String[]{studentKasper.getFirstName(), getBaseUserEdition().getId().toString()})
+                new String[]{testStudent.getFirstName(), getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -221,10 +225,10 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_first_name_works_no_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"firstName", "edition"},
-                new String[]{"apple" + studentKasper.getFirstName() + "banana",
+                new String[]{"apple" + testStudent.getFirstName() + "banana",
                         getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_not_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -234,7 +238,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 new String[]{"edition"},
                 new String[]{getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
 
     @Test
@@ -244,6 +248,6 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 new String[]{"edition", "cbilcblcjbh"},
                 new String[]{getBaseUserEdition().getId().toString(), "cbjbhcjb"})
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
 }

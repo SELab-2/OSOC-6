@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -106,7 +107,7 @@ public final class Invitation implements WeakToEdition {
         return !isUsed() && cal.getTime().toInstant().isBefore(Instant.now());
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return edition;
     }

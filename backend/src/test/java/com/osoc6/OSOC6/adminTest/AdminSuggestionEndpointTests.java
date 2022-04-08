@@ -180,7 +180,8 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_matching_query_over_suggest_reason_works() throws Exception {
-        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{suggestion1.getReason(),
                         getBaseUserEdition().getId().toString()})
@@ -191,7 +192,8 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_non_matching_query_over_suggest_reason_works() throws Exception {
-        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{"apple" + suggestion1.getReason() + "banana",
                         getBaseUserEdition().getId().toString()})
@@ -202,24 +204,12 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_is_contain_only_once() throws Exception {
-        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition"},
                 new String[]{getBaseUserEdition().getId().toString()})
                 .andExpect(status().isOk())
-                .andExpect(result -> {
-                    int containsCount = 0;
-                    String content = result.getResponse().getContentAsString();
-                    int firstIndex = content.indexOf(student.getCallName());
-                    while (firstIndex != -1) {
-                        content = content.substring(firstIndex + student.getCallName().length());
-                        firstIndex = content.indexOf(student.getCallName());
-                        containsCount++;
-                    }
-                    if (containsCount > 1) {
-                        throw new Exception("Contains string " + student.getCallName() + " more than allowed "
-                                + Integer.toString(1) + " times.");
-                    }
-                });
+                .andExpect(string_contains_times_or_less(student.getCallName(), 1));
     }
 
 }

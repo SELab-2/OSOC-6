@@ -15,7 +15,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -29,10 +28,6 @@ import java.util.Optional;
         path = DumbledorePathWizard.STUDENT_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    /**
-     * I tell you this...
-     */
-    String USER_EDITION_ACCESS = "@authorizationUtil.userEditions(authentication.principal).contains(#edition)";
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
@@ -40,8 +35,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         + MerlinSpELWizard.Q_USER_EDITIONS)
     Page<Student> findAll(@NonNull Pageable pageable);
 
+
+    @Override @NonNull
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + MerlinSpELWizard.USER_HAS_ACCESS_ON_OPTIONAL)
+    Optional<Student> findById(@NonNull Long aLong);
+
     /**
-     * Query over students.
+     * Query over students by their field or by a reason provided in suggestion or assignment.
      *
      * @param edition the id of the edition this search is restricted to.
      * @param email field in student that is looked for
@@ -65,36 +66,35 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param pageable field in student that is looked for
      * @return Page of matching students
      */
-    @Transactional
-    @SuppressWarnings("checkstyle:ParameterNumber")
     @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
+            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
     @Query(value =
-        "SELECT DISTINCT stud.* FROM student stud "
+        "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
         + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
-            + "inner_ed.id = :#{@authorizationUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
+            + "inner_ed.id = :#{@spelUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
         + "LEFT JOIN suggestion sugg ON (sugg.student_id = stud.id) "
         + "LEFT JOIN assignment assign ON (assign.student_id = stud.id) "
-        + "WHERE (:email is null or stud.email = :#{@authorizationUtil.safeString(#email)}) and "
-        + "(:firstName is null or stud.first_name = :#{@authorizationUtil.safeString(#firstName)}) and "
-        + "(:lastName is null or stud.last_name = :#{@authorizationUtil.safeString(#lastName)}) and "
-        + "(:callName is null or stud.call_name ILIKE :#{@authorizationUtil.stringBetween(#callName)}) and "
-        + "(:mostFluentLanguage is null or stud.most_fluent_language = :#{@authorizationUtil.safeString(#mostFluentLanguage)}) and "
-        + "(:englishProficiency is null or stud.english_proficiency = :#{@authorizationUtil.safeEnum(#englishProficiency)}) and "
-        + "(:phoneNumber is null or stud.phone_number = :#{@authorizationUtil.safeString(#phoneNumber)}) and "
-        + "(:curriculumVitaeURI is null or stud.curriculum_vitaeuri = :#{@authorizationUtil.safeString(#curriculumVitaeURI)}) and "
-        + "(:portfolioURI is null or stud.portfoliouri = :#{@authorizationUtil.safeString(#portfolioURI)}) and "
-        + "(:motivationURI is null or stud.motivationuri = :#{@authorizationUtil.safeString(#motivationURI)}) and "
-        + "(:writtenMotivation is null or stud.written_motivation = :#{@authorizationUtil.safeString(#writtenMotivation)}) and"
-        + "(:educationLevel is null or stud.education_level = :#{@authorizationUtil.safeString(#educationLevel)}) and "
-        + "(:currentDiploma is null or stud.current_diploma = :#{@authorizationUtil.safeString(#currentDiploma)}) and "
-        + "(:institutionName is null or stud.institution_name = :#{@authorizationUtil.safeString(#institutionName)}) and "
-        + "(:bestSkill is null or stud.best_skill = :#{@authorizationUtil.safeString(#bestSkill)}) and "
-        + "(:osocExperience is null or stud.osoc_experience = :#{@authorizationUtil.safeEnum(#osocExperience)}) and "
-        + "(:additionalStudentInfo is null or stud.additional_student_info = :#{@authorizationUtil.safeString(#additionalStudentInfo)}) and "
-        + "(:reason is null or sugg.reason LIKE :#{@authorizationUtil.stringBetween(#reason)} or assign.reason LIKE :#{@authorizationUtil.stringBetween(#reason)})"
-        , nativeQuery = true)
+        + "WHERE (:email is null or stud.email = :#{@spelUtil.safeString(#email)}) and "
+        + "(:firstName is null or stud.first_name = :#{@spelUtil.safeString(#firstName)}) and "
+        + "(:lastName is null or stud.last_name = :#{@spelUtil.safeString(#lastName)}) and "
+        + "(:callName is null or stud.call_name ILIKE :#{@spelUtil.formatContains(#callName)}) and "
+        + "(:mostFluentLanguage is null or stud.most_fluent_language = :#{@spelUtil.safeString(#mostFluentLanguage)}) and "
+        + "(:englishProficiency is null or stud.english_proficiency = :#{@spelUtil.safeEnum(#englishProficiency)}) and "
+        + "(:phoneNumber is null or stud.phone_number = :#{@spelUtil.safeString(#phoneNumber)}) and "
+        + "(:curriculumVitaeURI is null or stud.curriculum_vitaeuri = :#{@spelUtil.safeString(#curriculumVitaeURI)}) and "
+        + "(:portfolioURI is null or stud.portfoliouri = :#{@spelUtil.safeString(#portfolioURI)}) and "
+        + "(:motivationURI is null or stud.motivationuri = :#{@spelUtil.safeString(#motivationURI)}) and "
+        + "(:writtenMotivation is null or stud.written_motivation = :#{@spelUtil.safeString(#writtenMotivation)}) and"
+        + "(:educationLevel is null or stud.education_level = :#{@spelUtil.safeString(#educationLevel)}) and "
+        + "(:currentDiploma is null or stud.current_diploma = :#{@spelUtil.safeString(#currentDiploma)}) and "
+        + "(:institutionName is null or stud.institution_name = :#{@spelUtil.safeString(#institutionName)}) and "
+        + "(:bestSkill is null or stud.best_skill = :#{@spelUtil.safeString(#bestSkill)}) and "
+        + "(:osocExperience is null or stud.osoc_experience = :#{@spelUtil.safeEnum(#osocExperience)}) and "
+        + "(:additionalStudentInfo is null or stud.additional_student_info = :#{@spelUtil.safeString(#additionalStudentInfo)}) and "
+        + "(:reason is null or sugg.reason LIKE :#{@spelUtil.formatContains(#reason)} or assign.reason LIKE :#{@spelUtil.formatContains(#reason)})",
+            nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition,
                               @Param("email") String email,
                               @Param("firstName") String firstName, @Param("lastName") String lastName,
@@ -109,9 +109,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("additionalStudentInfo") String additionalStudentInfo,
                               @Param("reason") String reason,
                               Pageable pageable);
-
-    @Override @NonNull
-    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + MerlinSpELWizard.USER_HAS_ACCESS_ON_OPTIONAL)
-    Optional<Student> findById(@NonNull Long aLong);
 }
