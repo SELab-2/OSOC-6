@@ -71,9 +71,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
     @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
     @Query(value =
-        "SELECT stud.* FROM (student stud INNER JOIN "
-        + "(SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
-            + "inner_ed.id = :#{@authorizationUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id)) "
+        "SELECT DISTINCT stud.* FROM student stud "
+        + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
+            + "inner_ed.id = :#{@authorizationUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
+        + "LEFT JOIN suggestion sugg ON (sugg.student_id = stud.id) "
+        + "LEFT JOIN assignment assign ON (assign.student_id = stud.id) "
         + "WHERE (:email is null or stud.email = :#{@authorizationUtil.safeString(#email)}) and "
         + "(:firstName is null or stud.first_name = :#{@authorizationUtil.safeString(#firstName)}) and "
         + "(:lastName is null or stud.last_name = :#{@authorizationUtil.safeString(#lastName)}) and "
@@ -90,10 +92,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         + "(:institutionName is null or stud.institution_name = :#{@authorizationUtil.safeString(#institutionName)}) and "
         + "(:bestSkill is null or stud.best_skill = :#{@authorizationUtil.safeString(#bestSkill)}) and "
         + "(:osocExperience is null or stud.osoc_experience = :#{@authorizationUtil.safeEnum(#osocExperience)}) and "
-        + "(:additionalStudentInfo is null or stud.additional_student_info = :#{@authorizationUtil.safeString(#additionalStudentInfo)})"
+        + "(:additionalStudentInfo is null or stud.additional_student_info = :#{@authorizationUtil.safeString(#additionalStudentInfo)}) and "
+        + "(:reason is null or sugg.reason LIKE :#{@authorizationUtil.stringBetween(#reason)} or assign.reason LIKE :#{@authorizationUtil.stringBetween(#reason)})"
         , nativeQuery = true)
-        //+ "(:reason is null or coalesce(suggest.reason, 'apple') LIKE :#{@authorizationUtil.stringBetween(#reason)})")
-        //+ "or assign.reason = :reason)")
     Page<Student> findByQuery(@Param("edition") Long edition,
                               @Param("email") String email,
                               @Param("firstName") String firstName, @Param("lastName") String lastName,
@@ -106,7 +107,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("bestSkill") String bestSkill,
                               @Param("osocExperience") OsocExperience osocExperience,
                               @Param("additionalStudentInfo") String additionalStudentInfo,
-//                              @Param("reason") String reason,
+                              @Param("reason") String reason,
                               Pageable pageable);
 
     @Override @NonNull
