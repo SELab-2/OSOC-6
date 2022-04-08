@@ -25,7 +25,8 @@ jobs:
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
           echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
           echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
-          cat application.properties
+          echo "baseuser.email =baseUser@mail.com" > initial-user.properties
+          echo "baseuser.password =abcVanJe123SpringOpEnNeer" >> initial-user.properties
       - name: Run test coverage
         run: |
           cd backend/
