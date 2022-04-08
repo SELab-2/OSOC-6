@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -56,7 +57,7 @@ public final class Assignment implements WeakToEdition {
      * The reason the student got assigned.
      */
     @Basic(optional = false)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String reason;
 

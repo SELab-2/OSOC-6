@@ -70,29 +70,33 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
     @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + USER_EDITION_ACCESS)
-    @Query("select s from Student s left join s.suggestions suggest left join s.assignments assign "
-            + "where s.edition.id = :edition and "
-            + "(:email is null or s.email = :email) and "
-            + "(:firstName is null or s.firstName = :firstName) and"
-            + "(:lastName is null or s.lastName = :lastName) and "
-            + "(:callName is null or s.callName LIKE :#{@authorizationUtil.stringBetween(#callName)}) and "
-            + "(:mostFluentLanguage is null or s.mostFluentLanguage = :mostFluentLanguage) and "
-            + "(:englishProficiency is null or s.englishProficiency = :englishProficiency) and "
-            + "(:phoneNumber is null or s.phoneNumber = :phoneNumber) and "
-            + "(:curriculumVitaeURI is null or s.curriculumVitaeURI = :curriculumVitaeURI) and "
-            + "(:portfolioURI is null or s.portfolioURI = :portfolioURI) and "
-            + "(:motivationURI is null or s.motivationURI = :motivationURI) and "
-            + "(:writtenMotivation is null or s.writtenMotivation = :writtenMotivation) and "
-            + "(:educationLevel is null or s.educationLevel = :educationLevel) and "
-            + "(:currentDiploma is null or s.currentDiploma = :currentDiploma) and "
-            + "(:institutionName is null or s.institutionName = :institutionName) and "
-            + "(:bestSkill is null or s.bestSkill = :bestSkill) and "
-            + "(:osocExperience is null or s.osocExperience = :osocExperience) and "
-            + "(:additionalStudentInfo is null or s.additionalStudentInfo = :additionalStudentInfo)")
-            //+ "(:reason is null or coalesce(suggest.reason, 'apple') LIKE :#{@authorizationUtil.stringBetween(#reason)})")
-            //+ "or assign.reason = :reason)")
+    @Query(value =
+        "SELECT stud.* FROM (student stud INNER JOIN "
+        + "(SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
+            + "inner_ed.id = :#{@authorizationUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id)) "
+        + "WHERE (:email is null or stud.email = :#{@authorizationUtil.safeString(#email)}) and "
+        + "(:firstName is null or stud.first_name = :#{@authorizationUtil.safeString(#firstName)}) and "
+        + "(:lastName is null or stud.last_name = :#{@authorizationUtil.safeString(#lastName)}) and "
+        + "(:callName is null or stud.call_name ILIKE :#{@authorizationUtil.stringBetween(#callName)}) and "
+        + "(:mostFluentLanguage is null or stud.most_fluent_language = :#{@authorizationUtil.safeString(#mostFluentLanguage)}) and "
+        + "(:englishProficiency is null or stud.english_proficiency = :#{@authorizationUtil.safeEnum(#englishProficiency)}) and "
+        + "(:phoneNumber is null or stud.phone_number = :#{@authorizationUtil.safeString(#phoneNumber)}) and "
+        + "(:curriculumVitaeURI is null or stud.curriculum_vitaeuri = :#{@authorizationUtil.safeString(#curriculumVitaeURI)}) and "
+        + "(:portfolioURI is null or stud.portfoliouri = :#{@authorizationUtil.safeString(#portfolioURI)}) and "
+        + "(:motivationURI is null or stud.motivationuri = :#{@authorizationUtil.safeString(#motivationURI)}) and "
+        + "(:writtenMotivation is null or stud.written_motivation = :#{@authorizationUtil.safeString(#writtenMotivation)}) and"
+        + "(:educationLevel is null or stud.education_level = :#{@authorizationUtil.safeString(#educationLevel)}) and "
+        + "(:currentDiploma is null or stud.current_diploma = :#{@authorizationUtil.safeString(#currentDiploma)}) and "
+        + "(:institutionName is null or stud.institution_name = :#{@authorizationUtil.safeString(#institutionName)}) and "
+        + "(:bestSkill is null or stud.best_skill = :#{@authorizationUtil.safeString(#bestSkill)}) and "
+        + "(:osocExperience is null or stud.osoc_experience = :#{@authorizationUtil.safeEnum(#osocExperience)}) and "
+        + "(:additionalStudentInfo is null or stud.additional_student_info = :#{@authorizationUtil.safeString(#additionalStudentInfo)})"
+        , nativeQuery = true)
+        //+ "(:reason is null or coalesce(suggest.reason, 'apple') LIKE :#{@authorizationUtil.stringBetween(#reason)})")
+        //+ "or assign.reason = :reason)")
     Page<Student> findByQuery(@Param("edition") Long edition,
-                              @Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName,
+                              @Param("email") String email,
+                              @Param("firstName") String firstName, @Param("lastName") String lastName,
                               @Param("callName") String callName, @Param("mostFluentLanguage") String mostFluentLanguage,
                               @Param("englishProficiency") EnglishProficiency englishProficiency,
                               @Param("phoneNumber") String phoneNumber, @Param("curriculumVitaeURI") String curriculumVitaeURI,

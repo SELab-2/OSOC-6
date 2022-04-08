@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
@@ -11,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
@@ -23,7 +23,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
@@ -129,7 +128,7 @@ public final class Student implements WeakToEdition {
      * A URI pointing to the CV of a student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String curriculumVitaeURI;
 
@@ -137,7 +136,7 @@ public final class Student implements WeakToEdition {
      * A URI pointing to the portfolio of the student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String portfolioURI;
 
@@ -145,7 +144,7 @@ public final class Student implements WeakToEdition {
      * A URI pointing to the motivation of the student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String motivationURI;
 
@@ -153,7 +152,7 @@ public final class Student implements WeakToEdition {
      * A written motivation of the student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String writtenMotivation;
 
@@ -220,7 +219,7 @@ public final class Student implements WeakToEdition {
      * Additional info that coaches or admins write about students.
      */
     @Basic(optional = false)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String additionalStudentInfo;
 

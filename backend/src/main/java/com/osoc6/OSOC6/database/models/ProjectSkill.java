@@ -43,7 +43,7 @@ public final class ProjectSkill implements WeakToEdition {
      * The description of the skill.
      */
     @Basic(optional = true)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String additionalInfo;
 

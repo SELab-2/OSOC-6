@@ -60,7 +60,7 @@ public final class Project implements WeakToEdition {
      * A URI pointing to the version management of the project.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private URI versionManagement;
 
@@ -84,7 +84,7 @@ public final class Project implements WeakToEdition {
      * A URI pointing to the website of the partner.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private URI partnerWebsite;
 

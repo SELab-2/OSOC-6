@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,7 +40,7 @@ public final class CommunicationTemplate {
      * The template for the CommunicationTemplate.
      */
     @Basic(optional = false)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String template;
 

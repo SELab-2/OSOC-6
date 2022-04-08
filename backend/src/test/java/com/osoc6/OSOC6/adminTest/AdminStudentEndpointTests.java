@@ -230,10 +230,19 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void queried_all_works_with_results() throws Exception {
-        //base_get_all_entities_succeeds().andDo(print());
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition"},
                 new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(studentKasper.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_gibberish_param_works_with_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "cbilcblcjbh"},
+                new String[]{getBaseUserEdition().getId().toString(), "cbjbhcjb"})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(studentKasper.getCallName()));
     }

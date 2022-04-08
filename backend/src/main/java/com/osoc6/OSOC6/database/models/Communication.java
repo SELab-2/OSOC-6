@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -56,7 +55,7 @@ public final class Communication implements WeakToEdition {
      * The content of the communication.
      */
     @Basic(optional = true)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String content;
 

@@ -33,6 +33,10 @@ public final class AuthorizationUtil {
         return result;
     }
 
+    public static Object identity(Object obj) {
+        return obj;
+    }
+
     /**
      * Need for null type safety
      * @param orig
@@ -40,8 +44,20 @@ public final class AuthorizationUtil {
      */
     public static String stringBetween(final String orig) {
         if (orig == null) {
-            return null;
+            return "";
         }
         return "%" + orig + "%";
+    }
+
+    public static String safeString(final String orig) {
+        return orig == null ? "" : orig;
+    }
+
+    public static Long safeLong(final Long orig) {
+        return orig == null ? 0L : orig;
+    }
+
+    public static <T extends Enum<T>> int safeEnum(final Enum<T> orig) {
+        return orig == null ? -1 : orig.ordinal();
     }
 }
