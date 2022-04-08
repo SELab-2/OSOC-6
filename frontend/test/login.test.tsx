@@ -19,7 +19,7 @@ afterEach(() => {
 });
 
 describe('Login page', () => {
-    it('should render', async () => {
+    it('should be able to render', async () => {
         render(<Login />);
 
         // Check whether the login form has been rendered in the login page

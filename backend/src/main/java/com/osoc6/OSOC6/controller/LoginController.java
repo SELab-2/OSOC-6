@@ -29,7 +29,7 @@ public class LoginController {
      */
     @PostMapping("/failure")
     public void handleFailure(final HttpServletResponse response) {
-        response.setHeader("Location", "/login_error");
+        response.setHeader("Location", "/loginError");
         response.setStatus(HttpServletResponse.SC_FOUND);
     }
 }

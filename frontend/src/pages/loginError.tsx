@@ -3,11 +3,11 @@ import Head from 'next/head';
 import LoginForm from '../components/loginForm';
 import { Card } from 'react-bootstrap';
 import error_messages from '../properties/errorMessages.json';
-import { useTranslation } from 'react-i18next';
 import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
+import useTranslation from "next-translate/useTranslation";
 
 const LoginError: NextPage = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('translations');
     return (
         <div>
             <Head>
