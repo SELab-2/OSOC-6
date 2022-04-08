@@ -232,7 +232,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * Perform a get with queries.
      * @param path the path the resource is served on, with '/' as prefix
      * @param paramNames the names of the parameters
-     * @param values the value of the parameters (same order as paramNames
+     * @param values the value of the parameters (same order as paramNames)
      * @return a result action that can be used for more checks
      * @throws Exception if the request or a check fails
      */
@@ -364,6 +364,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
+     * Creates a resultMatcher that checks if a string is contained a maximum count.
      *
      * @param str the string that should be contained a limited amount of times
      * @param maxCount the maximum amount of times the string can be contained. A count of maxCount is allowed

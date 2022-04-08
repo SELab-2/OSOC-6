@@ -35,7 +35,7 @@ public final class SpelUtil {
     }
 
     /**
-     *
+     * Get a formatted string so LIKE will check if the parameter is contained.
      * @param orig ths String parameter for a query that should be formatted
      * @return the formatted string so LIKE will check if the parameter is contained
      */
@@ -47,7 +47,7 @@ public final class SpelUtil {
     }
 
     /**
-     *
+     * Get a non-null representation of a string. Defaults to empty string.
      * @param orig String that should have NULL safety
      * @return a non null String
      */
@@ -57,7 +57,7 @@ public final class SpelUtil {
     }
 
     /**
-     *
+     * Get a non-null representation of a Long. Defaults to 0L.
      * @param orig Long that should have NULL safety
      * @return a non null Long
      */
@@ -67,12 +67,11 @@ public final class SpelUtil {
     }
 
     /**
-     *
+     * Get the Null safe ordinal representation of provided Enum, defaults to -1.
      * @param orig Enum that should have NULL safety
      * @param <T> type of enum (is ignored)
      * @return null safe ordinal representation of Enum
      */
-    @NonNull
     public static <T extends Enum<T>> int safeEnum(final Enum<T> orig) {
         return orig == null ? -1 : orig.ordinal();
     }
