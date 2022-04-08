@@ -3,12 +3,12 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -153,17 +153,8 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
 
     @Override
     public final String transform_to_json(final Suggestion entity) {
-        String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class,
-                entity.getCoach().getId().toString()).getHref();
-        String studentUrl = entityLinks.linkToItemResource(Student.class,
-                entity.getStudent().getId().toString()).getHref();
-
-        // The regex replaces the whole UserEntity and student object (as json)
-        // with urls that points to the right entities.
-        json = json.replaceAll("\"coach\":.*}$",
-                "\"coach\":\"" + userUrl + "\",\"student\":\"" + studentUrl + "\"}");
-        return json;
+        SuggestionDTO helper = new SuggestionDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     /**

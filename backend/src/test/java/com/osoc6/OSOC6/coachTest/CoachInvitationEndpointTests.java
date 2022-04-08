@@ -1,13 +1,16 @@
 package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.dto.InvitationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
@@ -37,6 +40,12 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
      * The actual path invitations are served on, with '/' as prefix.
      */
     private static final String INVITATION_PATH = "/" + DumbledorePathWizard.INVITATIONS_PATH;
+
+    /**
+     * Entity links, needed to get to link of an entity.
+     */
+    @Autowired
+    private EntityLinks entityLinks;
 
     public CoachInvitationEndpointTests() {
         super(INVITATION_PATH, "");
@@ -151,5 +160,11 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
+    }
+
+    @Override
+    public final String transform_to_json(final Invitation entity) {
+        InvitationDTO helper = new InvitationDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 }
