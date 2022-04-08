@@ -10,7 +10,7 @@ const BeginPage: NextPage = () => {
                 <title>{t('Home page title')}</title>
             </Head>
             <main className="m-4">
-                <h1>Empty page</h1>
+                <h1>{t('Empty page')}</h1>
             </main>
         </div>
     );
