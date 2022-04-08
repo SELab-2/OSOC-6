@@ -55,4 +55,9 @@ public final class RadagastNumberWizard {
      * Amount of days before an invitation is invalid.
      */
     public static final int INVITATION_EXPIRATION_DAYS = 7;
+
+    /**
+     * Amount of milliseconds in a second.
+     */
+    public static final int MILLISECOND_IN_SECOND = 1000;
 }

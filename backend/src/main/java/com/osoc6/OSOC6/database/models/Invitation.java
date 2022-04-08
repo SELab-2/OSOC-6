@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public final class Invitation implements WeakToEdition {
      * The id of the invitation.
      */
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -99,14 +101,16 @@ public final class Invitation implements WeakToEdition {
     /**
      * @return Whether the invitation is still valid. An invitation is valid for a limited time.
      */
+    @JsonIgnore
     public boolean isValid() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(creationTimestamp);
         cal.add(Calendar.DAY_OF_WEEK, RadagastNumberWizard.INVITATION_EXPIRATION_DAYS);
-        return !isUsed() && cal.getTime().toInstant().isBefore(Instant.now());
+        return !isUsed() && Instant.now().getEpochSecond()
+                <= cal.getTimeInMillis() / RadagastNumberWizard.MILLISECOND_IN_SECOND;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return edition;
     }

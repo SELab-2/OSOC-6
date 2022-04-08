@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.WeakToEdition;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
@@ -30,6 +31,7 @@ public final class StudentSkill implements WeakToEdition {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -59,7 +61,7 @@ public final class StudentSkill implements WeakToEdition {
         student = newStudent;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return student.getControllingEdition();
     }

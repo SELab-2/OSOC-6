@@ -3,12 +3,12 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Class testing the integration of {@link Suggestion}.
@@ -151,17 +153,8 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
 
     @Override
     public final String transform_to_json(final Suggestion entity) {
-        String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class,
-                entity.getCoach().getId().toString()).getHref();
-        String studentUrl = entityLinks.linkToItemResource(Student.class,
-                entity.getStudent().getId().toString()).getHref();
-
-        // The regex replaces the whole UserEntity and student object (as json)
-        // with urls that points to the right entities.
-        json = json.replaceAll("\"coach\":.*}$",
-                "\"coach\":\"" + userUrl + "\",\"student\":\"" + studentUrl + "\"}");
-        return json;
+        SuggestionDTO helper = new SuggestionDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     /**
@@ -174,4 +167,40 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     public void patch_changes_value() throws Exception {
         super.patch_changes_value();
     }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_matching_query_over_suggest_reason_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"reason", "edition"},
+                new String[]{suggestion1.getReason(),
+                        getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(student.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_non_matching_query_over_suggest_reason_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"reason", "edition"},
+                new String[]{"apple" + suggestion1.getReason() + "banana",
+                        getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(student.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_is_contain_only_once() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_contains_times_or_less(student.getCallName(), 1));
+    }
+
 }

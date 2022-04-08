@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -219,12 +220,29 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     /**
      * Perform a GET request.
      *
-     * @param path     the path the entity is served on, with '/' as prefix
+     * @param path the path the resource is served on, with '/' as prefix
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
     public ResultActions perform_get(final String path) throws Exception {
         return mockMvc.perform(get(path));
+    }
+
+    /**
+     * Perform a get with queries.
+     * @param path the path the resource is served on, with '/' as prefix
+     * @param paramNames the names of the parameters
+     * @param values the value of the parameters (same order as paramNames)
+     * @return a result action that can be used for more checks
+     * @throws Exception if the request or a check fails
+     */
+    public ResultActions perform_queried_get(final String path, final String[] paramNames,
+                                             final String[] values)throws Exception {
+        MockHttpServletRequestBuilder builder = get(path);
+        for (int i = 0; i < paramNames.length; i++) {
+            builder = builder.queryParam(paramNames[i], values[i]);
+        }
+        return mockMvc.perform(builder);
     }
 
     /**
@@ -269,6 +287,20 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
+     * Perform a PATCH request with select content.
+     *
+     * @param path The path the entity is served on, with '/' as prefix
+     * @param patchBody The body of the patch request
+     * @return a result action that can be used for more checks
+     * @throws Exception throws exception if the request or a check fails
+     */
+    public ResultActions perform_patch(final String path, final String patchBody) throws Exception {
+        return mockMvc.perform(patch(path).content(patchBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /**
      * Perform a PATCH request with select fields.
      *
      * @param path The path the entity is served on, with '/' as prefix
@@ -277,9 +309,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @throws Exception throws exception if the request or a check fails
      */
     public ResultActions perform_patch(final String path, final Map<String, String> map) throws Exception {
-        return mockMvc.perform(patch(path).content(Util.asJsonString(map))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+        return perform_patch(path, Util.asJsonString(map));
     }
 
     /**
@@ -323,6 +353,41 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
+     * Convert a {@link String} to a {@link ResultMatcher} that checks whether
+     * the string is not contained in the result.
+     *
+     * @param str the string we want to look for
+     * @return a result matcher that can be used to perform checks
+     */
+    public ResultMatcher string_not_to_contains_string(final String str) {
+        return content().string(not(containsString(str)));
+    }
+
+    /**
+     * Creates a resultMatcher that checks if a string is contained a maximum count.
+     *
+     * @param str the string that should be contained a limited amount of times
+     * @param maxCount the maximum amount of times the string can be contained. A count of maxCount is allowed
+     * @return a result matcher that can be used to perform a mex contains test
+     */
+    public ResultMatcher string_contains_times_or_less(final String str, final int maxCount) {
+        return result -> {
+            int containsCount = 0;
+            String content = result.getResponse().getContentAsString();
+            int firstIndex = content.indexOf(str);
+            while (firstIndex != -1) {
+                content = content.substring(firstIndex + str.length());
+                firstIndex = content.indexOf(str);
+                containsCount++;
+            }
+            if (containsCount > maxCount) {
+                throw new Exception("Contains string " + str + " more than allowed "
+                        + maxCount + " times.");
+            }
+        };
+    }
+
+    /**
      * Get a {@link ResultMatcher} that checks whether the result is empty.
      *
      * @return a result matcher that can be used to perform checks
@@ -347,7 +412,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public void save_repository_entity(final T entity) {
         performAsAdmin(() -> get_repository().save(entity));
-
     }
 
     /**
