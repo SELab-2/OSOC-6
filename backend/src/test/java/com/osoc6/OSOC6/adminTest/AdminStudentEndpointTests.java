@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
-import com.osoc6.OSOC6.StudentJsonHelper;
+import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
@@ -149,7 +149,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
      */
     @Override
     public String transform_to_json(final Student entity) {
-        StudentJsonHelper helper = new StudentJsonHelper(entity, entityLinks);
+        StudentDTO helper = new StudentDTO(entity, entityLinks);
         return Util.asJsonString(helper);
     }
 

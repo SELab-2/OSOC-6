@@ -2,9 +2,8 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.dto.ProjectDTO;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -108,17 +107,8 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
      */
     @Override
     public String transform_to_json(final Project entity) {
-        String json = Util.asJsonString(entity);
-
-        String editionToUrl = entityLinks.linkToItemResource(Edition.class,
-                entity.getEdition().getId().toString()).getHref();
-        String userToUrl = entityLinks.linkToItemResource(UserEntity.class,
-                entity.getCreator().getId().toString()).getHref();
-
-        json = json.replaceAll("creator\":.*},", "creator\":\"" + userToUrl + "\",")
-                .replaceAll("edition\":.*},", "edition\":\"" + editionToUrl + "\",");
-
-        return json;
+        ProjectDTO helper = new ProjectDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     @Test

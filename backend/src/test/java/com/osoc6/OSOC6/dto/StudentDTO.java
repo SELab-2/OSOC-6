@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6;
+package com.osoc6.OSOC6.dto;
 
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
@@ -21,7 +21,7 @@ import java.util.List;
  * Using this there is no need to write complex regexes to represent relationships.
  */
 @Data // Provides a serializer we need to convert to json.
-public final class StudentJsonHelper {
+public final class StudentDTO {
     /**
      * The id of the student.
      */
@@ -173,7 +173,7 @@ public final class StudentJsonHelper {
      */
     private List<String> communications = new ArrayList<>();
 
-    public StudentJsonHelper(final Student student, final EntityLinks entityLinks) {
+    public StudentDTO(final Student student, final EntityLinks entityLinks) {
         id = student.getId();
         email = student.getEmail();
         firstName = student.getFirstName();
