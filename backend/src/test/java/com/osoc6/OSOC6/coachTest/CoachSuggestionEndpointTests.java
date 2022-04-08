@@ -4,12 +4,12 @@ import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
@@ -151,17 +151,8 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
     @Override
     public final String transform_to_json(final Suggestion entity) {
-        String json = Util.asJsonString(entity);
-        String userUrl = entityLinks.linkToItemResource(UserEntity.class,
-                entity.getCoach().getId().toString()).getHref();
-        String studentUrl = entityLinks.linkToItemResource(Student.class,
-                entity.getStudent().getId().toString()).getHref();
-
-        // The regex replaces the whole UserEntity and student object (as json)
-        // with urls that points to the right entities.
-        json = json.replaceAll("\"coach\":.*}$",
-        "\"coach\":\"" + userUrl + "\",\"student\":\"" + studentUrl + "\"}");
-        return json;
+        SuggestionDTO helper = new SuggestionDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     @Test
@@ -175,9 +166,11 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     @Test
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void post_new_to_other_edition_fails() throws Exception {
+        // This is either forbidden because the user cannot post a suggestion to an edition that is not his.
+        // or a bad request because the user is unable to see the student in the first place.
         Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality",
                 getOutsiderCoach(), student);
-        perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
+        perform_post(getEntityPath(), suggestion).andExpect(status().is4xxClientError());
     }
 
     @Test

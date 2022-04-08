@@ -76,4 +76,9 @@ public final class DumbledorePathWizard {
      * Path that {@link com.osoc6.OSOC6.database.models.student.Student} is served on.
      */
     public static final String STUDENT_PATH = "students";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.student.Student} query is served on.
+     */
+    public static final String STUDENT_QUERY_PATH = "full-query";
 }

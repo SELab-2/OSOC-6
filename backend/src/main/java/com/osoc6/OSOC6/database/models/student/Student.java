@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
@@ -22,13 +23,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +83,7 @@ public final class Student implements WeakToEdition {
      * The PronounsType of the student.
      */
     @Basic(optional = false)
-    @Getter
+    @Getter @Setter
     private PronounsType pronounsType;
 
     /**
@@ -99,7 +98,7 @@ public final class Student implements WeakToEdition {
      * The pronouns of the student.
      */
     @ElementCollection
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<String> pronouns = new ArrayList<>();
 
     /**
@@ -129,31 +128,31 @@ public final class Student implements WeakToEdition {
      * A URI pointing to the CV of a student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
-    private URI curriculumVitaeURI;
+    private String curriculumVitaeURI;
 
     /**
      * A URI pointing to the portfolio of the student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
-    private URI portfolioURI;
+    private String portfolioURI;
 
     /**
      * A URI pointing to the motivation of the student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
-    private URI motivationURI;
+    private String motivationURI;
 
     /**
      * A written motivation of the student.
      */
     @Basic
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String writtenMotivation;
 
@@ -220,7 +219,7 @@ public final class Student implements WeakToEdition {
      * Additional info that coaches or admins write about students.
      */
     @Basic(optional = false)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String additionalStudentInfo;
 
@@ -237,7 +236,7 @@ public final class Student implements WeakToEdition {
      */
     @ElementCollection
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<String> studies = new ArrayList<>();
 
     /**
@@ -245,21 +244,21 @@ public final class Student implements WeakToEdition {
      * In the form this is called the 'role' a student applies for.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student")
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<StudentSkill> skills = new ArrayList<>();
 
     /**
      * The suggestions made about this student.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student")
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<Suggestion> suggestions = new ArrayList<>();
 
     /**
      * The assignments made about this student.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<Assignment> assignments = new ArrayList<>();
 
     /**
@@ -267,30 +266,34 @@ public final class Student implements WeakToEdition {
      */
     @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     @OrderColumn(name = "timestamp")
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<Communication> communications = new ArrayList<>();
 
     /**
      *
-     * @param newPronounsType that should be set as the pronouns type of this student
+     * @return The possessive pronoun of the student.
      */
-    public void setPronounsType(final PronounsType newPronounsType) {
-        pronounsType = newPronounsType;
-        if (newPronounsType != PronounsType.OTHER) {
-            pronouns.clear();
-        }
+    public String getPossessivePronoun() {
+        return pronounsType.getPossessive(this);
     }
 
     /**
      *
-     * @param newPronouns that should be set as the pronouns of this student
+     * @return The subjective pronoun of the student.
      */
-    public void setPronouns(final List<String> newPronouns) {
-        pronounsType = PronounsType.OTHER;
-        pronouns = newPronouns;
+    public String getSubjectivePronoun() {
+        return pronounsType.getSubjective(this);
     }
 
-    @Override
+    /**
+     *
+     * @return The objective pronoun of the student
+     */
+    public String getObjectivePronoun() {
+        return pronounsType.getObjective(this);
+    }
+
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return edition;
     }

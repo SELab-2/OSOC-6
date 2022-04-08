@@ -2,9 +2,8 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.dto.ProjectDTO;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -18,9 +17,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -111,17 +107,8 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
      */
     @Override
     public String transform_to_json(final Project entity) {
-        String json = Util.asJsonString(entity);
-
-        String editionToUrl = entityLinks.linkToItemResource(Edition.class,
-                entity.getEdition().getId().toString()).getHref();
-        String userToUrl = entityLinks.linkToItemResource(UserEntity.class,
-                entity.getCreator().getId().toString()).getHref();
-
-        json = json.replaceAll("creator\":.*},", "creator\":\"" + userToUrl + "\",")
-                .replaceAll("edition\":.*},", "edition\":\"" + editionToUrl + "\",");
-
-        return json;
+        ProjectDTO helper = new ProjectDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     @Test
@@ -135,7 +122,7 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_all_does_not_contain_projects_of_different_edition_as_user() throws Exception {
         base_get_all_entities_succeeds()
-                .andExpect(content().string(not(containsString(testProject.getName()))));
+                .andExpect(string_not_to_contains_string(testProject.getName()));
     }
 
     @Test

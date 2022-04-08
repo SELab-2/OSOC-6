@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 /**
@@ -43,7 +42,7 @@ public final class UserSkill {
      * The description of the skill.
      */
     @Basic(optional = true)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String additionalInfo;
 

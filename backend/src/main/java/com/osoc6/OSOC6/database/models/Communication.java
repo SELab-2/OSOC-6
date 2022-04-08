@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
@@ -14,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -33,6 +33,7 @@ public final class Communication implements WeakToEdition {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -55,7 +56,7 @@ public final class Communication implements WeakToEdition {
      * The content of the communication.
      */
     @Basic(optional = true)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String content;
 
@@ -100,7 +101,7 @@ public final class Communication implements WeakToEdition {
         student = newStudent;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return student.getControllingEdition();
     }

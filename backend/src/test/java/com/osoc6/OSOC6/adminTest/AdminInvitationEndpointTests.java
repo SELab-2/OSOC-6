@@ -1,11 +1,14 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.dto.InvitationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
@@ -35,6 +38,12 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
      * Sample used invitation that gets loaded before every test.
      */
     private final Invitation unUsedInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+
+    /**
+     * Entity links, needed to get to link of an entity.
+     */
+    @Autowired
+    private EntityLinks entityLinks;
 
     /**
      * The actual path invitations are served on, with '/' as prefix.
@@ -121,5 +130,11 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
             mockedStatic.when(Instant::now).thenReturn(inTheFuture);
             assert !unUsedInvitation.isValid();
         }
+    }
+
+    @Override
+    public final String transform_to_json(final Invitation entity) {
+        InvitationDTO helper = new InvitationDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 }

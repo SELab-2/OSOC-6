@@ -38,13 +38,12 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or "
-            + "@authorizationUtil.userEditions(authentication.principal).contains(returnObject.get.id)")
-    Optional<Edition> findById(Long aLong);
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or " + MerlinSpELWizard.USER_HAS_ACCESS_ON_OPTIONAL)
+    Optional<Edition> findById(@NonNull Long aLong);
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @Query("SELECT e from Edition e where " + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
             + "e.id in " + MerlinSpELWizard.Q_USER_EDITIONS)
-    Page<Edition> findAll(Pageable pageable);
+    Page<Edition> findAll(@NonNull Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 /**
@@ -28,6 +28,7 @@ public final class ProjectSkill implements WeakToEdition {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -42,7 +43,7 @@ public final class ProjectSkill implements WeakToEdition {
      * The description of the skill.
      */
     @Basic(optional = true)
-    @Lob
+    @Column(columnDefinition = "text")
     @Getter @Setter
     private String additionalInfo;
 
@@ -67,7 +68,7 @@ public final class ProjectSkill implements WeakToEdition {
         additionalInfo = newAdditionalInfo;
     }
 
-    @Override
+    @Override @JsonIgnore
     public Edition getControllingEdition() {
         return project.getControllingEdition();
     }
