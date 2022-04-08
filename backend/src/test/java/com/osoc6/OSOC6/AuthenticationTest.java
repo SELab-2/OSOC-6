@@ -161,6 +161,23 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
     }
 
     @Test
+    public void register_with_valid_invitation_token_with_existing_email_fails() throws Exception {
+        Map<String, String> registerMap = Map.of(
+                "email", getCoachUser().getEmail(),
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/registration")
+                        .queryParam("token", unusedInvitation.getToken())
+                        .content(Util.asJsonString(registerMap))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andExpect(string_to_contains_string(
+                        String.format(MeguminExceptionWizard.ACCOUNT_TAKEN_EXCEPTION, getCoachUser().getEmail())));
+    }
+
+    @Test
     public void register_with_nonexisting_invitation_token_fails() throws Exception {
         Map<String, String> registerMap = Map.of(
                 "email", "register@test.com",

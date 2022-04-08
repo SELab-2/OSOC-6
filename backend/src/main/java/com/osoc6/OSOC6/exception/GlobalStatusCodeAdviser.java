@@ -22,9 +22,6 @@ public class GlobalStatusCodeAdviser {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String handleNotFound(final ResourceNotFoundException ex) {
-        if (ex.getMessage().isEmpty()) {
-            return MeguminExceptionWizard.RESOURCE_NOT_FOUND_EXCEPTION;
-        }
-        return ex.getMessage();
+        return MeguminExceptionWizard.RESOURCE_NOT_FOUND_EXCEPTION;
     }
 }
