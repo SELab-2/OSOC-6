@@ -62,6 +62,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param bestSkill field in student that is looked for
      * @param osocExperience field in student that is looked for
      * @param additionalStudentInfo field in student that is looked for
+     * @param skill field in student that is looked for
      * @param reason field in student that is looked for
      * @param pageable field in student that is looked for
      * @return Page of matching students
@@ -74,6 +75,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
         + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
             + "inner_ed.id = :#{@spelUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
+        + "LEFT JOIN student_skills studskill on (stud.id = studskill.student_id) "
         + "LEFT JOIN suggestion sugg ON (sugg.student_id = stud.id) "
         + "LEFT JOIN assignment assign ON (assign.student_id = stud.id) "
         + "WHERE (:email is null or stud.email = :#{@spelUtil.safeString(#email)}) and "
@@ -93,6 +95,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         + "(:bestSkill is null or stud.best_skill = :#{@spelUtil.safeString(#bestSkill)}) and "
         + "(:osocExperience is null or stud.osoc_experience = :#{@spelUtil.safeEnum(#osocExperience)}) and "
         + "(:additionalStudentInfo is null or stud.additional_student_info = :#{@spelUtil.safeString(#additionalStudentInfo)}) and "
+        + "(:skill is null or studskill.skills LIKE :#{@spelUtil.formatContains(#skill)}) and "
         + "(:reason is null or sugg.reason LIKE :#{@spelUtil.formatContains(#reason)} or assign.reason LIKE :#{@spelUtil.formatContains(#reason)})",
             nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition,
@@ -107,6 +110,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("bestSkill") String bestSkill,
                               @Param("osocExperience") OsocExperience osocExperience,
                               @Param("additionalStudentInfo") String additionalStudentInfo,
+                              @Param("skill") String skill,
                               @Param("reason") String reason,
                               Pageable pageable);
 }

@@ -62,6 +62,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
             .durationCurrentDegree(5)
             .edition(getBaseUserEdition())
             .motivationURI("www.I-like-bananas.com")
+            .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
             .curriculumVitaeURI("www.my-life-in-ghent.com")
             .writtenMotivation("www.I-just-like-spring.com")
             .build();
@@ -262,5 +263,35 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string("\"pronounsType\" : \"NONE\""))
                 .andExpect(string_to_contains_string("\"pronouns\" : [ ]"));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_on_reason_gives_result_1() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "skill"},
+                new String[]{getBaseUserEdition().getId().toString(), "on a nice"})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_on_reason_gives_result_2() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "skill"},
+                new String[]{getBaseUserEdition().getId().toString(), "whilst thinking about"})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_on_reason_gives_no_result() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "skill"},
+                new String[]{getBaseUserEdition().getId().toString(), "standing on hands"})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
 }

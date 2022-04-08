@@ -9,7 +9,6 @@ import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
-import com.osoc6.OSOC6.database.models.student.StudentSkill;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 
@@ -201,10 +200,7 @@ public final class StudentDTO {
 
         edition = entityLinks.linkToItemResource(Edition.class, student.getEdition().getId().toString()).getHref();
 
-        skills = new ArrayList<>();
-        for (StudentSkill skill: student.getSkills()) {
-            skills.add(entityLinks.linkToItemResource(StudentSkill.class, skill.getId().toString()).getHref());
-        }
+        skills = student.getSkills();
 
         suggestions = new ArrayList<>();
         for (Suggestion suggestion: student.getSuggestions()) {
