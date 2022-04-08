@@ -15,13 +15,15 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class testing the integration of {@link Edition} as an admin.
+ * Class testing the integration of {@link com.osoc6.OSOC6.database.models.Edition} as an admin.
  */
 public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, Long, StudentRepository> {
 
@@ -121,7 +123,8 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.NONE)
                 .phoneNumber("+324982672")
-                .pronounsType(PronounsType.HE)
+                .pronounsType(PronounsType.OTHER)
+                .pronouns(new ArrayList<>(List.of(new String[]{"he", "her", "them"})))
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
@@ -249,5 +252,15 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 new String[]{getBaseUserEdition().getId().toString(), "cbjbhcjb"})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void student_with_weird_pronouns_is_handled() throws Exception {
+        Student entity = get_random_repository_entity();
+        perform_patch(getEntityPath() + "/" + get_id(entity), "{\"pronounsType\":\"NONE\",\"pronouns\":[ ]}")
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string("\"pronounsType\" : \"NONE\""))
+                .andExpect(string_to_contains_string("\"pronouns\" : [ ]"));
     }
 }

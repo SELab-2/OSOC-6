@@ -83,7 +83,7 @@ public final class Student implements WeakToEdition {
      * The PronounsType of the student.
      */
     @Basic(optional = false)
-    @Getter
+    @Getter @Setter
     private PronounsType pronounsType;
 
     /**
@@ -98,7 +98,7 @@ public final class Student implements WeakToEdition {
      * The pronouns of the student.
      */
     @ElementCollection
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<String> pronouns = new ArrayList<>();
 
     /**
@@ -236,7 +236,7 @@ public final class Student implements WeakToEdition {
      */
     @ElementCollection
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<String> studies = new ArrayList<>();
 
     /**
@@ -244,21 +244,21 @@ public final class Student implements WeakToEdition {
      * In the form this is called the 'role' a student applies for.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student")
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<StudentSkill> skills = new ArrayList<>();
 
     /**
      * The suggestions made about this student.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student")
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<Suggestion> suggestions = new ArrayList<>();
 
     /**
      * The assignments made about this student.
      */
     @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<Assignment> assignments = new ArrayList<>();
 
     /**
@@ -266,27 +266,31 @@ public final class Student implements WeakToEdition {
      */
     @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
     @OrderColumn(name = "timestamp")
-    @Getter @Builder.Default
+    @Getter @Setter @Builder.Default
     private List<Communication> communications = new ArrayList<>();
 
     /**
      *
-     * @param newPronounsType that should be set as the pronouns type of this student
+     * @return The possessive pronoun of the student.
      */
-    public void setPronounsType(final PronounsType newPronounsType) {
-        pronounsType = newPronounsType;
-        if (newPronounsType != PronounsType.OTHER) {
-            pronouns.clear();
-        }
+    public String getPossessivePronoun() {
+        return pronounsType.getPossessive(this);
     }
 
     /**
      *
-     * @param newPronouns that should be set as the pronouns of this student
+     * @return The subjective pronoun of the student.
      */
-    public void setPronouns(final List<String> newPronouns) {
-        pronounsType = PronounsType.OTHER;
-        pronouns = newPronouns;
+    public String getSubjectivePronoun() {
+        return pronounsType.getSubjective(this);
+    }
+
+    /**
+     *
+     * @return The objective pronoun of the student
+     */
+    public String getObjectivePronoun() {
+        return pronounsType.getObjective(this);
     }
 
     @Override @JsonIgnore

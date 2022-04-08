@@ -287,6 +287,20 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
+     * Perform a PATCH request with select content.
+     *
+     * @param path The path the entity is served on, with '/' as prefix
+     * @param patchBody The body of the patch request
+     * @return a result action that can be used for more checks
+     * @throws Exception throws exception if the request or a check fails
+     */
+    public ResultActions perform_patch(final String path, final String patchBody) throws Exception {
+        return mockMvc.perform(patch(path).content(patchBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    /**
      * Perform a PATCH request with select fields.
      *
      * @param path The path the entity is served on, with '/' as prefix
@@ -295,9 +309,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * @throws Exception throws exception if the request or a check fails
      */
     public ResultActions perform_patch(final String path, final Map<String, String> map) throws Exception {
-        return mockMvc.perform(patch(path).content(Util.asJsonString(map))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+        return perform_patch(path, Util.asJsonString(map));
     }
 
     /**
