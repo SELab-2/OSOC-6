@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.exception;
 
+import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,7 +23,7 @@ public class GlobalStatusCodeAdviser {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String handleNotFound(final ResourceNotFoundException ex) {
         if (ex.getMessage().isEmpty()) {
-            return "Resource with provided identifiers was not found.";
+            return MeguminExceptionWizard.RESOURCE_NOT_FOUND_EXCEPTION;
         }
         return ex.getMessage();
     }

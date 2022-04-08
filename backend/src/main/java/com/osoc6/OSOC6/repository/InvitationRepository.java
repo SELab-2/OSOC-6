@@ -24,5 +24,6 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
      * @param token the token of the invitation
      * @return found invitation
      */
+    @PreAuthorize("permitAll()")
     Optional<Invitation> findByToken(@Param("token") String token);
 }

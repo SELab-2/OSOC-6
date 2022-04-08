@@ -5,11 +5,13 @@ import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -90,13 +92,15 @@ public final class UserEntity implements UserDetails {
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
+    @JsonIgnore
+    @RestResource(exported = false)
     private List<Invitation> sendInvitations = new ArrayList<>();
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
      */
     @JsonIgnore
-    @OneToMany(mappedBy = "subject", orphanRemoval = false, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "subject", orphanRemoval = false, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @Getter
     private List<Invitation> receivedInvitations = new ArrayList<>();
 

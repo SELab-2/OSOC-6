@@ -5,6 +5,7 @@ import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
+import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,12 +26,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserEntityService implements UserDetailsService {
-
-    /**
-     * Error message for login with unregistered email.
-     */
-    private final String userNotFoundMsg =
-            "user with email %s not found";
 
     /**
      * The user repository, link to the database.
@@ -64,7 +59,7 @@ public class UserEntityService implements UserDetailsService {
         UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
-                                String.format(userNotFoundMsg, email)));
+                                String.format(MeguminExceptionWizard.USERNAME_NOT_FOUND_EXCEPTION, email)));
 
         //REMOVE remove this manual security manipulation!!!!!
         SecurityContextHolder.clearContext();
@@ -77,7 +72,7 @@ public class UserEntityService implements UserDetailsService {
      * @param userEntity the user that needs to be added to the database.
      * @param invitation the invitation that was used to register
      */
-    public void registerUser(final UserEntity userEntity, final Invitation invitation) {
+    public void registerUserWithInvitation(final UserEntity userEntity, final Invitation invitation) {
         //REMOVE remove this manual security manipulation!!!!!
         SecurityContext securityContext = new SecurityContextImpl();
         securityContext.setAuthentication(
@@ -94,8 +89,8 @@ public class UserEntityService implements UserDetailsService {
         userEntity.setPassword(encodedPassword);
 
         userRepository.save(userEntity);
-
         invitation.setSubject(userEntity);
+        invitationRepository.save(invitation);
 
         //REMOVE remove this manual security manipulation!!!!!
         SecurityContextHolder.clearContext();

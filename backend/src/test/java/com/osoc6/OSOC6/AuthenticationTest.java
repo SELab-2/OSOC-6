@@ -1,20 +1,30 @@
 package com.osoc6.OSOC6;
 
 import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
+import com.osoc6.OSOC6.repository.UserRepository;
+import com.osoc6.OSOC6.service.RegistrationService;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
+import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.FormLoginRequestBuilder;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
+import static org.mockito.Mockito.mockStatic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -31,9 +41,26 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
     private InvitationRepository invitationRepository;
 
     /**
-     * Sample invitation that gets loaded before every test.
+     * The repository which saves, searches, ... in the database
      */
-    private final Invitation invitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * Sample user that gets registered before every test.
+     */
+    private final RegistrationDTO loginTestUser =
+            new RegistrationDTO("Login test user", "loginuser@test.com", "123456");
+
+    /**
+     * Sample invitation for loginTestUser that gets loaded before every test.
+     */
+    private final Invitation loginTestInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+
+    /**
+     * Sample unused invitation that gets loaded before every test.
+     */
+    private final Invitation unusedInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
 
     /**
      * The actual path invitations are served on, with '/' as prefix.
@@ -55,11 +82,21 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
     }
 
     /**
+     * The service used to register users.
+     */
+    @Autowired
+    private RegistrationService registrationService;
+
+    /**
      * Load test entities in the database.
      */
     @Override
     public void setUpRepository() {
         setupBasicData();
+
+        invitationRepository.save(unusedInvitation);
+
+        registrationService.register(loginTestUser, loginTestInvitation);
     }
 
     /**
@@ -68,6 +105,9 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
     @Override
     public void removeSetUpRepository() {
         removeBasicData();
+
+        invitationRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Override
@@ -88,38 +128,93 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
 
     @Test
     public void login_with_valid_user_works() throws Exception {
-        Map<String, String> loginMap = Map.of(
-                "email", getCoachUser().getEmail(),
-                "password", getCoachUser().getPassword());
-        getMockMvc().perform(post("/login")
-                    .content(loginMap.toString())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON));
+        FormLoginRequestBuilder login = formLogin()
+                .user(loginTestUser.getEmail())
+                .password(loginTestUser.getPassword());
+
+        getMockMvc().perform(login)
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test
     public void login_with_invalid_user() throws Exception {
         FormLoginRequestBuilder login = formLogin().user("invalid").password("invalid");
-        getMockMvc().perform(login).andExpect(unauthenticated());
+        getMockMvc().perform(login)
+                .andExpect(unauthenticated());
     }
 
     @Test
-    public void register_with_valid_invitation_token_works() {
-
+    public void register_with_valid_invitation_token_works() throws Exception {
+        Map<String, String> registerMap = Map.of(
+                "email", "register@test.com",
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/registration")
+                .queryParam("token", unusedInvitation.getToken())
+                .content(Util.asJsonString(registerMap))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void register_with_nonexisting_invitation_token_fails() {
-
+    public void register_with_nonexisting_invitation_token_fails() throws Exception {
+        Map<String, String> registerMap = Map.of(
+                "email", "register@test.com",
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/registration")
+                        .queryParam("token", "notavalidtoken")
+                        .content(Util.asJsonString(registerMap))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andExpect(string_to_contains_string(MeguminExceptionWizard.INVALID_INVITATION_TOKEN_EXCEPTION));
     }
 
     @Test
-    public void register_with_used_invitation_token_fails() {
-
+    public void register_with_used_invitation_token_fails() throws Exception {
+        Map<String, String> registerMap = Map.of(
+                "email", "register@test.com",
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/registration")
+                        .queryParam("token", getInvitationForCoach().getToken())
+                        .content(Util.asJsonString(registerMap))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andExpect(string_to_contains_string(MeguminExceptionWizard.INVALID_INVITATION_TOKEN_EXCEPTION));
     }
 
+    /**
+     * In this test we need to mock Instant.now() to be able to test
+     * whether an expired invitation is no longer valid.
+     */
     @Test
-    public void register_with_expired_invitation_token_fails() {
+    public void register_with_expired_invitation_token_fails() throws Exception {
+        Instant inTheFuture = Instant.now().plus(8, ChronoUnit.DAYS);
 
+        try (MockedStatic<Instant> mockedStatic = mockStatic(Instant.class)) {
+            mockedStatic.when(Instant::now).thenReturn(inTheFuture);
+
+            Map<String, String> registerMap = Map.of(
+                    "email", "register@test.com",
+                    "callName", "register man",
+                    "password", "123456"
+            );
+            getMockMvc().perform(post("/registration")
+                            .queryParam("token", unusedInvitation.getToken())
+                            .content(Util.asJsonString(registerMap))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isForbidden())
+                    .andExpect(string_to_contains_string(MeguminExceptionWizard.INVALID_INVITATION_TOKEN_EXCEPTION));
+        }
     }
 }

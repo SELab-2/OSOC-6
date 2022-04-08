@@ -5,10 +5,10 @@ import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.exception.InvalidInvitationTokenException;
 import com.osoc6.OSOC6.service.RegistrationService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -32,8 +32,8 @@ public class RegistrationController {
      * @param request contains the userinfo needed to register a user.
      * @throws InvalidInvitationTokenException when the invitation token used does not exist or is invalid
      */
-    @PostMapping("/{token}")
-    public void register(@PathVariable final String token, @Valid @RequestBody final RegistrationDTO request) {
+    @PostMapping
+    public void register(@RequestParam final String token, @Valid @RequestBody final RegistrationDTO request) {
         Optional<Invitation> optionalInvitation = registrationService.getInvitationFromToken(token);
         if (optionalInvitation.isPresent() && optionalInvitation.get().isValid()) {
             registrationService.register(request, optionalInvitation.get());

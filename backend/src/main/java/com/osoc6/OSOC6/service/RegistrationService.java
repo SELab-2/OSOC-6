@@ -48,7 +48,7 @@ public class RegistrationService {
                 UserRole.COACH,
                 request.getPassword()
         );
-        userEntityService.registerUser(registeredUser, invitation);
+        userEntityService.registerUserWithInvitation(registeredUser, invitation);
     }
 
 }

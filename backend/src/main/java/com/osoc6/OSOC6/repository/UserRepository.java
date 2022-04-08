@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
@@ -27,7 +28,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Optional<UserEntity> findByEmail(String email);
 
-
     /**
      * Try to find a {@link UserEntity} by their id.
      * @apiNote
@@ -37,6 +37,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Optional<UserEntity> findById(@NonNull Long id);
+
+    /**
+     * Check if there exists an enabled user with the specified role.
+     * @param userRole the role of the users to look for
+     * @param enabled wether the user is enabled or not
+     * @return a list of all users with the specified role
+     */
+    boolean existsAllByUserRoleEqualsAndEnabled(UserRole userRole, Boolean enabled);
 
     /**
      * Update a {@link UserEntity}.
