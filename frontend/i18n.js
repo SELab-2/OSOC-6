@@ -2,6 +2,6 @@ module.exports = {
     locales: ['en'],
     defaultLocale: 'en',
     pages: {
-        '*': ['translations'],
+        '*': ['translations', 'errorMessages'],
     },
 };

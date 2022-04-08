@@ -13,7 +13,7 @@ describe('LoginError page', () => {
         expect(screen.getByTestId('username')).toBeInTheDocument();
         expect(screen.getByTestId('password')).toBeInTheDocument();
 
-        const error = screen.getByText('Invalid username and/or password.');
+        const error = screen.getByText('errorMessages:invalid_credentials');
         expect(error).toBeInTheDocument();
 
         const submitButton = screen.getByRole('button');
