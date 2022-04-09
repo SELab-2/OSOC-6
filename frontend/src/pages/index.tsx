@@ -3,7 +3,7 @@ import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 
 const BeginPage: NextPage = () => {
-    const { t } = useTranslation('translations');
+    const { t } = useTranslation('common');
     return (
         <div>
             <Head>

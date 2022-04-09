@@ -4,7 +4,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
-    const { t } = useTranslation('translations');
+    const { t } = useTranslation('common');
     return (
         <div className={styles.container}>
             <Head>

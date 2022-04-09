@@ -5,7 +5,7 @@ import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
 import useTranslation from 'next-translate/useTranslation';
 
 const Login: NextPage = () => {
-    const { t } = useTranslation('translations');
+    const { t } = useTranslation('common');
     return (
         <div>
             <Head>
