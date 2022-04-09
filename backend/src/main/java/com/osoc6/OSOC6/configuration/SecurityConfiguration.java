@@ -49,12 +49,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            // Cross-site request forgery protection needs to be disabled for logging in from frontend
+            .csrf().disable().httpBasic()
+            .and()
             .authorizeRequests()
-                .antMatchers("/registration", "/login").permitAll()
+                .antMatchers("/registration", "/login*", "/auth/*").permitAll()
                 .anyRequest().authenticated()
-                .and()
-            .formLogin();
+            .and()
+            .formLogin()
+                .loginProcessingUrl("/login-processing")
+                .defaultSuccessUrl("/auth/home", true)
+                .failureForwardUrl("/auth/failure");
     }
 
     /**
