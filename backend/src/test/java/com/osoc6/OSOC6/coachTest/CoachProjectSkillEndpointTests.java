@@ -71,7 +71,7 @@ public class CoachProjectSkillEndpointTests extends TestFunctionProvider<Project
     }
 
     /**
-     * Add two test projects, a user and an edition to the database.
+     * Setup the repos for all tests.
      */
     @Override
     public final void setUpRepository() {
@@ -123,14 +123,14 @@ public class CoachProjectSkillEndpointTests extends TestFunctionProvider<Project
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void get_all_returns_all_projects_of_same_edition_as_user() throws Exception {
+    public void get_all_returns_all_projectsSkill_of_same_edition_as_user() throws Exception {
         base_get_all_entities_succeeds()
                 .andExpect(string_to_contains_string(skill.getName()));
     }
 
     @Test
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void get_all_does_not_contain_projects_of_different_edition_as_user() throws Exception {
+    public void get_all_does_not_contain_projectsSkills_of_different_edition_as_user() throws Exception {
         base_get_all_entities_succeeds()
                 .andExpect(string_not_to_contains_string(skill.getName()));
     }

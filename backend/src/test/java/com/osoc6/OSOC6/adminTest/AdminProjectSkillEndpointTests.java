@@ -69,7 +69,7 @@ public class AdminProjectSkillEndpointTests extends AdminEndpointTest<ProjectSki
     }
 
     /**
-     * Add two test projects, a user and an edition to the database.
+     * Setup repos for all tests.
      */
     @Override
     public void setUpRepository() {
