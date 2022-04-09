@@ -2,7 +2,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import useTranslation from 'next-translate/useTranslation';
 
 export const NavBar = () => {
-    const { t } = useTranslation('navBar');
+    const { t } = useTranslation('common');
     return (
         <>
             <Navbar
