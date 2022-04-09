@@ -17,3 +17,5 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: frontend
+          github-token: ${{ secrets.SECRET_TOKEN }}
+          annotations: failed-tests
