@@ -49,7 +49,7 @@ export const NavBar = () => {
                                 <Nav.Link href="profile">
                                     <Image
                                         alt=""
-                                        src={'/resources/profile-icon.png'}
+                                        src={'/resources/profile-icon.svg'}
                                         width="40"
                                         height="40"
                                     />
