@@ -10,7 +10,7 @@ import org.springframework.hateoas.server.EntityLinks;
 import java.sql.Timestamp;
 
 /**
- * A DTO that helps to convert a TODO to its JSON representation.
+ * A DTO that helps to convert a {@link Communication} to its JSON representation.
  * Using this there is no need to write complex regexes to represent relationships.
  */
 @Data
