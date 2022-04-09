@@ -30,9 +30,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     /**
      * Try to find a {@link UserEntity} by their id.
-     * @apiNote
-     * An admin can find any user by their id.
-     * A coach can only find themselves.
      */
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
