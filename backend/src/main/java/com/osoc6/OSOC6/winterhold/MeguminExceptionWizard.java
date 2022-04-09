@@ -1,7 +1,10 @@
 package com.osoc6.OSOC6.winterhold;
 
 /**
- * Jitse will fill this.
+ * {@link MeguminExceptionWizard} is a wizard that helps us remember Exception messages.
+ * Megumin is a wizard that focuses solely on Explosion magic, an exception in code is kind of like an Explosion.
+ * Megumin loves them so much she had the desire to help us handle exceptions.
+ * Whenever we need an exception message we will ask Megumin.
  */
 public final class MeguminExceptionWizard {
 
