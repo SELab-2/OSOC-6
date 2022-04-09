@@ -20,7 +20,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +161,6 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
      */
     @Test
     @Override
-    @Transactional
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void patch_changes_value() throws Exception {
         super.patch_changes_value();
