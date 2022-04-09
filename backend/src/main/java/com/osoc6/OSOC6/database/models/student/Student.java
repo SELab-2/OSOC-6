@@ -243,9 +243,10 @@ public final class Student implements WeakToEdition {
      * The skills this student has.
      * In the form this is called the 'role' a student applies for.
      */
-    @OneToMany(orphanRemoval = true, mappedBy = "student")
+    @ElementCollection
+    @Column(columnDefinition = "text")
     @Getter @Setter @Builder.Default
-    private List<StudentSkill> skills = new ArrayList<>();
+    private List<String> skills = new ArrayList<>();
 
     /**
      * The suggestions made about this student.

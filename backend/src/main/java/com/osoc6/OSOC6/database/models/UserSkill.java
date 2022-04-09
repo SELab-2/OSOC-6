@@ -27,6 +27,7 @@ public final class UserSkill {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -52,6 +53,7 @@ public final class UserSkill {
     @ManyToOne(optional = false)
     @ReadOnlyProperty
     @JoinColumn(name = "user_entity_id", referencedColumnName = "id")
+    @Getter
     private UserEntity userEntity;
 
     /**

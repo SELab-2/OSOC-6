@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -275,21 +274,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     public ResultActions perform_delete_with_id(final String path, final I id) throws Exception {
         return mockMvc.perform(delete(path + "/" + id.hashCode()));
-    }
-
-    /**
-     * Perform a PUT request.
-     * An id with value null will be removed to avoid exceptions.
-     *
-     * @param path   The path the entity is served on, with '/' as prefix
-     * @param entity The entity we want to put
-     * @return a result action that can be used for more checks
-     * @throws Exception throws exception if the request or a check fails
-     */
-    public ResultActions perform_put(final String path, final T entity) throws Exception {
-        return mockMvc.perform(put(path).content(transform_to_json(entity))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
     }
 
     /**

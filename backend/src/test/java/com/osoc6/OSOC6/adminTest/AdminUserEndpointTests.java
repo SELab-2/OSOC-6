@@ -16,7 +16,7 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class testing the integration of {@link UserEntity}.
+ * Class testing the integration of {@link UserEntity} as an admin.
  */
 public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, UserRepository> {
 

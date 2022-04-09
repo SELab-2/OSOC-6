@@ -53,6 +53,7 @@ public final class ProjectSkill implements WeakToEdition {
     @ManyToOne(optional = false)
     @ReadOnlyProperty
     @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @Getter
     private Project project;
 
     /**
