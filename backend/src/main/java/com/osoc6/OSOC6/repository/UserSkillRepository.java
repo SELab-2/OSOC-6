@@ -22,7 +22,7 @@ import java.util.Optional;
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface UserSkillRepository extends JpaRepository<UserSkill, Long> {
     /**
-     * Try to find a {@link UserSkill} by their it's id.
+     * Try to find a {@link UserSkill} by its id.
      */
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)

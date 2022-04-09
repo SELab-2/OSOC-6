@@ -24,7 +24,7 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class testing the integration of {@link UserEntity}.
+ * Class testing the integration of {@link UserSkill} as a coach.
  */
 @SpringBootTest
 @AutoConfigureMockMvc

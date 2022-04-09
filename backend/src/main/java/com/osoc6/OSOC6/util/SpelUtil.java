@@ -22,7 +22,7 @@ public final class SpelUtil {
 
     /**
      * Get all the id's of all of the given user's editions as an array List.
-     * This is private since we don't want to export List implementation dependenceis.
+     * This is private since we don't want to export List implementation dependencies.
      * @param userEntity the user to get all edition id's of
      * @return a list containing all of the user's editions
      */
@@ -55,22 +55,7 @@ public final class SpelUtil {
         if (first.getUserRole() == UserRole.ADMIN || second.getUserRole() == UserRole.ADMIN) {
             return true;
         }
-        ArrayList<Long> firstEditions = userEditionsArrayList(first);
-        firstEditions.sort((o1, o2) -> (int) (o1 - o2));
-        ArrayList<Long> secondEditions = userEditionsArrayList(second);
-        secondEditions.sort((o1, o2) -> (int) (o1 - o2));
-        int secondIndex = 0;
-        for (Long firstEdition : firstEditions) {
-            while (secondIndex < secondEditions.size()
-                    && secondEditions.get(secondIndex) < firstEdition) {
-                secondIndex++;
-            }
-            if (secondIndex < secondEditions.size()
-                    && secondEditions.get(secondIndex).equals(firstEdition)) {
-                return true;
-            }
-        }
-        return false;
+        return userEditionsArrayList(first).stream().anyMatch(userEditionsArrayList(second)::contains);
     }
 
     /**
