@@ -72,7 +72,7 @@ public final class CoachCommunicationEndpointTests
      */
     private final Student testStudent = Student.builder()
             .email("jitse@mail.com")
-            .additionalStudentInfo(TEST_STRING)
+            .additionalStudentInfo("I like boulders")
             .bestSkill("standing on hands")
             .currentDiploma("Master")
             .educationLevel("Lower level")
