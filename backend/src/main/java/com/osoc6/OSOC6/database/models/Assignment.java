@@ -81,6 +81,7 @@ public final class Assignment implements WeakToEdition {
      * Project that the student is assigned to.
      */
     @ManyToOne(optional = false)
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
     @Getter
     private Project project;
 

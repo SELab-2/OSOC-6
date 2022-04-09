@@ -30,8 +30,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
      * A coach can only update their own suggestions.
      */
     @Override @NonNull
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or (authentication.principal.id == #entity.coach.id and "
-        + MerlinSpELWizard.USER_HAS_ACCESS_ON_ENTITY + ")")
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or authentication.principal.id == #entity.coach.id")
     <S extends Suggestion> S save(@Param("entity") @NonNull S entity);
 
     /**

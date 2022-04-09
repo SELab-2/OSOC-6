@@ -156,16 +156,6 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         return Util.asJsonString(helper);
     }
 
-    /**
-     * Transactional is needed because a user gets fetched lazily.
-     */
-    @Test
-    @Override
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void patch_changes_value() throws Exception {
-        super.patch_changes_value();
-    }
-
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_matching_query_over_suggest_reason_works() throws Exception {

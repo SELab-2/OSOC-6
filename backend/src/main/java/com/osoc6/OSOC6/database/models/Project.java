@@ -111,6 +111,13 @@ public final class Project implements WeakToEdition {
     private List<UserEntity> coaches = new ArrayList<>();
 
     /**
+     * The assignments made around this project.
+     */
+    @OneToMany(mappedBy = "project", orphanRemoval = true)
+    @Getter
+    private List<Assignment> assignments = new ArrayList<>();
+
+    /**
      *
      * @param newName the name of the project
      * @param newEdition the edition that the project is associated with
