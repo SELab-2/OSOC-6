@@ -37,7 +37,7 @@ sudo apt-get install openjdk-17-jdk
 ### The Project
 
 We assume you cloned the repository on your local machine.
-If you did not please refer to [the root README](../README.md#installation) to close this repository.
+If you did not please refer to [the root README](../README.md#installation) to clone this repository.
 We need to link our database with our project.
 Go to `./src/main/resources`, here you will find a file named `application.properties.example`.
 Open the file and change the username to postgres.
@@ -54,6 +54,15 @@ Change `osoc-test` at the end of the file, to the name of the database you made 
 spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
 ```
 The final step, save this file and rename `application.properties.example` to `application.properties`.
+
+In the same `./src/main/resources` folder you'll also find a file named `initial-user.properties.example`.
+Open the file and set the email and password of the base admin user.
+This is the base user that will be created upon running the program for the first time.
+The same user will also be created/reset when you restart the program and there are no enabled admin users remaining.
+This is to make sure you don't lock yourself out of the application.
+
+Now save this file and rename `initial-user.properties.example` to `initial-user.properties`.
+
 Now you should be able to sync gradle and run the program.
 
 You should be set up now.

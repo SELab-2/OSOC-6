@@ -1,0 +1,3 @@
+# Properties file containing the email and password of the base user
+baseuser.email =your_base_user_email
+baseuser.password =your_base_user_password

@@ -5,11 +5,13 @@ import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -53,7 +55,9 @@ public final class UserEntity implements UserDetails {
 
     /**
      * The password of the user.
+     * @apiNote We need {@link JsonIgnore} here so the JSON user object does not contain their password.
      */
+    @JsonIgnore
     @Getter @Setter
     private String password;
 
@@ -87,16 +91,24 @@ public final class UserEntity implements UserDetails {
     /**
      * {@link List} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
+     * @apiNote We need to set {@link RestResource} exported to false and add {@link JsonIgnore}
+     * so the JSON user object does not contain it's sent invitations.
+     * This is because a user needs to be accessible to anyone,
+     * but the sent invitations should not, since these might contain invitation tokens that are not used yet.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
+    @JsonIgnore
+    @RestResource(exported = false)
     private List<Invitation> sendInvitations = new ArrayList<>();
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
+     * @apiNote We need to add {@link JsonIgnore} here because otherwise,
+     * when we convert this entity to JSON during testing, we will get infinite recursion.
      */
     @JsonIgnore
-    @OneToMany(mappedBy = "subject", orphanRemoval = false, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "subject", orphanRemoval = false, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @Getter
     private List<Invitation> receivedInvitations = new ArrayList<>();
 
