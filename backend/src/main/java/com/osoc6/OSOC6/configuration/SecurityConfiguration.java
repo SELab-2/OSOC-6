@@ -56,10 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration", "/login*", "/auth/*").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .formLogin()
-                    .loginProcessingUrl("/login-processing")
-                    .defaultSuccessUrl("/auth/home", true)
-                    .failureForwardUrl("/auth/failure");
+            .formLogin()
+                .loginProcessingUrl("/login-processing")
+                .defaultSuccessUrl("/auth/home", true)
+                .failureForwardUrl("/auth/failure");
     }
 
     /**

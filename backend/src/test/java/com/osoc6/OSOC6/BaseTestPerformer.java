@@ -17,6 +17,7 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -44,10 +45,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Provides an edition, coachUser, adminUser and invitation when
  * base setup and base removed are called in the setup and remove functions.
  *
+ * The ActiveProfiles annotation indicates that everything this class
+ * and it's subclasses do should be run with the test profile.
+ *
  * @param <T> the entity of the repository using this class
  * @param <I> the id type of the entity
  * @param <R> the repository linked to the entity
  */
+@ActiveProfiles("test")
 public abstract class BaseTestPerformer<T, I extends Serializable, R extends JpaRepository<T, I>> {
     /**
      * This mocks the server without starting it.
@@ -117,7 +122,8 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     /**
      * The invitation for the coach user. Makes it so the user is linked to an edition.
      */
-    private final Invitation invitationForCoach = new Invitation(baseUserEdition, coachUser, coachUser);
+    @Getter
+    private final Invitation invitationForCoach = new Invitation(baseUserEdition, adminUser, coachUser);
 
     /**
      * Load the needed edition, users and invitation.
