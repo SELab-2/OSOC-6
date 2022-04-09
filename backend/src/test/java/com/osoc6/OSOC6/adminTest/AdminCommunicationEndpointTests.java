@@ -179,4 +179,13 @@ public final class AdminCommunicationEndpointTests extends
                 .andExpect(string_not_to_contains_string(testCommunication.getContent()));
     }
 
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void student_endpoint_does_not_show_communication() throws Exception {
+        perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/" + testStudent.getId())
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testCommunication.getContent()))
+                .andExpect(string_not_to_contains_string("communication"));
+    }
+
 }

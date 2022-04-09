@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.database.models.student;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.Assignment;
+import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.WeakToEdition;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -259,6 +261,16 @@ public final class Student implements WeakToEdition {
     @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
     @Getter @Setter @Builder.Default
     private List<Assignment> assignments = new ArrayList<>();
+
+    /**
+     * Communication that this student has received sorted on the timestamp.
+     * We make sure this is not exported to the resource.
+     * This way a coach does not have any problems.
+     */
+    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
+    @JsonIgnore @RestResource(exported = false)
+    @Getter @Setter @Builder.Default
+    private List<Communication> communications = new ArrayList<>();
 
     /**
      *

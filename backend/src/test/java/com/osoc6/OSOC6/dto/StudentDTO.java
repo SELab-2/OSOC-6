@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.dto;
 
 import com.osoc6.OSOC6.database.models.Assignment;
+import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
@@ -166,6 +167,11 @@ public final class StudentDTO {
      */
     private List<String> assignments;
 
+    /**
+     * Communication that this student has received as URL.
+     */
+    private List<String> communications;
+
     public StudentDTO(final Student student, final EntityLinks entityLinks) {
         id = student.getId();
         email = student.getEmail();
@@ -206,6 +212,12 @@ public final class StudentDTO {
         for (Assignment assignment: student.getAssignments()) {
             assignments.add(entityLinks.linkToItemResource(Assignment.class,
                     assignment.getId().toString()).getHref());
+        }
+
+        communications = new ArrayList<>();
+        for (Communication communication: student.getCommunications()) {
+            communications.add(entityLinks.linkToItemResource(Communication.class,
+                    communication.getId().toString()).getHref());
         }
     }
 }
