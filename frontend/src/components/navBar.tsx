@@ -7,7 +7,7 @@ export const NavBar = () => {
         <>
             <Navbar
                 collapseOnSelect
-                fixed="top"
+                sticky="top"
                 expand="sm"
                 bg="dark"
                 variant="dark"
