@@ -89,6 +89,9 @@ public final class UserEntity implements UserDetails {
     /**
      * {@link List} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
+     * @apiNote We need to set {@link RestResource} exported to false and add {@link JsonIgnore}
+     * so the user does not contain it's sent invitations. This is because a user needs to be accessible to anyone,
+     * but the sent invitations should not, since these might contain invitation tokens that are not used yet.
      */
     @OneToMany(mappedBy = "issuer", orphanRemoval = true)
     @Getter
@@ -98,6 +101,8 @@ public final class UserEntity implements UserDetails {
 
     /**
      * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
+     * @apiNote We need to add {@link JsonIgnore} here because otherwise,
+     * when we convert this entity to json during testing, we will get infinite recursion.
      */
     @JsonIgnore
     @OneToMany(mappedBy = "subject", orphanRemoval = false, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

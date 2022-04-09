@@ -40,6 +40,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     /**
      * Check if there exists an enabled user with the specified role.
+     * This is needed for creating the base admin user.
      * @param userRole the role of the users to look for
      * @param enabled wether the user is enabled or not
      * @return a list of all users with the specified role

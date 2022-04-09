@@ -23,6 +23,8 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
      * Search by using the following: /{DumbledorePathWizard.INVITATIONS_PATH}/search/findByToken?token=tokenString.
      * @param token the token of the invitation
      * @return found invitation
+     * @apiNote We need to add permitAll here because an unauthenticated user needs to be able to register.
+     * In order to register they need to have a valid invitation token and thus need to be able to query by it.
      */
     @PreAuthorize("permitAll()")
     Optional<Invitation> findByToken(@Param("token") String token);
