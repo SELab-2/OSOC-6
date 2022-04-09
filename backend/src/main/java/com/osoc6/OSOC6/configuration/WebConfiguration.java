@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -54,11 +55,11 @@ public class WebConfiguration {
 
     /**
      * This creates a base admin user when there are no enabled admins left in the database.
-     * The profile annotation indicates that this method should not be executed when the application
-     * is run with a test profile.
      * @param userRepository the user repository
      * @param passwordEncoder the used password encoder
      * @return a commandline runner
+     * @apiNote The profile annotation indicates that this method should not be executed when the application
+     * is run with a test profile.
      */
     @Bean
     @Profile("!test")
@@ -78,11 +79,20 @@ public class WebConfiguration {
 
                 String baseEmail = properties.getProperty("baseuser.email");
                 String basePassword = properties.getProperty("baseuser.password");
-
                 String encodedPassword = passwordEncoder.encode(basePassword);
 
-                UserEntity baseAdminUser =
-                        new UserEntity(baseEmail, "Base Admin User", UserRole.ADMIN, encodedPassword);
+                UserEntity baseAdminUser = new UserEntity();
+
+                Optional<UserEntity> optionalUser = userRepository.findByEmail(baseEmail);
+                if (optionalUser.isPresent()) {
+                    baseAdminUser = optionalUser.get();
+                }
+
+                baseAdminUser.setEmail(baseEmail);
+                baseAdminUser.setPassword(encodedPassword);
+                baseAdminUser.setCallName("Base Admin User");
+                baseAdminUser.setUserRole(UserRole.ADMIN);
+                baseAdminUser.setEnabled(true);
 
                 userRepository.save(baseAdminUser);
             }
