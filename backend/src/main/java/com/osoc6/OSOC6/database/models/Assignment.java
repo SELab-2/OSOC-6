@@ -46,6 +46,16 @@ public final class Assignment implements WeakToEdition {
     private Boolean isSuggestion;
 
     /**
+     * Whether assignment is still valid.
+     * An assignment can be invalid after conflict resolution.
+     * This means we no longer recognise it.
+     * A coach can edit this field in their own suggestions since this is the same is making the assignment again.
+     */
+    @Basic(optional = false)
+    @NotNull @Getter @Setter
+    private Boolean isValid = true;
+
+    /**
      * The creation timestamp of the assignment.
      */
     @Basic(optional = false)

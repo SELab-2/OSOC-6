@@ -26,6 +26,14 @@ public class AssignmentDTO {
     private Boolean isSuggestion;
 
     /**
+     * Whether assignment is still valid.
+     * An assignment can be invalid after conflict resolution.
+     * This means we no longer recognise it.
+     * A coach can edit this field in their own suggestions since this is the same is making the assignment again.
+     */
+    private Boolean isValid;
+
+    /**
      * The creation timestamp of the assignment.
      */
     private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -54,6 +62,7 @@ public class AssignmentDTO {
     public AssignmentDTO(final Assignment assignment, final EntityLinks entityLinks) {
         id = assignment.getId();
         isSuggestion = assignment.getIsSuggestion();
+        isValid = assignment.getIsValid();
         reason = assignment.getReason();
 
         assigner = entityLinks.linkToItemResource(UserEntity.class,

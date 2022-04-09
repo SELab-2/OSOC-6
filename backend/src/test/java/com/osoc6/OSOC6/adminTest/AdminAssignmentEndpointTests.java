@@ -82,15 +82,20 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
             .build();
 
     /**
+     * Sample project 1 that gets loaded before every test.
+     */
+    private final Project project1 = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
+
+    /**
      * Sample project that gets loaded before every test.
      */
-    private final Project testProject = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
+    private final Project project2 = new Project("Instagram", getBaseUserEdition(), "Meta", getAdminUser());
 
     /**
      * Sample project that gets loaded before every test.
      */
     private final Assignment testAssignment = new Assignment(true, "Seems like handsome boy",
-            getAdminUser(), testStudent, testProject);
+            getAdminUser(), testStudent, project1);
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -116,7 +121,8 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     public void setUpRepository() {
         setupBasicData();
 
-        projectRepository.save(testProject);
+        projectRepository.save(project1);
+        projectRepository.save(project2);
 
         studentRepository.save(testStudent);
 
@@ -136,7 +142,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
     @Override
     public Assignment create_entity() {
-        return new Assignment(false, TEST_STRING, getAdminUser(), testStudent, testProject);
+        return new Assignment(false, TEST_STRING, getAdminUser(), testStudent, project1);
     }
 
     @Override
@@ -154,7 +160,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void student_matching_query_over_suggest_reason_works() throws Exception {
+    public void student_matching_query_over_assignment_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
@@ -166,12 +172,47 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void student_non_matching_query_over_suggest_reason_works() throws Exception {
+    public void student_non_matching_query_over_assignment_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{"apple" + testAssignment.getReason() + "banana",
                         getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_not_matching_query_conflict_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_matching_query_conflict_works() throws Exception {
+        perform_post(getEntityPath(), new Assignment(true, "A second reason", getCoachUser(), testStudent, project2));
+
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_conflict_no_edition_works() throws Exception {
+        perform_post(getEntityPath(), new Assignment(true, "A second reason", getCoachUser(), testStudent, project2));
+
+        perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_CONFLICT_PATH)
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }

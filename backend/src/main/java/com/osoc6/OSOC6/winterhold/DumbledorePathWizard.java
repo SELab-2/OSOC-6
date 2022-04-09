@@ -81,4 +81,9 @@ public final class DumbledorePathWizard {
      * Path that {@link com.osoc6.OSOC6.database.models.student.Student} query is served on.
      */
     public static final String STUDENT_QUERY_PATH = "full-query";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.database.models.student.Student} conflict query is served on.
+     */
+    public static final String STUDENT_CONFLICT_PATH = "conflict-query";
 }

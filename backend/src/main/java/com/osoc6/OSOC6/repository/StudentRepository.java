@@ -113,4 +113,24 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("skill") String skill,
                               @Param("reason") String reason,
                               Pageable pageable);
+
+    /**
+     * Return the students that are assigned to multiple projects through valid assignments.
+     * @param edition the edition in which this query operates.
+     * @param pageable field in student that is looked for
+     * @return Page of matching students
+     */
+    @RestResource(path = DumbledorePathWizard.STUDENT_CONFLICT_PATH,
+            rel = DumbledorePathWizard.STUDENT_CONFLICT_PATH)
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
+            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @Query(value =
+        "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
+            + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
+            + "inner_ed.id = :#{@spelUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
+        + "where (Select count(distinct proj.id) "
+            + "from (select inner_assign.* from assignment inner_assign "
+            + "where inner_assign.is_valid = true and inner_assign.student_id = stud.id) as assign "
+            + "inner join project proj on (assign.project_id = proj.id)) > 1", nativeQuery = true)
+    Page<Student> findConflict(@Param("edition") Long edition, Pageable pageable);
 }
