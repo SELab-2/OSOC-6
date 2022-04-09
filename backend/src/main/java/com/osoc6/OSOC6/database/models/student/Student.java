@@ -2,7 +2,6 @@ package com.osoc6.OSOC6.database.models.student;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.WeakToEdition;
@@ -25,7 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -224,7 +222,7 @@ public final class Student implements WeakToEdition {
     private String additionalStudentInfo;
 
     /**
-     * {@link Edition} in which this communication took place.
+     * {@link Edition} the student applies for.
      */
     @ManyToOne(optional = false, cascade = {})
     @ReadOnlyProperty
@@ -261,14 +259,6 @@ public final class Student implements WeakToEdition {
     @OneToMany(orphanRemoval = true, mappedBy = "student", cascade = {CascadeType.REMOVE})
     @Getter @Setter @Builder.Default
     private List<Assignment> assignments = new ArrayList<>();
-
-    /**
-     * Communication that this student has received sorted on the timestamp.
-     */
-    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
-    @OrderColumn(name = "timestamp")
-    @Getter @Setter @Builder.Default
-    private List<Communication> communications = new ArrayList<>();
 
     /**
      *
