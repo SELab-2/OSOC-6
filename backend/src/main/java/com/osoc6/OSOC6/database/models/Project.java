@@ -61,7 +61,7 @@ public final class Project implements WeakToEdition {
     @Basic(optional = false)
     @Column(columnDefinition = "text")
     @Getter @Setter
-    private String versionManagement;
+    private String versionManagement = "";
 
     /**
      * Edition within which this project was created.
@@ -85,7 +85,7 @@ public final class Project implements WeakToEdition {
     @Basic(optional = false)
     @Column(columnDefinition = "text")
     @Getter @Setter
-    private String partnerWebsite;
+    private String partnerWebsite = "";
 
     /**
      * The {@link UserEntity}/ admin that created the project.
