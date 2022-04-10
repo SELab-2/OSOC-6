@@ -28,6 +28,11 @@ public final class DumbledorePathWizard {
     public static final String USERS_PATH = "users";
 
     /**
+     * Path that query for own user {@link com.osoc6.OSOC6.database.models.UserEntity} is served on.
+     */
+    public static final String OWN_USERS_PATH = "own-user";
+
+    /**
      * Path that {@link com.osoc6.OSOC6.database.models.CommunicationTemplate} is served on.
      */
     public static final String COMMUNICATION_TEMPLATE_PATH = "communicationTemplates";

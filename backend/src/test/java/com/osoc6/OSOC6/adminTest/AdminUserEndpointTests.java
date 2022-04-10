@@ -216,4 +216,12 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
         perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_admin_user_works() throws Exception {
+        perform_get(getEntityPath() + "/search/" + DumbledorePathWizard.OWN_USERS_PATH)
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
 }

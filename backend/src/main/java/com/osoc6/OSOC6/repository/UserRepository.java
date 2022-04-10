@@ -6,7 +6,9 @@ import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Optional;
@@ -55,4 +57,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             + "and authentication.principal.userRole == #userEntity.userRole)")
     @NonNull
     <S extends UserEntity> S save(@NonNull S userEntity);
+
+    /**
+     * Find user that is currently logged in.
+     * @return The user currently logged in
+     */
+    @NonNull
+    @RestResource(path = DumbledorePathWizard.OWN_USERS_PATH,
+            rel = DumbledorePathWizard.OWN_USERS_PATH)
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @Query("select u from UserEntity u where u.id = :#{authentication.principal.id}")
+    UserEntity findSelf();
 }

@@ -191,4 +191,12 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
         perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void getting_coach_user_works() throws Exception {
+        perform_get(getEntityPath() + "/search/" + DumbledorePathWizard.OWN_USERS_PATH)
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
 }

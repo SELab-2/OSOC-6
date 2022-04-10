@@ -9,6 +9,11 @@ public final class MerlinSpELWizard {
     private MerlinSpELWizard() { }
 
     /**
+     * Get the id of the logged-in user in a query. (Query notation)
+     */
+    public static final String Q_USER_ID = ":#{authentication.principal.id}";
+
+    /**
      * Check if the current user has the admin authority.
      */
     public static final String ADMIN_AUTH = "hasAuthority('ADMIN')";
