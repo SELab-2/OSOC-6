@@ -7,7 +7,6 @@ import com.osoc6.OSOC6.database.models.UserEntity;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public final class ProjectDTO {
     /**
      * A URI pointing to the version management of the project.
      */
-    private URI versionManagement;
+    private String versionManagement;
 
     /**
      * Edition within which this project was created.
@@ -50,7 +49,7 @@ public final class ProjectDTO {
     /**
      * A URI pointing to the website of the partner.
      */
-    private URI partnerWebsite;
+    private String partnerWebsite;
 
     /**
      * The {@link UserEntity}/ admin that created the project.
