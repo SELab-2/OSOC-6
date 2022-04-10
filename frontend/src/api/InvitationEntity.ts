@@ -1,20 +1,20 @@
-import { BaseEntity, Page, Referencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
-export interface IInvitation extends BaseEntity {
+export interface IInvitation extends IBaseEntity {
     token: string | undefined;
     creationTimestamp: Date | undefined;
     used: boolean;
 
     _links: {
-        edition: Referencer;
-        issuer: Referencer;
-        subject: Referencer;
-        self: Referencer;
-        invitation: Referencer;
+        edition: IReferencer;
+        issuer: IReferencer;
+        subject: IReferencer;
+        self: IReferencer;
+        invitation: IReferencer;
     };
 }
 
-export type InvitationsPage = Page<{ invitations: IInvitation[] }>;
+export type IInvitationsPage = IPage<{ invitations: IInvitation[] }>;
 
 export class Invitation {
     constructor(issuer: string, edition: string) {

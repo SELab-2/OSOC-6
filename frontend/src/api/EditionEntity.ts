@@ -1,17 +1,17 @@
-import { BaseEntity, Page, Referencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
-export interface IEdition extends BaseEntity {
+export interface IEdition extends IBaseEntity {
     name: string;
     year: number;
     active: boolean;
 
     _links: {
-        edition: Referencer;
-        self: Referencer;
+        edition: IReferencer;
+        self: IReferencer;
     };
 }
 
-export type EditionsPage = Page<{ editions: IEdition[] }>;
+export type IEditionsPage = IPage<{ editions: IEdition[] }>;
 
 export class Edition {
     constructor(name: string, year: number, active: boolean) {

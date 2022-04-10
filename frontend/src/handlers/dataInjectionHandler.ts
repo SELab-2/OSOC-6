@@ -2,18 +2,19 @@ import { MouseEventHandler } from 'react';
 import axios from 'axios';
 import pathNames from '../properties/pathNames';
 import { IUser } from '../api/UserEntity';
-import { Edition, EditionsPage, IEdition } from '../api/EditionEntity';
+import { Edition, IEditionsPage, IEdition } from '../api/EditionEntity';
 import {
     IInvitation,
     Invitation,
-    InvitationsPage,
+    IInvitationsPage,
 } from '../api/InvitationEntity';
-import { IProject, Project, ProjectPage } from '../api/ProjectEntity';
+import { IProject, Project, IProjectPage } from '../api/ProjectEntity';
 import {
     IProjectSkill,
     ProjectSkill,
-    ProjectSkillPage,
+    IProjectSkillPage,
 } from '../api/ProjectSkillEntity';
+import { IUserSkill, IUserSkillPage, UserSkill } from "../api/UserSkillEntity";
 
 const baseRef = { baseURL: pathNames.base };
 
@@ -25,9 +26,28 @@ export const dataInjectionHandler: MouseEventHandler<
 
     const own_user_url: string = user._links!.self.href;
 
-    const editions: EditionsPage = (
-        await axios.get(pathNames.editions, baseRef)
-    ).data;
+    const userSkills: IUserSkillPage =
+        (await axios.get(pathNames.userSkills, baseRef)).data;
+    let containedUserSkills: IUserSkill[];
+    if (userSkills._embedded["user-skills"].length == 0) {
+        const skill: UserSkill = new UserSkill(
+            "The best",
+            "you're simply the best!",
+            own_user_url
+        );
+
+        containedUserSkills = await Promise.all([skill]
+            .map(async (skill) =>
+                (await axios.post(pathNames.userSkills, skill, baseRef)).data
+            )
+        );
+    } else {
+        containedUserSkills = userSkills._embedded["user-skills"];
+    }
+    console.log(containedUserSkills);
+
+    const editions: IEditionsPage =
+        (await axios.get(pathNames.editions, baseRef)).data;
     console.log(editions);
     let containedEdition: IEdition;
     if (editions._embedded.editions.length == 0) {
@@ -41,7 +61,7 @@ export const dataInjectionHandler: MouseEventHandler<
     console.log(containedEdition);
     const editionUrl: string = containedEdition._links!.self.href;
 
-    const invitations: InvitationsPage = (
+    const invitations: IInvitationsPage = (
         await axios.get(pathNames.invitations, baseRef)
     ).data;
     let containedInvitation: IInvitation;
@@ -55,7 +75,7 @@ export const dataInjectionHandler: MouseEventHandler<
     }
     console.log(containedInvitation);
 
-    const projects: ProjectPage = (await axios.get(pathNames.projects, baseRef))
+    const projects: IProjectPage = (await axios.get(pathNames.projects, baseRef))
         .data;
     let containedProjects: IProject[];
     if (projects._embedded.projects.length == 0) {
@@ -79,12 +99,9 @@ export const dataInjectionHandler: MouseEventHandler<
             own_user_url
         );
 
-        containedProjects = await Promise.all(
-            [project1, project2].map(
-                async (proj) =>
-                    (
-                        await axios.post(pathNames.projects, proj, baseRef)
-                    ).data
+        containedProjects = await Promise.all([project1, project2]
+            .map(async (proj) =>
+                (await axios.post(pathNames.projects, proj, baseRef)).data
             )
         );
     } else {
@@ -92,7 +109,7 @@ export const dataInjectionHandler: MouseEventHandler<
     }
     console.log(containedProjects);
 
-    const projectSkills: ProjectSkillPage = (
+    const projectSkills: IProjectSkillPage = (
         await axios.get(pathNames.projectSkills, baseRef)
     ).data;
     let containedProjectSkills: IProjectSkill[];
@@ -103,16 +120,9 @@ export const dataInjectionHandler: MouseEventHandler<
             containedProjects[1]._links!.self.href
         );
 
-        containedProjectSkills = await Promise.all(
-            [skill1].map(
-                async (skill) =>
-                    (
-                        await axios.post(
-                            pathNames.projectSkills,
-                            skill,
-                            baseRef
-                        )
-                    ).data
+        containedProjectSkills = await Promise.all([skill1]
+            .map(async (skill) =>
+                (await axios.post(pathNames.projectSkills, skill, baseRef)).data
             )
         );
     } else {

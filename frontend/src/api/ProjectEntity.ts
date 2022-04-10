@@ -1,6 +1,6 @@
-import { BaseEntity, Page, Referencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
-export interface IProject extends BaseEntity {
+export interface IProject extends IBaseEntity {
     goals: string[];
     name: string;
     versionManagement: string;
@@ -9,17 +9,17 @@ export interface IProject extends BaseEntity {
     creator: string;
 
     _links: {
-        assignment: Referencer;
-        coaches: Referencer;
-        creator: Referencer;
-        edition: Referencer;
-        neededSkills: Referencer;
-        project: Referencer;
-        self: Referencer;
+        assignment: IReferencer;
+        coaches: IReferencer;
+        creator: IReferencer;
+        edition: IReferencer;
+        neededSkills: IReferencer;
+        project: IReferencer;
+        self: IReferencer;
     };
 }
 
-export type ProjectPage = Page<{ projects: IProject[] }>;
+export type IProjectPage = IPage<{ projects: IProject[] }>;
 
 export class Project {
     constructor(

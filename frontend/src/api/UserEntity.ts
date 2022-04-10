@@ -1,6 +1,6 @@
-import { BaseEntity, Page, Referencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
-export interface IUser extends BaseEntity {
+export interface IUser extends IBaseEntity {
     accountNonExpired: boolean;
     accountNonLocked: boolean;
     authorities: IAuthority;
@@ -12,16 +12,16 @@ export interface IUser extends BaseEntity {
     username: string;
 
     _links: {
-        communications: Referencer;
-        projects: Referencer;
-        receivedInvitations: Referencer;
-        skills: Referencer;
-        userEntity: Referencer;
-        self: Referencer;
+        communications: IReferencer;
+        projects: IReferencer;
+        receivedInvitations: IReferencer;
+        skills: IReferencer;
+        userEntity: IReferencer;
+        self: IReferencer;
     };
 }
 
-export type UsersPage = Page<{ users: IUser[] }>;
+export type IUsersPage = IPage<{ users: IUser[] }>;
 
 export enum UserRole {
     admin = 'ADMIN',

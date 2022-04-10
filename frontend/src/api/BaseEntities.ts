@@ -1,14 +1,14 @@
-export interface Referencer {
+export interface IReferencer {
     href: string;
 }
 
-export interface BaseEntity {
+export interface IBaseEntity {
     _links: {
-        self: Referencer;
+        self: IReferencer;
     };
 }
 
-export interface Page<T> extends BaseEntity {
+export interface IPage<T> extends IBaseEntity {
     page: {
         number: number;
         size: number;
@@ -16,9 +16,9 @@ export interface Page<T> extends BaseEntity {
         totalPages: number;
     };
     _links: {
-        self: Referencer;
-        search: Referencer;
-        profile: Referencer;
+        self: IReferencer;
+        search: IReferencer;
+        profile: IReferencer;
     };
     _embedded: T;
 }
