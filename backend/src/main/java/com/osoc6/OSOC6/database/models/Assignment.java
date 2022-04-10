@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -46,12 +47,22 @@ public final class Assignment implements WeakToEdition {
     private Boolean isSuggestion;
 
     /**
+     * Whether assignment is still valid.
+     * An assignment can be invalid after conflict resolution.
+     * This means we no longer recognise it.
+     * A coach can edit this field in their own suggestions since this is the same is making the assignment again.
+     */
+    @Basic(optional = false)
+    @NotNull @Getter @Setter
+    private Boolean isValid = true;
+
+    /**
      * The creation timestamp of the assignment.
      */
     @Basic(optional = false)
     @Getter
-    @CreationTimestamp
-    private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    @CreationTimestamp @ReadOnlyProperty
+    private Timestamp timestamp;
 
     /**
      * The reason the student got assigned.
@@ -81,6 +92,7 @@ public final class Assignment implements WeakToEdition {
      * Project that the student is assigned to.
      */
     @ManyToOne(optional = false)
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
     @Getter
     private Project project;
 

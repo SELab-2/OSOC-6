@@ -33,10 +33,4 @@ public final class MerlinSpELWizard {
      */
     public static final String USER_HAS_ACCESS_ON_OPTIONAL = "!returnObject.present or "
         + "@spelUtil.userEditions(authentication.principal).contains(returnObject.get.controllingEdition.id)";
-
-    /**
-     * SpEll expression checking that a non admin user has access to entity param.
-     */
-    public static final String USER_HAS_ACCESS_ON_ENTITY =
-            "@spelUtil.userEditions(authentication.principal).contains(#entity.student.edition.id)";
 }

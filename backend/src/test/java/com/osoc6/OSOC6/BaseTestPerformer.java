@@ -99,6 +99,11 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     public static final String OUTSIDER_EMAIL = "outsider@mail.com";
 
     /**
+     * Email of the matching edition coach as a static final field. This way it can be used within annotations.
+     */
+    public static final String MATCHING_EMAIL = "matching@user.com";
+
+    /**
      * The admin test user. This is the admin user that will be used to execute the tests.
      */
     @Getter
@@ -113,6 +118,12 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
             UserRole.COACH, "123456");
 
     /**
+     * Sample User with a matching edition to base Coach that gets loaded before every test.
+     */
+    private final UserEntity matchingEditionCoach = new UserEntity(MATCHING_EMAIL, "Match User",
+            UserRole.COACH, "abc");
+
+    /**
      * The outsider coach sample user that gets loaded before every test.
      */
     @Getter
@@ -125,6 +136,12 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     private final Invitation invitationForCoach = new Invitation(baseUserEdition, adminUser, coachUser);
 
     /**
+     * Invitation that makes matchingEditionCoach registered to the same edition as the base coach.
+     */
+    private final Invitation matchingEditionUserInvitation = new Invitation(getBaseUserEdition(), getAdminUser(),
+            matchingEditionCoach);
+
+    /**
      * Load the needed edition, users and invitation.
      */
     public void setupBasicData() {
@@ -133,8 +150,10 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
         userRepository.save(adminUser);
         userRepository.save(coachUser);
         userRepository.save(outsiderCoach);
+        userRepository.save(matchingEditionCoach);
 
         invitationRepository.save(invitationForCoach);
+        invitationRepository.save(matchingEditionUserInvitation);
     }
 
     /**

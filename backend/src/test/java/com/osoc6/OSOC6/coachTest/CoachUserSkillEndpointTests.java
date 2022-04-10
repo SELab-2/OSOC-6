@@ -2,13 +2,8 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.database.models.UserSkill;
 import com.osoc6.OSOC6.dto.UserSkillDTO;
-import com.osoc6.OSOC6.repository.InvitationRepository;
-import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.repository.UserSkillRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -37,18 +32,6 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     private UserSkillRepository userSkillRepository;
 
     /**
-     * The UserRepository that saves, searches, ... in the database
-     */
-    @Autowired
-    private UserRepository userRepository;
-
-    /**
-     * The InvitationRepository that saves, searches, ... in the database
-     */
-    @Autowired
-    private InvitationRepository invitationRepository;
-
-    /**
      * Entity links, needed to get to link of an entity.
      */
     @Autowired
@@ -71,23 +54,6 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
      */
     private final UserSkill outsiderSkill = new UserSkill("Lonely loner", getOutsiderCoach(),
             "Stands outside in the rain and cries.");
-
-    /**
-     * Email of matching edition coach to be used in annotations.
-     */
-    private static final String MATCHING_EDITION_COACH_EMAIL = "matching@user.com";
-
-    /**
-     * Sample User with a matching edition to base Coach that gets loaded before every test.
-     */
-    private final UserEntity matchingEditionCoach = new UserEntity(MATCHING_EDITION_COACH_EMAIL, "Match User",
-            UserRole.COACH, "abc");
-
-    /**
-     * Invitation that makes matchingEditionCoach registered to the same edition as the base coach.
-     */
-    private final Invitation matchingEditionUserInvitation = new Invitation(getBaseUserEdition(), getAdminUser(),
-            matchingEditionCoach);
 
     /**
      * The actual path users are served on, with '/' as prefix.
@@ -118,9 +84,6 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     public void setUpRepository() {
         setupBasicData();
 
-        userRepository.save(matchingEditionCoach);
-        invitationRepository.save(matchingEditionUserInvitation);
-
         userSkillRepository.save(adminSkill);
         userSkillRepository.save(outsiderSkill);
         userSkillRepository.save(coachSkill);
@@ -129,9 +92,6 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     @Override
     public void removeSetUpRepository() {
         userSkillRepository.deleteAll();
-
-        invitationRepository.deleteAll();
-        userRepository.deleteAll();
 
         removeBasicData();
     }
@@ -206,7 +166,7 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     }
 
     @Test
-    @WithUserDetails(value = MATCHING_EDITION_COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_userSkill_by_id_of_matching_edition_user_works() throws Exception {
         perform_get(getEntityPath() + "/" + coachSkill.getId())
                 .andExpect(status().isOk())
