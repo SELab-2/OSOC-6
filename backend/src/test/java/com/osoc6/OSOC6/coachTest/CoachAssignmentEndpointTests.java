@@ -14,7 +14,6 @@ import com.osoc6.OSOC6.repository.AssignmentRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +22,8 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -197,16 +197,18 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
                 .andExpect(string_to_contains_string(TEST_STRING));
     }
 
-    // I have no idea how the string is parsed to json
     @Test
-    @Disabled
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_own_assignment_leaves_time_unchanged() throws Exception {
-        Timestamp timestamp = new Timestamp(testAssignment.getTimestamp().getTime());
+        Map<String, String> patchMap = Map.of(
+                "timestamp", Instant.now().plus(3, ChronoUnit.DAYS).toString()
+        );
 
-        perform_patch(getEntityPath() + "/" + testAssignment.getId(), change_entity(testAssignment))
+        String timestampString = testAssignment.getTimestamp().toInstant().toString();
+
+        perform_patch(getEntityPath() + "/" + testAssignment.getId(), patchMap)
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(timestamp.toLocalDateTime().toString()));
+                .andExpect(string_to_contains_string(timestampString.substring(0, timestampString.length() - 1)));
     }
 
     @Test

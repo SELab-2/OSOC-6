@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -60,8 +61,8 @@ public final class Assignment implements WeakToEdition {
      */
     @Basic(optional = false)
     @Getter
-    @CreationTimestamp
-    private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    @CreationTimestamp @ReadOnlyProperty
+    private Timestamp timestamp;
 
     /**
      * The reason the student got assigned.
