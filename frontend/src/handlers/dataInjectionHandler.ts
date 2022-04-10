@@ -15,6 +15,11 @@ import {
     IProjectSkillPage,
 } from '../api/ProjectSkillEntity';
 import { IUserSkill, IUserSkillPage, UserSkill } from '../api/UserSkillEntity';
+import {
+    CommunicationTemplate,
+    ICommunicationTemplate,
+    ICommunicationTemplatePage
+} from "../api/CommunicationTemplate";
 
 const baseRef = { baseURL: pathNames.base };
 
@@ -145,4 +150,21 @@ export const dataInjectionHandler: MouseEventHandler<
         containedProjectSkills = projectSkills._embedded['project-skills'];
     }
     console.log(containedProjectSkills);
+
+    const templates: ICommunicationTemplatePage =
+        (await axios.get(pathNames.communicationTemplates, baseRef)).data
+    let containedTemplates: ICommunicationTemplate[];
+    if (templates._embedded.communicationTemplates.length == 0) {
+        const template1 = new CommunicationTemplate("yes", "I say yes \{reason\}");
+        const template2 = new CommunicationTemplate("no", "I say no \{reason\}");
+        containedTemplates = await Promise.all(
+            [template1, template2].map(
+                async (skill) => (
+                    await axios.post(pathNames.communicationTemplates, skill, baseRef)).data
+            )
+        );
+    } else {
+        containedTemplates = templates._embedded.communicationTemplates;
+    }
+    console.log(containedTemplates);
 };
