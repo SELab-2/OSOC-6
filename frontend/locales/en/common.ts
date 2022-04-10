@@ -8,6 +8,6 @@ const common = {
     "Navbar projects": "Projects",
     "Navbar assign students": "Assign Students",
     "Navbar profile": "Profile"
-}
+};
 
-export default common
+export default common;
