@@ -3,7 +3,7 @@ import axios from 'axios';
 export async function getBasePost(url: string, data: any, contentType: string) {
     return axios({
         method: 'post',
-        url: '/api/login-processing',
+        url: url,
         data: data,
         headers: {
             'Content-Type': contentType,
