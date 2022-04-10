@@ -16,10 +16,10 @@ import {
 } from '../api/ProjectSkillEntity';
 import { IUserSkill, IUserSkillPage, UserSkill } from '../api/UserSkillEntity';
 import {
-    CommunicationTemplate,
+    CommunicationTemplateEntity,
     ICommunicationTemplate,
-    ICommunicationTemplatePage
-} from "../api/CommunicationTemplate";
+    ICommunicationTemplatePage,
+} from '../api/CommunicationTemplateEntity';
 
 const baseRef = { baseURL: pathNames.base };
 
@@ -151,16 +151,29 @@ export const dataInjectionHandler: MouseEventHandler<
     }
     console.log(containedProjectSkills);
 
-    const templates: ICommunicationTemplatePage =
-        (await axios.get(pathNames.communicationTemplates, baseRef)).data
+    const templates: ICommunicationTemplatePage = (
+        await axios.get(pathNames.communicationTemplates, baseRef)
+    ).data;
     let containedTemplates: ICommunicationTemplate[];
     if (templates._embedded.communicationTemplates.length == 0) {
-        const template1 = new CommunicationTemplate("yes", "I say yes \{reason\}");
-        const template2 = new CommunicationTemplate("no", "I say no \{reason\}");
+        const template1 = new CommunicationTemplateEntity(
+            'yes',
+            'I say yes {reason}'
+        );
+        const template2 = new CommunicationTemplateEntity(
+            'no',
+            'I say no {reason}'
+        );
         containedTemplates = await Promise.all(
             [template1, template2].map(
-                async (skill) => (
-                    await axios.post(pathNames.communicationTemplates, skill, baseRef)).data
+                async (skill) =>
+                    (
+                        await axios.post(
+                            pathNames.communicationTemplates,
+                            skill,
+                            baseRef
+                        )
+                    ).data
             )
         );
     } else {
