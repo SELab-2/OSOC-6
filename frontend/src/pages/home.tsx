@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
+import { dataInjectionHandler } from '../handlers/dataInjectionHandler';
 
 const Home: NextPage = () => {
     const { t } = useTranslation('common');
