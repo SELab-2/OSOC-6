@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 import axios from 'axios';
 import pathNames from '../properties/pathNames';
-import { Edition, Invitation, IUser } from "../api/Entities";
+import { Edition, editionPage, IEdition, Invitation, IUser } from "../api/Entities";
 
 const baseRef = { baseURL: pathNames.base };
 
@@ -11,11 +11,9 @@ export const dataInjectionHandler: MouseEventHandler<
     const result = await axios.get(pathNames.ownUser, baseRef);
     const user: IUser = <IUser>result.data;
 
-    const own_user: string | undefined = user._links
-        ? user._links.self.href
-        : undefined;
+    const own_user: string = user._links!.self.href;
 
-    const editions = (await axios.get(pathNames.editions, baseRef)).data;
+    const editions: editionPage = (await axios.get(pathNames.editions, baseRef)).data;
 
     const invitation = (await axios.get(pathNames.invitations, baseRef)).data;
 
@@ -23,5 +21,7 @@ export const dataInjectionHandler: MouseEventHandler<
 
     //await axios.post(pathNames.editions, edition1, baseRef
 
-    console.log(editions);
+    const containedEdition: IEdition = editions._embedded.editions[0];
+
+    console.log(containedEdition);
 };

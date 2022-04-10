@@ -1,30 +1,29 @@
 export interface Referencer {
-    href: string,
+    href: string;
 }
 
 export interface BaseEntity {
     _links: { self: Referencer } | undefined;
 }
 
-
 export interface Page<T> {
     page: {
-        number: number,
-        size: number,
-        totalElements: number,
-        totalPages: number,
-    },
+        number: number;
+        size: number;
+        totalElements: number;
+        totalPages: number;
+    };
     _links: {
-        self: Referencer
-        search: Referencer
-        profile: Referencer
-    },
-    _embedded: T
+        self: Referencer;
+        search: Referencer;
+        profile: Referencer;
+    };
+    _embedded: T;
 }
 
-export type editionPage = Page<{editions: IEdition}>
+export type editionPage = Page<{ editions: IEdition[] }>;
 
-export type userPage = Page<{users: IUser}>
+export type userPage = Page<{ users: IUser[] }>;
 
 export interface IUser extends BaseEntity {
     accountNonExpired: boolean;
@@ -39,15 +38,14 @@ export interface IUser extends BaseEntity {
 }
 
 export interface IInvitation extends BaseEntity {
-    token: string | undefined,
-    creationTimestamp: Date | undefined,
-    edition: string,
-    issuer: string,
+    token: string | undefined;
+    creationTimestamp: Date | undefined;
+    edition: string;
+    issuer: string;
     subject: string | undefined;
 }
 
 export class Invitation implements IInvitation {
-
     constructor(issuer: string, edition: string) {
         this.issuer = issuer;
         this.edition = edition;
