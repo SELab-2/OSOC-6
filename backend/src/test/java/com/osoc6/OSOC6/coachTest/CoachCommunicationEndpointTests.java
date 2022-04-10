@@ -29,7 +29,7 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class testing the integration of {@link CommunicationTemplate} for a coach.
+ * Class testing the integration of {@link Communication} for a coach.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,7 +44,7 @@ public final class CoachCommunicationEndpointTests
     private CommunicationTemplateRepository communicationTemplateRepository;
 
     /**
-     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database
+     * The repository which saves, searches, ... {@link Communication} in the database
      */
     @Autowired
     private CommunicationRepository communicationRepository;
@@ -62,7 +62,7 @@ public final class CoachCommunicationEndpointTests
     private EntityLinks entityLinks;
 
     /**
-     * First sample edition that gets loaded before every test.
+     * Sample {@link CommunicationTemplate} that gets loaded before every test.
      */
     private final CommunicationTemplate testTemplate = new CommunicationTemplate("informative",
             "I have to tell you...");
@@ -97,13 +97,13 @@ public final class CoachCommunicationEndpointTests
             .build();
 
     /**
-     * First sample edition that gets loaded before every test.
+     * Sample {@link Communication} that gets loaded before every test.
      */
     private final Communication testCommunication = new Communication("email",
             "I say yes to you because you look so cool.", testTemplate, getAdminUser(), testStudent);
 
     /**
-     * The actual path editions are served on, with '/' as prefix.
+     * The actual path communications are served on, with '/' as prefix.
      */
     private static final String COMMUNICATION_PATH = "/" + DumbledorePathWizard.COMMUNICATION_PATH;
 
