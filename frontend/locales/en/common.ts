@@ -1,4 +1,4 @@
-{
+const common = {
     "Tool name": "Open Summer Of Code Tool",
     "Home page title": "OSOC-6",
     "Login page title": "OSOC : Login page",
@@ -9,3 +9,5 @@
     "Navbar assign students": "Assign Students",
     "Navbar profile": "Profile"
 }
+
+export default common
