@@ -7,7 +7,7 @@ const BeginPage: NextPage = () => {
     return (
         <div>
             <Head>
-                <title>{t('Home page title')}</title>
+                <title>Open Summer of Code : Login page</title>
             </Head>
             <main className="m-4">
                 <h1>{t('Empty page')}</h1>
