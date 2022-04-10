@@ -127,34 +127,34 @@ public final class Student implements WeakToEdition {
     /**
      * A URI pointing to the CV of a student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String curriculumVitaeURI;
+    @Getter @Setter @Builder.Default
+    private String curriculumVitaeURI = "";
 
     /**
      * A URI pointing to the portfolio of the student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String portfolioURI;
+    @Getter @Setter @Builder.Default
+    private String portfolioURI = "";
 
     /**
      * A URI pointing to the motivation of the student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String motivationURI;
+    @Getter @Setter @Builder.Default
+    private String motivationURI = "";
 
     /**
      * A written motivation of the student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String writtenMotivation;
+    @Getter @Setter @Builder.Default
+    private String writtenMotivation = "";
 
     /**
      * Highest level of education a student currently has.
