@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -25,7 +26,6 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -224,7 +224,7 @@ public final class Student implements WeakToEdition {
     private String additionalStudentInfo;
 
     /**
-     * {@link Edition} in which this communication took place.
+     * {@link Edition} the student applies for.
      */
     @ManyToOne(optional = false, cascade = {})
     @ReadOnlyProperty
@@ -264,9 +264,11 @@ public final class Student implements WeakToEdition {
 
     /**
      * Communication that this student has received sorted on the timestamp.
+     * We make sure this is not exported to the resource.
+     * This way a coach does not have any problems.
      */
     @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = {CascadeType.REMOVE})
-    @OrderColumn(name = "timestamp")
+    @JsonIgnore @RestResource(exported = false)
     @Getter @Setter @Builder.Default
     private List<Communication> communications = new ArrayList<>();
 

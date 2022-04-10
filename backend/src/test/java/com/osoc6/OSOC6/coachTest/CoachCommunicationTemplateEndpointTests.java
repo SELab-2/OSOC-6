@@ -91,6 +91,8 @@ public final class CoachCommunicationTemplateEndpointTests
         return new CommunicationTemplate("Love Letter", TEST_STRING);
     }
 
+    // ======================= Tests =======================
+
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_fails() throws Exception {
@@ -102,14 +104,14 @@ public final class CoachCommunicationTemplateEndpointTests
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void post_new_skilltype_fails() throws Exception {
+    public void post_new_communication_template_fails() throws Exception {
         CommunicationTemplate entity = create_entity();
         perform_post(COMMUNICATION_TEMPLATE_PATH, entity).andExpect(status().isForbidden());
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void delete_skilltype_fails() throws Exception {
+    public void delete_communication_template_fails() throws Exception {
         CommunicationTemplate entity = get_random_repository_entity();
         perform_delete_with_id(COMMUNICATION_TEMPLATE_PATH, entity.getId())
                 .andExpect(status().isForbidden());

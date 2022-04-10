@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -78,6 +79,7 @@ public final class Communication implements WeakToEdition {
      * Student with whom the communication took place.
      */
     @ManyToOne(optional = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     @Getter @Setter
     private Student student;
 
