@@ -1,5 +1,6 @@
 const pathNames = {
-    login: '/api/login-processing',
+    base: '/api',
+    login: '/login-processing',
 };
 
 export default pathNames;
