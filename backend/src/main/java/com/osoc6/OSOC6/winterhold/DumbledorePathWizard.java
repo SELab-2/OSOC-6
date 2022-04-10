@@ -58,11 +58,6 @@ public final class DumbledorePathWizard {
     public static final String USER_SKILL_PATH = "user-skills";
 
     /**
-     * Path that {@link com.osoc6.OSOC6.database.models.student.StudentSkill} is served on.
-     */
-    public static final String STUDENT_SKILL_PATH = "student-skills";
-
-    /**
      * Path that {@link com.osoc6.OSOC6.database.models.UserSkill} is served on.
      */
     public static final String PROJECT_SKILL_PATH = "project-skills";

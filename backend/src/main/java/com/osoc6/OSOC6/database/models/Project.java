@@ -19,7 +19,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,10 +58,10 @@ public final class Project implements WeakToEdition {
     /**
      * A URI pointing to the version management of the project.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
     @Getter @Setter
-    private URI versionManagement;
+    private String versionManagement = "";
 
     /**
      * Edition within which this project was created.
@@ -83,10 +82,10 @@ public final class Project implements WeakToEdition {
     /**
      * A URI pointing to the website of the partner.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
     @Getter @Setter
-    private URI partnerWebsite;
+    private String partnerWebsite = "";
 
     /**
      * The {@link UserEntity}/ admin that created the project.
