@@ -11,6 +11,7 @@ import {
     loginSubmitHandler,
     LoginValues,
 } from '../src/handlers/loginSubmitHandler';
+import pathNames from "../src/properties/pathNames";
 
 jest.mock('next/router', () => require('next-router-mock'));
 
@@ -72,10 +73,10 @@ it('SubmitHandler for loginForm sends post request', () => {
     };
 
     loginSubmitHandler(values);
-    mockAxios.mockResponseFor({ url: '/api/login-processing' }, response);
+    mockAxios.mockResponseFor({ url: pathNames.login }, response);
 
     waitFor(() => {
-        expect(mockAxios.post).toHaveBeenCalledWith('/api/login-processing');
+        expect(mockAxios.post).toHaveBeenCalledWith(pathNames.login);
         expect(Router.push).toHaveBeenCalled();
     });
 });
