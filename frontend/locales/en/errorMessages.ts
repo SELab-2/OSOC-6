@@ -1,5 +1,5 @@
 const errorMessages = {
-    "invalid_credentials": "Invalid username and/or password."
-}
+    invalid_credentials: 'Invalid username and/or password.',
+};
 
-export default errorMessages
+export default errorMessages;
