@@ -10,7 +10,7 @@ import org.springframework.hateoas.server.EntityLinks;
 import java.sql.Timestamp;
 
 /**
- * A DTO that helps to convert a Invitation to its JSON representation.
+ * A DTO that helps to convert a {@link Assignment} to its JSON representation.
  * Using this there is no need to write complex regexes to represent relationships.
  */
 @Data
@@ -21,7 +21,7 @@ public class AssignmentDTO {
     private Long id;
 
     /**
-     * whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
+     * Whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
      */
     private Boolean isSuggestion;
 

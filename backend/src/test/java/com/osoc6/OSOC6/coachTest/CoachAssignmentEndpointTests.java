@@ -95,7 +95,7 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
     private final Project testProject = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
 
     /**
-     * Sample project that gets loaded before every test.
+     * Sample {@link Assignment} that gets loaded before every test.
      */
     private final Assignment testAssignment = new Assignment(true, "Seems like handsome boy",
             getCoachUser(), testStudent, testProject);

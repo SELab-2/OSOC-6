@@ -87,12 +87,12 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     private final Project project1 = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
 
     /**
-     * Sample project that gets loaded before every test.
+     * Sample project 2 that gets loaded before every test.
      */
     private final Project project2 = new Project("Instagram", getBaseUserEdition(), "Meta", getAdminUser());
 
     /**
-     * Sample project that gets loaded before every test.
+     * Sample {@link Assignment} that gets loaded before every test.
      */
     private final Assignment testAssignment = new Assignment(true, "Seems like handsome boy",
             getAdminUser(), testStudent, project1);
