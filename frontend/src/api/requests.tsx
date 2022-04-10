@@ -1,5 +1,5 @@
 import axios from 'axios';
-import pathNames from "../properties/pathNames";
+import pathNames from '../properties/pathNames';
 
 export async function getBasePost(url: string, data: any, contentType: string) {
     return axios({
