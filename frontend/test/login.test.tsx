@@ -11,7 +11,7 @@ import {
     loginSubmitHandler,
     LoginValues,
 } from '../src/handlers/loginSubmitHandler';
-import pathNames from "../src/properties/pathNames";
+import pathNames from '../src/properties/pathNames';
 
 jest.mock('next/router', () => require('next-router-mock'));
 
