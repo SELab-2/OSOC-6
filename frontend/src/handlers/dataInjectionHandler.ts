@@ -29,6 +29,8 @@ import {
     PronounsType,
     Student,
 } from '../api/StudentEntity';
+import { ISkillType, ISkillTypePage, SkillType } from '../api/SkillTypeEntity';
+import async from 'next-router-mock/src/async';
 
 const baseRef = { baseURL: pathNames.base };
 
@@ -250,4 +252,28 @@ export const dataInjectionHandler: MouseEventHandler<
     } catch (e) {
         console.log(e);
     }
+
+    const skillTypes: ISkillTypePage = (
+        await axios.get(pathNames.skillTypes, baseRef)
+    ).data;
+    let containedSkillTypes: ISkillType[];
+    if (skillTypes._embedded.skillTypes.length == 0) {
+        const skillType1 = new SkillType('V10 boulderer', '000000');
+
+        containedSkillTypes = await Promise.all(
+            [skillType1].map(
+                async (skill) =>
+                    (
+                        await axios.post(
+                            pathNames.skillTypes,
+                            skillType1,
+                            baseRef
+                        )
+                    ).data
+            )
+        );
+    } else {
+        containedSkillTypes = skillTypes._embedded.skillTypes;
+    }
+    console.log(containedSkillTypes);
 };
