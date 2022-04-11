@@ -56,7 +56,7 @@ public final class Project implements WeakToEdition {
     private String name;
 
     /**
-     * Info about the project project.
+     * Info about the project.
      */
     @Basic(optional = false)
     @Column(columnDefinition = "text")
