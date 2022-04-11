@@ -1,17 +1,25 @@
-import { MouseEventHandler } from "react";
-import axios from "axios";
-import pathNames from "../properties/pathNames";
-import { IUser } from "../api/UserEntity";
-import { Edition, IEdition, IEditionsPage } from "../api/EditionEntity";
-import { IInvitation, IInvitationsPage, Invitation } from "../api/InvitationEntity";
-import { IProject, IProjectPage, Project } from "../api/ProjectEntity";
-import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/ProjectSkillEntity";
-import { IUserSkill, IUserSkillPage, UserSkill } from "../api/UserSkillEntity";
+import { MouseEventHandler } from 'react';
+import axios from 'axios';
+import pathNames from '../properties/pathNames';
+import { IUser } from '../api/UserEntity';
+import { Edition, IEdition, IEditionsPage } from '../api/EditionEntity';
+import {
+    IInvitation,
+    IInvitationsPage,
+    Invitation,
+} from '../api/InvitationEntity';
+import { IProject, IProjectPage, Project } from '../api/ProjectEntity';
+import {
+    IProjectSkill,
+    IProjectSkillPage,
+    ProjectSkill,
+} from '../api/ProjectSkillEntity';
+import { IUserSkill, IUserSkillPage, UserSkill } from '../api/UserSkillEntity';
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
-    ICommunicationTemplatePage
-} from "../api/CommunicationTemplateEntity";
+    ICommunicationTemplatePage,
+} from '../api/CommunicationTemplateEntity';
 import {
     EnglishProficiency,
     Gender,
@@ -19,8 +27,8 @@ import {
     IStudentPage,
     OsocExpericience,
     PronounsType,
-    Student
-} from "../api/StudentEntity";
+    Student,
+} from '../api/StudentEntity';
 
 const baseRef = { baseURL: pathNames.base };
 
@@ -48,7 +56,11 @@ export const dataInjectionHandler: MouseEventHandler<
                 [skill].map(
                     async (skill) =>
                         (
-                            await axios.post(pathNames.userSkills, skill, baseRef)
+                            await axios.post(
+                                pathNames.userSkills,
+                                skill,
+                                baseRef
+                            )
                         ).data
                 )
             );
@@ -183,36 +195,41 @@ export const dataInjectionHandler: MouseEventHandler<
         }
         console.log(containedTemplates);
 
-        const students: IStudentPage = (await axios.get(pathNames.students, baseRef)).data;
+        const students: IStudentPage = (
+            await axios.get(pathNames.students, baseRef)
+        ).data;
         let containedStudents: IStudent[];
         if (students._embedded.students.length == 0) {
             const student1: Student = new Student(
-                "kasper@mail.com",
-                "He likes it like that",
-                "Finding out the Spring ways",
-                "Kasper Demeyere",
-                "Master",
-                "",
+                'kasper@mail.com',
+                'He likes it like that',
+                'Finding out the Spring ways',
+                'Kasper Demeyere',
+                'Master',
+                '',
                 5,
-                "higher level",
+                'higher level',
                 EnglishProficiency.fluent,
-                "Kasper",
+                'Kasper',
                 Gender.male,
-                "Ghent University",
-                "Demeyere",
-                "Dutch",
-                "",
+                'Ghent University',
+                'Demeyere',
+                'Dutch',
+                '',
                 OsocExpericience.yes_noStudentCoach,
-                "+3257697568",
-                "",
+                '+3257697568',
+                '',
                 [],
                 PronounsType.he,
-                ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
-                ["I love to Spring Spring in java Spring!"],
-                "",
-                "3th",
+                [
+                    'Gaming on a nice chair',
+                    'programming whilst thinking about sleeping',
+                ],
+                ['I love to Spring Spring in java Spring!'],
+                '',
+                '3th',
                 editionUrl
-            )
+            );
 
             containedStudents = await Promise.all(
                 [student1].map(

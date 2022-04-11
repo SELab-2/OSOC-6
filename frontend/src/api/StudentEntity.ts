@@ -1,54 +1,54 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
 export enum EnglishProficiency {
     /**
      * Can understand your form, but it is hard for me to reply.
      */
-    readNotWrite = "READ_NOT_WRITE",
+    readNotWrite = 'READ_NOT_WRITE',
 
     /**
      * Can have simple conversations.
      */
-    simpleConversation = "SIMPLE_CONVERSATION",
+    simpleConversation = 'SIMPLE_CONVERSATION',
 
     /**
      * Can express themselves, understand people and get a point across.
      */
-    expressive = "EXPRESSIVE",
+    expressive = 'EXPRESSIVE',
 
     /**
      * Can have extensive and complicated conversations.
      */
-    extensive = "EXTENSIVE",
+    extensive = 'EXTENSIVE',
 
     /**
      * Fluent in English.
      */
-    fluent = "FLUENT",
+    fluent = 'FLUENT',
 }
 
 export enum Gender {
-    female = "FEMALE",
-    male = "MALE",
-    transgender = "TRANSGENDER",
-    not_specified = "NOT_SPECIFIED",
+    female = 'FEMALE',
+    male = 'MALE',
+    transgender = 'TRANSGENDER',
+    not_specified = 'NOT_SPECIFIED',
 }
 
 export enum OsocExpericience {
-    none = "NONE",
-    yes_noStudentCoach = "YES_NO_STUDENT_COACH",
-    yes_studentCoach = "YES_STUDENT_COACH",
+    none = 'NONE',
+    yes_noStudentCoach = 'YES_NO_STUDENT_COACH',
+    yes_studentCoach = 'YES_STUDENT_COACH',
 }
 
 export enum PronounsType {
-    SHE = "SHE",
-    he = "HE",
-    they = "THEY",
-    ze = "ZE",
-    firstName = "FIRSTNAME",
-    callName = "CALLNAME",
-    other = "OTHER",
-    none = "NONE",
+    SHE = 'SHE',
+    he = 'HE',
+    they = 'THEY',
+    ze = 'ZE',
+    firstName = 'FIRSTNAME',
+    callName = 'CALLNAME',
+    other = 'OTHER',
+    none = 'NONE',
 }
 
 export interface IStudent extends IBaseEntity {
@@ -70,7 +70,7 @@ export interface IStudent extends IBaseEntity {
     osocExperience: OsocExpericience;
     phoneNumber: string;
     portfolioURI: string;
-    pronouns: string[]
+    pronouns: string[];
     pronounsType: PronounsType;
     skills: string[];
     studies: string[];
@@ -87,20 +87,39 @@ export interface IStudent extends IBaseEntity {
         suggestions: IReferencer;
         student: IReferencer;
         self: IReferencer;
-    }
+    };
 }
 
-export type IStudentPage = IPage<{ students: IStudent[] }>
+export type IStudentPage = IPage<{ students: IStudent[] }>;
 
 export class Student {
-    constructor(email: string, additionalStudentInfo: string, bestSkill: string,
-                callName: string, currentDiploma: string, curriculumVitaeURI: string,
-                durationCurrentDegree: number, educationLevel: string, englishProficiency: EnglishProficiency,
-                firstName: string, gender: Gender, institutionName: string, lastName: string,
-                mostFluentLanguage: string, motivationURI: string, osocExperience: OsocExpericience,
-                phoneNumber: string, portfolioURI: string, pronouns: string[],
-                pronounsType: PronounsType, skills: string[], studies: string[],
-                writtenMotivation: string, yearInCourse: string, edition: string) {
+    constructor(
+        email: string,
+        additionalStudentInfo: string,
+        bestSkill: string,
+        callName: string,
+        currentDiploma: string,
+        curriculumVitaeURI: string,
+        durationCurrentDegree: number,
+        educationLevel: string,
+        englishProficiency: EnglishProficiency,
+        firstName: string,
+        gender: Gender,
+        institutionName: string,
+        lastName: string,
+        mostFluentLanguage: string,
+        motivationURI: string,
+        osocExperience: OsocExpericience,
+        phoneNumber: string,
+        portfolioURI: string,
+        pronouns: string[],
+        pronounsType: PronounsType,
+        skills: string[],
+        studies: string[],
+        writtenMotivation: string,
+        yearInCourse: string,
+        edition: string
+    ) {
         this.email = email;
         this.additionalStudentInfo = additionalStudentInfo;
         this.bestSkill = bestSkill;
@@ -153,6 +172,5 @@ export class Student {
     writtenMotivation: string;
     yearInCourse: string;
 
-    edition: string
-
+    edition: string;
 }
