@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
 export interface IAssignment extends IBaseEntity {
     isSuggestion: boolean;
@@ -12,14 +12,20 @@ export interface IAssignment extends IBaseEntity {
         student: IReferencer;
         assignment: IReferencer;
         self: IReferencer;
-    }
+    };
 }
 
-export type IAssignmentPage = IPage<{ assignments: IAssignment[] }>
+export type IAssignmentPage = IPage<{ assignments: IAssignment[] }>;
 
 export class Assignment {
-    constructor(isSuggestion: boolean, isValid: boolean, reason: string,
-                assigner: string, student: string, project: string) {
+    constructor(
+        isSuggestion: boolean,
+        isValid: boolean,
+        reason: string,
+        assigner: string,
+        student: string,
+        project: string
+    ) {
         this.isSuggestion = isSuggestion;
         this.isValid = isValid;
         this.reason = reason;

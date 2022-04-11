@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 import axios from 'axios';
 import pathNames from '../properties/pathNames';
-import { IUser, IUsersPage, User } from "../api/UserEntity";
+import { IUser, IUsersPage, User } from '../api/UserEntity';
 import { Edition, IEdition, IEditionsPage } from '../api/EditionEntity';
 import { IInvitation, IInvitationsPage, Invitation } from '../api/InvitationEntity';
 import { IProject, IProjectPage, Project } from '../api/ProjectEntity';
@@ -31,7 +31,7 @@ import {
     Suggestion,
     SuggestionStrategy,
 } from '../api/SuggestionEntity';
-import { Assignment, IAssignment, IAssignmentPage } from "../api/AssignmentEntity";
+import { Assignment, IAssignment, IAssignmentPage } from '../api/AssignmentEntity';
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(pathNames.ownUser, AxiosConf)).data;
@@ -257,12 +257,12 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     console.log(containedSuggestions);
 
     const assignments: IAssignmentPage = (await axios.get(pathNames.assignments, AxiosConf)).data;
-    let containedAssignments: IAssignment[]
+    let containedAssignments: IAssignment[];
     if (assignments._embedded.assignments.length == 0) {
         const assignment1: Assignment = new Assignment(
             true,
             true,
-            "You! here! now!",
+            'You! here! now!',
             own_user_url,
             someStudentUri,
             someProjectUri
@@ -282,19 +282,23 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const users: IUsersPage = (await axios.get(pathNames.users, AxiosConf)).data;
     if (users._embedded.users.length < 2) {
         //console.log(crypto.randomUUID());
-        const coachUser1: User = new User("Ben", "ben@mail.com", crypto.randomUUID());
+        const coachUser1: User = new User('Ben', 'ben@mail.com', crypto.randomUUID());
 
         await Promise.all(
             [coachUser1].map(
-                async (user) => (await axios.post(pathNames.registration, user, {
-                    params: {
-                        token: containedInvitation.token,
-                    },
-                    ...AxiosConf,
-                })).data
+                async (user) =>
+                    (
+                        await axios.post(pathNames.registration, user, {
+                            params: {
+                                token: containedInvitation.token,
+                            },
+                            ...AxiosConf,
+                        })
+                    ).data
             )
         );
     }
-    let containedUsers = (<IUsersPage> (await axios.get(pathNames.users, AxiosConf)).data)._embedded.users;
+    let containedUsers = (<IUsersPage>(await axios.get(pathNames.users, AxiosConf)).data)._embedded
+        .users;
     console.log(containedUsers);
 };
