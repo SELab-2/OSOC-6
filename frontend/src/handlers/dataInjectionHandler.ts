@@ -31,20 +31,19 @@ import {
 } from '../api/StudentEntity';
 import { ISkillType, ISkillTypePage, SkillType } from '../api/SkillTypeEntity';
 import async from 'next-router-mock/src/async';
-
-const baseRef = { baseURL: pathNames.base };
+import { AxiosConf } from "../api/requests";
 
 export const dataInjectionHandler: MouseEventHandler<
     HTMLButtonElement
 > = async (_) => {
     try {
-        const user: IUser = (await axios.get(pathNames.ownUser, baseRef)).data;
+        const user: IUser = (await axios.get(pathNames.ownUser, AxiosConf)).data;
         console.log(user);
 
-        const own_user_url: string = user._links!.self.href;
+        const own_user_url: string = user._links.self.href;
 
         const userSkills: IUserSkillPage = (
-            await axios.get(pathNames.userSkills, baseRef)
+            await axios.get(pathNames.userSkills, AxiosConf)
         ).data;
         let containedUserSkills: IUserSkill[];
         if (userSkills._embedded['user-skills'].length == 0) {
@@ -61,7 +60,7 @@ export const dataInjectionHandler: MouseEventHandler<
                             await axios.post(
                                 pathNames.userSkills,
                                 skill,
-                                baseRef
+                                AxiosConf
                             )
                         ).data
                 )
@@ -72,14 +71,14 @@ export const dataInjectionHandler: MouseEventHandler<
         console.log(containedUserSkills);
 
         const editions: IEditionsPage = (
-            await axios.get(pathNames.editions, baseRef)
+            await axios.get(pathNames.editions, AxiosConf)
         ).data;
         console.log(editions);
         let containedEdition: IEdition;
         if (editions._embedded.editions.length == 0) {
             const edition1: Edition = new Edition('Edition 1', 2022, true);
             containedEdition = (
-                await axios.post(pathNames.editions, edition1, baseRef)
+                await axios.post(pathNames.editions, edition1, AxiosConf)
             ).data;
         } else {
             containedEdition = editions._embedded.editions[0];
@@ -88,13 +87,13 @@ export const dataInjectionHandler: MouseEventHandler<
         const editionUrl: string = containedEdition._links!.self.href;
 
         const invitations: IInvitationsPage = (
-            await axios.get(pathNames.invitations, baseRef)
+            await axios.get(pathNames.invitations, AxiosConf)
         ).data;
         let containedInvitation: IInvitation;
         if (invitations._embedded.invitations.length == 0) {
             const invitation1 = new Invitation(own_user_url, editionUrl);
             containedInvitation = (
-                await axios.post(pathNames.invitations, invitation1, baseRef)
+                await axios.post(pathNames.invitations, invitation1, AxiosConf)
             ).data;
         } else {
             containedInvitation = invitations._embedded.invitations[0];
@@ -102,7 +101,7 @@ export const dataInjectionHandler: MouseEventHandler<
         console.log(containedInvitation);
 
         const projects: IProjectPage = (
-            await axios.get(pathNames.projects, baseRef)
+            await axios.get(pathNames.projects, AxiosConf)
         ).data;
         let containedProjects: IProject[];
         if (projects._embedded.projects.length == 0) {
@@ -130,7 +129,7 @@ export const dataInjectionHandler: MouseEventHandler<
                 [project1, project2].map(
                     async (proj) =>
                         (
-                            await axios.post(pathNames.projects, proj, baseRef)
+                            await axios.post(pathNames.projects, proj, AxiosConf)
                         ).data
                 )
             );
@@ -140,7 +139,7 @@ export const dataInjectionHandler: MouseEventHandler<
         console.log(containedProjects);
 
         const projectSkills: IProjectSkillPage = (
-            await axios.get(pathNames.projectSkills, baseRef)
+            await axios.get(pathNames.projectSkills, AxiosConf)
         ).data;
         let containedProjectSkills: IProjectSkill[];
         if (projectSkills._embedded['project-skills'].length == 0) {
@@ -157,7 +156,7 @@ export const dataInjectionHandler: MouseEventHandler<
                             await axios.post(
                                 pathNames.projectSkills,
                                 skill,
-                                baseRef
+                                AxiosConf
                             )
                         ).data
                 )
@@ -168,7 +167,7 @@ export const dataInjectionHandler: MouseEventHandler<
         console.log(containedProjectSkills);
 
         const templates: ICommunicationTemplatePage = (
-            await axios.get(pathNames.communicationTemplates, baseRef)
+            await axios.get(pathNames.communicationTemplates, AxiosConf)
         ).data;
         let containedTemplates: ICommunicationTemplate[];
         if (templates._embedded.communicationTemplates.length == 0) {
@@ -187,7 +186,7 @@ export const dataInjectionHandler: MouseEventHandler<
                             await axios.post(
                                 pathNames.communicationTemplates,
                                 template,
-                                baseRef
+                                AxiosConf
                             )
                         ).data
                 )
@@ -198,7 +197,7 @@ export const dataInjectionHandler: MouseEventHandler<
         console.log(containedTemplates);
 
         const students: IStudentPage = (
-            await axios.get(pathNames.students, baseRef)
+            await axios.get(pathNames.students, AxiosConf)
         ).data;
         let containedStudents: IStudent[];
         if (students._embedded.students.length == 0) {
@@ -240,7 +239,7 @@ export const dataInjectionHandler: MouseEventHandler<
                             await axios.post(
                                 pathNames.students,
                                 student,
-                                baseRef
+                                AxiosConf
                             )
                         ).data
                 )
@@ -254,7 +253,7 @@ export const dataInjectionHandler: MouseEventHandler<
     }
 
     const skillTypes: ISkillTypePage = (
-        await axios.get(pathNames.skillTypes, baseRef)
+        await axios.get(pathNames.skillTypes, AxiosConf)
     ).data;
     let containedSkillTypes: ISkillType[];
     if (skillTypes._embedded.skillTypes.length == 0) {
@@ -267,7 +266,7 @@ export const dataInjectionHandler: MouseEventHandler<
                         await axios.post(
                             pathNames.skillTypes,
                             skillType1,
-                            baseRef
+                            AxiosConf
                         )
                     ).data
             )
