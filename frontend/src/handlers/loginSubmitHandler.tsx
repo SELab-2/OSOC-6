@@ -18,11 +18,7 @@ export async function loginSubmitHandler(values: LoginValues) {
     loginFormData.append('username', values.username);
     loginFormData.append('password', values.password);
 
-    const response = await axios.post(
-        pathNames.login,
-        loginFormData,
-        AxiosFormConfig
-    );
+    const response = await axios.post(pathNames.login, loginFormData, AxiosFormConfig);
     // redirect to the url specified in the response
     await Router.push(response.request.responseURL);
 }

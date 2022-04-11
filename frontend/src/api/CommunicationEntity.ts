@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
 export interface ICommunication extends IBaseEntity {
     content: string;
@@ -12,13 +12,19 @@ export interface ICommunication extends IBaseEntity {
 
         communication: IReferencer;
         self: IReferencer;
-    }
+    };
 }
 
-export type ICommunicationPage = IPage<{ communications: ICommunication[] }>
+export type ICommunicationPage = IPage<{ communications: ICommunication[] }>;
 
 export class Communication {
-    constructor(medium: string, template: string, content: string, sender: string, student: string) {
+    constructor(
+        medium: string,
+        template: string,
+        content: string,
+        sender: string,
+        student: string
+    ) {
         this.medium = medium;
         this.template = template;
         this.content = content;

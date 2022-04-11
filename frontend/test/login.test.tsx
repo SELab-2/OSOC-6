@@ -7,10 +7,7 @@ import mockAxios from 'jest-mock-axios';
 import Router from 'next/router';
 import { AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
-import {
-    loginSubmitHandler,
-    LoginValues,
-} from '../src/handlers/loginSubmitHandler';
+import { loginSubmitHandler, LoginValues } from '../src/handlers/loginSubmitHandler';
 import pathNames from '../src/properties/pathNames';
 
 jest.mock('next/router', () => require('next-router-mock'));

@@ -1,9 +1,9 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
 
 export enum SuggestionStrategy {
-    yes = "YES",
-    maybe = "MAYBE",
-    no = "NO",
+    yes = 'YES',
+    maybe = 'MAYBE',
+    no = 'NO',
 }
 
 export interface ISuggestion extends IBaseEntity {
@@ -16,10 +16,10 @@ export interface ISuggestion extends IBaseEntity {
         student: IReferencer;
         suggestion: IReferencer;
         self: IReferencer;
-    }
+    };
 }
 
-export type ISuggestionPage = IPage<{ suggestions: ISuggestion[] }>
+export type ISuggestionPage = IPage<{ suggestions: ISuggestion[] }>;
 
 export class Suggestion {
     constructor(strategy: SuggestionStrategy, reason: string, coach: string, student: string) {

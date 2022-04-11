@@ -1,6 +1,7 @@
 const pathNames = {
     base: 'http://localhost/api/',
     login: '/login-processing',
+    registration: '/registration',
     editions: 'editions',
     skillTypes: 'skillTypes',
     users: 'users',
