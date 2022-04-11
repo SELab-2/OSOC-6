@@ -8,4 +8,4 @@ export const AxiosFormConfig = {
         'Content-Type': 'multipart/form-data',
         'access-control-allow-origin': '*',
     },
-}
+};
