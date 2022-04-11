@@ -16,9 +16,7 @@ const LoginError: NextPage = () => {
             <main className="m-4">
                 <Card>
                     <Card.Body>
-                        <Card.Text>
-                            {t('errorMessages:invalid_credentials')}
-                        </Card.Text>
+                        <Card.Text>{t('errorMessages:invalid_credentials')}</Card.Text>
                     </Card.Body>
                 </Card>
                 <LoginForm submitHandler={loginSubmitHandler} />

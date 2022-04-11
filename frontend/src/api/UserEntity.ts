@@ -31,3 +31,15 @@ export enum UserRole {
 export interface IAuthority {
     authority: UserRole;
 }
+
+export class User {
+    constructor(callName: string, email: string, password: string) {
+        this.callName = callName;
+        this.email = email;
+        this.password = password;
+    }
+
+    callName: string;
+    email: string;
+    password: string;
+}
