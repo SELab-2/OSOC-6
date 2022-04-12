@@ -92,7 +92,11 @@ public enum PronounsType {
 
         @Override
         public String getSubjective(final Student student) {
-            return student.getFirstName();
+            String first = student.getFirstName();
+            if (first.charAt(first.length() - 1) == 's') {
+                return first + "'";
+            }
+            return first + "'s";
         }
 
         @Override
@@ -111,7 +115,11 @@ public enum PronounsType {
 
         @Override
         public String getSubjective(final Student student) {
-            return student.getCallName();
+            String call = student.getCallName();
+            if (call.charAt(call.length() - 1) == 's') {
+                return call + "'";
+            }
+            return call + "'s";
         }
 
         @Override
