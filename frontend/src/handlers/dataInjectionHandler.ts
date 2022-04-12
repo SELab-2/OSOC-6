@@ -21,7 +21,12 @@ import {
     PronounsType,
     Student,
 } from "../api/StudentEntity";
-import { getSkillTypeFromSkill, ISkillType, ISkillTypePage, SkillType } from "../api/SkillTypeEntity";
+import {
+    getSkillTypeFromSkill,
+    ISkillType,
+    ISkillTypePage,
+    SkillType,
+} from "../api/SkillTypeEntity";
 import { AxiosConf } from "../api/requests";
 import { Communication, ICommunication, ICommunicationPage } from "../api/CommunicationEntity";
 import { Simulate } from "react-dom/test-utils";
@@ -207,10 +212,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedSkillTypes = await Promise.all(
             [skillType1, skillTypeOther].map(
-                async (skill) =>
-                    (
-                        await axios.post(pathNames.skillTypes, skill, AxiosConf)
-                    ).data
+                async (skill) => (await axios.post(pathNames.skillTypes, skill, AxiosConf)).data
             )
         );
     } else {
