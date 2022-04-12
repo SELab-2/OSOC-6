@@ -10,7 +10,7 @@ export interface IProject extends IBaseEntity {
     creator: string;
 
     _links: {
-        assignment: IReferencer;
+        assignments: IReferencer;
         coaches: IReferencer;
         creator: IReferencer;
         edition: IReferencer;
@@ -43,7 +43,6 @@ export class Project {
         this.creator = creator;
     }
 
-    assignments: string | undefined;
     creator: string;
     edition: string;
     goals: string[];

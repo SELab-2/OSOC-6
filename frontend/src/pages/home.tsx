@@ -3,6 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
+import ProjectAsignmentList from "../components/projectAssignmentList";
 
 const Home: NextPage = () => {
     const { t } = useTranslation("common");
@@ -15,6 +16,7 @@ const Home: NextPage = () => {
                 <h1 className={styles.title}>{t("Tool name")}</h1>
             </main>
             <button onClick={dataInjectionHandler}>Inject!</button>
+            <ProjectAsignmentList/>
         </div>
     );
 };
