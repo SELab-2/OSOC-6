@@ -21,7 +21,7 @@ import {
     PronounsType,
     Student,
 } from "../api/StudentEntity";
-import { ISkillType, ISkillTypePage, SkillType } from "../api/SkillTypeEntity";
+import { getSkillTypeFromSkill, ISkillType, ISkillTypePage, SkillType } from "../api/SkillTypeEntity";
 import { AxiosConf } from "../api/requests";
 import { Communication, ICommunication, ICommunicationPage } from "../api/CommunicationEntity";
 import { Simulate } from "react-dom/test-utils";
@@ -53,6 +53,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedUserSkills = userSkills._embedded["user-skills"];
     }
     console.log(containedUserSkills);
+    const simpleUserSkill: IUserSkill = containedUserSkills[0];
 
     const editions: IEditionsPage = (await axios.get(pathNames.editions, AxiosConf)).data;
     console.log(editions);
@@ -132,6 +133,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedProjectSkills = projectSkills._embedded["project-skills"];
     }
     console.log(containedProjectSkills);
+    const projectBoulderSkill: IProjectSkill = containedProjectSkills[0];
 
     const templates: ICommunicationTemplatePage = (
         await axios.get(pathNames.communicationTemplates, AxiosConf)
@@ -201,12 +203,13 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     let containedSkillTypes: ISkillType[];
     if (skillTypes._embedded.skillTypes.length == 0) {
         const skillType1 = new SkillType("V10 boulderer", "000000");
+        const skillTypeOther = new SkillType("other", "929199");
 
         containedSkillTypes = await Promise.all(
-            [skillType1].map(
+            [skillType1, skillTypeOther].map(
                 async (skill) =>
                     (
-                        await axios.post(pathNames.skillTypes, skillType1, AxiosConf)
+                        await axios.post(pathNames.skillTypes, skill, AxiosConf)
                     ).data
             )
         );
@@ -214,6 +217,10 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedSkillTypes = skillTypes._embedded.skillTypes;
     }
     console.log(containedSkillTypes);
+
+    console.log("Test getSkillTypeFromSkill:");
+    console.log(await getSkillTypeFromSkill(projectBoulderSkill));
+    console.log(await getSkillTypeFromSkill(simpleUserSkill));
 
     const communications: ICommunicationPage = (
         await axios.get(pathNames.communications, AxiosConf)
