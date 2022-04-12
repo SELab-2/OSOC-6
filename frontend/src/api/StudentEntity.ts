@@ -1,54 +1,54 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
 
 export enum EnglishProficiency {
     /**
      * Can understand your form, but it is hard for me to reply.
      */
-    readNotWrite = 'READ_NOT_WRITE',
+    readNotWrite = "READ_NOT_WRITE",
 
     /**
      * Can have simple conversations.
      */
-    simpleConversation = 'SIMPLE_CONVERSATION',
+    simpleConversation = "SIMPLE_CONVERSATION",
 
     /**
      * Can express themselves, understand people and get a point across.
      */
-    expressive = 'EXPRESSIVE',
+    expressive = "EXPRESSIVE",
 
     /**
      * Can have extensive and complicated conversations.
      */
-    extensive = 'EXTENSIVE',
+    extensive = "EXTENSIVE",
 
     /**
      * Fluent in English.
      */
-    fluent = 'FLUENT',
+    fluent = "FLUENT",
 }
 
 export enum Gender {
-    female = 'FEMALE',
-    male = 'MALE',
-    transgender = 'TRANSGENDER',
-    not_specified = 'NOT_SPECIFIED',
+    female = "FEMALE",
+    male = "MALE",
+    transgender = "TRANSGENDER",
+    not_specified = "NOT_SPECIFIED",
 }
 
 export enum OsocExpericience {
-    none = 'NONE',
-    yes_noStudentCoach = 'YES_NO_STUDENT_COACH',
-    yes_studentCoach = 'YES_STUDENT_COACH',
+    none = "NONE",
+    yes_noStudentCoach = "YES_NO_STUDENT_COACH",
+    yes_studentCoach = "YES_STUDENT_COACH",
 }
 
 export enum PronounsType {
-    SHE = 'SHE',
-    he = 'HE',
-    they = 'THEY',
-    ze = 'ZE',
-    firstName = 'FIRSTNAME',
-    callName = 'CALLNAME',
-    other = 'OTHER',
-    none = 'NONE',
+    SHE = "SHE",
+    he = "HE",
+    they = "THEY",
+    ze = "ZE",
+    firstName = "FIRSTNAME",
+    callName = "CALLNAME",
+    other = "OTHER",
+    none = "NONE",
 }
 
 export interface IStudent extends IBaseEntity {

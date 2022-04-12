@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
 
 export interface IUser extends IBaseEntity {
     accountNonExpired: boolean;
@@ -24,8 +24,8 @@ export interface IUser extends IBaseEntity {
 export type IUsersPage = IPage<{ users: IUser[] }>;
 
 export enum UserRole {
-    admin = 'ADMIN',
-    coach = 'COACH',
+    admin = "ADMIN",
+    coach = "COACH",
 }
 
 export interface IAuthority {
