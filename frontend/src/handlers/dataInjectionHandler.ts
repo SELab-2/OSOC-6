@@ -297,8 +297,10 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                     ).data
             )
         );
+        console.log("You registered a new user. You are now logged out.");
+    } else {
+        let containedUsers = (<IUsersPage>(await axios.get(pathNames.users, AxiosConf)).data)._embedded
+            .users;
+        console.log(containedUsers);
     }
-    let containedUsers = (<IUsersPage>(await axios.get(pathNames.users, AxiosConf)).data)._embedded
-        .users;
-    console.log(containedUsers);
 };
