@@ -21,7 +21,7 @@ export interface IProject extends IBaseEntity {
 }
 
 export type IProjectPage = IPage<{ projects: IProject[] }>;
-export type IProjectLinks = IEntityLinks<{ projects: IProject[] }>
+export type IProjectLinks = IEntityLinks<{ projects: IProject[] }>;
 
 export class Project {
     constructor(

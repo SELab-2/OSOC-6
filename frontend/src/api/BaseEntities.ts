@@ -23,8 +23,5 @@ export interface IPage<T> extends IEntityLinks<T> {
 }
 
 export interface IEntityLinks<T> extends IBaseEntity {
-    _links: {
-        self: IReferencer;
-    };
     _embedded: T;
 }
