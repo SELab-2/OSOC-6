@@ -128,8 +128,8 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
 
     /**
      * For some reason the test does not keep its query params after the redirect.
-     * That's why this test needs to post to /login-processing instead of /login
-     * because posting to /login results in a redirect to /login-processing.
+     * That's why this test needs to post to /{LOGIN_PROCESSING_PATH} instead of /login
+     * because posting to /login results in a redirect to /{LOGIN_PROCESSING_PATH}.
      * @throws Exception throws exception if the request or a check fails
      */
     @Test
@@ -137,7 +137,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
         FormLoginRequestBuilder login = formLogin()
                 .user(loginTestUser.getEmail())
                 .password(loginTestUser.getPassword())
-                .loginProcessingUrl("/login-processing");
+                .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH);
         getMockMvc().perform(login)
                 .andExpect(authenticated())
                 .andExpect(status().is3xxRedirection())
@@ -149,7 +149,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
         FormLoginRequestBuilder login = formLogin()
                 .user("invalid")
                 .password("invalid")
-                .loginProcessingUrl("/login-processing");
+                .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH);
         getMockMvc().perform(login)
                 .andExpect(unauthenticated());
     }
@@ -161,7 +161,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 "callName", "register man",
                 "password", "123456"
         );
-        getMockMvc().perform(post("/registration")
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
                 .queryParam("token", unusedInvitation.getToken())
                 .content(Util.asJsonString(registerMap))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -176,7 +176,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 "callName", "register man",
                 "password", "123456"
         );
-        getMockMvc().perform(post("/registration")
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
                         .queryParam("token", unusedInvitation.getToken())
                         .content(Util.asJsonString(registerMap))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -193,7 +193,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 "callName", "register man",
                 "password", "123456"
         );
-        getMockMvc().perform(post("/registration")
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
                         .queryParam("token", "notavalidtoken")
                         .content(Util.asJsonString(registerMap))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -209,7 +209,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 "callName", "register man",
                 "password", "123456"
         );
-        getMockMvc().perform(post("/registration")
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
                         .queryParam("token", getInvitationForCoach().getToken())
                         .content(Util.asJsonString(registerMap))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -234,7 +234,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                     "callName", "register man",
                     "password", "123456"
             );
-            getMockMvc().perform(post("/registration")
+            getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
                             .queryParam("token", unusedInvitation.getToken())
                             .content(Util.asJsonString(registerMap))
                             .contentType(MediaType.APPLICATION_JSON)

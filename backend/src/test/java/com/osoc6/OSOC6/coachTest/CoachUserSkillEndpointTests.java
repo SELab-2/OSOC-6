@@ -127,7 +127,7 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     }
 
     @Test
-    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void user_post_others_skill_forbidden() throws Exception {
         perform_post(getEntityPath(), create_entity())
                 .andExpect(status().isForbidden());

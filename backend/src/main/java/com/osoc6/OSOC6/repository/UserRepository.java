@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Optional;
@@ -31,6 +32,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @RestResource(path = DumbledorePathWizard.USERS_BY_EMAIL_PATH,
             rel = DumbledorePathWizard.USERS_BY_EMAIL_PATH)
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
+            + "@spelUtil.hasOverlappingEditions(authentication.principal, returnObject.get)")
     Optional<UserEntity> findByEmail(String email);
 
     /**
@@ -38,6 +41,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      */
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
+            + "@spelUtil.hasOverlappingEditions(authentication.principal, returnObject.get)")
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**

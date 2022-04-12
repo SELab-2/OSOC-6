@@ -219,4 +219,21 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getAdminUser().getCallName()));
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_sees_other_edition_coach_by_email() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+                new String[]{"email"}, new String[]{getOutsiderCoach().getEmail()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getOutsiderCoach().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_sees_other_edition_coach_by_id() throws Exception {
+        perform_get(getEntityPath() + "/" + getOutsiderCoach().getId())
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getOutsiderCoach().getCallName()));
+    }
 }

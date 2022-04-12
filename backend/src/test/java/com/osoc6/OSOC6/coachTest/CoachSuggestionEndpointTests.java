@@ -159,10 +159,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     }
 
     @Test
-    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void posting_with_other_coach_id_fails() throws Exception {
         Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality",
-                getOutsiderCoach(), student);
+                getCoachUser(), student);
         perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
     }
 

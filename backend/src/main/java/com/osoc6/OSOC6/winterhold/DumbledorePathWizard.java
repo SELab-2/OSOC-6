@@ -48,6 +48,16 @@ public final class DumbledorePathWizard {
     public static final String OWN_USERS_PATH = "own-user";
 
     /**
+     * Path that registration is served on.
+     */
+    public static final String REGISTRATION_PATH = "registration";
+
+    /**
+     * Path that login processing is served on.
+     */
+    public static final String LOGIN_PROCESSING_PATH = "login-processing";
+
+    /**
      * Path that {@link com.osoc6.OSOC6.database.models.CommunicationTemplate} is served on.
      */
     public static final String COMMUNICATION_TEMPLATE_PATH = "communicationTemplates";

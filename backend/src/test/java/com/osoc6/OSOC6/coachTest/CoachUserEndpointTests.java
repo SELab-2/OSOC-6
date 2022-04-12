@@ -194,4 +194,37 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getCoachUser().getCallName()));
     }
+
+    @Test
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_sees_same_edition_by_email() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+                new String[]{"email"}, new String[]{getCoachUser().getEmail()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_does_NOT_see_other_edition_by_email() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+                new String[]{"email"}, new String[]{getCoachUser().getEmail()})
+                .andExpect(status().isForbidden())
+                .andExpect(string_not_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_sees_same_edition_by_id() throws Exception {
+        perform_get(getEntityPath() + "/" + getCoachUser().getId())
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_does_NOT_see_other_edition_by_id() throws Exception {
+        perform_get(getEntityPath() + "/" + getCoachUser().getId())
+                .andExpect(status().isForbidden());
+    }
 }
