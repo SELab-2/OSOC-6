@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IAssignment extends IBaseEntity {
     isSuggestion: boolean;
@@ -16,6 +16,7 @@ export interface IAssignment extends IBaseEntity {
 }
 
 export type IAssignmentPage = IPage<{ assignments: IAssignment[] }>;
+export type IAssignmentLinks = IEntityLinks<{ assignments: IAssignment[] }>;
 
 export class Assignment {
     constructor(

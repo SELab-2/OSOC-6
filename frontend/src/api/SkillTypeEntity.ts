@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface ISkillType extends IBaseEntity {
     name: string;
@@ -11,6 +11,7 @@ export interface ISkillType extends IBaseEntity {
 }
 
 export type ISkillTypePage = IPage<{ skillTypes: ISkillType[] }>;
+export type ISkillTypeLinks = IEntityLinks<{ skillTypes: ISkillType[] }>;
 
 export class SkillType {
     constructor(name: string, colour: string) {

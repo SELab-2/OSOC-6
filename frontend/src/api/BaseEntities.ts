@@ -8,7 +8,7 @@ export interface IBaseEntity {
     };
 }
 
-export interface IPage<T> extends IBaseEntity {
+export interface IPage<T> extends IEntityLinks<T> {
     page: {
         number: number;
         size: number;
@@ -20,5 +20,8 @@ export interface IPage<T> extends IBaseEntity {
         search: IReferencer;
         profile: IReferencer;
     };
+}
+
+export interface IEntityLinks<T> extends IBaseEntity {
     _embedded: T;
 }
