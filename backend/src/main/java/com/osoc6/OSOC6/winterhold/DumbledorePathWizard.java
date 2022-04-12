@@ -53,6 +53,26 @@ public final class DumbledorePathWizard {
     public static final String REGISTRATION_PATH = "registration";
 
     /**
+     * Path for authentication. (Spring security uses this path internally)
+     */
+    public static final String AUTH_PATH = "auth";
+
+    /**
+     * Path for successful authentication backend. (Spring security uses this path internally)
+     */
+    public static final String AUTH_HOME_PATH = "home";
+
+    /**
+     * Path for failed authentication backend. (Spring security uses this path internally)
+     */
+    public static final String AUTH_FAIL_PATH = "failure";
+
+    /**
+     * Path for logging in to the backend. (Spring security uses this path internally. It's a default path)
+     */
+    public static final String LOGIN_PATH = "login";
+
+    /**
      * Path that login processing is served on.
      */
     public static final String LOGIN_PROCESSING_PATH = "login-processing";

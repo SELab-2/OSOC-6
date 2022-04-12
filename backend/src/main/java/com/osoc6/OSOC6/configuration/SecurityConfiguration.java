@@ -54,13 +54,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrf().disable().httpBasic()
             .and()
             .authorizeRequests()
-                .antMatchers("/" + DumbledorePathWizard.REGISTRATION_PATH, "/login*", "/auth/*").permitAll()
+                .antMatchers("/" + DumbledorePathWizard.REGISTRATION_PATH,
+                        "/" + DumbledorePathWizard.LOGIN_PATH + "*",
+                        "/" + DumbledorePathWizard.AUTH_PATH + "/*").permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin()
                 .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH)
-                .defaultSuccessUrl("/auth/home", true)
-                .failureForwardUrl("/auth/failure");
+                .defaultSuccessUrl("/" + DumbledorePathWizard.AUTH_PATH + "/"
+                        + DumbledorePathWizard.AUTH_HOME_PATH, true)
+                .failureForwardUrl("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH);
     }
 
     /**

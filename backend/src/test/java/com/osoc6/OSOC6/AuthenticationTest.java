@@ -55,12 +55,12 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
     /**
      * Sample invitation for loginTestUser that gets loaded before every test.
      */
-    private final Invitation loginTestInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+    private final Invitation loginTestInvitation = TestEntityProvider.getBaseUnusedInvitation(this);
 
     /**
      * Sample unused invitation that gets loaded before every test.
      */
-    private final Invitation unusedInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+    private final Invitation unusedInvitation = TestEntityProvider.getBaseUnusedInvitation(this);
 
     /**
      * The actual path invitations are served on, with '/' as prefix.
@@ -122,7 +122,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
 
     @Test
     public void login_available_for_all() throws Exception {
-        perform_get("/login")
+        perform_get("/" + DumbledorePathWizard.LOGIN_PATH)
                 .andExpect(status().isOk());
     }
 
@@ -141,7 +141,8 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
         getMockMvc().perform(login)
                 .andExpect(authenticated())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/auth/home"));
+                .andExpect(redirectedUrl("/" + DumbledorePathWizard.AUTH_PATH
+                        + "/" + DumbledorePathWizard.AUTH_HOME_PATH));
     }
 
     @Test
