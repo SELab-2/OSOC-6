@@ -27,6 +27,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      * @param email email address of the searched user
      * @return if there is an account for the given email, the user will be returned
      */
+    @RestResource(path = DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+            rel = DumbledorePathWizard.USERS_BY_EMAIL_PATH)
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Optional<UserEntity> findByEmail(String email);
 

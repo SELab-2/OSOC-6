@@ -214,7 +214,7 @@ public final class CoachCommunicationEndpointTests
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_student_is_forbidden() throws Exception {
-        perform_queried_get(getEntityPath() + "/search/findByStudentId",
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.COMMUNICATION_BY_STUDENT_PATH,
                 new String[]{"studentId"}, new String[]{testStudent.getId().toString()})
                 .andExpect(status().isForbidden());
     }

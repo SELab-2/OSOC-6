@@ -116,13 +116,13 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     public void getting_my_edition_by_name_works() throws Exception {
         Edition edition = getBaseUserEdition();
         base_test_all_queried_assertions(
-                getEntityPath() + "/search/findByName", "name", edition.getName());
+                getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH, "name", edition.getName());
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_other_edition_by_name_doesnt_contain_result() throws Exception {
-        getMockMvc().perform(get(getEntityPath() + "/search/findByName")
+        getMockMvc().perform(get(getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH)
                         .queryParam("name", nonTrackedEdition.getName()))
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(nonTrackedEdition.getName()));

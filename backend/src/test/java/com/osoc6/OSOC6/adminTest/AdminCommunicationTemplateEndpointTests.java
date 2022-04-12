@@ -89,13 +89,15 @@ public final class AdminCommunicationTemplateEndpointTests extends
     public void find_by_name_works() throws Exception {
         CommunicationTemplate template = get_random_repository_entity();
         base_test_all_queried_assertions(
-                COMMUNICATION_TEMPLATE_PATH + "/search/findByName", "name", template.getName());
+                COMMUNICATION_TEMPLATE_PATH + "/search/" + DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH,
+                "name", template.getName());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_no_query_works() throws Exception {
-        perform_get(COMMUNICATION_TEMPLATE_PATH + "/search/findByName")
+        perform_get(COMMUNICATION_TEMPLATE_PATH + "/search/"
+                + DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH)
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(communicationTemplate.getName()));
     }

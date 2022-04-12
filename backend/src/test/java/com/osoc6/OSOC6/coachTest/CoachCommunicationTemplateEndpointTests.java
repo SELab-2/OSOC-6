@@ -97,7 +97,8 @@ public final class CoachCommunicationTemplateEndpointTests
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_fails() throws Exception {
         CommunicationTemplate template = get_random_repository_entity();
-        getMockMvc().perform(get(COMMUNICATION_TEMPLATE_PATH + "/search/findByName")
+        getMockMvc().perform(get(COMMUNICATION_TEMPLATE_PATH + "/search/"
+                        + DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH)
                 .queryParam("name", template.getName()))
                 .andExpect(status().isForbidden());
     }

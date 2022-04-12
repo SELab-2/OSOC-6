@@ -117,7 +117,7 @@ public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Lo
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         SkillType skillType = get_random_repository_entity();
-        base_test_all_queried_assertions(
-                SKILLTYPES_PATH + "/search/findByName", "name", skillType.getName());
+        base_test_all_queried_assertions(SKILLTYPES_PATH + "/search/" + DumbledorePathWizard.SKILLTYPE_BY_NAME_PATH,
+                "name", skillType.getName());
     }
 }

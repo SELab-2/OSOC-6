@@ -164,7 +164,7 @@ public final class AdminCommunicationEndpointTests extends
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_student_works() throws Exception {
-        perform_queried_get(getEntityPath() + "/search/findByStudentId",
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.COMMUNICATION_BY_STUDENT_PATH,
                 new String[]{"studentId"}, new String[]{testStudent.getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testCommunication.getContent()));
@@ -173,7 +173,7 @@ public final class AdminCommunicationEndpointTests extends
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_wrong_student_no_results() throws Exception {
-        perform_queried_get(getEntityPath() + "/search/findByStudentId",
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.COMMUNICATION_BY_STUDENT_PATH,
                 new String[]{"studentId"}, new String[]{Long.toString(getILLEGAL_ID())})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testCommunication.getContent()));

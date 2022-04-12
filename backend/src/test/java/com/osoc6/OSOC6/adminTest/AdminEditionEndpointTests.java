@@ -149,7 +149,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_my_edition_by_name_works() throws Exception {
         Edition edition = getBaseUserEdition();
-        base_test_all_queried_assertions(
-                getEntityPath() + "/search/findByName", "name", edition.getName());
+        base_test_all_queried_assertions(getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH,
+                "name", edition.getName());
     }
 }
