@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface ICommunication extends IBaseEntity {
     content: string;
@@ -16,6 +16,7 @@ export interface ICommunication extends IBaseEntity {
 }
 
 export type ICommunicationPage = IPage<{ communications: ICommunication[] }>;
+export type ICommunicationLinks = IEntityLinks<{ communications: ICommunication[] }>;
 
 export class Communication {
     constructor(

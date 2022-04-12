@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IProjectSkill extends IBaseEntity {
     name: string;
@@ -12,6 +12,7 @@ export interface IProjectSkill extends IBaseEntity {
 }
 
 export type IProjectSkillPage = IPage<{ "project-skills": IProjectSkill[] }>;
+export type IProjectSkillLinks = IEntityLinks<{ "project-skills": IProjectSkill[] }>;
 
 export class ProjectSkill {
     constructor(name: string, additionalInfo: string, project: string) {
