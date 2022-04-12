@@ -1,12 +1,12 @@
 package com.osoc6.OSOC6.adminTest;
 
-import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +124,9 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 .osocExperience(OsocExperience.NONE)
                 .phoneNumber("+324982672")
                 .pronounsType(PronounsType.OTHER)
-                .pronouns(new ArrayList<>(List.of(new String[]{"he", "her", "them"})))
+                .objectivePronoun("he")
+                .subjectivePronoun("her")
+                .possessivePronoun("them")
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
@@ -259,10 +260,12 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void student_with_weird_pronouns_is_handled() throws Exception {
         Student entity = get_random_repository_entity();
-        perform_patch(getEntityPath() + "/" + get_id(entity), "{\"pronounsType\":\"NONE\",\"pronouns\":[ ]}")
+        perform_patch(getEntityPath() + "/" + get_id(entity), Map.of("pronounsType", "NONE"))
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string("\"pronounsType\" : \"NONE\""))
-                .andExpect(string_to_contains_string("\"pronouns\" : [ ]"));
+                .andExpect(string_to_contains_string("\"possessivePronoun\" : \"his\""))
+                .andExpect(string_to_contains_string("\"subjectivePronoun\" : \"he\""))
+                .andExpect(string_to_contains_string("\"objectivePronoun\" : \"him\""));
     }
 
     @Test

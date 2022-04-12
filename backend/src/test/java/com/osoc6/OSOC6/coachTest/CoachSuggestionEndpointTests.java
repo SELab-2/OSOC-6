@@ -22,7 +22,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +55,9 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
             .pronounsType(PronounsType.HE)
             .writtenMotivation("I love to code!")
             .yearInCourse("3")
-            .pronouns(new ArrayList<>())
+            .objectivePronoun("he")
+            .subjectivePronoun("her")
+            .possessivePronoun("them")
             .durationCurrentDegree(5)
             .edition(getBaseUserEdition())
             .build();

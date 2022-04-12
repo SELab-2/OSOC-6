@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,7 +70,9 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
             .osocExperience(OsocExperience.NONE)
             .phoneNumber("+324982672")
             .pronounsType(PronounsType.OTHER)
-            .pronouns(List.of(new String[]{"he", "her", "them"}))
+            .objectivePronoun("he")
+            .subjectivePronoun("her")
+            .possessivePronoun("them")
             .writtenMotivation("I love to code!")
             .yearInCourse("3")
             .durationCurrentDegree(5)

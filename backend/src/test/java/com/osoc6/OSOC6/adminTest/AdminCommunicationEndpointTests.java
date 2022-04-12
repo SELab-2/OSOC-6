@@ -19,8 +19,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,7 +78,9 @@ public final class AdminCommunicationEndpointTests extends
             .osocExperience(OsocExperience.NONE)
             .phoneNumber("+324982672")
             .pronounsType(PronounsType.OTHER)
-            .pronouns(new ArrayList<>(List.of(new String[]{"he", "her", "them"})))
+            .objectivePronoun("he")
+            .subjectivePronoun("her")
+            .possessivePronoun("them")
             .writtenMotivation("I love to code!")
             .yearInCourse("3")
             .durationCurrentDegree(5)

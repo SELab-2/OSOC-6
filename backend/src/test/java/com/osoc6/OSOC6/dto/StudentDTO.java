@@ -57,9 +57,19 @@ public final class StudentDTO {
     private String callName;
 
     /**
-     * The pronouns of the student.
+     * The possessive pronoun used in case pronoun type == other.
      */
-    private List<String> pronouns;
+    private String possessivePronoun;
+
+    /**
+     * The subjective pronoun used in case pronoun type == other.
+     */
+    private String subjectivePronoun;
+
+    /**
+     * The objective pronoun used in case pronoun type == other.
+     */
+    private String objectivePronoun;
 
     /**
      * The most fluent language of a person. This is a formatted string.
@@ -180,7 +190,9 @@ public final class StudentDTO {
         gender = student.getGender();
         pronounsType = student.getPronounsType();
         callName = student.getCallName();
-        pronouns = student.getPronouns();
+        possessivePronoun = student.getPossessivePronoun();
+        subjectivePronoun = student.getSubjectivePronoun();
+        objectivePronoun = student.getObjectivePronoun();
         mostFluentLanguage = student.getMostFluentLanguage();
         englishProficiency = student.getEnglishProficiency();
         phoneNumber = student.getPhoneNumber();

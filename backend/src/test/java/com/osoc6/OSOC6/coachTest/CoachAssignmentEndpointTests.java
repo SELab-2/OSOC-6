@@ -24,7 +24,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,7 +78,9 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
             .osocExperience(OsocExperience.NONE)
             .phoneNumber("+324982672")
             .pronounsType(PronounsType.OTHER)
-            .pronouns(List.of(new String[]{"he", "her", "them"}))
+            .objectivePronoun("he")
+            .subjectivePronoun("her")
+            .possessivePronoun("them")
             .writtenMotivation("I love to code!")
             .yearInCourse("3")
             .durationCurrentDegree(5)
