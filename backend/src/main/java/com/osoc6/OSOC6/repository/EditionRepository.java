@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -25,8 +26,21 @@ import java.util.Optional;
         path = DumbledorePathWizard.EDITIONS_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface EditionRepository extends JpaRepository<Edition, Long> {
+
     /**
-     * search by using the following: /{DumbledorePathWizard.EDITIONS_PATH}/search/findByName?name=nameOfEdition.
+     * Find an edition by its name.
+     * @param name name of the edition to look for
+     * @return the edition with the given name or Optional#empty if none found
+     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
+     * Since we want to be able to use this method anywhere, we set the authorization to permitAll.
+     */
+    @RestResource(exported = false)
+    @PreAuthorize("permitAll()")
+    @Query("select e from Edition e where e.name = :name")
+    Optional<Edition> internalFindByName(@Param("name") String name);
+
+    /**
+     * Search by using the following: /{DumbledorePathWizard.EDITIONS_PATH}/search/findByName?name=nameOfEdition.
      * @param name the searched name
      * @param pageable argument needed to return a page
      * @return list of matched editions

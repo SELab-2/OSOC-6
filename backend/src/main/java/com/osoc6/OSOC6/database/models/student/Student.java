@@ -168,7 +168,6 @@ public final class Student implements WeakToEdition {
     /**
      * Diploma a student is trying to get.
      */
-
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     @Getter @Setter
@@ -222,6 +221,15 @@ public final class Student implements WeakToEdition {
     @Column(columnDefinition = "text")
     @Getter @Setter
     private String additionalStudentInfo;
+// TODO enable this field after merge
+//
+//    /**
+//     * A fun fact about the student.
+//     */
+//    @Basic(optional = false)
+//    @Column(columnDefinition = "text")
+//    @Getter @Setter
+//    private String funFact;
 
     /**
      * {@link Edition} the student applies for.
