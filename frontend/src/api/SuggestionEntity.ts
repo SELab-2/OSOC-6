@@ -1,9 +1,9 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
 
 export enum SuggestionStrategy {
-    yes = 'YES',
-    maybe = 'MAYBE',
-    no = 'NO',
+    yes = "YES",
+    maybe = "MAYBE",
+    no = "NO",
 }
 
 export interface ISuggestion extends IBaseEntity {

@@ -1,7 +1,7 @@
-import pathNames from '../properties/pathNames';
-import Router from 'next/router';
-import axios from 'axios';
-import { AxiosFormConfig } from '../api/requests';
+import pathNames from "../properties/pathNames";
+import Router from "next/router";
+import axios from "axios";
+import { AxiosFormConfig } from "../api/requests";
 
 export interface LoginValues {
     username: string;
@@ -15,8 +15,8 @@ export type LoginProps = {
 export async function loginSubmitHandler(values: LoginValues) {
     // store the states in the form data
     const loginFormData = new FormData();
-    loginFormData.append('username', values.username);
-    loginFormData.append('password', values.password);
+    loginFormData.append("username", values.username);
+    loginFormData.append("password", values.password);
 
     const response = await axios.post(pathNames.login, loginFormData, AxiosFormConfig);
     // redirect to the url specified in the response
