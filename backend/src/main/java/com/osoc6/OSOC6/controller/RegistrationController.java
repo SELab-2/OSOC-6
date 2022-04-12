@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.exception.InvalidInvitationTokenException;
 import com.osoc6.OSOC6.service.RegistrationService;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ import java.util.Optional;
  * This controller handles the mappings for the registration of a user.
  */
 @RestController
-@RequestMapping(path = "/registration")
+@RequestMapping(path = "/" + DumbledorePathWizard.REGISTRATION_PATH)
 @AllArgsConstructor
 public class RegistrationController {
     /**

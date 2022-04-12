@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -26,11 +27,13 @@ import java.util.Optional;
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface EditionRepository extends JpaRepository<Edition, Long> {
     /**
-     * search by using the following: /{DumbledorePathWizard.EDITIONS_PATH}/search/findByName?name=nameOfEdition.
+     * search by using the following: /{EDITIONS_PATH}/search/{EDITIONS_BY_NAME_PATH}?name=nameOfEdition.
      * @param name the searched name
      * @param pageable argument needed to return a page
      * @return list of matched editions
      */
+    @RestResource(path = DumbledorePathWizard.EDITIONS_BY_NAME_PATH,
+            rel = DumbledorePathWizard.EDITIONS_BY_NAME_PATH)
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @Query("select e from Edition e where e.name LIKE concat(:name, '%') and (" + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
             + "e.id in " + MerlinSpELWizard.Q_USER_EDITIONS + ")")

@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,19 +43,14 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
 
     @Override
     public UserEntity create_entity() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail("test@test.com");
+        UserEntity userEntity = TestEntityProvider.getBaseCoachUserEntity(this);
         userEntity.setCallName(TEST_STRING);
-        userEntity.setPassword("123456");
-        userEntity.setUserRole(UserRole.COACH);
         return userEntity;
     }
 
     @Override
     public Map<String, String> change_entity(final UserEntity startEntity) {
-        Map<String, String> changeMap = new HashMap<>();
-        changeMap.put("callName", TEST_STRING);
-        return changeMap;
+        return Map.of("callName", TEST_STRING);
     }
 
     public CoachUserEndpointTests() {
@@ -198,5 +193,38 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
         perform_get(getEntityPath() + "/search/" + DumbledorePathWizard.OWN_USERS_PATH)
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_sees_same_edition_by_email() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+                new String[]{"email"}, new String[]{getCoachUser().getEmail()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_does_NOT_see_other_edition_by_email() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+                new String[]{"email"}, new String[]{getCoachUser().getEmail()})
+                .andExpect(status().isForbidden())
+                .andExpect(string_not_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_sees_same_edition_by_id() throws Exception {
+        perform_get(getEntityPath() + "/" + getCoachUser().getId())
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_does_NOT_see_other_edition_by_id() throws Exception {
+        perform_get(getEntityPath() + "/" + getCoachUser().getId())
+                .andExpect(status().isForbidden());
     }
 }

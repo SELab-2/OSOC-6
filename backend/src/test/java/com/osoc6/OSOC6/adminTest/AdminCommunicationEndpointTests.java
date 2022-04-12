@@ -1,12 +1,9 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.CommunicationDTO;
 import com.osoc6.OSOC6.repository.CommunicationRepository;
@@ -19,8 +16,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,37 +53,12 @@ public final class AdminCommunicationEndpointTests extends
     /**
      * Sample {@link CommunicationTemplate} that gets loaded before every test.
      */
-    private final CommunicationTemplate testTemplate = new CommunicationTemplate("informative",
-            "I have to tell you...");
+    private final CommunicationTemplate testTemplate = TestEntityProvider.getBaseCommunicationTemplate1(this);
 
     /**
      * Test student that is loaded before every test.
      */
-    private final Student testStudent = Student.builder()
-            .email("jitse@mail.com")
-            .additionalStudentInfo("I like boulders")
-            .bestSkill("standing on hands")
-            .currentDiploma("Master")
-            .educationLevel("Lower level")
-            .englishProficiency(EnglishProficiency.FLUENT)
-            .firstName("Jitse")
-            .lastName("De Smet")
-            .callName("Jitse De smet")
-            .gender(Gender.MALE)
-            .institutionName("Ghent University")
-            .mostFluentLanguage("Dutch")
-            .osocExperience(OsocExperience.NONE)
-            .phoneNumber("+324982672")
-            .pronounsType(PronounsType.OTHER)
-            .pronouns(new ArrayList<>(List.of(new String[]{"he", "her", "them"})))
-            .writtenMotivation("I love to code!")
-            .yearInCourse("3")
-            .durationCurrentDegree(5)
-            .edition(getBaseUserEdition())
-            .motivationURI("www.ILikeApples.com")
-            .curriculumVitaeURI("www.my-life-in-bel-air.com")
-            .writtenMotivation("www.I-just-want-it.com")
-            .build();
+    private final Student testStudent = TestEntityProvider.getBaseStudentOther(this);
 
     /**
      * Sample {@link Communication} that gets loaded before every test.
@@ -164,7 +134,7 @@ public final class AdminCommunicationEndpointTests extends
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_student_works() throws Exception {
-        perform_queried_get(getEntityPath() + "/search/findByStudentId",
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.COMMUNICATION_BY_STUDENT_PATH,
                 new String[]{"studentId"}, new String[]{testStudent.getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testCommunication.getContent()));
@@ -173,7 +143,7 @@ public final class AdminCommunicationEndpointTests extends
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_wrong_student_no_results() throws Exception {
-        perform_queried_get(getEntityPath() + "/search/findByStudentId",
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.COMMUNICATION_BY_STUDENT_PATH,
                 new String[]{"studentId"}, new String[]{Long.toString(getILLEGAL_ID())})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testCommunication.getContent()));

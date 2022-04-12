@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.UserSkill;
@@ -40,20 +41,17 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     /**
      * Sample UserSkill of admin that gets loaded before every test.
      */
-    private final UserSkill adminSkill = new UserSkill("Active like Duracel bunny", getAdminUser(),
-            "The admin is very active");
+    private final UserSkill adminSkill = TestEntityProvider.getBaseAdminUserSkill(this);
 
     /**
      * Sample UserSkill that gets loaded before every test.
      */
-    private final UserSkill coachSkill = new UserSkill("Coaching with passion", getCoachUser(),
-            "I just want my students to learn");
+    private final UserSkill coachSkill = TestEntityProvider.getBaseCoachUserSkill(this);
 
     /**
      * Sample UserSkill of outsider user that gets loaded before every test.
      */
-    private final UserSkill outsiderSkill = new UserSkill("Lonely loner", getOutsiderCoach(),
-            "Stands outside in the rain and cries.");
+    private final UserSkill outsiderSkill = TestEntityProvider.getBaseOutsiderUserSkill(this);
 
     /**
      * The actual path users are served on, with '/' as prefix.
@@ -129,7 +127,7 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     }
 
     @Test
-    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void user_post_others_skill_forbidden() throws Exception {
         perform_post(getEntityPath(), create_entity())
                 .andExpect(status().isForbidden());
