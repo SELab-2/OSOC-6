@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
 
 export interface ISkillType extends IBaseEntity {
     name: string;

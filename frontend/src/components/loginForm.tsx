@@ -1,15 +1,15 @@
-import { Formik, Field, Form } from 'formik';
-import styles from '../styles/loginForm.module.css';
+import { Formik, Field, Form } from "formik";
+import styles from "../styles/loginForm.module.css";
 
-import { LoginProps } from '../handlers/loginSubmitHandler';
+import { LoginProps } from "../handlers/loginSubmitHandler";
 
 export default function LoginForm(props: LoginProps) {
     return (
         <div className={styles.login_box}>
             <Formik
                 initialValues={{
-                    username: '',
-                    password: '',
+                    username: "",
+                    password: "",
                 }}
                 onSubmit={props.submitHandler}
             >

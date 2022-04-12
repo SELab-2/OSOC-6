@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
 
 export interface ICommunicationTemplate extends IBaseEntity {
     name: string;
