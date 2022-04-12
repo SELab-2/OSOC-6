@@ -1,12 +1,9 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.CommunicationDTO;
 import com.osoc6.OSOC6.repository.CommunicationRepository;
@@ -56,39 +53,12 @@ public final class AdminCommunicationEndpointTests extends
     /**
      * Sample {@link CommunicationTemplate} that gets loaded before every test.
      */
-    private final CommunicationTemplate testTemplate = new CommunicationTemplate("informative",
-            "I have to tell you...");
+    private final CommunicationTemplate testTemplate = TestEntityProvider.getBaseCommunicationTemplate1(this);
 
     /**
      * Test student that is loaded before every test.
      */
-    private final Student testStudent = Student.builder()
-            .email("jitse@mail.com")
-            .additionalStudentInfo("I like boulders")
-            .bestSkill("standing on hands")
-            .currentDiploma("Master")
-            .educationLevel("Lower level")
-            .englishProficiency(EnglishProficiency.FLUENT)
-            .firstName("Jitse")
-            .lastName("De Smet")
-            .callName("Jitse De smet")
-            .gender(Gender.MALE)
-            .institutionName("Ghent University")
-            .mostFluentLanguage("Dutch")
-            .osocExperience(OsocExperience.NONE)
-            .phoneNumber("+324982672")
-            .pronounsType(PronounsType.OTHER)
-            .objectivePronoun("he")
-            .subjectivePronoun("her")
-            .possessivePronoun("them")
-            .writtenMotivation("I love to code!")
-            .yearInCourse("3")
-            .durationCurrentDegree(5)
-            .edition(getBaseUserEdition())
-            .motivationURI("www.ILikeApples.com")
-            .curriculumVitaeURI("www.my-life-in-bel-air.com")
-            .writtenMotivation("www.I-just-want-it.com")
-            .build();
+    private final Student testStudent = TestEntityProvider.getBaseStudentOther(this);
 
     /**
      * Sample {@link Communication} that gets loaded before every test.

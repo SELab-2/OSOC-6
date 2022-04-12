@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.database.models.CommunicationTemplate;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +28,7 @@ public final class AdminCommunicationTemplateEndpointTests extends
     /**
      * First sample edition that gets loaded before every test.
      */
-    private final CommunicationTemplate communicationTemplate = new CommunicationTemplate();
+    private final CommunicationTemplate communicationTemplate = TestEntityProvider.getBaseCommunicationTemplate1(this);
 
     /**
      * The actual path editions are served on, with '/' as prefix.
@@ -59,9 +59,6 @@ public final class AdminCommunicationTemplateEndpointTests extends
     public void setUpRepository() {
         setupBasicData();
 
-        communicationTemplate.setName("A well deserved yes");
-        communicationTemplate.setTemplate(
-                "We would like to inform you... You are the best candidate we ever had! We want you! Need you!");
         repository.save(communicationTemplate);
     }
 
@@ -74,14 +71,14 @@ public final class AdminCommunicationTemplateEndpointTests extends
 
     @Override
     public CommunicationTemplate create_entity() {
-        return new CommunicationTemplate("Love Letter", TEST_STRING);
+        CommunicationTemplate template = TestEntityProvider.getBaseCommunicationTemplate2(this);
+        template.setTemplate(TEST_STRING);
+        return template;
     }
 
     @Override
     public Map<String, String> change_entity(final CommunicationTemplate startEntity) {
-        Map<String, String> changeMap = new HashMap<>();
-        changeMap.put("template", TEST_STRING);
-        return changeMap;
+        return Map.of("template", TEST_STRING);
     }
 
     @Test

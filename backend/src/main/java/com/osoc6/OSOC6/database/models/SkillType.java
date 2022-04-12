@@ -51,8 +51,10 @@ public final class SkillType {
     /**
      * Constructor of {@link SkillType} for required final fields.
      * @param newName The name of the {@link SkillType}
+     * @param newColour the colour associated with this {@link SkillType}
      */
-    public SkillType(final String newName) {
+    public SkillType(final String newName, final String newColour) {
         name = newName;
+        colour = newColour;
     }
 }

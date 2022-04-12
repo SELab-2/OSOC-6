@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,19 +65,14 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
 
     @Override
     public final UserEntity create_entity() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail("test@test.com");
+        UserEntity userEntity = TestEntityProvider.getBaseAdminUserEntity(this);
         userEntity.setCallName(TEST_STRING);
-        userEntity.setPassword("123456");
-        userEntity.setUserRole(UserRole.ADMIN);
         return userEntity;
     }
 
     @Override
     public final Map<String, String> change_entity(final UserEntity startEntity) {
-        Map<String, String> patchMap = new HashMap<>();
-        patchMap.put("callName", TEST_STRING);
-        return patchMap;
+        return Map.of("callName", TEST_STRING);
     }
 
     @Override

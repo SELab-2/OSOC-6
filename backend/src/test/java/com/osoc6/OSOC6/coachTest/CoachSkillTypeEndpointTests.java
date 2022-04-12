@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.coachTest;
 
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.database.models.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
@@ -33,12 +34,7 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     /**
      * First sample skillTypes that gets loaded before every test.
      */
-    private final SkillType skillType1 = new SkillType("skillType 1");
-
-    /**
-     * Second sample skillTypes that gets loaded before every test.
-     */
-    private final SkillType skillType2 = new SkillType("skillType 2");
+    private final SkillType skillType1 = TestEntityProvider.getBaseSkillType1(this);
 
     /**
      * The actual path skillPaths are served on, with '/' as prefix.
@@ -57,16 +53,14 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
 
     @Override
     public SkillType create_entity() {
-        SkillType skillType = new SkillType("New skillType Name");
+        SkillType skillType = TestEntityProvider.getBaseSkillType2(this);
         skillType.setColour(TEST_STRING);
         return skillType;
     }
 
     @Override
     public Map<String, String> change_entity(final SkillType startEntity) {
-        Map<String, String> changeMap = new HashMap<>();
-        changeMap.put("colour", TEST_STRING);
-        return changeMap;
+        return Map.of("colour", TEST_STRING);
     }
 
     @Override
@@ -86,11 +80,7 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
     public void setUpRepository() {
         setupBasicData();
 
-        skillType1.setColour("42B37B");
         repository.save(skillType1);
-
-        skillType2.setColour("C94040");
-        repository.save(skillType2);
     }
 
     /**

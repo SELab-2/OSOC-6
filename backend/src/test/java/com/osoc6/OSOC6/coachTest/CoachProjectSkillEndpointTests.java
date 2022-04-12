@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Project;
@@ -16,7 +17,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +48,7 @@ public class CoachProjectSkillEndpointTests extends TestFunctionProvider<Project
     /**
      * Sample project that gets loaded before every test.
      */
-    private final Project testProject = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
+    private final Project testProject = TestEntityProvider.getBaseProject1(this);
 
     /**
      * Sample projectSkill that gets loaded before every test.
@@ -108,9 +108,7 @@ public class CoachProjectSkillEndpointTests extends TestFunctionProvider<Project
 
     @Override
     public final Map<String, String> change_entity(final ProjectSkill startEntity) {
-        Map<String, String> changeMap = new HashMap<>();
-        changeMap.put("name", TEST_STRING);
-        return changeMap;
+        return Map.of("name", TEST_STRING);
     }
 
     @Override
