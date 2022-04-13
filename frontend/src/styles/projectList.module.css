@@ -1,18 +1,18 @@
 .project_list {
     width: 300px;
     height: 1000px;
-    background-color: #0A0839;
+    background-color: #0a0839;
     overflow: scroll;
 }
 
 .project_list_header {
-    background-color: #0A0839;
-    color: #FFFFFF;
+    background-color: #0a0839;
+    color: #ffffff;
     font-weight: bold;
     font-size: x-large;
 }
 
 .project_list_project {
-    background-color: #0A0839;
-    color: #FFFFFF;
+    background-color: #0a0839;
+    color: #ffffff;
 }

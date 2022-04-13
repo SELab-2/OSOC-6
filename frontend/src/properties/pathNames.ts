@@ -15,7 +15,7 @@ const pathNames = {
     communications: "communications",
     assignments: "assignments",
     students: "students",
-    projectCreation: "projects/create"
+    projectCreation: "projects/create",
 };
 
 export default pathNames;

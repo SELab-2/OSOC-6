@@ -9,7 +9,7 @@ const common = {
     "Navbar assign students": "Assign Students",
     "Navbar profile": "Profile",
     "New project button": "New project",
-    "Project list header": "Projects"
+    "Project list header": "Projects",
 };
 
 export default common;

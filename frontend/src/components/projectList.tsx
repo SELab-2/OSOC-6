@@ -1,11 +1,11 @@
-import {Button, ListGroup, Pagination} from 'react-bootstrap';
-import {getAllProjects, IProject} from "../api/ProjectEntity";
-import axios from 'axios';
-import Router from 'next/router';
-import styles from '../styles/projectList.module.css';
-import { NewProjectButton } from './newProjectButton';
-import useTranslation from 'next-translate/useTranslation';
-import {useEffect, useState} from "react";
+import { Button, ListGroup, Pagination } from "react-bootstrap";
+import { getAllProjects, IProject } from "../api/ProjectEntity";
+import axios from "axios";
+import Router from "next/router";
+import styles from "../styles/projectList.module.css";
+import { NewProjectButton } from "./newProjectButton";
+import useTranslation from "next-translate/useTranslation";
+import { useEffect, useState } from "react";
 import pathNames from "../properties/pathNames";
 
 export const ProjectList = () => {
@@ -24,12 +24,14 @@ export const ProjectList = () => {
     return (
         <div className={styles.project_list}>
             <ListGroup as="ul" className="overflow-scroll">
-                <ListGroup.Item className={styles.project_list_header}>{t('common:Project list header')}</ListGroup.Item>
+                <ListGroup.Item className={styles.project_list_header}>
+                    {t("common:Project list header")}
+                </ListGroup.Item>
                 {data.map((project) => (
                     <ListGroup.Item
                         className={styles.project_list_project}
                         action
-                        as={'li'}
+                        as={"li"}
                         key={project.id}
                         // Should be changed to individual project page later
                         onClick={() => Router.push(pathNames.projects)}
@@ -41,7 +43,5 @@ export const ProjectList = () => {
             </ListGroup>
             <NewProjectButton />
         </div>
-
     );
 };
-

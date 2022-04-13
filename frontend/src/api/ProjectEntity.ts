@@ -60,15 +60,17 @@ export class Project {
  */
 export async function getAllProjects(): Promise<IProject[]> {
     let fetchedAll: boolean = false;
-    let currentPage: number = 0
+    let currentPage: number = 0;
     let projects: IProject[] = [];
 
     while (!fetchedAll) {
-        await axios.get("http://localhost/api/projects?size=1000&page=" + currentPage).then((response) => {
-            projects = projects.concat(response.data._embedded.projects);
-            fetchedAll = currentPage + 1 === response.data.page.totalPages;
-            currentPage++;
-        });
+        await axios
+            .get("http://localhost/api/projects?size=1000&page=" + currentPage)
+            .then((response) => {
+                projects = projects.concat(response.data._embedded.projects);
+                fetchedAll = currentPage + 1 === response.data.page.totalPages;
+                currentPage++;
+            });
     }
 
     return projects;
