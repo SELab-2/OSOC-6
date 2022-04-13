@@ -15,10 +15,10 @@ export const AxiosFormConfig = {
 export async function getAllEntities(url: string, collectionName: string): Promise<IBaseEntity[]> {
     let fetchedAll: boolean = false;
     let currentPage: number = 0;
-    let entities: IBaseEntity[] = [];
+    const entities: IBaseEntity[] = [];
 
     while (!fetchedAll) {
-        let page: IPage<{ [k: string]: IBaseEntity[] }>;
+        const page: IPage<{ [k: string]: IBaseEntity[] }>;
         page = (
             await axios.get(url, {
                 params: {
