@@ -1,7 +1,6 @@
 import axios from "axios";
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
-
 export interface IProject extends IBaseEntity {
     goals: string[];
     name: string;
