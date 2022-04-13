@@ -1,4 +1,5 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import { getAllEntities } from "./requests";
 
 export interface IProject extends IBaseEntity {
     goals: string[];
@@ -51,4 +52,11 @@ export class Project {
     partnerName: string;
     partnerWebsite: string;
     versionManagement: string;
+}
+
+/**
+ * Fetches all projects from the backend
+ */
+export function getAllProjects(url: string): Promise<IProject[]> {
+    return <Promise<IProject[]>>getAllEntities(url, "projects");
 }
