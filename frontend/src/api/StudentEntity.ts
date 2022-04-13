@@ -40,17 +40,6 @@ export enum OsocExpericience {
     yes_studentCoach = "YES_STUDENT_COACH",
 }
 
-export enum PronounsType {
-    SHE = "SHE",
-    he = "HE",
-    they = "THEY",
-    ze = "ZE",
-    firstName = "FIRSTNAME",
-    callName = "CALLNAME",
-    other = "OTHER",
-    none = "NONE",
-}
-
 export interface IStudent extends IBaseEntity {
     email: string;
     additionalStudentInfo: string;
@@ -70,14 +59,11 @@ export interface IStudent extends IBaseEntity {
     osocExperience: OsocExpericience;
     phoneNumber: string;
     portfolioURI: string;
-    pronounsType: PronounsType;
+    pronouns: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;
     yearInCourse: string;
-    subjectivePronoun: string;
-    possessivePronoun: string;
-    objectivePronoun: string;
 
     _links: {
         assignments: IReferencer;
@@ -111,10 +97,7 @@ export class Student {
         osocExperience: OsocExpericience,
         phoneNumber: string,
         portfolioURI: string,
-        subjectivePronoun: string,
-        possessivePronoun: string,
-        objectivePronoun: string,
-        pronounsType: PronounsType,
+        pronouns: string,
         skills: string[],
         studies: string[],
         writtenMotivation: string,
@@ -139,10 +122,7 @@ export class Student {
         this.osocExperience = osocExperience;
         this.phoneNumber = phoneNumber;
         this.portfolioURI = portfolioURI;
-        this.subjectivePronoun = subjectivePronoun;
-        this.possessivePronoun = possessivePronoun;
-        this.objectivePronoun = objectivePronoun;
-        this.pronounsType = pronounsType;
+        this.pronouns = pronouns;
         this.skills = skills;
         this.studies = studies;
         this.writtenMotivation = writtenMotivation;
@@ -168,10 +148,7 @@ export class Student {
     osocExperience: OsocExpericience;
     phoneNumber: string;
     portfolioURI: string;
-    subjectivePronoun: string;
-    possessivePronoun: string;
-    objectivePronoun: string;
-    pronounsType: PronounsType;
+    pronouns: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;

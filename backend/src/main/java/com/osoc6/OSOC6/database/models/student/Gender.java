@@ -9,42 +9,22 @@ public enum Gender {
     /**
      * identified gender as female.
      */
-    FEMALE("Female") {
-        @Override
-        public PronounsType getDefaultPronouns() {
-            return PronounsType.SHE;
-        }
-    },
+    FEMALE("Female"),
 
     /**
      * identified gender as male.
      */
-    MALE("Male") {
-        @Override
-        public PronounsType getDefaultPronouns() {
-            return PronounsType.HE;
-        }
-    },
+    MALE("Male"),
 
     /**
      * identified gender as transgender.
      */
-    TRANSGENDER("Transgender") {
-        @Override
-        public PronounsType getDefaultPronouns() {
-            return PronounsType.THEY;
-        }
-    },
+    TRANSGENDER("Transgender"),
 
     /**
      * Gender was not specified. If no pronouns are specified either, we will default to pronouns THEY/THEM/THEIRS.
      */
-     NOT_SPECIFIED("Rather not say") {
-         @Override
-         public PronounsType getDefaultPronouns() {
-             return PronounsType.THEY;
-         }
-     };
+     NOT_SPECIFIED("Rather not say");
 
     /**
      * The gender as a string. Used to parse the data from the tally webhook.
@@ -63,16 +43,10 @@ public enum Gender {
      */
     public static Gender fromText(final String text) {
         for (Gender gender : Gender.values()) {
-            if (gender.genderString.equals(text)) {
+            if (gender.genderString.equalsIgnoreCase(text)) {
                 return gender;
             }
         }
         throw new WebhookException(String.format("No gender matching %s found.", text));
     }
-
-    /**
-     * IMPORTANT: should NEVER return PronounsType.None. An infinite loop will be triggered.
-     * @return default pronouns for a gender if pronouns are not specified.
-     */
-    public abstract PronounsType getDefaultPronouns();
 }

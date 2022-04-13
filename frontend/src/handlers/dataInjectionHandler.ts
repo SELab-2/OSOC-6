@@ -18,7 +18,6 @@ import {
     IStudent,
     IStudentPage,
     OsocExpericience,
-    PronounsType,
     Student,
 } from "../api/StudentEntity";
 import {
@@ -182,10 +181,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             OsocExpericience.yes_noStudentCoach,
             "+3257697568",
             "",
-            "",
-            "",
-            "",
-            PronounsType.he,
+            "he/him/his",
             ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
             ["I love to Spring Spring in java Spring!"],
             "",

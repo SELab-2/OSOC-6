@@ -7,7 +7,6 @@ import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
@@ -47,9 +46,9 @@ public final class StudentDTO {
     private Gender gender;
 
     /**
-     * The PronounsType of the student.
+     * The pronouns of the student.
      */
-    private PronounsType pronounsType;
+    private String pronouns;
 
     /**
      * The callName of the student.
@@ -152,6 +151,11 @@ public final class StudentDTO {
     private String additionalStudentInfo;
 
     /**
+     * A fun fact about the student.
+     */
+    private String funFact;
+
+    /**
      * {@link Edition} as URL in which this communication took place.
      */
     private String edition;
@@ -188,11 +192,8 @@ public final class StudentDTO {
         firstName = student.getFirstName();
         lastName = student.getLastName();
         gender = student.getGender();
-        pronounsType = student.getPronounsType();
+        pronouns = student.getPronouns();
         callName = student.getCallName();
-        possessivePronoun = student.getPossessivePronoun();
-        subjectivePronoun = student.getSubjectivePronoun();
-        objectivePronoun = student.getObjectivePronoun();
         mostFluentLanguage = student.getMostFluentLanguage();
         englishProficiency = student.getEnglishProficiency();
         phoneNumber = student.getPhoneNumber();
@@ -208,6 +209,7 @@ public final class StudentDTO {
         bestSkill = student.getBestSkill();
         osocExperience = student.getOsocExperience();
         additionalStudentInfo = student.getAdditionalStudentInfo();
+        funFact = student.getFunFact();
         studies = student.getStudies();
 
         edition = entityLinks.linkToItemResource(Edition.class, student.getEdition().getId().toString()).getHref();

@@ -205,12 +205,9 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void student_with_weird_pronouns_is_handled() throws Exception {
         Student entity = get_random_repository_entity();
-        perform_patch(getEntityPath() + "/" + get_id(entity), Map.of("pronounsType", "NONE"))
+        perform_patch(getEntityPath() + "/" + get_id(entity), Map.of("pronouns", "hom/mam/tam"))
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string("\"pronounsType\" : \"NONE\""))
-                .andExpect(string_to_contains_string("\"possessivePronoun\" : \"his\""))
-                .andExpect(string_to_contains_string("\"subjectivePronoun\" : \"he\""))
-                .andExpect(string_to_contains_string("\"objectivePronoun\" : \"him\""));
+                .andExpect(string_to_contains_string("\"pronouns\" : \"hom/mam/tam\""));
     }
 
     @Test

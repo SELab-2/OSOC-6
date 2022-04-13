@@ -11,7 +11,6 @@ import com.osoc6.OSOC6.database.models.UserSkill;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 
 import java.util.List;
@@ -44,11 +43,12 @@ public final class TestEntityProvider {
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.YES_NO_STUDENT_COACH)
                 .phoneNumber("+324992772")
-                .pronounsType(PronounsType.HE)
+                .pronouns("he/him/his")
                 .writtenMotivation("I love to Spring Spring in java Spring!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
                 .edition(performer.getBaseUserEdition())
+                .funFact("I am groot.")
                 .motivationURI("www.I-like-bananas.com")
                 .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
                 .curriculumVitaeURI("www.my-life-in-ghent.com")
@@ -77,14 +77,12 @@ public final class TestEntityProvider {
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.NONE)
                 .phoneNumber("+324982672")
-                .pronounsType(PronounsType.OTHER)
-                .objectivePronoun("he")
-                .subjectivePronoun("her")
-                .possessivePronoun("them")
+                .pronouns("he/her/them")
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
                 .edition(performer.getBaseUserEdition())
+                .funFact("Boulder de boulder")
                 .motivationURI("www.ILikeApples.com")
                 .curriculumVitaeURI("www.my-life-in-bel-air.com")
                 .writtenMotivation("www.I-just-want-it.com")

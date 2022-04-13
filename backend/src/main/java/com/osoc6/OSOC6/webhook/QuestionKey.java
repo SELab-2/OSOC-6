@@ -90,7 +90,9 @@ public enum QuestionKey {
     WHICH_PRONOUNS("question_wgG6oN") {
         @Override
         public void addToStudent(final WebhookField formField, final Student student) {
-            // TODO implementeren na development merge
+            if (formField.getValue() != null) {
+                student.setPronouns((String) formField.getValue());
+            }
         }
     },
     /**
@@ -99,7 +101,9 @@ public enum QuestionKey {
     OTHER_PRONOUNS("question_3yY5a0") {
         @Override
         public void addToStudent(final WebhookField formField, final Student student) {
-            // TODO implementeren na development merge
+            if (formField.getValue() != null) {
+                student.setPronouns((String) formField.getValue());
+            }
         }
     },
     /**
@@ -241,8 +245,7 @@ public enum QuestionKey {
     FUN_FACT("question_mOGMNK") {
         @Override
         public void addToStudent(final WebhookField formField, final Student student) {
-            // TODO uncomment this after merge
-//            student.setFunFact((String) formField.getValue());
+            student.setFunFact((String) formField.getValue());
         }
     },
     /**
