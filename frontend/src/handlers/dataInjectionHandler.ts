@@ -275,7 +275,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "You! here! now!",
             own_user_url,
             someStudentUri,
-            projectBoulderSkill._links.self.href,
+            projectBoulderSkill._links.self.href
         );
 
         containedAssignments = await Promise.all(
