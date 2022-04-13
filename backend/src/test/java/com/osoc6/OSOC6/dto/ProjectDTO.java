@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.ProjectSkill;
@@ -72,11 +71,6 @@ public final class ProjectDTO {
      */
     private List<String> coaches;
 
-    /**
-     * The assignments made around this project.
-     */
-    private List<String> assignments = new ArrayList<>();
-
     public ProjectDTO(final Project project, final EntityLinks entityLinks) {
         id = project.getId();
         goals = project.getGoals();
@@ -100,11 +94,6 @@ public final class ProjectDTO {
         for (UserEntity coach: project.getCoaches()) {
             coaches.add(entityLinks.linkToItemResource(UserEntity.class,
                     coach.getId().toString()).getHref());
-        }
-
-        assignments = new ArrayList<>();
-        for (Assignment assignment: project.getAssignments()) {
-            assignments.add(entityLinks.linkToItemResource(Assignment.class, assignment.getId().toString()).getHref());
         }
     }
 

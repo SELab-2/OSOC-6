@@ -5,10 +5,12 @@ import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.database.models.ProjectSkill;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.AssignmentDTO;
 import com.osoc6.OSOC6.repository.AssignmentRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
+import com.osoc6.OSOC6.repository.ProjectSkillRepository;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -51,6 +53,12 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
     private ProjectRepository projectRepository;
 
     /**
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database
+     */
+    @Autowired
+    private ProjectSkillRepository projectSkillRepository;
+
+    /**
      * Entity links, needed to get to link of an entity.
      */
     @Autowired
@@ -67,10 +75,15 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
     private final Project testProject = TestEntityProvider.getBaseProject1(this);
 
     /**
+     * ProjectSkill that gets loaded before every test.
+     */
+    private final ProjectSkill projectSkill = TestEntityProvider.getBaseProjectSkill1(testProject);
+
+    /**
      * Sample {@link Assignment} that gets loaded before every test.
      */
-    private final Assignment testAssignment = new Assignment(true, "Seems like handsome boy",
-            getCoachUser(), testStudent, testProject);
+    private final Assignment testAssignment = TestEntityProvider
+            .getBaseSuggestionAssignment(getCoachUser(), testStudent, projectSkill);
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -98,6 +111,8 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
 
         projectRepository.save(testProject);
 
+        projectSkillRepository.save(projectSkill);
+
         studentRepository.save(testStudent);
 
         assignmentRepository.save(testAssignment);
@@ -109,6 +124,8 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
 
         studentRepository.deleteAll();
 
+        projectSkillRepository.deleteAll();
+
         projectRepository.deleteAll();
 
         removeBasicData();
@@ -116,7 +133,10 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
 
     @Override
     public Assignment create_entity() {
-        return new Assignment(false, TEST_STRING, getCoachUser(), testStudent, testProject);
+        Assignment assignment = TestEntityProvider
+                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill);
+        assignment.setReason(TEST_STRING);
+        return assignment;
     }
 
     @Override

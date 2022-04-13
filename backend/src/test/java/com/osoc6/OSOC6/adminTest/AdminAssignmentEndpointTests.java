@@ -4,10 +4,12 @@ import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.database.models.ProjectSkill;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.AssignmentDTO;
 import com.osoc6.OSOC6.repository.AssignmentRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
+import com.osoc6.OSOC6.repository.ProjectSkillRepository;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,12 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     private ProjectRepository projectRepository;
 
     /**
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database
+     */
+    @Autowired
+    private ProjectSkillRepository projectSkillRepository;
+
+    /**
      * Entity links, needed to get to link of an entity.
      */
     @Autowired
@@ -59,15 +67,20 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     private final Project project1 = TestEntityProvider.getBaseProject1(this);
 
     /**
-     * Sample project 2 that gets loaded before every test.
+     * First Skill for project that gets loaded before every test.
      */
-    private final Project project2 = TestEntityProvider.getBaseProject2(this);
+    private final ProjectSkill projectSkill1 = TestEntityProvider.getBaseProjectSkill1(project1);
+
+    /**
+     * Second Skill for project that gets loaded before every test.
+     */
+    private final ProjectSkill projectSkill2 = TestEntityProvider.getBaseProjectSkill1(project1);
 
     /**
      * Sample {@link Assignment} that gets loaded before every test.
      */
-    private final Assignment testAssignment = new Assignment(true, "Seems like handsome boy",
-            getAdminUser(), testStudent, project1);
+    private final Assignment testAssignment = TestEntityProvider.getBaseSuggestionAssignment(getAdminUser(),
+            testStudent, projectSkill1);
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -94,7 +107,9 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
         setupBasicData();
 
         projectRepository.save(project1);
-        projectRepository.save(project2);
+
+        projectSkillRepository.save(projectSkill1);
+        projectSkillRepository.save(projectSkill2);
 
         studentRepository.save(testStudent);
 
@@ -107,6 +122,8 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
         studentRepository.deleteAll();
 
+        projectSkillRepository.deleteAll();
+
         projectRepository.deleteAll();
 
         removeBasicData();
@@ -114,7 +131,10 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
     @Override
     public Assignment create_entity() {
-        return new Assignment(false, TEST_STRING, getAdminUser(), testStudent, project1);
+        Assignment assignment = TestEntityProvider
+                .getBaseNonSuggestionAssignment(getAdminUser(), testStudent, projectSkill1);
+        assignment.setReason(TEST_STRING);
+        return assignment;
     }
 
     @Override
@@ -168,7 +188,8 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_matching_query_conflict_works() throws Exception {
-        perform_post(getEntityPath(), new Assignment(true, "A second reason", getCoachUser(), testStudent, project2));
+        perform_post(getEntityPath(), TestEntityProvider
+                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill2));
 
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
@@ -181,7 +202,8 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_conflict_no_edition_works() throws Exception {
-        perform_post(getEntityPath(), new Assignment(true, "A second reason", getCoachUser(), testStudent, project2));
+        perform_post(getEntityPath(), TestEntityProvider
+                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill2));
 
         perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH)

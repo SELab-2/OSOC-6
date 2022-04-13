@@ -15,6 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The database entity for a skill looked for in a {@link Project}.
@@ -55,6 +58,13 @@ public final class ProjectSkill implements WeakToEdition {
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     @Getter
     private Project project;
+
+    /**
+     * Assigned students to this skill.
+     */
+    @OneToMany(orphanRemoval = true, mappedBy = "projectSkill")
+    @Getter
+    private List<Assignment> assignments = new ArrayList<>();
 
     /**
      *

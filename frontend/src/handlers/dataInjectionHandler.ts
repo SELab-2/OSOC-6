@@ -117,7 +117,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedProjects = projects._embedded.projects;
     }
     console.log(containedProjects);
-    const someProjectUri = containedProjects[0]._links.self.href;
 
     const projectSkills: IProjectSkillPage = (await axios.get(pathNames.projectSkills, AxiosConf))
         .data;
@@ -276,7 +275,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "You! here! now!",
             own_user_url,
             someStudentUri,
-            someProjectUri
+            projectBoulderSkill._links.self.href,
         );
 
         containedAssignments = await Promise.all(
