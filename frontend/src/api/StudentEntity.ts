@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export enum EnglishProficiency {
     /**
@@ -89,6 +89,7 @@ export interface IStudent extends IBaseEntity {
 }
 
 export type IStudentPage = IPage<{ students: IStudent[] }>;
+export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
 
 export class Student {
     constructor(
