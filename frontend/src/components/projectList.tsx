@@ -23,7 +23,10 @@ export const ProjectList = () => {
     return (
         <div className={styles.project_list}>
             <ListGroup as="ul" className="overflow-scroll">
-                <ListGroup.Item className={styles.project_list_header}>
+                <ListGroup.Item
+                    data-testid="projectlist-header"
+                    className={styles.project_list_header}
+                >
                     {t("common:Project list header")}
                 </ListGroup.Item>
                 {data.map((project) => (
