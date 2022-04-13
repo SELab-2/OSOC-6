@@ -1,5 +1,4 @@
 import {NextPage} from "next";
-import useTranslation from "next-translate/useTranslation";
 import {Accordion} from "react-bootstrap";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
@@ -9,15 +8,10 @@ import pathNames from "../properties/pathNames";
 import {useEffect, useState} from "react";
 import {AxiosConf} from "../api/requests";
 import {IProject, IProjectPage} from "../api/ProjectEntity";
-import {ISkillTypePage} from "../api/SkillTypeEntity";
-import Skills from "./skills";
-import {IProjectSkillPage} from "../api/ProjectSkillEntity";
-import {list} from "postcss";
 import {IAssignmentPage} from "../api/AssignmentEntity";
 
 
 const ProjectAsignmentList: NextPage = () => {
-    const { t } = useTranslation("common");
     const [projects, setProjects] = useState<{project:IProject, assignments:IAssignmentPage}[]>();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
