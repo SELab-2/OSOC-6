@@ -114,7 +114,8 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{"banana" + testStudent.getCallName() + "apple", getBaseActiveUserEdition().getId().toString()})
+                new String[]{"banana" + testStudent.getCallName() + "apple",
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
@@ -249,7 +250,8 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_on_experience_gives_result() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "osocExperience"},
-                new String[]{getBaseActiveUserEdition().getId().toString(), OsocExperience.YES_NO_STUDENT_COACH.toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString(),
+                        OsocExperience.YES_NO_STUDENT_COACH.toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }

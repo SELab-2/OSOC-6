@@ -1,15 +1,12 @@
 package com.osoc6.OSOC6.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.database.models.UserSkill;
 import lombok.Data;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.hateoas.server.EntityLinks;
 
 import java.util.ArrayList;

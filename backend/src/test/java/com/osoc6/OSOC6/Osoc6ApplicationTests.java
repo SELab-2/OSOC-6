@@ -8,11 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest
 class Osoc6ApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
     @Test
     public void test() {
         Osoc6Application.main(new String[]{

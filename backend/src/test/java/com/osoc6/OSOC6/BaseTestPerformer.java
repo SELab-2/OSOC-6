@@ -139,7 +139,8 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      * The invitation for the coach user on the active edition. Makes it so the user is linked to the active edition.
      */
     @Getter
-    private final Invitation invitationActiveEditionForCoach = new Invitation(baseActiveUserEdition, adminUser, coachUser);
+    private final Invitation invitationActiveEditionForCoach =
+            new Invitation(baseActiveUserEdition, adminUser, coachUser);
 
     /**
      * The invitation for the coach user on the non-active edition.

@@ -93,7 +93,7 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     }
 
     @Override
-    public String transform_to_json(UserEntity entity) {
+    public String transform_to_json(final UserEntity entity) {
         UserDTO helper = new UserDTO(entity, entityLinks);
         return Util.asJsonString(helper);
     }
