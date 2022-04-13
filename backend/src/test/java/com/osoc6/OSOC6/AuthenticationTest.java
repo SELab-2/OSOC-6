@@ -211,7 +211,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 "password", "123456"
         );
         getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
-                        .queryParam("token", getInvitationForCoach().getToken())
+                        .queryParam("token", getInvitationActiveEditionForCoach().getToken())
                         .content(Util.asJsonString(registerMap))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

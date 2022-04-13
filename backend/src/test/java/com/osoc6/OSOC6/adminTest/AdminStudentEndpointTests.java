@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
+import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
@@ -107,13 +108,13 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void filtering_on_edition_works_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{testStudent.getCallName(), getBaseUserEdition().getId().toString()})
+                new String[]{testStudent.getCallName(), getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
-                new String[]{"banana" + testStudent.getCallName() + "apple", getBaseUserEdition().getId().toString()})
+                new String[]{"banana" + testStudent.getCallName() + "apple", getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
@@ -124,7 +125,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
                 new String[]{testStudent.getCallName().substring(0, testStudent.getCallName().length() - 5),
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -135,7 +136,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"callName", "edition"},
                 new String[]{testStudent.getCallName().substring(5, testStudent.getCallName().length()),
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -165,7 +166,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_first_name_works() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"firstName", "edition"},
-                new String[]{testStudent.getFirstName(), getBaseUserEdition().getId().toString()})
+                new String[]{testStudent.getFirstName(), getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -176,7 +177,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"firstName", "edition"},
                 new String[]{"apple" + testStudent.getFirstName() + "banana",
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
@@ -186,7 +187,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_all_works_with_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition"},
-                new String[]{getBaseUserEdition().getId().toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -196,7 +197,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_gibberish_param_works_with_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "cbilcblcjbh"},
-                new String[]{getBaseUserEdition().getId().toString(), "cbjbhcjb"})
+                new String[]{getBaseActiveUserEdition().getId().toString(), "cbjbhcjb"})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -218,7 +219,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_on_reason_gives_result_1() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "skill"},
-                new String[]{getBaseUserEdition().getId().toString(), "on a nice"})
+                new String[]{getBaseActiveUserEdition().getId().toString(), "on a nice"})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -228,7 +229,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_on_reason_gives_result_2() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "skill"},
-                new String[]{getBaseUserEdition().getId().toString(), "whilst thinking about"})
+                new String[]{getBaseActiveUserEdition().getId().toString(), "whilst thinking about"})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -238,7 +239,27 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void queried_on_reason_gives_no_result() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "skill"},
-                new String[]{getBaseUserEdition().getId().toString(), "standing on hands"})
+                new String[]{getBaseActiveUserEdition().getId().toString(), "standing on hands"})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_on_experience_gives_result() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "osocExperience"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), OsocExperience.YES_NO_STUDENT_COACH.toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_on_experience_filters() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "osocExperience"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), OsocExperience.NONE.toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }

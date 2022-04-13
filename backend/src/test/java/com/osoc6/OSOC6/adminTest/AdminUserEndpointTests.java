@@ -4,10 +4,12 @@ import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.dto.UserDTO;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
@@ -25,6 +27,12 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
      */
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * Entity links, needed to get to link of an entity.
+     */
+    @Autowired
+    private EntityLinks entityLinks;
 
     /**
      * The actual path users are served on, with '/' as prefix.
@@ -59,8 +67,8 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
 
     @Override
     public final String transform_to_json(final UserEntity entity) {
-        String json = super.transform_to_json(entity);
-        return Util.removeFieldsFromJson(json, "authorities");
+        UserDTO helper = new UserDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     @Override
