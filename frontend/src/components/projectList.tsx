@@ -29,10 +29,10 @@ export const ProjectList = () => {
                 </ListGroup.Item>
                 {data.map((project) => (
                     <ListGroup.Item
+                        key={project._links.self.href.split(pathNames.projects)[1]}
                         className={styles.project_list_project}
                         action
                         as={"li"}
-                        key={project.id}
                         // Should be changed to individual project page later
                         onClick={() => {
                             let projectPath: string = project._links.self.href.split(

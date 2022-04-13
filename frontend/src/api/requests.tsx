@@ -18,8 +18,7 @@ export async function getAllEntities(url: string, collectionName: string): Promi
     const entities: IBaseEntity[] = [];
 
     while (!fetchedAll) {
-        const page: IPage<{ [k: string]: IBaseEntity[] }>;
-        page = (
+        const page: IPage<{ [k: string]: IBaseEntity[] }> = (
             await axios.get(url, {
                 params: {
                     size: 1000,
