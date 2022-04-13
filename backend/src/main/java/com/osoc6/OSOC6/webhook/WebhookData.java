@@ -37,5 +37,5 @@ public class WebhookData {
     /**
      * The fields of the actual form.
      */
-    private List<WebhookField> fields;
+    private List<FormField> fields;
 }

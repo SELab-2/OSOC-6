@@ -44,11 +44,11 @@ public enum OsocExperience {
      */
     public static OsocExperience fromParticipation(final String participation) {
         for (OsocExperience osocExperience : OsocExperience.values()) {
-            if (osocExperience.participation.equals(participation)) {
+            if (osocExperience.participation.equalsIgnoreCase(participation)) {
                 return osocExperience;
             }
         }
-        throw new WebhookException(String.format("No osocexperience participation matching %s found.", participation));
+        throw new WebhookException(String.format("No osocexperience participation matching '%s' found.", participation));
     }
 
     /**
@@ -59,10 +59,10 @@ public enum OsocExperience {
      */
     public static OsocExperience fromStudentCoach(final String studentCoach) {
         for (OsocExperience osocExperience : OsocExperience.values()) {
-            if (osocExperience.studentCoach.equals(studentCoach)) {
+            if (osocExperience.studentCoach.equalsIgnoreCase(studentCoach)) {
                 return osocExperience;
             }
         }
-        throw new WebhookException(String.format("No osocexperience studentcoach matching %s found.", studentCoach));
+        throw new WebhookException(String.format("No osocexperience studentcoach matching '%s' found.", studentCoach));
     }
 }

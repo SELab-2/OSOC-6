@@ -4,13 +4,12 @@ import com.osoc6.OSOC6.exception.WebhookException;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A webhook field represents a single question from the tally form.
  */
 @Data
-public class WebhookField {
+public class FormField {
 
     /**
      * The unique identifying key of the question.
@@ -45,22 +44,27 @@ public class WebhookField {
                 return option.getText();
             }
         }
-        throw new WebhookException(String.format("No option matching id %s found.", optionId));
+        throw new WebhookException(String.format("No option matching id '%s' found.", optionId));
     }
 
     /**
      * Get all the values from the chosen options, except for the 'Other' option.
+     * To get all selected options, the value needs to be parsed as a list of strings.
      * @return a list containing all the chosen values
      */
+    @SuppressWarnings("unchecked")
     public List<String> getAllNonOtherMatchingOptionValues() {
-        // TODO probeer met objectmapper
-        //  (https://stackoverflow.com/questions/44589381/how-to-convert-json-string-into-list-of-java-object)
-//      ObjectMapper mapper = new ObjectMapper();
-        List<String> chosenOptionIds = (List<String>) value;
+        List<String> chosenOptionIds;
+        try {
+            chosenOptionIds = (List<String>) value;
+        } catch (ClassCastException e) {
+            throw new WebhookException(String.format("Cannot parse '%s' as list of string.", value));
+        }
         return options
                 .stream()
                 .filter((option ->
-                        chosenOptionIds.contains(option.getId()) && !Objects.equals(option.getText(), "Other")))
+                        chosenOptionIds.contains(option.getId())
+                                && !option.getText().equalsIgnoreCase("other")))
                 .map((Option::getText))
                 .toList();
     }

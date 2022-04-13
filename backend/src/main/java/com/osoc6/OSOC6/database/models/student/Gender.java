@@ -47,6 +47,6 @@ public enum Gender {
                 return gender;
             }
         }
-        throw new WebhookException(String.format("No gender matching %s found.", text));
+        throw new WebhookException(String.format("No gender matching '%s' found.", text));
     }
 }

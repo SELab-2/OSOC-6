@@ -21,7 +21,7 @@ public enum QuestionKey {
     WORK_TIME("question_mB7WR7") {
         // TODO toevoegen aan student?
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) { }
+        public void addToStudent(final FormField formField, final Student student) { }
     },
     /**
      * Are there any responsibilities you might have which could hinder you during the day?
@@ -29,14 +29,14 @@ public enum QuestionKey {
     DAY_RESPONSIBILITIES("question_wvY59A") {
         // TODO toevoegen aan student?
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) { }
+        public void addToStudent(final FormField formField, final Student student) { }
     },
     /**
      * Birth name.
      */
     BIRTH_NAME("question_mK1KjM") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setFirstName((String) formField.getValue());
         }
     },
@@ -45,7 +45,7 @@ public enum QuestionKey {
      */
     LAST_NAME("question_wLpL2G") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setLastName((String) formField.getValue());
         }
     },
@@ -58,7 +58,7 @@ public enum QuestionKey {
          * Otherwise, the callName is set to a combination of their first and last name.
          */
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setCallName((String) formField.getValue());
             } else {
@@ -71,25 +71,17 @@ public enum QuestionKey {
      */
     GENDER("question_wMRpxY") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             String optionValue = formField.getMatchingOptionValue();
             student.setGender(Gender.fromText(optionValue));
         }
-    },
-    /**
-     * Would you like to add your pronouns?
-     */
-    WANT_PRONOUNS("question_mJzv4J") {
-        // TODO mag deze questionkey weg? (doe null check op het echte veld zelf)
-        @Override
-        public void addToStudent(final WebhookField formField, final Student student) { }
     },
     /**
      * Which pronouns do you prefer?
      */
     WHICH_PRONOUNS("question_wgG6oN") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setPronouns((String) formField.getValue());
             }
@@ -100,7 +92,7 @@ public enum QuestionKey {
      */
     OTHER_PRONOUNS("question_3yY5a0") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setPronouns((String) formField.getValue());
             }
@@ -111,7 +103,7 @@ public enum QuestionKey {
      */
     WHICH_LANGUAGE("question_3X0PbO") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setMostFluentLanguage((String) formField.getValue());
         }
     },
@@ -123,7 +115,7 @@ public enum QuestionKey {
          * Only set the most fluent language here if the student specified a 'other' language.
          */
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setMostFluentLanguage((String) formField.getValue());
             }
@@ -139,15 +131,16 @@ public enum QuestionKey {
          * @throws WebhookException if there are no stars, or too many stars
          */
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             String optionValue = formField.getMatchingOptionValue();
             int starCount = (int) optionValue.chars().filter(ch -> ch == '★').count();
             if (0 < starCount && starCount <= EnglishProficiency.values().length) {
-                EnglishProficiency proficiency = EnglishProficiency.values()[starCount];
+                EnglishProficiency proficiency = EnglishProficiency.values()[starCount - 1];
                 student.setEnglishProficiency(proficiency);
+            } else {
+                throw new WebhookException(
+                        String.format("Unable to process english proficiency of value '%s'.", optionValue));
             }
-            throw new WebhookException(
-                    String.format("English proficiency of value %s does not exist.", optionValue));
         }
     },
     /**
@@ -155,7 +148,7 @@ public enum QuestionKey {
      */
     PHONE_NUMBER("question_wzY561") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setPhoneNumber((String) formField.getValue());
         }
     },
@@ -164,7 +157,7 @@ public enum QuestionKey {
      */
     EMAIL_ADDRESS("question_w5xPAM") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setEmail((String) formField.getValue());
         }
     },
@@ -173,7 +166,7 @@ public enum QuestionKey {
      */
     UPLOAD_CV("question_wddeyz") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             // TODO uitzoeken hoe dit werkt
         }
     },
@@ -182,7 +175,7 @@ public enum QuestionKey {
      */
     LINK_CV("question_mYalAq") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setCurriculumVitaeURI((String) formField.getValue());
             }
@@ -193,7 +186,7 @@ public enum QuestionKey {
      */
     UPLOAD_PORTFOLIO("question_mDz6Gb") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             //Todo uitzoeken hoe dit werkt
         }
     },
@@ -202,7 +195,7 @@ public enum QuestionKey {
      */
     LINK_PORTOFLIO("question_3lrkE5") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setPortfolioURI((String) formField.getValue());
             }
@@ -213,7 +206,7 @@ public enum QuestionKey {
      */
     UPLOAD_MOTIVATION("question_mRPy9l") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             // TODO uitzoeken hoe dit werkt
         }
     },
@@ -222,7 +215,7 @@ public enum QuestionKey {
      */
     LINK_MOTIVATION("question_woGLj1") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setMotivationURI((String) formField.getValue());
             }
@@ -233,7 +226,7 @@ public enum QuestionKey {
      */
     WRITE_MOTIVATION("question_nGlAPj") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setWrittenMotivation((String) formField.getValue());
             }
@@ -244,7 +237,7 @@ public enum QuestionKey {
      */
     FUN_FACT("question_mOGMNK") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setFunFact((String) formField.getValue());
         }
     },
@@ -256,7 +249,7 @@ public enum QuestionKey {
          * Add all chosen studies to the list of the student's studies, except for the 'Other' study.
          */
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             List<String> studies = formField.getAllNonOtherMatchingOptionValues();
             student.getStudies().addAll(studies);
         }
@@ -266,7 +259,7 @@ public enum QuestionKey {
      */
     OTHER_STUDY("question_nPOJqQ") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.getStudies().add((String) formField.getValue());
             }
@@ -282,7 +275,7 @@ public enum QuestionKey {
          * We also do not want to set the student's diploma to 'Other'.
          */
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             List<String> diplomas = formField.getAllNonOtherMatchingOptionValues();
             if (diplomas.size() > 0) {
                 student.setCurrentDiploma(diplomas.get(0));
@@ -294,7 +287,7 @@ public enum QuestionKey {
      */
     OTHER_DIPLOMA("question_nrPMZM") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.setCurrentDiploma((String) formField.getValue());
             }
@@ -305,7 +298,7 @@ public enum QuestionKey {
      */
     TOTAL_DEGREE_YEARS("question_w4rVbb") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setDurationCurrentDegree((Integer) formField.getValue());
         }
     },
@@ -314,7 +307,7 @@ public enum QuestionKey {
      */
     CURRENT_DEGREE_YEAR("question_3jPAVR") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setYearInCourse((String) formField.getValue());
         }
     },
@@ -323,7 +316,7 @@ public enum QuestionKey {
      */
     COLLEGE_NAME("question_w2PG6p") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             // TODO test of hier een nullcheck bij moet, want als study = self taught dan kan dit null zijn
             student.setInstitutionName((String) formField.getValue());
         }
@@ -336,7 +329,7 @@ public enum QuestionKey {
          * Add all chosen roles/skills to the list of the student's skills, except for the 'Other' role/skill.
          */
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             List<String> skills = formField.getAllNonOtherMatchingOptionValues();
             student.getSkills().addAll(skills);
         }
@@ -346,7 +339,7 @@ public enum QuestionKey {
      */
     OTHER_ROLE("question_mZarB0") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
                 student.getSkills().add((String) formField.getValue());
             }
@@ -357,7 +350,7 @@ public enum QuestionKey {
      */
     BEST_SKILL("question_3No1ZG") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             student.setBestSkill((String) formField.getValue());
         }
     },
@@ -366,8 +359,9 @@ public enum QuestionKey {
      */
     OSOC_EXPERIENCE("question_3qV1l2") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
-            OsocExperience osocExperience = OsocExperience.fromParticipation((String) formField.getValue());
+        public void addToStudent(final FormField formField, final Student student) {
+            String participationValue = formField.getMatchingOptionValue();
+            OsocExperience osocExperience = OsocExperience.fromParticipation(participationValue);
             student.setOsocExperience(osocExperience);
         }
     },
@@ -376,9 +370,10 @@ public enum QuestionKey {
      */
     STUDENT_COACH("question_wQVlQg") {
         @Override
-        public void addToStudent(final WebhookField formField, final Student student) {
+        public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
-                OsocExperience osocExperience = OsocExperience.fromStudentCoach((String) formField.getValue());
+                String studentCoachValue = formField.getMatchingOptionValue();
+                OsocExperience osocExperience = OsocExperience.fromStudentCoach(studentCoachValue);
                 student.setOsocExperience(osocExperience);
             }
         }
@@ -396,7 +391,7 @@ public enum QuestionKey {
      * @param formField the field to get the answer from
      * @param student the student to add the answer to
      */
-    public abstract void addToStudent(WebhookField formField, Student student);
+    public abstract void addToStudent(FormField formField, Student student);
 
     QuestionKey(final String newKey) {
         key = newKey;
