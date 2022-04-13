@@ -8,6 +8,12 @@ const common = {
     "Navbar projects": "Projects",
     "Navbar assign students": "Assign Students",
     "Navbar profile": "Profile",
+    "UserOverview My Profile": "My Profile",
+    "UserOverview Name": "Name:",
+    "UserOverview E-mail": "E-mail:",
+    "UserOverview Password": "Password:",
+    "UserOverview Status": "Account Status:",
+    "UserOverview Delete": "Delete my profile",
 };
 
 export default common;
