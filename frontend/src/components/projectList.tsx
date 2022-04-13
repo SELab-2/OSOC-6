@@ -34,7 +34,12 @@ export const ProjectList = () => {
                         as={"li"}
                         key={project.id}
                         // Should be changed to individual project page later
-                        onClick={() => Router.push(pathNames.projects)}
+                        onClick={() => {
+                            let projectPath: string = project._links.self.href.split(
+                                pathNames.base
+                            )[1];
+                            Router.push(projectPath);
+                        }}
                     >
                         <h5 className="mb-1">{project.name}</h5>
                         <small>{project.partnerName}</small>
