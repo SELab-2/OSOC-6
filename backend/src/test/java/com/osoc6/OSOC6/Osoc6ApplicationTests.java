@@ -13,4 +13,11 @@ class Osoc6ApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    public void test() {
+        Osoc6Application.main(new String[]{
+                "--spring.main.web-environment=false",
+        });
+    }
+
 }
