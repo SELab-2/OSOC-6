@@ -14,7 +14,7 @@ export const ProjectList = () => {
     const [data, setData] = useState<any[]>([]);
 
     useEffect(() => {
-        const projects = getAllProjects().then((response) => setData(response));
+        const projects = getAllProjects(pathNames.projects).then((response) => setData(response));
     }, []);
 
     if (!data) {

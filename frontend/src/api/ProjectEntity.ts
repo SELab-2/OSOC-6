@@ -1,5 +1,5 @@
-import axios from "axios";
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import { getAllEntities } from "./requests";
 
 export interface IProject extends IBaseEntity {
     goals: string[];
@@ -59,20 +59,6 @@ export class Project {
 /**
  * Fetches all projects from the backend
  */
-export async function getAllProjects(): Promise<IProject[]> {
-    let fetchedAll: boolean = false;
-    let currentPage: number = 0;
-    let projects: IProject[] = [];
-
-    while (!fetchedAll) {
-        await axios
-            .get("http://localhost/api/projects?size=1000&page=" + currentPage)
-            .then((response) => {
-                projects = projects.concat(response.data._embedded.projects);
-                fetchedAll = currentPage + 1 === response.data.page.totalPages;
-                currentPage++;
-            });
-    }
-
-    return projects;
+export function getAllProjects(url: string): Promise<IProject[]> {
+    return <Promise<IProject[]>>getAllEntities(url, "projects");
 }
