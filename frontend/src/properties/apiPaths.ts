@@ -1,4 +1,4 @@
-const pathNames = {
+const apiPaths = {
     base: "http://localhost/api/",
     login: "/login-processing",
     registration: "/registration",
@@ -16,7 +16,6 @@ const pathNames = {
     communications: "communications",
     assignments: "assignments",
     students: "students",
-    projectCreation: "projects/create",
 };
 
-export default pathNames;
+export default apiPaths;

@@ -1,11 +1,11 @@
-import pathNames from "../properties/pathNames";
+import apiPaths from "../properties/apiPaths";
 import { IBaseEntity, IPage } from "./BaseEntities";
 import axios from "axios";
 
-export const AxiosConf = { baseURL: pathNames.base };
+export const AxiosConf = { baseURL: apiPaths.base };
 
 export const AxiosFormConfig = {
-    baseURL: pathNames.base,
+    baseURL: apiPaths.base,
     headers: {
         "Content-Type": "multipart/form-data",
         "access-control-allow-origin": "*",
