@@ -1,8 +1,8 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IInvitation extends IBaseEntity {
-    token: string | undefined;
-    creationTimestamp: Date | undefined;
+    token: string;
+    creationTimestamp: string;
     used: boolean;
 
     _links: {
@@ -15,6 +15,7 @@ export interface IInvitation extends IBaseEntity {
 }
 
 export type IInvitationsPage = IPage<{ invitations: IInvitation[] }>;
+export type IInvitationsLinks = IEntityLinks<{ invitations: IInvitation[] }>;
 
 export class Invitation {
     constructor(issuer: string, edition: string) {

@@ -95,11 +95,25 @@ public final class Student implements WeakToEdition {
     private String callName;
 
     /**
-     * The pronouns of the student.
+     * The possessive pronoun used in case pronoun type == other.
      */
-    @ElementCollection
-    @Getter @Setter @Builder.Default
-    private List<String> pronouns = new ArrayList<>();
+    @Basic(optional = false)
+    @Setter @Builder.Default
+    private String possessivePronoun = "";
+
+    /**
+     * The subjective pronoun used in case pronoun type == other.
+     */
+    @Basic(optional = false)
+    @Setter @Builder.Default
+    private String subjectivePronoun = "";
+
+    /**
+     * The objective pronoun used in case pronoun type == other.
+     */
+    @Basic(optional = false)
+    @Setter @Builder.Default
+    private String objectivePronoun = "";
 
     /**
      * The most fluent language of a person. This is a formatted string.
@@ -127,34 +141,34 @@ public final class Student implements WeakToEdition {
     /**
      * A URI pointing to the CV of a student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String curriculumVitaeURI;
+    @Getter @Setter @Builder.Default
+    private String curriculumVitaeURI = "";
 
     /**
      * A URI pointing to the portfolio of the student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String portfolioURI;
+    @Getter @Setter @Builder.Default
+    private String portfolioURI = "";
 
     /**
      * A URI pointing to the motivation of the student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String motivationURI;
+    @Getter @Setter @Builder.Default
+    private String motivationURI = "";
 
     /**
      * A written motivation of the student.
      */
-    @Basic
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
-    private String writtenMotivation;
+    @Getter @Setter @Builder.Default
+    private String writtenMotivation = "";
 
     /**
      * Highest level of education a student currently has.
@@ -294,6 +308,30 @@ public final class Student implements WeakToEdition {
      */
     public String getSubjectivePronoun() {
         return pronounsType.getSubjective(this);
+    }
+
+    /**
+     * Exportation of possessive pronoun to be used within te package, not exported by Spring.
+     * @return the possessive pronoun of the student in case the pronoun type is other.
+     */
+    String defaultGetPossessive() {
+        return possessivePronoun;
+    }
+
+    /**
+     * Exportation of objective pronoun to be used within te package, not exported by Spring.
+     * @return the objective pronoun of the student in case the pronoun type is other.
+     */
+    String defaultGetObjective() {
+        return objectivePronoun;
+    }
+
+    /**
+     * Exportation of subjective pronoun to be used within te package, not exported by Spring.
+     * @return the subjective pronoun of the student in case the pronoun type is other.
+     */
+    String defaultGetSubjective() {
+        return subjectivePronoun;
     }
 
     /**

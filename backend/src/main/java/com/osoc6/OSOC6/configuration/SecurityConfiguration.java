@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.configuration;
 
 import com.osoc6.OSOC6.service.UserEntityService;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,13 +54,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrf().disable().httpBasic()
             .and()
             .authorizeRequests()
-                .antMatchers("/registration", "/login*", "/auth/*", "/webhook/*").permitAll()
+                .antMatchers("/" + DumbledorePathWizard.REGISTRATION_PATH,
+                        "/" + DumbledorePathWizard.LOGIN_PATH + "*",
+                        "/" + DumbledorePathWizard.AUTH_PATH + "/*",
+                        "/" + DumbledorePathWizard.WEBHOOK_PATH + "/*").permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin()
-                .loginProcessingUrl("/login-processing")
-                .defaultSuccessUrl("/auth/home", true)
-                .failureForwardUrl("/auth/failure");
+                .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH)
+                .defaultSuccessUrl("/" + DumbledorePathWizard.AUTH_PATH + "/"
+                        + DumbledorePathWizard.AUTH_HOME_PATH, true)
+                .failureForwardUrl("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH);
     }
 
     /**

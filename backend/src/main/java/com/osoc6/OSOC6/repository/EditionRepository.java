@@ -26,7 +26,6 @@ import java.util.Optional;
         path = DumbledorePathWizard.EDITIONS_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface EditionRepository extends JpaRepository<Edition, Long> {
-
     /**
      * Find an edition by its name.
      * @param name name of the edition to look for
@@ -40,11 +39,13 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
     Optional<Edition> internalFindByName(@Param("name") String name);
 
     /**
-     * Search by using the following: /{DumbledorePathWizard.EDITIONS_PATH}/search/findByName?name=nameOfEdition.
+     * Search by using the following: /{EDITIONS_PATH}/search/{EDITIONS_BY_NAME_PATH}?name=nameOfEdition.
      * @param name the searched name
      * @param pageable argument needed to return a page
      * @return list of matched editions
      */
+    @RestResource(path = DumbledorePathWizard.EDITIONS_BY_NAME_PATH,
+            rel = DumbledorePathWizard.EDITIONS_BY_NAME_PATH)
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @Query("select e from Edition e where e.name LIKE concat(:name, '%') and (" + MerlinSpELWizard.Q_ADMIN_AUTH + " or "
             + "e.id in " + MerlinSpELWizard.Q_USER_EDITIONS + ")")

@@ -1,8 +1,9 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IProject extends IBaseEntity {
     goals: string[];
     name: string;
+    info: string;
     versionManagement: string;
     partnerName: string;
     partnerWebsite: string;
@@ -20,10 +21,12 @@ export interface IProject extends IBaseEntity {
 }
 
 export type IProjectPage = IPage<{ projects: IProject[] }>;
+export type IProjectLinks = IEntityLinks<{ projects: IProject[] }>;
 
 export class Project {
     constructor(
         name: string,
+        info: string,
         versionManagement: string,
         goals: string[],
         partnerName: string,
@@ -32,6 +35,7 @@ export class Project {
         creator: string
     ) {
         this.name = name;
+        this.info = info;
         this.versionManagement = versionManagement;
         this.goals = goals;
         this.partnerName = partnerName;
@@ -45,6 +49,7 @@ export class Project {
     edition: string;
     goals: string[];
     name: string;
+    info: string;
     partnerName: string;
     partnerWebsite: string;
     versionManagement: string;

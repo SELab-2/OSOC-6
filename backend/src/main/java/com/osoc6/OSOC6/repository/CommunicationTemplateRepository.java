@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
@@ -23,10 +24,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public interface CommunicationTemplateRepository extends JpaRepository<CommunicationTemplate, Long> {
     /**
      * search by using the following:
-     * /{DumbledorePathWizard.COMMUNICATION_TEMPLATE_PATH}/search/findByName?name=nameOfCommunicationTemplate.
+     * /{COMMUNICATION_TEMPLATE_PATH}/search/{COMMUNICATION_TEMPLATE_BY_NAME_PATH}?name=nameOfCommunicationTemplate.
      * @param name the searched name
      * @param pageable argument needed to return a page
      * @return list of matched communicationTemplates
      */
+    @RestResource(path = DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH,
+            rel = DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH)
     Page<CommunicationTemplate> findByName(@Param("name") String name, Pageable pageable);
 }

@@ -1,13 +1,10 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
@@ -22,8 +19,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,28 +33,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * First sample student that gets loaded before every test.
      */
-    private final Student student = Student.builder()
-            .email("jitse@mail.com")
-            .additionalStudentInfo("")
-            .bestSkill("standing on hands")
-            .currentDiploma("Master")
-            .educationLevel("Lower level")
-            .englishProficiency(EnglishProficiency.FLUENT)
-            .firstName("Jitse")
-            .lastName("De Smet")
-            .callName("Jitse De smet")
-            .gender(Gender.MALE)
-            .institutionName("Ghent University")
-            .mostFluentLanguage("Dutch")
-            .osocExperience(OsocExperience.NONE)
-            .phoneNumber("+324982672")
-            .pronounsType(PronounsType.HE)
-            .writtenMotivation("I love to code!")
-            .yearInCourse("3")
-            .pronouns(new ArrayList<>())
-            .durationCurrentDegree(5)
-            .edition(getBaseUserEdition())
-            .build();
+    private final Student student = TestEntityProvider.getBaseStudentOther(this);
 
     /**
      * First sample suggestions that gets loaded before every test.
@@ -144,9 +118,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
     @Override
     public final Map<String, String> change_entity(final Suggestion startEntity) {
-        Map<String, String> patchMap = new HashMap<>();
-        patchMap.put("reason", TEST_STRING);
-        return patchMap;
+        return Map.of("reason", TEST_STRING);
     }
 
     @Override
@@ -187,10 +159,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     }
 
     @Test
-    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void posting_with_other_coach_id_fails() throws Exception {
         Suggestion suggestion = new Suggestion(SuggestionStrategy.MAYBE, "Nice personality",
-                getOutsiderCoach(), student);
+                getCoachUser(), student);
         perform_post(getEntityPath(), suggestion).andExpect(status().isForbidden());
     }
 

@@ -56,10 +56,10 @@ public final class Communication implements WeakToEdition {
     /**
      * The content of the communication.
      */
-    @Basic(optional = true)
+    @Basic(optional = false)
     @Column(columnDefinition = "text")
     @Getter @Setter
-    private String content;
+    private String content = "";
 
     /**
      * {@link CommunicationTemplate} used in this communication.

@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IEdition extends IBaseEntity {
     name: string;
@@ -12,6 +12,7 @@ export interface IEdition extends IBaseEntity {
 }
 
 export type IEditionsPage = IPage<{ editions: IEdition[] }>;
+export type IEditionsLinks = IEntityLinks<{ editions: IEdition[] }>;
 
 export class Edition {
     constructor(name: string, year: number, active: boolean) {
