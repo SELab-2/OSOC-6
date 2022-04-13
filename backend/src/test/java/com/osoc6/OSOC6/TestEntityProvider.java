@@ -1,9 +1,11 @@
 package com.osoc6.OSOC6;
 
+import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.CommunicationTemplate;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.database.models.ProjectSkill;
 import com.osoc6.OSOC6.database.models.SkillType;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
@@ -21,10 +23,12 @@ import java.util.List;
  * Using this class you can create base entities more easily.
  */
 public final class TestEntityProvider {
-    private TestEntityProvider() { }
+    private TestEntityProvider() {
+    }
 
     /**
      * Creates a student with pronouns HE.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -48,7 +52,7 @@ public final class TestEntityProvider {
                 .writtenMotivation("I love to Spring Spring in java Spring!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
-                .edition(performer.getBaseUserEdition())
+                .edition(performer.getBaseActiveUserEdition())
                 .motivationURI("www.I-like-bananas.com")
                 .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
                 .curriculumVitaeURI("www.my-life-in-ghent.com")
@@ -58,6 +62,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a student with pronouns Other.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -84,7 +89,7 @@ public final class TestEntityProvider {
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
-                .edition(performer.getBaseUserEdition())
+                .edition(performer.getBaseActiveUserEdition())
                 .motivationURI("www.ILikeApples.com")
                 .curriculumVitaeURI("www.my-life-in-bel-air.com")
                 .writtenMotivation("www.I-just-want-it.com")
@@ -93,24 +98,27 @@ public final class TestEntityProvider {
 
     /**
      * Creates a base project.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
     public static Project getBaseProject1(final BaseTestPerformer<?, ?, ?> performer) {
-        return new Project("New chip", performer.getBaseUserEdition(), "Intel", performer.getAdminUser());
+        return new Project("New chip", performer.getBaseActiveUserEdition(), "Intel", performer.getAdminUser());
     }
 
     /**
      * Creates a base project.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
     public static Project getBaseProject2(final BaseTestPerformer<?, ?, ?> performer) {
-        return new Project("Instagram", performer.getBaseUserEdition(), "Meta", performer.getAdminUser());
+        return new Project("Instagram", performer.getBaseActiveUserEdition(), "Meta", performer.getAdminUser());
     }
 
     /**
      * Creates a base communication template.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -121,6 +129,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a base communication template.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -131,6 +140,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a non active edition.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -140,6 +150,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates an active edition.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -149,15 +160,17 @@ public final class TestEntityProvider {
 
     /**
      * Creates a non-used invitation.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
     public static Invitation getBaseUnusedInvitation(final BaseTestPerformer<?, ?, ?> performer) {
-        return new Invitation(performer.getBaseUserEdition(), performer.getAdminUser(), null);
+        return new Invitation(performer.getBaseActiveUserEdition(), performer.getAdminUser(), null);
     }
 
     /**
      * Creates a basic skilltype.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -167,6 +180,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a basic skilltype.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -176,6 +190,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a base UserEntity that has ADMIN role.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -185,6 +200,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a base UserEntity that has COACH role.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -194,6 +210,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a UserSkill for the admin user.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -203,6 +220,7 @@ public final class TestEntityProvider {
 
     /**
      * Creates a UserSkill for the coach user.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
@@ -213,11 +231,31 @@ public final class TestEntityProvider {
 
     /**
      * Creates a UserSkill for the outsider user.
+     *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
     public static UserSkill getBaseOutsiderUserSkill(final BaseTestPerformer<?, ?, ?> performer) {
         return new UserSkill("Lonely loner", performer.getOutsiderCoach(),
                 "Stands outside in the rain and cries.");
+    }
+
+    public static ProjectSkill getBaseProjectSkill1(final Project project) {
+        return new ProjectSkill("Walk on water", project, "just to be with you!");
+    }
+
+    public static ProjectSkill getBaseProjectSkill2(final Project project) {
+        return new ProjectSkill("V10 Boulder-er", project, "Strong climber unites");
+    }
+
+    public static Assignment getBaseSuggestionAssignment(final UserEntity user, final Student student,
+                                                         final ProjectSkill skill) {
+        return new Assignment(true, "Seems like handsome boy", user, student, skill);
+    }
+
+    public static Assignment getBaseNonSuggestionAssignment(final UserEntity user, final Student student,
+                                                         final ProjectSkill skill) {
+        return new Assignment(false, "Seems like handsome girl", user, student, skill);
+
     }
 }

@@ -2,14 +2,17 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.dto.UserDTO;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
@@ -29,6 +32,12 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      */
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * Entity links, needed to get to link of an entity.
+     */
+    @Autowired
+    private EntityLinks entityLinks;
 
     /**
      * The actual path users are served on, with '/' as prefix.
@@ -81,6 +90,12 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     @Override
     public void removeSetUpRepository() {
         removeBasicData();
+    }
+
+    @Override
+    public String transform_to_json(final UserEntity entity) {
+        UserDTO helper = new UserDTO(entity, entityLinks);
+        return Util.asJsonString(helper);
     }
 
     @Test

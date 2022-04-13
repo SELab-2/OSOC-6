@@ -8,6 +8,8 @@ const common = {
     "Navbar projects": "Projects",
     "Navbar assign students": "Assign Students",
     "Navbar profile": "Profile",
+    "New project button": "New project",
+    "Project list header": "Projects",
     "UserOverview My Profile": "My Profile",
     "UserOverview Name": "Name:",
     "UserOverview E-mail": "E-mail:",

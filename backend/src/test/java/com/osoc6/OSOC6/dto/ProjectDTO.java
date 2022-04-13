@@ -32,6 +32,11 @@ public final class ProjectDTO {
     private String name;
 
     /**
+     * Info about the project.
+     */
+    private String info;
+
+    /**
      * A URI pointing to the version management of the project.
      */
     private String versionManagement;
@@ -70,6 +75,7 @@ public final class ProjectDTO {
         id = project.getId();
         goals = project.getGoals();
         name = project.getName();
+        info = project.getInfo();
         versionManagement = project.getVersionManagement();
         partnerName = project.getPartnerName();
         partnerWebsite = project.getPartnerWebsite();

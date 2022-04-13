@@ -78,10 +78,16 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     private InvitationRepository invitationRepository;
 
     /**
-     * The test edition. Used so that our test users can be linked to an edition.
+     * The acitve test edition. Used so that our test users can be linked to an edition.
      */
     @Getter
-    private final Edition baseUserEdition = new Edition("Basic test edition", 2022, true);
+    private final Edition baseActiveUserEdition = new Edition("Basic active test edition", 2022, true);
+
+    /**
+     * The non-active test edition. Used so we test non-active edition
+     */
+    @Getter
+    private final Edition baseNonActiveUserEdition = new Edition("Basic non-active test edition", 2021, false);
 
     /**
      * Email of the admin as a static final field. This way it can be used within annotations.
@@ -130,29 +136,40 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     private final UserEntity outsiderCoach = new UserEntity(OUTSIDER_EMAIL, "joe", UserRole.COACH, "test");
 
     /**
-     * The invitation for the coach user. Makes it so the user is linked to an edition.
+     * The invitation for the coach user on the active edition. Makes it so the user is linked to the active edition.
      */
     @Getter
-    private final Invitation invitationForCoach = new Invitation(baseUserEdition, adminUser, coachUser);
+    private final Invitation invitationActiveEditionForCoach =
+            new Invitation(baseActiveUserEdition, adminUser, coachUser);
+
+    /**
+     * The invitation for the coach user on the non-active edition.
+     * Makes it so the user is linked to the non-active edition.
+     */
+    @Getter
+    private final Invitation invitationNonActiveEditionForCoach =
+            new Invitation(baseNonActiveUserEdition, adminUser, coachUser);
 
     /**
      * Invitation that makes matchingEditionCoach registered to the same edition as the base coach.
      */
-    private final Invitation matchingEditionUserInvitation = new Invitation(getBaseUserEdition(), getAdminUser(),
+    private final Invitation matchingEditionUserInvitation = new Invitation(getBaseActiveUserEdition(), getAdminUser(),
             matchingEditionCoach);
 
     /**
      * Load the needed edition, users and invitation.
      */
     public void setupBasicData() {
-        editionRepository.save(baseUserEdition);
+        editionRepository.save(baseActiveUserEdition);
+        editionRepository.save(baseNonActiveUserEdition);
 
         userRepository.save(adminUser);
         userRepository.save(coachUser);
         userRepository.save(outsiderCoach);
         userRepository.save(matchingEditionCoach);
 
-        invitationRepository.save(invitationForCoach);
+        invitationRepository.save(invitationActiveEditionForCoach);
+        invitationRepository.save(invitationNonActiveEditionForCoach);
         invitationRepository.save(matchingEditionUserInvitation);
     }
 

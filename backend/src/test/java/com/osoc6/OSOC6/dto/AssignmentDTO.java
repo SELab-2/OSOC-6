@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.dto;
 
 import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.database.models.ProjectSkill;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Data;
@@ -55,9 +55,9 @@ public class AssignmentDTO {
     private String student;
 
     /**
-     * Project that the student is assigned to.
+     * {@link ProjectSkill} that the student is assigned to.
      */
-    private String project;
+    private String projectSkill;
 
     public AssignmentDTO(final Assignment assignment, final EntityLinks entityLinks) {
         id = assignment.getId();
@@ -69,6 +69,7 @@ public class AssignmentDTO {
                 assignment.getAssigner().getId().toString()).getHref();
 
         student = entityLinks.linkToItemResource(Student.class, assignment.getStudent().getId().toString()).getHref();
-        project = entityLinks.linkToItemResource(Project.class, assignment.getProject().getId().toString()).getHref();
+        projectSkill = entityLinks.linkToItemResource(ProjectSkill.class,
+                assignment.getProjectSkill().getId().toString()).getHref();
     }
 }
