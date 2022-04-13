@@ -98,7 +98,7 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_invitation_by_id_fails() throws Exception {
-        perform_get(getEntityPath() + "/" + getInvitationForCoach().getId())
+        perform_get(getEntityPath() + "/" + getInvitationActiveEditionForCoach().getId())
                 .andExpect(status().isForbidden());
     }
 

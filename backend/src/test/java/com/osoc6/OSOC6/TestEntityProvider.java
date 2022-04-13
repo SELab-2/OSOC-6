@@ -48,7 +48,7 @@ public final class TestEntityProvider {
                 .writtenMotivation("I love to Spring Spring in java Spring!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
-                .edition(performer.getBaseUserEdition())
+                .edition(performer.getBaseActiveUserEdition())
                 .motivationURI("www.I-like-bananas.com")
                 .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
                 .curriculumVitaeURI("www.my-life-in-ghent.com")
@@ -84,7 +84,7 @@ public final class TestEntityProvider {
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
-                .edition(performer.getBaseUserEdition())
+                .edition(performer.getBaseActiveUserEdition())
                 .motivationURI("www.ILikeApples.com")
                 .curriculumVitaeURI("www.my-life-in-bel-air.com")
                 .writtenMotivation("www.I-just-want-it.com")
@@ -97,7 +97,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static Project getBaseProject1(final BaseTestPerformer<?, ?, ?> performer) {
-        return new Project("New chip", performer.getBaseUserEdition(), "Intel", performer.getAdminUser());
+        return new Project("New chip", performer.getBaseActiveUserEdition(), "Intel", performer.getAdminUser());
     }
 
     /**
@@ -106,7 +106,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static Project getBaseProject2(final BaseTestPerformer<?, ?, ?> performer) {
-        return new Project("Instagram", performer.getBaseUserEdition(), "Meta", performer.getAdminUser());
+        return new Project("Instagram", performer.getBaseActiveUserEdition(), "Meta", performer.getAdminUser());
     }
 
     /**
@@ -153,7 +153,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static Invitation getBaseUnusedInvitation(final BaseTestPerformer<?, ?, ?> performer) {
-        return new Invitation(performer.getBaseUserEdition(), performer.getAdminUser(), null);
+        return new Invitation(performer.getBaseActiveUserEdition(), performer.getAdminUser(), null);
     }
 
     /**

@@ -33,7 +33,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     /**
      * Sample used invitation that gets loaded before every test.
      */
-    private final Invitation usedInvitation = getInvitationForCoach();
+    private final Invitation usedInvitation = getInvitationActiveEditionForCoach();
 
     /**
      * Sample used invitation that gets loaded before every test.

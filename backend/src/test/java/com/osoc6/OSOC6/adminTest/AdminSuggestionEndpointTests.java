@@ -135,7 +135,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{suggestion1.getReason(),
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(student.getCallName()));
     }
@@ -147,7 +147,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{"apple" + suggestion1.getReason() + "banana",
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(student.getCallName()));
     }
@@ -158,7 +158,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition"},
-                new String[]{getBaseUserEdition().getId().toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_contains_times_or_less(student.getCallName(), 1));
     }

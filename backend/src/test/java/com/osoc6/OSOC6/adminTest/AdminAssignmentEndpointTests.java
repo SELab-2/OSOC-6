@@ -137,7 +137,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{testAssignment.getReason(),
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -149,7 +149,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"reason", "edition"},
                 new String[]{"apple" + testAssignment.getReason() + "banana",
-                        getBaseUserEdition().getId().toString()})
+                        getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
@@ -160,7 +160,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
                 new String[]{"edition"},
-                new String[]{getBaseUserEdition().getId().toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
@@ -173,7 +173,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
                 new String[]{"edition"},
-                new String[]{getBaseUserEdition().getId().toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }

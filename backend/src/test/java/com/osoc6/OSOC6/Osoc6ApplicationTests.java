@@ -8,9 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest
 class Osoc6ApplicationTests {
-
     @Test
-    void contextLoads() {
+    public void test() {
+        Osoc6Application.main(new String[]{
+                "--spring.main.web-environment=false",
+        });
     }
 
 }

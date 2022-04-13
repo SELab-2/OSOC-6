@@ -94,7 +94,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_my_edition_by_id_works() throws Exception {
-        Edition edition = getBaseUserEdition();
+        Edition edition = getBaseActiveUserEdition();
         check_get(getEntityPath() + "/" + edition.getId(), edition.getName());
     }
 
@@ -107,7 +107,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_my_edition_by_name_works() throws Exception {
-        Edition edition = getBaseUserEdition();
+        Edition edition = getBaseActiveUserEdition();
         base_test_all_queried_assertions(
                 getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH, "name", edition.getName());
     }
@@ -124,7 +124,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_all_contains_my_edition() throws Exception {
-        Edition edition = getBaseUserEdition();
+        Edition edition = getBaseActiveUserEdition();
         base_get_all_entities_succeeds().andExpect(string_to_contains_string(edition.getName()));
     }
 
@@ -143,7 +143,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void patching_edition_fails() throws Exception {
-        Edition edition = getBaseUserEdition();
+        Edition edition = getBaseActiveUserEdition();
         perform_patch(getEntityPath() + "/" + edition.getId(), change_entity(edition))
                 .andExpect(status().isForbidden());
     }
@@ -151,6 +151,6 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void deleting_edition_fails() throws Exception {
-        perform_delete_with_id(getEntityPath(), getBaseUserEdition().getId()).andExpect(status().isForbidden());
+        perform_delete_with_id(getEntityPath(), getBaseActiveUserEdition().getId()).andExpect(status().isForbidden());
     }
 }

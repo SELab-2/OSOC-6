@@ -80,7 +80,8 @@ public final class UserEntity implements UserDetails {
     /**
      * Indicates whether the account is locked. Needed to implement UserDetails.
      */
-    private final Boolean locked = false;
+    @Getter
+    private final boolean accountNonLocked = true;
 
     /**
      * Indicates whether the account is enabled. Needed to implement UserDetails.
@@ -177,15 +178,6 @@ public final class UserEntity implements UserDetails {
     @Override
     public boolean isAccountNonExpired() {
         return true;
-    }
-
-    /**
-     * Indicates whether the user's account is locked. Needed to implement UserDetails.
-     * @return boolean
-     */
-    @Override
-    public boolean isAccountNonLocked() {
-        return !locked;
     }
 
     /**
