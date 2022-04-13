@@ -4,6 +4,7 @@ const pathNames = {
     registration: "/registration",
     editions: "editions",
     skillTypes: "skillTypes",
+    skillTypesByName: "skillTypes/search/by-name",
     users: "users",
     ownUser: "users/search/own-user",
     communicationTemplates: "communicationTemplates",

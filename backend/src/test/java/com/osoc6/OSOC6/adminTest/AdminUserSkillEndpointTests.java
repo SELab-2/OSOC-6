@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.UserSkill;
 import com.osoc6.OSOC6.dto.UserSkillDTO;
@@ -30,8 +31,7 @@ public final class AdminUserSkillEndpointTests extends AdminEndpointTest<UserSki
     /**
      * Sample UserSkill that gets loaded before every test.
      */
-    private UserSkill testSkill = new UserSkill("Active like Duracel bunny", getAdminUser(),
-            "The admin is very active");
+    private final UserSkill testSkill = TestEntityProvider.getBaseAdminUserSkill(this);
 
     /**
      * The actual path users are served on, with '/' as prefix.
@@ -74,7 +74,9 @@ public final class AdminUserSkillEndpointTests extends AdminEndpointTest<UserSki
 
     @Override
     public UserSkill create_entity() {
-        return new UserSkill(TEST_STRING, getCoachUser(), "");
+        UserSkill skill = TestEntityProvider.getBaseCoachUserSkill(this);
+        skill.setName(TEST_STRING);
+        return skill;
     }
 
     @Override

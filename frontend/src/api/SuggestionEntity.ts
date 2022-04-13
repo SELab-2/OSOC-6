@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export enum SuggestionStrategy {
     yes = "YES",
@@ -20,6 +20,7 @@ export interface ISuggestion extends IBaseEntity {
 }
 
 export type ISuggestionPage = IPage<{ suggestions: ISuggestion[] }>;
+export type ISuggestionLinks = IEntityLinks<{ suggestions: ISuggestion[] }>;
 
 export class Suggestion {
     constructor(strategy: SuggestionStrategy, reason: string, coach: string, student: string) {

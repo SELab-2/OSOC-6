@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.dto.ProjectDTO;
@@ -13,7 +14,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,12 +38,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     /**
      * First sample project that gets loaded before every test.
      */
-    private final Project project1 = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
-
-    /**
-     * Second sample project that gets loaded before every test.
-     */
-    private final Project project2 = new Project("Instagram", getBaseUserEdition(), "Meta", getAdminUser());
+    private final Project project1 = TestEntityProvider.getBaseProject1(this);
 
     /**
      * The actual path projects are served on, with '/' as prefix.
@@ -68,7 +63,6 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
         setupBasicData();
 
         projectRepository.save(project1);
-        projectRepository.save(project2);
     }
 
     /**
@@ -83,14 +77,14 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
 
     @Override
     public final Project create_entity() {
-        return new Project(TEST_STRING, getBaseUserEdition(), "A new organisation", getAdminUser());
+        Project project = TestEntityProvider.getBaseProject2(this);
+        project.setName(TEST_STRING);
+        return project;
     }
 
     @Override
     public final Map<String, String> change_entity(final Project project) {
-        Map<String, String> patchMap = new HashMap<>();
-        patchMap.put("name", TEST_STRING);
-        return patchMap;
+        return Map.of("name", TEST_STRING);
     }
 
     @Override
@@ -118,8 +112,7 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_all_entities_succeeds() throws Exception {
         base_get_all_entities_succeeds()
-                .andExpect(string_to_contains_string(project1.getName()))
-                .andExpect(string_to_contains_string(project2.getName()));
+                .andExpect(string_to_contains_string(project1.getName()));
     }
 }
 

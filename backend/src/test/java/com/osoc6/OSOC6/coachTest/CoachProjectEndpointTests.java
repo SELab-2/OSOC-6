@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Project;
@@ -14,7 +15,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +41,7 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     /**
      * First sample project that gets loaded before every test.
      */
-    private final Project testProject = new Project("New chip", getBaseUserEdition(), "Intel", getAdminUser());
+    private final Project testProject = TestEntityProvider.getBaseProject1(this);
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -90,14 +90,14 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
 
     @Override
     public final Project create_entity() {
-        return new Project(TEST_STRING, getBaseUserEdition(), "A test organisation", getAdminUser());
+        Project project = TestEntityProvider.getBaseProject2(this);
+        project.setName(TEST_STRING);
+        return project;
     }
 
     @Override
     public final Map<String, String> change_entity(final Project startEntity) {
-        Map<String, String> patchMap = new HashMap<>();
-        patchMap.put("name", TEST_STRING);
-        return patchMap;
+        return Map.of("name", TEST_STRING);
     }
 
     /**

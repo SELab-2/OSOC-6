@@ -7,8 +7,10 @@ import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Optional;
@@ -27,7 +29,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      * @param email email address of the searched user
      * @return if there is an account for the given email, the user will be returned
      */
+    @RestResource(path = DumbledorePathWizard.USERS_BY_EMAIL_PATH,
+            rel = DumbledorePathWizard.USERS_BY_EMAIL_PATH)
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
+            + "@spelUtil.hasOverlappingEditions(authentication.principal, returnObject.get)")
     Optional<UserEntity> findByEmail(String email);
 
     /**
@@ -35,16 +41,22 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      */
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
+            + "@spelUtil.hasOverlappingEditions(authentication.principal, returnObject.get)")
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**
      * Check if there exists an enabled user with the specified role.
      * This is needed for creating the base admin user.
      * @param userRole the role of the users to look for
-     * @param enabled wether the user is enabled or not
+     * @param enabled whether the user is enabled or not
      * @return a list of all users with the specified role
+     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
      */
-    boolean existsAllByUserRoleEqualsAndEnabled(UserRole userRole, Boolean enabled);
+    @RestResource(exported = false)
+    @Query("select (count(u) > 0) from UserEntity u where u.userRole = :userRole and u.enabled = :enabled")
+    boolean existsAllByUserRoleEqualsAndEnabled(
+            @Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
 
     /**
      * Update a {@link UserEntity}.

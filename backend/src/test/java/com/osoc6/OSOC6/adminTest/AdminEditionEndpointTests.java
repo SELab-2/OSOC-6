@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
@@ -31,12 +32,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     /**
      * First sample edition that gets loaded before every test.
      */
-    private final Edition edition1 = new Edition();
-
-    /**
-     * Second sample edition that gets loaded before every test.
-     */
-    private final Edition edition2 = new Edition();
+    private final Edition edition1 = TestEntityProvider.getBaseNonActiveEdition(this);
 
     /**
      * The actual path editions are served on, with '/' as prefix.
@@ -60,15 +56,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     public void setUpRepository() {
         setupBasicData();
 
-        edition1.setName("Edition 1");
-        edition1.setYear(0);
-        edition1.setActive(false);
         repository.save(edition1);
-
-        edition2.setName("Edition 2");
-        edition2.setYear(1);
-        edition2.setActive(true);
-        repository.save(edition2);
     }
 
     /**
@@ -83,18 +71,14 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
 
     @Override
     public final Edition create_entity() {
-        Edition postEdition = new Edition();
+        Edition postEdition = TestEntityProvider.getBaseActiveEdition(this);
         postEdition.setName(TEST_STRING);
-        postEdition.setYear(1);
-        postEdition.setActive(true);
         return postEdition;
     }
 
     @Override
     public final Map<String, String> change_entity(final Edition edition) {
-        Map<String, String> patchMap = new HashMap<>();
-        patchMap.put("name", TEST_STRING);
-        return patchMap;
+        return Map.of("name", TEST_STRING);
     }
 
     @Override
@@ -138,18 +122,17 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void edition_needs_unique_name() throws Exception {
-        Map<String, String> changeMap = new HashMap<>();
-        changeMap.put("name", TEST_STRING);
+        post_new();
 
-        perform_patch(getEntityPath() + "/" + edition1.getId(), changeMap).andExpect(status().isOk());
-        perform_patch(getEntityPath() + "/" + edition2.getId(), changeMap).andExpect(status().isConflict());
+        perform_patch(getEntityPath() + "/" + edition1.getId(), Map.of("name", TEST_STRING))
+                .andExpect(status().isConflict());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_my_edition_by_name_works() throws Exception {
         Edition edition = getBaseUserEdition();
-        base_test_all_queried_assertions(
-                getEntityPath() + "/search/findByName", "name", edition.getName());
+        base_test_all_queried_assertions(getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH,
+                "name", edition.getName());
     }
 }

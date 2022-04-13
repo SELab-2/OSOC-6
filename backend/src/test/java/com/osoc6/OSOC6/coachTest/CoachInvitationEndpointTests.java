@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Invitation;
@@ -32,11 +33,6 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     private InvitationRepository invitationRepository;
 
     /**
-     * Sample invitation that gets loaded before every test.
-     */
-    private final Invitation invitation = new Invitation(getBaseUserEdition(), getAdminUser(), getCoachUser());
-
-    /**
      * The actual path invitations are served on, with '/' as prefix.
      */
     private static final String INVITATION_PATH = "/" + DumbledorePathWizard.INVITATIONS_PATH;
@@ -67,8 +63,6 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     @Override
     public void setUpRepository() {
         setupBasicData();
-
-        invitationRepository.save(invitation);
     }
 
     /**
@@ -83,7 +77,7 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
 
     @Override
     public final Invitation create_entity() {
-        return new Invitation(getBaseUserEdition(), getAdminUser(), null);
+        return TestEntityProvider.getBaseUnusedInvitation(this);
     }
 
     /**
@@ -104,7 +98,7 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void get_invitation_by_id_fails() throws Exception {
-        perform_get(getEntityPath() + "/" + invitation.getId())
+        perform_get(getEntityPath() + "/" + getInvitationForCoach().getId())
                 .andExpect(status().isForbidden());
     }
 

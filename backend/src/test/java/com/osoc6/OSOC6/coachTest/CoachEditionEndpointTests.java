@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.coachTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,7 +33,7 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     /**
      * Edition that is not tracked. A coach is unable to see this.
      */
-    private final Edition nonTrackedEdition = new Edition();
+    private final Edition nonTrackedEdition = TestEntityProvider.getBaseActiveEdition(this);
 
 
     /**
@@ -56,9 +56,6 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     public void setUpRepository() {
         setupBasicData();
 
-        nonTrackedEdition.setName("Hokus pockus edition");
-        nonTrackedEdition.setYear(22);
-        nonTrackedEdition.setActive(true);
         editionRepository.save(nonTrackedEdition);
     }
 
@@ -74,18 +71,14 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
 
     @Override
     public Edition create_entity() {
-        Edition edition = new Edition();
-        edition.setName(TEST_STRING);
-        edition.setYear(1);
-        edition.setActive(true);
-        return edition;
+        Edition postEdition = TestEntityProvider.getBaseActiveEdition(this);
+        postEdition.setName(TEST_STRING);
+        return postEdition;
     }
 
     @Override
     public Map<String, String> change_entity(final Edition edition) {
-        Map<String, String> patchMap = new HashMap<>();
-        patchMap.put("name", TEST_STRING);
-        return patchMap;
+        return Map.of("name", TEST_STRING);
     }
 
     @Override
@@ -116,13 +109,13 @@ public final class CoachEditionEndpointTests extends TestFunctionProvider<Editio
     public void getting_my_edition_by_name_works() throws Exception {
         Edition edition = getBaseUserEdition();
         base_test_all_queried_assertions(
-                getEntityPath() + "/search/findByName", "name", edition.getName());
+                getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH, "name", edition.getName());
     }
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void getting_other_edition_by_name_doesnt_contain_result() throws Exception {
-        getMockMvc().perform(get(getEntityPath() + "/search/findByName")
+        getMockMvc().perform(get(getEntityPath() + "/search/" + DumbledorePathWizard.EDITIONS_BY_NAME_PATH)
                         .queryParam("name", nonTrackedEdition.getName()))
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(nonTrackedEdition.getName()));

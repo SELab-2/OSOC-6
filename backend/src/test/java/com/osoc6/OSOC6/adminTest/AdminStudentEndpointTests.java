@@ -1,12 +1,9 @@
 package com.osoc6.OSOC6.adminTest;
 
-import com.osoc6.OSOC6.dto.StudentDTO;
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
 import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -15,9 +12,6 @@ import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,31 +35,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     /**
      * A test user to allowing us to write test easily.
      */
-    private final Student testStudent = Student.builder()
-            .email("kasper@mail.com")
-            .additionalStudentInfo("He likes it like that")
-            .bestSkill("Finding out the Spring ways")
-            .currentDiploma("Master")
-            .educationLevel("higher level")
-            .englishProficiency(EnglishProficiency.FLUENT)
-            .firstName("Kasper")
-            .lastName("Demeyere")
-            .callName("Kasper Demeyere")
-            .gender(Gender.MALE)
-            .institutionName("Ghent University")
-            .mostFluentLanguage("Dutch")
-            .osocExperience(OsocExperience.YES_NO_STUDENT_COACH)
-            .phoneNumber("+324992772")
-            .pronounsType(PronounsType.HE)
-            .writtenMotivation("I love to Spring Spring in java Spring!")
-            .yearInCourse("3")
-            .durationCurrentDegree(5)
-            .edition(getBaseUserEdition())
-            .motivationURI("www.I-like-bananas.com")
-            .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
-            .curriculumVitaeURI("www.my-life-in-ghent.com")
-            .writtenMotivation("www.I-just-like-spring.com")
-            .build();
+    private final Student testStudent = TestEntityProvider.getBaseStudentHe(this);
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -109,38 +79,14 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
 
     @Override
     public Student create_entity() {
-        return Student.builder()
-                .email("jitse@mail.com")
-                .additionalStudentInfo(TEST_STRING)
-                .bestSkill("standing on hands")
-                .currentDiploma("Master")
-                .educationLevel("Lower level")
-                .englishProficiency(EnglishProficiency.FLUENT)
-                .firstName("Jitse")
-                .lastName("De Smet")
-                .callName("Jitse De smet")
-                .gender(Gender.MALE)
-                .institutionName("Ghent University")
-                .mostFluentLanguage("Dutch")
-                .osocExperience(OsocExperience.NONE)
-                .phoneNumber("+324982672")
-                .pronounsType(PronounsType.OTHER)
-                .pronouns(new ArrayList<>(List.of(new String[]{"he", "her", "them"})))
-                .writtenMotivation("I love to code!")
-                .yearInCourse("3")
-                .durationCurrentDegree(5)
-                .edition(getBaseUserEdition())
-                .motivationURI("www.ILikeApples.com")
-                .curriculumVitaeURI("www.my-life-in-bel-air.com")
-                .writtenMotivation("www.I-just-want-it.com")
-                .build();
+        Student student = TestEntityProvider.getBaseStudentOther(this);
+        student.setAdditionalStudentInfo(TEST_STRING);
+        return student;
     }
 
     @Override
     public Map<String, String> change_entity(final Student startEntity) {
-        Map<String, String> changeMap = new HashMap<>();
-        changeMap.put("additionalStudentInfo", TEST_STRING);
-        return changeMap;
+        return Map.of("additionalStudentInfo", TEST_STRING);
     }
 
     /**
@@ -259,10 +205,12 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void student_with_weird_pronouns_is_handled() throws Exception {
         Student entity = get_random_repository_entity();
-        perform_patch(getEntityPath() + "/" + get_id(entity), "{\"pronounsType\":\"NONE\",\"pronouns\":[ ]}")
+        perform_patch(getEntityPath() + "/" + get_id(entity), Map.of("pronounsType", "NONE"))
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string("\"pronounsType\" : \"NONE\""))
-                .andExpect(string_to_contains_string("\"pronouns\" : [ ]"));
+                .andExpect(string_to_contains_string("\"possessivePronoun\" : \"his\""))
+                .andExpect(string_to_contains_string("\"subjectivePronoun\" : \"he\""))
+                .andExpect(string_to_contains_string("\"objectivePronoun\" : \"him\""));
     }
 
     @Test

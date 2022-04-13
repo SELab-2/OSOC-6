@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.adminTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.dto.InvitationDTO;
@@ -32,12 +33,12 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     /**
      * Sample used invitation that gets loaded before every test.
      */
-    private final Invitation usedInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), getCoachUser());
+    private final Invitation usedInvitation = getInvitationForCoach();
 
     /**
      * Sample used invitation that gets loaded before every test.
      */
-    private final Invitation unUsedInvitation = new Invitation(getBaseUserEdition(), getAdminUser(), null);
+    private final Invitation unUsedInvitation = TestEntityProvider.getBaseUnusedInvitation(this);
 
     /**
      * Entity links, needed to get to link of an entity.
@@ -71,7 +72,6 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     public void setUpRepository() {
         setupBasicData();
 
-        invitationRepository.save(usedInvitation);
         invitationRepository.save(unUsedInvitation);
     }
 
@@ -87,7 +87,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
 
     @Override
     public final Invitation create_entity() {
-        return new Invitation(getBaseUserEdition(), getAdminUser(), null);
+        return TestEntityProvider.getBaseUnusedInvitation(this);
     }
 
     /**

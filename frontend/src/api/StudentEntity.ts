@@ -1,4 +1,4 @@
-import { IBaseEntity, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export enum EnglishProficiency {
     /**
@@ -70,13 +70,11 @@ export interface IStudent extends IBaseEntity {
     osocExperience: OsocExpericience;
     phoneNumber: string;
     portfolioURI: string;
-    pronouns: string[];
     pronounsType: PronounsType;
     skills: string[];
     studies: string[];
     writtenMotivation: string;
     yearInCourse: string;
-
     subjectivePronoun: string;
     possessivePronoun: string;
     objectivePronoun: string;
@@ -91,6 +89,7 @@ export interface IStudent extends IBaseEntity {
 }
 
 export type IStudentPage = IPage<{ students: IStudent[] }>;
+export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
 
 export class Student {
     constructor(
@@ -112,7 +111,9 @@ export class Student {
         osocExperience: OsocExpericience,
         phoneNumber: string,
         portfolioURI: string,
-        pronouns: string[],
+        subjectivePronoun: string,
+        possessivePronoun: string,
+        objectivePronoun: string,
         pronounsType: PronounsType,
         skills: string[],
         studies: string[],
@@ -138,7 +139,9 @@ export class Student {
         this.osocExperience = osocExperience;
         this.phoneNumber = phoneNumber;
         this.portfolioURI = portfolioURI;
-        this.pronouns = pronouns;
+        this.subjectivePronoun = subjectivePronoun;
+        this.possessivePronoun = possessivePronoun;
+        this.objectivePronoun = objectivePronoun;
         this.pronounsType = pronounsType;
         this.skills = skills;
         this.studies = studies;
@@ -165,7 +168,9 @@ export class Student {
     osocExperience: OsocExpericience;
     phoneNumber: string;
     portfolioURI: string;
-    pronouns: string[];
+    subjectivePronoun: string;
+    possessivePronoun: string;
+    objectivePronoun: string;
     pronounsType: PronounsType;
     skills: string[];
     studies: string[];
