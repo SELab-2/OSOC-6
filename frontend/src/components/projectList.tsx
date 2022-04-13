@@ -1,12 +1,11 @@
-import { Button, ListGroup, Pagination } from "react-bootstrap";
-import { getAllProjects, IProject } from "../api/ProjectEntity";
-import axios from "axios";
+import { ListGroup } from "react-bootstrap";
+import { getAllProjects } from "../api/ProjectEntity";
 import Router from "next/router";
 import styles from "../styles/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
-import pathNames from "../properties/pathNames";
+import apiPaths from "../properties/apiPaths";
 
 export const ProjectList = () => {
     const { t } = useTranslation();
@@ -14,7 +13,7 @@ export const ProjectList = () => {
     const [data, setData] = useState<any[]>([]);
 
     useEffect(() => {
-        const projects = getAllProjects(pathNames.projects).then((response) => setData(response));
+        const projects = getAllProjects(apiPaths.projects).then((response) => setData(response));
     }, []);
 
     if (!data) {
@@ -29,14 +28,14 @@ export const ProjectList = () => {
                 </ListGroup.Item>
                 {data.map((project) => (
                     <ListGroup.Item
-                        key={project._links.self.href.split(pathNames.projects)[1]}
+                        key={project._links.self.href.split(apiPaths.projects)[1]}
                         className={styles.project_list_project}
                         action
                         as={"li"}
                         // Should be changed to individual project page later
                         onClick={() => {
                             let projectPath: string = project._links.self.href.split(
-                                pathNames.base
+                                apiPaths.base
                             )[1];
                             Router.push(projectPath);
                         }}

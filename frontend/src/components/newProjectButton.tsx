@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { Button, ButtonGroup } from "react-bootstrap";
 import Router from "next/router";
-import pathNames from "../properties/pathNames";
+import applicationPaths from "../properties/applicationPaths";
 
 export const NewProjectButton = () => {
     const { t } = useTranslation();
@@ -11,7 +11,7 @@ export const NewProjectButton = () => {
                 className="w-100"
                 variant="primary"
                 size="lg"
-                onClick={() => Router.push(pathNames.projectCreation)}
+                onClick={() => Router.push(applicationPaths.projectCreation)}
             >
                 {t("common:New project button")}
             </Button>

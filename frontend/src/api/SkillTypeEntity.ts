@@ -2,7 +2,7 @@ import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 import { IUserSkill } from "./UserSkillEntity";
 import { IProjectSkill } from "./ProjectSkillEntity";
 import axios from "axios";
-import pathNames from "../properties/pathNames";
+import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "./requests";
 
 export interface ISkillType extends IBaseEntity {
@@ -23,7 +23,7 @@ export async function getSkillTypeFromSkill(
     skill: IUserSkill | IProjectSkill
 ): Promise<ISkillType> {
     let type: ISkillTypePage = (
-        await axios.get(pathNames.skillTypesByName, {
+        await axios.get(apiPaths.skillTypesByName, {
             params: {
                 name: skill.name,
             },
@@ -32,7 +32,7 @@ export async function getSkillTypeFromSkill(
     ).data;
     if (type._embedded.skillTypes.length == 0) {
         type = (
-            await axios.get(pathNames.skillTypesByName, {
+            await axios.get(apiPaths.skillTypesByName, {
                 params: {
                     name: "other",
                 },

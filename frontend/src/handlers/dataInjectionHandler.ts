@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 import axios from "axios";
-import pathNames from "../properties/pathNames";
+import apiPaths from "../properties/apiPaths";
 import { IUser, IUsersPage, User } from "../api/UserEntity";
 import { Edition, IEdition, IEditionsPage } from "../api/EditionEntity";
 import { IInvitation, IInvitationsPage, Invitation } from "../api/InvitationEntity";
@@ -39,19 +39,19 @@ import {
 import { Assignment, IAssignment, IAssignmentPage } from "../api/AssignmentEntity";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
-    const user: IUser = (await axios.get(pathNames.ownUser, AxiosConf)).data;
+    const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
     console.log(user);
 
     const own_user_url: string = user._links.self.href;
 
-    const userSkills: IUserSkillPage = (await axios.get(pathNames.userSkills, AxiosConf)).data;
+    const userSkills: IUserSkillPage = (await axios.get(apiPaths.userSkills, AxiosConf)).data;
     let containedUserSkills: IUserSkill[];
     if (userSkills._embedded["user-skills"].length == 0) {
         const skill: UserSkill = new UserSkill("The best", "you're simply the best!", own_user_url);
 
         containedUserSkills = await Promise.all(
             [skill].map(
-                async (skill) => (await axios.post(pathNames.userSkills, skill, AxiosConf)).data
+                async (skill) => (await axios.post(apiPaths.userSkills, skill, AxiosConf)).data
             )
         );
     } else {
@@ -60,30 +60,29 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     console.log(containedUserSkills);
     const simpleUserSkill: IUserSkill = containedUserSkills[0];
 
-    const editions: IEditionsPage = (await axios.get(pathNames.editions, AxiosConf)).data;
+    const editions: IEditionsPage = (await axios.get(apiPaths.editions, AxiosConf)).data;
     console.log(editions);
     let containedEdition: IEdition;
     if (editions._embedded.editions.length == 0) {
         const edition1: Edition = new Edition("Edition 1", 2022, true);
-        containedEdition = (await axios.post(pathNames.editions, edition1, AxiosConf)).data;
+        containedEdition = (await axios.post(apiPaths.editions, edition1, AxiosConf)).data;
     } else {
         containedEdition = editions._embedded.editions[0];
     }
     console.log(containedEdition);
     const editionUrl: string = containedEdition._links!.self.href;
 
-    const invitations: IInvitationsPage = (await axios.get(pathNames.invitations, AxiosConf)).data;
+    const invitations: IInvitationsPage = (await axios.get(apiPaths.invitations, AxiosConf)).data;
     let containedInvitation: IInvitation;
     if (invitations._embedded.invitations.length == 0) {
         const invitation1 = new Invitation(own_user_url, editionUrl);
-        containedInvitation = (await axios.post(pathNames.invitations, invitation1, AxiosConf))
-            .data;
+        containedInvitation = (await axios.post(apiPaths.invitations, invitation1, AxiosConf)).data;
     } else {
         containedInvitation = invitations._embedded.invitations[0];
     }
     console.log(containedInvitation);
 
-    const projects: IProjectPage = (await axios.get(pathNames.projects, AxiosConf)).data;
+    const projects: IProjectPage = (await axios.get(apiPaths.projects, AxiosConf)).data;
     let containedProjects: IProject[];
     if (projects._embedded.projects.length == 0) {
         const project1: Project = new Project(
@@ -110,7 +109,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedProjects = await Promise.all(
             [project1, project2].map(
-                async (proj) => (await axios.post(pathNames.projects, proj, AxiosConf)).data
+                async (proj) => (await axios.post(apiPaths.projects, proj, AxiosConf)).data
             )
         );
     } else {
@@ -118,7 +117,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedProjects);
 
-    const projectSkills: IProjectSkillPage = (await axios.get(pathNames.projectSkills, AxiosConf))
+    const projectSkills: IProjectSkillPage = (await axios.get(apiPaths.projectSkills, AxiosConf))
         .data;
     let containedProjectSkills: IProjectSkill[];
     if (projectSkills._embedded["project-skills"].length == 0) {
@@ -130,7 +129,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedProjectSkills = await Promise.all(
             [skill1].map(
-                async (skill) => (await axios.post(pathNames.projectSkills, skill, AxiosConf)).data
+                async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data
             )
         );
     } else {
@@ -140,7 +139,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const projectBoulderSkill: IProjectSkill = containedProjectSkills[0];
 
     const templates: ICommunicationTemplatePage = (
-        await axios.get(pathNames.communicationTemplates, AxiosConf)
+        await axios.get(apiPaths.communicationTemplates, AxiosConf)
     ).data;
     let containedTemplates: ICommunicationTemplate[];
     if (templates._embedded.communicationTemplates.length == 0) {
@@ -150,7 +149,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             [template1, template2].map(
                 async (template) =>
                     (
-                        await axios.post(pathNames.communicationTemplates, template, AxiosConf)
+                        await axios.post(apiPaths.communicationTemplates, template, AxiosConf)
                     ).data
             )
         );
@@ -159,7 +158,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedTemplates);
 
-    const students: IStudentPage = (await axios.get(pathNames.students, AxiosConf)).data;
+    const students: IStudentPage = (await axios.get(apiPaths.students, AxiosConf)).data;
     let containedStudents: IStudent[];
     if (students._embedded.students.length == 0) {
         const student1: Student = new Student(
@@ -194,7 +193,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedStudents = await Promise.all(
             [student1].map(
-                async (student) => (await axios.post(pathNames.students, student, AxiosConf)).data
+                async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data
             )
         );
     } else {
@@ -203,7 +202,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const someStudentUri = containedStudents[0]._links.self.href;
     console.log(containedStudents);
 
-    const skillTypes: ISkillTypePage = (await axios.get(pathNames.skillTypes, AxiosConf)).data;
+    const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
     let containedSkillTypes: ISkillType[];
     if (skillTypes._embedded.skillTypes.length == 0) {
         const skillType1 = new SkillType("V10 boulderer", "000000");
@@ -211,7 +210,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedSkillTypes = await Promise.all(
             [skillType1, skillTypeOther].map(
-                async (skill) => (await axios.post(pathNames.skillTypes, skill, AxiosConf)).data
+                async (skill) => (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
             )
         );
     } else {
@@ -223,9 +222,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     console.log(await getSkillTypeFromSkill(projectBoulderSkill));
     console.log(await getSkillTypeFromSkill(simpleUserSkill));
 
-    const communications: ICommunicationPage = (
-        await axios.get(pathNames.communications, AxiosConf)
-    ).data;
+    const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf))
+        .data;
     let containedCommunications: ICommunication[];
     if (communications._embedded.communications.length == 0) {
         const communication1: Communication = new Communication(
@@ -238,7 +236,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedCommunications = await Promise.all(
             [communication1].map(
-                async (com) => (await axios.post(pathNames.communications, com, AxiosConf)).data
+                async (com) => (await axios.post(apiPaths.communications, com, AxiosConf)).data
             )
         );
     } else {
@@ -246,7 +244,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedCommunications);
 
-    const suggestions: ISuggestionPage = (await axios.get(pathNames.suggestions, AxiosConf)).data;
+    const suggestions: ISuggestionPage = (await axios.get(apiPaths.suggestions, AxiosConf)).data;
     let containedSuggestions: ISuggestion[];
     if (suggestions._embedded.suggestions.length == 0) {
         const suggestion1: Suggestion = new Suggestion(
@@ -258,7 +256,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedSuggestions = await Promise.all(
             [suggestion1].map(
-                async (sugg) => (await axios.post(pathNames.suggestions, sugg, AxiosConf)).data
+                async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data
             )
         );
     } else {
@@ -266,7 +264,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedSuggestions);
 
-    const assignments: IAssignmentPage = (await axios.get(pathNames.assignments, AxiosConf)).data;
+    const assignments: IAssignmentPage = (await axios.get(apiPaths.assignments, AxiosConf)).data;
     let containedAssignments: IAssignment[];
     if (assignments._embedded.assignments.length == 0) {
         const assignment1: Assignment = new Assignment(
@@ -280,7 +278,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         containedAssignments = await Promise.all(
             [assignment1].map(
-                async (assign) => (await axios.post(pathNames.assignments, assign, AxiosConf)).data
+                async (assign) => (await axios.post(apiPaths.assignments, assign, AxiosConf)).data
             )
         );
     } else {
@@ -289,7 +287,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     console.log(containedAssignments);
 
     // Create user with query token
-    const users: IUsersPage = (await axios.get(pathNames.users, AxiosConf)).data;
+    const users: IUsersPage = (await axios.get(apiPaths.users, AxiosConf)).data;
     if (users._embedded.users.length < 2) {
         //console.log(crypto.randomUUID());
         const coachUser1: User = new User("Ben", "ben@mail.com", crypto.randomUUID());
@@ -298,7 +296,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             [coachUser1].map(
                 async (user) =>
                     (
-                        await axios.post(pathNames.registration, user, {
+                        await axios.post(apiPaths.registration, user, {
                             params: {
                                 token: containedInvitation.token,
                             },
@@ -312,7 +310,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 "This happens due to a bug in the backend. It will be fixed eventually."
         );
     } else {
-        let containedUsers = (<IUsersPage>(await axios.get(pathNames.users, AxiosConf)).data)
+        let containedUsers = (<IUsersPage>(await axios.get(apiPaths.users, AxiosConf)).data)
             ._embedded.users;
         console.log(containedUsers);
     }
