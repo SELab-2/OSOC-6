@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { getAllProjects, IProject } from "../../api/ProjectEntity";
 import SkillItem from "./skillItem";
 
-
 async function getProjectAssignemntData(): Promise<{ project: IProject }[]> {
     const projects: IProject[] = await getAllProjects(apiPaths.projects);
     const reply: { project: IProject }[] = [];

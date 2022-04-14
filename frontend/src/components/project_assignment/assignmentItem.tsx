@@ -1,14 +1,13 @@
-import {IProjectSkill} from "../../api/ProjectSkillEntity";
-import {useEffect, useState} from "react";
+import { IProjectSkill } from "../../api/ProjectSkillEntity";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import {AxiosConf} from "../../api/requests";
-import {Badge, CloseButton, Col, Row} from "react-bootstrap";
-import {IAssignment, IAssignmentLinks} from "../../api/AssignmentEntity";
-import {IStudent} from "../../api/StudentEntity";
-import {IUser} from "../../api/UserEntity";
+import { AxiosConf } from "../../api/requests";
+import { Badge, CloseButton, Col, Row } from "react-bootstrap";
+import { IAssignment, IAssignmentLinks } from "../../api/AssignmentEntity";
+import { IStudent } from "../../api/StudentEntity";
+import { IUser } from "../../api/UserEntity";
 
 export type Assigments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
-
 
 async function getAssignments(assignmentList: IAssignmentLinks) {
     const assignments: Assigments = [];
@@ -30,18 +29,17 @@ async function getAssignments(assignmentList: IAssignmentLinks) {
     return assignments;
 }
 
-
 async function getLinks(item: { skill: IProjectSkill }) {
     const assignmentList: IAssignmentLinks = (
         await axios.get(item.skill._links.assignments.href, AxiosConf)
     ).data;
-    return await getAssignments(assignmentList)
+    return await getAssignments(assignmentList);
 }
 
 function AssignmentItem(item: { skill: IProjectSkill }) {
     const [assign, setAssign] = useState<Assigments>();
     useEffect(() => {
-        getLinks(item).then((assignments) => setAssign(assignments))
+        getLinks(item).then((assignments) => setAssign(assignments));
     }, [item]);
 
     async function removeAssignment(event: any) {

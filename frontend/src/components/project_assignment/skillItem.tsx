@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
-import {Container} from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 import AssignmentItem from "./assignmentItem";
-import {IProjectSkill, IProjectSkillLinks} from "../../api/ProjectSkillEntity";
-import {IProject} from "../../api/ProjectEntity";
+import { IProjectSkill, IProjectSkillLinks } from "../../api/ProjectSkillEntity";
+import { IProject } from "../../api/ProjectEntity";
 import axios from "axios";
-import {AxiosConf} from "../../api/requests";
+import { AxiosConf } from "../../api/requests";
 
 export type Skills = { skill: IProjectSkill }[];
 
@@ -24,14 +24,13 @@ async function getLinks(item: { project: IProject }) {
     const projectSkillsList: IProjectSkillLinks = (
         await axios.get(item.project._links.neededSkills.href, AxiosConf)
     ).data;
-    return await getProjectSkills(projectSkillsList)
+    return await getProjectSkills(projectSkillsList);
 }
-
 
 export default function SkillItem(item: { project: IProject }) {
     const [skillList, setSkillList] = useState<Skills>();
     useEffect(() => {
-        getLinks(item).then((skills) => setSkillList(skills))
+        getLinks(item).then((skills) => setSkillList(skills));
     }, [item]);
 
     if (skillList != undefined) {
