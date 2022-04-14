@@ -67,8 +67,7 @@ it("Should go to project page when clicking item in list", async () => {
         status: StatusCodes.TEMPORARY_REDIRECT,
         statusText: ReasonPhrases.TEMPORARY_REDIRECT,
         headers: {},
-        config: {},
-        request: { responseURL: "/home" },
+        config: {}
     };
 
     render(<ProjectList />);
