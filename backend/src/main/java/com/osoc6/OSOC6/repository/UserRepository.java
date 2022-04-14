@@ -66,7 +66,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         + " or #userEntity.id == null" // new user check
         + " or authentication.principal.id != #userEntity.id " // updating a different user than yourself
         + " or authentication.principal.userRole == #userEntity.userRole))" // don't update your own role
-    + " or (authentication.principal.id == #userEntity.id " // is updating himself
+    + " or (authentication.principal.id == #userEntity.id " // coach is updating themselves
         + " and authentication.principal.userRole == #userEntity.userRole)") // user is not updating his own role
     @NonNull
     <S extends UserEntity> S save(@NonNull S userEntity);
