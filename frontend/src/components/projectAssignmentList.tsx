@@ -1,30 +1,23 @@
 import { NextPage } from "next";
-import {
-    Accordion, Badge,
-    CloseButton,
-    Col,
-    Container,
-    Row
-} from "react-bootstrap";
+import { Accordion, Badge, CloseButton, Col, Container, Row } from "react-bootstrap";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import {useEffect, useState} from "react";
-import {AxiosConf} from "../api/requests";
-import {getAllProjects, IProject} from "../api/ProjectEntity";
+import { useEffect, useState } from "react";
+import { AxiosConf } from "../api/requests";
+import { getAllProjects, IProject } from "../api/ProjectEntity";
 import { IAssignment, IAssignmentLinks } from "../api/AssignmentEntity";
 import { IStudent } from "../api/StudentEntity";
 import { IUser } from "../api/UserEntity";
-import {IProjectSkill, IProjectSkillLinks} from "../api/ProjectSkillEntity";
+import { IProjectSkill, IProjectSkillLinks } from "../api/ProjectSkillEntity";
 
 export type Assigments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
-export type Skills = {  skill: IProjectSkill, assignments:Assigments }[];
+export type Skills = { skill: IProjectSkill; assignments: Assigments }[];
 
-
-async function getProjectSkills(projectSkillsList:IProjectSkillLinks) {
-    const skills: Skills = []
+async function getProjectSkills(projectSkillsList: IProjectSkillLinks) {
+    const skills: Skills = [];
 
     await Promise.all(
         projectSkillsList._embedded["project-skills"].map(async (skill) => {
@@ -34,26 +27,23 @@ async function getProjectSkills(projectSkillsList:IProjectSkillLinks) {
 
             const assignments: Assigments = await getAssignments(assignmentList);
 
-            skills.push( { skill, assignments })
+            skills.push({ skill, assignments });
         })
     );
 
-    return skills
+    return skills;
 }
 
-
-async function getAssignments(assignmentList:IAssignmentLinks) {
+async function getAssignments(assignmentList: IAssignmentLinks) {
     const assignments: Assigments = [];
 
     await Promise.all(
         assignmentList._embedded.assignments.map(async (assignment) => {
-            const student: IStudent = (
-                await axios.get(assignment._links.student.href, AxiosConf)
-            ).data;
+            const student: IStudent = (await axios.get(assignment._links.student.href, AxiosConf))
+                .data;
 
-            const assigner: IUser = (
-                await axios.get(assignment._links.assigner.href, AxiosConf)
-            ).data;
+            const assigner: IUser = (await axios.get(assignment._links.assigner.href, AxiosConf))
+                .data;
 
             if (assignment.isValid) {
                 assignments.push({ assignment, student, assigner });
@@ -61,7 +51,7 @@ async function getAssignments(assignmentList:IAssignmentLinks) {
         })
     );
 
-    return assignments
+    return assignments;
 }
 
 async function getProjectAssignemntData(): Promise<{ project: IProject; skills: Skills }[]> {
@@ -145,7 +135,7 @@ export function SkillItem(item: { skills: Skills }) {
                 {skillList.map((skill, index) => {
                     return (
                         <Container key={index}>
-                            <AssignmentItem skill={ skill.skill } assignments={skill.assignments}/>
+                            <AssignmentItem skill={skill.skill} assignments={skill.assignments} />
                         </Container>
                     );
                 })}
@@ -155,8 +145,7 @@ export function SkillItem(item: { skills: Skills }) {
     return <p>Loading...</p>;
 }
 
-
-function AssignmentItem(item: { skill: IProjectSkill, assignments:Assigments }) {
+function AssignmentItem(item: { skill: IProjectSkill; assignments: Assigments }) {
     const assignments = item.assignments;
     const [assign, setAssign] = useState<Assigments>();
     useEffect(() => setAssign(assignments), [assignments]);
@@ -177,7 +166,7 @@ function AssignmentItem(item: { skill: IProjectSkill, assignments:Assigments }) 
 
     if (assign != undefined) {
         if (assign.length == 0) {
-            return <p >No students have been assigned to this skill</p>;
+            return <p>No students have been assigned to this skill</p>;
         }
 
         return (
@@ -187,8 +176,12 @@ function AssignmentItem(item: { skill: IProjectSkill, assignments:Assigments }) 
                         <div key={index}>
                             <Row className={"align-items-center"} xs={2}>
                                 <Col sm={11}>
-                                    <h6>{assignment.student.firstName} <Badge bg={"secondary"}>{item.skill.name}</Badge></h6>
-                                    <p>Suggested by {assignment.assigner.callName}: <br />{" "}
+                                    <h6>
+                                        {assignment.student.firstName}{" "}
+                                        <Badge bg={"secondary"}>{item.skill.name}</Badge>
+                                    </h6>
+                                    <p>
+                                        Suggested by {assignment.assigner.callName}: <br />{" "}
                                         {assignment.assignment.reason}
                                     </p>
                                 </Col>
@@ -208,8 +201,7 @@ function AssignmentItem(item: { skill: IProjectSkill, assignments:Assigments }) 
         );
     }
 
-    return <p>Loading...</p>
+    return <p>Loading...</p>;
 }
-
 
 export default ProjectAsignmentList;
