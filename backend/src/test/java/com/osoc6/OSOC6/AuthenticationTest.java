@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.FormLoginRequestBuilder;
 
 import java.time.Instant;
@@ -184,6 +186,26 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void register_with_valid_invitation_token_updates_invitation() throws Exception {
+        String registerEmail = "register@test.com";
+        Map<String, String> registerMap = Map.of(
+                "email", registerEmail,
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
+                        .queryParam("token", unusedInvitation.getToken())
+                        .content(Util.asJsonString(registerMap))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Invitation invitation = get_repository_entity_by_id(unusedInvitation.getId());
+        assert invitation.getSubject().getEmail().equals(registerEmail);
     }
 
     @Test

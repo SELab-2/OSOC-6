@@ -3,22 +3,14 @@ package com.osoc6.OSOC6.service;
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
-import com.osoc6.OSOC6.repository.InvitationRepository;
-import com.osoc6.OSOC6.repository.UserRepository;
+import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * This service handles user functionalities such as finding and registering a user.
@@ -28,14 +20,9 @@ import java.util.List;
 public class UserEntityService implements UserDetailsService {
 
     /**
-     * The user repository, link to the database.
+     * The public repository, used to access the database without authorization.
      */
-    private final UserRepository userRepository;
-
-    /**
-     * The invitation repository, link to the database.
-     */
-    private final InvitationRepository invitationRepository;
+    private final PublicRepository publicRepository;
 
     /**
      * The encoder used to encode the passwords.
@@ -50,21 +37,10 @@ public class UserEntityService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-        //REMOVE remove this manual security manipulation!!!!!
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new UsernamePasswordAuthenticationToken(null, null, List.of(new SimpleGrantedAuthority("ADMIN"))));
-        SecurityContextHolder.setContext(securityContext);
-
-        UserEntity userEntity = userRepository.findByEmail(email)
+        return publicRepository.internalFindByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 String.format(MeguminExceptionWizard.USERNAME_NOT_FOUND_EXCEPTION, email)));
-
-        //REMOVE remove this manual security manipulation!!!!!
-        SecurityContextHolder.clearContext();
-
-        return userEntity;
     }
 
     /**
@@ -73,13 +49,7 @@ public class UserEntityService implements UserDetailsService {
      * @param invitation the invitation that was used to register
      */
     public void registerUserWithInvitation(final UserEntity userEntity, final Invitation invitation) {
-        //REMOVE remove this manual security manipulation!!!!!
-        SecurityContext securityContext = new SecurityContextImpl();
-        securityContext.setAuthentication(
-                new UsernamePasswordAuthenticationToken(null, null, List.of(new SimpleGrantedAuthority("ADMIN"))));
-        SecurityContextHolder.setContext(securityContext);
-
-        boolean accountExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
+        boolean accountExists = publicRepository.internalFindByEmail(userEntity.getEmail()).isPresent();
 
         if (accountExists) {
             throw new AccountTakenException(userEntity.getEmail());
@@ -88,11 +58,8 @@ public class UserEntityService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
         userEntity.setPassword(encodedPassword);
 
-        userRepository.save(userEntity);
+        publicRepository.internalSave(userEntity);
         invitation.setSubject(userEntity);
-        invitationRepository.save(invitation);
-
-        //REMOVE remove this manual security manipulation!!!!!
-        SecurityContextHolder.clearContext();
+        publicRepository.internalSave(invitation);
     }
 }
