@@ -25,10 +25,15 @@ const ProjectAsignmentList: NextPage = () => {
     const [projects, setProjects] = useState<{ project: IProject }[]>();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
+        /*
+            setInterval(() => {
+*/
         getProjectAssignemntData().then((reply) => {
             setProjects(reply);
             setLoading(false);
         });
+        /*console.log("reload");
+        }, 10000)*/
     }, []);
 
     if (loading) {
@@ -47,8 +52,6 @@ const ProjectAsignmentList: NextPage = () => {
                     style={{ height: "20em" }}
                 >
                     {projectList.map((item, index) => {
-                        console.log("item");
-                        console.log(item);
                         return (
                             <AccordionItem key={index} eventKey={`${index}`}>
                                 <AccordionHeader>

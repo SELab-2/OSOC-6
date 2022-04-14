@@ -55,7 +55,7 @@ export class Project {
 }
 
 /**
- * Fetches all projects from the backend
+ * Fetches all projects from an IEntityLink URI
  */
 export function getAllProjects(url: string): Promise<IProject[]> {
     return <Promise<IProject[]>>getAllEntities(url, "projects");

@@ -6,21 +6,34 @@ import { IProject } from "../../api/ProjectEntity";
 import axios from "axios";
 import { AxiosConf } from "../../api/requests";
 
-export type Skills = { skill: IProjectSkill }[];
+type Skills = { skill: IProjectSkill }[];
 
-export async function getProjectSkills(projectSkillsList: IProjectSkillLinks) {
+export async function getProjectSkills(projectSkillsList: IProjectSkillLinks): Promise<Skills> {
     const skills: Skills = [];
 
+    if (projectSkillsList == undefined) {
+        return skills;
+    }
     await Promise.all(
         projectSkillsList._embedded["project-skills"].map(async (skill) => {
             skills.push({ skill });
         })
     );
+    skills.sort((skill1, skill2) => {
+        if (skill1.skill.name > skill2.skill.name) {
+            return 1;
+        }
 
+        if (skill1.skill.name < skill2.skill.name) {
+            return -1;
+        }
+
+        return 0;
+    });
     return skills;
 }
 
-async function getLinks(item: { project: IProject }) {
+async function getLinks(item: { project: IProject }): Promise<Skills> {
     const projectSkillsList: IProjectSkillLinks = (
         await axios.get(item.project._links.neededSkills.href, AxiosConf)
     ).data;
