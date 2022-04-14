@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
-import ProjectAsignmentList from "../components/projectAssignmentList";
+import ProjectAsignmentList from "../components/project_assignment/projectAssignmentList";
 
 const Home: NextPage = () => {
     const { t } = useTranslation("common");
