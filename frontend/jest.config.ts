@@ -22,7 +22,4 @@ export default {
             },
         },
     },
-    "transformIgnorePatterns": [
-        "node_modules/?!(react-icons)"
-    ]
 };
