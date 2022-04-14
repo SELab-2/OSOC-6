@@ -63,10 +63,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Override
     @PreAuthorize("( " + MerlinSpELWizard.ADMIN_AUTH + " and "
     + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.database.models.UserRole).ADMIN, true) > 1"
-        + " or authentication.principal.id != #userEntity.id "
-        + " or authentication.principal.userRole == #userEntity.userRole))"
-    + " or (authentication.principal.id == #userEntity.id "
-        + " and authentication.principal.userRole == #userEntity.userRole)")
+        + " or #userEntity.id == null" // new user check
+        + " or authentication.principal.id != #userEntity.id " // updating a different user than yourself
+        + " or authentication.principal.userRole == #userEntity.userRole))" // don't update your own role
+    + " or (authentication.principal.id == #userEntity.id " // is updating himself
+        + " and authentication.principal.userRole == #userEntity.userRole)") // user is not updating his own role
     @NonNull
     <S extends UserEntity> S save(@NonNull S userEntity);
 
