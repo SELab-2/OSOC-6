@@ -133,6 +133,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_role_with_valid_role_succeeds() throws Exception {
+        // TODO: this should fail now! (make one that test if it still works as well)
         UserRole newRole = UserRole.ADMIN;
         Map<String, String> map = Map.of("userRole", newRole.toString());
         perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)

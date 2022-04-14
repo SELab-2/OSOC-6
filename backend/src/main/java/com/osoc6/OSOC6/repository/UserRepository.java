@@ -50,13 +50,28 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      * This is needed for creating the base admin user.
      * @param userRole the role of the users to look for
      * @param enabled whether the user is enabled or not
-     * @return a list of all users with the specified role
+     * @return whether there exists users with the specified role that are enabled or not.
      * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
      */
     @RestResource(exported = false)
     @Query("select (count(u) > 0) from UserEntity u where u.userRole = :userRole and u.enabled = :enabled")
     boolean existsAllByUserRoleEqualsAndEnabled(
             @Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
+
+    /**
+     * Count how manny enabled user with the specified role there are.
+     * This is needed for role patch safety.
+     *
+     * @param userRole the role of the users to look for
+     * @param enabled whether the user is enabled or not
+     * @return how many users there exist  with the specified role that are enabled or not.
+     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
+     */
+    @RestResource(exported = false)
+    @Query("select count(u) from UserEntity u where u.userRole = :userRole and u.enabled = :enabled")
+    boolean countAllByUserRoleEqualsAndEnabled(
+            @Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
+
 
     /**
      * Update a {@link UserEntity}.
