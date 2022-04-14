@@ -15,7 +15,6 @@ jobs:
       - name: Run linter and prettier
         run: |
           cd frontend/
-          rm package-lock.json
           npm install
           npx prettier --check .
           RESULT=$?
