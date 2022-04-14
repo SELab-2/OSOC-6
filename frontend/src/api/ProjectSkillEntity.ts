@@ -6,6 +6,7 @@ export interface IProjectSkill extends IBaseEntity {
 
     _links: {
         project: IReferencer;
+        assignments: IReferencer;
         projectSkill: IReferencer;
         self: IReferencer;
     };

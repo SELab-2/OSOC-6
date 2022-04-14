@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
@@ -27,7 +26,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "timestamp")})
 @NoArgsConstructor
-public final class Communication implements WeakToEdition {
+public final class Communication {
 
     /**
      * The id of the communication.
@@ -101,10 +100,5 @@ public final class Communication implements WeakToEdition {
         template = newCommunicationTemplate;
         sender = newUserEntity;
         student = newStudent;
-    }
-
-    @Override @JsonIgnore
-    public Edition getControllingEdition() {
-        return student.getControllingEdition();
     }
 }

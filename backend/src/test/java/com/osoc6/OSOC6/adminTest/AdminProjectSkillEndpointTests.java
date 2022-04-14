@@ -51,7 +51,7 @@ public class AdminProjectSkillEndpointTests extends AdminEndpointTest<ProjectSki
     /**
      * Sample projectSkill that gets loaded before every test.
      */
-    private final ProjectSkill skill = new ProjectSkill("Walk on water", testProject, "just to be with you!");
+    private final ProjectSkill skill = TestEntityProvider.getBaseProjectSkill1(testProject);
 
     /**
      * The actual path projects are served on, with '/' as prefix.

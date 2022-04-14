@@ -4,9 +4,9 @@ import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import com.osoc6.OSOC6.repository.EditionRepository;
-import com.osoc6.OSOC6.repository.StudentRepository;
-import com.osoc6.OSOC6.webhook.QuestionKey;
+import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.webhook.FormField;
+import com.osoc6.OSOC6.webhook.QuestionKey;
 import com.osoc6.OSOC6.webhook.WebhookForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,9 +33,9 @@ public class WebhookController {
     private final EditionRepository editionRepository;
 
     /**
-     * The student repository, used to access students from the database.
+     * The public repository, used to access the database without authorization.
      */
-    private final StudentRepository studentRepository;
+    private final PublicRepository publicRepository;
 
     /**
      * Method used to receive the data sent from the tally form.
@@ -57,7 +57,7 @@ public class WebhookController {
                 }
             }
             student.setEdition(optionalEdition.get());
-            studentRepository.internalSave(student);
+            publicRepository.internalSave(student);
         } else {
             throw new WebhookException(String.format("Edition with name '%s' not found.", edition));
         }

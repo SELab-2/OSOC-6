@@ -8,7 +8,7 @@ export interface IAssignment extends IBaseEntity {
 
     _links: {
         assigner: IReferencer;
-        project: IReferencer;
+        projectSkill: IReferencer;
         student: IReferencer;
         assignment: IReferencer;
         self: IReferencer;
@@ -25,14 +25,14 @@ export class Assignment {
         reason: string,
         assigner: string,
         student: string,
-        project: string
+        projectSkill: string
     ) {
         this.isSuggestion = isSuggestion;
         this.isValid = isValid;
         this.reason = reason;
         this.assigner = assigner;
         this.student = student;
-        this.project = project;
+        this.projectSkill = projectSkill;
     }
 
     isSuggestion: boolean;
@@ -40,5 +40,5 @@ export class Assignment {
     reason: string;
     assigner: string;
     student: string;
-    project: string;
+    projectSkill: string;
 }

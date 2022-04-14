@@ -191,7 +191,7 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
     public void query_with_correct_edition_has_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition"},
-                new String[]{getBaseUserEdition().getId().toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
@@ -201,7 +201,7 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
     public void query_with_wrong_edition_is_forbidden() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition"},
-                new String[]{getBaseUserEdition().getId().toString()})
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isForbidden());
     }
 }

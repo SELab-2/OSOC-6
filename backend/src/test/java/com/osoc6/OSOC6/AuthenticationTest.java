@@ -24,6 +24,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,7 +143,11 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 .andExpect(authenticated())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/" + DumbledorePathWizard.AUTH_PATH
-                        + "/" + DumbledorePathWizard.AUTH_HOME_PATH));
+                        + "/" + DumbledorePathWizard.AUTH_HOME_PATH))
+                .andDo(result -> perform_get(result.getResponse().getRedirectedUrl())
+                        .andExpect(status().is3xxRedirection())
+                        .andExpect(redirectedUrl("/home"))
+                );
     }
 
     @Test
@@ -152,7 +157,18 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 .password("invalid")
                 .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH);
         getMockMvc().perform(login)
-                .andExpect(unauthenticated());
+                .andExpect(unauthenticated())
+                .andExpect(status().isOk())
+                // A forward is a server side handled redirect. The redirect code is tested in another test.
+                .andExpect(forwardedUrl("/" + DumbledorePathWizard.AUTH_PATH
+                        + "/" + DumbledorePathWizard.AUTH_FAIL_PATH));
+    }
+
+    @Test
+    public void login_fail_handled_correctly() throws Exception {
+        perform_post("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH, null)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/loginError"));
     }
 
     @Test
@@ -168,6 +184,25 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void register_with_valid_invitation_token_updates_invitation() throws Exception {
+        String registerEmail = "register@test.com";
+        Map<String, String> registerMap = Map.of(
+                "email", registerEmail,
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
+                        .queryParam("token", unusedInvitation.getToken())
+                        .content(Util.asJsonString(registerMap))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Invitation invitation = get_repository_entity_by_id(unusedInvitation.getId());
+        assert invitation.getSubject().getEmail().equals(registerEmail);
     }
 
     @Test
@@ -211,7 +246,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 "password", "123456"
         );
         getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
-                        .queryParam("token", getInvitationForCoach().getToken())
+                        .queryParam("token", getInvitationActiveEditionForCoach().getToken())
                         .content(Util.asJsonString(registerMap))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

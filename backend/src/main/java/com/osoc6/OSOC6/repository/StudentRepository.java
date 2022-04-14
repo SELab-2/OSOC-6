@@ -27,17 +27,7 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.STUDENT_PATH,
         path = DumbledorePathWizard.STUDENT_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
-public interface StudentRepository extends JpaRepository<Student, Long>, InternalSaveRepository<Student> {
-    /**
-     * Save a new student.
-     * @param entity the new student to save
-     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
-     * Since we want to be able to use this method anywhere, we set the authorization to permitAll.
-     */
-    @Override
-    @RestResource(exported = false)
-    @PreAuthorize("permitAll()")
-    <S extends Student> void internalSave(@NonNull S entity);
+public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
@@ -136,9 +126,9 @@ public interface StudentRepository extends JpaRepository<Student, Long>, Interna
         "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
             + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
             + "inner_ed.id = :#{@spelUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
-        + "where (Select count(distinct proj.id) "
+        + "where (Select count(distinct skill.id) "
             + "from (select inner_assign.* from assignment inner_assign "
             + "where inner_assign.is_valid = true and inner_assign.student_id = stud.id) as assign "
-            + "inner join project proj on (assign.project_id = proj.id)) > 1", nativeQuery = true)
+            + "inner join project_skill skill on (assign.project_skill_id = skill.id)) > 1", nativeQuery = true)
     Page<Student> findConflict(@Param("edition") Long edition, Pageable pageable);
 }
