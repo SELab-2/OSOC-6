@@ -163,10 +163,10 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
         editionRepository.save(baseActiveUserEdition);
         editionRepository.save(baseNonActiveUserEdition);
 
-        userRepository.save(adminUser);
-        userRepository.save(coachUser);
-        userRepository.save(outsiderCoach);
-        userRepository.save(matchingEditionCoach);
+        userRepository.internalSave(adminUser);
+        userRepository.internalSave(coachUser);
+        userRepository.internalSave(outsiderCoach);
+        userRepository.internalSave(matchingEditionCoach);
 
         invitationRepository.save(invitationActiveEditionForCoach);
         invitationRepository.save(invitationNonActiveEditionForCoach);

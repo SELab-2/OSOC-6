@@ -23,7 +23,19 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long>, InternalSaveRepository<UserEntity> {
+
+    /**
+     * Save a new user.
+     * @param entity the new user to save
+     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
+     * Since we want to be able to use this method anywhere, we set the authorization to permitAll.
+     */
+    @Override
+    @RestResource(exported = false)
+    @PreAuthorize("permitAll()")
+    <S extends UserEntity> void internalSave(@NonNull S entity);
+
     /**
      * This method finds the user with a given email address.
      * @param email email address of the searched user
@@ -61,27 +73,26 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     /**
      * Count how manny enabled user with the specified role there are.
      * This is needed for role patch safety.
-     *
      * @param userRole the role of the users to look for
      * @param enabled whether the user is enabled or not
      * @return how many users there exist  with the specified role that are enabled or not.
-     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
      */
-    @RestResource(exported = false)
-    @Query("select count(u) from UserEntity u where u.userRole = :userRole and u.enabled = :enabled")
-    boolean countAllByUserRoleEqualsAndEnabled(
-            @Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
+    int countAllByUserRoleEqualsAndEnabled(@Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
 
 
     /**
      * Update a {@link UserEntity}.
      * @apiNote
-     * An admin can update everything about every user.
+     * An admin can update everything about every user, except for their own role when they are the last admin.
      * A coach can only update themselves and cannot change their role.
      */
     @Override
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or (authentication.principal.id == #userEntity.id "
-            + "and authentication.principal.userRole == #userEntity.userRole)")
+    @PreAuthorize("( " + MerlinSpELWizard.ADMIN_AUTH + " and "
+    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.database.models.UserRole).ADMIN, true) > 1"
+        + " or authentication.principal.id != #userEntity.id "
+        + " or authentication.principal.userRole == #userEntity.userRole))"
+    + " or (authentication.principal.id == #userEntity.id "
+        + " and authentication.principal.userRole == #userEntity.userRole)")
     @NonNull
     <S extends UserEntity> S save(@NonNull S userEntity);
 
