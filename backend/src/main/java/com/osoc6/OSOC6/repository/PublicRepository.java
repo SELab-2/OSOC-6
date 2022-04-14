@@ -2,7 +2,6 @@ package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
-import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +60,7 @@ public class PublicRepository {
      * it needs to be able to roll back the transaction.
      */
     @Transactional
-    public void internalSave(@NonNull final Object entity) {
+    public void internalSave(final Object entity) {
         entityManager.persist(entity);
     }
 }
