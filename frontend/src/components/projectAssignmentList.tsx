@@ -12,7 +12,7 @@ import { IAssignment, IAssignmentLinks } from "../api/AssignmentEntity";
 import { IStudent } from "../api/StudentEntity";
 import { IUser } from "../api/UserEntity";
 import { IBaseEntity, IPage } from "../api/BaseEntities";
-import {IProjectSkillLinks} from "../api/ProjectSkillEntity";
+import { IProjectSkillLinks } from "../api/ProjectSkillEntity";
 
 export type Assigments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
 
@@ -71,7 +71,8 @@ async function getProjectAssignemntData(): Promise<
                             if (assignment.isValid) {
                                 assignments.push({ assignment, student, assigner });
                             }
-                            }))
+                        })
+                    );
                 })
             );
             reply.push({ project, assignments });
@@ -134,7 +135,7 @@ export function AssignmentItem(item: { assignments: Assigments }) {
     useEffect(() => setAssign(assignments), [assignments]);
 
     async function removeAssignment(assignment: any) {
-        console.log(assignment)
+        console.log(assignment);
         await axios.delete(assignment.target.value, AxiosConf);
         if (assign != undefined) {
             const newAssign: Assigments = [];
