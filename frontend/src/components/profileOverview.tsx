@@ -1,26 +1,25 @@
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import { Container, Row, Col, Dropdown, DropdownButton, Button } from "react-bootstrap";
-import { useEffect, useState } from 'react';
-import pathNames from '../properties/pathNames';
-import { getUserInfo } from '../api/UserEntity';
-import styles from "../styles/profileOverview.module.css"
-import { profileDeleteHandler } from '../handlers/profileHandler';
+import { useEffect, useState } from "react";
+import apiPaths from "../properties/apiPaths";
+import { getUserInfo } from "../api/UserEntity";
+import styles from "../styles/profileOverview.module.css";
+import { profileDeleteHandler } from "../handlers/profileHandler";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
     const [data, setData] = useState<any>();
 
     useEffect(() => {
-        getUserInfo(pathNames.ownUser).then((response) => setData(response));
+        getUserInfo(apiPaths.ownUser).then((response) => setData(response));
     }, []);
 
     if (!data) {
         return null;
     }
 
-    function handleDelete(){
-
+    function handleDelete() {
         profileDeleteHandler(data._links.self.href);
     }
 
@@ -51,8 +50,8 @@ export function ProfileOverview() {
             <Row>
                 <Col className={styles.first_element}>{t("UserOverview Status")}</Col>
                 <Col>
-                        {data.userRole == "ADMIN" && <a>Admin</a>}
-                        {data.userRole == "COACH" && <a>Coach</a>}
+                    {data.userRole == "ADMIN" && <a>Admin</a>}
+                    {data.userRole == "COACH" && <a>Coach</a>}
                 </Col>
             </Row>
             <Row>
