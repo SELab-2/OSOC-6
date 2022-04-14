@@ -64,8 +64,8 @@ it("Should go to project page when clicking item in list", async () => {
                 totalPages: 1,
             },
         },
-        status: StatusCodes.TEMPORARY_REDIRECT,
-        statusText: ReasonPhrases.TEMPORARY_REDIRECT,
+        status: 200,
+        statusText: "",
         headers: {},
         config: {},
     };
