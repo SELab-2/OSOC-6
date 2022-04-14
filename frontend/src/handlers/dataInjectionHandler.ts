@@ -1,17 +1,17 @@
 import { MouseEventHandler } from "react";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import { IUser, IUsersPage, User } from "../apiEntities/UserEntity";
-import { Edition, IEdition, IEditionsPage } from "../apiEntities/EditionEntity";
-import { IInvitation, IInvitationsPage, Invitation } from "../apiEntities/InvitationEntity";
-import { IProject, IProjectPage, Project } from "../apiEntities/ProjectEntity";
-import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../apiEntities/ProjectSkillEntity";
-import { IUserSkill, IUserSkillPage, UserSkill } from "../apiEntities/UserSkillEntity";
+import { IUser, IUsersPage, User } from "../api/entities/UserEntity";
+import { Edition, IEdition, IEditionsPage } from "../api/entities/EditionEntity";
+import { IInvitation, IInvitationsPage, Invitation } from "../api/entities/InvitationEntity";
+import { IProject, IProjectPage, Project } from "../api/entities/ProjectEntity";
+import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/entities/ProjectSkillEntity";
+import { IUserSkill, IUserSkillPage, UserSkill } from "../api/entities/UserSkillEntity";
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
     ICommunicationTemplatePage,
-} from "../apiEntities/CommunicationTemplateEntity";
+} from "../api/entities/CommunicationTemplateEntity";
 import {
     EnglishProficiency,
     Gender,
@@ -20,27 +20,27 @@ import {
     OsocExpericience,
     PronounsType,
     Student,
-} from "../apiEntities/StudentEntity";
+} from "../api/entities/StudentEntity";
 import {
     baseSkillType,
     ISkillType,
     ISkillTypePage,
     SkillType,
-} from "../apiEntities/SkillTypeEntity";
-import { AxiosConf } from "../apiCalls/requests";
+} from "../api/entities/SkillTypeEntity";
+import { AxiosConf } from "../api/calls/requests";
 import {
     Communication,
     ICommunication,
     ICommunicationPage,
-} from "../apiEntities/CommunicationEntity";
+} from "../api/entities/CommunicationEntity";
 import {
     ISuggestion,
     ISuggestionPage,
     Suggestion,
     SuggestionStrategy,
-} from "../apiEntities/SuggestionEntity";
-import { Assignment, IAssignment, IAssignmentPage } from "../apiEntities/AssignmentEntity";
-import { getSkillTypeFromSkill } from "../apiCalls/skillTypeCalls";
+} from "../api/entities/SuggestionEntity";
+import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
+import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;

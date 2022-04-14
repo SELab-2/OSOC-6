@@ -5,7 +5,7 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
-import { getAllProjectsFormLinks } from "../apiCalls/projectCalls";
+import { getAllProjectsFormLinks } from "../api/calls/projectCalls";
 
 export const ProjectList = () => {
     const { t } = useTranslation();

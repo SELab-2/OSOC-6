@@ -1,5 +1,5 @@
-import apiPaths from "../properties/apiPaths";
-import { IBaseEntity, IPage } from "../apiEntities/BaseEntities";
+import apiPaths from "../../properties/apiPaths";
+import { IBaseEntity, IPage } from "../entities/BaseEntities";
 import axios from "axios";
 
 export const AxiosConf = { baseURL: apiPaths.base };

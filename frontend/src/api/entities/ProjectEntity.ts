@@ -1,5 +1,5 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { getAllEntitiesFromLinksPage } from "../apiCalls/requests";
+import { getAllEntitiesFromLinksPage } from "../calls/requests";
 
 export interface IProject extends IBaseEntity {
     goals: string[];
