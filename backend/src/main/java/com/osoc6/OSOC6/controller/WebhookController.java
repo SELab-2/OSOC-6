@@ -1,7 +1,12 @@
 package com.osoc6.OSOC6.controller;
 
 import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.exception.WebhookException;
 import com.osoc6.OSOC6.repository.EditionRepository;
+import com.osoc6.OSOC6.repository.StudentRepository;
+import com.osoc6.OSOC6.webhook.QuestionKey;
+import com.osoc6.OSOC6.webhook.FormField;
 import com.osoc6.OSOC6.webhook.WebhookForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,9 +28,14 @@ import java.util.Optional;
 public class WebhookController {
 
     /**
-     * The edition repository, used to access invitations from the database.
+     * The edition repository, used to access editions from the database.
      */
     private final EditionRepository editionRepository;
+
+    /**
+     * The student repository, used to access students from the database.
+     */
+    private final StudentRepository studentRepository;
 
     /**
      * Method used to receive the data sent from the tally form.
@@ -39,12 +49,17 @@ public class WebhookController {
                          @RequestBody final WebhookForm webhookForm) {
         Optional<Edition> optionalEdition = editionRepository.internalFindByName(edition);
         if (optionalEdition.isPresent()) {
-            // TODO de student aanmaken en invullen met de ontvangen data
-            System.out.println("juiste editie!");
+            Student student = new Student();
+            for (FormField formField : webhookForm.getData().getFields()) {
+                QuestionKey questionKey = formField.getKey();
+                if (questionKey != null) {
+                    questionKey.addToStudent(formField, student);
+                }
+            }
+            student.setEdition(optionalEdition.get());
+            studentRepository.internalSave(student);
         } else {
-            // TODO not found error smijten
-            //  (of mischien de repository methode geen optional doen en die zelf een error laten smijten)
-            throw new RuntimeException("Foute editie");
+            throw new WebhookException(String.format("Edition with name '%s' not found.", edition));
         }
     }
 }

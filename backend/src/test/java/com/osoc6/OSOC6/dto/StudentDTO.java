@@ -106,12 +106,6 @@ public final class StudentDTO {
     private String writtenMotivation;
 
     /**
-     * Highest level of education a student currently has.
-     * Represented as string instead of enum because only one choice can be provided and other is an option.
-     */
-    private String educationLevel;
-
-    /**
      * Diploma a student is trying to get.
      */
 
@@ -201,7 +195,6 @@ public final class StudentDTO {
         portfolioURI = student.getPortfolioURI();
         motivationURI = student.getMotivationURI();
         writtenMotivation = student.getWrittenMotivation();
-        educationLevel = student.getEducationLevel();
         currentDiploma = student.getCurrentDiploma();
         durationCurrentDegree = student.getDurationCurrentDegree();
         yearInCourse = student.getYearInCourse();

@@ -27,7 +27,17 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.STUDENT_PATH,
         path = DumbledorePathWizard.STUDENT_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long>, InternalSaveRepository<Student> {
+    /**
+     * Save a new student.
+     * @param entity the new student to save
+     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
+     * Since we want to be able to use this method anywhere, we set the authorization to permitAll.
+     */
+    @Override
+    @RestResource(exported = false)
+    @PreAuthorize("permitAll()")
+    <S extends Student> void internalSave(@NonNull S entity);
 
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
