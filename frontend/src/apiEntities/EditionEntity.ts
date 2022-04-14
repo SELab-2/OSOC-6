@@ -11,6 +11,7 @@ export interface IEdition extends IBaseEntity {
     };
 }
 
+export const editionCollectionName: string = "editions";
 export type IEditionsPage = IPage<{ editions: IEdition[] }>;
 export type IEditionsLinks = IEntityLinks<{ editions: IEdition[] }>;
 

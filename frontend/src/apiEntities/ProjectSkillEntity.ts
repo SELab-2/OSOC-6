@@ -12,6 +12,7 @@ export interface IProjectSkill extends IBaseEntity {
     };
 }
 
+export const projectSkillCollectionName: string = "project-skills";
 export type IProjectSkillPage = IPage<{ "project-skills": IProjectSkill[] }>;
 export type IProjectSkillLinks = IEntityLinks<{ "project-skills": IProjectSkill[] }>;
 

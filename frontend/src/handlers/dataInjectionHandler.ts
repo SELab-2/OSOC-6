@@ -1,17 +1,17 @@
 import { MouseEventHandler } from "react";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import { IUser, IUsersPage, User } from "../api/UserEntity";
-import { Edition, IEdition, IEditionsPage } from "../api/EditionEntity";
-import { IInvitation, IInvitationsPage, Invitation } from "../api/InvitationEntity";
-import { IProject, IProjectPage, Project } from "../api/ProjectEntity";
-import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/ProjectSkillEntity";
-import { IUserSkill, IUserSkillPage, UserSkill } from "../api/UserSkillEntity";
+import { IUser, IUsersPage, User } from "../apiEntities/UserEntity";
+import { Edition, IEdition, IEditionsPage } from "../apiEntities/EditionEntity";
+import { IInvitation, IInvitationsPage, Invitation } from "../apiEntities/InvitationEntity";
+import { IProject, IProjectPage, Project } from "../apiEntities/ProjectEntity";
+import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../apiEntities/ProjectSkillEntity";
+import { IUserSkill, IUserSkillPage, UserSkill } from "../apiEntities/UserSkillEntity";
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
     ICommunicationTemplatePage,
-} from "../api/CommunicationTemplateEntity";
+} from "../apiEntities/CommunicationTemplateEntity";
 import {
     EnglishProficiency,
     Gender,
@@ -20,23 +20,27 @@ import {
     OsocExpericience,
     PronounsType,
     Student,
-} from "../api/StudentEntity";
+} from "../apiEntities/StudentEntity";
 import {
-    getSkillTypeFromSkill,
+    baseSkillType,
     ISkillType,
     ISkillTypePage,
     SkillType,
-} from "../api/SkillTypeEntity";
-import { AxiosConf } from "../api/requests";
-import { Communication, ICommunication, ICommunicationPage } from "../api/CommunicationEntity";
-import { Simulate } from "react-dom/test-utils";
+} from "../apiEntities/SkillTypeEntity";
+import { AxiosConf } from "../apiCalls/requests";
+import {
+    Communication,
+    ICommunication,
+    ICommunicationPage,
+} from "../apiEntities/CommunicationEntity";
 import {
     ISuggestion,
     ISuggestionPage,
     Suggestion,
     SuggestionStrategy,
-} from "../api/SuggestionEntity";
-import { Assignment, IAssignment, IAssignmentPage } from "../api/AssignmentEntity";
+} from "../apiEntities/SuggestionEntity";
+import { Assignment, IAssignment, IAssignmentPage } from "../apiEntities/AssignmentEntity";
+import { getSkillTypeFromSkill } from "../apiCalls/skillTypeCalls";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
@@ -206,7 +210,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     let containedSkillTypes: ISkillType[];
     if (skillTypes._embedded.skillTypes.length == 0) {
         const skillType1 = new SkillType("V10 boulderer", "000000");
-        const skillTypeOther = new SkillType("other", "929199");
+        const skillTypeOther = new SkillType(baseSkillType, "929199");
 
         containedSkillTypes = await Promise.all(
             [skillType1, skillTypeOther].map(

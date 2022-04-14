@@ -19,6 +19,7 @@ export interface ISuggestion extends IBaseEntity {
     };
 }
 
+export const suggestionCollectionName: string = "suggestions";
 export type ISuggestionPage = IPage<{ suggestions: ISuggestion[] }>;
 export type ISuggestionLinks = IEntityLinks<{ suggestions: ISuggestion[] }>;
 

@@ -1,19 +1,9 @@
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { IUserSkill } from "./UserSkillEntity";
-import { IProjectSkill } from "./ProjectSkillEntity";
+import { IUserSkill } from "../apiEntities/UserSkillEntity";
+import { IProjectSkill } from "../apiEntities/ProjectSkillEntity";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "./requests";
-
-export interface ISkillType extends IBaseEntity {
-    name: string;
-    colour: string;
-
-    _links: {
-        skillType: IReferencer;
-        self: IReferencer;
-    };
-}
+import { baseSkillType, ISkillType, ISkillTypePage } from "../apiEntities/SkillTypeEntity";
 
 /**
  * Get the skillType for a certain Skill.
@@ -34,24 +24,11 @@ export async function getSkillTypeFromSkill(
         type = (
             await axios.get(apiPaths.skillTypesByName, {
                 params: {
-                    name: "other",
+                    name: baseSkillType,
                 },
                 ...AxiosConf,
             })
         ).data;
     }
     return type._embedded.skillTypes[0];
-}
-
-export type ISkillTypePage = IPage<{ skillTypes: ISkillType[] }>;
-export type ISkillTypeLinks = IEntityLinks<{ skillTypes: ISkillType[] }>;
-
-export class SkillType {
-    constructor(name: string, colour: string) {
-        this.name = name;
-        this.colour = colour;
-    }
-
-    name: string;
-    colour: string;
 }

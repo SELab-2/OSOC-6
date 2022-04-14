@@ -21,6 +21,7 @@ export interface IUser extends IBaseEntity {
     };
 }
 
+export const userCollectionName: string = "users";
 export type IUsersPage = IPage<{ users: IUser[] }>;
 export type IUsersLinks = IEntityLinks<{ users: IUser[] }>;
 

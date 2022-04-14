@@ -1,5 +1,5 @@
 import apiPaths from "../properties/apiPaths";
-import { IBaseEntity, IPage } from "./BaseEntities";
+import { IBaseEntity, IPage } from "../apiEntities/BaseEntities";
 import axios from "axios";
 
 export const AxiosConf = { baseURL: apiPaths.base };
@@ -12,14 +12,22 @@ export const AxiosFormConfig = {
     },
 };
 
-export async function getAllEntities(url: string, collectionName: string): Promise<IBaseEntity[]> {
+/**
+ * Gets all IBaseEntities on an url hosting IEntityLinks
+ * @param linksUrl url hosting the IEntityLinks
+ * @param collectionName name of the collection as defined in the IEntityLinks type extension.
+ */
+export async function getAllEntitiesFromLinksPage(
+    linksUrl: string,
+    collectionName: string
+): Promise<IBaseEntity[]> {
     let fetchedAll: boolean = false;
     let currentPage: number = 0;
     const entities: IBaseEntity[] = [];
 
     while (!fetchedAll) {
         const page: IPage<{ [k: string]: IBaseEntity[] }> = (
-            await axios.get(url, {
+            await axios.get(linksUrl, {
                 params: {
                     size: 1000,
                     page: currentPage,
@@ -31,6 +39,5 @@ export async function getAllEntities(url: string, collectionName: string): Promi
         fetchedAll = currentPage + 1 === page.page.totalPages;
         currentPage++;
     }
-
     return entities;
 }
