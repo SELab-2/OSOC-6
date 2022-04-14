@@ -187,6 +187,25 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
     }
 
     @Test
+    public void register_with_valid_invitation_token_updates_invitation() throws Exception {
+        String registerEmail = "register@test.com";
+        Map<String, String> registerMap = Map.of(
+                "email", registerEmail,
+                "callName", "register man",
+                "password", "123456"
+        );
+        getMockMvc().perform(post("/" + DumbledorePathWizard.REGISTRATION_PATH)
+                        .queryParam("token", unusedInvitation.getToken())
+                        .content(Util.asJsonString(registerMap))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Invitation invitation = get_repository_entity_by_id(unusedInvitation.getId());
+        assert invitation.getSubject().getEmail().equals(registerEmail);
+    }
+
+    @Test
     public void register_with_valid_invitation_token_with_existing_email_fails() throws Exception {
         Map<String, String> registerMap = Map.of(
                 "email", getCoachUser().getEmail(),
