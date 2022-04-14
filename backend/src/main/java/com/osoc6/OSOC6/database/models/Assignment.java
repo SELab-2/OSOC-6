@@ -89,12 +89,12 @@ public final class Assignment implements WeakToEdition {
     private Student student;
 
     /**
-     * Project that the student is assigned to.
+     * {@link ProjectSkill} that the student is assigned to.
      */
     @ManyToOne(optional = false)
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @JoinColumn(name = "project_skill_id", referencedColumnName = "id")
     @Getter
-    private Project project;
+    private ProjectSkill projectSkill;
 
     /**
      *
@@ -102,20 +102,20 @@ public final class Assignment implements WeakToEdition {
      * @param newReason the reason for this assignment
      * @param newAssigner the assigner related to this assignment
      * @param newStudent the student who is assigned
-     * @param newProject the project the assignment belongs to
+     * @param newProjectSkill the projectSkill the assignment belongs to
      */
     public Assignment(final boolean newIsSuggestion, final String newReason,
-                      final UserEntity newAssigner, final Student newStudent, final Project newProject) {
+                      final UserEntity newAssigner, final Student newStudent, final ProjectSkill newProjectSkill) {
         super();
         isSuggestion = newIsSuggestion;
         reason = newReason;
         assigner = newAssigner;
         student = newStudent;
-        project = newProject;
+        projectSkill = newProjectSkill;
     }
 
     @Override @JsonIgnore
     public Edition getControllingEdition() {
-        return project.getControllingEdition();
+        return projectSkill.getControllingEdition();
     }
 }

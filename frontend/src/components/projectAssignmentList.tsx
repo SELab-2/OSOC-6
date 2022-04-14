@@ -4,7 +4,7 @@ import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import axios from "axios";
-import pathNames from "../properties/pathNames";
+import apiPaths from "../properties/apiPaths";
 import { useEffect, useState } from "react";
 import { AxiosConf } from "../api/requests";
 import { IProject } from "../api/ProjectEntity";
@@ -12,6 +12,7 @@ import { IAssignment, IAssignmentLinks } from "../api/AssignmentEntity";
 import { IStudent } from "../api/StudentEntity";
 import { IUser } from "../api/UserEntity";
 import { IBaseEntity, IPage } from "../api/BaseEntities";
+import {IProjectSkillLinks} from "../api/ProjectSkillEntity";
 
 export type Assigments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
 
@@ -46,25 +47,31 @@ async function getAllEntities<T extends IBaseEntity>(
 async function getProjectAssignemntData(): Promise<
     { project: IProject; assignments: Assigments }[]
 > {
-    const projects: IProject[] = await getAllEntities<IProject>(pathNames.projects, "projects");
+    const projects: IProject[] = await getAllEntities<IProject>(apiPaths.projects, "projects");
     const reply: { project: IProject; assignments: Assigments }[] = [];
     await Promise.all(
         projects.map(async (project) => {
-            const assignmentList: IAssignmentLinks = (
-                await axios.get(project._links.assignments.href, AxiosConf)
+            const projectSkillsList: IProjectSkillLinks = (
+                await axios.get(project._links.neededSkills.href, AxiosConf)
             ).data;
             const assignments: Assigments = [];
             await Promise.all(
-                assignmentList._embedded.assignments.map(async (assignment) => {
-                    const student: IStudent = (
-                        await axios.get(assignment._links.student.href, AxiosConf)
+                projectSkillsList._embedded["project-skills"].map(async (projectSkill) => {
+                    const assignmentList: IAssignmentLinks = (
+                        await axios.get(projectSkill._links.assignments.href, AxiosConf)
                     ).data;
-                    const assigner: IUser = (
-                        await axios.get(assignment._links.assigner.href, AxiosConf)
-                    ).data;
-                    if (assignment.isValid) {
-                        assignments.push({ assignment, student, assigner });
-                    }
+                    await Promise.all(
+                        assignmentList._embedded.assignments.map(async (assignment) => {
+                            const student: IStudent = (
+                                await axios.get(assignment._links.student.href, AxiosConf)
+                            ).data;
+                            const assigner: IUser = (
+                                await axios.get(assignment._links.assigner.href, AxiosConf)
+                            ).data;
+                            if (assignment.isValid) {
+                                assignments.push({ assignment, student, assigner });
+                            }
+                            }))
                 })
             );
             reply.push({ project, assignments });
@@ -127,6 +134,7 @@ export function AssignmentItem(item: { assignments: Assigments }) {
     useEffect(() => setAssign(assignments), [assignments]);
 
     async function removeAssignment(assignment: any) {
+        console.log(assignment)
         await axios.delete(assignment.target.value, AxiosConf);
         if (assign != undefined) {
             const newAssign: Assigments = [];

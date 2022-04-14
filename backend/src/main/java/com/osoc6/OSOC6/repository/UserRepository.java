@@ -42,7 +42,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Override @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @PostAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !returnObject.present or "
-            + "@spelUtil.hasOverlappingEditions(authentication.principal, returnObject.get)")
+            + "@spelUtil.hasOverlappingEditions(returnObject.get, authentication.principal)")
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**
