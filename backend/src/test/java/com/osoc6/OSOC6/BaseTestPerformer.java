@@ -6,6 +6,7 @@ import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.InvitationRepository;
+import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
@@ -58,6 +59,12 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @Autowired @Getter
     private MockMvc mockMvc;
+
+    /**
+     * The public repository, used to access the database without authorization.
+     */
+    @Autowired
+    private PublicRepository publicRepository;
 
     /**
      * The edition repository which saves, searches, ... Editions in the database
@@ -163,10 +170,10 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
         editionRepository.save(baseActiveUserEdition);
         editionRepository.save(baseNonActiveUserEdition);
 
-        userRepository.internalSave(adminUser);
-        userRepository.internalSave(coachUser);
-        userRepository.internalSave(outsiderCoach);
-        userRepository.internalSave(matchingEditionCoach);
+        publicRepository.internalSave(adminUser);
+        publicRepository.internalSave(coachUser);
+        publicRepository.internalSave(outsiderCoach);
+        publicRepository.internalSave(matchingEditionCoach);
 
         invitationRepository.save(invitationActiveEditionForCoach);
         invitationRepository.save(invitationNonActiveEditionForCoach);
@@ -429,6 +436,17 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     public T get_random_repository_entity() {
         AtomicReference<T> entity = new AtomicReference<>();
         performAsAdmin(() -> entity.set(get_repository().findAll().get(0)));
+        return entity.get();
+    }
+
+    /**
+     * Get an entity by its id from the repository.
+     * @param id the id of the entity to get
+     * @return the found entity
+     */
+    public T get_repository_entity_by_id(final I id) {
+        AtomicReference<T> entity = new AtomicReference<>();
+        performAsAdmin(() -> entity.set(get_repository().getById(id)));
         return entity.get();
     }
 

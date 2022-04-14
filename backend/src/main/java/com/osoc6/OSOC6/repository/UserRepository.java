@@ -23,19 +23,7 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
-public interface UserRepository extends JpaRepository<UserEntity, Long>, InternalSaveRepository<UserEntity> {
-
-    /**
-     * Save a new user.
-     * @param entity the new user to save
-     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
-     * Since we want to be able to use this method anywhere, we set the authorization to permitAll.
-     */
-    @Override
-    @RestResource(exported = false)
-    @PreAuthorize("permitAll()")
-    <S extends UserEntity> void internalSave(@NonNull S entity);
-
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     /**
      * This method finds the user with a given email address.
      * @param email email address of the searched user
@@ -58,19 +46,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, Interna
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**
-     * Check if there exists an enabled user with the specified role.
-     * This is needed for creating the base admin user.
-     * @param userRole the role of the users to look for
-     * @param enabled whether the user is enabled or not
-     * @return whether there exists users with the specified role that are enabled or not.
-     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
-     */
-    @RestResource(exported = false)
-    @Query("select (count(u) > 0) from UserEntity u where u.userRole = :userRole and u.enabled = :enabled")
-    boolean existsAllByUserRoleEqualsAndEnabled(
-            @Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
-
-    /**
      * Count how manny enabled user with the specified role there are.
      * This is needed for role patch safety.
      * @param userRole the role of the users to look for
@@ -78,7 +53,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, Interna
      * @return how many users there exist  with the specified role that are enabled or not.
      */
     int countAllByUserRoleEqualsAndEnabled(@Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
-
 
     /**
      * Update a {@link UserEntity}.
