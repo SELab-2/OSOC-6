@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 
 /**
@@ -42,7 +41,6 @@ public final class Edition implements WeakToEdition {
      * The year of the edition.
      */
     @Basic(optional = false)
-    @NotNull
     @Setter @Getter
     private Integer year;
 
@@ -50,7 +48,6 @@ public final class Edition implements WeakToEdition {
      * Whether the edition is active.
      */
     @Basic(optional = false)
-    @NotNull
     @Setter @Getter
     private Boolean active;
 
