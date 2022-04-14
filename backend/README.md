@@ -69,6 +69,95 @@ You should be set up now.
 If you want to run the program just run `./gradlew run bootRun`.
 Your backend will be served on the base path `/api/`.
 
+## Developers
+
+We use the Java Spring framework within this framework we use
+[Data Rest](https://docs.spring.io/spring-data/rest/docs/current/reference/html/).
+This allows us to export our entities in a RESTfull manner without many problems.
+Spring data Rest can feel like magic at times though.
+In this paragraph we aim to teach you about some annotations we use and how they work together.
+Our persistence layer is driven postgres, we are dependent on postgres in a few annotations.
+
+### Entity annotations
+
+```java
+@Column(columnDefinition = "text")
+```
+Allows us to use postgres text fields. These are fields that contain text and are not restricted by size.
+
+```java
+@OneToMany(cascade = {CascadeType.REMOVE})
+```
+Makes sure the remove operation is cascaded to the linked entity.
+Many Cascade types are available and can be used together. 
+
+```java
+@JsonIgnore @RestResource(exported = false)
+```
+A field with this annotation will not be export to the JSON representation of the entity.
+
+```java
+@ReadOnlyProperty
+```
+Fields with this annotation will not be altered when asked.
+Altering the field will NOT throw an exception, it will just be ignored.
+
+```java
+@JoinColumn(name = "student_id", referencedColumnName = "id")
+```
+This annotation makes sure entities in relation with each other are correctly linked.
+The strings provided to this entity are the columns of the field in the persistence layer.
+
+All string fields we use are non-optional in the persistence layer.
+When they are semantically optional, we provide a default value, mostly the empty string.  
+
+### Repository annotations
+
+This is where the magic begins.
+With Spring Data Rest there is no need to write complex services, controllers and repositories.
+You just add a few annotations to construct yourself a secured endpoint.
+
+```java
+@PreAuthorize
+```
+Annotation allows you to implement authentication for your repository.
+Within the annotation u use the [Spring Expression Language (SpEL)](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/expressions.html)
+SpEL allows u to use things like `authentication.principal` that refers to the userDetails of authenticated user.
+U can access any bean from within your SpEL by using the `@` operator like `@spelUtil`.
+U can also reference your arguments using the `#` operator like `#email`.
+
+```java
+@RepositoryRestResource(collectionResourceRel = "/appel", path = "/appel")
+```
+This annotation tells Spring to host the endpoints on the path `/appel`.
+It creates all basic endpoint like: get all, get by id, save (POST/PATCH), delete, ...
+
+You can also create your own search endpoints like for example `findByEmail`.
+Spring will know what this means and create the endpoint for you.
+In addition, you can still create custom endpoints if you want with the `@Query annotation`.
+
+```java
+@Query(value= "someJQLQuery")
+```
+This annotation will allow u to write a custom query using Java Persistence Query Language (JPQL), a part of
+[the Java Persistence API (JPA)](https://docs.spring.io/spring-integration/reference/html/jpa.html).
+The [BNF form](https://en.wikibooks.org/wiki/Java_Persistence/JPQL_BNF) of JPQL is also available.
+JPQL helps u to write queries without having to worry on how to join tables.
+JPQL also makes sure Spring and your percistence layer are not tightly coupled.
+With JPQL you have a lot of expressive power but the syntax can be painful.
+
+* Use the `@Param(paramName)` annotation in the parameters of your repository function to access it with
+the Query annotation by using `:paramName`.
+* Use the `:#{}` syntax to write SpEL within the curly-braces.
+
+```java
+@Query(value= "someNativeQuery", native = true)
+```
+Allows you to write a query native to your persistence layer, postgres in our case.
+Using a native query you can often write more powerful queries on the expense of being tightly coupled to your persistence layer.
+You should try to avoid using native queries.
+From within a native query you can also use the `:` and `:#{}` syntax.
+
 ## Tests
 
 To run the tests we use gradle.
@@ -102,4 +191,3 @@ The report is created in `build/reports/jacoco/test/html` here you can find an `
 There are a lot of options to open this file.
 * Open it with your ide, that might help you render the web page.
 * Call `npx serve` in the directory.
-* 
