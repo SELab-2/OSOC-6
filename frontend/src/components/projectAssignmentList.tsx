@@ -1,88 +1,89 @@
 import { NextPage } from "next";
-import { Accordion, CloseButton, Col, Container, Row } from "react-bootstrap";
+import {
+    Accordion, Badge,
+    CloseButton,
+    Col,
+    Container,
+    Row
+} from "react-bootstrap";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import { useEffect, useState } from "react";
-import { AxiosConf } from "../api/requests";
-import { IProject } from "../api/ProjectEntity";
+import {useEffect, useState} from "react";
+import {AxiosConf} from "../api/requests";
+import {getAllProjects, IProject} from "../api/ProjectEntity";
 import { IAssignment, IAssignmentLinks } from "../api/AssignmentEntity";
 import { IStudent } from "../api/StudentEntity";
 import { IUser } from "../api/UserEntity";
-import { IBaseEntity, IPage } from "../api/BaseEntities";
-import { IProjectSkillLinks } from "../api/ProjectSkillEntity";
+import {IProjectSkill, IProjectSkillLinks} from "../api/ProjectSkillEntity";
 
 export type Assigments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
+export type Skills = {  skill: IProjectSkill, assignments:Assigments }[];
 
-async function getAllEntities<T extends IBaseEntity>(
-    url: string,
-    collectionName: string
-): Promise<T[]> {
-    let fetchedAll: boolean = false;
-    let currentPage: number = 0;
-    let entities: T[] = [];
 
-    while (!fetchedAll) {
-        let page: IPage<any>;
-        page = (
-            await axios.get(url, {
-                params: {
-                    size: 1000,
-                    page: currentPage,
-                },
-                ...AxiosConf,
-            })
-        ).data;
-        console.log(page);
-        entities.push(...page._embedded[collectionName]);
-        fetchedAll = currentPage + 1 === page.page.totalPages;
-        currentPage++;
-    }
+async function getProjectSkills(projectSkillsList:IProjectSkillLinks) {
+    const skills: Skills = []
 
-    return entities;
+    await Promise.all(
+        projectSkillsList._embedded["project-skills"].map(async (skill) => {
+            const assignmentList: IAssignmentLinks = (
+                await axios.get(skill._links.assignments.href, AxiosConf)
+            ).data;
+
+            const assignments: Assigments = await getAssignments(assignmentList);
+
+            skills.push( { skill, assignments })
+        })
+    );
+
+    return skills
 }
 
-async function getProjectAssignemntData(): Promise<
-    { project: IProject; assignments: Assigments }[]
-> {
-    const projects: IProject[] = await getAllEntities<IProject>(apiPaths.projects, "projects");
-    const reply: { project: IProject; assignments: Assigments }[] = [];
+
+async function getAssignments(assignmentList:IAssignmentLinks) {
+    const assignments: Assigments = [];
+
+    await Promise.all(
+        assignmentList._embedded.assignments.map(async (assignment) => {
+            const student: IStudent = (
+                await axios.get(assignment._links.student.href, AxiosConf)
+            ).data;
+
+            const assigner: IUser = (
+                await axios.get(assignment._links.assigner.href, AxiosConf)
+            ).data;
+
+            if (assignment.isValid) {
+                assignments.push({ assignment, student, assigner });
+            }
+        })
+    );
+
+    return assignments
+}
+
+async function getProjectAssignemntData(): Promise<{ project: IProject; skills: Skills }[]> {
+    const projects: IProject[] = await getAllProjects(apiPaths.projects);
+    const reply: { project: IProject; skills: Skills }[] = [];
+
     await Promise.all(
         projects.map(async (project) => {
             const projectSkillsList: IProjectSkillLinks = (
                 await axios.get(project._links.neededSkills.href, AxiosConf)
             ).data;
-            const assignments: Assigments = [];
-            await Promise.all(
-                projectSkillsList._embedded["project-skills"].map(async (projectSkill) => {
-                    const assignmentList: IAssignmentLinks = (
-                        await axios.get(projectSkill._links.assignments.href, AxiosConf)
-                    ).data;
-                    await Promise.all(
-                        assignmentList._embedded.assignments.map(async (assignment) => {
-                            const student: IStudent = (
-                                await axios.get(assignment._links.student.href, AxiosConf)
-                            ).data;
-                            const assigner: IUser = (
-                                await axios.get(assignment._links.assigner.href, AxiosConf)
-                            ).data;
-                            if (assignment.isValid) {
-                                assignments.push({ assignment, student, assigner });
-                            }
-                        })
-                    );
-                })
-            );
-            reply.push({ project, assignments });
+            const skills: Skills = await getProjectSkills(projectSkillsList);
+
+            reply.push({ project, skills });
         })
     );
+
     return reply;
 }
 
 const ProjectAsignmentList: NextPage = () => {
-    const [projects, setProjects] = useState<{ project: IProject; assignments: Assigments }[]>();
+    const [projects, setProjects] = useState<{ project: IProject; skills: Skills }[]>();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         getProjectAssignemntData().then((reply) => {
@@ -118,7 +119,7 @@ const ProjectAsignmentList: NextPage = () => {
                                     </div>
                                 </AccordionHeader>
                                 <AccordionBody>
-                                    <AssignmentItem assignments={item.assignments} />
+                                    <SkillItem skills={item.skills} />
                                 </AccordionBody>
                             </AccordionItem>
                         );
@@ -129,40 +130,65 @@ const ProjectAsignmentList: NextPage = () => {
     );
 };
 
-export function AssignmentItem(item: { assignments: Assigments }) {
+export function SkillItem(item: { skills: Skills }) {
+    const skills = item.skills;
+    const [skillList, setSkillList] = useState<Skills>();
+    useEffect(() => setSkillList(skills), [skills]);
+
+    if (skillList != undefined) {
+        if (skillList.length == 0) {
+            return <p>No skills have been assigned to this project</p>;
+        }
+
+        return (
+            <>
+                {skillList.map((skill, index) => {
+                    return (
+                        <Container key={index}>
+                            <AssignmentItem skill={ skill.skill } assignments={skill.assignments}/>
+                        </Container>
+                    );
+                })}
+            </>
+        );
+    }
+    return <p>Loading...</p>;
+}
+
+
+function AssignmentItem(item: { skill: IProjectSkill, assignments:Assigments }) {
     const assignments = item.assignments;
     const [assign, setAssign] = useState<Assigments>();
     useEffect(() => setAssign(assignments), [assignments]);
 
-    async function removeAssignment(assignment: any) {
-        console.log(assignment);
-        await axios.delete(assignment.target.value, AxiosConf);
+    async function removeAssignment(event: any) {
+        console.log(event);
+        await axios.delete(event.target.value, AxiosConf);
         if (assign != undefined) {
-            const newAssign: Assigments = [];
-            for (let ass of assign) {
-                if (ass.assignment._links.assignment.href != assignment.target.value) {
-                    newAssign.push(ass);
+            const assignments: Assigments = [];
+            for (let assignment of assign) {
+                if (assignment.assignment._links.assignment.href != event.target.value) {
+                    assignments.push(assignment);
                 }
             }
-            setAssign(newAssign);
+            setAssign(assignments);
         }
     }
 
     if (assign != undefined) {
         if (assign.length == 0) {
-            return <p>No students have been assigned to this project</p>;
+            return <p >No students have been assigned to this skill</p>;
         }
 
         return (
             <>
                 {assign.map((assignment, index) => {
                     return (
-                        <Container key={index}>
+                        <div key={index}>
                             <Row className={"align-items-center"} xs={2}>
                                 <Col sm={11}>
-                                    <h6>{assignment.student.firstName}</h6>
-                                    <p>
-                                        Suggested by {assignment.assigner.callName}: <br />{" "}
+                                    <h6>{assignment.student.firstName} <Badge bg={"secondary"}>{item.skill.name}</Badge></h6>
+                                    <p>Suggested by {assignment.assigner.callName}: <br />{" "}
                                         {assignment.assignment.reason}
                                     </p>
                                 </Col>
@@ -175,13 +201,15 @@ export function AssignmentItem(item: { assignments: Assigments }) {
                                 </Col>
                             </Row>
                             <hr />
-                        </Container>
+                        </div>
                     );
                 })}
             </>
         );
     }
-    return <p>Loading...</p>;
+
+    return <p>Loading...</p>
 }
+
 
 export default ProjectAsignmentList;
