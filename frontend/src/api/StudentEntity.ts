@@ -48,7 +48,6 @@ export interface IStudent extends IBaseEntity {
     currentDiploma: string;
     curriculumVitaeURI: string;
     durationCurrentDegree: number;
-    educationLevel: string;
     englishProficiency: EnglishProficiency;
     firstName: string;
     gender: Gender;
@@ -60,6 +59,7 @@ export interface IStudent extends IBaseEntity {
     phoneNumber: string;
     portfolioURI: string;
     pronouns: string;
+    funFact: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;
@@ -86,7 +86,6 @@ export class Student {
         currentDiploma: string,
         curriculumVitaeURI: string,
         durationCurrentDegree: number,
-        educationLevel: string,
         englishProficiency: EnglishProficiency,
         firstName: string,
         gender: Gender,
@@ -98,6 +97,7 @@ export class Student {
         phoneNumber: string,
         portfolioURI: string,
         pronouns: string,
+        funFact: string,
         skills: string[],
         studies: string[],
         writtenMotivation: string,
@@ -111,7 +111,6 @@ export class Student {
         this.currentDiploma = currentDiploma;
         this.curriculumVitaeURI = curriculumVitaeURI;
         this.durationCurrentDegree = durationCurrentDegree;
-        this.educationLevel = educationLevel;
         this.englishProficiency = englishProficiency;
         this.firstName = firstName;
         this.gender = gender;
@@ -123,6 +122,7 @@ export class Student {
         this.phoneNumber = phoneNumber;
         this.portfolioURI = portfolioURI;
         this.pronouns = pronouns;
+        this.funFact = funFact;
         this.skills = skills;
         this.studies = studies;
         this.writtenMotivation = writtenMotivation;
@@ -136,7 +136,6 @@ export class Student {
     currentDiploma: string;
     curriculumVitaeURI: string;
     durationCurrentDegree: number;
-    educationLevel: string;
     email: string;
     englishProficiency: EnglishProficiency;
     firstName: string;
@@ -149,6 +148,7 @@ export class Student {
     phoneNumber: string;
     portfolioURI: string;
     pronouns: string;
+    funFact: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;

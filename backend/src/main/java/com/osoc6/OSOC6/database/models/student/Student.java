@@ -84,7 +84,7 @@ public final class Student implements WeakToEdition {
      */
     @Basic(optional = false)
     @Getter @Setter
-    private String pronouns;
+    private String pronouns = "";
 
     /**
      * The callName of the student.
@@ -150,15 +150,6 @@ public final class Student implements WeakToEdition {
     private String writtenMotivation = "";
 
     /**
-     * Highest level of education a student currently has.
-     * Represented as string instead of enum because only one choice can be provided and other is an option.
-     */
-    @Basic(optional = false)
-    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
-    private String educationLevel;
-
-    /**
      * Diploma a student is trying to get.
      */
     @Basic(optional = false)
@@ -207,13 +198,15 @@ public final class Student implements WeakToEdition {
     @Getter @Setter
     private OsocExperience osocExperience;
 
+    // TODO status van student toevoegen (zie discussion)
+
     /**
      * Additional info that coaches or admins write about students.
      */
     @Basic(optional = false)
     @Column(columnDefinition = "text")
     @Getter @Setter
-    private String additionalStudentInfo;
+    private String additionalStudentInfo = "";
 
     /**
      * A fun fact about the student.
@@ -228,7 +221,7 @@ public final class Student implements WeakToEdition {
      */
     @ManyToOne(optional = false, cascade = {})
     @ReadOnlyProperty
-    @Getter
+    @Getter @Setter
     private Edition edition;
 
     /**
@@ -271,54 +264,6 @@ public final class Student implements WeakToEdition {
     @JsonIgnore @RestResource(exported = false)
     @Getter @Setter @Builder.Default
     private List<Communication> communications = new ArrayList<>();
-
-//    /**
-//     *
-//     * @return The possessive pronoun of the student.
-//     */
-//    public String getPossessivePronoun() {
-//        return pronounsType.getPossessive(this);
-//    }
-//
-//    /**
-//     *
-//     * @return The subjective pronoun of the student.
-//     */
-//    public String getSubjectivePronoun() {
-//        return pronounsType.getSubjective(this);
-//    }
-//
-//    /**
-//     * Exportation of possessive pronoun to be used within te package, not exported by Spring.
-//     * @return the possessive pronoun of the student in case the pronoun type is other.
-//     */
-//    String defaultGetPossessive() {
-//        return possessivePronoun;
-//    }
-//
-//    /**
-//     * Exportation of objective pronoun to be used within te package, not exported by Spring.
-//     * @return the objective pronoun of the student in case the pronoun type is other.
-//     */
-//    String defaultGetObjective() {
-//        return objectivePronoun;
-//    }
-//
-//    /**
-//     * Exportation of subjective pronoun to be used within te package, not exported by Spring.
-//     * @return the subjective pronoun of the student in case the pronoun type is other.
-//     */
-//    String defaultGetSubjective() {
-//        return subjectivePronoun;
-//    }
-//
-//    /**
-//     *
-//     * @return The objective pronoun of the student
-//     */
-//    public String getObjectivePronoun() {
-//        return pronounsType.getObjective(this);
-//    }
 
     @Override @JsonIgnore
     public Edition getControllingEdition() {

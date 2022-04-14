@@ -48,7 +48,8 @@ public enum OsocExperience {
                 return osocExperience;
             }
         }
-        throw new WebhookException(String.format("No osocexperience participation matching '%s' found.", participation));
+        throw new WebhookException(
+                String.format("No osocexperience participation matching '%s' found.", participation));
     }
 
     /**
