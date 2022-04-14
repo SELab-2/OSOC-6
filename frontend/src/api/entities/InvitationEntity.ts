@@ -14,6 +14,7 @@ export interface IInvitation extends IBaseEntity {
     };
 }
 
+export const invitationCollectionName: string = "invitations";
 export type IInvitationsPage = IPage<{ invitations: IInvitation[] }>;
 export type IInvitationsLinks = IEntityLinks<{ invitations: IInvitation[] }>;
 

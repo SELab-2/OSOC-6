@@ -88,6 +88,7 @@ export interface IStudent extends IBaseEntity {
     };
 }
 
+export const studentCollectionName: string = "students";
 export type IStudentPage = IPage<{ students: IStudent[] }>;
 export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
 

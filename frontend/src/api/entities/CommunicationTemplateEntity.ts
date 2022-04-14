@@ -10,6 +10,7 @@ export interface ICommunicationTemplate extends IBaseEntity {
     };
 }
 
+export const communicationTemplateCollectionName: string = "communicationTemplates";
 export type ICommunicationTemplatePage = IPage<{
     communicationTemplates: ICommunicationTemplate[];
 }>;

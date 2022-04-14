@@ -15,6 +15,7 @@ export interface ICommunication extends IBaseEntity {
     };
 }
 
+export const communicationCollectionName: string = "communications";
 export type ICommunicationPage = IPage<{ communications: ICommunication[] }>;
 export type ICommunicationLinks = IEntityLinks<{ communications: ICommunication[] }>;
 

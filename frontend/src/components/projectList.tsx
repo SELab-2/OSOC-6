@@ -1,11 +1,11 @@
 import { ListGroup } from "react-bootstrap";
-import { getAllProjects } from "../api/ProjectEntity";
 import Router from "next/router";
 import styles from "../styles/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
+import { getAllProjectsFormLinks } from "../api/calls/projectCalls";
 
 export const ProjectList = () => {
     const { t } = useTranslation();
@@ -13,7 +13,10 @@ export const ProjectList = () => {
     const [data, setData] = useState<any[]>([]);
 
     useEffect(() => {
-        const projects = getAllProjects(apiPaths.projects).then((response) => setData(response));
+        const fetchData = async () => {
+            setData(await getAllProjectsFormLinks(apiPaths.projects));
+        };
+        fetchData().catch(console.log);
     }, []);
 
     if (!data) {
