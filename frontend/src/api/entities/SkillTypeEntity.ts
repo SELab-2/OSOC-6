@@ -1,9 +1,4 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { IUserSkill } from "./UserSkillEntity";
-import { IProjectSkill } from "./ProjectSkillEntity";
-import axios from "axios";
-import apiPaths from "../../properties/apiPaths";
-import { AxiosConf } from "../calls/requests";
 
 export interface ISkillType extends IBaseEntity {
     name: string;

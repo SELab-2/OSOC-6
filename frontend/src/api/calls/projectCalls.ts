@@ -1,5 +1,5 @@
-import { getAllEntitiesFromLinksPage } from "./requests";
 import { IProject, projectCollectionName } from "../entities/ProjectEntity";
+import { getAllEntitiesFromLinksPage } from "./baseCalls";
 
 /**
  * Fetches all projects on a given ProjectLinksUrl

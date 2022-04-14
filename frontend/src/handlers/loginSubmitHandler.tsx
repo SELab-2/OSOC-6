@@ -1,7 +1,7 @@
 import apiPaths from "../properties/apiPaths";
 import Router from "next/router";
 import axios from "axios";
-import { AxiosFormConfig } from "../api/calls/requests";
+import { AxiosFormConfig } from "../api/calls/baseCalls";
 
 export interface LoginValues {
     username: string;

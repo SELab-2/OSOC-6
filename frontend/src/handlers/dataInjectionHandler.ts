@@ -27,7 +27,6 @@ import {
     ISkillTypePage,
     SkillType,
 } from "../api/entities/SkillTypeEntity";
-import { AxiosConf } from "../api/calls/requests";
 import {
     Communication,
     ICommunication,
@@ -41,6 +40,7 @@ import {
 } from "../api/entities/SuggestionEntity";
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
 import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
+import { AxiosConf } from "../api/calls/baseCalls";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;

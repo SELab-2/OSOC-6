@@ -2,8 +2,8 @@ import { IUserSkill } from "../entities/UserSkillEntity";
 import { IProjectSkill } from "../entities/ProjectSkillEntity";
 import axios from "axios";
 import apiPaths from "../../properties/apiPaths";
-import { AxiosConf } from "./requests";
 import { baseSkillType, ISkillType, ISkillTypePage } from "../entities/SkillTypeEntity";
+import { AxiosConf } from "./baseCalls";
 
 /**
  * Get the skillType for a certain Skill.
