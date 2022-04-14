@@ -13,6 +13,7 @@ jobs:
         run: |
           cd frontend/
           rm package-lock.json
+          rm -r node_modules
           npm install
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
