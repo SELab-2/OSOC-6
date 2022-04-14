@@ -13,7 +13,10 @@ import java.util.Optional;
 
 /**
  * This is our custom repository. Its methods are not exposed and are not secured with authorization.
- * This means that this repository should only be used when you are sure there is no way of using a normal repository.
+ * The methods are only accessible by manually calling this repository from within the application.
+ * They are callable from everywhere in the application, even if the user sending a request is unauthenticated.
+ * This means that this repository should only be used when you are sure there is no way of using a normal repository,
+ * and if you know what you are doing.
  */
 @Repository
 public class PublicRepository {
