@@ -64,8 +64,8 @@ it("Should go to project page when clicking item in list", async () => {
                 totalPages: 1,
             },
         },
-        status: 200,
-        statusText: "",
+        status: StatusCodes.OK,
+        statusText: ReasonPhrases.OK,
         headers: {},
         config: {},
     };
