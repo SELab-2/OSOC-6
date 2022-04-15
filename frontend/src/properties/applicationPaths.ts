@@ -8,6 +8,7 @@ const applicationPaths = {
     students: "students",
     projectInfo: "projects/[id]",
     login: "login",
+    loginError: "loginError",
     changePassword: "changePassword",
     changeEmail: "changeEmail",
 };

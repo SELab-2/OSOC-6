@@ -1,7 +1,8 @@
 const apiPaths = {
     base: "http://localhost/api/",
-    login: "/login-processing",
-    registration: "/registration",
+    backendLogin: "login",
+    login: "login-processing",
+    registration: "registration",
     editions: "editions",
     skillTypes: "skillTypes",
     skillTypesByName: "skillTypes/search/by-name",
