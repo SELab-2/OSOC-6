@@ -1,18 +1,18 @@
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
 import { getUserInfo } from "../api/UserEntity";
 import styles from "../styles/profileOverview.module.css";
-import { profileDeleteHandler, profileSaveHandler } from '../handlers/profileHandler';
+import { profileDeleteHandler, profileSaveHandler } from "../handlers/profileHandler";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
     const [data, setData] = useState<any>();
     const [editCallname, setEditCallname] = useState<boolean>(false);
-    const [callname, setCallname] = useState<string>('');
+    const [callname, setCallname] = useState<string>("");
 
     useEffect(() => {
         getUserInfo(apiPaths.ownUser).then((response) => setData(response));
@@ -22,14 +22,14 @@ export function ProfileOverview() {
         return null;
     }
 
-    function handleEditCallName(){
+    function handleEditCallName() {
         setEditCallname(true);
     }
 
-    function handleSaveCallName(){
+    function handleSaveCallName() {
         setEditCallname(false);
-        profileSaveHandler(data._links.self.href, callname).then(respone => {
-            if(respone.status == 200){
+        profileSaveHandler(data._links.self.href, callname).then((respone) => {
+            if (respone.status == 200) {
                 setData(respone.data);
             } else {
                 // TODO Show toats that PATCH failed
@@ -43,7 +43,6 @@ export function ProfileOverview() {
         setCallname(event.target.value);
     }
 
-
     return (
         <Container>
             <h2>{t("UserOverview My Profile")}</h2>
@@ -51,20 +50,23 @@ export function ProfileOverview() {
                 <Col className={styles.first_element}>{t("UserOverview Name")}</Col>
                 {/*show callname if not editing*/}
                 {!editCallname && <Col>{data.callName}</Col>}
-                {!editCallname && <Col>
-                    <a onClick={handleEditCallName}>
-                        <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
-                    </a>
+                {!editCallname && (
+                    <Col>
+                        <a onClick={handleEditCallName}>
+                            <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                        </a>
                     </Col>
-                }
+                )}
 
                 {/*input field and save mark if editing*/}
-                {editCallname && <Col>
-                    <input name="callname" value={data.callName} onChange={onChange} />
-                    <button onClick={handleSaveCallName}>
-                        <Image alt="" src={"/resources/checkmark.svg"} width="15" height="15" />
-                    </button>
-                </Col>}
+                {editCallname && (
+                    <Col>
+                        <input name="callname" value={data.callName} onChange={onChange} />
+                        <button onClick={handleSaveCallName}>
+                            <Image alt="" src={"/resources/checkmark.svg"} width="15" height="15" />
+                        </button>
+                    </Col>
+                )}
             </Row>
             <Row>
                 <Col className={styles.first_element}>{t("UserOverview E-mail")}</Col>
@@ -92,7 +94,12 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Button onClick={(event) => profileDeleteHandler(event)} value={data._links.self.href}>Delete my profile</Button>
+                <Button
+                    onClick={(event) => profileDeleteHandler(event)}
+                    value={data._links.self.href}
+                >
+                    Delete my profile
+                </Button>
             </Row>
         </Container>
     );
