@@ -18,7 +18,7 @@
     "http-status-codes": "^2.2.0",
     "i18next": "^21.6.16",
     "identity-obj-proxy": "^3.0.0",
-    "jest-mock-axios": "^4.5.0",
+    "jest-mock-axios": "^4.6.1",
     "next": "^12.1.5",
     "next-router-mock": "^0.6.6",
     "next-translate": "^1.4.0",
