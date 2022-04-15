@@ -15,6 +15,7 @@ export interface IAssignment extends IBaseEntity {
     };
 }
 
+export const assignmentCollectionName: string = "assignments";
 export type IAssignmentPage = IPage<{ assignments: IAssignment[] }>;
 export type IAssignmentLinks = IEntityLinks<{ assignments: IAssignment[] }>;
 

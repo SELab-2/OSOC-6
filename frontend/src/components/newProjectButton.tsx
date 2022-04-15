@@ -6,7 +6,7 @@ import applicationPaths from "../properties/applicationPaths";
 export const NewProjectButton = () => {
     const { t } = useTranslation();
     return (
-        <ButtonGroup className="d-flex">
+        <ButtonGroup className="d-flex" data-testid="newproject-button">
             <Button
                 className="w-100"
                 variant="primary"

@@ -1,6 +1,6 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 import axios from "axios";
-import { AxiosConf } from "./requests";
+import { AxiosConf } from '../calls/baseCalls';
 
 export interface IUser extends IBaseEntity {
     accountNonExpired: boolean;
@@ -23,6 +23,7 @@ export interface IUser extends IBaseEntity {
     };
 }
 
+export const userCollectionName: string = "users";
 export type IUsersPage = IPage<{ users: IUser[] }>;
 export type IUsersLinks = IEntityLinks<{ users: IUser[] }>;
 

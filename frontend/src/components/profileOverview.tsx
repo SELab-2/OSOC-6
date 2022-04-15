@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
-import { getUserInfo } from "../api/UserEntity";
+import { getUserInfo } from "../api/calls/userProfileCalls";
 import styles from "../styles/profileOverview.module.css";
 import { profileDeleteHandler, profileSaveHandler } from "../handlers/profileHandler";
 
