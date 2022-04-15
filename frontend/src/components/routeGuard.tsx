@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "../api/calls/baseCalls";
-import Router, {useRouter} from "next/router";
+import Router, { useRouter } from "next/router";
 import applicationPaths from "../properties/applicationPaths";
 import ApiPaths from "../properties/apiPaths";
 
@@ -24,7 +24,7 @@ export default function RouteGuard({ children }: any) {
         ];
         // Check if the user is logged in. If not this request will be redirected to the backend login
         const userResponse: AxiosResponse = await axios.get(apiPaths.ownUser, AxiosConf);
-        const path = url.split('?')[0];
+        const path = url.split("?")[0];
 
         console.log(userResponse.request.responseURL);
         if (
@@ -35,7 +35,7 @@ export default function RouteGuard({ children }: any) {
             // window.location.replace is needed since Router.push does not invoke useEffect on redirect.
             push({
                 pathname: applicationPaths.base + applicationPaths.login,
-                query: { returnUrl: Router.asPath }
+                query: { returnUrl: Router.asPath },
             });
         } else {
             setAuthorized(true);
