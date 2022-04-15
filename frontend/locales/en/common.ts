@@ -10,6 +10,13 @@ const common = {
     "Navbar profile": "Profile",
     "New project button": "New project",
     "Project list header": "Projects",
+    "Users manage": "Manage users",
+    "Users search name": "Search name",
+    "Users email": "Email",
+    "Users status": "Account status",
+    "UserRole Admin": "Admin",
+    "UserRole Coach": "Coach",
+    "UserRole Disabled": "Disabled",
 };
 
 export default common;
