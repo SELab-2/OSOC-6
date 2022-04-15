@@ -71,11 +71,11 @@ Your backend will be served on the base path `/api/`.
 
 ## Developers
 
-We use the Java Spring framework and within this framework we use
+We use the Java Spring Framework and within this framework we use
 [Data Rest](https://docs.spring.io/spring-data/rest/docs/current/reference/html/).
-This allows us to export our entities in a RESTfull manner without many problems.
+This allows us to export our entities in a RESTful manner without many problems.
 Spring data Rest can feel like magic at times though.
-In this paragraph we aim to teach you about some annotations we use and how they work together.
+In this paragraph we aim to give you an overview of some annotations we use and how they work together.
 Some of the annotations we use are dependent on our persistence layer being driven by postgres.
 
 ### Entity annotations
@@ -83,7 +83,7 @@ Some of the annotations we use are dependent on our persistence layer being driv
 ```java
 @Column(columnDefinition = "text")
 ```
-Allows us to use postgres text fields. These are fields that contain text and are not restricted by size.
+Allows us to use postgres text fields. These are fields that contain plain text and are not restricted by size.
 
 ```java
 @OneToMany(cascade = {CascadeType.REMOVE})
@@ -105,7 +105,7 @@ Altering the field will NOT throw an exception, it will just be ignored.
 ```java
 @JoinColumn(name = "student_id", referencedColumnName = "id")
 ```
-This annotation makes sure entities in relation with each other are correctly linked.
+This annotation makes sure related entities are correctly linked.
 The strings provided to this entity are the columns of the field in the persistence layer.
 
 All string fields we use are non-optional in the persistence layer.
@@ -121,10 +121,10 @@ You just add a few annotations to construct yourself a secured endpoint.
 @PreAuthorize
 ```
 An annotation that allows you to implement authentication for your repository.
-Within the annotation u use the [Spring Expression Language (SpEL)](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/expressions.html)
-SpEL allows u to use things like `authentication.principal` that refers to the userDetails of the authenticated user.
-U can access any bean from within your SpEL by using the `@` operator like `@spelUtil`.
-U can also reference your arguments using the `#` operator like `#email`.
+Within the annotation you use the [Spring Expression Language (SpEL)](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/expressions.html)
+SpEL allows you to use things like `authentication.principal` which refers to the userDetails of the authenticated user.
+You can access any bean from within your SpEL by using the `@` operator like `@spelUtil`.
+You can also reference your arguments using the `#` operator like `#email`.
 
 ```java
 @RepositoryRestResource(collectionResourceRel = "/appel", path = "/appel")
@@ -142,7 +142,7 @@ In addition, you can still create custom endpoints if you want with the `@Query`
 This annotation will allow u to write a custom query using Java Persistence Query Language (JPQL), a part of
 [the Java Persistence API (JPA)](https://docs.spring.io/spring-integration/reference/html/jpa.html).
 The [BNF form](https://en.wikibooks.org/wiki/Java_Persistence/JPQL_BNF) of JPQL is also available.
-JPQL helps u to write queries without having to worry about how to join tables.
+JPQL helps you write queries without having to worry about how to join tables.
 JPQL also makes sure Spring and your persistence layer are not tightly coupled.
 With JPQL you have a lot of expressive power but the syntax can be painful.
 
@@ -153,7 +153,7 @@ With JPQL you have a lot of expressive power but the syntax can be painful.
 @Query(value= "someNativeQuery", native = true)
 ```
 Allows you to write a query native to your persistence layer, postgres in our case.
-Using a native query you can often write more powerful queries on the expense of being tightly coupled to your persistence layer.
+Using a native query you can often write more powerful queries. This is however at the expense of the independency from your persistence layer.
 You should try to avoid using native queries.
 From within a native query you can also use the `:` and `:#{}` syntax.
 
