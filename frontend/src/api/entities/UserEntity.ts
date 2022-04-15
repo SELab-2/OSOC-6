@@ -1,6 +1,6 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 import axios from "axios";
-import { AxiosConf } from '../calls/baseCalls';
+import { AxiosConf } from "../calls/baseCalls";
 
 export interface IUser extends IBaseEntity {
     accountNonExpired: boolean;
