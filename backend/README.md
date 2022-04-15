@@ -71,12 +71,12 @@ Your backend will be served on the base path `/api/`.
 
 ## Developers
 
-We use the Java Spring framework within this framework we use
+We use the Java Spring framework and within this framework we use
 [Data Rest](https://docs.spring.io/spring-data/rest/docs/current/reference/html/).
 This allows us to export our entities in a RESTfull manner without many problems.
 Spring data Rest can feel like magic at times though.
 In this paragraph we aim to teach you about some annotations we use and how they work together.
-Our persistence layer is driven postgres, we are dependent on postgres in a few annotations.
+Some of the annotations we use are dependent on our persistence layer being driven by postgres.
 
 ### Entity annotations
 
@@ -94,7 +94,7 @@ Many Cascade types are available and can be used together.
 ```java
 @JsonIgnore @RestResource(exported = false)
 ```
-A field with this annotation will not be export to the JSON representation of the entity.
+A field with this annotation will not be exported to the JSON representation of the entity.
 
 ```java
 @ReadOnlyProperty
@@ -120,9 +120,9 @@ You just add a few annotations to construct yourself a secured endpoint.
 ```java
 @PreAuthorize
 ```
-Annotation allows you to implement authentication for your repository.
+An annotation that allows you to implement authentication for your repository.
 Within the annotation u use the [Spring Expression Language (SpEL)](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/expressions.html)
-SpEL allows u to use things like `authentication.principal` that refers to the userDetails of authenticated user.
+SpEL allows u to use things like `authentication.principal` that refers to the userDetails of the authenticated user.
 U can access any bean from within your SpEL by using the `@` operator like `@spelUtil`.
 U can also reference your arguments using the `#` operator like `#email`.
 
@@ -130,11 +130,11 @@ U can also reference your arguments using the `#` operator like `#email`.
 @RepositoryRestResource(collectionResourceRel = "/appel", path = "/appel")
 ```
 This annotation tells Spring to host the endpoints on the path `/appel`.
-It creates all basic endpoint like: get all, get by id, save (POST/PATCH), delete, ...
+It enables all basic endpoint operations like: get all, get by id, save (POST/PATCH), delete, ...
 
-You can also create your own search endpoints like for example `findByEmail`.
+You can also create your own search endpoints, like for example `findByEmail`.
 Spring will know what this means and create the endpoint for you.
-In addition, you can still create custom endpoints if you want with the `@Query annotation`.
+In addition, you can still create custom endpoints if you want with the `@Query` annotation.
 
 ```java
 @Query(value= "someJQLQuery")
@@ -142,12 +142,11 @@ In addition, you can still create custom endpoints if you want with the `@Query 
 This annotation will allow u to write a custom query using Java Persistence Query Language (JPQL), a part of
 [the Java Persistence API (JPA)](https://docs.spring.io/spring-integration/reference/html/jpa.html).
 The [BNF form](https://en.wikibooks.org/wiki/Java_Persistence/JPQL_BNF) of JPQL is also available.
-JPQL helps u to write queries without having to worry on how to join tables.
-JPQL also makes sure Spring and your percistence layer are not tightly coupled.
+JPQL helps u to write queries without having to worry about how to join tables.
+JPQL also makes sure Spring and your persistence layer are not tightly coupled.
 With JPQL you have a lot of expressive power but the syntax can be painful.
 
-* Use the `@Param(paramName)` annotation in the parameters of your repository function to access it with
-the Query annotation by using `:paramName`.
+* Place the `@Param(paramName)` annotation before a parameter of your repository function to be able to access it within the Query annotation by using `:paramName`.
 * Use the `:#{}` syntax to write SpEL within the curly-braces.
 
 ```java
