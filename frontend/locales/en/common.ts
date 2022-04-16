@@ -40,6 +40,7 @@ const common = {
     admin: "admin",
     coach: "coach",
     edit: "edit",
+    "student page title": "studentpage title"
 };
 
 export default common;
