@@ -1,5 +1,5 @@
 .student_list_title {
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
@@ -9,7 +9,7 @@
     padding-bottom: 0;
 
     background-color: transparent;
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .student_list_element {
@@ -24,31 +24,31 @@
     left: 0;
     top: 310px;
 
-    background: #0A0839;
+    background: #0a0839;
     border-radius: 10px 10px 0 0;
     overflow: scroll;
 }
 
 .student_name {
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 28px;
     padding-left: 20px;
 
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .student_best_skill {
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     line-height: 21px;
     padding-left: 25px;
 
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .line {

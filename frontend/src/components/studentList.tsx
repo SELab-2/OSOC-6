@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import { getAllStudentsFromLinks } from "../api/calls/studentCalls";
-import {IStudent} from "../api/entities/StudentEntity";
+import { IStudent } from "../api/entities/StudentEntity";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");
@@ -15,7 +15,7 @@ export const StudentList = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             setStudents(await getAllStudentsFromLinks(apiPaths.students));
-        }
+        };
         fetchStudents().catch(console.log);
     }, []);
 
@@ -50,10 +50,14 @@ export const StudentList = () => {
                         }}
                     >
                         <small className={styles.student_name}>{student.callName}</small>
-                        <br/>
+                        <br />
                         <small className={styles.student_best_skill}>{student.bestSkill}</small>
-                        <div className={styles.line}
-                             style={{background: `linear-gradient(to right, #1DE1AE 33%, #FCB70F 33% 66%, #F14A3B 66% 100%)`}}/>
+                        <div
+                            className={styles.line}
+                            style={{
+                                background: `linear-gradient(to right, #1DE1AE 33%, #FCB70F 33% 66%, #F14A3B 66% 100%)`,
+                            }}
+                        />
                     </ListGroup.Item>
                 ))}
             </ListGroup>
