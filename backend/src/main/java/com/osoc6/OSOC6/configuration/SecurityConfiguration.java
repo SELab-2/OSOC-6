@@ -63,7 +63,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH)
                 .defaultSuccessUrl("/" + DumbledorePathWizard.AUTH_PATH + "/"
                         + DumbledorePathWizard.AUTH_HOME_PATH, true)
-                .failureForwardUrl("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH);
+                .failureForwardUrl("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH)
+            .and()
+            .logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
     }
 
     /**
