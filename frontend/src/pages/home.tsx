@@ -15,7 +15,6 @@ const Home: NextPage = () => {
             <main className={styles.main}>
                 <h1 className={styles.title}>{t("Tool name")}</h1>
             </main>
-            <ProjectList />
             <button onClick={dataInjectionHandler}>Inject!</button>
         </div>
     );

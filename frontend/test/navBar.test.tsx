@@ -20,14 +20,18 @@ it.skip("Click brand", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-brand"));
-    expect(mockRouter.pathname).toEqual(applicationPaths.students);
+    await waitFor(() => {
+        expect(mockRouter.pathname).toEqual(applicationPaths.students);
+    });
 });
 
 it.skip("Click users", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-users"));
-    expect(mockRouter.pathname).toEqual(applicationPaths.users);
+    await waitFor(() => {
+        expect(mockRouter.pathname).toEqual(applicationPaths.users);
+    });
 });
 
 it.skip("Click students", async () => {
@@ -41,19 +45,25 @@ it.skip("Click assign students", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-assignstudents"));
-    expect(mockRouter.pathname).toEqual(applicationPaths.assignStudents);
+    await waitFor(() => {
+        expect(mockRouter.pathname).toEqual(applicationPaths.assignStudents);
+    });
 });
 
 it.skip("Click projects", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-projects"));
-    expect(mockRouter.pathname).toEqual(applicationPaths.projects);
+    await waitFor(() => {
+        expect(mockRouter.pathname).toEqual(applicationPaths.projects);
+    });
 });
 
 it.skip("Click profile", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-profile"));
-    expect(mockRouter.pathname).toEqual(applicationPaths.profile);
+    await waitFor(() => {
+        expect(mockRouter.pathname).toEqual(applicationPaths.profile);
+    });
 });
