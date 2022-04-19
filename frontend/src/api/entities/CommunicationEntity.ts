@@ -20,13 +20,7 @@ export type ICommunicationPage = IPage<{ communications: ICommunication[] }>;
 export type ICommunicationLinks = IEntityLinks<{ communications: ICommunication[] }>;
 
 export class Communication {
-    constructor(
-        medium: string,
-        template: string,
-        content: string,
-        sender: string,
-        student: string
-    ) {
+    constructor(medium: string, template: string, content: string, sender: string, student: string) {
         this.medium = medium;
         this.template = template;
         this.content = content;
