@@ -3,7 +3,6 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
@@ -38,12 +37,12 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     /**
      * First sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", getCoachUser(), student);
+    private final Suggestion suggestion1 = TestEntityProvider.getBaseYesSuggestion(getCoachUser(), student);
 
     /**
      * Second sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion2 = new Suggestion(SuggestionStrategy.NO, "Reason 2", getAdminUser(), student);
+    private final Suggestion suggestion2 = TestEntityProvider.getBaseNoSuggestion(getAdminUser(), student);
 
     /**
      * The actual path suggestion are served on, with '/' as prefix.
@@ -114,7 +113,9 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
 
     @Override
     public final Suggestion create_entity() {
-        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, getAdminUser(), student);
+        Suggestion created = TestEntityProvider.getBaseMaybeSuggestion(getAdminUser(), student);
+        created.setReason(TEST_STRING);
+        return created;
     }
 
     @Override
@@ -161,6 +162,16 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
                 new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_contains_times_or_less(student.getCallName(), 1));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_has_correct_suggestion_counts() throws Exception {
+        perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/" + student.getId().toString())
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string("\"yesSuggestionCount\" : 1"))
+                .andExpect(string_to_contains_string("\"noSuggestionCount\" : 1"))
+                .andExpect(string_to_contains_string("\"maybeSuggestionCount\" : 0"));
     }
 
 }
