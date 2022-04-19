@@ -4,10 +4,11 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
-import Router from "next/router";
 import applicationPaths from "../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
+import { getBaseOkResponse, getBasePage, getBaseProject } from "./TestEntityProvider";
+import mockRouter from "next-router-mock";
+import { makeCacheFree } from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -15,66 +16,46 @@ afterEach(() => {
     mockAxios.reset();
 });
 
-describe("ProjectList header and button", () => {
-    it("Should have the 'New project'-button", () => {
-        render(<ProjectList />);
-        expect(screen.getByTestId("newproject-button")).toBeInTheDocument();
+describe("Project", () => {
+    describe("ProjectList header and button", () => {
+        it("Should have the 'New project'-button", () => {
+            render(makeCacheFree(ProjectList));
+            expect(screen.getByTestId("newproject-button")).toBeInTheDocument();
+        });
+
+        it("Should have the 'Projects'-header", () => {
+            render(makeCacheFree(ProjectList));
+            expect(screen.getByTestId("projectlist-header")).toBeInTheDocument();
+        });
     });
 
-    it("Should have the 'Projects'-header", () => {
-        render(<ProjectList />);
-        expect(screen.getByTestId("projectlist-header")).toBeInTheDocument();
+    describe("ProjectList initialization", () => {
+        it("Should call axios.get() upon rendering", async () => {
+            render(makeCacheFree(ProjectList));
+            expect(mockAxios.get).toHaveBeenCalled();
+        });
     });
-});
 
-describe("ProjectList initialization", () => {
-    it("Should call axios.get() upon rendering", () => {
-        render(<ProjectList />);
-        expect(mockAxios.get).toHaveBeenCalled();
+    it("Should go to projects/create when clicking button", async () => {
+        render(<ProjectList/>);
+        await userEvent.click(screen.getByTestId("newproject-button"));
+        await waitFor(() => {
+            expect(mockRouter.pathname).toEqual(applicationPaths.projectCreation);
+        });
     });
-});
 
-it("Should go to projects/create when clicking button", async () => {
-    render(<ProjectList />);
-    await userEvent.click(screen.getByTestId("newproject-button"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.projectCreation);
+    it("Should go to project page when clicking item in list", async () => {
+        const baseProject = getBaseProject("5");
+        const response: AxiosResponse = getBaseOkResponse(
+            getBasePage(apiPaths.projects, "projects", [baseProject])
+        );
+
+        render(makeCacheFree(ProjectList));
+
+        mockAxios.mockResponseFor({ method: "GET" }, response);
+        await userEvent.click(await screen.findByText(baseProject.name));
+
+        expect(mockRouter.pathname).toEqual("projects/5");
     });
-});
+})
 
-it("Should go to project page when clicking item in list", async () => {
-    const projectURL = "http://localhost/api/projects/5";
-
-    const response: AxiosResponse = {
-        data: {
-            _embedded: {
-                projects: [
-                    {
-                        _links: {
-                            self: {
-                                href: projectURL,
-                            },
-                        },
-                        name: "project name",
-                        info: "project info",
-                    },
-                ],
-            },
-            page: {
-                totalPages: 1,
-            },
-        },
-        status: StatusCodes.OK,
-        statusText: ReasonPhrases.OK,
-        headers: {},
-        config: {},
-    };
-
-    render(<ProjectList />);
-    mockAxios.mockResponseFor({ method: "GET" }, response);
-    await userEvent.click(await screen.findByText("project name"));
-
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(projectURL.split(apiPaths.base)[1]);
-    });
-});

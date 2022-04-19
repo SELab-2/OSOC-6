@@ -40,6 +40,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const own_user_url: string = user._links.self.href;
 
     const userSkills: IUserSkillPage = (await axios.get(apiPaths.userSkills, AxiosConf)).data;
+    console.log(userSkills);
     let containedUserSkills: IUserSkill[];
     if (userSkills._embedded["user-skills"].length == 0) {
         const skill: UserSkill = new UserSkill("The best", "you're simply the best!", own_user_url);

@@ -7,7 +7,6 @@ export interface IProject extends IBaseEntity {
     versionManagement: string;
     partnerName: string;
     partnerWebsite: string;
-    creator: string;
 
     _links: {
         coaches: IReferencer;

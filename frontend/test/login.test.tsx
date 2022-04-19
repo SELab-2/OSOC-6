@@ -4,11 +4,12 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import Router from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { loginSubmitHandler, LoginValues } from "../src/handlers/loginSubmitHandler";
 import apiPaths from "../src/properties/apiPaths";
+import mockRouter from "next-router-mock";
+import applicationPaths from "../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -17,7 +18,7 @@ afterEach(() => {
 });
 
 describe("Login page", () => {
-    it("should be able to render", async () => {
+    it("should be able to render", () => {
         render(<Login />);
 
         // Check whether the login form has been rendered in the login page
@@ -58,7 +59,7 @@ test("Test whether the login sends the form", async () => {
     });
 });
 
-it("SubmitHandler for loginForm sends post request", () => {
+it("SubmitHandler for loginForm sends post request", async () => {
     const values: LoginValues = { username: "test@mail.com", password: "pass" };
     const response: AxiosResponse = {
         data: {},
@@ -72,8 +73,8 @@ it("SubmitHandler for loginForm sends post request", () => {
     loginSubmitHandler(values);
     mockAxios.mockResponseFor({ url: apiPaths.login }, response);
 
-    waitFor(() => {
-        expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.login);
-        expect(Router.push).toHaveBeenCalled();
+    await waitFor(() => {
+        expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.login, expect.anything(), expect.anything());
     });
+    expect(mockRouter.pathname).toEqual("/" + applicationPaths.home);
 });

@@ -78,6 +78,9 @@ export interface IStudent extends IBaseEntity {
     subjectivePronoun: string;
     possessivePronoun: string;
     objectivePronoun: string;
+    yesSuggestionCount: number;
+    noSuggestionCount: number;
+    maybeSuggestionCount: number;
 
     _links: {
         assignments: IReferencer;

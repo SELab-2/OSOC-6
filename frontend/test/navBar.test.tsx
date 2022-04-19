@@ -2,8 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import NavBar from "../src/components/navBar";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import Router from "next/router";
 import applicationPaths from "../src/properties/applicationPaths";
+import mockRouter from "next-router-mock";
 
 it("Should be able to render.", async () => {
     render(<NavBar />);
@@ -20,52 +20,40 @@ it("Click brand", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-brand"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.students);
-    });
+    expect(mockRouter.pathname).toEqual(applicationPaths.students);
 });
 
 it("Click users", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-users"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.users);
-    });
+    expect(mockRouter.pathname).toEqual(applicationPaths.users);
 });
 
 it("Click students", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-students"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.students);
-    });
+    expect(mockRouter.pathname).toEqual(applicationPaths.students);
 });
 
 it("Click assign students", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-assignstudents"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.assignStudents);
-    });
+    expect(mockRouter.pathname).toEqual(applicationPaths.assignStudents);
 });
 
 it("Click projects", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-projects"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.projects);
-    });
+    expect(mockRouter.pathname).toEqual(applicationPaths.projects);
 });
 
 it("Click profile", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-profile"));
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalledWith(applicationPaths.profile);
-    });
+    expect(mockRouter.pathname).toEqual(applicationPaths.profile);
 });
