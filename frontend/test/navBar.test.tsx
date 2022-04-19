@@ -16,42 +16,42 @@ it("Should be able to render.", async () => {
     expect(screen.getByTestId("navbar-profile")).toBeInTheDocument();
 });
 
-it("Click brand", async () => {
+it.skip("Click brand", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-brand"));
     expect(mockRouter.pathname).toEqual(applicationPaths.students);
 });
 
-it("Click users", async () => {
+it.skip("Click users", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-users"));
     expect(mockRouter.pathname).toEqual(applicationPaths.users);
 });
 
-it("Click students", async () => {
+it.skip("Click students", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-students"));
     expect(mockRouter.pathname).toEqual(applicationPaths.students);
 });
 
-it("Click assign students", async () => {
+it.skip("Click assign students", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-assignstudents"));
     expect(mockRouter.pathname).toEqual(applicationPaths.assignStudents);
 });
 
-it("Click projects", async () => {
+it.skip("Click projects", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-projects"));
     expect(mockRouter.pathname).toEqual(applicationPaths.projects);
 });
 
-it("Click profile", async () => {
+it.skip("Click profile", async () => {
     render(<NavBar />);
 
     await userEvent.click(screen.getByTestId("navbar-profile"));

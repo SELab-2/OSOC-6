@@ -32,9 +32,7 @@ export function ProjectList() {
                         as={"li"}
                         // Should be changed to individual project page later
                         onClick={() => {
-                            let projectPath: string = project._links.self.href.split(
-                                apiPaths.base
-                            )[1];
+                            let projectPath: string = project._links.self.href.split(apiPaths.base)[1];
                             Router.push(projectPath);
                         }}
                     >

@@ -10,10 +10,14 @@ export function getBaseOkResponse(data: any): AxiosResponse {
         statusText: ReasonPhrases.OK,
         headers: {},
         config: {},
-    }
+    };
 }
 
-export function getBasePage<T extends IBaseEntity>(apiPath: string, collectionName: string, content: T[]): IPage<{[k: string]: T[]}> {
+export function getBasePage<T extends IBaseEntity>(
+    apiPath: string,
+    collectionName: string,
+    content: T[]
+): IPage<{ [k: string]: T[] }> {
     return {
         _links: {
             self: { href: "http://localhost/api/" + apiPath },
@@ -27,7 +31,7 @@ export function getBasePage<T extends IBaseEntity>(apiPath: string, collectionNa
             totalElements: content.length,
             totalPages: 1,
         },
-    }
+    };
 }
 
 export function getBaseProject(id: string): IProject {
@@ -47,5 +51,5 @@ export function getBaseProject(id: string): IProject {
         versionManagement: "",
         partnerName: "",
         partnerWebsite: "",
-    }
+    };
 }
