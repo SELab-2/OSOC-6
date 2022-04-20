@@ -8,13 +8,13 @@ import {
 } from "../handlers/usersHandler";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import { useState } from "react";
-import { useSWRConfig } from 'swr';
-import apiPaths from '../properties/apiPaths';
-import { StatusCodes } from 'http-status-codes';
+import { useSWRConfig } from "swr";
+import apiPaths from "../properties/apiPaths";
+import { StatusCodes } from "http-status-codes";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
-    const { mutate } = useSWRConfig()
+    const { mutate } = useSWRConfig();
     const [user, setUser] = useState<any>(props.user);
 
     if (!user) {
@@ -26,7 +26,7 @@ export function UserComponent(props: any) {
             if (response.status == StatusCodes.NO_CONTENT) {
                 try {
                     const user = mutate(apiPaths.users);
-                } catch(error){
+                } catch (error) {
                     // TODO toast
                 }
             } else {
@@ -40,7 +40,7 @@ export function UserComponent(props: any) {
             if (response.status != StatusCodes.OK) {
                 // TODO Toast
             } else {
-                let newUser = Object.assign({}, response.data)
+                let newUser = Object.assign({}, response.data);
                 setUser(newUser);
             }
         });
@@ -51,7 +51,7 @@ export function UserComponent(props: any) {
             if (response.status != StatusCodes.OK) {
                 // TODO Toast
             } else {
-                let newUser = Object.assign({}, response.data)
+                let newUser = Object.assign({}, response.data);
                 setUser(newUser);
             }
         });
@@ -62,7 +62,7 @@ export function UserComponent(props: any) {
             if (response.status != StatusCodes.OK) {
                 // TODO Show toast
             } else {
-                let newUser = Object.assign({}, response.data)
+                let newUser = Object.assign({}, response.data);
                 setUser(newUser);
             }
         });

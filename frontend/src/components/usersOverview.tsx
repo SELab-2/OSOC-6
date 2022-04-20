@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 export function UsersOverview() {
     const { t } = useTranslation("common");
-    let {data, error} = useSWR(apiPaths.users, getAllUsers);
+    let { data, error } = useSWR(apiPaths.users, getAllUsers);
 
     data = data || [];
 
