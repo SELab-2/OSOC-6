@@ -4,6 +4,5 @@ module.exports = {
     tabWidth: 4,
     semi: true,
     singleQuote: false,
-    printWidth: 100,
-    endOfLine: "lf",
+    printWidth: 110,
 };

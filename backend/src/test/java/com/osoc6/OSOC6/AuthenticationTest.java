@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -278,5 +279,23 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                     .andExpect(status().isForbidden())
                     .andExpect(string_to_contains_string(MeguminExceptionWizard.INVALID_INVITATION_TOKEN_EXCEPTION));
         }
+    }
+
+    @Test
+    public void logout_valid_user_after_login() throws Exception {
+        FormLoginRequestBuilder login = formLogin()
+                .user(loginTestUser.getEmail())
+                .password(loginTestUser.getPassword())
+                .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH);
+        getMockMvc().perform(login)
+                .andExpect(authenticated());
+        getMockMvc().perform(logout())
+                .andExpect(unauthenticated());
+    }
+
+    @Test
+    public void logout_non_authenticated_user() throws Exception {
+        getMockMvc().perform(logout())
+                .andExpect(status().isFound());
     }
 }

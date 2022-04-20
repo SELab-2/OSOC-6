@@ -21,17 +21,8 @@ import {
     PronounsType,
     Student,
 } from "../api/entities/StudentEntity";
-import {
-    baseSkillType,
-    ISkillType,
-    ISkillTypePage,
-    SkillType,
-} from "../api/entities/SkillTypeEntity";
-import {
-    Communication,
-    ICommunication,
-    ICommunicationPage,
-} from "../api/entities/CommunicationEntity";
+import { baseSkillType, ISkillType, ISkillTypePage, SkillType } from "../api/entities/SkillTypeEntity";
+import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
 import {
     ISuggestion,
     ISuggestionPage,
@@ -49,14 +40,13 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const own_user_url: string = user._links.self.href;
 
     const userSkills: IUserSkillPage = (await axios.get(apiPaths.userSkills, AxiosConf)).data;
+    console.log(userSkills);
     let containedUserSkills: IUserSkill[];
     if (userSkills._embedded["user-skills"].length == 0) {
         const skill: UserSkill = new UserSkill("The best", "you're simply the best!", own_user_url);
 
         containedUserSkills = await Promise.all(
-            [skill].map(
-                async (skill) => (await axios.post(apiPaths.userSkills, skill, AxiosConf)).data
-            )
+            [skill].map(async (skill) => (await axios.post(apiPaths.userSkills, skill, AxiosConf)).data)
         );
     } else {
         containedUserSkills = userSkills._embedded["user-skills"];
@@ -121,8 +111,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedProjects);
 
-    const projectSkills: IProjectSkillPage = (await axios.get(apiPaths.projectSkills, AxiosConf))
-        .data;
+    const projectSkills: IProjectSkillPage = (await axios.get(apiPaths.projectSkills, AxiosConf)).data;
     let containedProjectSkills: IProjectSkill[];
     if (projectSkills._embedded["project-skills"].length == 0) {
         const skill1: ProjectSkill = new ProjectSkill(
@@ -132,9 +121,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
 
         containedProjectSkills = await Promise.all(
-            [skill1].map(
-                async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data
-            )
+            [skill1].map(async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data)
         );
     } else {
         containedProjectSkills = projectSkills._embedded["project-skills"];
@@ -196,9 +183,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
 
         containedStudents = await Promise.all(
-            [student1].map(
-                async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data
-            )
+            [student1].map(async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data)
         );
     } else {
         containedStudents = students._embedded.students;
@@ -226,8 +211,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     console.log(await getSkillTypeFromSkill(projectBoulderSkill));
     console.log(await getSkillTypeFromSkill(simpleUserSkill));
 
-    const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf))
-        .data;
+    const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];
     if (communications._embedded.communications.length == 0) {
         const communication1: Communication = new Communication(
@@ -259,9 +243,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
 
         containedSuggestions = await Promise.all(
-            [suggestion1].map(
-                async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data
-            )
+            [suggestion1].map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data)
         );
     } else {
         containedSuggestions = suggestions._embedded.suggestions;
@@ -314,8 +296,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 "This happens due to a bug in the backend. It will be fixed eventually."
         );
     } else {
-        let containedUsers = (<IUsersPage>(await axios.get(apiPaths.users, AxiosConf)).data)
-            ._embedded.users;
+        let containedUsers = (<IUsersPage>(await axios.get(apiPaths.users, AxiosConf)).data)._embedded.users;
         console.log(containedUsers);
     }
 };

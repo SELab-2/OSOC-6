@@ -38,7 +38,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * First sample suggestions that gets loaded before every test.
      */
-    private final Suggestion suggestion1 = new Suggestion(SuggestionStrategy.YES, "Reason 1", getCoachUser(), student);
+    private final Suggestion suggestion1 = TestEntityProvider.getBaseYesSuggestion(getCoachUser(), student);
 
     /**
      * The actual path suggestion are served on, with '/' as prefix.
@@ -113,7 +113,9 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
 
     @Override
     public final Suggestion create_entity() {
-        return new Suggestion(SuggestionStrategy.MAYBE, TEST_STRING, getCoachUser(), student);
+        Suggestion created = TestEntityProvider.getBaseMaybeSuggestion(getCoachUser(), student);
+        created.setReason(TEST_STRING);
+        return created;
     }
 
     @Override

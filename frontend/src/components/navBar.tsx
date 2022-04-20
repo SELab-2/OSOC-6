@@ -16,19 +16,13 @@ export const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className={"ms-auto"}>
                             <Nav.Item data-testid="navbar-students">
-                                <Nav.Link href={applicationPaths.students}>
-                                    {t("Navbar students")}
-                                </Nav.Link>
+                                <Nav.Link href={applicationPaths.students}>{t("Navbar students")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-users">
-                                <Nav.Link href={applicationPaths.users}>
-                                    {t("Navbar users")}
-                                </Nav.Link>
+                                <Nav.Link href={applicationPaths.users}>{t("Navbar users")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-projects">
-                                <Nav.Link href={applicationPaths.projects}>
-                                    {t("Navbar projects")}
-                                </Nav.Link>
+                                <Nav.Link href={applicationPaths.projects}>{t("Navbar projects")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-assignstudents">
                                 <Nav.Link href={applicationPaths.assignStudents}>

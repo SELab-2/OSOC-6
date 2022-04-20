@@ -1,4 +1,5 @@
 const applicationPaths = {
+    home: "home",
     projectCreation: "projects/create",
     users: "users",
     profile: "profile",
