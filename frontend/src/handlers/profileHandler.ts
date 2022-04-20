@@ -18,9 +18,6 @@ export async function profileDeleteHandler(event: any) {
     }
 }
 
-export async function profileSaveHandler(
-    url: string,
-    callname: string
-): Promise<AxiosResponse<any>> {
+export async function profileSaveHandler(url: string, callname: string): Promise<AxiosResponse<any>> {
     return await axios.patch(url, { callName: callname }, AxiosFormConfig);
 }

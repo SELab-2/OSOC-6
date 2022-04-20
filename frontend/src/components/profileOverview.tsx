@@ -94,10 +94,7 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Button
-                    onClick={(event) => profileDeleteHandler(event)}
-                    value={data._links.self.href}
-                >
+                <Button onClick={(event) => profileDeleteHandler(event)} value={data._links.self.href}>
                     Delete my profile
                 </Button>
             </Row>
