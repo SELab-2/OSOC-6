@@ -1,37 +1,18 @@
 import axios from "axios";
-import { AxiosFormConfig } from "../api/calls/baseCalls";
-import apiPaths from "../properties/apiPaths";
+import { AxiosConf, AxiosFormConfig } from '../api/calls/baseCalls';
 
 export async function userDeleteHandler(url: string) {
     return await axios.delete(url, AxiosFormConfig);
 }
 
 export async function disabledUserHandler(url: string) {
-    const config = {
-        baseURL: apiPaths.base,
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8",
-        },
-    };
-    return await axios.patch(url, { enabled: false }, config);
+    return await axios.patch(url, { enabled: false }, AxiosConf);
 }
 
 export async function setRoleCoachHandler(url: string) {
-    const config = {
-        baseURL: apiPaths.base,
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8",
-        },
-    };
-    return await axios.patch(url, { enabled: true, userRole: "COACH" }, config);
+    return await axios.patch(url, { enabled: true, userRole: "COACH" }, AxiosConf);
 }
 
 export async function setRoleAdminHandler(url: string) {
-    const config = {
-        baseURL: apiPaths.base,
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8",
-        },
-    };
-    return await axios.patch(url, { enabled: true, userRole: "ADMIN" }, config);
+    return await axios.patch(url, { enabled: true, userRole: "ADMIN" }, AxiosConf);
 }

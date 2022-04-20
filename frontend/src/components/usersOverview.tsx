@@ -1,25 +1,20 @@
 import useTranslation from "next-translate/useTranslation";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsers } from "../api/calls/usersCalls";
 import UserComponent from "./manageUserComponent";
 import { IUser } from "../api/entities/UserEntity";
+import useSWR from "swr";
 
 export function UsersOverview() {
     const { t } = useTranslation("common");
-    const [data, setData] = useState<any>();
+    let {data, error} = useSWR(apiPaths.users, getAllUsers);
 
-    useEffect(() => {
-        getAllUsers(apiPaths.users).then((response) => setData(response));
-    }, []);
+    data = data || [];
 
-    if (!data) {
+    if (error) {
+        console.log(error);
         return null;
-    }
-
-    function handleUnmount() {
-        getAllUsers(apiPaths.users).then((response) => setData(response));
     }
 
     return (
@@ -38,7 +33,7 @@ export function UsersOverview() {
                 <Col xs={1} />
             </Row>
             {data.map((user: IUser) => (
-                <UserComponent key={user.email} user={user} unmountMe={handleUnmount} />
+                <UserComponent key={user.email} user={user} />
             ))}
         </Container>
     );

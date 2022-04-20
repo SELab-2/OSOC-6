@@ -7,10 +7,14 @@ import {
     userDeleteHandler,
 } from "../handlers/usersHandler";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSWRConfig } from 'swr';
+import apiPaths from '../properties/apiPaths';
+import { StatusCodes } from 'http-status-codes';
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
+    const { mutate } = useSWRConfig()
     const [user, setUser] = useState<any>(props.user);
 
     if (!user) {
@@ -19,18 +23,24 @@ export function UserComponent(props: any) {
 
     function deleteUser() {
         userDeleteHandler(user._links.self.href).then((response) => {
-            if (response.status == 204) {
-                props.unmountMe();
+            if (response.status == StatusCodes.NO_CONTENT) {
+                try {
+                    const user = mutate(apiPaths.users);
+                } catch(error){
+                    // TODO toast
+                }
+            } else {
+                // TODO toast
             }
         });
     }
 
     function setUserRoleAdmin() {
         setRoleAdminHandler(user._links.self.href).then((response) => {
-            if (response.status != 200) {
+            if (response.status != StatusCodes.OK) {
                 // TODO Toast
             } else {
-                let newUser = JSON.parse(JSON.stringify(response.data));
+                let newUser = Object.assign({}, response.data)
                 setUser(newUser);
             }
         });
@@ -38,10 +48,10 @@ export function UserComponent(props: any) {
 
     function setUserRoleCoach() {
         setRoleCoachHandler(user._links.self.href).then((response) => {
-            if (response.status != 200) {
+            if (response.status != StatusCodes.OK) {
                 // TODO Toast
             } else {
-                let newUser = JSON.parse(JSON.stringify(response.data));
+                let newUser = Object.assign({}, response.data)
                 setUser(newUser);
             }
         });
@@ -49,10 +59,10 @@ export function UserComponent(props: any) {
 
     function disableUser() {
         disabledUserHandler(user._links.self.href).then((response) => {
-            if (response.status != 200) {
+            if (response.status != StatusCodes.OK) {
                 // TODO Show toast
             } else {
-                let newUser = JSON.parse(JSON.stringify(response.data));
+                let newUser = Object.assign({}, response.data)
                 setUser(newUser);
             }
         });
