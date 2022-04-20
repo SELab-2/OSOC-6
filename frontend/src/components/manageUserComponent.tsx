@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Row, Col, Image, DropdownButton, Toast, Container, ToastContainer } from 'react-bootstrap';
+import { Row, Col, Image, DropdownButton, Toast, Container, ToastContainer } from "react-bootstrap";
 import {
     disabledUserHandler,
     setRoleAdminHandler,
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useSWRConfig } from "swr";
 import apiPaths from "../properties/apiPaths";
 import { StatusCodes } from "http-status-codes";
-import { AxiosResponse } from 'axios';
+import { AxiosResponse } from "axios";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -37,7 +37,7 @@ export function UserComponent(props: any) {
         });
     }
 
-    function setUserPatch(response: AxiosResponse){
+    function setUserPatch(response: AxiosResponse) {
         if (response.status != StatusCodes.OK) {
             setShow(true);
         } else {
@@ -70,7 +70,10 @@ export function UserComponent(props: any) {
                 <Col>{user.callName}</Col>
                 <Col>{user.email}</Col>
                 <Col>
-                    <DropdownButton id="dropdown-basic-button" title={user.enabled ? user.userRole : "Disabled"}>
+                    <DropdownButton
+                        id="dropdown-basic-button"
+                        title={user.enabled ? user.userRole : "Disabled"}
+                    >
                         {(user.userRole != "ADMIN" || user.enabled == false) && (
                             <DropdownItem onClick={setUserRoleAdmin} data-testid="overview-admin-user">
                                 {t("UserRole Admin")}

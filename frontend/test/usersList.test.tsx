@@ -16,6 +16,30 @@ afterEach(() => {
     mockAxios.reset();
 });
 
+function mockRequestOK(url: string, new_user: IUser){
+    const response: AxiosResponse = {
+        data: new_user,
+        status: StatusCodes.OK,
+        statusText: ReasonPhrases.OK,
+        headers: {},
+        config: {},
+        request: {},
+    };
+    act(() => mockAxios.mockResponseFor({ url: url }, response));
+}
+
+function mockRequestFAIL(url: string){
+    const response: AxiosResponse = {
+        data: {},
+        status: StatusCodes.BAD_REQUEST,
+        statusText: ReasonPhrases.BAD_REQUEST,
+        headers: {},
+        config: {},
+        request: {},
+    };
+    act(() => mockAxios.mockResponseFor({ url: url }, response));
+}
+
 describe("Users", () => {
     describe("Users overview and rows", () => {
         it("Should have overview component", () => {
@@ -63,17 +87,8 @@ describe("Users", () => {
             });
 
             const new_user: IUser = getBaseUser("2", UserRole.admin, true);
-            const response: AxiosResponse = {
-                data: new_user,
-                status: StatusCodes.OK,
-                statusText: ReasonPhrases.OK,
-                headers: {},
-                config: {},
-                request: {},
-            };
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            mockRequestOK(user._links.self.href, new_user);
         });
-
 
         it("User role to disabled", async () => {
             const user: IUser = getBaseUser("2", UserRole.coach, true);
@@ -91,22 +106,12 @@ describe("Users", () => {
             });
 
             const new_user: IUser = getBaseUser("2", UserRole.coach, false);
-            const response: AxiosResponse = {
-                data: new_user,
-                status: StatusCodes.OK,
-                statusText: ReasonPhrases.OK,
-                headers: {},
-                config: {},
-                request: {},
-            };
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            mockRequestOK(user._links.self.href, new_user);
         });
 
         it("User delete", async () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);
-            act(() => {
-                render(<UserComponent key={user.email} user={user} />);
-            });
+            render(<UserComponent key={user.email} user={user} />);
 
             await userEvent.click(screen.getByTestId("overview-delete-user"));
             await waitFor(() => {
@@ -126,29 +131,41 @@ describe("Users", () => {
 
         it("User role to coach", async () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);
-            act(() => {
-                render(<UserComponent key={user.email} user={user} />);
-            });
+            render(<UserComponent key={user.email} user={user} />);
 
-            await act(async () => await userEvent.click(screen.getByRole("button")));
-            await act(async () => {
-                await userEvent.click(screen.getByTestId("overview-coach-user"));
-            });
+            await userEvent.click(screen.getByRole("button"));
+            await userEvent.click(screen.getByTestId("overview-coach-user"));
             await waitFor(() => {
                 expect(mockAxios.patch).toHaveBeenCalled();
             });
 
-
             const new_user: IUser = getBaseUser("2", UserRole.coach, true);
-            const response: AxiosResponse = {
-                data: new_user,
-                status: StatusCodes.OK,
-                statusText: ReasonPhrases.OK,
-                headers: {},
-                config: {},
-                request: {},
-            };
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            mockRequestOK(user._links.self.href, new_user);
+        });
+
+        it("Failed patch", async () => {
+            const user: IUser = getBaseUser("2", UserRole.admin, true);
+            render(<UserComponent key={user.email} user={user} />);
+
+            await userEvent.click(screen.getByRole("button"));
+            await userEvent.click(screen.getByTestId("overview-coach-user"));
+            await waitFor(() => {
+                expect(mockAxios.patch).toHaveBeenCalled();
+            });
+
+            mockRequestFAIL(user._links.self.href);
+        })
+
+        it("delete fail", async () => {
+            const user: IUser = getBaseUser("2", UserRole.admin, true);
+            render(<UserComponent key={user.email} user={user} />);
+
+            await userEvent.click(screen.getByTestId("overview-delete-user"));
+            await waitFor(() => {
+                expect(mockAxios.delete).toHaveBeenCalled();
+            });
+
+            mockRequestFAIL(user._links.self.href);
         });
     });
 });
