@@ -18,7 +18,7 @@ export function UsersOverview() {
     }
 
     return (
-        <Container>
+        <Container data-testid="user-overview">
             <h2>{t("Users manage")}</h2>
             <Row>
                 <Col>
