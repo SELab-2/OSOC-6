@@ -5,6 +5,7 @@ import com.osoc6.OSOC6.database.models.Assignment;
 import com.osoc6.OSOC6.database.models.Communication;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.WeakToEdition;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
@@ -332,6 +333,30 @@ public final class Student implements WeakToEdition {
      */
     public String getObjectivePronoun() {
         return pronounsType.getObjective(this);
+    }
+
+    /**
+     * Get function exposing the amount of yes suggestions this student received within a student api-entry.
+     * @return the amount of yes suggestions this student received.
+     */
+    public long getYesSuggestionCount() {
+        return suggestions.stream().filter(suggestion -> suggestion.getStrategy() == SuggestionStrategy.YES).count();
+    }
+
+    /**
+     * Get function exposing the amount of maybe suggestions this student received within a student api-entry.
+     * @return the amount of maybe suggestions this student received.
+     */
+    public long getMaybeSuggestionCount() {
+        return suggestions.stream().filter(suggestion -> suggestion.getStrategy() == SuggestionStrategy.MAYBE).count();
+    }
+
+    /**
+     * Get function exposing the amount of no suggestions this student received within a student api-entry.
+     * @return the amount of no suggestions this student received.
+     */
+    public long getNoSuggestionCount() {
+        return suggestions.stream().filter(suggestion -> suggestion.getStrategy() == SuggestionStrategy.NO).count();
     }
 
     @Override @JsonIgnore
