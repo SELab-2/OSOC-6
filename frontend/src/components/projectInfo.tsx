@@ -1,54 +1,58 @@
 import styles from "../styles/projectInfo.module.css";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { IProject } from "../api/entities/ProjectEntity";
-import { getProjectOnUrl } from "../api/calls/projectCalls";
 import apiPaths from "../properties/apiPaths";
-import { IUser } from "../api/entities/UserEntity";
-import { getAllUsersFormLinks } from "../api/calls/userCalls";
-import { IProjectSkill, ProjectSkill } from "../api/entities/ProjectSkillEntity";
-import { getAllProjectSkillsFormLinks } from "../api/calls/projectSkillCalls";
-import { IStudent } from "../api/entities/StudentEntity";
-
-interface IFullProjectInfo {
-    info: IProject;
-    coaches: IUser[];
-    skills: IProjectSkill[];
-}
-
-interface IFullProjectSkill {
-    skill: IProjectSkill;
-    assignee: IStudent;
-}
+import useSWR from "swr";
+import { getFullProjectInfo } from "../api/calls/projectCalls";
+import { capitalize } from "../utility/stringUtil";
 
 export function ProjectInfo() {
-    const { t } = useTranslation();
+    const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
-    const [project, setProject] = useState<IFullProjectInfo | undefined>(undefined);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const project: IProject = await getProjectOnUrl(apiPaths.projects + "/" + id);
-            const coaches: IUser[] = await getAllUsersFormLinks(project._links.coaches.href);
-            const neededSkills: IProjectSkill[] = await getAllProjectSkillsFormLinks(
-                project._links.neededSkills.href
-            );
-            setProject(undefined);
-        };
-        fetchData().catch(console.log);
-    });
+    const { data, error } = useSWR(apiPaths.projects + "/" + id, getFullProjectInfo);
+    console.log(data);
 
-    if (!project) {
+    if (error || !data) {
         return null;
     }
 
     return (
         <div className={styles.project_info}>
-            <h1>{project.info.name}</h1>
-            <a href={project.info.partnerWebsite}>{project.info.partnerName}</a>
-            Coach: {project.info.name}
+            <h1>{data.info.name}</h1>
+            <a href={data.info.partnerWebsite || undefined}>{data.info.partnerName}</a>
+            <br />
+            {capitalize(t("coaches"))}
+            <ul>
+                {data.coaches.map((user) => (
+                    <li key={user._links.self.href}>{user.callName}</li>
+                ))}
+            </ul>
+            <hr />
+            {capitalize(t("project about"))}
+            <br />
+            {data.info.info}
+            <hr />
+            {capitalize(t("project expertise"))}
+            <ul>
+                {data.skills.map((skill) => (
+                    <li key={skill.skill._links.self.href}>{skill.skill.name}</li>
+                ))}
+            </ul>
+            {capitalize(t("project roles"))}
+            <ul>
+                {data.skills.map((skill) => (
+                    <li style={{ color: skill.type.colour }} key={skill.skill._links.self.href}>
+                        {skill.type.name}
+                        <ul>
+                            {skill.assignees.map((student) => (
+                                <li key={student._links.self.href}>{student.callName}</li>
+                            ))}
+                        </ul>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
