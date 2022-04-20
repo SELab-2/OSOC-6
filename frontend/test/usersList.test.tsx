@@ -1,12 +1,12 @@
-import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
-import mockAxios from 'jest-mock-axios';
-import { render, screen, waitFor } from '@testing-library/react';
-import { makeCacheFree } from './Provide';
-import UsersOverview from '../src/components/usersOverview';
-import UserComponent from '../src/components/manageUserComponent';
-import { IUser, UserRole } from '../src/api/entities/UserEntity';
-import { getBaseUser } from './TestEntityProvider';
+import "@testing-library/jest-dom";
+import userEvent from "@testing-library/user-event";
+import mockAxios from "jest-mock-axios";
+import { render, screen, waitFor } from "@testing-library/react";
+import { makeCacheFree } from "./Provide";
+import UsersOverview from "../src/components/usersOverview";
+import UserComponent from "../src/components/manageUserComponent";
+import { IUser, UserRole } from "../src/api/entities/UserEntity";
+import { getBaseUser } from "./TestEntityProvider";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -21,8 +21,8 @@ describe("Users", () => {
             expect(screen.getByTestId("user-overview")).toBeInTheDocument();
         });
 
-        it("Should have rows for the users",() => {
-            const user: IUser = getBaseUser('2', UserRole.admin);
+        it("Should have rows for the users", () => {
+            const user: IUser = getBaseUser("2", UserRole.admin);
             render(<UserComponent user={user} />);
             expect(screen.getByTestId("user-row")).toBeInTheDocument();
         });
@@ -36,7 +36,7 @@ describe("Users", () => {
     });
 
     it("User delete", async () => {
-        const user: IUser = getBaseUser('2', UserRole.admin);
+        const user: IUser = getBaseUser("2", UserRole.admin);
         render(<UserComponent user={user} />);
         expect(screen.getByTestId("user-row")).toBeInTheDocument();
 
@@ -44,10 +44,10 @@ describe("Users", () => {
         await waitFor(() => {
             expect(mockAxios.delete).toHaveBeenCalled();
         });
-    })
+    });
 
     it("User role to coach", async () => {
-        const user: IUser = getBaseUser('2', UserRole.admin);
+        const user: IUser = getBaseUser("2", UserRole.admin);
         render(<UserComponent user={user} />);
         expect(screen.getByTestId("user-row")).toBeInTheDocument();
 
@@ -56,10 +56,10 @@ describe("Users", () => {
         await waitFor(() => {
             expect(mockAxios.patch).toHaveBeenCalled();
         });
-    })
+    });
 
     it("User role to admin", async () => {
-        const user: IUser = getBaseUser('2', UserRole.coach);
+        const user: IUser = getBaseUser("2", UserRole.coach);
         render(<UserComponent user={user} />);
         expect(screen.getByTestId("user-row")).toBeInTheDocument();
 
@@ -68,10 +68,10 @@ describe("Users", () => {
         await waitFor(() => {
             expect(mockAxios.patch).toHaveBeenCalled();
         });
-    })
+    });
 
     it("User role to disabled", async () => {
-        const user: IUser = getBaseUser('2', UserRole.coach);
+        const user: IUser = getBaseUser("2", UserRole.coach);
         render(<UserComponent user={user} />);
         expect(screen.getByTestId("user-row")).toBeInTheDocument();
 
@@ -80,6 +80,5 @@ describe("Users", () => {
         await waitFor(() => {
             expect(mockAxios.patch).toHaveBeenCalled();
         });
-    })
-
+    });
 });
