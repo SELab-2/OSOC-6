@@ -55,7 +55,7 @@ export function getBaseProject(id: string): IProject {
     };
 }
 
-export function getBaseUser(id: string, role: UserRole): IUser {
+export function getBaseUser(id: string, role: UserRole, enabled: boolean): IUser {
     return {
         accountNonExpired: true,
         accountNonLocked: true,
@@ -65,7 +65,7 @@ export function getBaseUser(id: string, role: UserRole): IUser {
         callName: "Jef",
         credentialsNonExpired: true,
         email: "test@mail.com",
-        enabled: true,
+        enabled: enabled,
         userRole: role,
         username: "test@mail.com",
         _links: {
