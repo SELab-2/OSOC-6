@@ -63,19 +63,12 @@ export function UserComponent(props: any) {
             <Col>{user.callName}</Col>
             <Col>{user.email}</Col>
             <Col>
-                <DropdownButton
-                    id="dropdown-basic-button"
-                    title={user.enabled ? user.userRole : "Disabled"}
-                >
+                <DropdownButton id="dropdown-basic-button" title={user.enabled ? user.userRole : "Disabled"}>
                     {(user.userRole != "ADMIN" || user.enabled == false) && (
-                        <DropdownItem onClick={setUserRoleAdmin}>
-                            {t("UserRole Admin")}
-                        </DropdownItem>
+                        <DropdownItem onClick={setUserRoleAdmin}>{t("UserRole Admin")}</DropdownItem>
                     )}
                     {(user.userRole != "COACH" || user.enabled == false) && (
-                        <DropdownItem onClick={setUserRoleCoach}>
-                            {t("UserRole Coach")}
-                        </DropdownItem>
+                        <DropdownItem onClick={setUserRoleCoach}>{t("UserRole Coach")}</DropdownItem>
                     )}
                     {user.enabled && (
                         <DropdownItem onClick={disableUser}>{t("UserRole Disabled")}</DropdownItem>
