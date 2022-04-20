@@ -9,9 +9,7 @@ import { AxiosConf } from "./baseCalls";
  * Get the skillType for a certain Skill.
  * @param skill The skill you want the skillTypeFrom
  */
-export async function getSkillTypeFromSkill(
-    skill: IUserSkill | IProjectSkill
-): Promise<ISkillType> {
+export async function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): Promise<ISkillType> {
     let type: ISkillTypePage = (
         await axios.get(apiPaths.skillTypesByName, {
             params: {
