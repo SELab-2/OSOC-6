@@ -16,7 +16,7 @@ afterEach(() => {
     mockAxios.reset();
 });
 
-function mockRequestOK(url: string, new_user: IUser){
+function mockRequestOK(url: string, new_user: IUser) {
     const response: AxiosResponse = {
         data: new_user,
         status: StatusCodes.OK,
@@ -28,7 +28,7 @@ function mockRequestOK(url: string, new_user: IUser){
     act(() => mockAxios.mockResponseFor({ url: url }, response));
 }
 
-function mockRequestFAIL(url: string){
+function mockRequestFAIL(url: string) {
     const response: AxiosResponse = {
         data: {},
         status: StatusCodes.BAD_REQUEST,
@@ -154,7 +154,7 @@ describe("Users", () => {
             });
 
             mockRequestFAIL(user._links.self.href);
-        })
+        });
 
         it("delete fail", async () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);
