@@ -183,7 +183,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             editionUrl
         );
 
-        let students = [student1]
+        let students = [student1];
         for (let i = 0; i < 10; i++) {
             const firstname = faker.name.firstName();
             const lastname = faker.name.lastName();
