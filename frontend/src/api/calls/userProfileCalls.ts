@@ -1,4 +1,4 @@
-import { IUser, UserRole } from '../entities/UserEntity';
+import { IUser, UserRole } from "../entities/UserEntity";
 import axios from "axios";
 import { AxiosConf } from "./baseCalls";
 
