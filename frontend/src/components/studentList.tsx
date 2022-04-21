@@ -4,7 +4,7 @@ import styles from "../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
-import { getAllStudentsFromLinks } from "../api/calls/studentCalls";
+import { getAllStudentsFormLinks } from "../api/calls/studentCalls";
 import { IStudent } from "../api/entities/StudentEntity";
 
 export const StudentList = () => {
@@ -13,7 +13,7 @@ export const StudentList = () => {
 
     useEffect(() => {
         const fetchStudents = async () => {
-            setStudents(await getAllStudentsFromLinks(apiPaths.students));
+            setStudents(await getAllStudentsFormLinks(apiPaths.students));
         };
         fetchStudents().catch(console.log);
     }, []);
@@ -23,43 +23,45 @@ export const StudentList = () => {
     }
 
     return (
-        <div className={styles.student_list_component}>
-            <ListGroup as="ul" className="overflow-scroll">
-                <ListGroup.Item
-                    key="studentHeader"
-                    data-testid="studentlist-header"
-                    className={styles.student_list_title}
-                >
-                    {t("common:Student list header")}
-                </ListGroup.Item>
-                {students.map((student) => (
+        <div className="capitalize">
+            <div className={styles.student_list_component}>
+                <ListGroup as="ul" className="overflow-scroll">
                     <ListGroup.Item
-                        key={student._links.self.href.split(apiPaths.students)[1]}
-                        className={styles.student_list_element}
-                        action
-                        as={"li"}
-                        // Should be changed to individual student page later
-                        onClick={() => {
-                            let studentPath: string = student._links.self.href.split(
-                                apiPaths.base
-                            )[1];
-                            Router.push(studentPath);
-                        }}
+                        key="studentHeader"
+                        data-testid="studentlist-header"
+                        className={styles.student_list_title}
                     >
-                        <small className={styles.student_name}>{student.callName}</small>
-                        <br />
-                        <small className={styles.student_best_skill}>{student.bestSkill}</small>
-                        <div
-                            className={styles.line}
-                            style={{
-                                // These percentages should be calculated instead of hardcoded
-                                background: `linear-gradient(to right, #1DE1AE ${33}%, 
-                                #FCB70F ${33}% ${66}%, #F14A3B ${66}% 100%)`,
-                            }}
-                        />
+                        {t("common:students")}
                     </ListGroup.Item>
-                ))}
-            </ListGroup>
+                    {students.map((student) => (
+                        <ListGroup.Item
+                            key={student._links.self.href.split(apiPaths.students)[1]}
+                            className={styles.student_list_element}
+                            action
+                            as={"li"}
+                            // Should be changed to individual student page later
+                            onClick={() => {
+                                let studentPath: string = student._links.self.href.split(
+                                    apiPaths.base
+                                )[1];
+                                Router.push(studentPath);
+                            }}
+                        >
+                            <small className={styles.student_name}>{student.callName}</small>
+                            <br />
+                            <small className={styles.student_best_skill}>{student.bestSkill}</small>
+                            <div
+                                className={styles.line}
+                                style={{
+                                    // These percentages should be calculated instead of hardcoded
+                                    background: `linear-gradient(to right, #1DE1AE ${33}%, 
+                                    #FCB70F ${33}% ${66}%, #F14A3B ${66}% 100%)`,
+                                }}
+                            />
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
+            </div>
         </div>
     );
 };
