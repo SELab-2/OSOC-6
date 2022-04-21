@@ -11,10 +11,10 @@ const Home: NextPage = () => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>{t("home page title")}</title>
+                <title className="capitalize">{t("home page title")}</title>
             </Head>
             <main className={styles.main}>
-                <h1 className={styles.title}>{t("tool name")}</h1>
+                <div className="capitalize"><h1 className={styles.title}>{t("tool name")}</h1></div>
             </main>
             <NavBar />
             <ProjectList />
