@@ -14,7 +14,9 @@ const Home: NextPage = () => {
                 <title className="capitalize">{t("home page title")}</title>
             </Head>
             <main className={styles.main}>
-                <div className="capitalize"><h1 className={styles.title}>{t("tool name")}</h1></div>
+                <div className="capitalize">
+                    <h1 className={styles.title}>{t("tool name")}</h1>
+                </div>
             </main>
             <NavBar />
             <ProjectList />
