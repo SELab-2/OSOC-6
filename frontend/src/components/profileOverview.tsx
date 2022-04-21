@@ -1,23 +1,23 @@
-import Image from 'next/image';
-import useTranslation from 'next-translate/useTranslation';
-import { Button, Col, Container, Row, Toast, ToastContainer } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import apiPaths from '../properties/apiPaths';
-import applicationPaths from '../properties/applicationPaths';
-import { getUserInfo } from '../api/calls/userProfileCalls';
-import styles from '../styles/profileOverview.module.css';
-import { profileSaveHandler, userDeleteHandler } from '../handlers/profileHandler';
-import { IAuthority, IUser, UserRole } from '../api/entities/UserEntity';
-import { StatusCodes } from 'http-status-codes';
+import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
+import { Button, Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import apiPaths from "../properties/apiPaths";
+import applicationPaths from "../properties/applicationPaths";
+import { getUserInfo } from "../api/calls/userProfileCalls";
+import styles from "../styles/profileOverview.module.css";
+import { profileSaveHandler, userDeleteHandler } from "../handlers/profileHandler";
+import { IAuthority, IUser, UserRole } from "../api/entities/UserEntity";
+import { StatusCodes } from "http-status-codes";
 import useSWR, { useSWRConfig } from "swr";
-import Router from 'next/router';
-import { IReferencer } from '../api/entities/BaseEntities';
+import Router from "next/router";
+import { IReferencer } from "../api/entities/BaseEntities";
 
 function getEmtpyUser(): IUser {
     return {
         accountNonExpired: true,
         accountNonLocked: true,
-        authorities: {authority: UserRole.admin},
+        authorities: { authority: UserRole.admin },
         callName: "",
         credentialsNonExpired: true,
         email: "",
@@ -26,19 +26,19 @@ function getEmtpyUser(): IUser {
         username: "",
 
         _links: {
-            communications: {href: ""},
-            projects: {href: ""},
-            receivedInvitations: {href: ""},
-            skills: {href: ""},
-            userEntity: {href: ""},
-            self: {href: ""},
+            communications: { href: "" },
+            projects: { href: "" },
+            receivedInvitations: { href: "" },
+            skills: { href: "" },
+            userEntity: { href: "" },
+            self: { href: "" },
         },
-    }
+    };
 }
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
-    let {data, error} = useSWR(apiPaths.ownUser, getUserInfo);
+    let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
     const { mutate } = useSWRConfig();
     const [editCallname, setEditCallname] = useState<boolean>(false);
     const [callname, setCallname] = useState<string>("");
@@ -57,10 +57,10 @@ export function ProfileOverview() {
 
     function handleSaveCallName() {
         setEditCallname(false);
-        if(data) {
+        if (data) {
             profileSaveHandler(data._links.self.href, callname).then((response) => {
                 if (response.status == StatusCodes.OK) {
-                    data = response.data
+                    data = response.data;
                     const user = mutate(apiPaths.ownUser);
                 } else {
                     setShow(true);
@@ -69,8 +69,8 @@ export function ProfileOverview() {
         }
     }
 
-    function deleteCurrentUser(){
-        if(data){
+    function deleteCurrentUser() {
+        if (data) {
             userDeleteHandler(data._links.self.href).then(async (response) => {
                 if (response.status == StatusCodes.NO_CONTENT) {
                     await Router.push(applicationPaths.login);
@@ -105,7 +105,12 @@ export function ProfileOverview() {
                 {/*input field and save mark if editing*/}
                 {editCallname && (
                     <Col>
-                        <input data-testid="input-callname" name="callname" defaultValue={data.callName} onChange={onChange} />
+                        <input
+                            data-testid="input-callname"
+                            name="callname"
+                            defaultValue={data.callName}
+                            onChange={onChange}
+                        />
                         <button data-testid="save-callname" onClick={handleSaveCallName}>
                             <Image alt="" src={"/resources/checkmark.svg"} width="15" height="15" />
                         </button>

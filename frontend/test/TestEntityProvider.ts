@@ -2,7 +2,7 @@ import { IProject } from "../src/api/entities/ProjectEntity";
 import { IBaseEntity, IPage } from "../src/api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { IUser, UserRole } from '../src/api/entities/UserEntity';
+import { IUser, UserRole } from "../src/api/entities/UserEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -64,7 +64,6 @@ export function getBaseProject(id: string): IProject {
         partnerWebsite: "",
     };
 }
-
 
 export function getBaseUser(id: string, role: UserRole, enabled: boolean): IUser {
     return {
