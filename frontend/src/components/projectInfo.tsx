@@ -12,7 +12,6 @@ export function ProjectInfo() {
     const { id } = router.query as { id: string };
 
     const { data, error } = useSWR(apiPaths.projects + "/" + id, getFullProjectInfo);
-    console.log(data);
 
     if (error || !data) {
         return null;
