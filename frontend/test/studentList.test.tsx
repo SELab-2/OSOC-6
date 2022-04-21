@@ -6,6 +6,7 @@ import mockAxios from "jest-mock-axios";
 import Router from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
+import {makeCacheFree} from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -48,7 +49,7 @@ it("Render studentlist and click an item", async () => {
         config: {},
     };
 
-    render(<StudentList />);
+    render(makeCacheFree(StudentList));
     mockAxios.mockResponseFor({ method: "GET" }, response);
 
     let user: Element = await screen.findByText("test user");
