@@ -4,13 +4,13 @@ import styles from "../styles/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
-import { getAllProjectsFormLinks } from "../api/calls/projectCalls";
+import { getAllProjectsFormPage } from "../api/calls/projectCalls";
 import useSWR from "swr";
 
 export function ProjectList() {
-    const { t } = useTranslation();
+    const { t } = useTranslation("common");
 
-    let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormLinks);
+    let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
 
     if (error) {
@@ -22,7 +22,7 @@ export function ProjectList() {
         <div className={styles.project_list}>
             <ListGroup as="ul" className="overflow-scroll">
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
-                    {t("common:Project list header")}
+                    <div className="capitalize">{t("projects")}</div>
                 </ListGroup.Item>
                 {data
                     .map((project) => ({

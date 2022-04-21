@@ -6,7 +6,7 @@ import applicationPaths from "../properties/applicationPaths";
 export const NavBar = () => {
     const { t } = useTranslation("common");
     return (
-        <>
+        <div className="capitalize">
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href={applicationPaths.students} data-testid="navbar-brand">
@@ -16,17 +16,17 @@ export const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className={"ms-auto"}>
                             <Nav.Item data-testid="navbar-students">
-                                <Nav.Link href={applicationPaths.students}>{t("Navbar students")}</Nav.Link>
+                                <Nav.Link href={applicationPaths.students}>{t("students")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-users">
-                                <Nav.Link href={applicationPaths.users}>{t("Navbar users")}</Nav.Link>
+                                <Nav.Link href={applicationPaths.users}>{t("users")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-projects">
-                                <Nav.Link href={applicationPaths.projects}>{t("Navbar projects")}</Nav.Link>
+                                <Nav.Link href={applicationPaths.projects}>{t("projects")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-assignstudents">
                                 <Nav.Link href={applicationPaths.assignStudents}>
-                                    {t("Navbar assign students")}
+                                    {t("assign students")}
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-profile">
@@ -43,7 +43,7 @@ export const NavBar = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-        </>
+        </div>
     );
 };
 

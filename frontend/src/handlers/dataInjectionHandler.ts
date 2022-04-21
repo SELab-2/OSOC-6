@@ -194,8 +194,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
     let containedSkillTypes: ISkillType[];
     if (skillTypes._embedded.skillTypes.length == 0) {
-        const skillType1 = new SkillType("V10 boulderer", "000000");
-        const skillTypeOther = new SkillType(baseSkillType, "929199");
+        const skillType1 = new SkillType("V10 boulderer", "#427162");
+        const skillTypeOther = new SkillType(baseSkillType, "#929199");
 
         containedSkillTypes = await Promise.all(
             [skillType1, skillTypeOther].map(
