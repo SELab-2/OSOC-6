@@ -33,7 +33,7 @@ export const StudentList = () => {
                             student,
                             studentId: student._links.self.href.split(apiPaths.base)[1],
                         }))
-                        .map(({student, studentId}) => (
+                        .map(({ student, studentId }) => (
                             <ListGroup.Item
                                 key={studentId}
                                 className={styles.student_list_element}
@@ -41,7 +41,9 @@ export const StudentList = () => {
                                 as={"li"}
                                 // Should be changed to individual student page later
                                 onClick={() => {
-                                    let studentPath: string = student._links.self.href.split(apiPaths.base)[1];
+                                    let studentPath: string = student._links.self.href.split(
+                                        apiPaths.base
+                                    )[1];
                                     Router.push(studentPath);
                                 }}
                             >
@@ -57,7 +59,7 @@ export const StudentList = () => {
                                     }}
                                 />
                             </ListGroup.Item>
-                    ))}
+                        ))}
                 </ListGroup>
             </div>
         </div>

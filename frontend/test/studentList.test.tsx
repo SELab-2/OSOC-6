@@ -6,7 +6,7 @@ import mockAxios from "jest-mock-axios";
 import Router from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import {makeCacheFree} from "./Provide";
+import { makeCacheFree } from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
