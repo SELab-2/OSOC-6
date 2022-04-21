@@ -14,7 +14,7 @@ export const AxiosFormConfig = {
 
 /**
  * Gets all IBaseEntities on an url hosting IEntityLinks
- * @param pageUrl url hosting the IEntityLinks
+ * @param pageUrl url hosting the IPage
  * @param collectionName name of the collection as defined in the IEntityLinks type extension.
  */
 export async function getAllEntitiesFromPage(

@@ -19,7 +19,7 @@ export function ProjectInfo() {
     }
 
     return (
-        <div className={styles.project_info}>
+        <div>
             <h1>{data.info.name}</h1>
             <a href={data.info.partnerWebsite || undefined}>{data.info.partnerName}</a>
             <br />
