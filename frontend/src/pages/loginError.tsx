@@ -10,9 +10,9 @@ const LoginError: NextPage = () => {
     return (
         <div>
             <Head>
-                <title>{t("common:Login page title")}</title>
+                <title>{t("common:login page title")}</title>
             </Head>
-            <h1 className="display-6 mb-3">{t("common:Tool name")}</h1>
+            <h1 className="display-6 mb-3">{t("common:tool name")}</h1>
             <main className="m-4">
                 <Card>
                     <Card.Body>
