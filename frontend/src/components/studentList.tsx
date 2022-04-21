@@ -5,21 +5,16 @@ import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import { getAllStudentsFormLinks } from "../api/calls/studentCalls";
-import { IStudent } from "../api/entities/StudentEntity";
+import useSWR from "swr";
+import {IStudent} from "../api/entities/StudentEntity";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");
-    const [students, setStudents] = useState<any[]>([]);
+    let {data, error} = useSWR(apiPaths.students, getAllStudentsFormLinks);
+    data = data || [];
 
-    useEffect(() => {
-        const fetchStudents = async () => {
-            setStudents(await getAllStudentsFormLinks(apiPaths.students));
-        };
-        fetchStudents().catch(console.log);
-    }, []);
-
-    if (!students) {
-        return null;
+    if (error) {
+        console.log(error)
     }
 
     return (
@@ -33,7 +28,7 @@ export const StudentList = () => {
                     >
                         {t("common:students")}
                     </ListGroup.Item>
-                    {students.map((student) => (
+                    {data.map((student: IStudent) => (
                         <ListGroup.Item
                             key={student._links.self.href.split(apiPaths.students)[1]}
                             className={styles.student_list_element}
