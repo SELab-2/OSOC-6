@@ -11,8 +11,8 @@ const common = {
     "new project": "new project",
     coaches: "coaches",
     "project about": "about this project",
-    "project expertise": "Expertise needed for this project",
-    "project roles": "Roles needed for this project",
+    "project expertise": "expertise needed for this project",
+    "project roles": "roles needed for this project",
 };
 
 export default common;
