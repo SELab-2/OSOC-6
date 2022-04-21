@@ -6,11 +6,15 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import {
-    getBaseAdmin, getBaseAssignment,
+    getBaseAdmin,
+    getBaseAssignment,
     getBaseLinks,
-    getBaseOkResponse, getBasePage,
+    getBaseOkResponse,
+    getBasePage,
     getBaseProject,
-    getBaseProjectSkill, getBaseSkillType, getBaseStudent
+    getBaseProjectSkill,
+    getBaseSkillType,
+    getBaseStudent,
 } from "./TestEntityProvider";
 import { userCollectionName } from "../src/api/entities/UserEntity";
 import { projectSkillCollectionName } from "../src/api/entities/ProjectSkillEntity";
@@ -27,14 +31,13 @@ describe("project info", () => {
 
     it("should render with data", async () => {
         mockRouter.setCurrentUrl("/projects/5");
-        mockRouter.query = { id: "5" }
+        mockRouter.query = { id: "5" };
         render(makeCacheFree(ProjectInfo));
 
         const project = getBaseProject("5");
         await waitFor(() =>
             mockAxios.mockResponseFor({ url: apiPaths.projects + "/5" }, getBaseOkResponse(project))
         );
-
 
         const user = getBaseAdmin("6");
         await waitFor(() =>
@@ -44,7 +47,6 @@ describe("project info", () => {
             )
         );
 
-
         const projectSkill = getBaseProjectSkill("7");
         await waitFor(() =>
             mockAxios.mockResponseFor(
@@ -53,7 +55,7 @@ describe("project info", () => {
                     getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, [projectSkill])
                 )
             )
-        )
+        );
 
         const skillType = getBaseSkillType("8");
         await waitFor(() =>
@@ -63,7 +65,7 @@ describe("project info", () => {
                     getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, [skillType])
                 )
             )
-        )
+        );
 
         const assignment = getBaseAssignment("9");
         await waitFor(() =>
@@ -73,18 +75,13 @@ describe("project info", () => {
                     getBaseLinks(projectSkill._links.assignments.href, assignmentCollectionName, [assignment])
                 )
             )
-        )
+        );
 
         const student = getBaseStudent("10");
         await waitFor(() =>
-            mockAxios.mockResponseFor(
-                { url: assignment._links.student.href },
-                getBaseOkResponse(student)
-            )
+            mockAxios.mockResponseFor({ url: assignment._links.student.href }, getBaseOkResponse(student))
         );
 
-        await waitFor(() =>
-            expect(screen.getByText(student.callName)).toBeInTheDocument()
-        );
+        await waitFor(() => expect(screen.getByText(student.callName)).toBeInTheDocument());
     });
 });
