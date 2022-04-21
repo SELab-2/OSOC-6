@@ -1,7 +1,6 @@
 import { ListGroup } from "react-bootstrap";
 import Router from "next/router";
 import styles from "../styles/studentList.module.css";
-import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
@@ -23,30 +22,28 @@ export const StudentList = () => {
         return null;
     }
 
-    const color1 = "#343336";
-    const color2 = "#B408A4";
-
     return (
         <div className={styles.student_list_component}>
             <ListGroup as="ul" className="overflow-scroll">
                 <ListGroup.Item
+                    key="studentHeader"
                     data-testid="studentlist-header"
                     className={styles.student_list_title}
                 >
                     {t("common:Student list header")}
                 </ListGroup.Item>
-                {students.map((student: IStudent) => (
+                {students.map((student) => (
                     <ListGroup.Item
-                        key={student._links.self.href.split(apiPaths.projects)[1]}
+                        key={student._links.self.href.split(apiPaths.students)[1]}
                         className={styles.student_list_element}
                         action
                         as={"li"}
                         // Should be changed to individual student page later
                         onClick={() => {
-                            let projectPath: string = student._links.self.href.split(
+                            let studentPath: string = student._links.self.href.split(
                                 apiPaths.base
                             )[1];
-                            Router.push(projectPath);
+                            Router.push(studentPath);
                         }}
                     >
                         <small className={styles.student_name}>{student.callName}</small>
@@ -55,7 +52,9 @@ export const StudentList = () => {
                         <div
                             className={styles.line}
                             style={{
-                                background: `linear-gradient(to right, #1DE1AE 33%, #FCB70F 33% 66%, #F14A3B 66% 100%)`,
+                                // These percentages should be calculated instead of hardcoded
+                                background: `linear-gradient(to right, #1DE1AE ${33}%, 
+                                #FCB70F ${33}% ${66}%, #F14A3B ${66}% 100%)`,
                             }}
                         />
                     </ListGroup.Item>

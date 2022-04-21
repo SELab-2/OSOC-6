@@ -19,10 +19,9 @@
 
 .student_list_component {
     position: absolute;
-    width: 473px;
-    height: 770px;
+    width: 470px;
+    height: 80%;
     left: 0;
-    top: 310px;
 
     background: #0a0839;
     border-radius: 10px 10px 0 0;
