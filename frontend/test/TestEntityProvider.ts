@@ -11,7 +11,7 @@ import {
     Gender,
     IStudent,
     OsocExpericience,
-    PronounsType
+    PronounsType,
 } from "../src/api/entities/StudentEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
@@ -98,8 +98,8 @@ export function getBaseAdmin(id: string): IUser {
             skills: { href: baseUserPath + "/skills" },
             userEntity: { href: baseUserPath },
             self: { href: baseUserPath },
-        }
-    }
+        },
+    };
 }
 
 export function getBaseProjectSkill(id: string): IProjectSkill {
@@ -113,8 +113,8 @@ export function getBaseProjectSkill(id: string): IProjectSkill {
             assignments: { href: baseProjectSkillPath + "/assignments" },
             projectSkill: { href: baseProjectSkillPath },
             self: { href: baseProjectSkillPath },
-        }
-    }
+        },
+    };
 }
 
 export function getBaseSkillType(id: string): ISkillType {
@@ -127,7 +127,7 @@ export function getBaseSkillType(id: string): ISkillType {
             skillType: { href: baseSkillTypePath },
             self: { href: baseSkillTypePath },
         },
-    }
+    };
 }
 
 export function getBaseAssignment(id: string): IAssignment {
@@ -144,8 +144,8 @@ export function getBaseAssignment(id: string): IAssignment {
             student: { href: baseAssignmentsPath },
             assignment: { href: baseAssignmentsPath },
             self: { href: baseAssignmentsPath },
-        }
-    }
+        },
+    };
 }
 
 export function getBaseStudent(id: string): IStudent {
@@ -175,13 +175,8 @@ export function getBaseStudent(id: string): IStudent {
         bestSkill: "Finding out the Spring ways",
         osocExperience: OsocExpericience.yes_noStudentCoach,
         additionalStudentInfo: "He likes it like that",
-        studies: [
-            "I love to Spring Spring in java Spring!"
-        ],
-        skills: [
-            "Gaming on a nice chair",
-            "programming whilst thinking about sleeping"
-        ],
+        studies: ["I love to Spring Spring in java Spring!"],
+        skills: ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
         yesSuggestionCount: 0,
         maybeSuggestionCount: 0,
         noSuggestionCount: 0,
@@ -191,6 +186,6 @@ export function getBaseStudent(id: string): IStudent {
             edition: { href: baseAssignmentsPath },
             student: { href: baseAssignmentsPath },
             self: { href: baseAssignmentsPath },
-        }
-    }
+        },
+    };
 }

@@ -10,7 +10,7 @@ import {
     getBaseLinks,
     getBaseOkResponse,
     getBaseProject,
-    getBaseProjectSkill
+    getBaseProjectSkill,
 } from "./TestEntityProvider";
 import { userCollectionName } from "../src/api/entities/UserEntity";
 import { projectSkillCollectionName } from "../src/api/entities/ProjectSkillEntity";
@@ -23,25 +23,31 @@ describe("project info", () => {
     });
 
     it.skip("should render with data", () => {
-        mockRouter.setCurrentUrl("/projects/5")
+        mockRouter.setCurrentUrl("/projects/5");
         render(makeCacheFree(ProjectInfo));
-        const project = getBaseProject('5');
+        const project = getBaseProject("5");
         mockAxios.mockResponseFor({ url: apiPaths.projects + "/5" }, getBaseOkResponse(project));
 
         const user = getBaseAdmin("6");
-        mockAxios.mockResponseFor({ url: project._links.coaches.href }, getBaseOkResponse(getBaseLinks(
-            project._links.coaches.href, userCollectionName, [user]
-        )));
+        mockAxios.mockResponseFor(
+            { url: project._links.coaches.href },
+            getBaseOkResponse(getBaseLinks(project._links.coaches.href, userCollectionName, [user]))
+        );
 
         const projectSkill = getBaseProjectSkill("7");
-        mockAxios.mockResponseFor({ url: project._links.neededSkills.href }, getBaseOkResponse(getBaseLinks(
-            project._links.neededSkills.href, projectSkillCollectionName, [projectSkill]
-        )));
+        mockAxios.mockResponseFor(
+            { url: project._links.neededSkills.href },
+            getBaseOkResponse(
+                getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, [projectSkill])
+            )
+        );
 
         const skillType = getBaseProjectSkill("8");
-        mockAxios.mockResponseFor({ url: apiPaths.skillTypes }, getBaseOkResponse(getBaseLinks(
-            project._links.neededSkills.href, projectSkillCollectionName, [projectSkill]
-        )));
-
+        mockAxios.mockResponseFor(
+            { url: apiPaths.skillTypes },
+            getBaseOkResponse(
+                getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, [projectSkill])
+            )
+        );
     });
-})
+});
