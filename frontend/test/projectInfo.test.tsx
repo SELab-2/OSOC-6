@@ -19,7 +19,6 @@ import {
 import { userCollectionName } from "../src/api/entities/UserEntity";
 import { projectSkillCollectionName } from "../src/api/entities/ProjectSkillEntity";
 import { assignmentCollectionName } from "../src/api/entities/AssignmentEntity";
-import { studentCollectionName } from "../src/api/entities/StudentEntity";
 import { skillTypeCollectionName } from "../src/api/entities/SkillTypeEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));

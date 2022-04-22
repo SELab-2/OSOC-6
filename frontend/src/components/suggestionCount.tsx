@@ -1,7 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
-import apiPaths from "../properties/apiPaths";
-import { getFullProjectInfo } from "../api/calls/projectCalls";
 import { getStudentOnUrl } from "../api/calls/studentCalls";
 
 export function SuggestionCount(props: { studentUrl: string }) {
