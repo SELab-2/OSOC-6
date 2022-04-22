@@ -1,12 +1,12 @@
-import {MouseEventHandler} from "react";
+import { MouseEventHandler } from "react";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import {IUser, IUsersPage, User} from "../api/entities/UserEntity";
-import {Edition, IEdition, IEditionsPage} from "../api/entities/EditionEntity";
-import {IInvitation, IInvitationsPage, Invitation} from "../api/entities/InvitationEntity";
-import {IProject, IProjectPage, Project} from "../api/entities/ProjectEntity";
-import {IProjectSkill, IProjectSkillPage, ProjectSkill} from "../api/entities/ProjectSkillEntity";
-import {IUserSkill, IUserSkillPage, UserSkill} from "../api/entities/UserSkillEntity";
+import { IUser, IUsersPage, User } from "../api/entities/UserEntity";
+import { Edition, IEdition, IEditionsPage } from "../api/entities/EditionEntity";
+import { IInvitation, IInvitationsPage, Invitation } from "../api/entities/InvitationEntity";
+import { IProject, IProjectPage, Project } from "../api/entities/ProjectEntity";
+import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/entities/ProjectSkillEntity";
+import { IUserSkill, IUserSkillPage, UserSkill } from "../api/entities/UserSkillEntity";
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
@@ -21,12 +21,17 @@ import {
     Status,
     Student,
 } from "../api/entities/StudentEntity";
-import {baseSkillType, ISkillType, ISkillTypePage, SkillType} from "../api/entities/SkillTypeEntity";
-import {Communication, ICommunication, ICommunicationPage} from "../api/entities/CommunicationEntity";
-import {ISuggestion, ISuggestionPage, Suggestion, SuggestionStrategy,} from "../api/entities/SuggestionEntity";
-import {Assignment, IAssignment, IAssignmentPage} from "../api/entities/AssignmentEntity";
-import {getSkillTypeFromSkill} from "../api/calls/skillTypeCalls";
-import {AxiosConf} from "../api/calls/baseCalls";
+import { baseSkillType, ISkillType, ISkillTypePage, SkillType } from "../api/entities/SkillTypeEntity";
+import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
+import {
+    ISuggestion,
+    ISuggestionPage,
+    Suggestion,
+    SuggestionStrategy,
+} from "../api/entities/SuggestionEntity";
+import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
+import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
+import { AxiosConf } from "../api/calls/baseCalls";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
