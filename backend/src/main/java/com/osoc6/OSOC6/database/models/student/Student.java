@@ -156,14 +156,14 @@ public final class Student implements WeakToEdition {
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     @Getter @Setter
-    private String currentDiploma;
+    private String currentDiploma = "";
 
     /**
      * Amount of years getting the current degree takes.
      */
     @Basic(optional = false)
     @NotNull @Getter @Setter
-    private Integer durationCurrentDegree;
+    private Integer durationCurrentDegree = 0;
 
     /**
      * What year the student is in the course.
@@ -174,7 +174,7 @@ public final class Student implements WeakToEdition {
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
     @Getter @Setter
-    private String yearInCourse;
+    private String yearInCourse = "";
 
     /**
      * Name of the collage/ university student is enrolled.
@@ -182,7 +182,7 @@ public final class Student implements WeakToEdition {
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     @Getter @Setter
-    private String institutionName;
+    private String institutionName = "";
 
     /**
      * The skill the student would describe to be their best.
