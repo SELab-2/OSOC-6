@@ -1,50 +1,40 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {act, cleanup, render, screen, waitFor} from "@testing-library/react";
 import Home from "../src/pages/home";
 import Index from "../src/pages/index";
 import RouteGuard from "../src/components/routeGuard";
-import MyApp from "../src/pages/_app";
 import mockAxios from "jest-mock-axios";
 import React from "react";
-import useTranslation from "next-translate/useTranslation";
-import LoginForm from "../src/components/loginForm";
-import mock = jest.mock;
 import apiPaths from "../src/properties/apiPaths";
 import { AxiosConf } from "../src/api/calls/baseCalls";
-import Router from "next/router";
+import Router, {useRouter} from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import applicationPaths from "../src/properties/applicationPaths";
-
-jest.mock("next/router", () => require("next-router-mock"));
+import {jest} from "@jest/globals";
+import ApiPaths from "../src/properties/apiPaths";
 
 afterEach(() => {
     mockAxios.reset();
+    cleanup();
 });
+
+jest.mock('next/router', () => ({
+    asPath: "/home",
+    push: jest.fn(),
+    back: jest.fn(),
+    events: {
+        on: jest.fn(),
+        off: jest.fn(),
+    },
+    beforePopState: jest.fn(() => null),
+    useRouter: () => ({
+        push: jest.fn(),
+    }),
+}));
 
 describe("Test RouteGuard unauthenticated user to private page", () => {
     render(
-            <RouteGuard>
-                <Home />
-            </RouteGuard>
-    );
-
-    it("Rendering a page with the routeguard should get the logged in user", () => {
-        expect(mockAxios.get).toHaveBeenCalledWith(apiPaths.ownUser, AxiosConf);
-    });
-
-    it("The user should be redirected when accessing a private page", () => {
-        waitFor(() => {
-            expect(Router.push).toHaveBeenCalledWith(
-                applicationPaths.base + applicationPaths.login
-            );
-        });
-    });
-});
-
-describe("Test RouteGuard unauthenticated user to public page", () => {
-    render(
         <RouteGuard>
-            <Index />
+            <Home />
         </RouteGuard>
     );
 
@@ -54,7 +44,7 @@ describe("Test RouteGuard unauthenticated user to public page", () => {
         statusText: ReasonPhrases.MOVED_TEMPORARILY,
         headers: {},
         config: {},
-        request: { responseURL: "/login" },
+        request: { responseURL: ApiPaths.base + ApiPaths.backendLogin },
     };
     mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
 
@@ -62,10 +52,8 @@ describe("Test RouteGuard unauthenticated user to public page", () => {
         expect(mockAxios.get).toHaveBeenCalledWith(apiPaths.ownUser, AxiosConf);
     });
 
-    it("The user should not be redirected when accessing a public page", () => {
-        waitFor(() => {
-            expect(Router.push).not.toHaveBeenCalled();
-        });
+    it("The user should be redirected when accessing a private page", () => {
+        expect(Router.push).toHaveBeenCalled();
     });
 });
 
@@ -97,7 +85,7 @@ describe("Test RouteGuard authenticated user to private page", () => {
 
     it("The user should not be redirected when accessing a private page", () => {
         waitFor(() => {
-            expect(Router.push).not.toHaveBeenCalled();
+            expect(useRouter().push).not.toHaveBeenCalled();
         });
     });
 });
