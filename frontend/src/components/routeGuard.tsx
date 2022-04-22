@@ -19,8 +19,8 @@ export default function RouteGuard({ children }: any) {
         // Define the public paths for which authentication is not needed.
         const publicPaths = [
             "/" + applicationPaths.index,
-            "/" +  applicationPaths.login,
-            "/" + applicationPaths.loginError
+            "/" + applicationPaths.login,
+            "/" + applicationPaths.loginError,
         ];
 
         // Check if the user is logged in. If not this request will be redirected to the backend login
