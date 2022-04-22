@@ -204,4 +204,23 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
                 new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_with_correct_edition_has_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_with_wrong_edition_is_forbidden() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isForbidden());
+    }
 }

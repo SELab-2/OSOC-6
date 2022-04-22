@@ -7,6 +7,8 @@ import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.ProjectSkill;
 import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.database.models.UserSkill;
@@ -253,5 +255,17 @@ public final class TestEntityProvider {
                                                          final ProjectSkill skill) {
         return new Assignment(false, "Seems like handsome girl", user, student, skill);
 
+    }
+
+    public static Suggestion getBaseYesSuggestion(final UserEntity user, final Student student) {
+        return new Suggestion(SuggestionStrategy.YES, "Reason 1", user, student);
+    }
+
+    public static Suggestion getBaseMaybeSuggestion(final UserEntity user, final Student student) {
+        return new Suggestion(SuggestionStrategy.MAYBE, "Reason 1", user, student);
+    }
+
+    public static Suggestion getBaseNoSuggestion(final UserEntity user, final Student student) {
+        return new Suggestion(SuggestionStrategy.NO, "Reason 1", user, student);
     }
 }

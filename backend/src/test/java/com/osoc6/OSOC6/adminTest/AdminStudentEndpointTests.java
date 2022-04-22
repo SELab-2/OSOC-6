@@ -262,4 +262,24 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_on_correct_edition_works() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_on_false_edition_works_not_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
 }

@@ -16,6 +16,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 /**
  * Class testing the integration of {@link Project} with an admin access level.
  */
@@ -113,6 +115,26 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
     public void getting_all_entities_succeeds() throws Exception {
         base_get_all_entities_succeeds()
                 .andExpect(string_to_contains_string(project1.getName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_correct_edition_works() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(project1.getName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_false_edition_works_not_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(project1.getName()));
     }
 }
 

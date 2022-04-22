@@ -17,7 +17,7 @@ export interface IPage<T> extends IEntityLinks<T> {
     };
     _links: {
         self: IReferencer;
-        search: IReferencer;
+        search: IReferencer | undefined;
         profile: IReferencer;
     };
 }

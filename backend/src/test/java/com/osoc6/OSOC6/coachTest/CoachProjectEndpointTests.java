@@ -189,4 +189,23 @@ public class CoachProjectEndpointTests extends TestFunctionProvider<Project, Lon
     public void patching_entity_to_illegal_string_id_fails() throws Exception {
         base_patching_entity_to_illegal_string_id_fails();
     }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_with_correct_edition_has_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testProject.getName()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_with_wrong_edition_is_forbidden() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isForbidden());
+    }
 }

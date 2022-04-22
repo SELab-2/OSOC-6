@@ -64,6 +64,9 @@ export interface IStudent extends IBaseEntity {
     studies: string[];
     writtenMotivation: string;
     yearInCourse: string;
+    yesSuggestionCount: number;
+    noSuggestionCount: number;
+    maybeSuggestionCount: number;
 
     _links: {
         assignments: IReferencer;
@@ -74,6 +77,7 @@ export interface IStudent extends IBaseEntity {
     };
 }
 
+export const studentCollectionName: string = "students";
 export type IStudentPage = IPage<{ students: IStudent[] }>;
 export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
 

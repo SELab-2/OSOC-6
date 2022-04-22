@@ -11,6 +11,7 @@ export interface IUserSkill extends IBaseEntity {
     };
 }
 
+export const userSkillCollectionName: string = "user-skills";
 export type IUserSkillPage = IPage<{ "user-skills": IUserSkill[] }>;
 export type IUserSkillLinks = IEntityLinks<{ "user-skills": IUserSkill[] }>;
 

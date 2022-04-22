@@ -1,5 +1,4 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { getAllEntities } from "./requests";
 
 export interface IProject extends IBaseEntity {
     goals: string[];
@@ -8,7 +7,6 @@ export interface IProject extends IBaseEntity {
     versionManagement: string;
     partnerName: string;
     partnerWebsite: string;
-    creator: string;
 
     _links: {
         coaches: IReferencer;
@@ -20,6 +18,7 @@ export interface IProject extends IBaseEntity {
     };
 }
 
+export const projectCollectionName: string = "projects";
 export type IProjectPage = IPage<{ projects: IProject[] }>;
 export type IProjectLinks = IEntityLinks<{ projects: IProject[] }>;
 
@@ -52,11 +51,4 @@ export class Project {
     partnerName: string;
     partnerWebsite: string;
     versionManagement: string;
-}
-
-/**
- * Fetches all projects from the backend
- */
-export function getAllProjects(url: string): Promise<IProject[]> {
-    return <Promise<IProject[]>>getAllEntities(url, "projects");
 }

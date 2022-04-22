@@ -23,6 +23,11 @@ public final class DumbledorePathWizard {
     public static final String EDITIONS_BY_NAME_PATH = "by-name";
 
     /**
+     * Path that queries over {@link com.osoc6.OSOC6.database.models.Edition} id are served on.
+     */
+    public static final String FIND_ANYTHING_BY_EDITION_PATH = "by-edition";
+
+    /**
      * Path that {@link com.osoc6.OSOC6.database.models.SkillType} is served on.
      */
     public static final String SKILLTYPE_PATH = "skillTypes";
