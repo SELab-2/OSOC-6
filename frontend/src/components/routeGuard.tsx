@@ -18,9 +18,9 @@ export default function RouteGuard({ children }: any) {
     async function authCheck(url: string) {
         // Define the public paths for which authentication is not needed.
         const publicPaths = [
-            applicationPaths.base,
-            applicationPaths.base + applicationPaths.login,
-            applicationPaths.base + applicationPaths.loginError,
+            "/" + applicationPaths.index,
+            "/" +  applicationPaths.login,
+            "/" + applicationPaths.loginError
         ];
 
         // Check if the user is logged in. If not this request will be redirected to the backend login
@@ -34,7 +34,7 @@ export default function RouteGuard({ children }: any) {
         ) {
             setAuthorized(false);
             await push({
-                pathname: applicationPaths.base + applicationPaths.login,
+                pathname: applicationPaths.login,
                 query: { returnUrl: Router.asPath },
             });
         } else {

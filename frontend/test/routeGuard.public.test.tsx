@@ -1,18 +1,18 @@
-import {render, waitFor} from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import RouteGuard from "../src/components/routeGuard";
 import Index from "../src/pages";
-import {AxiosResponse} from "axios";
-import {ReasonPhrases, StatusCodes} from "http-status-codes";
+import { AxiosResponse } from "axios";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import ApiPaths from "../src/properties/apiPaths";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
-import {AxiosConf} from "../src/api/calls/baseCalls";
+import { AxiosConf } from "../src/api/calls/baseCalls";
 import Router from "next/router";
 import React from "react";
-import {jest} from "@jest/globals";
+import { jest } from "@jest/globals";
 import ApplicationPaths from "../src/properties/applicationPaths";
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
     asPath: "/",
     push: jest.fn(),
     back: jest.fn(),

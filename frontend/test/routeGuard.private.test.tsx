@@ -1,15 +1,14 @@
-import {act, cleanup, render, screen, waitFor} from "@testing-library/react";
+import { cleanup, render, waitFor } from "@testing-library/react";
 import Home from "../src/pages/home";
-import Index from "../src/pages/index";
 import RouteGuard from "../src/components/routeGuard";
 import mockAxios from "jest-mock-axios";
 import React from "react";
 import apiPaths from "../src/properties/apiPaths";
 import { AxiosConf } from "../src/api/calls/baseCalls";
-import Router, {useRouter} from "next/router";
+import Router, { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import {jest} from "@jest/globals";
+import { jest } from "@jest/globals";
 import ApiPaths from "../src/properties/apiPaths";
 
 afterEach(() => {
@@ -17,7 +16,7 @@ afterEach(() => {
     cleanup();
 });
 
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
     asPath: "/home",
     push: jest.fn(),
     back: jest.fn(),
