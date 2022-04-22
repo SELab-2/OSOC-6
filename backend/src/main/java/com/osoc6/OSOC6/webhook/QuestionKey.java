@@ -16,7 +16,7 @@ import java.util.List;
  */
 public enum QuestionKey {
     /**
-     * Are you able to work 128 hours with a student employment agreement, or as a volunteer?*.
+     * Are you able to work 128 hours with a student employment agreement, or as a volunteer?.
      */
     WORK_TIME("question_mB7WR7") {
         // TODO toevoegen aan student?
@@ -167,7 +167,9 @@ public enum QuestionKey {
     UPLOAD_CV("question_wddeyz") {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
-            // TODO uitzoeken hoe dit werkt
+            if (formField.getValue() != null) {
+                student.setCurriculumVitaeURI(formField.getUrlFromValue());
+            }
         }
     },
     /**
@@ -187,7 +189,9 @@ public enum QuestionKey {
     UPLOAD_PORTFOLIO("question_mDz6Gb") {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
-            //Todo uitzoeken hoe dit werkt
+            if (formField.getValue() != null) {
+                student.setPortfolioURI(formField.getUrlFromValue());
+            }
         }
     },
     /**
@@ -207,7 +211,9 @@ public enum QuestionKey {
     UPLOAD_MOTIVATION("question_mRPy9l") {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
-            // TODO uitzoeken hoe dit werkt
+            if (formField.getValue() != null) {
+                student.setMotivationURI(formField.getUrlFromValue());
+            }
         }
     },
     /**
@@ -299,7 +305,9 @@ public enum QuestionKey {
     TOTAL_DEGREE_YEARS("question_w4rVbb") {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
-            student.setDurationCurrentDegree((Integer) formField.getValue());
+            if (formField.getValue() != null) {
+                student.setDurationCurrentDegree((Integer) formField.getValue());
+            }
         }
     },
     /**
@@ -308,7 +316,9 @@ public enum QuestionKey {
     CURRENT_DEGREE_YEAR("question_3jPAVR") {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
-            student.setYearInCourse((String) formField.getValue());
+            if (formField.getValue() != null) {
+                student.setYearInCourse((String) formField.getValue());
+            }
         }
     },
     /**
@@ -317,8 +327,9 @@ public enum QuestionKey {
     COLLEGE_NAME("question_w2PG6p") {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
-            // TODO test of hier een nullcheck bij moet, want als study = self taught dan kan dit null zijn
-            student.setInstitutionName((String) formField.getValue());
+            if (formField.getValue() != null) {
+                student.setInstitutionName((String) formField.getValue());
+            }
         }
     },
     /**

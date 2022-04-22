@@ -4,6 +4,7 @@ import com.osoc6.OSOC6.exception.WebhookException;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A webhook field represents a single question from the tally form.
@@ -67,5 +68,19 @@ public class FormField {
                                 && !option.getText().equalsIgnoreCase("other")))
                 .map((Option::getText))
                 .toList();
+    }
+
+    /**
+     * Get the url from the value. Used for getting the url from the FILE_UPLOAD field.
+     * @return the url contained in the value
+     */
+    @SuppressWarnings("unchecked")
+    public String getUrlFromValue() {
+        try {
+            Map<String, String> fileMap = ((List<Map<String, String>>) value).get(0);
+            return fileMap.get("url");
+        } catch (ClassCastException e) {
+            throw new WebhookException(String.format("Cannot parse '%s' as a map of string, string.", value));
+        }
     }
 }
