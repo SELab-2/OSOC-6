@@ -35,7 +35,7 @@ export default function RouteGuard({ children }: any) {
             setAuthorized(false);
             await push({
                 pathname: applicationPaths.base + applicationPaths.login,
-                query: {returnUrl: Router.asPath},
+                query: { returnUrl: Router.asPath },
             });
         } else {
             setAuthorized(true);
