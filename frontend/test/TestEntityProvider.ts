@@ -1,17 +1,12 @@
-import { IProject } from "../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage } from "../src/api/entities/BaseEntities";
-import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { IProjectSkill } from "../src/api/entities/ProjectSkillEntity";
-import { IUser, UserRole } from "../src/api/entities/UserEntity";
-import { baseSkillType, ISkillType } from "../src/api/entities/SkillTypeEntity";
-import { IAssignment } from "../src/api/entities/AssignmentEntity";
-import {
-    EnglishProficiency,
-    Gender,
-    IStudent,
-    OsocExpericience,
-} from "../src/api/entities/StudentEntity";
+import {IProject} from "../src/api/entities/ProjectEntity";
+import {IBaseEntity, IEntityLinks, IPage} from "../src/api/entities/BaseEntities";
+import {AxiosResponse} from "axios";
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
+import {IProjectSkill} from "../src/api/entities/ProjectSkillEntity";
+import {IUser, UserRole} from "../src/api/entities/UserEntity";
+import {baseSkillType, ISkillType} from "../src/api/entities/SkillTypeEntity";
+import {IAssignment} from "../src/api/entities/AssignmentEntity";
+import {EnglishProficiency, Gender, IStudent, OsocExpericience, Status} from "../src/api/entities/StudentEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -170,6 +165,7 @@ export function getBaseStudent(id: string): IStudent {
         bestSkill: "Finding out the Spring ways",
         funFact: "A fun fact about me",
         osocExperience: OsocExpericience.yes_noStudentCoach,
+        status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],
         skills: ["Gaming on a nice chair", "programming whilst thinking about sleeping"],

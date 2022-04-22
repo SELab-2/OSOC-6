@@ -40,6 +40,15 @@ export enum OsocExpericience {
     yes_studentCoach = "YES_STUDENT_COACH",
 }
 
+export enum Status {
+    undecided = "UNDECIDED",
+    maybe = "MAYBE",
+    rejected = "REJECTED",
+    approved = "APPROVED",
+    contract_confirmed = "CONTRACT_CONFIRMED",
+    contract_declined = "CONTRACT_DECLINED",
+}
+
 export interface IStudent extends IBaseEntity {
     email: string;
     additionalStudentInfo: string;
@@ -56,6 +65,7 @@ export interface IStudent extends IBaseEntity {
     mostFluentLanguage: string;
     motivationURI: string;
     osocExperience: OsocExpericience;
+    status: Status;
     phoneNumber: string;
     portfolioURI: string;
     pronouns: string;
@@ -98,6 +108,7 @@ export class Student {
         mostFluentLanguage: string,
         motivationURI: string,
         osocExperience: OsocExpericience,
+        status: Status,
         phoneNumber: string,
         portfolioURI: string,
         pronouns: string,
@@ -123,6 +134,7 @@ export class Student {
         this.mostFluentLanguage = mostFluentLanguage;
         this.motivationURI = motivationURI;
         this.osocExperience = osocExperience;
+        this.status = status;
         this.phoneNumber = phoneNumber;
         this.portfolioURI = portfolioURI;
         this.pronouns = pronouns;
@@ -149,6 +161,7 @@ export class Student {
     mostFluentLanguage: string;
     motivationURI: string;
     osocExperience: OsocExpericience;
+    status: Status;
     phoneNumber: string;
     portfolioURI: string;
     pronouns: string;

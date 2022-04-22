@@ -15,6 +15,7 @@ import com.osoc6.OSOC6.database.models.UserSkill;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
+import com.osoc6.OSOC6.database.models.student.Status;
 import com.osoc6.OSOC6.database.models.student.Student;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public final class TestEntityProvider {
                 .institutionName("Ghent University")
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.YES_NO_STUDENT_COACH)
+                .status(Status.MAYBE)
                 .phoneNumber("+324992772")
                 .pronouns("he/him/his")
                 .writtenMotivation("I love to Spring Spring in java Spring!")
@@ -81,6 +83,7 @@ public final class TestEntityProvider {
                 .institutionName("Ghent University")
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.NONE)
+                .status(Status.APPROVED)
                 .phoneNumber("+324982672")
                 .pronouns("he/her/them")
                 .writtenMotivation("I love to code!")

@@ -7,6 +7,7 @@ import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
+import com.osoc6.OSOC6.database.models.student.Status;
 import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
@@ -140,6 +141,11 @@ public final class StudentDTO {
     private OsocExperience osocExperience;
 
     /**
+     * The {@link Status} of a student, used to track which type of mail was last sent to them.
+     */
+    private Status status;
+
+    /**
      * Additional info that coaches or admins write about students.
      */
     private String additionalStudentInfo;
@@ -201,6 +207,7 @@ public final class StudentDTO {
         institutionName = student.getInstitutionName();
         bestSkill = student.getBestSkill();
         osocExperience = student.getOsocExperience();
+        status = student.getStatus();
         additionalStudentInfo = student.getAdditionalStudentInfo();
         funFact = student.getFunFact();
         studies = student.getStudies();

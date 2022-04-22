@@ -199,7 +199,12 @@ public final class Student implements WeakToEdition {
     @Getter @Setter
     private OsocExperience osocExperience;
 
-    // TODO status van student toevoegen (zie discussion)
+    /**
+     * The {@link Status} of a student, used to track which type of mail was last sent to them.
+     */
+    @Basic(optional = false)
+    @Getter @Setter
+    private Status status = Status.UNDECIDED;
 
     /**
      * Additional info that coaches or admins write about students.
