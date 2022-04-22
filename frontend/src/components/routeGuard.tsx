@@ -22,20 +22,20 @@ export default function RouteGuard({ children }: any) {
             applicationPaths.base + applicationPaths.login,
             applicationPaths.base + applicationPaths.loginError,
         ];
+
         // Check if the user is logged in. If not this request will be redirected to the backend login
         const userResponse: AxiosResponse = await axios.get(apiPaths.ownUser, AxiosConf);
         const path = url.split("?")[0];
 
-        console.log(userResponse.request.responseURL);
+        // A request to the backend will return redirect to the login when the user was not authenticated
         if (
             !publicPaths.includes(path) &&
             userResponse.request.responseURL == ApiPaths.base + ApiPaths.backendLogin
         ) {
             setAuthorized(false);
-            // window.location.replace is needed since Router.push does not invoke useEffect on redirect.
-            push({
+            await push({
                 pathname: applicationPaths.base + applicationPaths.login,
-                query: { returnUrl: Router.asPath },
+                query: {returnUrl: Router.asPath},
             });
         } else {
             setAuthorized(true);
