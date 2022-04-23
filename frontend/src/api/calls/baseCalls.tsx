@@ -2,7 +2,12 @@ import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
 import axios from "axios";
 
-export const AxiosConf = { baseURL: apiPaths.base };
+export const AxiosConf = {
+    baseURL: apiPaths.base,
+    headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+    },
+};
 
 export const AxiosFormConfig = {
     baseURL: apiPaths.base,

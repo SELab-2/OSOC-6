@@ -19,6 +19,14 @@ const common = {
     "password identical": "both passwords should be identical.",
     "email identical": "both emails should be identical.",
     "changed succesfully": "changed succesfully.",
+    "users manage": "manage users",
+    "users search name": "search name",
+    "users email": "email",
+    "users status": "account status",
+    "userrole admin": "admin",
+    "userrole coach": "coach",
+    "userrole disabled": "disabled",
+    "something went wrong": "oops, something went wrong.",
 };
 
 export default common;
