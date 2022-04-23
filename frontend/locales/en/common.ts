@@ -27,6 +27,19 @@ const common = {
     "userrole coach": "coach",
     "userrole disabled": "disabled",
     "something went wrong": "oops, something went wrong.",
+    "useroverview my profile": "my profile",
+    "useroverview name": "name:",
+    "useroverview e-mail": "e-mail:",
+    "useroverview password": "password:",
+    "useroverview status": "account status:",
+    "useroverview delete": "delete my profile",
+    "new password": "new password",
+    "repeat new password": "repeat new password",
+    "new email": "new email",
+    "repeat new email": "repeat new email",
+    admin: "admin",
+    coach: "coach",
+    edit: "edit",
 };
 
 export default common;

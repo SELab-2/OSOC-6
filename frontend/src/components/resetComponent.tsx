@@ -4,13 +4,13 @@ import styles from "../styles/resetComponent.module.css";
 import { useState } from "react";
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
-import { getEmtpyUser, getUserInfo } from "../api/calls/userProfileCalls";
 import applicationPaths from "../properties/applicationPaths";
 import Router from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../properties/timers";
+import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
@@ -54,9 +54,9 @@ export const ResetComponent = (props: any) => {
     return (
         <Container className={styles.reset_component} data-testid="reset-component">
             <h4>{capitalize(t("reset " + props.name))}</h4>
-            <Form.Label>New {props.name}</Form.Label>
+            <Form.Label>{capitalize(t("new" + props.name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-1" type={props.name} onChange={onChangeFirstEntry} />
-            <Form.Label>Repeat New {props.name}</Form.Label>
+            <Form.Label>{capitalize(t("repeat new" + props.name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-2" type={props.name} onChange={onChangeSecondEntry} />
             <Button data-testid="confirm-reset" onClick={onConfirm}>
                 {capitalize(t("confirm button"))}
@@ -66,7 +66,7 @@ export const ResetComponent = (props: any) => {
                     bg="danger"
                     onClose={() => setShowDanger(false)}
                     show={showDanger}
-                    delay={3000}
+                    delay={timers.toast}
                     autohide
                 >
                     <Toast.Body>{capitalize(t(props.name + " identical"))}</Toast.Body>
