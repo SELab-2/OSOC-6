@@ -1,8 +1,15 @@
 .project_list {
-    width: 300px;
-    height: 1000px;
+    width: 100%;
+    height: 100%;
     background-color: #0a0839;
-    overflow: scroll;
+    overflow: auto;
+    position: relative;
+}
+
+.project_list_button {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 .project_list_header {

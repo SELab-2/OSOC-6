@@ -20,7 +20,7 @@ export function ProjectList() {
 
     return (
         <div className={styles.project_list}>
-            <ListGroup as="ul" className="overflow-scroll">
+            <ListGroup as="ul" className="overflow-auto">
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
                     <div className="capitalize">{t("projects")}</div>
                 </ListGroup.Item>

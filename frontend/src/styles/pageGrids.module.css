@@ -1,0 +1,5 @@
+.projects {
+    /* calc needs to be changed once navbar is fixed */
+    height: calc(100vh - 4rem);
+    width: 100%;
+}
