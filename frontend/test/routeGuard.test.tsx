@@ -1,19 +1,22 @@
-import { render, waitFor } from "@testing-library/react";
+import {cleanup, render} from "@testing-library/react";
 import RouteGuard from "../src/components/routeGuard";
-import Index from "../src/pages";
-import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
+import Home from "../src/pages/home";
+import {AxiosResponse} from "axios";
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
 import ApiPaths from "../src/properties/apiPaths";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
-import { AxiosConf } from "../src/api/calls/baseCalls";
-import Router from "next/router";
+import {AxiosConf} from "../src/api/calls/baseCalls";
 import React from "react";
-import { jest } from "@jest/globals";
-import ApplicationPaths from "../src/properties/applicationPaths";
+import {jest} from "@jest/globals";
+
+afterEach(() => {
+    mockAxios.reset();
+    cleanup();
+});
 
 jest.mock("next/router", () => ({
-    asPath: "/",
+    asPath: "/home",
     push: jest.fn(),
     back: jest.fn(),
     events: {
@@ -26,10 +29,10 @@ jest.mock("next/router", () => ({
     }),
 }));
 
-describe("Test RouteGuard unauthenticated user to public page", () => {
+describe("RouteGuard", () => {
     render(
         <RouteGuard>
-            <Index />
+            <Home />
         </RouteGuard>
     );
 
@@ -43,13 +46,7 @@ describe("Test RouteGuard unauthenticated user to public page", () => {
     };
     mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
 
-    it("Rendering a page with the routeguard should get the logged in user", () => {
+    it("Should request the logged in user", () => {
         expect(mockAxios.get).toHaveBeenCalledWith(apiPaths.ownUser, AxiosConf);
-    });
-
-    it("The user should not be redirected when accessing a public page", async () => {
-        await waitFor(() => {
-            expect(Router.push).not.toHaveBeenCalled();
-        });
     });
 });
