@@ -1,14 +1,14 @@
-import {cleanup, render} from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import RouteGuard from "../src/components/routeGuard";
 import Home from "../src/pages/home";
-import {AxiosResponse} from "axios";
-import {ReasonPhrases, StatusCodes} from "http-status-codes";
+import { AxiosResponse } from "axios";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import ApiPaths from "../src/properties/apiPaths";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
-import {AxiosConf} from "../src/api/calls/baseCalls";
+import { AxiosConf } from "../src/api/calls/baseCalls";
 import React from "react";
-import {jest} from "@jest/globals";
+import { jest } from "@jest/globals";
 
 afterEach(() => {
     mockAxios.reset();
