@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.exception.WebhookException;
+import lombok.Getter;
 
 /**
  * This enum contains the different kinds of experience a student can have in OSOC.
@@ -24,11 +25,13 @@ public enum OsocExperience {
     /**
      * Whether the student has participated in OSOC before or not.
      */
+    @Getter
     private final String participation;
 
     /**
      * Whether the student would like to be a student coach or not.
      */
+    @Getter
     private final String studentCoach;
 
     OsocExperience(final String newParticipation, final String newStudentCoach) {

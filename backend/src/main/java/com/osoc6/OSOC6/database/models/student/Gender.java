@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.database.models.student;
 
 import com.osoc6.OSOC6.exception.WebhookException;
+import lombok.Getter;
 
 /**
  * An enum listing the different kinds of genders a {@link Student} can have.
@@ -29,6 +30,7 @@ public enum Gender {
     /**
      * The gender as a string. Used to parse the data from the tally webhook.
      */
+    @Getter
     private final String genderString;
 
     Gender(final String newGenderString) {
