@@ -54,9 +54,9 @@ export const ResetComponent = (props: any) => {
     return (
         <Container className={styles.reset_component} data-testid="reset-component">
             <h4>{capitalize(t("reset " + props.name))}</h4>
-            <Form.Label>{capitalize(t("new" + props.name))}</Form.Label>
+            <Form.Label>{capitalize(t("new " + props.name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-1" type={props.name} onChange={onChangeFirstEntry} />
-            <Form.Label>{capitalize(t("repeat new" + props.name))}</Form.Label>
+            <Form.Label>{capitalize(t("repeat new " + props.name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-2" type={props.name} onChange={onChangeSecondEntry} />
             <Button data-testid="confirm-reset" onClick={onConfirm}>
                 {capitalize(t("confirm button"))}
