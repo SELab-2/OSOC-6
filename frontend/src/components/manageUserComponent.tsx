@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 import { Row, Col, DropdownButton, Toast, Container, ToastContainer } from "react-bootstrap";
-import Image from 'next/image'
+import Image from "next/image";
 import {
     disabledUserHandler,
     setRoleAdminHandler,
@@ -13,8 +13,8 @@ import { useSWRConfig } from "swr";
 import apiPaths from "../properties/apiPaths";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
-import { capitalize } from '../utility/stringUtil';
-import { UserRole } from '../api/entities/UserEntity';
+import { capitalize } from "../utility/stringUtil";
+import { UserRole } from "../api/entities/UserEntity";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -50,17 +50,17 @@ export function UserComponent(props: any) {
     }
 
     async function setUserRoleAdmin() {
-        const response: AxiosResponse = await setRoleAdminHandler(user._links.self.href)
+        const response: AxiosResponse = await setRoleAdminHandler(user._links.self.href);
         setUserPatch(response);
     }
 
     async function setUserRoleCoach() {
-        const response: AxiosResponse = await setRoleCoachHandler(user._links.self.href)
+        const response: AxiosResponse = await setRoleCoachHandler(user._links.self.href);
         setUserPatch(response);
     }
 
     async function disableUser() {
-        const response: AxiosResponse = await disabledUserHandler(user._links.self.href)
+        const response: AxiosResponse = await disabledUserHandler(user._links.self.href);
         setUserPatch(response);
     }
 

@@ -11,7 +11,7 @@ import {
     getBaseNoContentResponse,
     getBaseOkResponse,
     getBaseUser,
-} from './TestEntityProvider';
+} from "./TestEntityProvider";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
@@ -52,7 +52,9 @@ describe("Users", () => {
     describe("User Updates/Delete", () => {
         it("User role to admin", async () => {
             const user: IUser = getBaseUser("2", UserRole.coach, true);
-            act(() => {render(<UserComponent key={user.email} user={user} />)});
+            act(() => {
+                render(<UserComponent key={user.email} user={user} />);
+            });
 
             await act(async () => await userEvent.click(screen.getByRole("button")));
             await act(async () => await userEvent.click(screen.getByTestId("overview-admin-user")));
@@ -68,7 +70,9 @@ describe("Users", () => {
 
         it("User role to disabled", async () => {
             const user: IUser = getBaseUser("2", UserRole.coach, true);
-            act(() => {render(<UserComponent key={user.email} user={user} />)});
+            act(() => {
+                render(<UserComponent key={user.email} user={user} />);
+            });
 
             await act(async () => await userEvent.click(screen.getByRole("button")));
             await act(async () => await userEvent.click(screen.getByTestId("overview-disable-user")));
@@ -87,7 +91,7 @@ describe("Users", () => {
             await userEvent.click(screen.getByTestId("overview-delete-user"));
             await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
-            const response: AxiosResponse = getBaseNoContentResponse()
+            const response: AxiosResponse = getBaseNoContentResponse();
             act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
 

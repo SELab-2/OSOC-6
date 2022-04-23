@@ -13,9 +13,10 @@ import {
     getBaseProject,
     getBaseProjectSkill,
     getBaseSkillType,
-    getBaseStudent, getBaseUser,
-} from './TestEntityProvider';
-import { userCollectionName, UserRole } from '../src/api/entities/UserEntity';
+    getBaseStudent,
+    getBaseUser,
+} from "./TestEntityProvider";
+import { userCollectionName, UserRole } from "../src/api/entities/UserEntity";
 import { projectSkillCollectionName } from "../src/api/entities/ProjectSkillEntity";
 import { assignmentCollectionName } from "../src/api/entities/AssignmentEntity";
 import { skillTypeCollectionName } from "../src/api/entities/SkillTypeEntity";

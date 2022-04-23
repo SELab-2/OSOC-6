@@ -20,7 +20,7 @@ const common = {
     "userrole admin": "admin",
     "userrole coach": "coach",
     "userrole disabled": "disabled",
-    "something went wrong": "oops, something went wrong."
+    "something went wrong": "oops, something went wrong.",
 };
 
 export default common;

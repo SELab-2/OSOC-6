@@ -4,8 +4,8 @@ import apiPaths from "../properties/apiPaths";
 import UserComponent from "./manageUserComponent";
 import { IUser } from "../api/entities/UserEntity";
 import useSWR from "swr";
-import { capitalize } from '../utility/stringUtil';
-import { getAllUsersFromLinks, getAllUsersFromPage } from '../api/calls/userCalls';
+import { capitalize } from "../utility/stringUtil";
+import { getAllUsersFromLinks, getAllUsersFromPage } from "../api/calls/userCalls";
 
 export function UsersOverview() {
     const { t } = useTranslation("common");
