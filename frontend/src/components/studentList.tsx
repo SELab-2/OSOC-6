@@ -50,7 +50,7 @@ export const StudentList = () => {
                                 <small className={styles.student_name}>{student.callName}</small>
                                 <br />
                                 <small className={styles.student_best_skill}>{student.bestSkill}</small>
-                                <SuggestionCount studentUrl={student._links.self.href}/>
+                                <SuggestionCount studentUrl={student._links.self.href} />
                             </ListGroup.Item>
                         ))}
                 </ListGroup>

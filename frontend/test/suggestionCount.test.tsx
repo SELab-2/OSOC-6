@@ -32,5 +32,5 @@ describe("suggestion count", () => {
         await waitFor(() => mockAxios.mockResponseFor({ url: studentUrl }, getBaseOkResponse(student)));
 
         await waitFor(() => expect(screen.getByTestId("suggestioncount")).toBeInTheDocument());
-    })
+    });
 });

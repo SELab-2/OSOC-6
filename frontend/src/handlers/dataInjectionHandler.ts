@@ -289,17 +289,17 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     for (let student of containedStudents) {
         let studenturi = student._links.self.href;
         let newSuggestions: Suggestion[] = [];
-        for (let i = 0; i < Math.floor(Math.random()*10); i++) {
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
             const chance = Math.random();
             let suggestion: Suggestion;
-            if (chance < 1/3) {
+            if (chance < 1 / 3) {
                 suggestion = new Suggestion(
                     SuggestionStrategy.yes,
                     faker.lorem.lines(1),
                     own_user_url,
                     studenturi
                 );
-            } else if (chance < 2/3) {
+            } else if (chance < 2 / 3) {
                 suggestion = new Suggestion(
                     SuggestionStrategy.maybe,
                     faker.lorem.lines(1),
@@ -317,7 +317,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             newSuggestions.push(suggestion);
         }
         containedSuggestions = await Promise.all(
-            newSuggestions.map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data));
+            newSuggestions.map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data)
+        );
     }
     console.log(containedSuggestions);
 

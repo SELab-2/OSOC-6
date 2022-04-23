@@ -31,7 +31,7 @@ export function SuggestionCount(props: { studentUrl: string }) {
                 className={styles.line}
                 data-testid="nosuggestions"
                 style={{
-                    background: 'gray',
+                    background: "gray",
                 }}
             />
         );
