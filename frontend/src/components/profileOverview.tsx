@@ -4,37 +4,14 @@ import { Button, Col, Container, Row, Toast, ToastContainer } from "react-bootst
 import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
-import { getUserInfo } from "../api/calls/userProfileCalls";
 import styles from "../styles/profileOverview.module.css";
 import { profileSaveHandler, userDeleteHandler } from "../handlers/profileHandler";
-import { IAuthority, IUser, UserRole } from "../api/entities/UserEntity";
+import { getEmtpyUser, getUserInfo, IAuthority, IUser, UserRole } from "../api/entities/UserEntity";
 import { StatusCodes } from "http-status-codes";
 import useSWR, { useSWRConfig } from "swr";
 import Router from "next/router";
 import { IReferencer } from "../api/entities/BaseEntities";
-
-function getEmtpyUser(): IUser {
-    return {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        authorities: { authority: UserRole.admin },
-        callName: "",
-        credentialsNonExpired: true,
-        email: "",
-        enabled: true,
-        userRole: UserRole.admin,
-        username: "",
-
-        _links: {
-            communications: { href: "" },
-            projects: { href: "" },
-            receivedInvitations: { href: "" },
-            skills: { href: "" },
-            userEntity: { href: "" },
-            self: { href: "" },
-        },
-    };
-}
+import { AxiosResponse } from "axios";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
@@ -55,29 +32,27 @@ export function ProfileOverview() {
         setEditCallname(true);
     }
 
-    function handleSaveCallName() {
+    async function handleSaveCallName() {
         setEditCallname(false);
         if (data) {
-            profileSaveHandler(data._links.self.href, callname).then((response) => {
-                if (response.status == StatusCodes.OK) {
-                    data = response.data;
-                    const user = mutate(apiPaths.ownUser);
-                } else {
-                    setShow(true);
-                }
-            });
+            const response: AxiosResponse = await profileSaveHandler(data._links.self.href, callname);
+            if (response.status == StatusCodes.OK) {
+                data = response.data;
+                const user = mutate(apiPaths.ownUser);
+            } else {
+                setShow(true);
+            }
         }
     }
 
-    function deleteCurrentUser() {
+    async function deleteCurrentUser() {
         if (data) {
-            userDeleteHandler(data._links.self.href).then(async (response) => {
-                if (response.status == StatusCodes.NO_CONTENT) {
-                    await Router.push(applicationPaths.login);
-                } else {
-                    setShow(true);
-                }
-            });
+            const response: AxiosResponse = await userDeleteHandler(data._links.self.href);
+            if (response.status == StatusCodes.NO_CONTENT) {
+                await Router.push(applicationPaths.login);
+            } else {
+                setShow(true);
+            }
         }
     }
 
@@ -89,9 +64,9 @@ export function ProfileOverview() {
 
     return (
         <Container>
-            <h2>{t("UserOverview My Profile")}</h2>
+            <h2>{t("useroverview my profile")}</h2>
             <Row data-testid="profile-overview">
-                <Col className={styles.first_element}>{t("UserOverview Name")}</Col>
+                <Col className={styles.first_element}>{t("useroverview name")}</Col>
                 {/*show callname if not editing*/}
                 {!editCallname && <Col>{data.callName}</Col>}
                 {!editCallname && (
@@ -118,7 +93,7 @@ export function ProfileOverview() {
                 )}
             </Row>
             <Row>
-                <Col className={styles.first_element}>{t("UserOverview E-mail")}</Col>
+                <Col className={styles.first_element}>{t("useroverview e-mail")}</Col>
                 <Col>{data.email}</Col>
                 <Col>
                     <a href={applicationPaths.changeEmail}>
@@ -127,7 +102,7 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Col className={styles.first_element}>{t("UserOverview Password")}</Col>
+                <Col className={styles.first_element}>{t("useroverview password")}</Col>
                 <Col>******</Col>
                 <Col>
                     <a href={applicationPaths.changePassword}>
@@ -144,11 +119,12 @@ export function ProfileOverview() {
             </Row>
             <Row>
                 <Button data-testid="delete-userprofile" onClick={deleteCurrentUser}>
-                    Delete my profile
+                    {t("useroverview delete")}
                 </Button>
             </Row>
             <ToastContainer position="bottom-end">
                 <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={3000} autohide>
+                    {/*TODO*/}
                     <Toast.Body>Oops, something went wrong!</Toast.Body>
                 </Toast>
             </ToastContainer>

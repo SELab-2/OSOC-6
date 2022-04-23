@@ -4,12 +4,12 @@ import styles from "../styles/resetComponent.module.css";
 import { useState } from "react";
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
-import { getEmtpyUser, getUserInfo } from "../api/calls/userProfileCalls";
 import applicationPaths from "../properties/applicationPaths";
 import Router from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
+import { getEmtpyUser, getUserInfo } from '../api/entities/UserEntity';
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
