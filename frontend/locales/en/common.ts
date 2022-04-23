@@ -4,7 +4,7 @@ const common = {
     "login page title": "OSOC : login page",
     "empty page": "empty page",
     students: "students",
-    users: "Users",
+    users: "users",
     projects: "projects",
     "assign students": "assign students",
     profile: "profile",
@@ -25,6 +25,8 @@ const common = {
     "useroverview password": "password:",
     "useroverview status": "account status:",
     "useroverview delete": "delete my profile",
+    admin: "admin",
+    coach: "coach",
 };
 
 export default common;

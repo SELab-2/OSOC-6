@@ -12,6 +12,8 @@ import useSWR, { useSWRConfig } from "swr";
 import Router from "next/router";
 import { IReferencer } from "../api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
+import { capitalize } from '../utility/stringUtil';
+import timers from '../properties/timers';
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
@@ -66,7 +68,7 @@ export function ProfileOverview() {
         <Container>
             <h2>{t("useroverview my profile")}</h2>
             <Row data-testid="profile-overview">
-                <Col className={styles.first_element}>{t("useroverview name")}</Col>
+                <Col className={styles.first_element}>{capitalize(t("useroverview name"))}</Col>
                 {/*show callname if not editing*/}
                 {!editCallname && <Col>{data.callName}</Col>}
                 {!editCallname && (
@@ -93,7 +95,7 @@ export function ProfileOverview() {
                 )}
             </Row>
             <Row>
-                <Col className={styles.first_element}>{t("useroverview e-mail")}</Col>
+                <Col className={styles.first_element}>{capitalize(t("useroverview e-mail"))}</Col>
                 <Col>{data.email}</Col>
                 <Col>
                     <a href={applicationPaths.changeEmail}>
@@ -102,7 +104,7 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Col className={styles.first_element}>{t("useroverview password")}</Col>
+                <Col className={styles.first_element}>{capitalize(t("useroverview password"))}</Col>
                 <Col>******</Col>
                 <Col>
                     <a href={applicationPaths.changePassword}>
@@ -111,21 +113,20 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Col className={styles.first_element}>{t("UserOverview Status")}</Col>
+                <Col className={styles.first_element}>{capitalize(t("useroverview status"))}</Col>
                 <Col>
-                    {data.userRole == UserRole.admin && <a>Admin</a>}
-                    {data.userRole == UserRole.coach && <a>Coach</a>}
+                    {data.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
+                    {data.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
                 </Col>
             </Row>
             <Row>
                 <Button data-testid="delete-userprofile" onClick={deleteCurrentUser}>
-                    {t("useroverview delete")}
+                    {capitalize(t("useroverview delete"))}
                 </Button>
             </Row>
             <ToastContainer position="bottom-end">
-                <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={3000} autohide>
-                    {/*TODO*/}
-                    <Toast.Body>Oops, something went wrong!</Toast.Body>
+                <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
+                    <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
         </Container>

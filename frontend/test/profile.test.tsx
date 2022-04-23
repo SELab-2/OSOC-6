@@ -32,9 +32,7 @@ async function performPatch(editedCallname: string) {
     await userEvent.type(input, editedCallname);
     await act(async () => await userEvent.click(screen.getByTestId("save-callname")));
 
-    await waitFor(() => {
-        expect(mockAxios.patch).toHaveBeenCalled();
-    });
+    await waitFor(() => expect(mockAxios.patch).toHaveBeenCalled());
 }
 
 afterEach(() => {
@@ -68,9 +66,7 @@ describe("User Profile", () => {
         await renderNormalUser();
         await userEvent.click(screen.getByTestId("delete-userprofile"));
 
-        await waitFor(() => {
-            expect(mockAxios.delete).toHaveBeenCalled();
-        });
+        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
         // Other response code than expected (doesn't matter what it is)
         // everything except NoContent
