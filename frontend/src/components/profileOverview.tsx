@@ -74,7 +74,12 @@ export function ProfileOverview() {
                 {!editCallname && (
                     <Col>
                         <a data-testid="edit-callname" onClick={handleEditCallName}>
-                            <Image alt={capitalize(t("edit"))} src={"/resources/edit.svg"} width="15" height="15" />
+                            <Image
+                                alt={capitalize(t("edit"))}
+                                src={"/resources/edit.svg"}
+                                width="15"
+                                height="15"
+                            />
                         </a>
                     </Col>
                 )}
@@ -89,7 +94,12 @@ export function ProfileOverview() {
                             onChange={onChange}
                         />
                         <button data-testid="save-callname" onClick={handleSaveCallName}>
-                            <Image alt={capitalize(t("confirm button"))} src={"/resources/checkmark.svg"} width="15" height="15" />
+                            <Image
+                                alt={capitalize(t("confirm button"))}
+                                src={"/resources/checkmark.svg"}
+                                width="15"
+                                height="15"
+                            />
                         </button>
                     </Col>
                 )}
@@ -99,7 +109,12 @@ export function ProfileOverview() {
                 <Col>{data.email}</Col>
                 <Col>
                     <a href={applicationPaths.changeEmail}>
-                        <Image alt={capitalize(t("edit"))} src={"/resources/edit.svg"} width="15" height="15" />
+                        <Image
+                            alt={capitalize(t("edit"))}
+                            src={"/resources/edit.svg"}
+                            width="15"
+                            height="15"
+                        />
                     </a>
                 </Col>
             </Row>
@@ -108,7 +123,12 @@ export function ProfileOverview() {
                 <Col>******</Col>
                 <Col>
                     <a href={applicationPaths.changePassword}>
-                        <Image alt={capitalize(t("edit"))} src={"/resources/edit.svg"} width="15" height="15" />
+                        <Image
+                            alt={capitalize(t("edit"))}
+                            src={"/resources/edit.svg"}
+                            width="15"
+                            height="15"
+                        />
                     </a>
                 </Col>
             </Row>
