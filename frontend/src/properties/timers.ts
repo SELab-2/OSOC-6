@@ -3,5 +3,4 @@ const timers = {
     toast: 3000,
 };
 
-
 export default timers;

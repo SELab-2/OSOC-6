@@ -15,7 +15,7 @@ import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import { UserRole } from "../api/entities/UserEntity";
-import timers from '../properties/timers';
+import timers from "../properties/timers";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -98,7 +98,13 @@ export function UserComponent(props: any) {
                     </a>
                 </Col>
                 <ToastContainer position="bottom-end">
-                    <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
+                    <Toast
+                        bg="warning"
+                        onClose={() => setShow(false)}
+                        show={show}
+                        delay={timers.toast}
+                        autohide
+                    >
                         <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>

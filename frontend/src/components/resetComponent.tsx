@@ -10,7 +10,7 @@ import Router from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
-import timers from '../properties/timers';
+import timers from "../properties/timers";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
