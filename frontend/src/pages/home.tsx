@@ -3,13 +3,13 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
-import { ProjectList } from "../components/projectList";
 import NavBar from "../components/navBar";
 
 const Home: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div className={styles.container}>
+            <NavBar />
             <Head>
                 <title className="capitalize">{t("home page title")}</title>
             </Head>
@@ -18,8 +18,6 @@ const Home: NextPage = () => {
                     <h1 className={styles.title}>{t("tool name")}</h1>
                 </div>
             </main>
-            <NavBar />
-            <ProjectList />
             <button onClick={dataInjectionHandler}>Inject!</button>
         </div>
     );

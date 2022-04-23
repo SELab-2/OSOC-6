@@ -10,13 +10,7 @@ export const NavBar = () => {
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href={applicationPaths.students} data-testid="navbar-brand">
-                        <Image
-                            alt=""
-                            src={"/resources/osoc-logo.svg"}
-                            width="30"
-                            height="30"
-                            className={"d-inline-block align-top"}
-                        />
+                        <Image alt="" src={"/resources/osoc-logo.svg"} width="30" height="30" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">

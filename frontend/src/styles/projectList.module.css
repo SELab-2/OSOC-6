@@ -4,6 +4,7 @@
     background-color: #0a0839;
     overflow: auto;
     position: relative;
+    padding-bottom: 3em;
 }
 
 .project_list_button {
