@@ -4,17 +4,22 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
 import { ProjectList } from "../components/projectList";
+import NavBar from "../components/navBar";
 
 const Home: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div className={styles.container}>
             <Head>
-                <title>{t("Home page title")}</title>
+                <title className="capitalize">{t("home page title")}</title>
             </Head>
             <main className={styles.main}>
-                <h1 className={styles.title}>{t("Tool name")}</h1>
+                <div className="capitalize">
+                    <h1 className={styles.title}>{t("tool name")}</h1>
+                </div>
             </main>
+            <NavBar />
+            <ProjectList />
             <button onClick={dataInjectionHandler}>Inject!</button>
         </div>
     );
