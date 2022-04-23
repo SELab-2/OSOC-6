@@ -1,5 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
-import { Row, Col, Image, DropdownButton, Toast, Container, ToastContainer } from "react-bootstrap";
+import { Row, Col, DropdownButton, Toast, Container, ToastContainer } from "react-bootstrap";
+import Image from 'next/image'
 import {
     disabledUserHandler,
     setRoleAdminHandler,
@@ -12,6 +13,8 @@ import { useSWRConfig } from "swr";
 import apiPaths from "../properties/apiPaths";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
+import { capitalize } from '../utility/stringUtil';
+import { UserRole } from '../api/entities/UserEntity';
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -46,22 +49,19 @@ export function UserComponent(props: any) {
         }
     }
 
-    function setUserRoleAdmin() {
-        setRoleAdminHandler(user._links.self.href).then((response) => {
-            setUserPatch(response);
-        });
+    async function setUserRoleAdmin() {
+        const response: AxiosResponse = await setRoleAdminHandler(user._links.self.href)
+        setUserPatch(response);
     }
 
-    function setUserRoleCoach() {
-        setRoleCoachHandler(user._links.self.href).then((response) => {
-            setUserPatch(response);
-        });
+    async function setUserRoleCoach() {
+        const response: AxiosResponse = await setRoleCoachHandler(user._links.self.href)
+        setUserPatch(response);
     }
 
-    function disableUser() {
-        disabledUserHandler(user._links.self.href).then((response) => {
-            setUserPatch(response);
-        });
+    async function disableUser() {
+        const response: AxiosResponse = await disabledUserHandler(user._links.self.href)
+        setUserPatch(response);
     }
 
     return (
@@ -74,19 +74,19 @@ export function UserComponent(props: any) {
                         id="dropdown-basic-button"
                         title={user.enabled ? user.userRole : "Disabled"}
                     >
-                        {(user.userRole != "ADMIN" || user.enabled == false) && (
+                        {(user.userRole != UserRole.admin || user.enabled == false) && (
                             <DropdownItem onClick={setUserRoleAdmin} data-testid="overview-admin-user">
-                                {t("UserRole Admin")}
+                                {capitalize(t("userrole admin"))}
                             </DropdownItem>
                         )}
-                        {(user.userRole != "COACH" || user.enabled == false) && (
+                        {(user.userRole != UserRole.coach || user.enabled == false) && (
                             <DropdownItem onClick={setUserRoleCoach} data-testid="overview-coach-user">
-                                {t("UserRole Coach")}
+                                {capitalize(t("userrole coach"))}
                             </DropdownItem>
                         )}
                         {user.enabled && (
                             <DropdownItem onClick={disableUser} data-testid="overview-disable-user">
-                                {t("UserRole Disabled")}
+                                {capitalize(t("userrole disabled"))}
                             </DropdownItem>
                         )}
                     </DropdownButton>
@@ -98,7 +98,7 @@ export function UserComponent(props: any) {
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={3000} autohide>
-                        <Toast.Body>Oops, something went wrong!</Toast.Body>
+                        <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>
                 <hr />

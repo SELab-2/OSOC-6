@@ -14,3 +14,7 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.capitalize {
+    text-transform: capitalize;
+}

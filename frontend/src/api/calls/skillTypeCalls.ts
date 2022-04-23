@@ -2,8 +2,14 @@ import { IUserSkill } from "../entities/UserSkillEntity";
 import { IProjectSkill } from "../entities/ProjectSkillEntity";
 import axios from "axios";
 import apiPaths from "../../properties/apiPaths";
-import { baseSkillType, ISkillType, ISkillTypePage } from "../entities/SkillTypeEntity";
-import { AxiosConf } from "./baseCalls";
+import {
+    baseSkillType,
+    ISkillType,
+    ISkillTypePage,
+    skillTypeCollectionName,
+} from "../entities/SkillTypeEntity";
+import { AxiosConf, getAllEntitiesFromLinksUrl } from "./baseCalls";
+import { IUser, userCollectionName } from "../entities/UserEntity";
 
 /**
  * Get the skillType for a certain Skill.
@@ -29,4 +35,11 @@ export async function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): 
         ).data;
     }
     return type._embedded.skillTypes[0];
+}
+
+/**
+ * Fetches all SkillTypes on a given SkillTypeLinksUrl
+ */
+export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
+    return <Promise<ISkillType[]>>getAllEntitiesFromLinksUrl(url, skillTypeCollectionName);
 }

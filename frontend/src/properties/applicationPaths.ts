@@ -6,6 +6,7 @@ const applicationPaths = {
     assignStudents: "assignStudents",
     projects: "projects",
     students: "students",
+    projectInfo: "projects/[id]",
 };
 
 export default applicationPaths;

@@ -6,7 +6,12 @@ import { makeCacheFree } from "./Provide";
 import UsersOverview from "../src/components/usersOverview";
 import UserComponent from "../src/components/manageUserComponent";
 import { IUser, UserRole } from "../src/api/entities/UserEntity";
-import { getBaseUser } from "./TestEntityProvider";
+import {
+    getBaseBadRequestResponse,
+    getBaseNoContentResponse,
+    getBaseOkResponse,
+    getBaseUser,
+} from './TestEntityProvider';
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
@@ -15,30 +20,6 @@ jest.mock("next/router", () => require("next-router-mock"));
 afterEach(() => {
     mockAxios.reset();
 });
-
-function mockRequestOK(url: string, new_user: IUser) {
-    const response: AxiosResponse = {
-        data: new_user,
-        status: StatusCodes.OK,
-        statusText: ReasonPhrases.OK,
-        headers: {},
-        config: {},
-        request: {},
-    };
-    act(() => mockAxios.mockResponseFor({ url: url }, response));
-}
-
-function mockRequestFAIL(url: string) {
-    const response: AxiosResponse = {
-        data: {},
-        status: StatusCodes.BAD_REQUEST,
-        statusText: ReasonPhrases.BAD_REQUEST,
-        headers: {},
-        config: {},
-        request: {},
-    };
-    act(() => mockAxios.mockResponseFor({ url: url }, response));
-}
 
 describe("Users", () => {
     describe("Users overview and rows", () => {
@@ -55,7 +36,7 @@ describe("Users", () => {
             expect(screen.getByTestId("user-row")).toBeInTheDocument();
         });
 
-        it("Users page", () => {
+        it("should render full userOverview component", () => {
             render(makeCacheFree(UsersOverview));
             expect(screen.getByTestId("user-overview")).toBeInTheDocument();
         });
@@ -71,42 +52,32 @@ describe("Users", () => {
     describe("User Updates/Delete", () => {
         it("User role to admin", async () => {
             const user: IUser = getBaseUser("2", UserRole.coach, true);
-            act(() => {
-                render(<UserComponent key={user.email} user={user} />);
-            });
+            act(() => {render(<UserComponent key={user.email} user={user} />)});
 
-            await act(async () => {
-                await userEvent.click(screen.getByRole("button"));
-            });
-            await act(async () => {
-                await userEvent.click(screen.getByTestId("overview-admin-user"));
-            });
+            await act(async () => await userEvent.click(screen.getByRole("button")));
+            await act(async () => await userEvent.click(screen.getByTestId("overview-admin-user")));
 
             await waitFor(() => {
                 expect(mockAxios.patch).toHaveBeenCalled();
             });
 
             const new_user: IUser = getBaseUser("2", UserRole.admin, true);
-            mockRequestOK(user._links.self.href, new_user);
+            const response: AxiosResponse = getBaseOkResponse(new_user);
+            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
 
         it("User role to disabled", async () => {
             const user: IUser = getBaseUser("2", UserRole.coach, true);
-            act(() => {
-                render(<UserComponent key={user.email} user={user} />);
-            });
+            act(() => {render(<UserComponent key={user.email} user={user} />)});
 
             await act(async () => await userEvent.click(screen.getByRole("button")));
-            await act(async () => {
-                await userEvent.click(screen.getByTestId("overview-disable-user"));
-            });
+            await act(async () => await userEvent.click(screen.getByTestId("overview-disable-user")));
 
-            await waitFor(() => {
-                expect(mockAxios.patch).toHaveBeenCalled();
-            });
+            await waitFor(() => expect(mockAxios.patch).toHaveBeenCalled());
 
             const new_user: IUser = getBaseUser("2", UserRole.coach, false);
-            mockRequestOK(user._links.self.href, new_user);
+            const response: AxiosResponse = getBaseOkResponse(new_user);
+            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
 
         it("User delete", async () => {
@@ -114,18 +85,9 @@ describe("Users", () => {
             render(<UserComponent key={user.email} user={user} />);
 
             await userEvent.click(screen.getByTestId("overview-delete-user"));
-            await waitFor(() => {
-                expect(mockAxios.delete).toHaveBeenCalled();
-            });
+            await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
-            const response: AxiosResponse = {
-                data: {},
-                status: StatusCodes.NO_CONTENT,
-                statusText: ReasonPhrases.NO_CONTENT,
-                headers: {},
-                config: {},
-                request: {},
-            };
+            const response: AxiosResponse = getBaseNoContentResponse()
             act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
 
@@ -135,12 +97,11 @@ describe("Users", () => {
 
             await userEvent.click(screen.getByRole("button"));
             await userEvent.click(screen.getByTestId("overview-coach-user"));
-            await waitFor(() => {
-                expect(mockAxios.patch).toHaveBeenCalled();
-            });
+            await waitFor(() => expect(mockAxios.patch).toHaveBeenCalled());
 
             const new_user: IUser = getBaseUser("2", UserRole.coach, true);
-            mockRequestOK(user._links.self.href, new_user);
+            const response: AxiosResponse = getBaseOkResponse(new_user);
+            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
 
         it("Failed patch", async () => {
@@ -149,11 +110,10 @@ describe("Users", () => {
 
             await userEvent.click(screen.getByRole("button"));
             await userEvent.click(screen.getByTestId("overview-coach-user"));
-            await waitFor(() => {
-                expect(mockAxios.patch).toHaveBeenCalled();
-            });
+            await waitFor(() => expect(mockAxios.patch).toHaveBeenCalled());
 
-            mockRequestFAIL(user._links.self.href);
+            const response: AxiosResponse = getBaseBadRequestResponse();
+            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
 
         it("delete fail", async () => {
@@ -161,11 +121,10 @@ describe("Users", () => {
             render(<UserComponent key={user.email} user={user} />);
 
             await userEvent.click(screen.getByTestId("overview-delete-user"));
-            await waitFor(() => {
-                expect(mockAxios.delete).toHaveBeenCalled();
-            });
+            await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
-            mockRequestFAIL(user._links.self.href);
+            const response: AxiosResponse = getBaseBadRequestResponse();
+            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
         });
     });
 });
