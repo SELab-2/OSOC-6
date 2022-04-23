@@ -15,6 +15,7 @@ import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import { UserRole } from "../api/entities/UserEntity";
+import timers from '../properties/timers';
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -72,7 +73,7 @@ export function UserComponent(props: any) {
                 <Col>
                     <DropdownButton
                         id="dropdown-basic-button"
-                        title={user.enabled ? user.userRole : "Disabled"}
+                        title={user.enabled ? user.userRole : capitalize(t("userrole disabled"))}
                     >
                         {(user.userRole != UserRole.admin || user.enabled == false) && (
                             <DropdownItem onClick={setUserRoleAdmin} data-testid="overview-admin-user">
@@ -97,7 +98,7 @@ export function UserComponent(props: any) {
                     </a>
                 </Col>
                 <ToastContainer position="bottom-end">
-                    <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={3000} autohide>
+                    <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
                         <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>
