@@ -9,7 +9,7 @@ import apiPaths from "../src/properties/apiPaths";
 import { AxiosConf } from "../src/api/calls/baseCalls";
 import React from "react";
 import { jest } from "@jest/globals";
-import {getBaseMovedResponse} from "./TestEntityProvider";
+import { getBaseMovedResponse } from "./TestEntityProvider";
 
 afterEach(() => {
     mockAxios.reset();

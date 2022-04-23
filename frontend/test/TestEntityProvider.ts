@@ -52,8 +52,8 @@ export function getBaseMovedResponse(url: string): AxiosResponse {
         statusText: ReasonPhrases.MOVED_TEMPORARILY,
         headers: {},
         config: {},
-        request: { responseURL: url }
-    }
+        request: { responseURL: url },
+    };
 }
 
 export function getBasePage<T extends IBaseEntity>(
