@@ -7,7 +7,7 @@ import Router from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { makeCacheFree } from "./Provide";
-import {getBaseOkResponse, getBasePage, getBaseStudent} from "./TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseStudent } from "./TestEntityProvider";
 import apiPaths from "../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -25,11 +25,9 @@ describe("StudentList initialization", () => {
 
 it("Render studentlist and click an item", async () => {
     const id = "10";
-    const student = getBaseStudent(id)
+    const student = getBaseStudent(id);
 
-    const response: AxiosResponse = getBaseOkResponse(
-        getBasePage(apiPaths.students, "students", [student])
-    );
+    const response: AxiosResponse = getBaseOkResponse(getBasePage(apiPaths.students, "students", [student]));
 
     render(makeCacheFree(StudentList));
     mockAxios.mockResponseFor({ method: "GET" }, response);
