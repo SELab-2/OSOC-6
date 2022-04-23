@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import ProfileOverview from "../components/profileOverview";
 import NavBar from "../components/navBar";
-import { capitalize } from '../utility/stringUtil';
+import { capitalize } from "../utility/stringUtil";
 
 const Profile: NextPage = () => {
     const { t } = useTranslation("common");

@@ -12,8 +12,8 @@ import useSWR, { useSWRConfig } from "swr";
 import Router from "next/router";
 import { IReferencer } from "../api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
-import { capitalize } from '../utility/stringUtil';
-import timers from '../properties/timers';
+import { capitalize } from "../utility/stringUtil";
+import timers from "../properties/timers";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");

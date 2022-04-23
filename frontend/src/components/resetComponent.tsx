@@ -9,7 +9,7 @@ import Router from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
-import { getEmtpyUser, getUserInfo } from '../api/entities/UserEntity';
+import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
