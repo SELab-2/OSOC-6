@@ -39,6 +39,7 @@ const common = {
     "repeat new email": "repeat new email",
     admin: "admin",
     coach: "coach",
+    edit: "edit",
 };
 
 export default common;

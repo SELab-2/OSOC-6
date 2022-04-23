@@ -57,7 +57,7 @@ export async function getUserInfo(url: string): Promise<IUser> {
 }
 
 /**
- * Gives an empty user json. Needed in for user profile.
+ * Gives an empty user object. Needed in ProfileOverview.
  */
 export function getEmtpyUser(): IUser {
     return {
