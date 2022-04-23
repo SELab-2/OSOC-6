@@ -285,6 +285,40 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     } else {
         containedSuggestions = suggestions._embedded.suggestions;
     }
+
+    for (let student of containedStudents) {
+        let studenturi = student._links.self.href;
+        let newSuggestions: Suggestion[] = [];
+        for (let i = 0; i < Math.floor(Math.random()*10); i++) {
+            const chance = Math.random();
+            let suggestion: Suggestion;
+            if (chance < 1/3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.yes,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else if (chance < 2/3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.maybe,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.no,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            }
+            newSuggestions.push(suggestion);
+        }
+        containedSuggestions = await Promise.all(
+            newSuggestions.map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data));
+    }
     console.log(containedSuggestions);
 
     const assignments: IAssignmentPage = (await axios.get(apiPaths.assignments, AxiosConf)).data;

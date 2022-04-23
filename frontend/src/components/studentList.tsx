@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import { getAllStudentsFormLinks } from "../api/calls/studentCalls";
 import useSWR from "swr";
-import { IStudent } from "../api/entities/StudentEntity";
+import { SuggestionCount } from "./suggestionCount";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");
@@ -50,14 +50,7 @@ export const StudentList = () => {
                                 <small className={styles.student_name}>{student.callName}</small>
                                 <br />
                                 <small className={styles.student_best_skill}>{student.bestSkill}</small>
-                                <div
-                                    className={styles.line}
-                                    style={{
-                                        // These percentages should be calculated instead of hardcoded
-                                        background: `linear-gradient(to right, #1DE1AE ${33}%, 
-                                        #FCB70F ${33}% ${66}%, #F14A3B ${66}% 100%)`,
-                                    }}
-                                />
+                                <SuggestionCount studentUrl={student._links.self.href}/>
                             </ListGroup.Item>
                         ))}
                 </ListGroup>
