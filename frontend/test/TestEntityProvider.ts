@@ -1,5 +1,5 @@
 import { IProject } from "../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage } from '../src/api/entities/BaseEntities';
+import { IBaseEntity, IEntityLinks, IPage } from "../src/api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { IProjectSkill } from "../src/api/entities/ProjectSkillEntity";

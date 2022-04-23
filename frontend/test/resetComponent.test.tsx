@@ -5,8 +5,8 @@ import mockAxios from "jest-mock-axios";
 import { makeCacheFree } from "./Provide";
 import ChangeEmail from "../src/pages/changeEmail";
 import ChangePassword from "../src/pages/changePassword";
-import { getBaseOkResponse, getBaseUser } from './TestEntityProvider';
-import { IUser, UserRole } from '../src/api/entities/UserEntity';
+import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
+import { IUser, UserRole } from "../src/api/entities/UserEntity";
 import { AxiosResponse } from "axios";
 import apiPaths from "../src/properties/apiPaths";
 
@@ -40,7 +40,11 @@ async function performPatch(string1: string, string2: string, toRender: Function
     await act(async () => await userEvent.click(screen.getByTestId("confirm-reset")));
 
     await waitFor(() => {
-        expect(mockAxios.patch).toHaveBeenCalledWith(user._links.self.href, expect.anything(), expect.anything());
+        expect(mockAxios.patch).toHaveBeenCalledWith(
+            user._links.self.href,
+            expect.anything(),
+            expect.anything()
+        );
     });
 }
 
@@ -79,7 +83,7 @@ describe("Reset Component Tests", () => {
         expect(input2).toBeInTheDocument();
         await userEvent.type(input2, newMail2);
         await act(async () => await userEvent.click(screen.getByTestId("confirm-reset")));
-        act(() => expect(screen.getByTestId("toast-reset")).toBeInTheDocument())
+        act(() => expect(screen.getByTestId("toast-reset")).toBeInTheDocument());
     });
 
     it("changePassword patch", async () => {
@@ -106,6 +110,6 @@ describe("Reset Component Tests", () => {
         expect(input2).toBeInTheDocument();
         await userEvent.type(input2, newPassword2);
         await act(async () => await userEvent.click(screen.getByTestId("confirm-reset")));
-        act(() => expect(screen.getByTestId("toast-reset")).toBeInTheDocument())
+        act(() => expect(screen.getByTestId("toast-reset")).toBeInTheDocument());
     });
 });
