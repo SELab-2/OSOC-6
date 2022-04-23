@@ -24,6 +24,16 @@ export function getBaseOkResponse(data: any): AxiosResponse {
     };
 }
 
+export function getBaseNoContentResponse(): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.NO_CONTENT,
+        statusText: ReasonPhrases.NO_CONTENT,
+        headers: {},
+        config: {},
+    };
+}
+
 export function getBaseBadRequestResponse(): AxiosResponse {
     return {
         data: {},
@@ -32,16 +42,6 @@ export function getBaseBadRequestResponse(): AxiosResponse {
         headers: {},
         config: {},
         request: {},
-    };
-}
-
-export function getBaseNoContentResponse(): AxiosResponse {
-    return {
-        data: {},
-        status: StatusCodes.NO_CONTENT,
-        statusText: ReasonPhrases.NO_CONTENT,
-        headers: {},
-        config: {},
     };
 }
 
@@ -83,12 +83,12 @@ export function getBaseProject(id: string): IProject {
     const baseProjectPath = "http://localhost/api/projects/" + id;
     return {
         _links: {
+            self: { href: baseProjectPath },
             neededSkills: { href: baseProjectPath + "/neededSkills" },
             coaches: { href: baseProjectPath + "coaches" },
             edition: { href: baseProjectPath + "/edition" },
             creator: { href: baseProjectPath + "/creator" },
             project: { href: baseProjectPath },
-            self: { href: baseProjectPath },
         },
         name: "project name",
         info: "project info",
