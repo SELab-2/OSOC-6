@@ -55,7 +55,7 @@ const ProjectAsignmentList: NextPage = () => {
                         return (
                             <AccordionItem key={index} eventKey={`${index}`}>
                                 <AccordionHeader className={"bg-secondary"}>
-                                    <div >
+                                    <div>
                                         <h4>{item.project.name}</h4>
                                         <p>{item.project.partnerName}</p>
                                     </div>
