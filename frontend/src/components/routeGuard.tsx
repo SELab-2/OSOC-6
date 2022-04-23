@@ -7,13 +7,13 @@ import applicationPaths from "../properties/applicationPaths";
 import ApiPaths from "../properties/apiPaths";
 
 export default function RouteGuard({ children }: any) {
-    const [authorized, setAuthorized] = useState<boolean | undefined>(false);
+    const [authorized, setAuthorized] = useState<boolean>(false);
     const { push } = useRouter();
 
     useEffect(() => {
         // Check the authentication of the current path
         authCheck(Router.asPath);
-    }, [push]);
+    }, [authCheck]);
 
     async function authCheck(url: string) {
         // Define the public paths for which authentication is not needed.
@@ -30,7 +30,7 @@ export default function RouteGuard({ children }: any) {
         // A request to the backend will return redirect to the login when the user was not authenticated
         if (
             !publicPaths.includes(path) &&
-            userResponse.request.responseURL == ApiPaths.base + ApiPaths.backendLogin
+            userResponse.request.responseURL == ApiPaths.base + ApiPaths.loginRedirect
         ) {
             setAuthorized(false);
             await push({

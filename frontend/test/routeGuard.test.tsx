@@ -9,6 +9,7 @@ import apiPaths from "../src/properties/apiPaths";
 import { AxiosConf } from "../src/api/calls/baseCalls";
 import React from "react";
 import { jest } from "@jest/globals";
+import {getBaseMovedResponse} from "./TestEntityProvider";
 
 afterEach(() => {
     mockAxios.reset();
@@ -36,14 +37,7 @@ describe("RouteGuard", () => {
         </RouteGuard>
     );
 
-    const response: AxiosResponse = {
-        data: {},
-        status: StatusCodes.MOVED_TEMPORARILY,
-        statusText: ReasonPhrases.MOVED_TEMPORARILY,
-        headers: {},
-        config: {},
-        request: { responseURL: ApiPaths.base + ApiPaths.backendLogin },
-    };
+    const response: AxiosResponse = getBaseMovedResponse(ApiPaths.base + ApiPaths.loginRedirect);
     mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
 
     it("Should request the logged in user", () => {

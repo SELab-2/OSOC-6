@@ -1,6 +1,6 @@
 const apiPaths = {
     base: "http://localhost/api/",
-    backendLogin: "login",
+    loginRedirect: "login",
     login: "login-processing",
     registration: "registration",
     editions: "editions",
