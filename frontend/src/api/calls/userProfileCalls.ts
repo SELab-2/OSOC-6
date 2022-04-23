@@ -14,12 +14,12 @@ export function getEmtpyUser(): IUser {
     return {
         accountNonExpired: true,
         accountNonLocked: true,
-        authorities: { authority: UserRole.admin },
+        authorities: { authority: UserRole.coach },
         callName: "",
         credentialsNonExpired: true,
         email: "",
         enabled: true,
-        userRole: UserRole.admin,
+        userRole: UserRole.coach,
         username: "",
 
         _links: {

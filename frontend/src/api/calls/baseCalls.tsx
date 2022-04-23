@@ -1,5 +1,5 @@
 import apiPaths from "../../properties/apiPaths";
-import { IBaseEntity, IPage } from "../entities/BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
 import axios from "axios";
 
 export const AxiosConf = { baseURL: apiPaths.base };
@@ -14,11 +14,11 @@ export const AxiosFormConfig = {
 
 /**
  * Gets all IBaseEntities on an url hosting IEntityLinks
- * @param linksUrl url hosting the IEntityLinks
+ * @param pageUrl url hosting the IPage
  * @param collectionName name of the collection as defined in the IEntityLinks type extension.
  */
-export async function getAllEntitiesFromLinksPage(
-    linksUrl: string,
+export async function getAllEntitiesFromPage(
+    pageUrl: string,
     collectionName: string
 ): Promise<IBaseEntity[]> {
     let fetchedAll: boolean = false;
@@ -27,7 +27,7 @@ export async function getAllEntitiesFromLinksPage(
 
     while (!fetchedAll) {
         const page: IPage<{ [k: string]: IBaseEntity[] }> = (
-            await axios.get(linksUrl, {
+            await axios.get(pageUrl, {
                 params: {
                     size: 1000,
                     page: currentPage,
@@ -40,4 +40,34 @@ export async function getAllEntitiesFromLinksPage(
         currentPage++;
     }
     return entities;
+}
+
+export async function getAllEntitiesFromLinksUrl(
+    linksUrl: string,
+    collectionName: string
+): Promise<IBaseEntity[]> {
+    const linksData: IEntityLinks<{ [k: string]: IBaseEntity[] }> = (await axios.get(linksUrl, AxiosConf))
+        .data;
+    return linksData._embedded[collectionName];
+}
+
+export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity> {
+    return (await axios.get(entityUrl, AxiosConf)).data;
+}
+
+export async function getEntitiesWithCache(
+    urls: string[],
+    cache: { [url: string]: IBaseEntity }
+): Promise<IBaseEntity[]> {
+    // Register when starting fetch and build cache first. This way we have no problems fighting the event loop.
+    const fetched: Set<string> = new Set();
+    await Promise.all(
+        urls.map(async (url) => {
+            if (!cache[url] && !fetched.has(url)) {
+                fetched.add(url);
+                cache[url] = await getEntityOnUrl(url);
+            }
+        })
+    );
+    return urls.map((url) => cache[url]);
 }

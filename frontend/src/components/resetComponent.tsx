@@ -7,6 +7,7 @@ import apiPaths from "../properties/apiPaths";
 import { getEmtpyUser, getUserInfo } from "../api/calls/userProfileCalls";
 import applicationPaths from "../properties/applicationPaths";
 import Router from "next/router";
+import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 
@@ -35,30 +36,29 @@ export const ResetComponent = (props: any) => {
         setSecondEntry(event.target.value);
     }
 
-    function onConfirm() {
+    async function onConfirm() {
         if (firstEntry !== secondEntry) {
             setShowDanger(true);
         } else if (data) {
-            props.handler(data._links.self.href, firstEntry).then((response: AxiosResponse) => {
-                if (response.status == StatusCodes.OK) {
-                    setShowSuccess(true);
-                    setTimeout(function () {
-                        Router.push(applicationPaths.home);
-                    }, 3000);
-                }
-            });
+            const response: AxiosResponse = await props.handler(data._links.self.href, firstEntry);
+            if (response.status == StatusCodes.OK) {
+                setShowSuccess(true);
+                setTimeout(function () {
+                    Router.push(applicationPaths.home);
+                }, 3000);
+            }
         }
     }
 
     return (
         <Container className={styles.reset_component} data-testid="reset-component">
-            <h4>{t("Reset " + props.name)}</h4>
+            <h4>{capitalize(t("reset " + props.name))}</h4>
             <Form.Label>New {props.name}</Form.Label>
             <FormControl id="" data-testid="reset-input-1" type={props.name} onChange={onChangeFirstEntry} />
             <Form.Label>Repeat New {props.name}</Form.Label>
             <FormControl id="" data-testid="reset-input-2" type={props.name} onChange={onChangeSecondEntry} />
             <Button data-testid="confirm-reset" onClick={onConfirm}>
-                {t("Confirm Button")}
+                {capitalize(t("confirm button"))}
             </Button>
             <ToastContainer position="bottom-end">
                 <Toast
@@ -68,10 +68,10 @@ export const ResetComponent = (props: any) => {
                     delay={3000}
                     autohide
                 >
-                    <Toast.Body>{t(props.name + " Identical")}</Toast.Body>
+                    <Toast.Body>{capitalize(t(props.name + " identical"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
-            <ToastContainer position="bottom-end">
+            <ToastContainer position="bottom-end" data-testid="toast-reset">
                 <Toast
                     bg="success"
                     onClose={() => setShowSuccess(false)}
@@ -79,7 +79,7 @@ export const ResetComponent = (props: any) => {
                     delay={3000}
                     autohide
                 >
-                    <Toast.Body>{t("Changed Succesfully")}</Toast.Body>
+                    <Toast.Body>{capitalize(t("changed succesfully"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
         </Container>

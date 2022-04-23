@@ -4,13 +4,14 @@ import useTranslation from "next-translate/useTranslation";
 import { ResetComponent } from "../components/resetComponent";
 import Navbar from "../components/navBar";
 import { savePasswordHandler } from "../handlers/confirmResetHandler";
+import { capitalize } from "../utility/stringUtil";
 
 const ChangePassword: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div>
             <Head>
-                <title>{t("Reset password")}</title>
+                <title>{capitalize(t("reset password"))}</title>
             </Head>
             <Navbar />
             <ResetComponent name="password" handler={savePasswordHandler} />

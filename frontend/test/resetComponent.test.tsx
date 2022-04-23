@@ -5,8 +5,8 @@ import mockAxios from "jest-mock-axios";
 import { makeCacheFree } from "./Provide";
 import ChangeEmail from "../src/pages/changeEmail";
 import ChangePassword from "../src/pages/changePassword";
-import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
-import { UserRole } from "../src/api/entities/UserEntity";
+import { getBaseOkResponse, getBaseUser } from './TestEntityProvider';
+import { IUser, UserRole } from '../src/api/entities/UserEntity';
 import { AxiosResponse } from "axios";
 import apiPaths from "../src/properties/apiPaths";
 
@@ -16,20 +16,19 @@ afterEach(() => {
     mockAxios.reset();
 });
 
-async function renderNormalUser(toRender: Function) {
+async function renderNormalUser(toRender: Function, user: IUser) {
     render(makeCacheFree(toRender));
 
     await waitFor(() => {
         expect(mockAxios.get).toHaveBeenCalled();
     });
 
-    const user = getBaseUser("2", UserRole.admin, true);
     const response: AxiosResponse = getBaseOkResponse(user);
     act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response));
 }
 
-async function performPatch(string1: string, string2: string, toRender: Function) {
-    await renderNormalUser(toRender);
+async function performPatch(string1: string, string2: string, toRender: Function, user: IUser) {
+    await renderNormalUser(toRender, user);
 
     const input1 = screen.getByTestId("reset-input-1");
     expect(input1).toBeInTheDocument();
@@ -41,7 +40,7 @@ async function performPatch(string1: string, string2: string, toRender: Function
     await act(async () => await userEvent.click(screen.getByTestId("confirm-reset")));
 
     await waitFor(() => {
-        expect(mockAxios.patch).toHaveBeenCalled();
+        expect(mockAxios.patch).toHaveBeenCalledWith(user._links.self.href, expect.anything(), expect.anything());
     });
 }
 
@@ -57,8 +56,9 @@ describe("Reset Component Tests", () => {
     });
 
     it("changeEmail patch", async () => {
+        const user = getBaseUser("2", UserRole.admin, true);
         const newMail: string = "new@mail.com";
-        await performPatch(newMail, newMail, ChangeEmail);
+        await performPatch(newMail, newMail, ChangeEmail, user);
 
         // May be empty, we don't process the returned values
         const response: AxiosResponse = getBaseOkResponse({});
@@ -66,9 +66,10 @@ describe("Reset Component Tests", () => {
     });
 
     it("changeEmail patch fail", async () => {
+        const user = getBaseUser("2", UserRole.admin, true);
         const newMail: string = "new@mail.com";
         const newMail2: string = "ne@mail.com";
-        await renderNormalUser(ChangeEmail);
+        await renderNormalUser(ChangeEmail, user);
 
         const input1 = screen.getByTestId("reset-input-1");
         expect(input1).toBeInTheDocument();
@@ -78,11 +79,13 @@ describe("Reset Component Tests", () => {
         expect(input2).toBeInTheDocument();
         await userEvent.type(input2, newMail2);
         await act(async () => await userEvent.click(screen.getByTestId("confirm-reset")));
+        act(() => expect(screen.getByTestId("toast-reset")).toBeInTheDocument())
     });
 
     it("changePassword patch", async () => {
+        const user = getBaseUser("2", UserRole.admin, true);
         const newPassword: string = "new-secure-password";
-        await performPatch(newPassword, newPassword, ChangePassword);
+        await performPatch(newPassword, newPassword, ChangePassword, user);
 
         // May be empty, we don't process the returned values
         const response: AxiosResponse = getBaseOkResponse({});
@@ -90,9 +93,10 @@ describe("Reset Component Tests", () => {
     });
 
     it("changePassword patch fail", async () => {
+        const user = getBaseUser("2", UserRole.admin, true);
         const newPassword: string = "new-secure-password";
         const newPassword2: string = "new-secure-passwod";
-        await renderNormalUser(ChangePassword);
+        await renderNormalUser(ChangePassword, user);
 
         const input1 = screen.getByTestId("reset-input-1");
         expect(input1).toBeInTheDocument();
@@ -102,5 +106,6 @@ describe("Reset Component Tests", () => {
         expect(input2).toBeInTheDocument();
         await userEvent.type(input2, newPassword2);
         await act(async () => await userEvent.click(screen.getByTestId("confirm-reset")));
+        act(() => expect(screen.getByTestId("toast-reset")).toBeInTheDocument())
     });
 });
