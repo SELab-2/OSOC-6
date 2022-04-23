@@ -48,14 +48,14 @@ const ProjectAsignmentList: NextPage = () => {
                 <Accordion
                     defaultActiveKey={["0"]}
                     alwaysOpen
-                    className={"w-75 overflow-auto"}
-                    style={{ height: "20em" }}
+                    className={"overflow-auto"}
+                    style={{ height: "30em" }}
                 >
                     {projectList.map((item, index) => {
                         return (
                             <AccordionItem key={index} eventKey={`${index}`}>
-                                <AccordionHeader>
-                                    <div>
+                                <AccordionHeader className={"bg-secondary"}>
+                                    <div >
                                         <h4>{item.project.name}</h4>
                                         <p>{item.project.partnerName}</p>
                                     </div>

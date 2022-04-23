@@ -121,15 +121,15 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                 {assign.map((assignment, index) => {
                     return (
                         <div key={index}>
-                            <Row className={"align-items-center"} xs={2}>
-                                <Col sm={11}>
+                            <Row className={"align-items-center"}>
+                                <Col xs={10} md={11}>
                                     <h6>{assignment.student.firstName} </h6>
                                     <p>
                                         Suggested by {assignment.assigner.callName}: <br />{" "}
                                         {assignment.assignment.reason}
                                     </p>
                                 </Col>
-                                <Col sm={1}>
+                                <Col xs={2} md={1}>
                                     <CloseButton
                                         aria-label={"Remove student from project"}
                                         value={assignment.assignment._links.assignment.href}
