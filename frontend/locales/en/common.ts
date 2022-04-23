@@ -84,7 +84,6 @@ const common = {
     "student none": "no experience yet",
     "student yes_noStudentCoach": "yes, but does not want to be student coach",
     "student yes_StudentCoach": "yes, wants to be student coach",
-
 };
 
 export default common;

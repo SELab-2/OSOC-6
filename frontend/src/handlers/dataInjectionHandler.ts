@@ -160,8 +160,19 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
     const students: IStudentPage = (await axios.get(apiPaths.students, AxiosConf)).data;
     let containedStudents: IStudent[];
-    const possibleSkills = ["front-end developer", "back-end developer", "UX / UI designer", "Graphic designer",
-        "Business Modeller", "Storyteller", "Marketer", "Copywriter", "Video editor", "Photographer", "Other"]
+    const possibleSkills = [
+        "front-end developer",
+        "back-end developer",
+        "UX / UI designer",
+        "Graphic designer",
+        "Business Modeller",
+        "Storyteller",
+        "Marketer",
+        "Copywriter",
+        "Video editor",
+        "Photographer",
+        "Other",
+    ];
     if (students._embedded.students.length == 0) {
         const bestSkill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
         const skill = possibleSkills[(Math.random() * possibleSkills.length) | 0];

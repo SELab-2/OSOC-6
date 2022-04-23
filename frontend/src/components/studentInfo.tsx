@@ -18,8 +18,11 @@ export function StudentInfo() {
         return null;
     }
 
-    let experiences = {"YES_NO_STUDENT_COACH": "student yes_noStudentCoach",
-        "YES_STUDENT_COACH": "student yes_StudentCoach", 'NONE': "student none"}[data.student.osocExperience]
+    let experiences = {
+        YES_NO_STUDENT_COACH: "student yes_noStudentCoach",
+        YES_STUDENT_COACH: "student yes_StudentCoach",
+        NONE: "student none",
+    }[data.student.osocExperience];
 
     return (
         <div>
@@ -29,13 +32,11 @@ export function StudentInfo() {
                 </div>
                 <div className="col-sm-6">
                     <ListGroup className="list-group-horizontal" as="ul">
-                        {data.student.skills
-                            .map((skill) => (
-                                <ListGroupItem key={skill} className={styles.skillStyle}>
-                                    <p>{skill}</p>
-                                </ListGroupItem>
-                            ))
-                        }
+                        {data.student.skills.map((skill) => (
+                            <ListGroupItem key={skill} className={styles.skillStyle}>
+                                <p>{skill}</p>
+                            </ListGroupItem>
+                        ))}
                     </ListGroup>
                 </div>
             </div>
@@ -62,20 +63,44 @@ export function StudentInfo() {
             <a href={data.student.motivationURI}>{capitalize(t("student motivation"))}</a> <br />
             <br />
             <h2>{capitalize(t("student personal details"))}</h2>
-            <div>{capitalize(t("student gender"))}: {(data.student.gender).toLowerCase()} {t("student pronouns")} {(data.student.pronounsType).toLowerCase()}</div>
-            <div>{capitalize(t("student native language"))}: {data.student.mostFluentLanguage}</div>
-            <div>{capitalize(t("student english proficiency"))}: {data.student.englishProficiency.toLowerCase()}</div>
-            <div>{capitalize(t("student phone number"))}: {data.student.phoneNumber}</div>
-            <div>{capitalize(t("student email"))}: {data.student.email}</div>
+            <div>
+                {capitalize(t("student gender"))}: {data.student.gender.toLowerCase()} {t("student pronouns")}{" "}
+                {data.student.pronounsType.toLowerCase()}
+            </div>
+            <div>
+                {capitalize(t("student native language"))}: {data.student.mostFluentLanguage}
+            </div>
+            <div>
+                {capitalize(t("student english proficiency"))}:{" "}
+                {data.student.englishProficiency.toLowerCase()}
+            </div>
+            <div>
+                {capitalize(t("student phone number"))}: {data.student.phoneNumber}
+            </div>
+            <div>
+                {capitalize(t("student email"))}: {data.student.email}
+            </div>
             <br />
             <h2>{capitalize(t("student education"))}</h2>
-            <div>{capitalize(t("student studies"))}: {data.student.studies.join(", ")}</div>
-            <div>{capitalize(t("student institution"))}: {data.student.institutionName}</div>
-            <div>{capitalize(t("student current diploma"))}: {data.student.currentDiploma}</div>
-            <div>{capitalize(t("student degree year"))}: {data.student.yearInCourse} {t("student degree duration")} {data.student.durationCurrentDegree}</div>
-            <div>{capitalize(t("student applied for"))}: {data.student.skills.join(", ")}</div>
-            <div>{capitalize(t("student osoc experience"))}: {t(experiences)}</div>
-
+            <div>
+                {capitalize(t("student studies"))}: {data.student.studies.join(", ")}
+            </div>
+            <div>
+                {capitalize(t("student institution"))}: {data.student.institutionName}
+            </div>
+            <div>
+                {capitalize(t("student current diploma"))}: {data.student.currentDiploma}
+            </div>
+            <div>
+                {capitalize(t("student degree year"))}: {data.student.yearInCourse}{" "}
+                {t("student degree duration")} {data.student.durationCurrentDegree}
+            </div>
+            <div>
+                {capitalize(t("student applied for"))}: {data.student.skills.join(", ")}
+            </div>
+            <div>
+                {capitalize(t("student osoc experience"))}: {t(experiences)}
+            </div>
         </div>
     );
 }
