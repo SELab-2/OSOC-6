@@ -84,7 +84,7 @@ public final class Student implements WeakToEdition {
      * The pronouns of the student.
      */
     @Basic(optional = false)
-    @Getter @Setter
+    @Getter @Setter @Builder.Default
     private String pronouns = "";
 
     /**
@@ -117,6 +117,22 @@ public final class Student implements WeakToEdition {
     @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
     @Getter @Setter
     private String phoneNumber;
+
+    // TODO mischien worktype en daytimeresponsibilities aan front end toevoegen,
+    //  eerst testen of front end werkt zonder ze toe te voegen
+    /**
+     * How the student would like to work for OSOC (employment agreement, volunteer, for free, ...).
+     */
+    @Basic(optional = false)
+    @Getter @Setter
+    private String workType;
+
+    /**
+     * Any responsibilities the student might have which could hinder them during the day.
+     */
+    @Basic(optional = false)
+    @Getter @Setter @Builder.Default
+    private String daytimeResponsibilities = "";
 
     /**
      * A URI pointing to the CV of a student.
@@ -155,14 +171,14 @@ public final class Student implements WeakToEdition {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
+    @Getter @Setter @Builder.Default
     private String currentDiploma = "";
 
     /**
      * Amount of years getting the current degree takes.
      */
     @Basic(optional = false)
-    @NotNull @Getter @Setter
+    @NotNull @Getter @Setter @Builder.Default
     private Integer durationCurrentDegree = 0;
 
     /**
@@ -173,7 +189,7 @@ public final class Student implements WeakToEdition {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
+    @Getter @Setter @Builder.Default
     private String yearInCourse = "";
 
     /**
@@ -181,7 +197,7 @@ public final class Student implements WeakToEdition {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
-    @Getter @Setter
+    @Getter @Setter @Builder.Default
     private String institutionName = "";
 
     /**
@@ -203,7 +219,7 @@ public final class Student implements WeakToEdition {
      * The {@link Status} of a student, used to track which type of mail was last sent to them.
      */
     @Basic(optional = false)
-    @Getter @Setter
+    @Getter @Setter @Builder.Default
     private Status status = Status.UNDECIDED;
 
     /**
@@ -211,7 +227,7 @@ public final class Student implements WeakToEdition {
      */
     @Basic(optional = false)
     @Column(columnDefinition = "text")
-    @Getter @Setter
+    @Getter @Setter @Builder.Default
     private String additionalStudentInfo = "";
 
     /**

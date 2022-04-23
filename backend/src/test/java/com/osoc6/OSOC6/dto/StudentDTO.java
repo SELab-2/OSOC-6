@@ -87,6 +87,16 @@ public final class StudentDTO {
     private String phoneNumber;
 
     /**
+     * How the student would like to work for OSOC (employment agreement, volunteer, for free, ...).
+     */
+    private String workType;
+
+    /**
+     * Any responsibilities the student might have which could hinder them during the day.
+     */
+    private String daytimeResponsibilities;
+
+    /**
      * A URI pointing to the CV of a student.
      */
     private String curriculumVitaeURI;
@@ -197,6 +207,8 @@ public final class StudentDTO {
         mostFluentLanguage = student.getMostFluentLanguage();
         englishProficiency = student.getEnglishProficiency();
         phoneNumber = student.getPhoneNumber();
+        workType = student.getWorkType();
+        daytimeResponsibilities = student.getDaytimeResponsibilities();
         curriculumVitaeURI = student.getCurriculumVitaeURI();
         portfolioURI = student.getPortfolioURI();
         motivationURI = student.getMotivationURI();
