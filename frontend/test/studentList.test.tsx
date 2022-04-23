@@ -7,6 +7,8 @@ import Router from "next/router";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { makeCacheFree } from "./Provide";
+import {getBaseOkResponse, getBasePage, getBaseStudent} from "./TestEntityProvider";
+import apiPaths from "../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -22,43 +24,22 @@ describe("StudentList initialization", () => {
 });
 
 it("Render studentlist and click an item", async () => {
-    const studentURL = "http://localhost/api/users/10";
+    const id = "10";
+    const student = getBaseStudent(id)
 
-    const response: AxiosResponse = {
-        data: {
-            _embedded: {
-                students: [
-                    {
-                        _links: {
-                            self: {
-                                href: studentURL,
-                            },
-                        },
-                        callName: "test user",
-                        bestSkill: "best skill",
-                    },
-                ],
-            },
-            page: {
-                totalPages: 1,
-            },
-        },
-        status: StatusCodes.OK,
-        statusText: ReasonPhrases.OK,
-        headers: {},
-        config: {},
-    };
+    const response: AxiosResponse = getBaseOkResponse(
+        getBasePage(apiPaths.students, "students", [student])
+    );
 
     render(makeCacheFree(StudentList));
     mockAxios.mockResponseFor({ method: "GET" }, response);
 
-    let user: Element = await screen.findByText("test user");
-    expect(user).toBeInTheDocument();
+    let studentElement = await screen.findByText(student.callName);
+    expect(studentElement).toBeInTheDocument();
 
-    await userEvent.click(user);
+    await userEvent.click(studentElement);
 
     waitFor(() => {
-        // expect(Router.push).toHaveBeenCalledWith(studentURL.split(apiPaths.base)[1]);
         expect(Router.push).toHaveBeenCalled();
     });
 });
