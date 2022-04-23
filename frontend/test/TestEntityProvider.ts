@@ -34,6 +34,17 @@ export function getBaseNoContentResponse(): AxiosResponse {
     };
 }
 
+export function getBaseBadRequestResponse(): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.BAD_REQUEST,
+        statusText: ReasonPhrases.BAD_REQUEST,
+        headers: {},
+        config: {},
+        request: {},
+    };
+}
+
 export function getBasePage<T extends IBaseEntity>(
     apiPath: string,
     collectionName: string,

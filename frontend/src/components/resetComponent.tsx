@@ -9,6 +9,7 @@ import Router from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
+import timers from "../properties/timers";
 import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
 
 export const ResetComponent = (props: any) => {
@@ -45,7 +46,7 @@ export const ResetComponent = (props: any) => {
                 setShowSuccess(true);
                 setTimeout(function () {
                     Router.push(applicationPaths.home);
-                }, 3000);
+                }, timers.redirect);
             }
         }
     }
@@ -76,7 +77,7 @@ export const ResetComponent = (props: any) => {
                     bg="success"
                     onClose={() => setShowSuccess(false)}
                     show={showSuccess}
-                    delay={3000}
+                    delay={timers.toast}
                     autohide
                 >
                     <Toast.Body>{capitalize(t("changed succesfully"))}</Toast.Body>
