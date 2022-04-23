@@ -54,6 +54,13 @@ const common = {
 
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
+
+    "student suggestions": "suggestions",
+    "student about": "about student",
+    "student more info": "more info about this student",
+    "student education": "student education",
+    "student cv": "cv",
+    "student motivation": "motivation",
 };
 
 export default common;
