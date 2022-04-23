@@ -1,8 +1,8 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import {IProject} from "./ProjectEntity";
-import {IUser} from "./UserEntity";
-import {IFullProjectSkill} from "../calls/projectSkillCalls";
-import {IFullSuggestion, ISuggestion} from "./SuggestionEntity";
+import { IProject } from "./ProjectEntity";
+import { IUser } from "./UserEntity";
+import { IFullProjectSkill } from "../calls/projectSkillCalls";
+import { IFullSuggestion, ISuggestion } from "./SuggestionEntity";
 
 export enum EnglishProficiency {
     /**
@@ -99,7 +99,7 @@ export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
 export type IAllStudentInfo = {
     student: IStudent;
     suggestions: IFullSuggestion[];
-}
+};
 
 export class Student {
     constructor(
