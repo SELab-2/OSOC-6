@@ -18,18 +18,22 @@ public enum QuestionKey {
     /**
      * Are you able to work 128 hours with a student employment agreement, or as a volunteer?.
      */
-    WORK_TIME("question_mB7WR7") {
-        // TODO toevoegen aan student?
+    WORK_TYPE("question_mB7WR7") {
         @Override
-        public void addToStudent(final FormField formField, final Student student) { }
+        public void addToStudent(final FormField formField, final Student student) {
+            student.setWorkType((String) formField.getValue());
+        }
     },
     /**
      * Are there any responsibilities you might have which could hinder you during the day?
      */
     DAY_RESPONSIBILITIES("question_wvY59A") {
-        // TODO toevoegen aan student?
         @Override
-        public void addToStudent(final FormField formField, final Student student) { }
+        public void addToStudent(final FormField formField, final Student student) {
+            if (formField.getValue() != null) {
+                student.setDaytimeResponsibilities((String) formField.getValue());
+            }
+        }
     },
     /**
      * Birth name.

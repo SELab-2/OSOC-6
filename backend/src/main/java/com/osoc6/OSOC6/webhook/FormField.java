@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.webhook;
 
+import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import lombok.Data;
 
@@ -32,6 +33,14 @@ public class FormField {
      * The options of the question.
      */
     private List<Option> options;
+
+    /**
+     * Add the answer to this form field to the given student.
+     * @param student the student to add the answer to
+     */
+    public void addToStudent(final Student student) {
+        key.addToStudent(this, student);
+    }
 
     /**
      * Given an id and a list of options, get option from the list with the same id.
