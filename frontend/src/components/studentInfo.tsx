@@ -2,9 +2,10 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../properties/apiPaths";
 import useSWR from "swr";
-import { getAllStudentInfo, getStudentOnUrl } from "../api/calls/studentCalls";
+import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
-import { ListGroup } from "react-bootstrap";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
+import styles from "../styles/studentList.module.css";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
@@ -17,14 +18,25 @@ export function StudentInfo() {
         return null;
     }
 
+    let experiences = {"YES_NO_STUDENT_COACH": "student yes_noStudentCoach",
+        "YES_STUDENT_COACH": "student yes_StudentCoach", 'NONE': "student none"}[data.student.osocExperience]
+
     return (
         <div>
             <div className="row">
-                <div className="col-sm-4">
+                <div className="col-sm-6">
                     <h1>{data.student.callName}</h1>
                 </div>
-                <div className="col-sm-8">
-                    <div>Positions</div>
+                <div className="col-sm-6">
+                    <ListGroup className="list-group-horizontal" as="ul">
+                        {data.student.skills
+                            .map((skill) => (
+                                <ListGroupItem key={skill} className={styles.skillStyle}>
+                                    <p>{skill}</p>
+                                </ListGroupItem>
+                            ))
+                        }
+                    </ListGroup>
                 </div>
             </div>
             <br />
@@ -49,12 +61,21 @@ export function StudentInfo() {
             <a href={data.student.portfolioURI}>{capitalize(t("student portfolio"))}</a> <br />
             <a href={data.student.motivationURI}>{capitalize(t("student motivation"))}</a> <br />
             <br />
+            <h2>{capitalize(t("student personal details"))}</h2>
+            <div>{capitalize(t("student gender"))}: {(data.student.gender).toLowerCase()} {t("student pronouns")} {(data.student.pronounsType).toLowerCase()}</div>
+            <div>{capitalize(t("student native language"))}: {data.student.mostFluentLanguage}</div>
+            <div>{capitalize(t("student english proficiency"))}: {data.student.englishProficiency.toLowerCase()}</div>
+            <div>{capitalize(t("student phone number"))}: {data.student.phoneNumber}</div>
+            <div>{capitalize(t("student email"))}: {data.student.email}</div>
+            <br />
             <h2>{capitalize(t("student education"))}</h2>
-            <div>
-                Currently in {data.student.yearInCourse} year of {data.student.studies} at{" "}
-                {data.student.institutionName}.
-            </div>
-            <div>Has already obtained {data.student.currentDiploma}.</div>
+            <div>{capitalize(t("student studies"))}: {data.student.studies.join(", ")}</div>
+            <div>{capitalize(t("student institution"))}: {data.student.institutionName}</div>
+            <div>{capitalize(t("student current diploma"))}: {data.student.currentDiploma}</div>
+            <div>{capitalize(t("student degree year"))}: {data.student.yearInCourse} {t("student degree duration")} {data.student.durationCurrentDegree}</div>
+            <div>{capitalize(t("student applied for"))}: {data.student.skills.join(", ")}</div>
+            <div>{capitalize(t("student osoc experience"))}: {t(experiences)}</div>
+
         </div>
     );
 }

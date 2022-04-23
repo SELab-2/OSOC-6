@@ -56,11 +56,35 @@ const common = {
     "template placeholder": "Write your template here",
 
     "student suggestions": "suggestions",
-    "student about": "about student",
+    "student personal details": "personal details",
+    "student native language": "native language",
+    "student english proficiency": "english proficiency",
+    "student phone number": "phone number",
+    "student email": "email adress",
+    "student gender": "gender",
+    "student pronouns": "with pronouns",
+    "student about": "about the student",
     "student more info": "more info about this student",
-    "student education": "student education",
+    "student education": "student education and experience",
     "student cv": "cv",
     "student motivation": "motivation",
+
+    "student info current": "currently in",
+    "student info year": "year of",
+    "student info institution": "at",
+    "student info current diploma": "",
+
+    "student studies": "studies",
+    "student institution": "institution",
+    "student current diploma": "studying for",
+    "student degree year": "currently in",
+    "student degree duration": "year out of",
+    "student applied for": "applied for",
+    "student osoc experience": "osoc experience",
+    "student none": "no experience yet",
+    "student yes_noStudentCoach": "yes, but does not want to be student coach",
+    "student yes_StudentCoach": "yes, wants to be student coach",
+
 };
 
 export default common;
