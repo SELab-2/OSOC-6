@@ -424,7 +424,8 @@ public enum QuestionKey {
                 return questionKey;
             }
         }
-        // If the key does not exist.
+        // If the key does not exist, set it to null. This way, all unhandled questions can be filtered out
+        // by simply removing all questions with a null QuestionKey.
         return null;
     }
 }
