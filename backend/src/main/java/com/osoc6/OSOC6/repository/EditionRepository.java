@@ -27,18 +27,6 @@ import java.util.Optional;
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface EditionRepository extends JpaRepository<Edition, Long> {
     /**
-     * Find an edition by its name.
-     * @param name name of the edition to look for
-     * @return the edition with the given name or Optional#empty if none found
-     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
-     * Since we want to be able to use this method anywhere, we set the authorization to permitAll.
-     */
-    @RestResource(exported = false)
-    @PreAuthorize("permitAll()")
-    @Query("select e from Edition e where e.name = :name")
-    Optional<Edition> internalFindByName(@Param("name") String name);
-
-    /**
      * Search by using the following: /{EDITIONS_PATH}/search/{EDITIONS_BY_NAME_PATH}?name=nameOfEdition.
      * @param name the searched name
      * @param pageable argument needed to return a page

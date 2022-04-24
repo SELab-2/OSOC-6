@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,20 @@ public class PublicRepository {
         query.setParameter("email", email);
         List<?> results = query.getResultList();
         return (Optional<UserEntity>) results.stream().findFirst();
+    }
+
+    /**
+     * This method finds the edition with a given name.
+     * @param name name of the searched edition
+     * @return the edition with the given name or Optional#empty if none found
+     * @apiNote Since we are casting to Optional, we need to add the 'unchecked' suppress warnings annotation
+     */
+    @SuppressWarnings("unchecked")
+    public Optional<Edition> internalFindByName(final String name) {
+        Query query = entityManager.createQuery("select e from Edition e where e.name = :name");
+        query.setParameter("name", name);
+        List<?> results = query.getResultList();
+        return (Optional<Edition>) results.stream().findFirst();
     }
 
     /**

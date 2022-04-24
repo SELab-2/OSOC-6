@@ -3,7 +3,6 @@ package com.osoc6.OSOC6.service;
 import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
-import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.webhook.FormField;
 import com.osoc6.OSOC6.webhook.WebhookForm;
@@ -20,11 +19,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class WebhookService {
     /**
-     * The edition repository, used to access editions from the database.
-     */
-    private final EditionRepository editionRepository;
-
-    /**
      * The public repository, used to access the database without authorization.
      */
     private final PublicRepository publicRepository;
@@ -36,7 +30,7 @@ public class WebhookService {
      * @param editionName the name of the edition the student is applying for
      */
     public void processWebhookForm(final WebhookForm webhookForm, final String editionName) {
-        Optional<Edition> optionalEdition = editionRepository.internalFindByName(editionName);
+        Optional<Edition> optionalEdition = publicRepository.internalFindByName(editionName);
         if (optionalEdition.isPresent()) {
             Student student = new Student();
             List<FormField> fields = webhookForm.getData().getFields().stream()
