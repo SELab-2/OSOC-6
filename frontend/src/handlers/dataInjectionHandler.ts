@@ -32,6 +32,7 @@ import {
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
 import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
 import { AxiosConf } from "../api/calls/baseCalls";
+import faker from "@faker-js/faker";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
@@ -182,8 +183,44 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             editionUrl
         );
 
+        let students = [student1];
+        for (let i = 0; i < 10; i++) {
+            const firstname = faker.name.firstName();
+            const lastname = faker.name.lastName();
+            const newStudent: Student = new Student(
+                faker.internet.email(),
+                faker.lorem.sentence(10),
+                faker.lorem.sentence(5),
+                firstname + " " + lastname,
+                "Master",
+                "",
+                5,
+                "higher level",
+                EnglishProficiency.fluent,
+                firstname,
+                Gender.male,
+                "Ghent University",
+                lastname,
+                "Dutch",
+                "",
+                OsocExpericience.yes_noStudentCoach,
+                "+3257697568",
+                "",
+                "",
+                "",
+                "",
+                PronounsType.he,
+                ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+                ["I love to Spring Spring in java Spring!"],
+                "",
+                "3th",
+                editionUrl
+            );
+            students.push(newStudent);
+        }
+
         containedStudents = await Promise.all(
-            [student1].map(async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data)
+            students.map(async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data)
         );
     } else {
         containedStudents = students._embedded.students;
@@ -247,6 +284,41 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
     } else {
         containedSuggestions = suggestions._embedded.suggestions;
+    }
+
+    for (let student of containedStudents) {
+        let studenturi = student._links.self.href;
+        let newSuggestions: Suggestion[] = [];
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+            const chance = Math.random();
+            let suggestion: Suggestion;
+            if (chance < 1 / 3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.yes,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else if (chance < 2 / 3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.maybe,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.no,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            }
+            newSuggestions.push(suggestion);
+        }
+        containedSuggestions = await Promise.all(
+            newSuggestions.map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data)
+        );
     }
     console.log(containedSuggestions);
 
