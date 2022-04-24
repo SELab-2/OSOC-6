@@ -45,6 +45,17 @@ export function getBaseBadRequestResponse(): AxiosResponse {
     };
 }
 
+export function getBaseMovedResponse(url: string): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.MOVED_TEMPORARILY,
+        statusText: ReasonPhrases.MOVED_TEMPORARILY,
+        headers: {},
+        config: {},
+        request: { responseURL: url },
+    };
+}
+
 export function getBasePage<T extends IBaseEntity>(
     apiPath: string,
     collectionName: string,
