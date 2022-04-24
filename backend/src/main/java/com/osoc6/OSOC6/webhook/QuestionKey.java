@@ -56,7 +56,7 @@ public enum QuestionKey {
     /**
      * How would you like to be called?
      */
-    DIFFERENT_NAME("question_31VoaM") {
+    CALL_NAME("question_31VoaM") {
         /**
          * If the student specified a callName, use the specified one.
          * Otherwise, the callName is set to a combination of their first and last name.

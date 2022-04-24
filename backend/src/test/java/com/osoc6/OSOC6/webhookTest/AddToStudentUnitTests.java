@@ -128,7 +128,7 @@ public class AddToStudentUnitTests {
     public void provided_callname_is_added() {
         String callName = "callname";
         FormField formField = new FormField();
-        formField.setKey(QuestionKey.DIFFERENT_NAME);
+        formField.setKey(QuestionKey.CALL_NAME);
         formField.setValue(callName);
 
         formField.addToStudent(student);
@@ -144,7 +144,7 @@ public class AddToStudentUnitTests {
         student.setLastName(lastname);
 
         FormField formField = new FormField();
-        formField.setKey(QuestionKey.DIFFERENT_NAME);
+        formField.setKey(QuestionKey.CALL_NAME);
 
         formField.addToStudent(student);
 
