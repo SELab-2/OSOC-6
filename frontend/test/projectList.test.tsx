@@ -20,7 +20,7 @@ describe("Project", () => {
     describe("ProjectList header and button", () => {
         it("Should have the 'New project'-button", () => {
             render(makeCacheFree(ProjectList));
-            expect(screen.getByTestId("newproject-button")).toBeInTheDocument();
+            expect(screen.getByTestId("new-project-button")).toBeInTheDocument();
         });
 
         it("Should have the 'Projects'-header", () => {
@@ -38,10 +38,9 @@ describe("Project", () => {
 
     it.skip("Should go to projects/create when clicking button", async () => {
         render(<ProjectList />);
-        await userEvent.click(screen.getByTestId("newproject-button"));
-        await waitFor(() => {
-            expect(mockRouter.pathname).toEqual(applicationPaths.projectCreation);
-        });
+        await userEvent.click(screen.getByTestId("new-project-button"));
+
+        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
     });
 
     it("Should go to project page when clicking item in list", async () => {
@@ -55,6 +54,6 @@ describe("Project", () => {
         mockAxios.mockResponseFor({ method: "GET" }, response);
         await userEvent.click(await screen.findByText(baseProject.name));
 
-        expect(mockRouter.pathname).toEqual("projects/5");
+        expect(mockRouter.pathname).toEqual("/projects/5");
     });
 });
