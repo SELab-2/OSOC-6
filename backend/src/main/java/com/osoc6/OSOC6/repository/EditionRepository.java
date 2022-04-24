@@ -27,7 +27,7 @@ import java.util.Optional;
 @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH)
 public interface EditionRepository extends JpaRepository<Edition, Long> {
     /**
-     * search by using the following: /{EDITIONS_PATH}/search/{EDITIONS_BY_NAME_PATH}?name=nameOfEdition.
+     * Search by using the following: /{EDITIONS_PATH}/search/{EDITIONS_BY_NAME_PATH}?name=nameOfEdition.
      * @param name the searched name
      * @param pageable argument needed to return a page
      * @return list of matched editions

@@ -69,7 +69,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param portfolioURI field in student that is looked for
      * @param motivationURI field in student that is looked for
      * @param writtenMotivation field in student that is looked for
-     * @param educationLevel field in student that is looked for
      * @param currentDiploma field in student that is looked for
      * @param institutionName field in student that is looked for
      * @param bestSkill field in student that is looked for
@@ -102,7 +101,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         + "(:portfolioURI is null or stud.portfoliouri = :#{@spelUtil.safeString(#portfolioURI)}) and "
         + "(:motivationURI is null or stud.motivationuri = :#{@spelUtil.safeString(#motivationURI)}) and "
         + "(:writtenMotivation is null or stud.written_motivation = :#{@spelUtil.safeString(#writtenMotivation)}) and"
-        + "(:educationLevel is null or stud.education_level = :#{@spelUtil.safeString(#educationLevel)}) and "
         + "(:currentDiploma is null or stud.current_diploma = :#{@spelUtil.safeString(#currentDiploma)}) and "
         + "(:institutionName is null or stud.institution_name = :#{@spelUtil.safeString(#institutionName)}) and "
         + "(:bestSkill is null or stud.best_skill = :#{@spelUtil.safeString(#bestSkill)}) and "
@@ -118,7 +116,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("englishProficiency") EnglishProficiency englishProficiency,
                               @Param("phoneNumber") String phoneNumber, @Param("curriculumVitaeURI") String curriculumVitaeURI,
                               @Param("portfolioURI") String portfolioURI, @Param("motivationURI") String motivationURI,
-                              @Param("writtenMotivation") String writtenMotivation, @Param("educationLevel") String educationLevel,
+                              @Param("writtenMotivation") String writtenMotivation,
                               @Param("currentDiploma") String currentDiploma, @Param("institutionName") String institutionName,
                               @Param("bestSkill") String bestSkill,
                               @Param("osocExperience") OsocExperience osocExperience,

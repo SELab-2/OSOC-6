@@ -9,7 +9,7 @@ import { capitalize } from "../utility/stringUtil";
 const Users: NextPage = () => {
     const { t } = useTranslation("common");
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
                 <title>{capitalize(t("users manage"))}</title>
             </Head>

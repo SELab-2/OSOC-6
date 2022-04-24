@@ -19,6 +19,18 @@ describe("suggestion count", () => {
         const student = getBaseStudent("1");
         await waitFor(() => mockAxios.mockResponseFor({ url: studentUrl }, getBaseOkResponse(student)));
 
-        await waitFor(() => expect(screen.getByText("yes: 0 maybe: 0 no: 0")).toBeInTheDocument());
+        await waitFor(() => expect(screen.getByTestId("nosuggestions")).toBeInTheDocument());
+    });
+
+    it("should render with data containing suggestions", async () => {
+        render(makeCacheFree(() => SuggestionCount({ studentUrl })));
+
+        let student = getBaseStudent("1");
+        student.yesSuggestionCount = 5;
+        student.maybeSuggestionCount = 3;
+        student.noSuggestionCount = 1;
+        await waitFor(() => mockAxios.mockResponseFor({ url: studentUrl }, getBaseOkResponse(student)));
+
+        await waitFor(() => expect(screen.getByTestId("suggestioncount")).toBeInTheDocument());
     });
 });

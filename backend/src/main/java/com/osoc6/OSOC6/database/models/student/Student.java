@@ -81,11 +81,11 @@ public final class Student implements WeakToEdition {
     private Gender gender;
 
     /**
-     * The PronounsType of the student.
+     * The pronouns of the student.
      */
     @Basic(optional = false)
-    @Getter @Setter
-    private PronounsType pronounsType;
+    @Getter @Setter @Builder.Default
+    private String pronouns = "";
 
     /**
      * The callName of the student.
@@ -94,27 +94,6 @@ public final class Student implements WeakToEdition {
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
     @Getter @Setter
     private String callName;
-
-    /**
-     * The possessive pronoun used in case pronoun type == other.
-     */
-    @Basic(optional = false)
-    @Setter @Builder.Default
-    private String possessivePronoun = "";
-
-    /**
-     * The subjective pronoun used in case pronoun type == other.
-     */
-    @Basic(optional = false)
-    @Setter @Builder.Default
-    private String subjectivePronoun = "";
-
-    /**
-     * The objective pronoun used in case pronoun type == other.
-     */
-    @Basic(optional = false)
-    @Setter @Builder.Default
-    private String objectivePronoun = "";
 
     /**
      * The most fluent language of a person. This is a formatted string.
@@ -138,6 +117,20 @@ public final class Student implements WeakToEdition {
     @Column(length = RadagastNumberWizard.PHONE_NUMBER_LENGTH)
     @Getter @Setter
     private String phoneNumber;
+
+    /**
+     * How the student would like to work for OSOC (employment agreement, volunteer, for free, ...).
+     */
+    @Basic(optional = false)
+    @Getter @Setter
+    private String workType;
+
+    /**
+     * Any responsibilities the student might have which could hinder them during the day.
+     */
+    @Basic(optional = false)
+    @Getter @Setter @Builder.Default
+    private String daytimeResponsibilities = "";
 
     /**
      * A URI pointing to the CV of a student.
@@ -172,29 +165,19 @@ public final class Student implements WeakToEdition {
     private String writtenMotivation = "";
 
     /**
-     * Highest level of education a student currently has.
-     * Represented as string instead of enum because only one choice can be provided and other is an option.
-     */
-    @Basic(optional = false)
-    @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
-    private String educationLevel;
-
-    /**
      * Diploma a student is trying to get.
      */
-
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
-    private String currentDiploma;
+    @Getter @Setter @Builder.Default
+    private String currentDiploma = "";
 
     /**
      * Amount of years getting the current degree takes.
      */
     @Basic(optional = false)
-    @NotNull @Getter @Setter
-    private Integer durationCurrentDegree;
+    @NotNull @Getter @Setter @Builder.Default
+    private Integer durationCurrentDegree = 0;
 
     /**
      * What year the student is in the course.
@@ -204,16 +187,16 @@ public final class Student implements WeakToEdition {
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.DEFAULT_DESCRIPTION_LENGTH)
-    @Getter @Setter
-    private String yearInCourse;
+    @Getter @Setter @Builder.Default
+    private String yearInCourse = "";
 
     /**
      * Name of the collage/ university student is enrolled.
      */
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.CALL_NAME_LENGTH)
-    @Getter @Setter
-    private String institutionName;
+    @Getter @Setter @Builder.Default
+    private String institutionName = "";
 
     /**
      * The skill the student would describe to be their best.
@@ -231,19 +214,34 @@ public final class Student implements WeakToEdition {
     private OsocExperience osocExperience;
 
     /**
+     * The {@link Status} of a student, used to track which type of mail was last sent to them.
+     */
+    @Basic(optional = false)
+    @Getter @Setter @Builder.Default
+    private Status status = Status.UNDECIDED;
+
+    /**
      * Additional info that coaches or admins write about students.
      */
     @Basic(optional = false)
     @Column(columnDefinition = "text")
+    @Getter @Setter @Builder.Default
+    private String additionalStudentInfo = "";
+
+    /**
+     * A fun fact about the student.
+     */
+    @Basic(optional = false)
+    @Column(columnDefinition = "text")
     @Getter @Setter
-    private String additionalStudentInfo;
+    private String funFact;
 
     /**
      * {@link Edition} the student applies for.
      */
     @ManyToOne(optional = false, cascade = {})
     @ReadOnlyProperty
-    @Getter
+    @Getter @Setter
     private Edition edition;
 
     /**
@@ -286,54 +284,6 @@ public final class Student implements WeakToEdition {
     @JsonIgnore @RestResource(exported = false)
     @Getter @Setter @Builder.Default
     private List<Communication> communications = new ArrayList<>();
-
-    /**
-     *
-     * @return The possessive pronoun of the student.
-     */
-    public String getPossessivePronoun() {
-        return pronounsType.getPossessive(this);
-    }
-
-    /**
-     *
-     * @return The subjective pronoun of the student.
-     */
-    public String getSubjectivePronoun() {
-        return pronounsType.getSubjective(this);
-    }
-
-    /**
-     * Exportation of possessive pronoun to be used within te package, not exported by Spring.
-     * @return the possessive pronoun of the student in case the pronoun type is other.
-     */
-    String defaultGetPossessive() {
-        return possessivePronoun;
-    }
-
-    /**
-     * Exportation of objective pronoun to be used within te package, not exported by Spring.
-     * @return the objective pronoun of the student in case the pronoun type is other.
-     */
-    String defaultGetObjective() {
-        return objectivePronoun;
-    }
-
-    /**
-     * Exportation of subjective pronoun to be used within te package, not exported by Spring.
-     * @return the subjective pronoun of the student in case the pronoun type is other.
-     */
-    String defaultGetSubjective() {
-        return subjectivePronoun;
-    }
-
-    /**
-     *
-     * @return The objective pronoun of the student
-     */
-    public String getObjectivePronoun() {
-        return pronounsType.getObjective(this);
-    }
 
     /**
      * Get function exposing the amount of yes suggestions this student received within a student api-entry.

@@ -11,7 +11,7 @@ import {
     Gender,
     IStudent,
     OsocExpericience,
-    PronounsType,
+    Status,
 } from "../src/api/entities/StudentEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
@@ -42,6 +42,17 @@ export function getBaseBadRequestResponse(): AxiosResponse {
         headers: {},
         config: {},
         request: {},
+    };
+}
+
+export function getBaseMovedResponse(url: string): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.MOVED_TEMPORARILY,
+        statusText: ReasonPhrases.MOVED_TEMPORARILY,
+        headers: {},
+        config: {},
+        request: { responseURL: url },
     };
 }
 
@@ -176,25 +187,25 @@ export function getBaseStudent(id: string): IStudent {
         firstName: "Kasper",
         lastName: "Demeyere",
         gender: Gender.male,
-        pronounsType: PronounsType.he,
         callName: "Kasper Demeyere",
-        possessivePronoun: "his",
-        subjectivePronoun: "he",
-        objectivePronoun: "him",
+        pronouns: "he/him",
         mostFluentLanguage: "Dutch",
         englishProficiency: EnglishProficiency.expressive,
         phoneNumber: "+3257697568",
+        workType: "Yes, I can work with a student employment agreement in Belgium",
+        daytimeResponsibilities: "Eating and drinking",
         curriculumVitaeURI: "",
         portfolioURI: "",
         motivationURI: "",
         writtenMotivation: "",
-        educationLevel: "higher level",
         currentDiploma: "Master",
         durationCurrentDegree: 5,
         yearInCourse: "3th",
         institutionName: "Ghent University",
         bestSkill: "Finding out the Spring ways",
+        funFact: "A fun fact about me",
         osocExperience: OsocExpericience.yes_noStudentCoach,
+        status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],
         skills: ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
