@@ -1,7 +1,7 @@
 import { Formik, Field, Form } from "formik";
 import styles from "../styles/loginForm.module.css";
 
-export default function RegistrationForm(props: {submitHandler: (values: any) => void;}) {
+export default function RegistrationForm(props: { submitHandler: (values: any) => void }) {
     return (
         <div className={styles.login_box}>
             <Formik
@@ -9,7 +9,7 @@ export default function RegistrationForm(props: {submitHandler: (values: any) =>
                     callname: "",
                     email: "",
                     password: "",
-                    repeat: ""
+                    repeat: "",
                 }}
                 onSubmit={props.submitHandler}
             >

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import LoginError from "../src/pages/loginError";
 import "@testing-library/jest-dom";
-import {capitalize} from "../src/utility/stringUtil";
+import { capitalize } from "../src/utility/stringUtil";
 
 describe("LoginError page", () => {
     it("should render", async () => {

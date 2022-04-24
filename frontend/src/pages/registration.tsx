@@ -1,26 +1,31 @@
-import {NextPage} from "next";
+import { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import NavBar from "../components/navBar";
 import RegistrationForm from "../components/registrationForm";
-import {Toast, ToastContainer} from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../properties/timers";
-import {useState} from "react";
-import {User} from "../api/entities/UserEntity";
+import { useState } from "react";
+import { User } from "../api/entities/UserEntity";
 import Router from "next/router";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import {AxiosConf} from "../api/calls/baseCalls";
-import {loginSubmitHandler} from "../handlers/loginSubmitHandler";
-import {capitalize} from "../utility/stringUtil";
+import { AxiosConf } from "../api/calls/baseCalls";
+import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
+import { capitalize } from "../utility/stringUtil";
 
 const Registration: NextPage = () => {
     const { t } = useTranslation("common");
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [error, setError] = useState<string>(t("no_error"));
 
-    async function registrationHandler(values: { callname: string, email: string, password: string, repeat: string }) {
-        console.log(values)
+    async function registrationHandler(values: {
+        callname: string;
+        email: string;
+        password: string;
+        repeat: string;
+    }) {
+        console.log(values);
         if (values.password == values.repeat) {
             const registratingUser: User = new User(values.callname, values.email, values.password);
             // Use asPath instead of query to ignore the special characters in the token
@@ -29,13 +34,13 @@ const Registration: NextPage = () => {
             try {
                 await axios.post(apiPaths.base + apiPaths.registration, registratingUser, {
                     params: {
-                        token: invitationToken
+                        token: invitationToken,
                     },
-                    ...AxiosConf
-                })
+                    ...AxiosConf,
+                });
 
-                await loginSubmitHandler({username: values.email, password: values.password});
-                Router.push(apiPaths.home)
+                await loginSubmitHandler({ username: values.email, password: values.password });
+                Router.push(apiPaths.home);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);
@@ -51,9 +56,9 @@ const Registration: NextPage = () => {
             <Head>
                 <title className="capitalize">Registration</title>
             </Head>
-            <NavBar/>
+            <NavBar />
             <h1 className="display-6 mb-3 capitalize">Registration</h1>
-            <RegistrationForm submitHandler={registrationHandler}/>
+            <RegistrationForm submitHandler={registrationHandler} />
             <ToastContainer position="bottom-end">
                 <Toast
                     bg="danger"
