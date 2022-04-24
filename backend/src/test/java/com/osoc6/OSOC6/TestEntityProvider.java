@@ -88,7 +88,7 @@ public final class TestEntityProvider {
                 .phoneNumber("+324982672")
                 .workType("Yes, I can work as a volunteer in Belgium")
                 .daytimeResponsibilities("Being the boss")
-                .pronouns("he/her/them")
+                .pronouns("they")
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
