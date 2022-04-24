@@ -53,6 +53,12 @@ Change `osoc-test` at the end of the file, to the name of the database you made 
 ```
 spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
 ```
+You will also need to create an api token. You can do this by using the `crypto.randomUUID()` function in the browser 
+(see https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID). Once you have your api token, replace the 
+placeholder in `application.properties.example` with it.
+```
+webhook.token=your_secret_token_here
+```
 The final step, save this file and rename `application.properties.example` to `application.properties`.
 
 In the same `./src/main/resources` folder you'll also find a file named `initial-user.properties.example`.
@@ -68,6 +74,18 @@ Now you should be able to sync gradle and run the program.
 You should be set up now.
 If you want to run the program just run `./gradlew run bootRun`.
 Your backend will be served on the base path `/api/`.
+
+### Tally webhook
+
+To make it so the tally form submissions are automatically sent to the server, first go to your tally form. There, go
+to the `Integrations` tab and click `Connect` next to `Webhooks`. If your server domain is for example `test.com`,
+then fill in the following for endpoint URL, replacing `your_token_here` with the api token you generated earlier:
+```
+https://test.com/api/webhook?token=your_token_here&edition=edition_name_here
+```
+
+Later, once you have created an edition, replace `edition_name_here` with the name of the edition.
+This allows you to have multiple forms, each linked to a different edition.
 
 ## Developers
 
