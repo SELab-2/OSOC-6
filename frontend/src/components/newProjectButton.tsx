@@ -11,7 +11,7 @@ export const NewProjectButton = () => {
                 className="w-100, capitalize"
                 variant="primary"
                 size="lg"
-                onClick={() => Router.push(applicationPaths.projectCreation)}
+                onClick={() => Router.push("/" + applicationPaths.projectCreation)}
             >
                 {t("new project")}
             </Button>

@@ -36,9 +36,11 @@ export function ProjectList() {
                             action
                             as={"li"}
                             // Should be changed to individual project page later
+                            //href={projectId}
+
                             onClick={() => {
                                 let projectPath: string = projectId;
-                                Router.push(projectPath);
+                                Router.push("/" + projectPath);
                             }}
                         >
                             <h5 className="mb-1">{project.name}</h5>

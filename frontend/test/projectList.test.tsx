@@ -39,9 +39,8 @@ describe("Project", () => {
     it.skip("Should go to projects/create when clicking button", async () => {
         render(<ProjectList />);
         await userEvent.click(screen.getByTestId("newproject-button"));
-        await waitFor(() => {
-            expect(mockRouter.pathname).toEqual(applicationPaths.projectCreation);
-        });
+
+        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
     });
 
     it("Should go to project page when clicking item in list", async () => {
@@ -55,6 +54,6 @@ describe("Project", () => {
         mockAxios.mockResponseFor({ method: "GET" }, response);
         await userEvent.click(await screen.findByText(baseProject.name));
 
-        expect(mockRouter.pathname).toEqual("projects/5");
+        expect(mockRouter.pathname).toEqual("/projects/5");
     });
 });
