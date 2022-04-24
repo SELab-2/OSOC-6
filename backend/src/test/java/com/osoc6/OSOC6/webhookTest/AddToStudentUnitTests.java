@@ -68,9 +68,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_work_type_works() {
         String workType = "Yes, I can work as a volunteer in Belgium";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.WORK_TYPE);
-        formField.setValue(workType);
+        FormField formField = new FormField(QuestionKey.WORK_TYPE, workType);
 
         formField.addToStudent(student);
 
@@ -80,9 +78,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_daytime_responsibilities_is_added() {
         String daytimeResponsibilities = "Taking care of my nana";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.DAY_RESPONSIBILITIES);
-        formField.setValue(daytimeResponsibilities);
+        FormField formField = new FormField(QuestionKey.DAY_RESPONSIBILITIES, daytimeResponsibilities);
 
         formField.addToStudent(student);
 
@@ -91,9 +87,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_daytime_responsibilities_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.DAY_RESPONSIBILITIES);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.DAY_RESPONSIBILITIES, null);
 
         formField.addToStudent(student);
 
@@ -103,9 +97,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_birth_name_works() {
         String birthName = "birthname";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.BIRTH_NAME);
-        formField.setValue(birthName);
+        FormField formField = new FormField(QuestionKey.BIRTH_NAME, birthName);
 
         formField.addToStudent(student);
 
@@ -115,9 +107,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_last_name_works() {
         String lastName = "lastname";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LAST_NAME);
-        formField.setValue(lastName);
+        FormField formField = new FormField(QuestionKey.LAST_NAME, lastName);
 
         formField.addToStudent(student);
 
@@ -127,9 +117,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_callname_is_added() {
         String callName = "callname";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.CALL_NAME);
-        formField.setValue(callName);
+        FormField formField = new FormField(QuestionKey.CALL_NAME, callName);
 
         formField.addToStudent(student);
 
@@ -143,8 +131,7 @@ public class AddToStudentUnitTests {
         student.setFirstName(firstname);
         student.setLastName(lastname);
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.CALL_NAME);
+        FormField formField = new FormField(QuestionKey.CALL_NAME, null);
 
         formField.addToStudent(student);
 
@@ -156,9 +143,7 @@ public class AddToStudentUnitTests {
         Gender gender = Gender.FEMALE;
         String optionId = "1";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.GENDER);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.GENDER, optionId);
         setupGender(formField);
 
         formField.addToStudent(student);
@@ -171,9 +156,7 @@ public class AddToStudentUnitTests {
         Gender gender = Gender.MALE;
         String optionId = "2";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.GENDER);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.GENDER, optionId);
         setupGender(formField);
 
         formField.addToStudent(student);
@@ -186,9 +169,7 @@ public class AddToStudentUnitTests {
         Gender gender = Gender.TRANSGENDER;
         String optionId = "3";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.GENDER);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.GENDER, optionId);
         setupGender(formField);
 
         formField.addToStudent(student);
@@ -201,9 +182,7 @@ public class AddToStudentUnitTests {
         Gender gender = Gender.NOT_SPECIFIED;
         String optionId = "4";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.GENDER);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.GENDER, optionId);
         setupGender(formField);
 
         formField.addToStudent(student);
@@ -216,9 +195,7 @@ public class AddToStudentUnitTests {
         String invalidGender = "Rubicks cube";
         String optionId = "1";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.GENDER);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.GENDER, optionId);
         formField.setOptions(List.of(new Option(optionId, invalidGender)));
 
         assertThrows(WebhookException.class, () -> formField.addToStudent(student));
@@ -227,9 +204,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_pronouns_are_added() {
         String pronouns = "they/them";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.WHICH_PRONOUNS);
-        formField.setValue(pronouns);
+        FormField formField = new FormField(QuestionKey.WHICH_PRONOUNS, pronouns);
 
         formField.addToStudent(student);
 
@@ -238,9 +213,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_pronouns_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.WHICH_PRONOUNS);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.WHICH_PRONOUNS, null);
 
         formField.addToStudent(student);
 
@@ -250,9 +223,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_other_pronouns_are_added() {
         String pronouns = "mir/zir/zar";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_PRONOUNS);
-        formField.setValue(pronouns);
+        FormField formField = new FormField(QuestionKey.OTHER_PRONOUNS, pronouns);
 
         formField.addToStudent(student);
 
@@ -261,9 +232,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_other_pronouns_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_PRONOUNS);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.OTHER_PRONOUNS, null);
 
         formField.addToStudent(student);
 
@@ -273,9 +242,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_most_fluent_language_works() {
         String language = "French";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.WHICH_LANGUAGE);
-        formField.setValue(language);
+        FormField formField = new FormField(QuestionKey.WHICH_LANGUAGE, language);
 
         formField.addToStudent(student);
 
@@ -285,9 +252,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_other_most_fluent_language_is_added() {
         String language = "Iraqw";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_LANGUAGE);
-        formField.setValue(language);
+        FormField formField = new FormField(QuestionKey.OTHER_LANGUAGE, language);
 
         formField.addToStudent(student);
 
@@ -299,9 +264,7 @@ public class AddToStudentUnitTests {
         String language = "French";
         student.setMostFluentLanguage(language);
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_LANGUAGE);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.OTHER_LANGUAGE, null);
 
         formField.addToStudent(student);
 
@@ -311,9 +274,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_read_not_write_english_proficiency_works() {
         String optionId = "1";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         setupEnglishProficiency(formField);
 
         formField.addToStudent(student);
@@ -324,9 +285,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_simple_conversation_english_proficiency_works() {
         String optionId = "2";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         setupEnglishProficiency(formField);
 
         formField.addToStudent(student);
@@ -337,9 +296,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_expressive_english_proficiency_works() {
         String optionId = "3";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         setupEnglishProficiency(formField);
 
         formField.addToStudent(student);
@@ -350,9 +307,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_extensive_english_proficiency_works() {
         String optionId = "4";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         setupEnglishProficiency(formField);
 
         formField.addToStudent(student);
@@ -363,9 +318,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_fluent_english_proficiency_works() {
         String optionId = "5";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         setupEnglishProficiency(formField);
 
         formField.addToStudent(student);
@@ -376,9 +329,7 @@ public class AddToStudentUnitTests {
     @Test
     public void no_stars_in_english_proficiency_throws_exception() {
         String optionId = "1";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         formField.setOptions(List.of(new Option(optionId, "no stars in this string")));
 
         assertThrows(WebhookException.class, () -> formField.addToStudent(student));
@@ -387,9 +338,7 @@ public class AddToStudentUnitTests {
     @Test
     public void too_many_stars_in_english_proficiency_throws_exception() {
         String optionId = "1";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.RATE_ENGLISH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.RATE_ENGLISH, optionId);
         formField.setOptions(List.of(new Option(optionId, "to many stars ★★★★★★ in this string")));
 
         assertThrows(WebhookException.class, () -> formField.addToStudent(student));
@@ -398,9 +347,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_phone_number_works() {
         String phoneNumber = "+32456742567864356";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.PHONE_NUMBER);
-        formField.setValue(phoneNumber);
+        FormField formField = new FormField(QuestionKey.PHONE_NUMBER, phoneNumber);
 
         formField.addToStudent(student);
 
@@ -410,9 +357,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_email_adress_works() {
         String email = "test@test.com";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.EMAIL_ADDRESS);
-        formField.setValue(email);
+        FormField formField = new FormField(QuestionKey.EMAIL_ADDRESS, email);
 
         formField.addToStudent(student);
 
@@ -425,9 +370,7 @@ public class AddToStudentUnitTests {
         List<Map<String, String>> listMap = List.of(Map.of(
                 "name", "testname",
                 "url", url));
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_CV);
-        formField.setValue(listMap);
+        FormField formField = new FormField(QuestionKey.UPLOAD_CV, listMap);
 
         formField.addToStudent(student);
 
@@ -436,9 +379,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_upload_cv_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_CV);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.UPLOAD_CV, null);
 
         formField.addToStudent(student);
 
@@ -448,9 +389,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_link_cv_is_added() {
         String url = "https://my.cv.com";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LINK_CV);
-        formField.setValue(url);
+        FormField formField = new FormField(QuestionKey.LINK_CV, url);
 
         formField.addToStudent(student);
 
@@ -459,9 +398,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_link_cv_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LINK_CV);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.LINK_CV, null);
 
         formField.addToStudent(student);
 
@@ -474,9 +411,7 @@ public class AddToStudentUnitTests {
         List<Map<String, String>> listMap = List.of(Map.of(
                 "name", "testname",
                 "url", url));
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_PORTFOLIO);
-        formField.setValue(listMap);
+        FormField formField = new FormField(QuestionKey.UPLOAD_PORTFOLIO, listMap);
 
         formField.addToStudent(student);
 
@@ -485,9 +420,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_upload_portfolio_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_PORTFOLIO);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.UPLOAD_PORTFOLIO, null);
 
         formField.addToStudent(student);
 
@@ -497,9 +430,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_link_portfolio_is_added() {
         String url = "https://my.portfolio.com";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LINK_PORTOFLIO);
-        formField.setValue(url);
+        FormField formField = new FormField(QuestionKey.LINK_PORTOFLIO, url);
 
         formField.addToStudent(student);
 
@@ -508,9 +439,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_link_portfolio_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LINK_PORTOFLIO);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.LINK_PORTOFLIO, null);
 
         formField.addToStudent(student);
 
@@ -523,9 +452,7 @@ public class AddToStudentUnitTests {
         List<Map<String, String>> listMap = List.of(Map.of(
                 "name", "testname",
                 "url", url));
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_MOTIVATION);
-        formField.setValue(listMap);
+        FormField formField = new FormField(QuestionKey.UPLOAD_MOTIVATION, listMap);
 
         formField.addToStudent(student);
 
@@ -534,9 +461,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_upload_motivation_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_MOTIVATION);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.UPLOAD_MOTIVATION, null);
 
         formField.addToStudent(student);
 
@@ -546,9 +471,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_link_motivation_is_added() {
         String url = "https://my.motivation";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LINK_MOTIVATION);
-        formField.setValue(url);
+        FormField formField = new FormField(QuestionKey.LINK_MOTIVATION, url);
 
         formField.addToStudent(student);
 
@@ -557,9 +480,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_link_motivation_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.LINK_MOTIVATION);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.LINK_MOTIVATION, null);
 
         formField.addToStudent(student);
 
@@ -569,9 +490,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_written_motivation_is_added() {
         String motivation = "A 'long' text explaining why I would like to join OSOC.";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.WRITE_MOTIVATION);
-        formField.setValue(motivation);
+        FormField formField = new FormField(QuestionKey.WRITE_MOTIVATION, motivation);
 
         formField.addToStudent(student);
 
@@ -580,9 +499,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_written_motivation_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.WRITE_MOTIVATION);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.WRITE_MOTIVATION, null);
 
         formField.addToStudent(student);
 
@@ -592,9 +509,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_fun_fact_works() {
         String funFact = "A fun fact about me";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.FUN_FACT);
-        formField.setValue(funFact);
+        FormField formField = new FormField(QuestionKey.FUN_FACT, funFact);
 
         formField.addToStudent(student);
 
@@ -606,9 +521,7 @@ public class AddToStudentUnitTests {
         List<String> studies = List.of("Backend development", "Design");
         List<String> optionIds = List.of("1", "3", "4");
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.STUDY);
-        formField.setValue(optionIds);
+        FormField formField = new FormField(QuestionKey.STUDY, optionIds);
         formField.setOptions(List.of(
                 new Option("1", "Backend development"),
                 new Option("2", "Frontend development"),
@@ -624,9 +537,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_other_study_is_added() {
         String study = "Special study";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_STUDY);
-        formField.setValue(study);
+        FormField formField = new FormField(QuestionKey.OTHER_STUDY, study);
 
         formField.addToStudent(student);
 
@@ -635,9 +546,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_other_study_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_STUDY);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.OTHER_STUDY, null);
 
         formField.addToStudent(student);
 
@@ -650,9 +559,7 @@ public class AddToStudentUnitTests {
         String diploma = "Bachelor of Science";
         String optionId = "1";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.DIPLOMA);
-        formField.setValue(List.of(optionId));
+        FormField formField = new FormField(QuestionKey.DIPLOMA, List.of(optionId));
         formField.setOptions(List.of(
                 new Option(optionId, diploma),
                 new Option("2", "Master of Science"),
@@ -670,9 +577,7 @@ public class AddToStudentUnitTests {
         String diploma = "Other";
         String optionId = "4";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.DIPLOMA);
-        formField.setValue(List.of(optionId));
+        FormField formField = new FormField(QuestionKey.DIPLOMA, List.of(optionId));
         formField.setOptions(List.of(
                 new Option(optionId, diploma),
                 new Option("2", "Master of Science"),
@@ -688,9 +593,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_other_diploma_is_added() {
         String diploma = "Special diploma";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_DIPLOMA);
-        formField.setValue(diploma);
+        FormField formField = new FormField(QuestionKey.OTHER_DIPLOMA, diploma);
 
         formField.addToStudent(student);
 
@@ -699,9 +602,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_other_diploma_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_DIPLOMA);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.OTHER_DIPLOMA, null);
 
         formField.addToStudent(student);
 
@@ -711,9 +612,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_total_degree_years_is_added() {
         Integer totalDegreeYears = 3;
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.TOTAL_DEGREE_YEARS);
-        formField.setValue(totalDegreeYears);
+        FormField formField = new FormField(QuestionKey.TOTAL_DEGREE_YEARS, totalDegreeYears);
 
         formField.addToStudent(student);
 
@@ -722,9 +621,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_total_degree_years_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.TOTAL_DEGREE_YEARS);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.TOTAL_DEGREE_YEARS, null);
 
         formField.addToStudent(student);
 
@@ -734,9 +631,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_current_degree_year_is_added() {
         String currentDegreeYear = "second year";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.CURRENT_DEGREE_YEAR);
-        formField.setValue(currentDegreeYear);
+        FormField formField = new FormField(QuestionKey.CURRENT_DEGREE_YEAR, currentDegreeYear);
 
         formField.addToStudent(student);
 
@@ -745,9 +640,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_current_degree_year_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.CURRENT_DEGREE_YEAR);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.CURRENT_DEGREE_YEAR, null);
 
         formField.addToStudent(student);
 
@@ -757,9 +650,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_college_name_is_added() {
         String collegeName = "UGent";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.COLLEGE_NAME);
-        formField.setValue(collegeName);
+        FormField formField = new FormField(QuestionKey.COLLEGE_NAME, collegeName);
 
         formField.addToStudent(student);
 
@@ -768,9 +659,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_college_name_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.COLLEGE_NAME);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.COLLEGE_NAME, null);
 
         formField.addToStudent(student);
 
@@ -782,9 +671,7 @@ public class AddToStudentUnitTests {
         List<String> roles = List.of("Backend developer", "Photographer");
         List<String> optionIds = List.of("1", "2", "4");
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.ROLES);
-        formField.setValue(optionIds);
+        FormField formField = new FormField(QuestionKey.ROLES, optionIds);
         formField.setOptions(List.of(
                 new Option("1", "Backend developer"),
                 new Option("2", "Photographer"),
@@ -800,9 +687,7 @@ public class AddToStudentUnitTests {
     @Test
     public void provided_other_role_is_added() {
         String role = "Special role";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_ROLE);
-        formField.setValue(role);
+        FormField formField = new FormField(QuestionKey.OTHER_ROLE, role);
 
         formField.addToStudent(student);
 
@@ -811,9 +696,7 @@ public class AddToStudentUnitTests {
 
     @Test
     public void no_provided_other_role_does_not_add_null() {
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OTHER_ROLE);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.OTHER_ROLE, null);
 
         formField.addToStudent(student);
 
@@ -824,9 +707,7 @@ public class AddToStudentUnitTests {
     @Test
     public void add_best_skill_works() {
         String bestSkill = "My best skill";
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.BEST_SKILL);
-        formField.setValue(bestSkill);
+        FormField formField = new FormField(QuestionKey.BEST_SKILL, bestSkill);
 
         formField.addToStudent(student);
 
@@ -838,9 +719,7 @@ public class AddToStudentUnitTests {
         OsocExperience osocExperience = OsocExperience.NONE;
         String optionId = "1";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OSOC_EXPERIENCE);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.OSOC_EXPERIENCE, optionId);
         formField.setOptions(List.of(
                 new Option("1", osocExperience.getParticipation()),
                 new Option("2", OsocExperience.YES_NO_STUDENT_COACH.getParticipation())
@@ -855,9 +734,7 @@ public class AddToStudentUnitTests {
     public void invalid_osoc_participation_throws_exception() {
         String experience = "Maybe I have experience";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.OSOC_EXPERIENCE);
-        formField.setValue("1");
+        FormField formField = new FormField(QuestionKey.OSOC_EXPERIENCE, "1");
         formField.setOptions(List.of(
                 new Option("1", experience),
                 new Option("2", OsocExperience.YES_NO_STUDENT_COACH.getParticipation())
@@ -871,9 +748,7 @@ public class AddToStudentUnitTests {
         OsocExperience studentCoach = OsocExperience.YES_STUDENT_COACH;
         String optionId = "2";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.STUDENT_COACH);
-        formField.setValue(optionId);
+        FormField formField = new FormField(QuestionKey.STUDENT_COACH, optionId);
         formField.setOptions(List.of(
                 new Option("1", OsocExperience.YES_NO_STUDENT_COACH.getStudentCoach()),
                 new Option("2", studentCoach.getStudentCoach())
@@ -888,9 +763,7 @@ public class AddToStudentUnitTests {
     public void provided_invalid_student_coach_throws_exception() {
         String studentCoach = "Maybe I want to be coach";
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.STUDENT_COACH);
-        formField.setValue("2");
+        FormField formField = new FormField(QuestionKey.STUDENT_COACH, "2");
         formField.setOptions(List.of(
                 new Option("1", OsocExperience.YES_NO_STUDENT_COACH.getStudentCoach()),
                 new Option("2", studentCoach)
@@ -904,9 +777,7 @@ public class AddToStudentUnitTests {
         OsocExperience osocExperience = OsocExperience.NONE;
         student.setOsocExperience(osocExperience);
 
-        FormField formField = new FormField();
-        formField.setKey(QuestionKey.STUDENT_COACH);
-        formField.setValue(null);
+        FormField formField = new FormField(QuestionKey.STUDENT_COACH, null);
 
         formField.addToStudent(student);
 

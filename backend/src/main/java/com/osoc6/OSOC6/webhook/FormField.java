@@ -3,6 +3,7 @@ package com.osoc6.OSOC6.webhook;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,18 @@ import java.util.Map;
  * A webhook field represents a single question from the tally form.
  */
 @Data
+@NoArgsConstructor
 public class FormField {
+
+    /**
+     * Constructor for creating a new form field with a given QuestionKey and value.
+     * @param newQuestionKey the key of the question
+     * @param newValue the answer value to the question
+     */
+    public FormField(final QuestionKey newQuestionKey, final Object newValue) {
+        key = newQuestionKey;
+        value = newValue;
+    }
 
     /**
      * The unique identifying key of the question.
