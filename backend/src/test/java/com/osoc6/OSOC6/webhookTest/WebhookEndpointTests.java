@@ -68,6 +68,8 @@ public class WebhookEndpointTests extends BaseTestPerformer<Student, Long, Stude
     /**
      * Load the json string of both test forms. This only happens the first time this method is called.
      * @throws IOException when there is a problem reading one of the test files
+     * @apiNote We can't use the more fitting beforeAll annotation here because it requires the method to be static. So
+     * that's why we use the filesLoaded flag to make sure the test forms are only loaded once.
      */
     @BeforeEach
     private void loadJsonForms() throws IOException {
