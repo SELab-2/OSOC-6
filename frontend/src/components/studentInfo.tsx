@@ -112,19 +112,25 @@ export function StudentInfo() {
                             <div className="container">
                                 <div className="row">
                                     <div className="col-sm">
-                                        <CustomDialogContent suggestion={SuggestionStrategy.yes}
-                                             style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
-                                             studentUrl={data.student._links.self.href}/>
+                                        <CustomDialogContent
+                                            suggestion={SuggestionStrategy.yes}
+                                            style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                                            studentUrl={data.student._links.self.href}
+                                        />
                                     </div>
                                     <div className="col-sm">
-                                        <CustomDialogContent suggestion={SuggestionStrategy.maybe}
-                                             style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
-                                             studentUrl={data.student._links.self.href}/>
+                                        <CustomDialogContent
+                                            suggestion={SuggestionStrategy.maybe}
+                                            style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
+                                            studentUrl={data.student._links.self.href}
+                                        />
                                     </div>
                                     <div className="col-sm">
-                                        <CustomDialogContent suggestion={SuggestionStrategy.no}
-                                             style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
-                                             studentUrl={data.student._links.self.href}/>
+                                        <CustomDialogContent
+                                            suggestion={SuggestionStrategy.no}
+                                            style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
+                                            studentUrl={data.student._links.self.href}
+                                        />
                                     </div>
                                 </div>
                             </div>
