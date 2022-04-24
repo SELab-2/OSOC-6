@@ -18,3 +18,7 @@ a {
 .capitalize {
     text-transform: capitalize;
 }
+
+nav {
+    min-height: 4rem;
+}

@@ -9,25 +9,29 @@ const StudentsPage: NextPage = () => {
             <NavBar />
             <div className={styles.projects}>
                 <Row className="gx-0 h-25 w-100">
+                    {/* Replace this div with the correct component */}
                     <div
                         className={
                             "d-flex justify-content-center align-items-center h-100 " + styles.placeholder
                         }
                     >
-                        <p>Student list placeholder</p>
+                        <p>Student filter placeholder</p>
                     </div>
                 </Row>
                 <Row xs={1} className={"h-75 w-100 gx-0 gx-sm-4"}>
                     <Col sm={3} xxl={2}>
+                        {/* Replace this div with the correct component */}
                         <div
                             className={
-                                "d-flex justify-content-center align-items-center h-100 " + styles.placeholder
+                                "d-flex justify-content-center align-items-center h-100 " +
+                                styles.placeholder1
                             }
                         >
                             <p>Student list placeholder</p>
                         </div>
                     </Col>
                     <Col sm={9} xxl={10}>
+                        {/* Replace this div with the correct component */}
                         <div className={"d-flex justify-content-center align-items-center h-100"}>
                             <p>Student info placeholder</p>
                         </div>

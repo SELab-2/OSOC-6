@@ -1,10 +1,21 @@
 .projects {
-    /* calc needs to be changed once navbar is fixed */
     height: calc(100vh - 4rem);
     width: 100%;
+}
+
+.students {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
 }
 
 .placeholder {
     background-color: #0a0839;
     color: white;
+}
+
+.placeholder1 {
+    background-color: #0a0839;
+    color: white;
+    border-top: 1px solid white;
 }
