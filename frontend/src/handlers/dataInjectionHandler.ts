@@ -170,6 +170,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             OsocExpericience.yes_noStudentCoach,
             Status.maybe,
             "+3257697568",
+            "Yes, I can work with a student employment agreement in Belgium",
+            "Eating and drinking",
             "",
             "he/him/his",
             "A fun fact about me",

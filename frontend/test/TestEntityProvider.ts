@@ -160,6 +160,8 @@ export function getBaseStudent(id: string): IStudent {
         mostFluentLanguage: "Dutch",
         englishProficiency: EnglishProficiency.expressive,
         phoneNumber: "+3257697568",
+        workType: "Yes, I can work with a student employment agreement in Belgium",
+        daytimeResponsibilities: "Eating and drinking",
         curriculumVitaeURI: "",
         portfolioURI: "",
         motivationURI: "",

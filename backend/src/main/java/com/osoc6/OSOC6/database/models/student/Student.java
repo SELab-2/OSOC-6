@@ -118,8 +118,6 @@ public final class Student implements WeakToEdition {
     @Getter @Setter
     private String phoneNumber;
 
-    // TODO mischien worktype en daytimeresponsibilities aan front end toevoegen,
-    //  eerst testen of front end werkt zonder ze toe te voegen
     /**
      * How the student would like to work for OSOC (employment agreement, volunteer, for free, ...).
      */

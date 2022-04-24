@@ -67,6 +67,8 @@ export interface IStudent extends IBaseEntity {
     osocExperience: OsocExpericience;
     status: Status;
     phoneNumber: string;
+    workType: string;
+    daytimeResponsibilities: string;
     portfolioURI: string;
     pronouns: string;
     funFact: string;
@@ -110,6 +112,8 @@ export class Student {
         osocExperience: OsocExpericience,
         status: Status,
         phoneNumber: string,
+        workType: string,
+        daytimeResponsibilities: string,
         portfolioURI: string,
         pronouns: string,
         funFact: string,
@@ -136,6 +140,8 @@ export class Student {
         this.osocExperience = osocExperience;
         this.status = status;
         this.phoneNumber = phoneNumber;
+        this.workType = workType;
+        this.daytimeResponsibilities = daytimeResponsibilities;
         this.portfolioURI = portfolioURI;
         this.pronouns = pronouns;
         this.funFact = funFact;
@@ -163,6 +169,8 @@ export class Student {
     osocExperience: OsocExpericience;
     status: Status;
     phoneNumber: string;
+    workType: string;
+    daytimeResponsibilities: string;
     portfolioURI: string;
     pronouns: string;
     funFact: string;
