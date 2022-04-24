@@ -181,9 +181,9 @@ Should the tally form ever get new questions or get recreated, you will need to 
 `QuestionKey` enum. To test whether your changes work on your local machine, you have two options:
 
 * Use the provided tests in `WebhookEndpointTests`. You can easily add more testfiles in the `resources/tesdata`
-directory and then load them in the mentioned test file. These test files can be acquired by connecting a webhook 
-(does not have to be a valid one), filling in and submitting the form, and going to the events log of the webhook in 
-tally. You can now copy the request body and place it in your .json test file.
+directory and then load them in the mentioned test file. To acquire the testdata, first add a wbehook to the tally form 
+(does not have to be a valid one). Next, fill in and submit the form. Now you can go to the events log of the webhook in 
+tally. Here the request body can be copied and placed in your .json test file.
 * Use https://my.webhookrelay.com. This service allows you to take incoming requests and send them to your localhost 
 server. You will need to install a command line tool to get this working. Their website provides a tutorial on the 
 complete setup. The only downside is that you are limited to 150 requests per month.
