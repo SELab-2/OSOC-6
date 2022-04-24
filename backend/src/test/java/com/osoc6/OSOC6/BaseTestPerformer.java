@@ -6,7 +6,6 @@ import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.InvitationRepository;
-import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
@@ -59,12 +58,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
      */
     @Autowired @Getter
     private MockMvc mockMvc;
-
-    /**
-     * The public repository, used to access the database without authorization.
-     */
-    @Autowired
-    private PublicRepository publicRepository;
 
     /**
      * The edition repository which saves, searches, ... Editions in the database
@@ -170,10 +163,10 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
         editionRepository.save(baseActiveUserEdition);
         editionRepository.save(baseNonActiveUserEdition);
 
-        publicRepository.internalSave(adminUser);
-        publicRepository.internalSave(coachUser);
-        publicRepository.internalSave(outsiderCoach);
-        publicRepository.internalSave(matchingEditionCoach);
+        userRepository.save(adminUser);
+        userRepository.save(coachUser);
+        userRepository.save(outsiderCoach);
+        userRepository.save(matchingEditionCoach);
 
         invitationRepository.save(invitationActiveEditionForCoach);
         invitationRepository.save(invitationNonActiveEditionForCoach);

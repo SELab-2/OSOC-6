@@ -103,14 +103,14 @@ public final class DumbledorePathWizard {
     public static final String INVITATIONS_PATH = "invitations";
 
     /**
-     * Path that {@link com.osoc6.OSOC6.database.models.Suggestion} is served on.
+     * Path that {@link com.osoc6.OSOC6.database.models.Invitation} is served on.
      */
-    public static final String SUGGESTION_PATH = "suggestions";
+    public static final String INVITATION_BY_TOKEN_PATH = "by-token";
 
     /**
      * Path that {@link com.osoc6.OSOC6.database.models.Suggestion} is served on.
      */
-    public static final String SUGGESTION_BY_TOKEN_PATH = "by-token";
+    public static final String SUGGESTION_PATH = "suggestions";
 
     /**
      * Path that {@link com.osoc6.OSOC6.database.models.UserSkill} is served on.
@@ -151,4 +151,9 @@ public final class DumbledorePathWizard {
      * Path that {@link com.osoc6.OSOC6.database.models.student.Student} conflict query is served on.
      */
     public static final String STUDENT_CONFLICT_PATH = "conflict-query";
+
+    /**
+     * Path that our webhook is served on.
+     */
+    public static final String WEBHOOK_PATH = "webhook";
 }

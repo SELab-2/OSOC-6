@@ -40,15 +40,13 @@ export enum OsocExpericience {
     yes_studentCoach = "YES_STUDENT_COACH",
 }
 
-export enum PronounsType {
-    SHE = "SHE",
-    he = "HE",
-    they = "THEY",
-    ze = "ZE",
-    firstName = "FIRSTNAME",
-    callName = "CALLNAME",
-    other = "OTHER",
-    none = "NONE",
+export enum Status {
+    undecided = "UNDECIDED",
+    maybe = "MAYBE",
+    rejected = "REJECTED",
+    approved = "APPROVED",
+    contract_confirmed = "CONTRACT_CONFIRMED",
+    contract_declined = "CONTRACT_DECLINED",
 }
 
 export interface IStudent extends IBaseEntity {
@@ -59,7 +57,6 @@ export interface IStudent extends IBaseEntity {
     currentDiploma: string;
     curriculumVitaeURI: string;
     durationCurrentDegree: number;
-    educationLevel: string;
     englishProficiency: EnglishProficiency;
     firstName: string;
     gender: Gender;
@@ -68,16 +65,17 @@ export interface IStudent extends IBaseEntity {
     mostFluentLanguage: string;
     motivationURI: string;
     osocExperience: OsocExpericience;
+    status: Status;
     phoneNumber: string;
+    workType: string;
+    daytimeResponsibilities: string;
     portfolioURI: string;
-    pronounsType: PronounsType;
+    pronouns: string;
+    funFact: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;
     yearInCourse: string;
-    subjectivePronoun: string;
-    possessivePronoun: string;
-    objectivePronoun: string;
     yesSuggestionCount: number;
     noSuggestionCount: number;
     maybeSuggestionCount: number;
@@ -104,7 +102,6 @@ export class Student {
         currentDiploma: string,
         curriculumVitaeURI: string,
         durationCurrentDegree: number,
-        educationLevel: string,
         englishProficiency: EnglishProficiency,
         firstName: string,
         gender: Gender,
@@ -113,12 +110,13 @@ export class Student {
         mostFluentLanguage: string,
         motivationURI: string,
         osocExperience: OsocExpericience,
+        status: Status,
         phoneNumber: string,
+        workType: string,
+        daytimeResponsibilities: string,
         portfolioURI: string,
-        subjectivePronoun: string,
-        possessivePronoun: string,
-        objectivePronoun: string,
-        pronounsType: PronounsType,
+        pronouns: string,
+        funFact: string,
         skills: string[],
         studies: string[],
         writtenMotivation: string,
@@ -132,7 +130,6 @@ export class Student {
         this.currentDiploma = currentDiploma;
         this.curriculumVitaeURI = curriculumVitaeURI;
         this.durationCurrentDegree = durationCurrentDegree;
-        this.educationLevel = educationLevel;
         this.englishProficiency = englishProficiency;
         this.firstName = firstName;
         this.gender = gender;
@@ -141,12 +138,13 @@ export class Student {
         this.mostFluentLanguage = mostFluentLanguage;
         this.motivationURI = motivationURI;
         this.osocExperience = osocExperience;
+        this.status = status;
         this.phoneNumber = phoneNumber;
+        this.workType = workType;
+        this.daytimeResponsibilities = daytimeResponsibilities;
         this.portfolioURI = portfolioURI;
-        this.subjectivePronoun = subjectivePronoun;
-        this.possessivePronoun = possessivePronoun;
-        this.objectivePronoun = objectivePronoun;
-        this.pronounsType = pronounsType;
+        this.pronouns = pronouns;
+        this.funFact = funFact;
         this.skills = skills;
         this.studies = studies;
         this.writtenMotivation = writtenMotivation;
@@ -160,7 +158,6 @@ export class Student {
     currentDiploma: string;
     curriculumVitaeURI: string;
     durationCurrentDegree: number;
-    educationLevel: string;
     email: string;
     englishProficiency: EnglishProficiency;
     firstName: string;
@@ -170,12 +167,13 @@ export class Student {
     mostFluentLanguage: string;
     motivationURI: string;
     osocExperience: OsocExpericience;
+    status: Status;
     phoneNumber: string;
+    workType: string;
+    daytimeResponsibilities: string;
     portfolioURI: string;
-    subjectivePronoun: string;
-    possessivePronoun: string;
-    objectivePronoun: string;
-    pronounsType: PronounsType;
+    pronouns: string;
+    funFact: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;

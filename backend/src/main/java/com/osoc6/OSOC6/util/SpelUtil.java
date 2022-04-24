@@ -3,7 +3,9 @@ package com.osoc6.OSOC6.util;
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
+import lombok.Getter;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,6 +21,13 @@ public final class SpelUtil {
      * Constructor of class. Does nothing.
      */
     private SpelUtil() { }
+
+    /**
+     * This field is populated by Spring upon startup with the secret webhook token from the properties file.
+     */
+    @Getter
+    @Value("${webhook.token}")
+    private String webhookToken;
 
     /**
      * Get all the id's of all of the given user's editions as an array List.
