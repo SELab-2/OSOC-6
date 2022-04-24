@@ -9,7 +9,7 @@ import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { makeCacheFree } from "./Provide";
 import { getBaseOkResponse, getBasePage, getBaseStudent } from "./TestEntityProvider";
 import apiPaths from "../src/properties/apiPaths";
-import {studentCollectionName} from "../src/api/entities/StudentEntity";
+import { studentCollectionName } from "../src/api/entities/StudentEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -28,7 +28,9 @@ it("Render studentlist and click an item", async () => {
     const id = "10";
     const student = getBaseStudent(id);
 
-    const response: AxiosResponse = getBaseOkResponse(getBasePage(apiPaths.students, studentCollectionName, [student]));
+    const response: AxiosResponse = getBaseOkResponse(
+        getBasePage(apiPaths.students, studentCollectionName, [student])
+    );
 
     render(makeCacheFree(StudentList));
     mockAxios.mockResponseFor({ method: "GET" }, response);
