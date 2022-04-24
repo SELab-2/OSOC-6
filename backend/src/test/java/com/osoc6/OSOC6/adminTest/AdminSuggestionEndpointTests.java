@@ -131,41 +131,6 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void student_matching_query_over_suggest_reason_works() throws Exception {
-        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
-                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
-                new String[]{suggestion1.getReason(),
-                        getBaseActiveUserEdition().getId().toString()})
-                .andExpect(status().isOk())
-                .andExpect(string_to_contains_string(student.getCallName()));
-    }
-
-    @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void student_non_matching_query_over_suggest_reason_works() throws Exception {
-        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
-                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
-                new String[]{"apple" + suggestion1.getReason() + "banana",
-                        getBaseActiveUserEdition().getId().toString()})
-                .andExpect(status().isOk())
-                .andExpect(string_not_to_contains_string(student.getCallName()));
-    }
-
-    @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void student_is_contain_only_once() throws Exception {
-        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
-                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"edition"},
-                new String[]{getBaseActiveUserEdition().getId().toString()})
-                .andExpect(status().isOk())
-                .andExpect(string_contains_times_or_less(student.getCallName(), 1));
-    }
-
-    @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_has_correct_suggestion_counts() throws Exception {
         perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/" + student.getId().toString())
                 .andExpect(status().isOk())

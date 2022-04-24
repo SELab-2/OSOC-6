@@ -21,6 +21,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -76,7 +78,7 @@ public final class Student implements WeakToEdition {
     /**
      * The gender of the student.
      */
-    @Basic(optional = false)
+    @Basic(optional = false) @Enumerated(EnumType.STRING)
     @Getter @Setter
     private Gender gender;
 
@@ -106,7 +108,7 @@ public final class Student implements WeakToEdition {
     /**
      * English proficiency rating of a student as described in @{@link EnglishProficiency}.
      */
-    @Basic(optional = false)
+    @Basic(optional = false) @Enumerated(EnumType.STRING)
     @Getter @Setter
     private EnglishProficiency englishProficiency;
 
@@ -209,14 +211,14 @@ public final class Student implements WeakToEdition {
     /**
      * Level of Osoc experience as described in @{@link OsocExperience}.
      */
-    @Basic(optional = false)
+    @Basic(optional = false) @Enumerated(EnumType.STRING)
     @Getter @Setter
     private OsocExperience osocExperience;
 
     /**
      * The {@link Status} of a student, used to track which type of mail was last sent to them.
      */
-    @Basic(optional = false)
+    @Basic(optional = false) @Enumerated(EnumType.STRING)
     @Getter @Setter @Builder.Default
     private Status status = Status.UNDECIDED;
 
