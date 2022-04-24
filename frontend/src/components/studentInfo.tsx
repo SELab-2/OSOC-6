@@ -5,7 +5,11 @@ import useSWR from "swr";
 import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
-import styles from "../styles/studentList.module.css";
+import { suggest } from "../handlers/suggestionHandler";
+import styles from "../styles/studentInfo.module.css";
+import {SuggestionStrategy} from "../api/entities/SuggestionEntity";
+import {CustomDialogContent} from "./dialog";
+
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
@@ -25,6 +29,7 @@ export function StudentInfo() {
     }[data.student.osocExperience];
 
     return (
+        <div>
         <div>
             <div className="row">
                 <div className="col-sm-6">
@@ -101,6 +106,36 @@ export function StudentInfo() {
             <div>
                 {capitalize(t("student osoc experience"))}: {t(experiences)}
             </div>
+        </div>
+        <footer className="studentfooter py-3 fixed-bottom">
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-sm">
+                                    <button type="button" className="btn btn-outline"
+                                            data-mdb-toggle="modal" data-mdb-target="#exampleModal"
+                                            style={{color: "#1DE1AE", borderColor: "#1DE1AE", width: 150}}>Suggest yes</button>
+                                </div>
+                                <div className="col-sm">
+                                    <button type="button" className="btn btn-outline"
+                                            style={{color: "#FCB70F", borderColor: "#FCB70F", width: 150}}>Suggest maybe</button>
+                                </div>
+                                <div className="col-sm">
+                                    <button type="button" className="btn btn-outline"
+                                            style={{color: "#F14A3B", borderColor: "#F14A3B", width: 150}}>Suggest no</button>
+                                </div>
+                                <CustomDialogContent/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm">
+                        Add definite decision
+                    </div>
+                </div>
+            </div>
+        </footer>
         </div>
     );
 }
