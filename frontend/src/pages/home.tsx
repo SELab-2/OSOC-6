@@ -9,7 +9,7 @@ import NavBar from "../components/navBar";
 const Home: NextPage = () => {
     const { t } = useTranslation("common");
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
                 <title className="capitalize">{t("home page title")}</title>
             </Head>
