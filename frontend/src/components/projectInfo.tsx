@@ -1,10 +1,10 @@
-import styles from "../styles/projectInfo.module.css";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../properties/apiPaths";
 import useSWR from "swr";
 import { getFullProjectInfo } from "../api/calls/projectCalls";
 import { capitalize } from "../utility/stringUtil";
+import { SuggestionCount } from "./suggestionCount";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");

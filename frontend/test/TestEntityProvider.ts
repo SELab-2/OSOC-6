@@ -24,6 +24,38 @@ export function getBaseOkResponse(data: any): AxiosResponse {
     };
 }
 
+export function getBaseNoContentResponse(): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.NO_CONTENT,
+        statusText: ReasonPhrases.NO_CONTENT,
+        headers: {},
+        config: {},
+    };
+}
+
+export function getBaseBadRequestResponse(): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.BAD_REQUEST,
+        statusText: ReasonPhrases.BAD_REQUEST,
+        headers: {},
+        config: {},
+        request: {},
+    };
+}
+
+export function getBaseMovedResponse(url: string): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.MOVED_TEMPORARILY,
+        statusText: ReasonPhrases.MOVED_TEMPORARILY,
+        headers: {},
+        config: {},
+        request: { responseURL: url },
+    };
+}
+
 export function getBasePage<T extends IBaseEntity>(
     apiPath: string,
     collectionName: string,
@@ -62,12 +94,12 @@ export function getBaseProject(id: string): IProject {
     const baseProjectPath = "http://localhost/api/projects/" + id;
     return {
         _links: {
+            self: { href: baseProjectPath },
             neededSkills: { href: baseProjectPath + "/neededSkills" },
             coaches: { href: baseProjectPath + "coaches" },
             edition: { href: baseProjectPath + "/edition" },
             creator: { href: baseProjectPath + "/creator" },
             project: { href: baseProjectPath },
-            self: { href: baseProjectPath },
         },
         name: "project name",
         info: "project info",
@@ -78,26 +110,26 @@ export function getBaseProject(id: string): IProject {
     };
 }
 
-export function getBaseAdmin(id: string): IUser {
-    const baseUserPath = "http://localhost/api/users/" + id;
+export function getBaseUser(id: string, role: UserRole, enabled: boolean): IUser {
     return {
         accountNonExpired: true,
         accountNonLocked: true,
-        authorities: { authority: UserRole.admin },
-        callName: "Jos Jossem",
+        authorities: {
+            authority: role,
+        },
+        callName: "Jef",
         credentialsNonExpired: true,
-        email: "jos@mail.com",
-        enabled: true,
-        userRole: UserRole.admin,
-        username: "josjossem",
-
+        email: "test@mail.com",
+        enabled: enabled,
+        userRole: role,
+        username: "test@mail.com",
         _links: {
-            communications: { href: baseUserPath + "/communications" },
-            projects: { href: baseUserPath + "/projects" },
-            receivedInvitations: { href: baseUserPath + "/receivedInvitations" },
-            skills: { href: baseUserPath + "/skills" },
-            userEntity: { href: baseUserPath },
-            self: { href: baseUserPath },
+            self: { href: "http://localhost/api/users/" + id },
+            communications: { href: "http://localhost/api/users/" + id + "/communications" },
+            projects: { href: "http://localhost/api/users/" + id + "/projects" },
+            receivedInvitations: { href: "http://localhost/api/users/" + id + "/receivedInvitations" },
+            skills: { href: "http://localhost/api/users/" + id + "/skills" },
+            userEntity: { href: "http://localhost/api/users/" + id },
         },
     };
 }

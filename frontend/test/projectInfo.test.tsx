@@ -6,7 +6,6 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import {
-    getBaseAdmin,
     getBaseAssignment,
     getBaseLinks,
     getBaseOkResponse,
@@ -15,11 +14,11 @@ import {
     getBaseProjectSkill,
     getBaseSkillType,
     getBaseStudent,
+    getBaseUser,
 } from "./TestEntityProvider";
-import { userCollectionName } from "../src/api/entities/UserEntity";
+import { userCollectionName, UserRole } from "../src/api/entities/UserEntity";
 import { projectSkillCollectionName } from "../src/api/entities/ProjectSkillEntity";
 import { assignmentCollectionName } from "../src/api/entities/AssignmentEntity";
-import { studentCollectionName } from "../src/api/entities/StudentEntity";
 import { skillTypeCollectionName } from "../src/api/entities/SkillTypeEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -39,7 +38,7 @@ describe("project info", () => {
             mockAxios.mockResponseFor({ url: apiPaths.projects + "/5" }, getBaseOkResponse(project))
         );
 
-        const user = getBaseAdmin("6");
+        const user = getBaseUser("6", UserRole.admin, true);
         await waitFor(() =>
             mockAxios.mockResponseFor(
                 { url: project._links.coaches.href },
