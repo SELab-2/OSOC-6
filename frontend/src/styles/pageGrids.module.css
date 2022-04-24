@@ -3,3 +3,8 @@
     height: calc(100vh - 4rem);
     width: 100%;
 }
+
+.placeholder {
+    background-color: #0a0839;
+    color: white;
+}
