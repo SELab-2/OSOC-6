@@ -5,11 +5,11 @@ import NavBar from "../../components/navBar";
 import { ProjectList } from "../../components/projectList";
 import styles from "../../styles/pageGrids.module.css";
 
-const ProjectPage: NextPage = () => {
+const ProjectIDPage: NextPage = () => {
     return (
         <>
             <NavBar />
-            <div className={styles.projects}>
+            <div className={styles.projects} data-testid="projects-grid">
                 <Row xs={1} className={"h-100 w-100 gx-0 gx-sm-4"}>
                     <Col sm={3} xxl={2}>
                         <ProjectList />
@@ -23,4 +23,4 @@ const ProjectPage: NextPage = () => {
     );
 };
 
-export default ProjectPage;
+export default ProjectIDPage;
