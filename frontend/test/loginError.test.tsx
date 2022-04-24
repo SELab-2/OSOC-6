@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import LoginError from "../src/pages/loginError";
 import "@testing-library/jest-dom";
+import {capitalize} from "../src/utility/stringUtil";
 
 describe("LoginError page", () => {
     it("should render", async () => {
@@ -13,7 +14,7 @@ describe("LoginError page", () => {
         expect(screen.getByTestId("username")).toBeInTheDocument();
         expect(screen.getByTestId("password")).toBeInTheDocument();
 
-        const error = screen.getByText("errorMessages:invalid_credentials");
+        const error = screen.getByText(capitalize("errorMessages:invalid_credentials"));
         expect(error).toBeInTheDocument();
 
         const submitButton = screen.getByRole("button");
