@@ -20,7 +20,7 @@ describe("Project", () => {
     describe("ProjectList header and button", () => {
         it("Should have the 'New project'-button", () => {
             render(makeCacheFree(ProjectList));
-            expect(screen.getByTestId("newproject-button")).toBeInTheDocument();
+            expect(screen.getByTestId("new-project-button")).toBeInTheDocument();
         });
 
         it("Should have the 'Projects'-header", () => {
@@ -38,7 +38,7 @@ describe("Project", () => {
 
     it.skip("Should go to projects/create when clicking button", async () => {
         render(<ProjectList />);
-        await userEvent.click(screen.getByTestId("newproject-button"));
+        await userEvent.click(screen.getByTestId("new-project-button"));
 
         await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
     });

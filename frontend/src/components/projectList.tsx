@@ -19,7 +19,7 @@ export function ProjectList() {
     }
 
     return (
-        <div className={styles.project_list}>
+        <div className={styles.project_list} data-testid="project-list">
             <ListGroup as="ul" className="overflow-scroll">
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
                     <div className="capitalize">{t("projects")}</div>
@@ -35,9 +35,6 @@ export function ProjectList() {
                             className={styles.project_list_project}
                             action
                             as={"li"}
-                            // Should be changed to individual project page later
-                            //href={projectId}
-
                             onClick={() => {
                                 let projectPath: string = projectId;
                                 Router.push("/" + projectPath);

@@ -6,7 +6,7 @@ import applicationPaths from "../properties/applicationPaths";
 export const NavBar = () => {
     const { t } = useTranslation("common");
     return (
-        <div className="capitalize">
+        <div className="capitalize" data-testid="nav-bar">
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href={"/" + applicationPaths.students} data-testid="navbar-brand">
