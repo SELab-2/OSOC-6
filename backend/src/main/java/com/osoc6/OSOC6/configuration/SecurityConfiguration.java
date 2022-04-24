@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/" + DumbledorePathWizard.REGISTRATION_PATH,
                         "/" + DumbledorePathWizard.LOGIN_PATH + "*",
                         "/" + DumbledorePathWizard.AUTH_PATH + "/*",
-                        "/" + DumbledorePathWizard.WEBHOOK_PATH + "/*").permitAll()
+                        "/" + DumbledorePathWizard.WEBHOOK_PATH).permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin()

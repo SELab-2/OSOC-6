@@ -23,7 +23,7 @@ public final class SpelUtil {
     private SpelUtil() { }
 
     /**
-     * This field is populated by Spring upon startup with the secret webhook token from a properties file.
+     * This field is populated by Spring upon startup with the secret webhook token from the properties file.
      */
     @Getter
     @Value("${webhook.token}")
