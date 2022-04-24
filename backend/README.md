@@ -175,6 +175,19 @@ Using a native query you can often write more powerful queries. This is however 
 You should try to avoid using native queries.
 From within a native query you can also use the `:` and `:#{}` syntax.
 
+### Webhook
+
+Should the tally form ever get new questions or get recreated, you will need to update/add/remove some parts of the 
+`QuestionKey` enum. To test whether your changes work on your local machine, you have two options:
+
+* Use the provided tests in `WebhookEndpointTests`. You can easily add more testfiles in the `resources/tesdata`
+directory and then load them in the mentioned test file. These test files can be acquired by connecting a webhook 
+(does not have to be a valid one), filling in and submitting the form, and going to the events log of the webhook in 
+tally. You can now copy the request body and place it in your .json test file.
+* Use https://my.webhookrelay.com. This service allows you to take incoming requests and send them to your localhost 
+server. You will need to install a command line tool to get this working. Their website provides a tutorial on the 
+complete setup. The only downside is that you are limited to 150 requests per month.
+
 ## Tests
 
 To run the tests we use gradle.
