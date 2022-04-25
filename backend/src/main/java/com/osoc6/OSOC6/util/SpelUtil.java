@@ -79,15 +79,25 @@ public final class SpelUtil {
         return "%" + orig + "%";
     }
 
+    /**
+     * Get a formatted query string substituting spaces with '&'.
+     * @param ownFormat a string that uses space separation for different string
+     * @return a safe text search query string
+     */
     public static String safeToTSQuery(final String ownFormat) {
         return safeString(ownFormat).strip().replaceAll(" +", " & ");
     }
 
-    public static String[] safeToList(final String[] ownFormat) {
-        if (ownFormat == null) {
+    /**
+     * Get a non-null representation of a string array. Defaults to empty array.
+     * @param strArray string array that should have null safety
+     * @return a non-null array.
+     */
+    public static String[] safeArray(final String[] strArray) {
+        if (strArray == null) {
             return new String[]{};
         }
-        return ownFormat;
+        return strArray;
     }
 
     /**

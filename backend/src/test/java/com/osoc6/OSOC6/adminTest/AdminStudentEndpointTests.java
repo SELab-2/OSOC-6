@@ -134,7 +134,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     public void filtering_on_free_first_name_works_no_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "freeText"},
-                new String[]{getBaseActiveUserEdition().getId().toString(), "apple"+ testStudent.getFirstName()})
+                new String[]{getBaseActiveUserEdition().getId().toString(), "apple" + testStudent.getFirstName()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }

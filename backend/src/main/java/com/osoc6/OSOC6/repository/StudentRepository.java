@@ -14,7 +14,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,10 +53,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> findByEdition(@Param("edition") Long editionId, @NonNull Pageable pageable);
 
     /**
-     * Query over students by their field or by a reason provided in suggestion or assignment.
-     * We need to use cast keyword instead of native :: because ':' means something to Spring.
+     * Query over students by their experience, edition, skills and free text search.
      *
-     * @param edition the id of the edition this search is restricted to.
+     * @param edition the id of the edition this search is restricted to (required argument).
+     * @param experience list of experiences that the user should have one of
+     * @param skills free text search parameter restricted to the skills of a user
+     * @param freeText free text search over the student, and the assignment or suggestion reason.
+     *                 This field is formatted in a way that a space means a search for a separate,
+     *                 not necessarily consecutive word.
      * @param pageable argument needed to return a page
      * @return Page of matching students
      */
@@ -65,7 +68,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
     @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
             + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
-    @Query(value =
+    @Query(value = // We need to use cast keyword instead of native :: because ':' means something to Spring.
             "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
                 + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
                     + "inner_ed.id = :#{@spelUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
@@ -78,7 +81,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             + "and (:skills is null or to_tsvector("
                 + "(select COALESCE(string_agg(CAST(studskill as text), ''), '') from student_skills studskill where studskill.student_id = stud.id) "
             + ") @@ to_tsquery(:#{@spelUtil.safeToTSQuery(#skills)})) "
-            + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeToList(#experience)})",
+            + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeArray(#experience)})",
             nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition, @Param("freeText") String freeText,
                               @Param("skills") String skills, @Param("experience") String[] experience,
