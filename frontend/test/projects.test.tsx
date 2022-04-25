@@ -19,10 +19,7 @@ describe("Projects Page Tests", () => {
 
         expect(screen.getByTestId("projects-grid")).toBeInTheDocument();
 
-        /*
-       Test for ProjectList component
-       expect(screen.getByTestId("project-list")).toBeInTheDocument();
-        */
+        expect(screen.getByTestId("project-list")).toBeInTheDocument();
 
         expect(screen.getByTestId("projects-select-message")).toBeInTheDocument();
     });
@@ -35,14 +32,9 @@ describe("Projects Page Tests", () => {
 
         expect(screen.getByTestId("projects-grid")).toBeInTheDocument();
 
+        expect(screen.getByTestId("project-list")).toBeInTheDocument();
         /*
-       Test for ProjectList component
-       expect(screen.getByTestId("project-list")).toBeInTheDocument();
-        */
-
-        /*
-       Test for ProjectInfo component
-       expect(screen.getByTestId("project-info")).toBeInTheDocument();
+        expect(screen.getByTestId("project-info")).toBeInTheDocument();
         */
     });
 });
