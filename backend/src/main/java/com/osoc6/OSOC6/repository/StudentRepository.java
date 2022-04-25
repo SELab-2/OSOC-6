@@ -68,7 +68,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value =
             "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
                 + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
-                    + "inner_ed.id = :edition) as ed ON (stud.edition_id = ed.id) "
+                    + "inner_ed.id = :#{@spelUtil.safeLong(#edition)}) as ed ON (stud.edition_id = ed.id) "
             + "where "
             + "(:freeText is null or to_tsvector("
                 + "CAST(stud as text) || "
@@ -76,12 +76,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                 + "(select COALESCE(string_agg(CAST(assign as text), ''), '') from assignment assign where assign.student_id = stud.id) "
             + ") @@ to_tsquery(:#{@spelUtil.safeToTSQuery(#freeText)})) "
             + "and (:skills is null or to_tsvector("
-                + "(select COALESCE(string_agg(CAST(studskill    as text), ''), '') from student_skills studskill where studskill.student_id = stud.id) "
+                + "(select COALESCE(string_agg(CAST(studskill as text), ''), '') from student_skills studskill where studskill.student_id = stud.id) "
             + ") @@ to_tsquery(:#{@spelUtil.safeToTSQuery(#skills)})) "
-            + "and (:experience is null or stud.osoc_experience = any(array[:#{@spelUtil.safeToList(#experience)}]))",
+            + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeToList(#experience)})",
             nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition, @Param("freeText") String freeText,
-                              @Param("skills") String skills, @Param("experience") String experience,
+                              @Param("skills") String skills, @Param("experience") String[] experience,
                               Pageable pageable);
 
     /**

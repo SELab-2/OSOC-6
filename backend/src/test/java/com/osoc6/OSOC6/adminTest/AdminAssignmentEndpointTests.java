@@ -152,6 +152,30 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_matching_query_over_assignment_reason_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"freeText", "edition"},
+                new String[]{testAssignment.getReason(),
+                        getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void student_non_matching_query_over_assignment_reason_works() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
+                        + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"freeText", "edition"},
+                new String[]{"apple" + testAssignment.getReason() + "banana",
+                        getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_not_matching_query_conflict_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH,

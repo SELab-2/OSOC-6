@@ -83,9 +83,11 @@ public final class SpelUtil {
         return safeString(ownFormat).strip().replaceAll(" +", " & ");
     }
 
-    public static String safeToList(final String ownFormat) {
-        String res =  safeString(ownFormat).strip().replaceAll(" +", " , ");
-        return res;
+    public static String[] safeToList(final String[] ownFormat) {
+        if (ownFormat == null) {
+            return new String[]{};
+        }
+        return ownFormat;
     }
 
     /**

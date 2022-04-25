@@ -225,7 +225,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "experience"},
                 new String[]{getBaseActiveUserEdition().getId().toString(),
-                        testStudent.getOsocExperience().toString() + " " + OsocExperience.NONE.toString()})
+                        testStudent.getOsocExperience().toString() + "," + OsocExperience.NONE.toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
     }
