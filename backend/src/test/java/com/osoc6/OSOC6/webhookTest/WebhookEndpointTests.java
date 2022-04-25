@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,11 +75,9 @@ public class WebhookEndpointTests extends BaseTestPerformer<Student, Long, Stude
     @BeforeEach
     private void loadJsonForms() throws IOException {
         if (!filesLoaded) {
-            InputStream inputStream1 = form1Resource.getInputStream();
-            jsonForm1 = new String(inputStream1.readAllBytes());
+            jsonForm1 = Files.readString(form1Resource.getFile().toPath(), StandardCharsets.UTF_8);
 
-            InputStream inputStream2 = form2Resource.getInputStream();
-            jsonForm2 = new String(inputStream2.readAllBytes());
+            jsonForm2 = Files.readString(form2Resource.getFile().toPath(), StandardCharsets.UTF_8);
 
             filesLoaded = true;
         }
