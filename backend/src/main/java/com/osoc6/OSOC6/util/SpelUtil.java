@@ -79,6 +79,15 @@ public final class SpelUtil {
         return "%" + orig + "%";
     }
 
+    public static String safeToTSQuery(final String ownFormat) {
+        return safeString(ownFormat).strip().replaceAll(" +", " & ");
+    }
+
+    public static String safeToList(final String ownFormat) {
+        String res =  safeString(ownFormat).strip().replaceAll(" +", " , ");
+        return res;
+    }
+
     /**
      * Get a non-null representation of a string. Defaults to empty string.
      * @param orig String that should have NULL safety

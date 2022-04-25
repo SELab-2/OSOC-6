@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
+import com.osoc6.OSOC6.database.models.student.OsocExperience;
 import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
@@ -106,15 +107,135 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void filtering_on_edition_works_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"freeText", "edition"},
-                new String[]{testStudent.getFirstName(), getBaseActiveUserEdition().getId().toString()})
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(testStudent.getCallName()));
 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"freeText", "edition"},
-                new String[]{"banana" + testStudent.getFirstName() + "apple",
-                        getBaseActiveUserEdition().getId().toString()})
+                new String[]{"edition"},
+                new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_free_first_name_works_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "freeText"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), testStudent.getFirstName()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_free_first_name_works_no_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "freeText"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), "apple"+ testStudent.getFirstName()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_free_call_name_works_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "freeText"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), testStudent.getCallName()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_free_call_name_works_no_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "freeText"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), "apple" + testStudent.getCallName()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_free_first_name_startsWith_works_no_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "freeText"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), testStudent.getFirstName().substring(0, 3)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_no_args_has_no_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{},
+                new String[]{})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void queried_gibberish_param_works_with_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "cbilcblcjbh"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), "cbjbhcjb"})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_skills_works_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "skills"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), testStudent.getSkills().get(0)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_skills_works_no_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "skills"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), "apple" + testStudent.getSkills().get(0)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_experience_works_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "experience"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), testStudent.getOsocExperience().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_experience_works_results_2() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "experience"},
+                new String[]{getBaseActiveUserEdition().getId().toString(),
+                        testStudent.getOsocExperience().toString() + " " + OsocExperience.NONE.toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_experience_works_no_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "experience"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), OsocExperience.NONE.toString()})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }
