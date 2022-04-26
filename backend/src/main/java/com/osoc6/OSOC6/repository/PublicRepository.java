@@ -72,6 +72,17 @@ public class PublicRepository {
     }
 
     /**
+     * Update an existing entity in the database.
+     * @param entity the entity to update
+     * @apiNote The transactional annotation is needed because if the merge fails,
+     * it needs to be able to roll back the transaction.
+     */
+    @Transactional
+    public void internalUpdate(final Object entity) {
+        entityManager.merge(entity);
+    }
+
+    /**
      * Save an entity to the database.
      * @param entity the entity to save
      * @apiNote The transactional annotation is needed because if the persist fails,

@@ -81,7 +81,11 @@ public class WebConfiguration {
                 baseAdminUser.setUserRole(UserRole.ADMIN);
                 baseAdminUser.setEnabled(true);
 
-                publicRepository.internalSave(baseAdminUser);
+                if (optionalUser.isPresent()) {
+                    publicRepository.internalUpdate(baseAdminUser);
+                } else {
+                    publicRepository.internalSave(baseAdminUser);
+                }
             }
         };
     }
