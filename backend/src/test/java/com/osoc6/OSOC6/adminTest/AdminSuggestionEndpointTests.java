@@ -35,14 +35,20 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     private final Student student = TestEntityProvider.getBaseStudentOther(this);
 
     /**
-     * First sample suggestions that gets loaded before every test.
+     * First sample suggestion that gets loaded before every test.
      */
     private final Suggestion suggestion1 = TestEntityProvider.getBaseYesSuggestion(getCoachUser(), student);
 
     /**
-     * Second sample suggestions that gets loaded before every test.
+     * Second sample suggestion that gets loaded before every test.
      */
     private final Suggestion suggestion2 = TestEntityProvider.getBaseNoSuggestion(getAdminUser(), student);
+
+    /**
+     * Third sample suggestion that gets loaded before every test.
+     */
+    private final Suggestion suggestion3 = TestEntityProvider.getBaseMaybeSuggestion(getAdminUser(), student);
+
 
     /**
      * The actual path suggestion are served on, with '/' as prefix.
@@ -99,6 +105,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
 
         repository.save(suggestion1);
         repository.save(suggestion2);
+        repository.save(suggestion3);
     }
 
     @Override
@@ -171,7 +178,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string("\"yesSuggestionCount\" : 1"))
                 .andExpect(string_to_contains_string("\"noSuggestionCount\" : 1"))
-                .andExpect(string_to_contains_string("\"maybeSuggestionCount\" : 0"));
+                .andExpect(string_to_contains_string("\"maybeSuggestionCount\" : 1"));
     }
 
 }
