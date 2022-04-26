@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class BaseAdminResetTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void user_with_same_email_as_base_admin_gets_reset_on_startup() {
         Optional<UserEntity> optionalUserEntity = publicRepository.internalFindByEmail(baseAdminEmail);
 
