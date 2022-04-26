@@ -61,6 +61,11 @@ public class BaseAdminCreatedTest {
         baseAdminEmail = properties.getProperty("baseuser.email");
     }
 
+    /**
+     * This test needs to go first because the dirties context makes it so that the application context is reset,
+     * meaning that the database will be cleared (spring.jpa.hibernate.ddl-auto=create in application.properties).
+     * When the application context is rebooted, there will not be any users and the base admin user should be created.
+     */
     @Test
     @Order(1)
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
@@ -74,6 +79,9 @@ public class BaseAdminCreatedTest {
         assertEquals(UserRole.ADMIN, userEntity.getUserRole());
     }
 
+    /**
+     * This test needs to go second because we want the base admin user to be present already.
+     */
     @Test
     @Order(2)
     public void enabled_base_admin_user_present_works() throws Exception {
