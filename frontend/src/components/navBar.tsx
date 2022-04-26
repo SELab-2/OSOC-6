@@ -34,8 +34,8 @@ export const NavBar = () => {
                                     <Image
                                         alt=""
                                         src={"/resources/profile-icon.svg"}
-                                        width="40"
-                                        height="40"
+                                        width="25"
+                                        height="25"
                                     />
                                 </Nav.Link>
                             </Nav.Item>
