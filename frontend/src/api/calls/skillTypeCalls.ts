@@ -8,8 +8,16 @@ import {
     ISkillTypePage,
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
-import { AxiosConf, getAllEntitiesFromLinksUrl } from "./baseCalls";
+import { AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage } from "./baseCalls";
 import { IUser, userCollectionName } from "../entities/UserEntity";
+import { IProject, projectCollectionName } from "../entities/ProjectEntity";
+
+/**
+ * Fetches all SkillTypes on a given SkillTypePageUrl
+ */
+export function getAllSkillTypesFormPage(url: string): Promise<ISkillType[]> {
+    return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
+}
 
 /**
  * Get the skillType for a certain Skill.

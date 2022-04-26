@@ -2,10 +2,7 @@ import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../../styles/Home.module.css";
-import { ProjectList } from "../../components/projectList";
-import NavBar from "../../components/navBar";
 import { CreateProjectForm } from "../../components/createProjectForm";
-import { loginSubmitHandler } from "../../handlers/loginSubmitHandler";
 import { createProjectSubmitHandler } from "../../handlers/createProjectSubmitHandler";
 
 const Home: NextPage = () => {
@@ -16,13 +13,11 @@ const Home: NextPage = () => {
                 <title className="capitalize">{t("home page title")}</title>
             </Head>
             <main className={styles.main}>
-                <div className="capitalize">
+                <div className="capitalize  m-4">
                     <h1 className={styles.title}>{t("tool name")}</h1>
+                    <CreateProjectForm submitHandler={createProjectSubmitHandler} />
                 </div>
             </main>
-            <NavBar />
-            <ProjectList />
-            <CreateProjectForm submitHandler={createProjectSubmitHandler} />
         </div>
     );
 };

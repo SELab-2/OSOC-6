@@ -9,7 +9,6 @@ export interface ProjectCreationValues {
     coach: string;
     partnerName: string;
     partnerWebsite: string;
-    creator: string;
 }
 
 export type ProjectCreationProps = {
@@ -17,6 +16,7 @@ export type ProjectCreationProps = {
 };
 
 export async function createProjectSubmitHandler(values: ProjectCreationValues) {
+    console.log("METTNE");
     // store the states in the form data
     const createProjectFormData = new FormData();
     createProjectFormData.append("projectName", values.projectName);
@@ -24,11 +24,11 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
     createProjectFormData.append("coach", values.coach);
     createProjectFormData.append("partnerName", values.partnerName);
     createProjectFormData.append("partnerWebsite", values.partnerWebsite);
-
+    console.log("HERE");
     const ownUser = await axios.get(apiPaths.ownUser, AxiosFormConfig);
     createProjectFormData.append("creator", ownUser.data._links.self.split(apiPaths.base)[1]);
 
-    const response = await axios.post(apiPaths.projects, createProjectFormData, AxiosFormConfig);
+    const response = await axios.post(apiPaths.projects, null, AxiosFormConfig);
     console.log("RESPONSE");
     console.log(response);
     // redirect to the url specified in the response

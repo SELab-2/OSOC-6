@@ -4,6 +4,8 @@ import styles from "../styles/loginForm.module.css";
 import { LoginProps } from "../handlers/loginSubmitHandler";
 
 export default function LoginForm(props: LoginProps) {
+    console.log("LOGIN");
+    console.log(props);
     return (
         <div className={styles.login_box}>
             <Formik
