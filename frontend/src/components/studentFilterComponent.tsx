@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { Field, Form, Formik } from "formik";
 import { ParsedUrlQueryInput } from "querystring";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../utility/stringUtil";
 
 interface IFormValues {
     freeText: string;
@@ -57,6 +59,8 @@ function fromFormValues(values: IFormValues): ParsedUrlQueryInput {
 }
 
 export function StudentFilterComponent() {
+    const { t } = useTranslation("common");
+
     const router = useRouter();
 
     const values: IFormValues = fromFormQuery(router.query);
@@ -81,7 +85,7 @@ export function StudentFilterComponent() {
                                 id="coachCheck"
                             />
                             <label className="form-check-label" htmlFor="coachCheck">
-                                Student Coach
+                                {capitalize(t("student coach"))}
                             </label>
                         </div>
                         <div className="form-check">
@@ -92,7 +96,7 @@ export function StudentFilterComponent() {
                                 id="alumniCheck"
                             />
                             <label className="form-check-label" htmlFor="alumniCheck">
-                                Alumni
+                                {capitalize(t("alumni"))}
                             </label>
                         </div>
                         <div className="form-check">
@@ -103,13 +107,13 @@ export function StudentFilterComponent() {
                                 id="unmatchedCheck"
                             />
                             <label className="form-check-label" htmlFor="unmatchedCheck">
-                                Unmatched
+                                {capitalize(t("unmatched"))}
                             </label>
                         </div>
                         <Field type="text" name="freeText" placeholder="Search students with key words" />
                         <Field type="text" name="roles" placeholder="Search students with roles" />
                         <button type="submit" disabled={isSubmitting}>
-                            Apply filters
+                            {capitalize(t("apply"))}
                         </button>
                     </Form>
                 )}

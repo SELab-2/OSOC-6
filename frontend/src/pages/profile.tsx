@@ -11,7 +11,7 @@ const Profile: NextPage = () => {
     return (
         <div>
             <Head>
-                <title>{capitalize(t("useroverview my profile"))}</title>
+                <title>{capitalize(t("user profile"))}</title>
             </Head>
             <main className={styles.main}>
                 <NavBar />
