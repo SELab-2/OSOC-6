@@ -57,7 +57,7 @@ public class WebConfiguration {
      */
     @Bean
     @Profile("!test")
-    CommandLineRunner initBaseAdminUser(final PublicRepository publicRepository,
+    public CommandLineRunner initBaseAdminUser(final PublicRepository publicRepository,
                                         final BCryptPasswordEncoder passwordEncoder) {
         return args -> {
             if (publicRepository.countAllByUserRoleEqualsAndEnabled(UserRole.ADMIN, true) == 0) {
