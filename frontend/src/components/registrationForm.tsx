@@ -46,7 +46,7 @@ export default function RegistrationForm(props: { submitHandler: (values: any) =
                         placeholder="Repeat password"
                         required
                     />
-                    <button className="btn btn-primary" type="submit">
+                    <button className="btn btn-primary" type="submit" data-testid="register-button">
                         Register
                     </button>
                 </Form>

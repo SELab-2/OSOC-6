@@ -25,7 +25,6 @@ const Registration: NextPage = () => {
         password: string;
         repeat: string;
     }) {
-        console.log(values);
         if (values.password == values.repeat) {
             const registratingUser: User = new User(values.callname, values.email, values.password);
             // Use asPath instead of query to ignore the special characters in the token
@@ -38,9 +37,8 @@ const Registration: NextPage = () => {
                     },
                     ...AxiosConf,
                 });
-
                 await loginSubmitHandler({ username: values.email, password: values.password });
-                Router.push(apiPaths.home);
+                await Router.push(apiPaths.home);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);
@@ -59,7 +57,7 @@ const Registration: NextPage = () => {
             <NavBar />
             <h1 className="display-6 mb-3 capitalize">Registration</h1>
             <RegistrationForm submitHandler={registrationHandler} />
-            <ToastContainer position="bottom-end">
+            <ToastContainer position="bottom-end" data-testid="toast-registration">
                 <Toast
                     bg="danger"
                     onClose={() => setShowDanger(false)}
