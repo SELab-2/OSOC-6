@@ -9,16 +9,19 @@
 }
 
 .student_list_element:hover {
-    background-color: rgb(10, 8, 57, 70%);
+    background-color: white;
+    color: black;
 }
 
 .student_name {
-    color: #ffffff;
     margin-bottom: 0;
 }
 
 .student_list_component {
     border-top: 1px solid white;
+    height: 100%;
+    width: 100%;
+    background-color: #0a0839;
 }
 
 .student_list {
@@ -26,7 +29,6 @@
 }
 
 .student_best_skill {
-    color: #ffffff;
     padding-left: 1rem;
 }
 
