@@ -39,7 +39,6 @@ public class BaseAdminResetTest {
 
     @BeforeAll
     static void setup() throws IOException {
-        System.out.println("Now in beforeall");
         Resource resource = new ClassPathResource("initial-user.properties");
         Properties properties = PropertiesLoaderUtils.loadProperties(resource);
 
