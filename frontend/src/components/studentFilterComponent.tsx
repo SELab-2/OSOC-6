@@ -71,13 +71,12 @@ export function StudentFilterComponent() {
                     });
                 }}
             >
-                {({ isSubmitting, values }) => (
+                {({ isSubmitting }) => (
                     <Form>
                         <div className="form-check">
                             <Field
                                 type="checkbox"
                                 className="form-check-input"
-                                checked={values.studentCoach}
                                 name="studentCoach"
                                 id="coachCheck"
                             />
@@ -89,7 +88,6 @@ export function StudentFilterComponent() {
                             <Field
                                 type="checkbox"
                                 className="form-check-input"
-                                checked={values.alumni}
                                 name="alumni"
                                 id="alumniCheck"
                             />
@@ -101,7 +99,6 @@ export function StudentFilterComponent() {
                             <Field
                                 type="checkbox"
                                 className="form-check-input"
-                                checked={values.unmatched}
                                 name="unmatched"
                                 id="unmatchedCheck"
                             />
@@ -109,10 +106,10 @@ export function StudentFilterComponent() {
                                 Unmatched
                             </label>
                         </div>
-                        <Field type="text" name="freeText" placeholder="search with keywords" />
-                        <Field type="text" name="roles" placeholder="Type the role you are looking for" />
+                        <Field type="text" name="freeText" placeholder="Search students with key words" />
+                        <Field type="text" name="roles" placeholder="Search students with roles" />
                         <button type="submit" disabled={isSubmitting}>
-                            Submit
+                            Apply filters
                         </button>
                     </Form>
                 )}
