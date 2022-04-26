@@ -41,8 +41,8 @@ const common = {
     coach: "coach",
     edit: "edit",
     "student page title": "studentpage title",
-    "registration": "registration",
-    "register": "register",
+    registration: "registration",
+    register: "register",
 };
 
 export default common;

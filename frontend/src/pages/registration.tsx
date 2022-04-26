@@ -13,8 +13,8 @@ const Registration: NextPage = () => {
             <Head>
                 <title className="capitalize">{capitalize(t("registration"))}</title>
             </Head>
-            <NavBar/>
-            <RegistrationForm/>
+            <NavBar />
+            <RegistrationForm />
         </div>
     );
 };

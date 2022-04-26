@@ -11,7 +11,7 @@ import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import { capitalize } from "../utility/stringUtil";
-import { Formik, Field,Form} from "formik";
+import { Formik, Field, Form } from "formik";
 import styles from "../styles/loginForm.module.css";
 
 const RegistrationForm: NextPage = () => {
