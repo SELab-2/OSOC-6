@@ -68,18 +68,6 @@ public final class SpelUtil {
     }
 
     /**
-     * Get a formatted string so LIKE will check if the parameter is contained.
-     * @param orig ths String parameter for a query that should be formatted
-     * @return the formatted string so LIKE will check if the parameter is contained
-     */
-    public static String formatContains(final String orig) {
-        if (orig == null) {
-            return "";
-        }
-        return "%" + orig + "%";
-    }
-
-    /**
      * Get a formatted query string substituting spaces with '&'.
      * @param ownFormat a string that uses space separation for different string
      * @return a safe text search query string
@@ -129,15 +117,5 @@ public final class SpelUtil {
     public static Boolean safeBoolean(final Boolean orig) {
         // return orig == null ? false : orig;
         return orig != null && orig;
-    }
-
-    /**
-     * Get the Null safe ordinal representation of provided Enum, defaults to -1.
-     * @param orig Enum that should have NULL safety
-     * @param <T> type of enum (is ignored)
-     * @return null safe ordinal representation of Enum
-     */
-    public static <T extends Enum<T>> int safeEnum(final Enum<T> orig) {
-        return orig == null ? -1 : orig.ordinal();
     }
 }
