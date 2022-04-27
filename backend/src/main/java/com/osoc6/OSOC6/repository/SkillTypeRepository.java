@@ -35,10 +35,6 @@ public interface SkillTypeRepository extends JpaRepository<SkillType, Long> {
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Page<SkillType> findByName(@Param("name") String name, Pageable pageable);
 
-    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
-    @Override @NonNull
-    Page<SkillType> findAll(@NonNull Pageable pageable);
-
     @Override
     @NonNull
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)

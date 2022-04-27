@@ -22,8 +22,7 @@ export const StudentList = () => {
             ...params,
             editionId: 3,
         }),
-        getAllStudentsFormPage,
-        { refreshInterval: 2 }
+        getAllStudentsFormPage
     );
     data = data || [];
 
