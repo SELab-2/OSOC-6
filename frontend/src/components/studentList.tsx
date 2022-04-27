@@ -4,7 +4,7 @@ import styles from "../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import {
-    baseUrlAndQueryParamsToUrl,
+    constructStudentQueryUrl,
     getAllStudentsFromPage,
     IStudentQueryParams,
 } from "../api/calls/studentCalls";
@@ -18,7 +18,7 @@ export const StudentList = () => {
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
     let { data, error } = useSWR(
-        baseUrlAndQueryParamsToUrl(apiPaths.studentByQuery, {
+        constructStudentQueryUrl(apiPaths.studentByQuery, {
             ...params,
             editionId: 3,
         }),

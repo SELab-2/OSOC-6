@@ -20,7 +20,7 @@ export function getStudentOnUrl(url: string): Promise<IStudent> {
     return <Promise<IStudent>>getEntityOnUrl(url);
 }
 
-export function baseUrlAndQueryParamsToUrl(
+export function constructStudentQueryUrl(
     url: string,
     params: IStudentQueryParams & { editionId: number }
 ): string {
