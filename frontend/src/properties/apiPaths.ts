@@ -17,6 +17,7 @@ const apiPaths = {
     communications: "communications",
     assignments: "assignments",
     students: "students",
+    logout: "logout",
 };
 
 export default apiPaths;

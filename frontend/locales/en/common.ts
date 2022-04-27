@@ -41,6 +41,12 @@ const common = {
     coach: "coach",
     edit: "edit",
     "student page title": "studentpage title",
+    registration: "registration",
+    register: "register",
+    "enter callname": "enter callname",
+    "enter email": "enter email address",
+    "enter password": "enter password",
+    "repeat password": "repeat password",
 };
 
 export default common;

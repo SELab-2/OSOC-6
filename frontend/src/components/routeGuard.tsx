@@ -21,6 +21,7 @@ export default function RouteGuard({ children }: any) {
             "/" + applicationPaths.index,
             "/" + applicationPaths.login,
             "/" + applicationPaths.loginError,
+            "/" + applicationPaths.registration,
         ];
 
         // Check if the user is logged in. If not this request will be redirected to the backend login
