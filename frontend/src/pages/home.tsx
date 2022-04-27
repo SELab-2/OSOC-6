@@ -20,7 +20,7 @@ const Home: NextPage = () => {
                 </div>
             </main>
             <button onClick={dataInjectionHandler}>Inject!</button>
-            <InvitationButton/>
+            <InvitationButton />
         </div>
     );
 };
