@@ -71,10 +71,7 @@ function sortAssignments(assignments: Assignments) {
     });
 }
 
-async function deleteAssignment(
-    assignmentURL: string,
-    oldAssignments: Assignments
-): Promise<Assignments> {
+async function deleteAssignment(assignmentURL: string, oldAssignments: Assignments): Promise<Assignments> {
     await axios.delete(assignmentURL, AxiosConf);
     const assignments: Assignments = [];
     for (let assignment of oldAssignments) {
@@ -86,9 +83,8 @@ async function deleteAssignment(
 }
 
 async function getLinks(item: { skill: IProjectSkill }): Promise<Assignments> {
-    const assignmentList: IAssignmentLinks = (
-        await axios.get(item.skill._links.assignments.href, AxiosConf)
-    ).data;
+    const assignmentList: IAssignmentLinks = (await axios.get(item.skill._links.assignments.href, AxiosConf))
+        .data;
     return await getAssignments(assignmentList);
 }
 

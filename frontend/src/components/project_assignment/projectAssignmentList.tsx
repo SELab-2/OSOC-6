@@ -5,11 +5,12 @@ import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import apiPaths from "../../properties/apiPaths";
 import { useEffect, useState } from "react";
-import { getAllProjects, IProject } from "../../api/ProjectEntity";
+import { IProject } from "../../api/entities/ProjectEntity";
+import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
 import SkillItem from "./skillItem";
 
 async function getProjectAssignemntData(): Promise<{ project: IProject }[]> {
-    const projects: IProject[] = await getAllProjects(apiPaths.projects);
+    const projects: IProject[] = await getAllProjectsFormPage(apiPaths.projects);
     const reply: { project: IProject }[] = [];
 
     await Promise.all(
