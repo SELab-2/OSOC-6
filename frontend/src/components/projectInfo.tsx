@@ -36,7 +36,9 @@ export function ProjectInfo() {
             {capitalize(t("project expertise"))}
             <ul>
                 {data.skills.map((skill) => (
-                    <li key={skill.skill._links.self.href}>{skill.skill.name}</li>
+                    <li key={skill.skill._links.self.href}>
+                        {skill.skill.name + ": " + skill.skill.additionalInfo}
+                    </li>
                 ))}
             </ul>
             {capitalize(t("project roles"))}
