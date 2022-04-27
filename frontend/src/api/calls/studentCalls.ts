@@ -12,7 +12,7 @@ export interface IStudentQueryParams {
 /**
  * Fetches all students on a given StudentLinksUrl
  */
-export function getAllStudentsFormPage(url: string): Promise<IStudent[]> {
+export function getAllStudentsFromPage(url: string): Promise<IStudent[]> {
     return <Promise<IStudent[]>>getAllEntitiesFromPage(url, studentCollectionName);
 }
 

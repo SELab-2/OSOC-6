@@ -5,7 +5,7 @@ import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import {
     baseUrlAndQueryParamsToUrl,
-    getAllStudentsFormPage,
+    getAllStudentsFromPage,
     IStudentQueryParams,
 } from "../api/calls/studentCalls";
 import useSWR from "swr";
@@ -22,7 +22,7 @@ export const StudentList = () => {
             ...params,
             editionId: 3,
         }),
-        getAllStudentsFormPage
+        getAllStudentsFromPage
     );
     data = data || [];
 
