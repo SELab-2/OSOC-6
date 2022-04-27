@@ -27,10 +27,7 @@ export default function InvitationButton() {
             invitationToken: postedInvitation.token,
         });
 
-        // Log the user out to allow registration
-        await logoutUser();
-        // Redirect to the registration page
-        await Router.push(url);
+        await Promise.all([logoutUser(), Router.push(url)]);
     }
 
     return <Button onClick={onClick}>Create invitation for registration</Button>;
