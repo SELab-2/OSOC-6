@@ -6,13 +6,13 @@ import timers from "../properties/timers";
 import { useState } from "react";
 import { User } from "../api/entities/UserEntity";
 import Router from "next/router";
-import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import { AxiosConf } from "../api/calls/baseCalls";
+import {basePost, getParamsFromQueryUrl} from "../api/calls/baseCalls";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import { capitalize } from "../utility/stringUtil";
 import { Formik, Field, Form } from "formik";
 import styles from "../styles/loginForm.module.css";
+import applicationPaths from "../properties/applicationPaths";
 
 const RegistrationForm: NextPage = () => {
     const { t } = useTranslation("common");
@@ -26,19 +26,20 @@ const RegistrationForm: NextPage = () => {
         repeat: string;
     }) {
         if (values.password == values.repeat) {
+            console.log("Register")
             const registratingUser: User = new User(values.callname, values.email, values.password);
-            // Use asPath instead of query to ignore the special characters in the token
-            const invitationToken: string = Router.asPath.split("invitationToken=")[1];
+            let invitationToken = getParamsFromQueryUrl(Router.asPath).get("invitationToken");
+            // Token always ends on "=", but this character is removed in the paramsFromQueryURl method
+            if (invitationToken[-1] !== "=") {
+                invitationToken += "=";
+            }
 
             try {
-                await axios.post(apiPaths.base + apiPaths.registration, registratingUser, {
-                    params: {
-                        token: invitationToken,
-                    },
-                    ...AxiosConf,
-                });
+                await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
+                    token: invitationToken,
+                })
                 await loginSubmitHandler({ username: values.email, password: values.password });
-                await Router.push(apiPaths.home);
+                await Router.push(applicationPaths.home);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);

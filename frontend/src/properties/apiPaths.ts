@@ -18,7 +18,6 @@ const apiPaths = {
     assignments: "assignments",
     students: "students",
     logout: "logout",
-    home: "home",
 };
 
 export default apiPaths;

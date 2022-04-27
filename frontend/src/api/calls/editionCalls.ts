@@ -1,6 +1,6 @@
-import { getAllEntitiesFromLinksUrl } from "./baseCalls";
+import { getAllEntitiesFromPage } from "./baseCalls";
 import { editionCollectionName, IEdition } from "../entities/EditionEntity";
 
-export function getAllEditionsFromUrl(url: string): Promise<IEdition[]> {
-    return <Promise<IEdition[]>>getAllEntitiesFromLinksUrl(url, editionCollectionName);
+export function getAllEditionsFromPage(url: string): Promise<IEdition[]> {
+    return <Promise<IEdition[]>>getAllEntitiesFromPage(url, editionCollectionName);
 }
