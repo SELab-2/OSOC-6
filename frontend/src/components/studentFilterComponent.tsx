@@ -58,7 +58,7 @@ export function StudentFilterComponent() {
 
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
     return (
-        <>
+        <div data-testid="student-filter">
             <Formik
                 enableReinitialize={true}
                 initialValues={values}
@@ -111,6 +111,6 @@ export function StudentFilterComponent() {
                     </Form>
                 )}
             </Formik>
-        </>
+        </div>
     );
 }
