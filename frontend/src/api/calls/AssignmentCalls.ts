@@ -68,7 +68,6 @@ export async function getAssignments(url: string): Promise<ProjectAssignments> {
                 assigner = assigners[assignerURL];
             }
             assignments.push({ assignment, student, assigner });
-            console.log(assignments);
         }
     }
 
