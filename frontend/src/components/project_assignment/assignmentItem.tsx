@@ -1,15 +1,17 @@
-import { IProjectSkill } from "../../api/ProjectSkillEntity";
-import { useEffect, useState } from "react";
+import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import axios from "axios";
-import { AxiosConf } from "../../api/requests";
+import { AxiosConf } from "../../api/calls/baseCalls";
 import { Badge, CloseButton, Col, Row } from "react-bootstrap";
-import { IAssignment, IAssignmentLinks } from "../../api/AssignmentEntity";
-import { IStudent } from "../../api/StudentEntity";
-import { IUser } from "../../api/UserEntity";
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import { IStudent } from "../../api/entities/StudentEntity";
+import { IUser } from "../../api/entities/UserEntity";
+import useSWR, { useSWRConfig } from "swr";
+import { getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
+import { useEffect, useState } from "react";
 
 type Assignments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
 
-async function getAssignments(assignmentList: IAssignmentLinks): Promise<Assignments> {
+async function getAssignments(assignmentList: IAssignment[]): Promise<Assignments> {
     let assignments: Assignments = [];
     const assigners: { [url: string]: IUser } = {};
     const students: { [url: string]: IStudent } = {};
@@ -18,31 +20,30 @@ async function getAssignments(assignmentList: IAssignmentLinks): Promise<Assignm
         return assignments;
     }
 
-    await Promise.all(
-        assignmentList._embedded.assignments.map(async (assignment) => {
-            if (assignment.isValid) {
-                const studentURL = assignment._links.student.href;
-                const assignerURL = assignment._links.assigner.href;
+    for (let assignment of assignmentList) {
+        if (assignment.isValid) {
+            const studentURL = assignment._links.student.href;
+            const assignerURL = assignment._links.assigner.href;
 
-                let student: IStudent;
-                if (students[studentURL] == undefined) {
-                    student = (await axios.get(studentURL, AxiosConf)).data;
-                    students[studentURL] = student;
-                } else {
-                    student = students[studentURL];
-                }
-
-                let assigner: IUser;
-                if (assigners[assignerURL] == undefined) {
-                    assigner = (await axios.get(assignerURL, AxiosConf)).data;
-                    assigners[assignerURL] = assigner;
-                } else {
-                    assigner = assigners[assignerURL];
-                }
-                assignments.push({ assignment, student, assigner });
+            let student: IStudent;
+            if (students[studentURL] == undefined) {
+                student = (await axios.get(studentURL, AxiosConf)).data;
+                students[studentURL] = student;
+            } else {
+                student = students[studentURL];
             }
-        })
-    );
+
+            let assigner: IUser;
+            if (assigners[assignerURL] == undefined) {
+                assigner = (await axios.get(assignerURL, AxiosConf)).data;
+                assigners[assignerURL] = assigner;
+            } else {
+                assigner = assigners[assignerURL];
+            }
+            assignments.push({ assignment, student, assigner });
+            console.log(assignments);
+        }
+    }
 
     sortAssignments(assignments);
 
@@ -82,22 +83,32 @@ async function deleteAssignment(assignmentURL: string, oldAssignments: Assignmen
     return assignments;
 }
 
-async function getLinks(item: { skill: IProjectSkill }): Promise<Assignments> {
-    const assignmentList: IAssignmentLinks = (await axios.get(item.skill._links.assignments.href, AxiosConf))
-        .data;
-    return await getAssignments(assignmentList);
-}
-
 function AssignmentItem(item: { skill: IProjectSkill }) {
+    const { mutate } = useSWRConfig();
+    let { data, error } = useSWR(item.skill._links.assignments.href, getAllAssignmentsFormLinks, {
+        refreshInterval: 10,
+    });
+    data = data || [];
+
+    if (error) {
+        console.log(error);
+    }
+
     const [assign, setAssign] = useState<Assignments>();
     useEffect(() => {
-        getLinks(item).then((assignments) => setAssign(assignments));
-    }, [item]);
+        if (data != undefined) {
+            getAssignments(data).then((it) => {
+                setAssign(it);
+            });
+        } else {
+            setAssign([]);
+        }
+    }, [data]);
 
     async function removeAssignment(event: any) {
         if (assign != undefined) {
-            const assignments = await deleteAssignment(event.target.value, assign);
-            setAssign(assignments);
+            const new_assignments = await deleteAssignment(event.target.value, assign);
+            setAssign(new_assignments);
         }
     }
 

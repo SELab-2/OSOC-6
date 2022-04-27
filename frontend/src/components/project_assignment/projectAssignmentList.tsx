@@ -4,72 +4,42 @@ import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import apiPaths from "../../properties/apiPaths";
-import { useEffect, useState } from "react";
-import { IProject } from "../../api/entities/ProjectEntity";
 import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
 import SkillItem from "./skillItem";
-
-async function getProjectAssignemntData(): Promise<{ project: IProject }[]> {
-    const projects: IProject[] = await getAllProjectsFormPage(apiPaths.projects);
-    const reply: { project: IProject }[] = [];
-
-    await Promise.all(
-        projects.map(async (project) => {
-            reply.push({ project });
-        })
-    );
-
-    return reply;
-}
+import useSWR from "swr";
 
 const ProjectAsignmentList: NextPage = () => {
-    const [projects, setProjects] = useState<{ project: IProject }[]>();
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        /*
-            setInterval(() => {
-*/
-        getProjectAssignemntData().then((reply) => {
-            setProjects(reply);
-            setLoading(false);
-        });
-        /*console.log("reload");
-        }, 10000)*/
-    }, []);
+    let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
+    data = data || [];
 
-    if (loading) {
-        return <h3>Loading ...</h3>;
+    if (error) {
+        console.log(error);
     }
 
-    const projectList = projects!;
+    const projectList = data;
 
     return (
-        <>
-            <Container>
-                <Accordion
-                    defaultActiveKey={["0"]}
-                    alwaysOpen
-                    className={"overflow-auto"}
-                    style={{ height: "30em" }}
-                >
-                    {projectList.map((item, index) => {
+        <div data-testid="project-assignment-list">
+            <Container className="overflow-auto h-100 pt-2">
+                <Accordion defaultActiveKey={["0"]} alwaysOpen className={"overflow-auto"}>
+                    {projectList.map((project, index) => {
                         return (
                             <AccordionItem key={index} eventKey={`${index}`}>
                                 <AccordionHeader className={"bg-secondary"}>
                                     <div>
-                                        <h4>{item.project.name}</h4>
-                                        <p>{item.project.partnerName}</p>
+                                        <h4>{project.name}</h4>
+                                        <p>{project.partnerName}</p>
                                     </div>
                                 </AccordionHeader>
                                 <AccordionBody>
-                                    <SkillItem project={item.project} />
+                                    <SkillItem project={project} />
                                 </AccordionBody>
                             </AccordionItem>
                         );
                     })}
                 </Accordion>
             </Container>
-        </>
+        </div>
     );
 };
 
