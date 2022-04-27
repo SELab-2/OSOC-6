@@ -9,6 +9,7 @@ import apiPaths from "../src/properties/apiPaths";
 import { AxiosConf } from "../src/api/calls/baseCalls";
 import { getBaseForbiddenResponse } from "./TestEntityProvider";
 import { act } from "react-dom/test-utils";
+import mockRouter from "next-router-mock";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -46,11 +47,12 @@ describe("Registration", () => {
 
     it("submit should post the registration", async () => {
         await performRegistration(user.callName, user.email, user.password, user.password);
+        mockRouter.setCurrentUrl("/registration?invitationToken=token");
         await userEvent.click(screen.getByTestId("register-button"));
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.base + apiPaths.registration, user, {
                 ...AxiosConf,
-                params: { token: undefined },
+                params: { token: "token=" },
             });
         });
     });
