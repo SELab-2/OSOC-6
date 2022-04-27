@@ -71,7 +71,7 @@ const RegistrationForm: NextPage = () => {
                             type="text"
                             data-testid="callname"
                             name="callname"
-                            placeholder="Enter callname"
+                            placeholder={capitalize(t("register callname"))}
                             required
                         />
                         <Field
@@ -79,7 +79,7 @@ const RegistrationForm: NextPage = () => {
                             type="email"
                             data-testid="email"
                             name="email"
-                            placeholder="Enter email address"
+                            placeholder={capitalize(t("register email"))}
                             required
                         />
                         <Field
@@ -87,7 +87,7 @@ const RegistrationForm: NextPage = () => {
                             type="password"
                             data-testid="password"
                             name="password"
-                            placeholder="Enter password"
+                            placeholder={capitalize(t("register password"))}
                             required
                         />
                         <Field
@@ -95,7 +95,7 @@ const RegistrationForm: NextPage = () => {
                             type="password"
                             data-testid="repeat"
                             name="repeat"
-                            placeholder="Repeat password"
+                            placeholder={capitalize(t("repeat password"))}
                             required
                         />
                         <button className="btn btn-primary" type="submit" data-testid="register-button">

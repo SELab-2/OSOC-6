@@ -43,6 +43,10 @@ const common = {
     "student page title": "studentpage title",
     registration: "registration",
     register: "register",
+    "register callname": "enter callname",
+    "register email": "enter email address",
+    "register password": "enter password",
+    "register repeat password": "repeat password"
 };
 
 export default common;
