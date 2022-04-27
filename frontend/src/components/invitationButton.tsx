@@ -1,6 +1,6 @@
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import { AxiosConf, getQueryUrlFromParams } from "../api/calls/baseCalls";
+import {AxiosConf, basePost, getQueryUrlFromParams} from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
@@ -21,7 +21,7 @@ export default function InvitationButton() {
 
         // Create an invitation
         const invitation = new Invitation(user._links.self.href, edition._links.self.href);
-        const postedInvitation = (await axios.post(apiPaths.invitations, invitation, AxiosConf)).data;
+        const postedInvitation = (await basePost(apiPaths.invitations, invitation, {})).data;
 
         const url = getQueryUrlFromParams(applicationPaths.registration, {
             invitationToken: postedInvitation.token,
