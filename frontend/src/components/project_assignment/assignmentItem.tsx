@@ -1,114 +1,36 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
-import axios from "axios";
-import { AxiosConf } from "../../api/calls/baseCalls";
 import { Badge, CloseButton, Col, Row } from "react-bootstrap";
-import { IAssignment } from "../../api/entities/AssignmentEntity";
-import { IStudent } from "../../api/entities/StudentEntity";
-import { IUser } from "../../api/entities/UserEntity";
 import useSWR, { useSWRConfig } from "swr";
-import { getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
-import { useEffect, useState } from "react";
+import { deleteAssignment, getAssignments } from "../../api/calls/AssignmentCalls";
+import WarningToast from "./warningToast";
 
-type Assignments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
-
-async function getAssignments(assignmentList: IAssignment[]): Promise<Assignments> {
-    let assignments: Assignments = [];
-    const assigners: { [url: string]: IUser } = {};
-    const students: { [url: string]: IStudent } = {};
-
-    if (assignmentList == undefined) {
-        return assignments;
-    }
-
-    for (let assignment of assignmentList) {
-        if (assignment.isValid) {
-            const studentURL = assignment._links.student.href;
-            const assignerURL = assignment._links.assigner.href;
-
-            let student: IStudent;
-            if (students[studentURL] == undefined) {
-                student = (await axios.get(studentURL, AxiosConf)).data;
-                students[studentURL] = student;
-            } else {
-                student = students[studentURL];
-            }
-
-            let assigner: IUser;
-            if (assigners[assignerURL] == undefined) {
-                assigner = (await axios.get(assignerURL, AxiosConf)).data;
-                assigners[assignerURL] = assigner;
-            } else {
-                assigner = assigners[assignerURL];
-            }
-            assignments.push({ assignment, student, assigner });
-            console.log(assignments);
-        }
-    }
-
-    sortAssignments(assignments);
-
-    return assignments;
-}
-
-function sortAssignments(assignments: Assignments) {
-    assignments.sort((assignment1, assignment2) => {
-        if (assignment1.student.firstName > assignment2.student.firstName) {
-            return 1;
-        }
-
-        if (assignment1.student.firstName < assignment2.student.firstName) {
-            return -1;
-        }
-
-        if (assignment1.assigner.username > assignment2.assigner.username) {
-            return 1;
-        }
-
-        if (assignment1.assigner.username < assignment2.assigner.username) {
-            return -1;
-        }
-
-        return 0;
-    });
-}
-
-async function deleteAssignment(assignmentURL: string, oldAssignments: Assignments): Promise<Assignments> {
-    await axios.delete(assignmentURL, AxiosConf);
-    const assignments: Assignments = [];
-    for (let assignment of oldAssignments) {
-        if (assignment.assignment._links.assignment.href != assignmentURL) {
-            assignments.push(assignment);
-        }
-    }
-    return assignments;
-}
-
+/**
+ * An item containing the information about the assignments to a skill of a project.
+ * It contains the name of the skill followed by a list of assignments for that skill.
+ * The list contains the first name of the student, the name of the person that did the assignment and the motivation.
+ * Furthermore, it contains a delete button to delete the assignment.
+ * @param item Skill you want the assignments from
+ * @constructor
+ */
 function AssignmentItem(item: { skill: IProjectSkill }) {
     const { mutate } = useSWRConfig();
-    let { data, error } = useSWR(item.skill._links.assignments.href, getAllAssignmentsFormLinks, {
+    let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments, {
         refreshInterval: 10,
     });
-    data = data || [];
+    let assign = data || [];
 
     if (error) {
-        console.log(error);
+        return (
+            <WarningToast
+                message={"An error occurred, if you are experiencing issues please reload the page."}
+            />
+        );
     }
-
-    const [assign, setAssign] = useState<Assignments>();
-    useEffect(() => {
-        if (data != undefined) {
-            getAssignments(data).then((it) => {
-                setAssign(it);
-            });
-        } else {
-            setAssign([]);
-        }
-    }, [data]);
 
     async function removeAssignment(event: any) {
         if (assign != undefined) {
-            const new_assignments = await deleteAssignment(event.target.value, assign);
-            setAssign(new_assignments);
+            await deleteAssignment(event.target.value, assign);
+            await mutate(item.skill._links.assignments.href);
         }
     }
 

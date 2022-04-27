@@ -26,7 +26,7 @@ const AssignStudentsPage: NextPage = () => {
                     </Col>
                     <Col sm={9} xxl={10} className={"h-100"}>
                         <Row className={"h-100"}>
-                            <Col className="h-100">
+                            <Col className="h-100 overflow-auto pb-2">
                                 <ProjectAsignmentList />
                             </Col>
                             <Col className={"visually-hidden"}>

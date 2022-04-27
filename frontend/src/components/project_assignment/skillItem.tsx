@@ -3,12 +3,22 @@ import AssignmentItem from "./assignmentItem";
 import { IProject } from "../../api/entities/ProjectEntity";
 import useSWR from "swr";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
+import WarningToast from "./warningToast";
 
+/**
+ * This class returns a sorted list of all the skills appointed to a project.
+ * @param item Project you want the skills from.
+ * @constructor
+ */
 export default function SkillItem(item: { project: IProject }) {
     let { data, error } = useSWR(item.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
 
     if (error) {
-        console.log(error);
+        return (
+            <WarningToast
+                message={"An error occurred, if you are experiencing issues please reload the page."}
+            />
+        );
     }
 
     let skillList = data || undefined;

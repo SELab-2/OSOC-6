@@ -7,13 +7,22 @@ import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
 import SkillItem from "./skillItem";
 import useSWR from "swr";
+import WarningToast from "./warningToast";
 
+/**
+ * Accordion containing all the information to correctly assign students to projects.
+ * @constructor
+ */
 const ProjectAsignmentList: NextPage = () => {
     let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
 
     if (error) {
-        console.log(error);
+        return (
+            <WarningToast
+                message={"An error occurred, if you are experiencing issues please reload the page."}
+            />
+        );
     }
 
     const projectList = data;
