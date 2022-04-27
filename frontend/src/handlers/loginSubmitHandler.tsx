@@ -1,7 +1,7 @@
 import apiPaths from "../properties/apiPaths";
 import Router from "next/router";
 import axios from "axios";
-import { AxiosFormConfig } from "../api/requests";
+import { AxiosFormConfig } from "../api/calls/baseCalls";
 
 export interface LoginValues {
     username: string;
@@ -20,5 +20,7 @@ export async function loginSubmitHandler(values: LoginValues) {
 
     const response = await axios.post(apiPaths.login, loginFormData, AxiosFormConfig);
     // redirect to the url specified in the response
-    await Router.push(response.request.responseURL);
+    let redirect =
+        Router.query.returnUrl != undefined ? Router.query.returnUrl : response.request.responseURL;
+    await Router.push(redirect);
 }

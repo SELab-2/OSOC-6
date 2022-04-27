@@ -46,27 +46,28 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**
-     * Check if there exists an enabled user with the specified role.
-     * This is needed for creating the base admin user.
+     * Count how manny enabled user with the specified role there are.
+     * This is needed for role patch safety.
      * @param userRole the role of the users to look for
      * @param enabled whether the user is enabled or not
-     * @return a list of all users with the specified role
-     * @apiNote This is an internal method, meaning it is not exposed as a RestResource.
+     * @return how many users there exist  with the specified role that are enabled or not.
      */
-    @RestResource(exported = false)
-    @Query("select (count(u) > 0) from UserEntity u where u.userRole = :userRole and u.enabled = :enabled")
-    boolean existsAllByUserRoleEqualsAndEnabled(
-            @Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
+    int countAllByUserRoleEqualsAndEnabled(@Param("userRole") UserRole userRole, @Param("enabled") Boolean enabled);
 
     /**
      * Update a {@link UserEntity}.
      * @apiNote
-     * An admin can update everything about every user.
+     * An admin can update everything about every user, except for their own role when they are the last admin.
      * A coach can only update themselves and cannot change their role.
      */
     @Override
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or (authentication.principal.id == #userEntity.id "
-            + "and authentication.principal.userRole == #userEntity.userRole)")
+    @PreAuthorize("( " + MerlinSpELWizard.ADMIN_AUTH + " and "
+    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.database.models.UserRole).ADMIN, true) > 1"
+        + " or #userEntity.id == null" // new user check
+        + " or authentication.principal.id != #userEntity.id " // updating a different user than yourself
+        + " or authentication.principal.userRole == #userEntity.userRole))" // don't update your own role
+    + " or (authentication.principal.id == #userEntity.id " // coach is updating themselves
+        + " and authentication.principal.userRole == #userEntity.userRole)") // user is not updating his own role
     @NonNull
     <S extends UserEntity> S save(@NonNull S userEntity);
 

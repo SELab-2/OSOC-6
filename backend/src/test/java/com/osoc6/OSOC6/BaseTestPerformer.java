@@ -433,6 +433,17 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
+     * Get an entity by its id from the repository.
+     * @param id the id of the entity to get
+     * @return the found entity
+     */
+    public T get_repository_entity_by_id(final I id) {
+        AtomicReference<T> entity = new AtomicReference<>();
+        performAsAdmin(() -> entity.set(get_repository().getById(id)));
+        return entity.get();
+    }
+
+    /**
      * Save an entity to the repository.
      * @param entity entity to save
      */

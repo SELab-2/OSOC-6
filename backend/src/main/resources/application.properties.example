@@ -5,6 +5,9 @@ spring.datasource.driverClassName = org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
 server.servlet.contextPath=/api/
 
+# Tally webhook secret token
+webhook.token=your_secret_token_here
+
 #drop n create table again, good for testing, comment this in production
 #spring.jpa.hibernate.ddl-auto=create
 

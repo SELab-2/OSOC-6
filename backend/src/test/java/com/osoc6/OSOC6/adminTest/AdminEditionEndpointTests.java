@@ -12,7 +12,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,9 +97,7 @@ public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, 
      */
     @Override
     public Edition get_random_repository_entity() {
-        AtomicReference<Edition> entity = new AtomicReference<>();
-        performAsAdmin(() -> entity.set(get_repository().getById(edition1.getId())));
-        return entity.get();
+        return get_repository_entity_by_id(edition1.getId());
     }
 
     @Test

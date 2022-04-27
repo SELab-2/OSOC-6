@@ -207,12 +207,9 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void student_with_weird_pronouns_is_handled() throws Exception {
         Student entity = get_random_repository_entity();
-        perform_patch(getEntityPath() + "/" + get_id(entity), Map.of("pronounsType", "NONE"))
+        perform_patch(getEntityPath() + "/" + get_id(entity), Map.of("pronouns", "hom/mam/tam"))
                 .andExpect(status().isOk())
-                .andExpect(string_to_contains_string("\"pronounsType\" : \"NONE\""))
-                .andExpect(string_to_contains_string("\"possessivePronoun\" : \"his\""))
-                .andExpect(string_to_contains_string("\"subjectivePronoun\" : \"he\""))
-                .andExpect(string_to_contains_string("\"objectivePronoun\" : \"him\""));
+                .andExpect(string_to_contains_string("\"pronouns\" : \"hom/mam/tam\""));
     }
 
     @Test
@@ -262,6 +259,26 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "osocExperience"},
                 new String[]{getBaseActiveUserEdition().getId().toString(), OsocExperience.NONE.toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_on_correct_edition_works() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_edition_on_false_edition_works_not_results() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"},
+                new String[]{Long.toString(getILLEGAL_ID())})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
     }

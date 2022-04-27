@@ -42,6 +42,19 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findById(@NonNull Long aLong);
 
     /**
+     * Get all projects within an edition.
+     * @param editionId the id of the edition you want to see the projects of
+     * @param pageable argument needed to return a page
+     * @return page of matching projects
+     */
+    @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+            rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
+            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @Query("select s from Student s where s.edition.id = :edition")
+    Page<Student> findByEdition(@Param("edition") Long editionId, @NonNull Pageable pageable);
+
+    /**
      * Query over students by their field or by a reason provided in suggestion or assignment.
      *
      * @param edition the id of the edition this search is restricted to.
@@ -56,7 +69,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param portfolioURI field in student that is looked for
      * @param motivationURI field in student that is looked for
      * @param writtenMotivation field in student that is looked for
-     * @param educationLevel field in student that is looked for
      * @param currentDiploma field in student that is looked for
      * @param institutionName field in student that is looked for
      * @param bestSkill field in student that is looked for
@@ -64,7 +76,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param additionalStudentInfo field in student that is looked for
      * @param skill field in student that is looked for
      * @param reason field in student that is looked for
-     * @param pageable field in student that is looked for
+     * @param pageable argument needed to return a page
      * @return Page of matching students
      */
     @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
@@ -89,7 +101,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         + "(:portfolioURI is null or stud.portfoliouri = :#{@spelUtil.safeString(#portfolioURI)}) and "
         + "(:motivationURI is null or stud.motivationuri = :#{@spelUtil.safeString(#motivationURI)}) and "
         + "(:writtenMotivation is null or stud.written_motivation = :#{@spelUtil.safeString(#writtenMotivation)}) and"
-        + "(:educationLevel is null or stud.education_level = :#{@spelUtil.safeString(#educationLevel)}) and "
         + "(:currentDiploma is null or stud.current_diploma = :#{@spelUtil.safeString(#currentDiploma)}) and "
         + "(:institutionName is null or stud.institution_name = :#{@spelUtil.safeString(#institutionName)}) and "
         + "(:bestSkill is null or stud.best_skill = :#{@spelUtil.safeString(#bestSkill)}) and "
@@ -105,7 +116,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                               @Param("englishProficiency") EnglishProficiency englishProficiency,
                               @Param("phoneNumber") String phoneNumber, @Param("curriculumVitaeURI") String curriculumVitaeURI,
                               @Param("portfolioURI") String portfolioURI, @Param("motivationURI") String motivationURI,
-                              @Param("writtenMotivation") String writtenMotivation, @Param("educationLevel") String educationLevel,
+                              @Param("writtenMotivation") String writtenMotivation,
                               @Param("currentDiploma") String currentDiploma, @Param("institutionName") String institutionName,
                               @Param("bestSkill") String bestSkill,
                               @Param("osocExperience") OsocExperience osocExperience,

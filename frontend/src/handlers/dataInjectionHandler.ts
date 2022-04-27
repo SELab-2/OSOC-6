@@ -1,42 +1,38 @@
 import { MouseEventHandler } from "react";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import { IUser, IUsersPage, User } from "../api/UserEntity";
-import { Edition, IEdition, IEditionsPage } from "../api/EditionEntity";
-import { IInvitation, IInvitationsPage, Invitation } from "../api/InvitationEntity";
-import { IProject, IProjectPage, Project } from "../api/ProjectEntity";
-import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/ProjectSkillEntity";
-import { IUserSkill, IUserSkillPage, UserSkill } from "../api/UserSkillEntity";
+import { IUser, IUsersPage, User } from "../api/entities/UserEntity";
+import { Edition, IEdition, IEditionsPage } from "../api/entities/EditionEntity";
+import { IInvitation, IInvitationsPage, Invitation } from "../api/entities/InvitationEntity";
+import { IProject, IProjectPage, Project } from "../api/entities/ProjectEntity";
+import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/entities/ProjectSkillEntity";
+import { IUserSkill, IUserSkillPage, UserSkill } from "../api/entities/UserSkillEntity";
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
     ICommunicationTemplatePage,
-} from "../api/CommunicationTemplateEntity";
+} from "../api/entities/CommunicationTemplateEntity";
 import {
     EnglishProficiency,
     Gender,
     IStudent,
     IStudentPage,
     OsocExpericience,
-    PronounsType,
+    Status,
     Student,
-} from "../api/StudentEntity";
-import {
-    getSkillTypeFromSkill,
-    ISkillType,
-    ISkillTypePage,
-    SkillType,
-} from "../api/SkillTypeEntity";
-import { AxiosConf } from "../api/requests";
-import { Communication, ICommunication, ICommunicationPage } from "../api/CommunicationEntity";
-import { Simulate } from "react-dom/test-utils";
+} from "../api/entities/StudentEntity";
+import { baseSkillType, ISkillType, ISkillTypePage, SkillType } from "../api/entities/SkillTypeEntity";
+import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
 import {
     ISuggestion,
     ISuggestionPage,
     Suggestion,
     SuggestionStrategy,
-} from "../api/SuggestionEntity";
-import { Assignment, IAssignment, IAssignmentPage } from "../api/AssignmentEntity";
+} from "../api/entities/SuggestionEntity";
+import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
+import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
+import { AxiosConf } from "../api/calls/baseCalls";
+import faker from "@faker-js/faker";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
@@ -45,14 +41,13 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const own_user_url: string = user._links.self.href;
 
     const userSkills: IUserSkillPage = (await axios.get(apiPaths.userSkills, AxiosConf)).data;
+    console.log(userSkills);
     let containedUserSkills: IUserSkill[];
     if (userSkills._embedded["user-skills"].length == 0) {
         const skill: UserSkill = new UserSkill("The best", "you're simply the best!", own_user_url);
 
         containedUserSkills = await Promise.all(
-            [skill].map(
-                async (skill) => (await axios.post(apiPaths.userSkills, skill, AxiosConf)).data
-            )
+            [skill].map(async (skill) => (await axios.post(apiPaths.userSkills, skill, AxiosConf)).data)
         );
     } else {
         containedUserSkills = userSkills._embedded["user-skills"];
@@ -117,8 +112,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedProjects);
 
-    const projectSkills: IProjectSkillPage = (await axios.get(apiPaths.projectSkills, AxiosConf))
-        .data;
+    const projectSkills: IProjectSkillPage = (await axios.get(apiPaths.projectSkills, AxiosConf)).data;
     let containedProjectSkills: IProjectSkill[];
     if (projectSkills._embedded["project-skills"].length == 0) {
         const skill1: ProjectSkill = new ProjectSkill(
@@ -128,9 +122,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
 
         containedProjectSkills = await Promise.all(
-            [skill1].map(
-                async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data
-            )
+            [skill1].map(async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data)
         );
     } else {
         containedProjectSkills = projectSkills._embedded["project-skills"];
@@ -169,7 +161,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "Master",
             "",
             5,
-            "higher level",
             EnglishProficiency.fluent,
             "Kasper",
             Gender.male,
@@ -178,12 +169,13 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "Dutch",
             "",
             OsocExpericience.yes_noStudentCoach,
+            Status.maybe,
             "+3257697568",
+            "Yes, I can work with a student employment agreement in Belgium",
+            "Eating and drinking",
             "",
-            "",
-            "",
-            "",
-            PronounsType.he,
+            "he/him/his",
+            "A fun fact about me",
             ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
             ["I love to Spring Spring in java Spring!"],
             "",
@@ -191,10 +183,44 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             editionUrl
         );
 
+        let students = [student1];
+        for (let i = 0; i < 10; i++) {
+            const firstname = faker.name.firstName();
+            const lastname = faker.name.lastName();
+            const newStudent: Student = new Student(
+                faker.internet.email(),
+                faker.lorem.sentence(10),
+                faker.lorem.sentence(5),
+                firstname + " " + lastname,
+                "Master",
+                "",
+                5,
+                EnglishProficiency.fluent,
+                firstname,
+                Gender.male,
+                "Ghent University",
+                lastname,
+                "Dutch",
+                "",
+                OsocExpericience.yes_noStudentCoach,
+                Status.approved,
+                "+3257697568",
+                "No – but I would like to join this experience for free",
+                "",
+                "",
+                "they",
+                "",
+                ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+                ["I love to Spring Spring in java Spring!"],
+                "",
+                "3th",
+                editionUrl
+            );
+            students.push(newStudent);
+        }
+
         containedStudents = await Promise.all(
-            [student1].map(
-                async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data
-            )
+            students.map(async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data)
         );
     } else {
         containedStudents = students._embedded.students;
@@ -205,8 +231,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
     let containedSkillTypes: ISkillType[];
     if (skillTypes._embedded.skillTypes.length == 0) {
-        const skillType1 = new SkillType("V10 boulderer", "000000");
-        const skillTypeOther = new SkillType("other", "929199");
+        const skillType1 = new SkillType("V10 boulderer", "#427162");
+        const skillTypeOther = new SkillType(baseSkillType, "#929199");
 
         containedSkillTypes = await Promise.all(
             [skillType1, skillTypeOther].map(
@@ -222,8 +248,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     console.log(await getSkillTypeFromSkill(projectBoulderSkill));
     console.log(await getSkillTypeFromSkill(simpleUserSkill));
 
-    const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf))
-        .data;
+    const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];
     if (communications._embedded.communications.length == 0) {
         const communication1: Communication = new Communication(
@@ -255,12 +280,45 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
 
         containedSuggestions = await Promise.all(
-            [suggestion1].map(
-                async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data
-            )
+            [suggestion1].map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data)
         );
     } else {
         containedSuggestions = suggestions._embedded.suggestions;
+    }
+
+    for (let student of containedStudents) {
+        let studenturi = student._links.self.href;
+        let newSuggestions: Suggestion[] = [];
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+            const chance = Math.random();
+            let suggestion: Suggestion;
+            if (chance < 1 / 3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.yes,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else if (chance < 2 / 3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.maybe,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.no,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            }
+            newSuggestions.push(suggestion);
+        }
+        containedSuggestions = await Promise.all(
+            newSuggestions.map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data)
+        );
     }
     console.log(containedSuggestions);
 
@@ -310,8 +368,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 "This happens due to a bug in the backend. It will be fixed eventually."
         );
     } else {
-        let containedUsers = (<IUsersPage>(await axios.get(apiPaths.users, AxiosConf)).data)
-            ._embedded.users;
+        let containedUsers = (<IUsersPage>(await axios.get(apiPaths.users, AxiosConf)).data)._embedded.users;
         console.log(containedUsers);
     }
 };

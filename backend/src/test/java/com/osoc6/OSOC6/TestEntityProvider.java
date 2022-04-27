@@ -7,13 +7,15 @@ import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.Project;
 import com.osoc6.OSOC6.database.models.ProjectSkill;
 import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.database.models.SuggestionStrategy;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.database.models.UserSkill;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
+import com.osoc6.OSOC6.database.models.student.Status;
 import com.osoc6.OSOC6.database.models.student.Student;
 
 import java.util.List;
@@ -38,7 +40,6 @@ public final class TestEntityProvider {
                 .additionalStudentInfo("He likes it like that")
                 .bestSkill("Finding out the Spring ways")
                 .currentDiploma("Master")
-                .educationLevel("higher level")
                 .englishProficiency(EnglishProficiency.FLUENT)
                 .firstName("Kasper")
                 .lastName("Demeyere")
@@ -47,11 +48,14 @@ public final class TestEntityProvider {
                 .institutionName("Ghent University")
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.YES_NO_STUDENT_COACH)
+                .status(Status.MAYBE)
                 .phoneNumber("+324992772")
-                .pronounsType(PronounsType.HE)
+                .workType("Yes, I can work with a student employment agreement in Belgium")
+                .pronouns("he/him/his")
                 .writtenMotivation("I love to Spring Spring in java Spring!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
+                .funFact("I am groot.")
                 .edition(performer.getBaseActiveUserEdition())
                 .motivationURI("www.I-like-bananas.com")
                 .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
@@ -72,7 +76,6 @@ public final class TestEntityProvider {
                 .additionalStudentInfo("I like boulders")
                 .bestSkill("standing on hands")
                 .currentDiploma("Master")
-                .educationLevel("Lower level")
                 .englishProficiency(EnglishProficiency.FLUENT)
                 .firstName("Jitse")
                 .lastName("De Smet")
@@ -81,15 +84,16 @@ public final class TestEntityProvider {
                 .institutionName("Ghent University")
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.NONE)
+                .status(Status.APPROVED)
                 .phoneNumber("+324982672")
-                .pronounsType(PronounsType.OTHER)
-                .objectivePronoun("he")
-                .subjectivePronoun("her")
-                .possessivePronoun("them")
+                .workType("Yes, I can work as a volunteer in Belgium")
+                .daytimeResponsibilities("Being the boss")
+                .pronouns("they")
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
                 .edition(performer.getBaseActiveUserEdition())
+                .funFact("Boulder de boulder")
                 .motivationURI("www.ILikeApples.com")
                 .curriculumVitaeURI("www.my-life-in-bel-air.com")
                 .writtenMotivation("www.I-just-want-it.com")
@@ -257,5 +261,17 @@ public final class TestEntityProvider {
                                                          final ProjectSkill skill) {
         return new Assignment(false, "Seems like handsome girl", user, student, skill);
 
+    }
+
+    public static Suggestion getBaseYesSuggestion(final UserEntity user, final Student student) {
+        return new Suggestion(SuggestionStrategy.YES, "Reason 1", user, student);
+    }
+
+    public static Suggestion getBaseMaybeSuggestion(final UserEntity user, final Student student) {
+        return new Suggestion(SuggestionStrategy.MAYBE, "Reason 1", user, student);
+    }
+
+    public static Suggestion getBaseNoSuggestion(final UserEntity user, final Student student) {
+        return new Suggestion(SuggestionStrategy.NO, "Reason 1", user, student);
     }
 }
