@@ -26,7 +26,6 @@ const RegistrationForm: NextPage = () => {
         repeat: string;
     }) {
         if (values.password == values.repeat) {
-            console.log("Register");
             const registratingUser: User = new User(values.callname, values.email, values.password);
             let invitationToken = getParamsFromQueryUrl(Router.asPath).get("invitationToken");
             // Token always ends on "=", but this character is removed in the paramsFromQueryURl method

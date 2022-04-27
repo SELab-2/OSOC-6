@@ -22,7 +22,6 @@ export default function InvitationButton() {
         // Create an invitation
         const invitation = new Invitation(user._links.self.href, edition._links.self.href);
         const postedInvitation = (await axios.post(apiPaths.invitations, invitation, AxiosConf)).data;
-        console.log(postedInvitation);
 
         const url = getQueryUrlFromParams(applicationPaths.registration, {
             invitationToken: postedInvitation.token,
