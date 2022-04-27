@@ -10,7 +10,7 @@ export const NavBar = () => {
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href={"/" + applicationPaths.students} data-testid="navbar-brand">
-                        <Image alt="" src={"/resources/osoc-logo.svg"} width="40" height="40" />
+                        <Image alt="" src={"/resources/osoc-logo.svg"} width="30" height="30" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
@@ -34,8 +34,8 @@ export const NavBar = () => {
                                     <Image
                                         alt=""
                                         src={"/resources/profile-icon.svg"}
-                                        width="40"
-                                        height="40"
+                                        width="25"
+                                        height="25"
                                     />
                                 </Nav.Link>
                             </Nav.Item>

@@ -1,11 +1,10 @@
 import { NextPage } from "next";
-import { ProjectInfo } from "../../components/projectInfo";
 import { Col, Row } from "react-bootstrap";
 import NavBar from "../../components/navBar";
 import { ProjectList } from "../../components/projectList";
 import styles from "../../styles/pageGrids.module.css";
 
-const ProjectIDPage: NextPage = () => {
+const ProjectPage: NextPage = () => {
     return (
         <>
             <NavBar />
@@ -14,8 +13,8 @@ const ProjectIDPage: NextPage = () => {
                     <Col sm={3} xxl={2}>
                         <ProjectList />
                     </Col>
-                    <Col sm={9} xxl={10}>
-                        <ProjectInfo />
+                    <Col sm={9} xxl={10} className={"d-flex justify-content-center align-items-center"}>
+                        <p data-testid="projects-select-message">select a project to start</p>
                     </Col>
                 </Row>
             </div>
@@ -23,4 +22,4 @@ const ProjectIDPage: NextPage = () => {
     );
 };
 
-export default ProjectIDPage;
+export default ProjectPage;
