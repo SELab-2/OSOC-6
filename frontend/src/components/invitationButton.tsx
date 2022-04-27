@@ -1,15 +1,14 @@
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import {AxiosConf, getQueryUrlFromParams} from "../api/calls/baseCalls";
+import { AxiosConf, getQueryUrlFromParams } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../properties/applicationPaths";
-import {getAllEditionsFromPage} from "../api/calls/editionCalls";
-import {getOwnUser, logoutUser} from "../api/calls/userCalls";
-
+import { getAllEditionsFromPage } from "../api/calls/editionCalls";
+import { getOwnUser, logoutUser } from "../api/calls/userCalls";
 
 export default function InvitationButton() {
     async function onClick() {
@@ -25,8 +24,9 @@ export default function InvitationButton() {
         const postedInvitation = (await axios.post(apiPaths.invitations, invitation, AxiosConf)).data;
         console.log(postedInvitation);
 
-        const url = getQueryUrlFromParams(applicationPaths.registration,
-            {"invitationToken": postedInvitation.token});
+        const url = getQueryUrlFromParams(applicationPaths.registration, {
+            invitationToken: postedInvitation.token,
+        });
 
         // Log the user out to allow registration
         await logoutUser();

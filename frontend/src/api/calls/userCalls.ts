@@ -1,8 +1,8 @@
-import {AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl} from "./baseCalls";
+import { AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
 import { IUser, userCollectionName, UserRole } from "../entities/UserEntity";
 import axios from "axios";
 import apiPaths from "../../properties/apiPaths";
-import {IProject} from "../entities/ProjectEntity";
+import { IProject } from "../entities/ProjectEntity";
 
 /**
  * Fetches all users on a given UserPageUrl

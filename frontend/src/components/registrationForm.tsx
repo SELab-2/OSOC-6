@@ -7,7 +7,7 @@ import { useState } from "react";
 import { User } from "../api/entities/UserEntity";
 import Router from "next/router";
 import apiPaths from "../properties/apiPaths";
-import {basePost, getParamsFromQueryUrl} from "../api/calls/baseCalls";
+import { basePost, getParamsFromQueryUrl } from "../api/calls/baseCalls";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import { capitalize } from "../utility/stringUtil";
 import { Formik, Field, Form } from "formik";
@@ -26,7 +26,7 @@ const RegistrationForm: NextPage = () => {
         repeat: string;
     }) {
         if (values.password == values.repeat) {
-            console.log("Register")
+            console.log("Register");
             const registratingUser: User = new User(values.callname, values.email, values.password);
             let invitationToken = getParamsFromQueryUrl(Router.asPath).get("invitationToken");
             // Token always ends on "=", but this character is removed in the paramsFromQueryURl method
@@ -37,7 +37,7 @@ const RegistrationForm: NextPage = () => {
             try {
                 await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
                     token: invitationToken,
-                })
+                });
                 await loginSubmitHandler({ username: values.email, password: values.password });
                 await Router.push(applicationPaths.home);
             } catch (error: any) {
