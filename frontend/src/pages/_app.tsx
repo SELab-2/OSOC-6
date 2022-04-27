@@ -6,7 +6,7 @@ import RouteGuard from "../components/routeGuard";
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <RouteGuard>
-            <Component {...pageProps} />;
+            <Component {...pageProps} />
         </RouteGuard>
     );
 }
