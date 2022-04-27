@@ -121,6 +121,17 @@ public final class SpelUtil {
     }
 
     /**
+     * Get a non-null representation of a Boolean. Defaults to false.
+     * @param orig Boolean that should have NULL safety
+     * @return a non null Boolean
+     */
+    @NonNull
+    public static Boolean safeBoolean(final Boolean orig) {
+        // return orig == null ? false : orig;
+        return orig != null && orig;
+    }
+
+    /**
      * Get the Null safe ordinal representation of provided Enum, defaults to -1.
      * @param orig Enum that should have NULL safety
      * @param <T> type of enum (is ignored)

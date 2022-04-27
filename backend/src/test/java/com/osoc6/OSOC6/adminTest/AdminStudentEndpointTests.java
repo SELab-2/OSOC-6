@@ -171,6 +171,26 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_true() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_false() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void queried_no_args_has_no_results() throws Exception {
         perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{},

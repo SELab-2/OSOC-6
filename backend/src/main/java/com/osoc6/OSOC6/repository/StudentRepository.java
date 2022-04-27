@@ -61,6 +61,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * @param freeText free text search over the student, and the assignment or suggestion reason.
      *                 This field is formatted in a way that a space means a search for a separate,
      *                 not necessarily consecutive word.
+     * @param unmatched boolean parameter, when true only unmatched students will be returned
      * @param pageable argument needed to return a page
      * @return Page of matching students
      */
@@ -81,11 +82,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             + "and (:skills is null or to_tsvector("
                 + "(select COALESCE(string_agg(CAST(studskill as text), ''), '') from student_skills studskill where studskill.student_id = stud.id) "
             + ") @@ to_tsquery(:#{@spelUtil.safeToTSQuery(#skills)})) "
-            + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeArray(#experience)})",
+            + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeArray(#experience)}) "
+            + "and (:#{@spelUtil.safeBoolean(#unmatched)} = false or NOT EXISTS (select assign from assignment assign where assign.student_id = stud.id))",
             nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition, @Param("freeText") String freeText,
                               @Param("skills") String skills, @Param("experience") String[] experience,
-                              Pageable pageable);
+                              @Param("unmatched") Boolean unmatched, Pageable pageable);
 
     /**
      * Return the students that are assigned to multiple projects through valid assignments.

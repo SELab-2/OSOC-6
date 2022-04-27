@@ -76,3 +76,15 @@ export async function getEntitiesWithCache(
     );
     return urls.map((url) => cache[url]);
 }
+
+export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
+    let urlContructor = url + "?";
+    for (const key in params) {
+        urlContructor += key + "=" + params[key] + "&";
+    }
+    urlContructor =
+        urlContructor[urlContructor.length - 1] === "&"
+            ? urlContructor.substring(0, urlContructor.length - 1)
+            : urlContructor;
+    return urlContructor;
+}

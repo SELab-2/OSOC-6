@@ -3,21 +3,14 @@ import { Field, Form, Formik } from "formik";
 import { ParsedUrlQueryInput } from "querystring";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
-
-interface IFormValues {
-    freeText: string;
-    roles: string;
-    studentCoach: boolean;
-    alumni: boolean;
-    unmatched: boolean;
-}
+import { IStudentQueryParams } from "../api/calls/studentCalls";
 
 function boolToString(bool: boolean | undefined) {
     return bool ? "true" : "false";
 }
 
-function fromFormQuery(query: ParsedUrlQueryInput): IFormValues {
-    const values: IFormValues = {
+export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStudentQueryParams {
+    const values: IStudentQueryParams = {
         freeText: "",
         roles: "",
         studentCoach: false,
@@ -38,7 +31,7 @@ function fromFormQuery(query: ParsedUrlQueryInput): IFormValues {
     return values;
 }
 
-function fromFormValues(values: IFormValues): ParsedUrlQueryInput {
+function fromFormStudentQueryParams(values: IStudentQueryParams): ParsedUrlQueryInput {
     const queryObject: ParsedUrlQueryInput = {};
     if (values.freeText) {
         queryObject.freeText = values.freeText;
@@ -63,7 +56,7 @@ export function StudentFilterComponent() {
 
     const router = useRouter();
 
-    const values: IFormValues = fromFormQuery(router.query);
+    const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
     return (
         <>
             <Formik
@@ -71,7 +64,7 @@ export function StudentFilterComponent() {
                 initialValues={values}
                 onSubmit={async (values) => {
                     await router.replace({
-                        query: fromFormValues(values),
+                        query: fromFormStudentQueryParams(values),
                     });
                 }}
             >
