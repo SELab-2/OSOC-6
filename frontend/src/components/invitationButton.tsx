@@ -1,6 +1,6 @@
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import {AxiosConf, basePost, getQueryUrlFromParams} from "../api/calls/baseCalls";
+import { basePost, getQueryUrlFromParams } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
