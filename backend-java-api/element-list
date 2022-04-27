@@ -1,0 +1,16 @@
+com.osoc6.OSOC6
+com.osoc6.OSOC6.adminTest
+com.osoc6.OSOC6.coachTest
+com.osoc6.OSOC6.configuration
+com.osoc6.OSOC6.configurationTest
+com.osoc6.OSOC6.controller
+com.osoc6.OSOC6.database.models
+com.osoc6.OSOC6.database.models.student
+com.osoc6.OSOC6.dto
+com.osoc6.OSOC6.exception
+com.osoc6.OSOC6.repository
+com.osoc6.OSOC6.service
+com.osoc6.OSOC6.util
+com.osoc6.OSOC6.webhook
+com.osoc6.OSOC6.webhookTest
+com.osoc6.OSOC6.winterhold
