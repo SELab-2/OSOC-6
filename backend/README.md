@@ -72,7 +72,7 @@ Now save this file and rename `initial-user.properties.example` to `initial-user
 Now you should be able to sync gradle and run the program.
 
 You should be set up now.
-If you want to run the program just run `./gradlew run bootRun`.
+If you want to run the program just run `./gradlew task build && ./gradlew taskk bootRun`.
 Your backend will be served on the base path `/api/`.
 
 ### Tally webhook
