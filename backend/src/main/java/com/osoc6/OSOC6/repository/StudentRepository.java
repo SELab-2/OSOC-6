@@ -43,7 +43,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      * Get all projects within an edition.
      * @param editionId the id of the edition you want to see the projects of
      * @param pageable argument needed to return a page
-     * @return page of matching projects
+     * @return page of matching students
      */
     @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
             rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)

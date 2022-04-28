@@ -66,7 +66,7 @@ Further setup is explained for
 [Back end](backend/README.md#tests): 100%
 
 Backend test coverage is 100% and should be kept that way.
-Our frontend test coverage is not vary high since we are prioritizing the implementation of all components first.
+Our frontend test coverage is not very high since we are prioritizing the implementation of all components first.
 
 ## Team
 
