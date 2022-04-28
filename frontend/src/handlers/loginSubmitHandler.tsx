@@ -13,7 +13,7 @@ export type LoginProps = {
     submitHandler: (values: LoginValues) => void;
 };
 
-export async function loginSubmitHandler(values: LoginValues, mutate:  ScopedMutator<any>) {
+export async function loginSubmitHandler(values: LoginValues, mutate: ScopedMutator<any>) {
     // store the states in the form data
     const loginFormData = new FormData();
     loginFormData.append("username", values.username);

@@ -1,15 +1,15 @@
 import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
-export const AxiosConf = {
+export const AxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,
     headers: {
         "Content-Type": "application/json; charset=UTF-8",
     },
 };
 
-export const AxiosFormConfig = {
+export const AxiosFormConfig: AxiosRequestConfig = {
     baseURL: apiPaths.base,
     headers: {
         "Content-Type": "multipart/form-data",

@@ -10,18 +10,23 @@ export function getAllEditionsFromPage(url: string): Promise<IEdition[]> {
 }
 
 export function getEditionByName(editionName: string): Promise<IEdition> {
-    return <Promise<IEdition>>getEntityOnUrl(getQueryUrlFromParams(apiPaths.editionByName, {
-        name: editionName,
-    }));
+    return <Promise<IEdition>>getEntityOnUrl(
+        getQueryUrlFromParams(apiPaths.editionByName, {
+            name: editionName,
+        })
+    );
 }
 
-export function useEdition(editionName: string): { edition?: IEdition, error?: Error } {
-    const { data, error } = useSWR(getQueryUrlFromParams(apiPaths.editionByName, {
-        name: editionName
-    }), getEntityOnUrl);
+export function useEdition(editionName: string): { edition?: IEdition; error?: Error } {
+    const { data, error } = useSWR(
+        getQueryUrlFromParams(apiPaths.editionByName, {
+            name: editionName,
+        }),
+        getEntityOnUrl
+    );
     if (error) {
         // We perform a cast here since the EditionGuard resolves this problem.
         return { error: new Error("Not logged in") };
     }
-    return { edition: <IEdition|undefined> data };
+    return { edition: <IEdition | undefined>data };
 }

@@ -28,9 +28,9 @@ public class RegistrationService {
     private final UserEntityService userEntityService;
 
     /**
-     * Check if the given token is a valid invitation token.
+     * Get the invitation corresponding to the given token.
      * @param token the token of an invitation
-     * @return whether the provided token is valid
+     * @return an invitation or Optional#empty if the token does not belong to an invitation.
      */
     public Optional<Invitation> getInvitationFromToken(final String token) {
         return invitationRepository.findByToken(token);

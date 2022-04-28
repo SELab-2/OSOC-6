@@ -27,25 +27,25 @@ public final class AdminCommunicationEndpointTests extends
         AdminEndpointTest<Communication, Long, CommunicationRepository> {
 
     /**
-     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database
+     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database.
      */
     @Autowired
     private CommunicationTemplateRepository communicationTemplateRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Communication} in the database
+     * The repository which saves, searches, ... {@link Communication} in the database.
      */
     @Autowired
     private CommunicationRepository communicationRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Student} in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

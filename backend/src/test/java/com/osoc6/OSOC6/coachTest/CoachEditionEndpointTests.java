@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachEditionEndpointTests extends TestFunctionProvider<Edition, Long, EditionRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Edition} in the database.
      */
     @Autowired
     private EditionRepository editionRepository;

@@ -41,19 +41,19 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     private AssignmentRepository assignmentRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Project} in the database
+     * The repository which saves, searches, ... {@link Project} in the database.
      */
     @Autowired
     private ProjectRepository projectRepository;
 
     /**
-     * The repository which saves, searches, ... {@link ProjectSkill} in the database
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database.
      */
     @Autowired
     private ProjectSkillRepository projectSkillRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

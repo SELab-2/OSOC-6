@@ -4,9 +4,7 @@ import { useEffect } from "react";
 import useSWR from "swr";
 import { getEditionByName, useEdition } from "../api/calls/editionCalls";
 
-async function assertBaseEdition(editionName: string) {
-
-}
+async function assertBaseEdition(editionName: string) {}
 
 export default function EditionGuard({ children }: any) {
     const router = useRouter();
@@ -17,7 +15,7 @@ export default function EditionGuard({ children }: any) {
         return children;
     }
 
-    useEffect(assertBaseEdition(), [])
+    useEffect(assertBaseEdition(), []);
 
-    return children
+    return children;
 }

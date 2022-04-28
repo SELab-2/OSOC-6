@@ -4,8 +4,6 @@ import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { pathIsAuthException } from "../utility/pathUtil";
 
-
-
 export default function RouteGuard({ children }: any) {
     const [authorized, setAuthorized] = useState<boolean>(false);
     const { replace } = useRouter();

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A webhook field represents a single question from the tally form.
+ * A form field represents a single question from the tally form.
  */
 @Data
 @NoArgsConstructor
@@ -39,6 +39,7 @@ public class FormField {
     private FieldType type;
     /**
      * The answer(s) to the question.
+     * This needs to be an Object because the answer can be a string, list of strings, ...
      */
     private Object value;
     /**
@@ -55,7 +56,7 @@ public class FormField {
     }
 
     /**
-     * Given an id and a list of options, get option from the list with the same id.
+     * Given an id and a list of options, get the option from the list with the same id.
      * @return the value of the matched option
      * @throws WebhookException if there is no matching option
      */
@@ -73,6 +74,7 @@ public class FormField {
      * Get all the values from the chosen options, except for the 'Other' option.
      * To get all selected options, the value needs to be parsed as a list of strings.
      * @return a list containing all the chosen values
+     * @apiNote Since we are casting to List, we need to add the 'unchecked' suppress warnings annotation
      */
     @SuppressWarnings("unchecked")
     public List<String> getAllNonOtherMatchingOptionValues() {
@@ -94,6 +96,7 @@ public class FormField {
     /**
      * Get the url from the value. Used for getting the url from the FILE_UPLOAD field.
      * @return the url contained in the value
+     * @apiNote Since we are casting to Map, we need to add the 'unchecked' suppress warnings annotation
      */
     @SuppressWarnings("unchecked")
     public String getUrlFromValue() {

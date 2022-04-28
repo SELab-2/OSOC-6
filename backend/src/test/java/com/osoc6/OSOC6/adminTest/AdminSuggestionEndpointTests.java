@@ -62,19 +62,19 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     private static final String TEST_STRING = "TEST REASON";
 
     /**
-     * The repository which saves, searches, ... a suggestion in the database
+     * The repository which saves, searches, ... {@link Suggestion} in the database.
      */
     @Autowired
     private SuggestionRepository repository;
 
     /**
-     * The repository which saves, searches, ... a student in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

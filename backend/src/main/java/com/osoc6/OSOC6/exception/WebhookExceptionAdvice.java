@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class WebhookExceptionAdvice {
     /**
-     * Handle advise given when there is a problem with processing a form received from the tally webhook.
+     * Handle advice given when there is a problem with processing a form received from the tally webhook.
      * @param ex the {@link WebhookException} triggering this advice
      * @return a description of what went wrong.
      */
