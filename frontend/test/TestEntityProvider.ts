@@ -45,6 +45,17 @@ export function getBaseBadRequestResponse(): AxiosResponse {
     };
 }
 
+export function getBaseForbiddenResponse(): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.FORBIDDEN,
+        statusText: ReasonPhrases.FORBIDDEN,
+        headers: {},
+        config: {},
+        request: {},
+    };
+}
+
 export function getBaseMovedResponse(url: string): AxiosResponse {
     return {
         data: {},

@@ -29,6 +29,12 @@ const common = {
     "repeat new password": "repeat new password",
     "new email": "new email",
     "repeat new email": "repeat new email",
+    registration: "registration",
+    register: "register",
+    "enter callname": "enter callname",
+    "enter email": "enter email address",
+    "enter password": "enter password",
+    "repeat password": "repeat password",
 
     profile: "profile",
     projects: "projects",

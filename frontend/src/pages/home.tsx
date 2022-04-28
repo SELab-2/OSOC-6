@@ -4,6 +4,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
 import NavBar from "../components/navBar";
+import InvitationButton from "../components/invitationButton";
 
 const Home: NextPage = () => {
     const { t } = useTranslation("common");
@@ -19,6 +20,7 @@ const Home: NextPage = () => {
                 </div>
             </main>
             <button onClick={dataInjectionHandler}>Inject!</button>
+            <InvitationButton />
         </div>
     );
 };

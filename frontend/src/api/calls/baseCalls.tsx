@@ -78,13 +78,30 @@ export async function getEntitiesWithCache(
 }
 
 export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
-    let urlContructor = url + "?";
+    let urlConstructor = url + "?";
     for (const key in params) {
-        urlContructor += key + "=" + params[key] + "&";
+        urlConstructor += key + "=" + params[key] + "&";
     }
-    urlContructor =
-        urlContructor[urlContructor.length - 1] === "&"
-            ? urlContructor.substring(0, urlContructor.length - 1)
-            : urlContructor;
-    return urlContructor;
+    urlConstructor =
+        urlConstructor[urlConstructor.length - 1] === "&"
+            ? urlConstructor.substring(0, urlConstructor.length - 1)
+            : urlConstructor;
+    return urlConstructor;
+}
+
+export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
+    const urlQuery = url.split("?")[1];
+    let params = new Map();
+    for (const param of urlQuery.split("&")) {
+        const parameter: string[] = param.split("=");
+        params.set(parameter[0], parameter[1]);
+    }
+    return params;
+}
+
+export async function basePost(url: string, data: any, params: { [k: string]: any }) {
+    return await axios.post(url, data, {
+        params: params,
+        ...AxiosConf,
+    });
 }
