@@ -56,20 +56,6 @@ public final class StudentDTO {
      */
     private String callName;
 
-    /**
-     * The possessive pronoun used in case pronoun type == other.
-     */
-    private String possessivePronoun;
-
-    /**
-     * The subjective pronoun used in case pronoun type == other.
-     */
-    private String subjectivePronoun;
-
-    /**
-     * The objective pronoun used in case pronoun type == other.
-     */
-    private String objectivePronoun;
 
     /**
      * The most fluent language of a person. This is a formatted string.

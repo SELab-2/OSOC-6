@@ -26,13 +26,13 @@ import java.util.Map;
 public class AdminProjectSkillEndpointTests extends AdminEndpointTest<ProjectSkill, Long, ProjectSkillRepository> {
 
     /**
-     * The repository which saves, searches, ... Projects in the database
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database.
      */
     @Autowired
     private ProjectSkillRepository projectSkillRepository;
 
     /**
-     * The repository which saves, searches, ... Projects in the database
+     * The repository which saves, searches, ... {@link Project} in the database.
      */
     @Autowired
     private ProjectRepository projectRepository;

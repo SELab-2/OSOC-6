@@ -18,12 +18,12 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class testing the integration of {@link com.osoc6.OSOC6.database.models.Edition} as an admin.
+ * Class testing the integration of {@link Student} as an admin.
  */
 public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, Long, StudentRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
@@ -45,7 +45,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
     private static final String TEST_STRING = "Bananas are my signature dish";
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

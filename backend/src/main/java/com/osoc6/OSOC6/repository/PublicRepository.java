@@ -31,7 +31,7 @@ public class PublicRepository {
     /**
      * This method finds the user with a given email address.
      * @param email email address of the searched user
-     * @return if there is an account for the given email, the user will be returned
+     * @return the user with the given email or Optional#empty if none found
      * @apiNote Since we are casting to Optional, we need to add the 'unchecked' suppress warnings annotation
      */
     @SuppressWarnings("unchecked")

@@ -34,7 +34,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
     <S extends Suggestion> S save(@Param("entity") @NonNull S entity);
 
     /**
-     * delete a {@link Suggestion}.
+     * Delete a {@link Suggestion}.
      * @apiNote
      * An admin can delete everything about every suggestion.
      * A coach can only delete their own suggestions.

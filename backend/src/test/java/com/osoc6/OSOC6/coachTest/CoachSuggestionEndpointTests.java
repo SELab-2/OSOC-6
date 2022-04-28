@@ -36,7 +36,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     private final Student student = TestEntityProvider.getBaseStudentOther(this);
 
     /**
-     * First sample suggestions that gets loaded before every test.
+     * First sample suggestion that gets loaded before every test.
      */
     private final Suggestion suggestion1 = TestEntityProvider.getBaseYesSuggestion(getCoachUser(), student);
 
@@ -52,7 +52,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     private static final String TEST_STRING = "TEST REASON";
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Suggestion} in the database.
      */
     @Autowired
     private SuggestionRepository suggestionRepository;
@@ -64,13 +64,13 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     private UserRepository userRepository;
 
     /**
-     * The repository which saves, searches, ... a student in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
