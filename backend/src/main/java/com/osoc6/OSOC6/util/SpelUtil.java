@@ -68,15 +68,24 @@ public final class SpelUtil {
     }
 
     /**
-     * Get a formatted string so LIKE will check if the parameter is contained.
-     * @param orig ths String parameter for a query that should be formatted
-     * @return the formatted string so LIKE will check if the parameter is contained
+     * Get a formatted query string substituting spaces with '&'.
+     * @param ownFormat a string that uses space separation for different string
+     * @return a safe text search query string
      */
-    public static String formatContains(final String orig) {
-        if (orig == null) {
-            return "";
+    public static String safeToTSQuery(final String ownFormat) {
+        return safeString(ownFormat).strip().replaceAll(" +", " & ");
+    }
+
+    /**
+     * Get a non-null representation of a string array. Defaults to empty array.
+     * @param strArray string array that should have null safety
+     * @return a non-null array.
+     */
+    public static String[] safeArray(final String[] strArray) {
+        if (strArray == null) {
+            return new String[]{};
         }
-        return "%" + orig + "%";
+        return strArray;
     }
 
     /**
@@ -100,12 +109,13 @@ public final class SpelUtil {
     }
 
     /**
-     * Get the Null safe ordinal representation of provided Enum, defaults to -1.
-     * @param orig Enum that should have NULL safety
-     * @param <T> type of enum (is ignored)
-     * @return null safe ordinal representation of Enum
+     * Get a non-null representation of a Boolean. Defaults to false.
+     * @param orig Boolean that should have NULL safety
+     * @return a non null Boolean
      */
-    public static <T extends Enum<T>> int safeEnum(final Enum<T> orig) {
-        return orig == null ? -1 : orig.ordinal();
+    @NonNull
+    public static Boolean safeBoolean(final Boolean orig) {
+        // return orig == null ? false : orig;
+        return orig != null && orig;
     }
 }

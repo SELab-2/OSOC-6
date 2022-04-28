@@ -141,7 +141,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     public void student_matching_query_over_suggest_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{suggestion1.getReason(),
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
@@ -153,7 +153,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     public void student_non_matching_query_over_suggest_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{"apple" + suggestion1.getReason() + "banana",
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
