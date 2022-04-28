@@ -1,5 +1,5 @@
 name: java-test-coverage
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   jacoco:
@@ -23,9 +23,11 @@ jobs:
           echo "spring.datasource.username = ${{ secrets.DB_USERNAME }}" > application.properties
           echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
+          echo "webhook.token = 123" >> application.properties
           echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
           echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
-          cat application.properties
+          echo "baseuser.email =baseUser@mail.com" > initial-user.properties
+          echo "baseuser.password =abcVanJe123SpringOpEnNeer" >> initial-user.properties
       - name: Run test coverage
         run: |
           cd backend/

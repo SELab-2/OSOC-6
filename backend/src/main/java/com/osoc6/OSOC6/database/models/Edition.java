@@ -1,14 +1,16 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Basic;
+import javax.persistence.Id;
 
 
 /**
@@ -17,7 +19,7 @@ import javax.persistence.Basic;
  */
 @Entity
 @NoArgsConstructor
-public class Edition {
+public final class Edition implements WeakToEdition {
 
     /**
      * The id of the edition.
@@ -31,6 +33,7 @@ public class Edition {
      * The name of the edition.
      */
     @Basic(optional = false)
+    @Column(unique = true)
     @Setter @Getter
     private String name;
 
@@ -39,13 +42,29 @@ public class Edition {
      */
     @Basic(optional = false)
     @Setter @Getter
-    private int year;
+    private Integer year;
 
     /**
      * Whether the edition is active.
      */
     @Basic(optional = false)
     @Setter @Getter
-    private boolean active;
+    private Boolean active;
 
+    /**
+     *
+     * @param newName the name of the edition
+     * @param newYear the year of the edition
+     * @param newActive whether the edition is active
+     */
+    public Edition(final String newName, final Integer newYear, final boolean newActive) {
+        name = newName;
+        year = newYear;
+        active = newActive;
+    }
+
+    @Override @JsonIgnore
+    public Edition getControllingEdition() {
+        return this;
+    }
 }

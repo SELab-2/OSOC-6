@@ -1,16 +1,19 @@
 package com.osoc6.OSOC6.database.models;
 
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * The database entity for a SkillType.
@@ -19,17 +22,22 @@ import javax.persistence.Id;
  */
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-public class SkillType {
+public final class SkillType {
+    /**
+     * The id of the SkillType.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private Long id;
+
     /**
      * The type of skill.
      */
-    @Id
+    @NaturalId
     @Column(length = RadagastNumberWizard.SMALL_DESCRIPTION_LENGTH)
-    // We need to specify this here because we explicitly expose the id.
-    // Every field with the Spring-Id annotation is non-editable.
     @ReadOnlyProperty
-    @Getter
+    @NotNull @Getter
     private String name;
 
     /**
@@ -38,5 +46,15 @@ public class SkillType {
     @Basic(optional = false)
     @Column(length = RadagastNumberWizard.COLOUR_DESCRIPTION_LENGTH)
     @Getter @Setter
-    private String colour;
+    private String colour = "FFFFFF";
+
+    /**
+     * Constructor of {@link SkillType} for required final fields.
+     * @param newName The name of the {@link SkillType}
+     * @param newColour the colour associated with this {@link SkillType}
+     */
+    public SkillType(final String newName, final String newColour) {
+        name = newName;
+        colour = newColour;
+    }
 }

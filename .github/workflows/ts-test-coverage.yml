@@ -1,5 +1,5 @@
 name: ts-coverage
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   jest:
@@ -12,8 +12,8 @@ jobs:
       - name: Go to frontend
         run: |
           cd frontend/
-          rm package-lock.json
           npm install
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: frontend
+          annotations: failed-tests

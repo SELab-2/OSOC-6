@@ -1,11 +1,15 @@
 package com.osoc6.OSOC6.configuration;
 
 import com.osoc6.OSOC6.service.UserEntityService;
+import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     /**
@@ -45,13 +50,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            // Cross-site request forgery protection needs to be disabled for logging in from frontend
+            .csrf().disable().httpBasic()
+            .and()
             .authorizeRequests()
-            .antMatchers("/registration", "/login")
-            .permitAll()
-            .anyRequest()
-            .authenticated().and()
-            .formLogin();
+                .antMatchers("/" + DumbledorePathWizard.REGISTRATION_PATH,
+                        "/" + DumbledorePathWizard.LOGIN_PATH + "*",
+                        "/" + DumbledorePathWizard.AUTH_PATH + "/*",
+                        "/" + DumbledorePathWizard.WEBHOOK_PATH).permitAll()
+                .anyRequest().authenticated()
+            .and()
+            .formLogin()
+                .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH)
+                .defaultSuccessUrl("/" + DumbledorePathWizard.AUTH_PATH + "/"
+                        + DumbledorePathWizard.AUTH_HOME_PATH, true)
+                .failureForwardUrl("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH)
+            .and()
+            .logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
     }
 
     /**
@@ -64,5 +81,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
+    }
+
+    /**
+     * Set up the role hierarchy.
+     * @return the configured role hierarchy
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "ADMIN > COACH";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
     }
 }

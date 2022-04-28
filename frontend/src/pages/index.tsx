@@ -1,19 +1,21 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import type { NextPage } from "next";
+import Head from "next/head";
+import useTranslation from "next-translate/useTranslation";
+import NavBar from "../components/navBar";
 
-const Home: NextPage = () => {
+const BeginPage: NextPage = () => {
+    const { t } = useTranslation("common");
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
-                <title>OSOC-6</title>
+                <title className="capitalize">{t("tool name")}</title>
             </Head>
-
-            <main className={styles.main}>
-                <h1 className={styles.title}>Open Summer of Code Tool</h1>
+            <NavBar />
+            <main className="m-4">
+                <h1 className="capitalize">{t("empty page")}</h1>
             </main>
         </div>
     );
 };
 
-export default Home;
+export default BeginPage;

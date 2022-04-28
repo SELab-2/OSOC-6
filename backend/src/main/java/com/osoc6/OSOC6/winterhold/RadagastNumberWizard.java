@@ -50,4 +50,14 @@ public final class RadagastNumberWizard {
      * Length that should be reserved in database for the description of a colour.
      */
     public static final int COLOUR_DESCRIPTION_LENGTH = 10;
+
+    /**
+     * Amount of days before an invitation is invalid.
+     */
+    public static final int INVITATION_EXPIRATION_DAYS = 7;
+
+    /**
+     * Amount of milliseconds in a second.
+     */
+    public static final int MILLISECOND_IN_SECOND = 1000;
 }

@@ -1,5 +1,5 @@
 name: ts-linter
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   prettier:
@@ -15,7 +15,6 @@ jobs:
       - name: Run linter and prettier
         run: |
           cd frontend/
-          rm package-lock.json
           npm install
           npx prettier --check .
           RESULT=$?

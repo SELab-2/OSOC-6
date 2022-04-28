@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -26,13 +26,14 @@ import java.sql.Timestamp;
 @Entity
 @Table(indexes = {@Index(unique = false, columnList = "timestamp")})
 @NoArgsConstructor
-public class Communication {
+public final class Communication {
 
     /**
      * The id of the communication.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
@@ -54,10 +55,10 @@ public class Communication {
     /**
      * The content of the communication.
      */
-    @Basic(optional = true)
-    @Lob
+    @Basic(optional = false)
+    @Column(columnDefinition = "text")
     @Getter @Setter
-    private String content;
+    private String content = "";
 
     /**
      * {@link CommunicationTemplate} used in this communication.
@@ -71,12 +72,13 @@ public class Communication {
      */
     @ManyToOne(optional = false)
     @Getter
-    private UserEntity userEntity;
+    private UserEntity sender;
 
     /**
      * Student with whom the communication took place.
      */
     @ManyToOne(optional = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     @Getter @Setter
     private Student student;
 
@@ -96,7 +98,7 @@ public class Communication {
         medium = newMedium;
         content = newContent;
         template = newCommunicationTemplate;
-        userEntity = newUserEntity;
+        sender = newUserEntity;
         student = newStudent;
     }
 }

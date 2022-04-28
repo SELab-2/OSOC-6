@@ -1,8 +1,10 @@
 package com.osoc6.OSOC6.service;
 
+import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
-import com.osoc6.OSOC6.repository.UserRepository;
+import com.osoc6.OSOC6.repository.PublicRepository;
+import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,15 +20,9 @@ import org.springframework.stereotype.Service;
 public class UserEntityService implements UserDetailsService {
 
     /**
-     * Error message for login with unregistered email.
+     * The public repository, used to access the database without authorization.
      */
-    private final String userNotFoundMsg =
-            "user with email %s not found";
-
-    /**
-     * The user repository, link to the database.
-     */
-    private final UserRepository userRepository;
+    private final PublicRepository publicRepository;
 
     /**
      * The encoder used to encode the passwords.
@@ -41,18 +37,19 @@ public class UserEntityService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
+        return publicRepository.internalFindByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
-                                String.format(userNotFoundMsg, email)));
+                                String.format(MeguminExceptionWizard.USERNAME_NOT_FOUND_EXCEPTION, email)));
     }
 
     /**
      * Register a new user.
      * @param userEntity the user that needs to be added to the database.
+     * @param invitation the invitation that was used to register
      */
-    public void registerUser(final UserEntity userEntity) {
-        boolean accountExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
+    public void registerUserWithInvitation(final UserEntity userEntity, final Invitation invitation) {
+        boolean accountExists = publicRepository.internalFindByEmail(userEntity.getEmail()).isPresent();
 
         if (accountExists) {
             throw new AccountTakenException(userEntity.getEmail());
@@ -61,6 +58,8 @@ public class UserEntityService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
         userEntity.setPassword(encodedPassword);
 
-        userRepository.save(userEntity);
+        publicRepository.internalSave(userEntity);
+        invitation.setSubject(userEntity);
+        publicRepository.internalSave(invitation);
     }
 }

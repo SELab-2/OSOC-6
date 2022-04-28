@@ -1,14 +1,20 @@
 package com.osoc6.OSOC6.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
@@ -19,28 +25,37 @@ import java.sql.Timestamp;
  */
 @Entity
 @NoArgsConstructor
-public class Suggestion {
+public final class Suggestion implements WeakToEdition {
     /**
      * Automatically generated id of Suggestion.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
     /**
      * Strategy this suggestion takes.
      */
     @Basic(optional = false)
-    @Getter
+    @Getter @Setter
     private SuggestionStrategy strategy;
 
     /**
      * Reason provided by the user for giving this suggestion.
      */
     @Basic(optional = false)
-    @Lob
-    @Getter
+    @Column(columnDefinition = "text")
+    @Getter @Setter
     private String reason;
+
+    /**
+     * {@link Timestamp} of creation from the suggestion.
+     */
+    @Basic(optional = false)
+    @CreationTimestamp
+    @Getter
+    private Timestamp timestamp;
 
     /**
      * Coach that did the suggestion.
@@ -50,22 +65,31 @@ public class Suggestion {
     private UserEntity coach;
 
     /**
-     * {@link Timestamp} of creation from the suggestion.
+     * Student that is the subject of this suggestion.
      */
-    @Basic(optional = false)
+    @ManyToOne(optional = false, cascade = {})
+    @ReadOnlyProperty
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     @Getter
-    private Timestamp timestamp;
+    private Student student;
 
     /**
      *
      * @param newStrategy Yes, maybe or no
      * @param newReason the reason this suggestion was made
      * @param newCoach the coach that made the suggestion
+     * @param newStudent the student that is the subject of this suggestion
      */
-    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final UserEntity newCoach) {
+    public Suggestion(final SuggestionStrategy newStrategy, final String newReason, final UserEntity newCoach,
+                      final Student newStudent) {
         strategy = newStrategy;
         reason = newReason;
         coach = newCoach;
-        timestamp = new Timestamp(System.currentTimeMillis());
+        student = newStudent;
+    }
+
+    @Override @JsonIgnore
+    public Edition getControllingEdition() {
+        return student.getEdition();
     }
 }
