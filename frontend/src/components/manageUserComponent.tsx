@@ -73,21 +73,21 @@ export function UserComponent(props: any) {
                 <Col>
                     <DropdownButton
                         id="dropdown-basic-button"
-                        title={user.enabled ? user.userRole : capitalize(t("userrole disabled"))}
+                        title={user.enabled ? user.userRole : capitalize(t("disabled"))}
                     >
                         {(user.userRole != UserRole.admin || user.enabled == false) && (
                             <DropdownItem onClick={setUserRoleAdmin} data-testid="overview-admin-user">
-                                {capitalize(t("userrole admin"))}
+                                {capitalize(t("admin"))}
                             </DropdownItem>
                         )}
                         {(user.userRole != UserRole.coach || user.enabled == false) && (
                             <DropdownItem onClick={setUserRoleCoach} data-testid="overview-coach-user">
-                                {capitalize(t("userrole coach"))}
+                                {capitalize(t("coach"))}
                             </DropdownItem>
                         )}
                         {user.enabled && (
                             <DropdownItem onClick={disableUser} data-testid="overview-disable-user">
-                                {capitalize(t("userrole disabled"))}
+                                {capitalize(t("disabled"))}
                             </DropdownItem>
                         )}
                     </DropdownButton>
