@@ -24,7 +24,7 @@ public class WebhookService {
     private final PublicRepository publicRepository;
 
     /**
-     * Process the webhook form by creating a new student and adding the form answer to them.
+     * Process the webhook form by creating a new student and adding the form answers to them.
      * Afterwards, save the student to the database.
      * @param webhookForm the received form to process
      * @param editionName the name of the edition the student is applying for

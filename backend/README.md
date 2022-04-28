@@ -72,7 +72,7 @@ Now save this file and rename `initial-user.properties.example` to `initial-user
 Now you should be able to sync gradle and run the program.
 
 You should be set up now.
-If you want to run the program just run `./gradlew task build && ./gradlew taskk bootRun`.
+If you want to run the program just run `./gradlew task build && ./gradlew task bootRun`.
 Your backend will be served on the base path `/api/`.
 
 ### Tally webhook
@@ -156,7 +156,7 @@ Spring will know what this means and create the endpoint for you.
 In addition, you can still create custom endpoints if you want with the `@Query` annotation.
 
 ```java
-@Query(value= "someJQLQuery")
+@Query(value= "someJPQLQuery")
 ```
 This annotation will allow u to write a custom query using Java Persistence Query Language (JPQL), a part of
 [the Java Persistence API (JPA)](https://docs.spring.io/spring-integration/reference/html/jpa.html).
