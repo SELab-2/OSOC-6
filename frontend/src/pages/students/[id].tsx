@@ -22,7 +22,7 @@ const StudentsIDPage: NextPage = () => {
                 </Row>
                 <Row xs={1} className={"h-75 w-100 gx-0 gx-sm-4"}>
                     <Col sm={3} xxl={2} className={"h-100"}>
-                        <StudentList />
+                        <StudentList isDraggable={false} />
                     </Col>
                     <Col sm={9} xxl={10}>
                         {/* Replace this div with the correct component */}

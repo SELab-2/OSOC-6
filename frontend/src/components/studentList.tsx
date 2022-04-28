@@ -1,13 +1,14 @@
 import { ListGroup } from "react-bootstrap";
-import Router from "next/router";
 import styles from "../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import { getAllStudentsFormLinks } from "../api/calls/studentCalls";
 import useSWR from "swr";
+import Router from "next/router";
 import { SuggestionCount } from "./suggestionCount";
 
-export const StudentList = () => {
+export const StudentList = (props: any) => {
+    const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     let { data, error } = useSWR(apiPaths.students, getAllStudentsFormLinks);
     data = data || [];
@@ -40,7 +41,7 @@ export const StudentList = () => {
                             className={styles.student_list_element}
                             action
                             as={"li"}
-                            draggable={true}
+                            draggable={draggable}
                             onDragStart={(event) =>
                                 event.dataTransfer.setData("url", student._links.self.href)
                             }
