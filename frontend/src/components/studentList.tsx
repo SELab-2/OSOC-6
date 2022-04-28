@@ -28,6 +28,7 @@ export const StudentList = () => {
 
     if (error) {
         console.log(error);
+        return null;
     }
 
     return (

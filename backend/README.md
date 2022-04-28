@@ -85,6 +85,7 @@ https://test.com/api/webhook?token=your_token_here&edition=edition_name_here
 ```
 
 Later, once you have created an edition, replace `edition_name_here` with the name of the edition.
+Replacing spaces in the name with `%20`. `My edition` becomes `My%20edition`
 This allows you to have multiple forms, each linked to a different edition.
 
 ## Developers
