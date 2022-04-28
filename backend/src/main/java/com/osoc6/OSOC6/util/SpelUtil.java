@@ -30,10 +30,10 @@ public final class SpelUtil {
     private String webhookToken;
 
     /**
-     * Get all the id's of all of the given user's editions as an array List.
+     * Get all the id's of all of the given users editions as an array List.
      * This is private since we don't want to export List implementation dependencies.
      * @param userEntity the user to get all edition id's of
-     * @return a list containing all of the user's editions
+     * @return a list containing all of the users editions
      */
     private static ArrayList<Long> userEditionsArrayList(final UserEntity userEntity) {
         ArrayList<Long> result = new ArrayList<>();
@@ -46,9 +46,9 @@ public final class SpelUtil {
     }
 
     /**
-     * Get all the id's of all of the given user's editions.
+     * Get all the id's of all of the given users editions.
      * @param userEntity the user to get all edition id's of
-     * @return a list containing all of the user's editions
+     * @return a list containing all of the users editions
      */
     public static List<Long> userEditions(final UserEntity userEntity) {
         return userEditionsArrayList(userEntity);

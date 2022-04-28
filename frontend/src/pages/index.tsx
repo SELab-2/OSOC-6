@@ -8,11 +8,11 @@ const BeginPage: NextPage = () => {
     return (
         <div>
             <Head>
-                <title>Open Summer of Code : Login page</title>
+                <title className="capitalize">{t("tool name")}</title>
             </Head>
             <NavBar />
             <main className="m-4">
-                <h1>{t("Empty page")}</h1>
+                <h1 className="capitalize">{t("empty page")}</h1>
             </main>
         </div>
     );

@@ -99,7 +99,7 @@ After you have done that, everything to run the back end is set up.
 
 To run the back end, you simply can go to the `/backend` folder and run the following command.
 ```
-./gradlew bootRun
+./gradlew task build && ./gradlew task bootRun
 ```
 This will work fine. However, when the server restarts, you will need to do this all over again.
 To make this more simple, we are going to use a process manager (PM2).
@@ -117,7 +117,7 @@ sudo npm install pm2@latest -g
 With that installed, we can make a service to run our back end.
 Replace `giveThisAName` with a name you want to add to this process.
 ```
-pm2 start "./gradlew bootRun" --name giveThisAName
+pm2 start "./gradlew task build && ./gradlew task bootRun" --name giveThisAName
 ```
 Now we have made a process.
 We just need to make sure it gets started when the server is started.

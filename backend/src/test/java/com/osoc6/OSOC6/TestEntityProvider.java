@@ -21,7 +21,7 @@ import com.osoc6.OSOC6.database.models.student.Student;
 import java.util.List;
 
 /**
- * This class provides some entities to classes it doesn't need any web calls so it can be a Utility class.
+ * This class provides some entities to classes. It doesn't need any web calls so it can be a Utility class.
  * Using this class you can create base entities more easily.
  */
 public final class TestEntityProvider {

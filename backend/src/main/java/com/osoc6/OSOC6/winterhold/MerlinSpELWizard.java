@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.winterhold;
 
 /**
- * Merlin is a SpELL (Spring Expression Language) Wizard.
+ * Merlin is a SpEL (Spring Expression Language) Wizard.
  * He will help us write concise and manageable Spring expressions.
  * Variables starting with 'Q_' are meant to be used in Query annotations of spring.
  */

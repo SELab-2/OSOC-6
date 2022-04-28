@@ -11,7 +11,7 @@ const Registration: NextPage = () => {
     return (
         <div>
             <Head>
-                <title className="capitalize">{capitalize(t("registration"))}</title>
+                <title className="capitalize">{t("registration")}</title>
             </Head>
             <NavBar />
             <RegistrationForm />

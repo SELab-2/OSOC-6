@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * This enum holds all questions used to fill in a new {@link Student}.
  * Every QuestionKey enum object has it's own addToStudent method
- * which extracts the answer from it's and adds it to the student.
+ * which extracts the answer from it's given form field and adds it to the given student.
  */
 public enum QuestionKey {
     /**
@@ -131,7 +131,7 @@ public enum QuestionKey {
     RATE_ENGLISH("question_n0ORWZ") {
         /**
          * We determine the student's English proficiency
-         * by counting the amount of starts in the multiple choice answer.
+         * by counting the amount of stars in the multiple choice answer.
          * @throws WebhookException if there are no stars, or too many stars
          */
         @Override
@@ -424,7 +424,7 @@ public enum QuestionKey {
                 return questionKey;
             }
         }
-        // If the key does not exist, set it to null. This way, all unhandled questions can be filtered out
+        // If the key does not exist, return null. This way, all unhandled questions can be filtered out
         // by simply removing all questions with a null QuestionKey.
         return null;
     }
