@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachUserSkillEndpointTests extends TestFunctionProvider<UserSkill, Long, UserSkillRepository> {
 
     /**
-     * The UserSkillRepository that saves, searches, ... in the database
+     * The UserSkillRepository that saves, searches, ... {@link UserSkill} in the database.
      */
     @Autowired
     private UserSkillRepository userSkillRepository;

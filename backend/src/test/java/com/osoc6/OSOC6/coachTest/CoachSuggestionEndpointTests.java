@@ -9,7 +9,6 @@ import com.osoc6.OSOC6.database.models.student.Student;
 import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
-import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +55,6 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
      */
     @Autowired
     private SuggestionRepository suggestionRepository;
-
-    /**
-     * The repository which saves, searches, ... in the database
-     */
-    @Autowired
-    private UserRepository userRepository;
 
     /**
      * The repository which saves, searches, ... {@link Student} in the database.
