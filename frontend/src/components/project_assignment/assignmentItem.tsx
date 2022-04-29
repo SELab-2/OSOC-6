@@ -4,6 +4,8 @@ import useSWR, { useSWRConfig } from "swr";
 import { deleteAssignment, getAssignments } from "../../api/calls/AssignmentCalls";
 import WarningToast from "./warningToast";
 import apiPaths from "../../properties/apiPaths";
+import useTranslation from "next-translate/useTranslation";
+import {capitalize} from "../../utility/stringUtil";
 
 /**
  * An item containing the information about the assignments to a skill of a project.
@@ -14,6 +16,8 @@ import apiPaths from "../../properties/apiPaths";
  * @constructor
  */
 function AssignmentItem(item: { skill: IProjectSkill }) {
+    const { t } = useTranslation("common");
+
     const { mutate } = useSWRConfig();
     let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments, {
         refreshInterval: 10,
@@ -23,7 +27,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     if (error) {
         return (
             <WarningToast
-                message={"An error occurred, if you are experiencing issues please reload the page."}
+                message={capitalize(t("error reload page"))}
             />
         );
     }
@@ -40,7 +44,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
             return (
                 <div>
                     <Badge bg={"secondary"}>{item.skill.name}</Badge>
-                    <p>No students have been assigned for this skill.</p>
+                    <p>{capitalize(t("no users for skill"))}</p>
                 </div>
             );
         }
@@ -61,7 +65,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                                         <h6>{assignment.student.firstName}</h6>
                                     </a>
                                     <p>
-                                        Suggested by {assignment.assigner.callName}: <br />{" "}
+                                        {capitalize(t("suggested by"))}{assignment.assigner.callName}: <br />{" "}
                                         {assignment.assignment.reason}
                                     </p>
                                 </Col>

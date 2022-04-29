@@ -11,8 +11,12 @@ import { IUser } from "../api/entities/UserEntity";
 import axios from "axios";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { Assignment } from "../api/entities/AssignmentEntity";
+import useTranslation from "next-translate/useTranslation";
+import {capitalize} from "../utility/stringUtil";
 
 const AssignStudentsPage: NextPage = () => {
+    const { t } = useTranslation("common");
+
     const [showModal, setShowModal] = useState(false);
     const [studentURL, setStudentURL] = useState("");
     const [skillURL, setSkillURL] = useState("");
@@ -77,10 +81,10 @@ const AssignStudentsPage: NextPage = () => {
             </div>
             <Modal show={showModal} onHide={handleClose} centered>
                 <ModalHeader>
-                    <ModalTitle>Why do you want this student here?</ModalTitle>
+                    <ModalTitle>{capitalize(t("assignment modal title"))}</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
-                    <div>Reason for the suggestion: </div>
+                    <div>{capitalize(t("assignment reason"))}</div>
                     <Formik initialValues={{ reason: "" }} onSubmit={dropStudent}>
                         <Form>
                             <Field
@@ -91,7 +95,7 @@ const AssignStudentsPage: NextPage = () => {
                                 required
                             />
                             <button className="btn btn-primary" type="submit" style={{ float: "right" }}>
-                                Confirm suggestion
+                                {capitalize(t("confirm assignment"))}
                             </button>
                         </Form>
                     </Formik>

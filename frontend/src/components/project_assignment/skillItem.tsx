@@ -3,6 +3,8 @@ import AssignmentItem from "./assignmentItem";
 import useSWR, { useSWRConfig } from "swr";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
 import WarningToast from "./warningToast";
+import useTranslation from "next-translate/useTranslation";
+import {capitalize} from "../../utility/stringUtil";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
@@ -10,13 +12,15 @@ import WarningToast from "./warningToast";
  * @constructor
  */
 export default function SkillItem(props: any) {
+    const { t } = useTranslation("common");
+
     const { mutate } = useSWRConfig();
     let { data, error } = useSWR(props.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
 
     if (error) {
         return (
             <WarningToast
-                message={"An error occurred, if you are experiencing issues please reload the page."}
+                message={capitalize(t("error reload page"))}
             />
         );
     }
@@ -41,7 +45,7 @@ export default function SkillItem(props: any) {
         });
 
         if (skillList.length == 0) {
-            return <p>No skills have been assigned to this project</p>;
+            return <p>{capitalize(t("no skills for project"))}</p>;
         }
 
         return (
@@ -65,5 +69,5 @@ export default function SkillItem(props: any) {
             </>
         );
     }
-    return <p>Loading...</p>;
+    return <p>{capitalize(t("loading"))}</p>;
 }

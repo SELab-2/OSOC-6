@@ -41,6 +41,14 @@ const common = {
     coach: "coach",
     edit: "edit",
     "student page title": "studentpage title",
+    "assignment modal title": "Why do you want this student here?",
+    "confirm assignment": "confirm assignment",
+    "assignment reason": "Reason for the assignment: ",
+    "error reload page": "An error occurred, if you are experiencing issues please reload the page.",
+    "no users for skill": "No students have been assigned for this skill.",
+    "suggested by": "Suggested by ",
+    "no skills for project": "No skills have been assigned to this project",
+    "loading": "Loading...",
 };
 
 export default common;

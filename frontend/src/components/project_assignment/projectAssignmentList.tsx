@@ -7,19 +7,22 @@ import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
 import SkillItem from "./skillItem";
 import useSWR from "swr";
 import WarningToast from "./warningToast";
+import useTranslation from "next-translate/useTranslation";
+import {capitalize} from "../../utility/stringUtil";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
  * @constructor
  */
 function ProjectAsignmentList(props: any) {
+    const { t } = useTranslation("common");
     let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
 
     if (error) {
         return (
             <WarningToast
-                message={"An error occurred, if you are experiencing issues please reload the page."}
+                message={capitalize(t("error reload page"))}
             />
         );
     }
