@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Col, Row } from "react-bootstrap";
+import { Badge, Col, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik } from "formik";
 import useSWR from "swr";
@@ -16,6 +16,7 @@ import { getAllSkillTypesFormPage } from "../api/calls/skillTypeCalls";
 import { ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
+import { minify } from "next/dist/build/swc";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
     let userResponse = useSWR(apiPaths.users, getAllUsersFromPage);
@@ -45,6 +46,12 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     if (skillTypeError) {
         console.log(skillTypeError);
         return null;
+    }
+
+    let skillColorMap = new Map<string, string>();
+
+    for (let skillType of skillTypes) {
+        skillColorMap.set(skillType.name, skillType.colour);
     }
 
     function handleChangeSkill(e: ChangeEvent<HTMLInputElement>) {
@@ -205,23 +212,30 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     {skillInfos.length !== 0 ? <h5>{capitalize(t("project expertise"))}</h5> : <h5 />}
                     {skillInfos.map((skillInfo: string, index: number) => (
                         <Row key={index}>
-                            <Col>{skills[index] + ": " + skillInfo}</Col>
+                            <Col>
+                                <Badge bg="" style={{ backgroundColor: skillColorMap.get(skills[index]) }}>
+                                    {skills[index]}
+                                </Badge>
+                            </Col>
+                            <Col>{": " + skillInfo}</Col>
                         </Row>
                     ))}
                     <h5>{capitalize(t("choose roles"))}</h5>
                     {skills.map((skillType: string, index: number) => (
                         <Row key={index}>
-                            <Col>{skillType}</Col>
-                            <Col xs={1}>
-                                <a>
-                                    <Image
-                                        onClick={() => handleDeleteSkill(index)}
-                                        alt=""
-                                        src={"/resources/delete.svg"}
-                                        width="15"
-                                        height="15"
-                                    />
-                                </a>
+                            <Col>
+                                <Badge bg="" style={{ backgroundColor: skillColorMap.get(skillType) }}>
+                                    {skillType}
+                                </Badge>
+                            </Col>
+                            <Col xs={6}>
+                                <Image
+                                    onClick={() => handleDeleteSkill(index)}
+                                    alt=""
+                                    src={"/resources/delete.svg"}
+                                    width="15"
+                                    height="15"
+                                />
                             </Col>
                         </Row>
                     ))}
