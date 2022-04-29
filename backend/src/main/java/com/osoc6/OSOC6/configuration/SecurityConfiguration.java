@@ -5,6 +5,7 @@ import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Arrays;
 
 /**
  * This class sets up the configuration to handle the authentication process.
@@ -34,6 +37,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder passwordEncoder;
 
     /**
+     * Environment of the application, needed to access the active profiles.
+     */
+    private Environment environment;
+
+    /**
      * This function configures the AuthenticationManager used for the login-system.
      * @param auth the builder used to create an AuthenticationManager
      */
@@ -49,6 +57,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        // In production, we use secured communication (https)
+        if (Arrays.asList(environment.getActiveProfiles()).contains("production")) {
+            http.requiresChannel().anyRequest().requiresSecure();
+        }
+
         http
             // Cross-site request forgery protection needs to be disabled for logging in from frontend
             .csrf().disable().httpBasic()
