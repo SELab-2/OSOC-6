@@ -128,7 +128,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     skills: [],
                     skillInfos: [],
                 }}
-                onSubmit={props.submitHandler}
+                onSubmit={handleSubmit}
             >
                 <Form>
                     <h2>Create new project</h2>

@@ -58,7 +58,7 @@ it("SubmitHandler for createProject sends post request", async () => {
         config: {},
     };
 
-    createProjectSubmitHandler(values); //, [], [], []);
+    createProjectSubmitHandler(values);
     mockAxios.mockResponseFor({ url: apiPaths.ownUser }, ownUserResponse);
 
     waitFor(() => {
