@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
-import styles from "../styles/studentInfo.module.css";
+import styles from "../styles/studentList.module.css";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { CustomDialogContent } from "./suggestionModal";
 
@@ -68,7 +68,7 @@ export function StudentInfo() {
                 <h2>{capitalize(t("student personal details"))}</h2>
                 <div>
                     {capitalize(t("student gender"))}: {data.student.gender.toLowerCase()}{" "}
-                    {t("student pronouns")} {data.student.pronounsType.toLowerCase()}
+                    {t("student pronouns")} {data.student.pronouns.toLowerCase()}
                 </div>
                 <div>
                     {capitalize(t("student native language"))}: {data.student.mostFluentLanguage}

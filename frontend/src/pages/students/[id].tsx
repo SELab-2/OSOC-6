@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import NavBar from "../../components/navBar";
 import styles from "../../styles/pageGrids.module.css";
 import { StudentList } from "../../components/studentList";
+import {StudentInfo} from "../../components/studentInfo";
 
 const StudentsIDPage: NextPage = () => {
     return (
@@ -30,7 +31,7 @@ const StudentsIDPage: NextPage = () => {
                             className={"d-flex justify-content-center align-items-center h-100"}
                             data-testid="student-info"
                         >
-                            <p>Student info placeholder</p>
+                            <StudentInfo/>
                         </div>
                     </Col>
                 </Row>
