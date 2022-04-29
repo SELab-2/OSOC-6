@@ -3,6 +3,7 @@ import { Badge, CloseButton, Col, Row } from "react-bootstrap";
 import useSWR, { useSWRConfig } from "swr";
 import { deleteAssignment, getAssignments } from "../../api/calls/AssignmentCalls";
 import WarningToast from "./warningToast";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * An item containing the information about the assignments to a skill of a project.
@@ -52,7 +53,13 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                         <div key={index}>
                             <Row className={"align-items-center"}>
                                 <Col xs={10} md={11}>
-                                    <h6>{assignment.student.firstName} </h6>
+                                    <a
+                                        rel="noreferrer"
+                                        href={assignment.student._links.self.href.split(apiPaths.base)[1]}
+                                        target="_blank"
+                                    >
+                                        <h6>{assignment.student.firstName}</h6>
+                                    </a>
                                     <p>
                                         Suggested by {assignment.assigner.callName}: <br />{" "}
                                         {assignment.assignment.reason}

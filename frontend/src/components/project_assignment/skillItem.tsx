@@ -1,23 +1,17 @@
 import { Container } from "react-bootstrap";
 import AssignmentItem from "./assignmentItem";
-import { IProject } from "../../api/entities/ProjectEntity";
 import useSWR, { useSWRConfig } from "swr";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
 import WarningToast from "./warningToast";
-import axios from "axios";
-import apiPaths from "../../properties/apiPaths";
-import { AxiosConf } from "../../api/calls/baseCalls";
-import { Assignment } from "../../api/entities/AssignmentEntity";
-import { IUser } from "../../api/entities/UserEntity";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
- * @param item Project you want the skills from.
+ * @param props Properties
  * @constructor
  */
-export default function SkillItem(item: { project: IProject }) {
+export default function SkillItem(props: any) {
     const { mutate } = useSWRConfig();
-    let { data, error } = useSWR(item.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
+    let { data, error } = useSWR(props.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
 
     if (error) {
         return (
@@ -27,19 +21,8 @@ export default function SkillItem(item: { project: IProject }) {
         );
     }
     async function dropStudent(studentUrl: string, skillUrl: string) {
-        console.log(apiPaths.base + apiPaths.assignments);
-        const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
-        const assignment: Assignment = new Assignment(
-            false,
-            true,
-            "Just cuz",
-            user._links.self.href,
-            studentUrl,
-            skillUrl
-        );
-        console.log(assignment);
-        await axios.post(apiPaths.base + apiPaths.assignments, assignment, AxiosConf);
-        await mutate(item.project._links.neededSkills.href);
+        props.dropHandler(studentUrl, skillUrl);
+        await mutate(props.project._links.neededSkills.href);
     }
 
     let skillList = data || undefined;
@@ -70,7 +53,6 @@ export default function SkillItem(item: { project: IProject }) {
                             onDrop={(e) => {
                                 e.preventDefault();
                                 dropStudent(e.dataTransfer.getData("url"), skill._links.projectSkill.href);
-                                console.log();
                             }}
                             onDragOver={(event) => {
                                 event.preventDefault();

@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { Accordion, Container } from "react-bootstrap";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
@@ -13,7 +12,7 @@ import WarningToast from "./warningToast";
  * Accordion containing all the information to correctly assign students to projects.
  * @constructor
  */
-const ProjectAsignmentList: NextPage = () => {
+function ProjectAsignmentList(props: any) {
     let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
 
@@ -41,7 +40,7 @@ const ProjectAsignmentList: NextPage = () => {
                                     </div>
                                 </AccordionHeader>
                                 <AccordionBody>
-                                    <SkillItem project={project} />
+                                    <SkillItem project={project} dropHandler={props.dropHandler} />
                                 </AccordionBody>
                             </AccordionItem>
                         );
@@ -50,6 +49,6 @@ const ProjectAsignmentList: NextPage = () => {
             </Container>
         </div>
     );
-};
+}
 
 export default ProjectAsignmentList;
