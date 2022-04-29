@@ -8,7 +8,7 @@ import SkillItem from "./skillItem";
 import useSWR from "swr";
 import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
@@ -20,11 +20,7 @@ function ProjectAsignmentList(props: any) {
     data = data || [];
 
     if (error) {
-        return (
-            <WarningToast
-                message={capitalize(t("error reload page"))}
-            />
-        );
+        return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
     const projectList = data;

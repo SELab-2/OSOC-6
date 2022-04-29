@@ -12,7 +12,7 @@ import axios from "axios";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { Assignment } from "../api/entities/AssignmentEntity";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../utility/stringUtil";
+import { capitalize } from "../utility/stringUtil";
 
 const AssignStudentsPage: NextPage = () => {
     const { t } = useTranslation("common");

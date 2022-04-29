@@ -48,7 +48,7 @@ const common = {
     "no users for skill": "No students have been assigned for this skill.",
     "suggested by": "Suggested by ",
     "no skills for project": "No skills have been assigned to this project",
-    "loading": "Loading...",
+    loading: "Loading...",
 };
 
 export default common;

@@ -4,7 +4,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
 import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
@@ -18,11 +18,7 @@ export default function SkillItem(props: any) {
     let { data, error } = useSWR(props.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
 
     if (error) {
-        return (
-            <WarningToast
-                message={capitalize(t("error reload page"))}
-            />
-        );
+        return <WarningToast message={capitalize(t("error reload page"))} />;
     }
     async function dropStudent(studentUrl: string, skillUrl: string) {
         props.dropHandler(studentUrl, skillUrl);

@@ -5,7 +5,7 @@ import { deleteAssignment, getAssignments } from "../../api/calls/AssignmentCall
 import WarningToast from "./warningToast";
 import apiPaths from "../../properties/apiPaths";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 
 /**
  * An item containing the information about the assignments to a skill of a project.
@@ -25,11 +25,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     let assign = data || [];
 
     if (error) {
-        return (
-            <WarningToast
-                message={capitalize(t("error reload page"))}
-            />
-        );
+        return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
     async function removeAssignment(event: any) {
@@ -65,8 +61,8 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                                         <h6>{assignment.student.firstName}</h6>
                                     </a>
                                     <p>
-                                        {capitalize(t("suggested by"))}{assignment.assigner.callName}: <br />{" "}
-                                        {assignment.assignment.reason}
+                                        {capitalize(t("suggested by"))}
+                                        {assignment.assigner.callName}: <br /> {assignment.assignment.reason}
                                     </p>
                                 </Col>
                                 <Col xs={2} md={1}>
