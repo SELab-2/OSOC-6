@@ -6,7 +6,11 @@ import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
-import { ProjectCreationProps, ProjectCreationValues } from "../handlers/createProjectSubmitHandler";
+import {
+    createProjectSubmitHandler,
+    ProjectCreationProps,
+    ProjectCreationValues,
+} from "../handlers/createProjectSubmitHandler";
 import { IUser } from "../api/entities/UserEntity";
 import { getAllSkillTypesFormPage } from "../api/calls/skillTypeCalls";
 import { ISkillType } from "../api/entities/SkillTypeEntity";
@@ -96,7 +100,6 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             coachURLs.push(
                 // @ts-ignore
                 // We know there will always be a user with this callname
-                //"/" + users.find((item) => item.callName === coach)._links.self.href.split(apiPaths.base)[1]
                 users.find((item) => item.callName === coach)._links.self.href
             );
         }
@@ -106,7 +109,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     return (
-        <div className={styles.create_project_box}>
+        <div className={styles.create_project_box} data-testid="create-project-form">
             <Formik
                 initialValues={{
                     projectName: "",
@@ -118,7 +121,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     skills: [],
                     skillInfos: [],
                 }}
-                onSubmit={handleSubmit}
+                onSubmit={props.submitHandler}
             >
                 <Form>
                     <h2>Create new project</h2>
@@ -126,6 +129,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         className="form-control mb-2"
                         label={capitalize(t("choose project name"))}
                         name="projectName"
+                        data-testid="projectname-input"
                         placeholder={capitalize(t("project name placeholder"))}
                         required
                     />
@@ -133,12 +137,14 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         className="form-control mb-2"
                         label={capitalize(t("enter project info"))}
                         name="projectInfo"
+                        data-testid="projectinfo-input"
                         placeholder={capitalize(t("project info placeholder"))}
                     />
                     <Field
                         className="form-control mb-2"
                         label={capitalize(t("choose version control URL"))}
                         name="versionManagement"
+                        data-testid="versionmanagement-input"
                         placeholder={capitalize(t("version control placeholder"))}
                         required
                     />
@@ -147,16 +153,17 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         label={capitalize(t("choose coach"))}
                         as="select"
                         name="coach"
+                        data-testid="coach-input"
                         placeholder={capitalize(t("choose coach"))}
                         value={selectedCoach}
                         onChange={handleChangeCoach}
-                        required
                     >
                         {users.map((user) => (
                             <option
                                 key={user.callName}
                                 value={user.callName}
                                 label={user.callName}
+                                data-testid={"user-" + user.callName}
                                 onClick={handleAddCoach}
                             >
                                 {user.callName}
@@ -183,6 +190,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         className="form-control mb-2"
                         label={capitalize(t("choose partner name"))}
                         name="partnerName"
+                        data-testid="partnername-input"
                         placeholder={capitalize(t("partner name placeholder"))}
                         required
                     />
@@ -190,6 +198,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         className="form-control mb-2"
                         label={capitalize(t("choose partner website"))}
                         name="partnerWebsite"
+                        data-testid="partnerwebsite-input"
                         placeholder={capitalize(t("partner website placeholder"))}
                         required
                     />
@@ -221,12 +230,18 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         label={capitalize(t("choose skill type"))}
                         as="select"
                         name="skillType"
+                        data-testid="skill-input"
                         value={selectedSkill}
                         placeholder={capitalize(t("choose skill type"))}
                         onChange={handleChangeSkill}
                     >
                         {skillTypes.map((skillType) => (
-                            <option key={skillType.name} value={skillType.name} label={skillType.name}>
+                            <option
+                                key={skillType.name}
+                                value={skillType.name}
+                                label={skillType.name}
+                                data-testid={"skilltype-" + skillType.name}
+                            >
                                 {skillType.name}
                             </option>
                         ))}
@@ -235,14 +250,20 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         className="form-control mb-2"
                         label={capitalize(t("extra skill info"))}
                         name="skillInfo"
+                        data-testid="skillinfo-input"
                         value={skillInfo}
                         placeholder={capitalize(t("extra skill info placeholder"))}
                         onChange={handleChangeSkillInfo}
                     />
-                    <button className="btn btn-secondary" type="button" onClick={handleAddSkill}>
+                    <button
+                        className="btn btn-secondary"
+                        type="button"
+                        onClick={handleAddSkill}
+                        data-testid="add-skill-button"
+                    >
                         {capitalize(t("add skill"))}
                     </button>
-                    <button className="btn btn-primary" type="submit">
+                    <button className="btn btn-primary" type="submit" data-testid="create-project-button">
                         {capitalize(t("create project"))}
                     </button>
                 </Form>

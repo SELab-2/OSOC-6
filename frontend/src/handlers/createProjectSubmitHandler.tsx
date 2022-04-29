@@ -10,11 +10,11 @@ export interface ProjectCreationValues {
     projectName: string;
     projectInfo: string;
     versionManagement: string;
-    coaches: string[];
     partnerName: string;
     partnerWebsite: string;
     skills: string[];
     skillInfos: string[];
+    coaches: string[];
 }
 
 export type ProjectCreationProps = {
@@ -53,7 +53,6 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
             async (projectSkill) => await axios.post(apiPaths.projectSkills, projectSkill, AxiosConf)
         )
     );
-    console.log(projectResponse.data._links.self.href);
 
     await Promise.all(
         values.coaches.map(

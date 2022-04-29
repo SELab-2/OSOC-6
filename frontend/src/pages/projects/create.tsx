@@ -5,7 +5,7 @@ import styles from "../../styles/Home.module.css";
 import { CreateProjectForm } from "../../components/createProjectForm";
 import { createProjectSubmitHandler } from "../../handlers/createProjectSubmitHandler";
 
-const Home: NextPage = () => {
+const CreateProject: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div className={styles.container}>
@@ -22,4 +22,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default CreateProject;
