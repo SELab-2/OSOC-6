@@ -9,6 +9,13 @@ export const AxiosConf = {
     },
 };
 
+export const ManyToManyAxiosConf = {
+    baseURL: apiPaths.base,
+    headers: {
+        "Content-Type": "text/uri-list; charset=UTF-8",
+    },
+};
+
 export const AxiosFormConfig = {
     baseURL: apiPaths.base,
     headers: {

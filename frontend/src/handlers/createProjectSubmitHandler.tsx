@@ -1,7 +1,7 @@
 import apiPaths from "../properties/apiPaths";
 import Router from "next/router";
 import axios from "axios";
-import { AxiosConf, AxiosFormConfig } from "../api/calls/baseCalls";
+import { AxiosConf, AxiosFormConfig, ManyToManyAxiosConf } from "../api/calls/baseCalls";
 import { Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
@@ -53,8 +53,16 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
             async (projectSkill) => await axios.post(apiPaths.projectSkills, projectSkill, AxiosConf)
         )
     );
+    console.log(projectResponse.data._links.self.href);
 
-    await axios.patch(projectResponse.data._links.coaches.href, { users: values.coaches }, AxiosConf);
+    await Promise.all(
+        values.coaches.map(
+            async (coach) =>
+                await axios.put(projectResponse.data._links.coaches.href, coach, ManyToManyAxiosConf)
+        )
+    );
+
+    //await axios.put(projectResponse.data._links.coaches.href, values.coaches, ManyToManyAxiosConf);
 
     await Router.push(
         "/" + applicationPaths.projects + "/" + projectResponse.data._links.self.href.split("/").pop()

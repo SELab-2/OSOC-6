@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Button, Col, FormCheck, ListGroup, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik } from "formik";
 import useSWR from "swr";
@@ -9,7 +9,7 @@ import { capitalize } from "../utility/stringUtil";
 import { ProjectCreationProps, ProjectCreationValues } from "../handlers/createProjectSubmitHandler";
 import { IUser } from "../api/entities/UserEntity";
 import { getAllSkillTypesFormPage } from "../api/calls/skillTypeCalls";
-import { ISkillType, SkillType } from "../api/entities/SkillTypeEntity";
+import { ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
@@ -96,7 +96,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             coachURLs.push(
                 // @ts-ignore
                 // We know there will always be a user with this callname
-                "/" + users.find((item) => item.callName === coach)._links.self.href.split(apiPaths.base)[1]
+                //"/" + users.find((item) => item.callName === coach)._links.self.href.split(apiPaths.base)[1]
+                users.find((item) => item.callName === coach)._links.self.href
             );
         }
 
