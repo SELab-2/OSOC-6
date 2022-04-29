@@ -1,8 +1,12 @@
 import { getAllEntitiesFromPage, getEntityOnUrl, getQueryUrlFromParams } from "./baseCalls";
-import { IAllStudentInfo, IStudent, OsocExpericience, studentCollectionName } from "../entities/StudentEntity";
-import {IFullSuggestion, ISuggestion} from "../entities/SuggestionEntity";
-import {getAllSuggestionsFromLinks, getFullSuggestionFromSuggestion} from "./suggestionCalls";
-
+import {
+    IAllStudentInfo,
+    IStudent,
+    OsocExpericience,
+    studentCollectionName,
+} from "../entities/StudentEntity";
+import { IFullSuggestion, ISuggestion } from "../entities/SuggestionEntity";
+import { getAllSuggestionsFromLinks, getFullSuggestionFromSuggestion } from "./suggestionCalls";
 
 export interface IStudentQueryParams {
     freeText: string;
@@ -53,7 +57,8 @@ export async function getAllStudentInfo(studentUrl: string): Promise<IAllStudent
     const student: IStudent = await getStudentOnUrl(studentUrl);
     const suggestions: ISuggestion[] = await getAllSuggestionsFromLinks(student._links.suggestions.href);
     const fullSuggestions: IFullSuggestion[] = await Promise.all(
-        suggestions.map((suggestion: ISuggestion) => getFullSuggestionFromSuggestion(suggestion)));
+        suggestions.map((suggestion: ISuggestion) => getFullSuggestionFromSuggestion(suggestion))
+    );
 
     return { student: student, suggestions: fullSuggestions };
 }

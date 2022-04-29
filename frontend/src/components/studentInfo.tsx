@@ -4,7 +4,7 @@ import apiPaths from "../properties/apiPaths";
 import useSWR from "swr";
 import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import {Col, ListGroup, ListGroupItem, Row} from "react-bootstrap";
 import styles from "../styles/studentList.module.css";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { CustomDialogContent } from "./suggestionModal";
@@ -105,39 +105,35 @@ export function StudentInfo() {
                     {capitalize(t("student osoc experience"))}: {t(experiences)}
                 </div>
             </div>
-            <footer className="studentfooter py-3 fixed-bottom">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-sm">
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-sm">
-                                        <CustomDialogContent
-                                            suggestion={SuggestionStrategy.yes}
-                                            style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
-                                            studentUrl={data.student._links.self.href}
-                                        />
-                                    </div>
-                                    <div className="col-sm">
-                                        <CustomDialogContent
-                                            suggestion={SuggestionStrategy.maybe}
-                                            style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
-                                            studentUrl={data.student._links.self.href}
-                                        />
-                                    </div>
-                                    <div className="col-sm">
-                                        <CustomDialogContent
-                                            suggestion={SuggestionStrategy.no}
-                                            style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
-                                            studentUrl={data.student._links.self.href}
-                                        />
-                                    </div>
-                                </div>
+            <footer className={"py-3 position-sticky bottom-0"} style={{backgroundColor: "white"}}>
+                <Row className="row">
+                    <Col sm={8}>
+                        <div className="row">
+                            <div className="col-sm">
+                                <CustomDialogContent
+                                    suggestion={SuggestionStrategy.yes}
+                                    style={{color: "#1DE1AE", borderColor: "#1DE1AE", width: 150}}
+                                    studentUrl={data.student._links.self.href}
+                                />
+                            </div>
+                            <div className="col-sm">
+                                <CustomDialogContent
+                                    suggestion={SuggestionStrategy.maybe}
+                                    style={{color: "#FCB70F", borderColor: "#FCB70F", width: 150}}
+                                    studentUrl={data.student._links.self.href}
+                                />
+                            </div>
+                            <div className="col-sm">
+                                <CustomDialogContent
+                                    suggestion={SuggestionStrategy.no}
+                                    style={{color: "#F14A3B", borderColor: "#F14A3B", width: 150}}
+                                    studentUrl={data.student._links.self.href}
+                                />
                             </div>
                         </div>
-                        <div className="col-sm">Add definite decision</div>
-                    </div>
-                </div>
+                    </Col>
+                    <Col sm={4}>Add definite decision</Col>
+                </Row>
             </footer>
         </div>
     );
