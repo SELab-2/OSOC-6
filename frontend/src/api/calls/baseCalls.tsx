@@ -44,7 +44,7 @@ export async function getAllEntitiesFromPage(
             })
         ).data;
         entities.push(...page._embedded[collectionName]);
-        fetchedAll = currentPage + 1 === page.page.totalPages;
+        fetchedAll = currentPage + 1 >= page.page.totalPages;
         currentPage++;
     }
     return entities;
