@@ -8,24 +8,17 @@ export function getAllEditionsFromPage(url: string): Promise<IEdition[]> {
     return <Promise<IEdition[]>>getAllEntitiesFromPage(url, editionCollectionName);
 }
 
-export function getEditionByName(editionName: string): Promise<IEdition> {
-    return <Promise<IEdition>>getEntityOnUrl(
+export async function getEditionByName(editionName: string): Promise<IEdition | undefined> {
+    const editions = await getAllEditionsFromPage(
         getQueryUrlFromParams(apiPaths.editionByName, {
             name: editionName,
         })
     );
+    return editions[0];
 }
 
 export function useEdition(editionName: string | undefined): IEdition | undefined {
-    const { data } = useSWR(
-        editionName
-            ? getQueryUrlFromParams(apiPaths.editionByName, {
-                  name: editionName,
-              })
-            : null,
-        getEntityOnUrl
-    );
-    return <IEdition | undefined>data;
+    return useSWR(editionName ? editionName : null, getEditionByName).data;
 }
 
 export function useCurrentEdition(shouldExec: boolean): IEdition | undefined {
@@ -39,7 +32,7 @@ export function useCurrentEdition(shouldExec: boolean): IEdition | undefined {
     );
     const newestEdition = data?.at(0);
 
-    if (!queryParams.edition && !isValidating) {
+    if (shouldExec && !queryParams.edition && !isValidating) {
         router
             .replace({
                 query: {
@@ -50,4 +43,8 @@ export function useCurrentEdition(shouldExec: boolean): IEdition | undefined {
     }
 
     return chosenEdition || newestEdition;
+}
+
+export function extractIdFromEditionUrl(url: string): number {
+    return 3;
 }

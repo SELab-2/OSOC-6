@@ -2,7 +2,7 @@ import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
 import axios, { AxiosRequestConfig } from "axios";
 import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
-import { useCurrentEdition } from "./editionCalls";
+import { extractIdFromEditionUrl, useCurrentEdition } from "./editionCalls";
 import useSWR from "swr";
 
 export const AxiosConf: AxiosRequestConfig = {
@@ -65,10 +65,18 @@ export function useSwrWithEdition<T>(
     config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
 ) {
     const edition = useCurrentEdition(true);
-    return useSWR(key ? getQueryUrlFromParams(key, { edition: edition?.name }) : null, fetcher, config);
+    return useSWR(
+        key
+            ? getQueryUrlFromParams(key, {
+                  edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
+              })
+            : null,
+        fetcher,
+        config
+    );
 }
 
-export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity> {
+export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
     return (await axios.get(entityUrl, AxiosConf)).data;
 }
 
@@ -92,7 +100,7 @@ export async function getEntitiesWithCache(
 export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
     let urlConstructor = url.indexOf("?") === -1 ? url + "?" : url;
     for (const key in params) {
-        urlConstructor += key + "=" + params[key] + "&";
+        urlConstructor += key + "=" + encodeURIComponent(params[key]) + "&";
     }
     urlConstructor =
         urlConstructor[urlConstructor.length - 1] === "&"
