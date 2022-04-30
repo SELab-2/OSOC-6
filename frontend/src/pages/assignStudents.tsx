@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Modal, Col, Row, ModalTitle, ModalBody, ModalHeader } from "react-bootstrap";
+import { Modal, Col, Row, ModalTitle, ModalBody, ModalHeader, Badge } from "react-bootstrap";
 import NavBar from "../components/navBar";
 import styles from "../styles/pageGrids.module.css";
 import { StudentList } from "../components/studentList";
@@ -14,30 +14,43 @@ import { Assignment } from "../api/entities/AssignmentEntity";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
 
+type SkillInfo = { skillName: string; skillColor: string; skillUrl: string };
+export type DropHandler = (
+    studentName: string,
+    studentUrl: string,
+    skillInfo: SkillInfo,
+    projectName: string
+) => void;
+
 const AssignStudentsPage: NextPage = () => {
     const { t } = useTranslation("common");
 
     const [showModal, setShowModal] = useState(false);
-    const [studentURL, setStudentURL] = useState("");
-    const [skillURL, setSkillURL] = useState("");
+    const [modalInfo, setModalInfo] = useState<{
+        studentName: string;
+        studentUrl: string;
+        skillInfo: SkillInfo;
+        projectName: string;
+    }>();
 
-    function handleShow(studentUrl: string, skillUrl: string) {
-        setStudentURL(studentUrl);
-        setSkillURL(skillUrl);
+    function handleShow(studentName: string, studentUrl: string, skillInfo: SkillInfo, projectName: string) {
+        setModalInfo({ studentName, studentUrl, skillInfo, projectName });
         setShowModal(true);
     }
 
     async function dropStudent(values: { reason: string }) {
         const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
-        const assignment: Assignment = new Assignment(
-            false,
-            true,
-            values.reason,
-            user._links.self.href,
-            studentURL,
-            skillURL
-        );
-        await axios.post(apiPaths.base + apiPaths.assignments, assignment, AxiosConf);
+        if (modalInfo != undefined) {
+            const assignment: Assignment = new Assignment(
+                false,
+                true,
+                values.reason,
+                user._links.self.href,
+                modalInfo.studentUrl,
+                modalInfo.skillInfo.skillUrl
+            );
+            await axios.post(apiPaths.base + apiPaths.assignments, assignment, AxiosConf);
+        }
         handleClose();
     }
 
@@ -84,6 +97,18 @@ const AssignStudentsPage: NextPage = () => {
                     <ModalTitle>{capitalize(t("assignment modal title"))}</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
+                    {modalInfo != undefined ? (
+                        <p>
+                            You are suggesting {modalInfo.studentName} to project{" "}
+                            <i>{modalInfo.projectName}</i> for the role{" "}
+                            <Badge bg="" style={{ backgroundColor: modalInfo.skillInfo.skillColor }}>
+                                {modalInfo.skillInfo.skillName}
+                            </Badge>
+                            .
+                        </p>
+                    ) : (
+                        <p></p>
+                    )}
                     <div>{capitalize(t("assignment reason"))}</div>
                     <Formik initialValues={{ reason: "" }} onSubmit={dropStudent}>
                         <Form>

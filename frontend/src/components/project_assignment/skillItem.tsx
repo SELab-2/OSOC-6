@@ -5,13 +5,17 @@ import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls"
 import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
+import { IProject } from "../../api/entities/ProjectEntity";
+import { DropHandler } from "../../pages/assignStudents";
+import { getSkillTypeFromSkill } from "../../api/calls/skillTypeCalls";
+import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
  * @param props Properties
  * @constructor
  */
-export default function SkillItem(props: any) {
+export default function SkillItem(props: { project: IProject; dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
 
     const { mutate } = useSWRConfig();
@@ -20,8 +24,16 @@ export default function SkillItem(props: any) {
     if (error) {
         return <WarningToast message={capitalize(t("error reload page"))} />;
     }
-    async function dropStudent(studentUrl: string, skillUrl: string) {
-        props.dropHandler(studentUrl, skillUrl);
+
+    async function dropStudent(studentName: string, studentUrl: string, skill: IProjectSkill) {
+        const skillType = await getSkillTypeFromSkill(skill);
+        const skillColor = skillType.colour;
+        props.dropHandler(
+            studentName,
+            studentUrl,
+            { skillUrl: skill._links.self.href, skillName: skill.name, skillColor },
+            props.project.name
+        );
         await mutate(props.project._links.neededSkills.href);
     }
 
@@ -52,7 +64,11 @@ export default function SkillItem(props: any) {
                             key={index}
                             onDrop={(e) => {
                                 e.preventDefault();
-                                dropStudent(e.dataTransfer.getData("url"), skill._links.projectSkill.href);
+                                dropStudent(
+                                    e.dataTransfer.getData("name"),
+                                    e.dataTransfer.getData("url"),
+                                    skill
+                                );
                             }}
                             onDragOver={(event) => {
                                 event.preventDefault();

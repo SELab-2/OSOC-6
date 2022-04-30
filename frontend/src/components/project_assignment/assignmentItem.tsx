@@ -6,6 +6,8 @@ import WarningToast from "./warningToast";
 import apiPaths from "../../properties/apiPaths";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
+import { getSkillTypeFromSkill } from "../../api/calls/skillTypeCalls";
+import { useEffect, useState } from "react";
 
 /**
  * An item containing the information about the assignments to a skill of a project.
@@ -18,10 +20,16 @@ import { capitalize } from "../../utility/stringUtil";
 function AssignmentItem(item: { skill: IProjectSkill }) {
     const { t } = useTranslation("common");
 
+    const [color, setColor] = useState("secondary");
+    useEffect(() => {
+        getSkillTypeFromSkill(item.skill).then((skillType) => setColor(skillType.colour));
+    });
+
     const { mutate } = useSWRConfig();
     let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments, {
         refreshInterval: 10,
     });
+    getSkillTypeFromSkill(item.skill);
     let assign = data || [];
 
     if (error) {
@@ -39,7 +47,9 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
         if (assign.length == 0) {
             return (
                 <div>
-                    <Badge bg={"secondary"}>{item.skill.name}</Badge>
+                    <Badge bg="" style={{ background: color }}>
+                        {item.skill.name}
+                    </Badge>
                     <p>{capitalize(t("no users for skill"))}</p>
                 </div>
             );
@@ -47,7 +57,9 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
 
         return (
             <>
-                <Badge bg={"secondary"}>{item.skill.name}</Badge>
+                <Badge bg="" style={{ backgroundColor: color }}>
+                    {item.skill.name}
+                </Badge>
                 {assign.map((assignment, index) => {
                     return (
                         <div key={index}>

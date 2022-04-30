@@ -42,9 +42,10 @@ export const StudentList = (props: any) => {
                             action
                             as={"li"}
                             draggable={draggable}
-                            onDragStart={(event) =>
-                                event.dataTransfer.setData("url", student._links.self.href)
-                            }
+                            onDragStart={(event) => {
+                                event.dataTransfer.setData("url", student._links.self.href);
+                                event.dataTransfer.setData("name", student.firstName);
+                            }}
                             // Should be changed to individual student page later
                             onClick={() => {
                                 let studentPath: string = student._links.self.href.split(apiPaths.base)[1];

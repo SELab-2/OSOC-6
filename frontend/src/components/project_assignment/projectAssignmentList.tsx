@@ -9,12 +9,13 @@ import useSWR from "swr";
 import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
+import { DropHandler } from "../../pages/assignStudents";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
  * @constructor
  */
-function ProjectAsignmentList(props: any) {
+function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
     let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
