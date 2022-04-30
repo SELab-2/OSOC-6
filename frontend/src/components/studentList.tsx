@@ -52,7 +52,7 @@ export const StudentList = (props: any) => {
                                     let studentPath: string = student._links.self.href.split(
                                         apiPaths.base
                                     )[1];
-                                    Router.push(studentPath);
+                                    Router.push("/" + studentPath);
                                 }
                             }}
                         >

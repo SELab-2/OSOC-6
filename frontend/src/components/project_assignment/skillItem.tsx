@@ -37,49 +37,42 @@ export default function SkillItem(props: { project: IProject; dropHandler: DropH
         await mutate(props.project._links.neededSkills.href);
     }
 
-    let skillList = data || undefined;
+    let skillList = data || [];
 
-    if (skillList != undefined) {
-        skillList.sort((skill1, skill2) => {
-            if (skill1.name > skill2.name) {
-                return 1;
-            }
-
-            if (skill1.name < skill2.name) {
-                return -1;
-            }
-
-            return 0;
-        });
-
-        if (skillList.length == 0) {
-            return <p>{capitalize(t("no skills for project"))}</p>;
+    skillList.sort((skill1, skill2) => {
+        if (skill1.name > skill2.name) {
+            return 1;
         }
 
-        return (
-            <>
-                {skillList.map((skill, index) => {
-                    return (
-                        <Container
-                            key={index}
-                            onDrop={(e) => {
-                                e.preventDefault();
-                                dropStudent(
-                                    e.dataTransfer.getData("name"),
-                                    e.dataTransfer.getData("url"),
-                                    skill
-                                );
-                            }}
-                            onDragOver={(event) => {
-                                event.preventDefault();
-                            }}
-                        >
-                            <AssignmentItem skill={skill} />
-                        </Container>
-                    );
-                })}
-            </>
-        );
+        if (skill1.name < skill2.name) {
+            return -1;
+        }
+
+        return 0;
+    });
+
+    if (skillList.length == 0) {
+        return <p>{capitalize(t("no skills for project"))}</p>;
     }
-    return <p>{capitalize(t("loading"))}</p>;
+
+    return (
+        <>
+            {skillList.map((skill, index) => {
+                return (
+                    <Container
+                        key={index}
+                        onDrop={(e) => {
+                            e.preventDefault();
+                            dropStudent(e.dataTransfer.getData("name"), e.dataTransfer.getData("url"), skill);
+                        }}
+                        onDragOver={(event) => {
+                            event.preventDefault();
+                        }}
+                    >
+                        <AssignmentItem skill={skill} />
+                    </Container>
+                );
+            })}
+        </>
+    );
 }

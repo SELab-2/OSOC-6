@@ -92,6 +92,7 @@ const AssignStudentsPage: NextPage = () => {
                     </Col>
                 </Row>
             </div>
+
             <Modal show={showModal} onHide={handleClose} centered>
                 <ModalHeader>
                     <ModalTitle>{capitalize(t("assignment modal title"))}</ModalTitle>

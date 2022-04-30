@@ -29,7 +29,6 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments, {
         refreshInterval: 10,
     });
-    getSkillTypeFromSkill(item.skill);
     let assign = data || [];
 
     if (error) {
@@ -37,63 +36,57 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     }
 
     async function removeAssignment(event: any) {
-        if (assign != undefined) {
-            await deleteAssignment(event.target.value, assign);
-            await mutate(item.skill._links.assignments.href);
-        }
+        await deleteAssignment(event.target.value, assign);
+        await mutate(item.skill._links.assignments.href);
     }
 
-    if (assign != undefined) {
-        if (assign.length == 0) {
-            return (
-                <div>
-                    <Badge bg="" style={{ background: color }}>
-                        {item.skill.name}
-                    </Badge>
-                    <p>{capitalize(t("no users for skill"))}</p>
-                </div>
-            );
-        }
-
+    if (assign.length == 0) {
         return (
-            <>
-                <Badge bg="" style={{ backgroundColor: color }}>
+            <div>
+                <Badge bg="" style={{ background: color }}>
                     {item.skill.name}
                 </Badge>
-                {assign.map((assignment, index) => {
-                    return (
-                        <div key={index}>
-                            <Row className={"align-items-center"}>
-                                <Col xs={10} md={11}>
-                                    <a
-                                        rel="noreferrer"
-                                        href={assignment.student._links.self.href.split(apiPaths.base)[1]}
-                                        target="_blank"
-                                    >
-                                        <h6>{assignment.student.firstName}</h6>
-                                    </a>
-                                    <p>
-                                        {capitalize(t("suggested by"))}
-                                        {assignment.assigner.callName}: <br /> {assignment.assignment.reason}
-                                    </p>
-                                </Col>
-                                <Col xs={2} md={1}>
-                                    <CloseButton
-                                        aria-label={"Remove student from project"}
-                                        value={assignment.assignment._links.assignment.href}
-                                        onClick={(assignment) => removeAssignment(assignment)}
-                                    />
-                                </Col>
-                            </Row>
-                            <hr />
-                        </div>
-                    );
-                })}
-            </>
+                <p>{capitalize(t("no users for skill"))}</p>
+            </div>
         );
     }
 
-    return <p>Loading...</p>;
+    return (
+        <>
+            <Badge bg="" style={{ backgroundColor: color }}>
+                {item.skill.name}
+            </Badge>
+            {assign.map((assignment, index) => {
+                return (
+                    <div key={index}>
+                        <Row className={"align-items-center"}>
+                            <Col xs={10} md={11}>
+                                <a
+                                    rel="noreferrer"
+                                    href={assignment.student._links.self.href.split(apiPaths.base)[1]}
+                                    target="_blank"
+                                >
+                                    <h6>{assignment.student.firstName}</h6>
+                                </a>
+                                <p>
+                                    {capitalize(t("suggested by"))}
+                                    {assignment.assigner.callName}: <br /> {assignment.assignment.reason}
+                                </p>
+                            </Col>
+                            <Col xs={2} md={1}>
+                                <CloseButton
+                                    aria-label={"Remove student from project"}
+                                    value={assignment.assignment._links.assignment.href}
+                                    onClick={(assignment) => removeAssignment(assignment)}
+                                />
+                            </Col>
+                        </Row>
+                        <hr />
+                    </div>
+                );
+            })}
+        </>
+    );
 }
 
 export default AssignmentItem;
