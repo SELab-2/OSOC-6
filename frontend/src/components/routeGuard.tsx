@@ -3,11 +3,10 @@ import { useCurrentUser } from "../api/calls/userCalls";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { pathIsAuthException } from "../utility/pathUtil";
-import { getAllEditionsFromPage, useCurrentEdition } from "../api/calls/editionCalls";
+import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 import useSWR from "swr";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
 import apiPaths from "../properties/apiPaths";
-import { data } from "browserslist";
 
 export default function RouteGuard({ children }: any) {
     const router = useRouter();

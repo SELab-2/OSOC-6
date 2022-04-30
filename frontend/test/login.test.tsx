@@ -10,6 +10,7 @@ import { loginSubmitHandler, LoginValues } from "../src/handlers/loginSubmitHand
 import apiPaths from "../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../src/properties/applicationPaths";
+import { ScopedMutator } from "swr/dist/types";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -70,11 +71,14 @@ it("SubmitHandler for loginForm sends post request", async () => {
         request: { responseURL: "/home" },
     };
 
-    loginSubmitHandler(values);
+    loginSubmitHandler(values, mockRouter, (() => {}) as any as ScopedMutator);
     mockAxios.mockResponseFor({ url: apiPaths.login }, response);
 
     await waitFor(() => {
         expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.login, expect.anything(), expect.anything());
     });
-    expect(mockRouter.pathname).toEqual("/" + applicationPaths.home);
+
+    await waitFor(() => {
+        expect(mockRouter.pathname).toEqual("/" + applicationPaths.home);
+    })
 });
