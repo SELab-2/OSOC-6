@@ -15,7 +15,9 @@ import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
@@ -39,19 +41,19 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     private AssignmentRepository assignmentRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Project} in the database
+     * The repository which saves, searches, ... {@link Project} in the database.
      */
     @Autowired
     private ProjectRepository projectRepository;
 
     /**
-     * The repository which saves, searches, ... {@link ProjectSkill} in the database
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database.
      */
     @Autowired
     private ProjectSkillRepository projectSkillRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -155,7 +157,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     public void student_matching_query_over_assignment_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{testAssignment.getReason(),
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
@@ -167,7 +169,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     public void student_non_matching_query_over_assignment_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{"apple" + testAssignment.getReason() + "banana",
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
@@ -209,5 +211,27 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH)
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_true() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
+                        + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_false() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
+                        + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
     }
 }

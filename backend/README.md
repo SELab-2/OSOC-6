@@ -53,6 +53,12 @@ Change `osoc-test` at the end of the file, to the name of the database you made 
 ```
 spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
 ```
+You will also need to create an api token. You can do this by using the `crypto.randomUUID()` function in the browser 
+(see https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID). Once you have your api token, replace the 
+placeholder in `application.properties.example` with it.
+```
+webhook.token=your_secret_token_here
+```
 The final step, save this file and rename `application.properties.example` to `application.properties`.
 
 In the same `./src/main/resources` folder you'll also find a file named `initial-user.properties.example`.
@@ -66,8 +72,21 @@ Now save this file and rename `initial-user.properties.example` to `initial-user
 Now you should be able to sync gradle and run the program.
 
 You should be set up now.
-If you want to run the program just run `./gradlew run bootRun`.
+If you want to run the program just run `./gradlew task build && ./gradlew task bootRun`.
 Your backend will be served on the base path `/api/`.
+
+### Tally webhook
+
+To configure automatic Tally form submissions, first go to your tally form. There, go
+to the `Integrations` tab and click `Connect` next to `Webhooks`. If your server domain is for example `test.com`,
+then fill in the following for endpoint URL, replacing `your_token_here` with the api token you generated earlier:
+```
+https://test.com/api/webhook?token=your_token_here&edition=edition_name_here
+```
+
+Later, once you have created an edition, replace `edition_name_here` with the name of the edition.
+Replacing spaces in the name with `%20`. `My edition` becomes `My%20edition`
+This allows you to have multiple forms, each linked to a different edition.
 
 ## Developers
 
@@ -137,7 +156,7 @@ Spring will know what this means and create the endpoint for you.
 In addition, you can still create custom endpoints if you want with the `@Query` annotation.
 
 ```java
-@Query(value= "someJQLQuery")
+@Query(value= "someJPQLQuery")
 ```
 This annotation will allow u to write a custom query using Java Persistence Query Language (JPQL), a part of
 [the Java Persistence API (JPA)](https://docs.spring.io/spring-integration/reference/html/jpa.html).
@@ -156,6 +175,19 @@ Allows you to write a query native to your persistence layer, postgres in our ca
 Using a native query you can often write more powerful queries. This is however at the expense of the independency from your persistence layer.
 You should try to avoid using native queries.
 From within a native query you can also use the `:` and `:#{}` syntax.
+
+### Webhook
+
+Should the tally form ever get new questions or get recreated, you will need to update/add/remove some parts of the 
+`QuestionKey` enum. To test whether your changes work on your local machine, you have two options:
+
+* Use the provided tests in `WebhookEndpointTests`. You can easily add more testfiles in the `resources/testdata`
+directory and then load them in the mentioned test file. To acquire the testdata, first add a webhook to the tally form 
+(does not have to be a valid one). Next, fill in and submit the form. Now you can go to the events log of the webhook in 
+tally. Here the request body can be copied and placed in your .json test file.
+* Use https://my.webhookrelay.com. This service allows you to take incoming requests and send them to your localhost 
+server. You will need to install a command line tool to get this working. Their website provides a tutorial on the 
+complete setup. The only downside is that you are limited to 150 requests per month.
 
 ## Tests
 

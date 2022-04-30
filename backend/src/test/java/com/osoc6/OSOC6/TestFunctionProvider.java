@@ -55,7 +55,7 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
      * Change the entity to have a different field value.
      * This will be used to test whether a patch request works.
      * @param startEntity the entity we would like to change
-     * @return an map containing names of fields and new values
+     * @return a map containing names of fields and new values
      */
     public abstract Map<String, String> change_entity(T startEntity);
 
@@ -84,7 +84,7 @@ public abstract class TestFunctionProvider<T, I extends Serializable, R extends 
     }
 
     /**
-     * Test if all entities can be found.
+     * Tests if all entities can be found.
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request fails
      */

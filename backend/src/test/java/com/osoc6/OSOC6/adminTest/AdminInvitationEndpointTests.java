@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mockStatic;
 public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, Long, InvitationRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Invitation} in the database.
      */
     @Autowired
     private InvitationRepository invitationRepository;
@@ -41,7 +41,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     private final Invitation unUsedInvitation = TestEntityProvider.getBaseUnusedInvitation(this);
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

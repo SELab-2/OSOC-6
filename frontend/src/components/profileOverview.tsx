@@ -66,9 +66,9 @@ export function ProfileOverview() {
 
     return (
         <Container>
-            <h2>{t("useroverview my profile")}</h2>
+            <h2>{t("user profile")}</h2>
             <Row data-testid="profile-overview">
-                <Col className={styles.first_element}>{capitalize(t("useroverview name"))}</Col>
+                <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                 {/*show callname if not editing*/}
                 {!editCallname && <Col>{data.callName}</Col>}
                 {!editCallname && (
@@ -95,7 +95,7 @@ export function ProfileOverview() {
                         />
                         <button data-testid="save-callname" onClick={handleSaveCallName}>
                             <Image
-                                alt={capitalize(t("confirm button"))}
+                                alt={capitalize(t("confirm"))}
                                 src={"/resources/checkmark.svg"}
                                 width="15"
                                 height="15"
@@ -105,7 +105,7 @@ export function ProfileOverview() {
                 )}
             </Row>
             <Row>
-                <Col className={styles.first_element}>{capitalize(t("useroverview e-mail"))}</Col>
+                <Col className={styles.first_element}>{capitalize(t("email")) + ":"}</Col>
                 <Col>{data.email}</Col>
                 <Col>
                     <a href={applicationPaths.changeEmail}>
@@ -119,7 +119,7 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Col className={styles.first_element}>{capitalize(t("useroverview password"))}</Col>
+                <Col className={styles.first_element}>{capitalize(t("user password") + ":")}</Col>
                 <Col>******</Col>
                 <Col>
                     <a href={applicationPaths.changePassword}>
@@ -133,7 +133,7 @@ export function ProfileOverview() {
                 </Col>
             </Row>
             <Row>
-                <Col className={styles.first_element}>{capitalize(t("useroverview status"))}</Col>
+                <Col className={styles.first_element}>{capitalize(t("user status"))}</Col>
                 <Col>
                     {data.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
                     {data.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
@@ -141,7 +141,7 @@ export function ProfileOverview() {
             </Row>
             <Row>
                 <Button data-testid="delete-userprofile" onClick={deleteCurrentUser}>
-                    {capitalize(t("useroverview delete"))}
+                    {capitalize(t("user delete"))}
                 </Button>
             </Row>
             <ToastContainer position="bottom-end">

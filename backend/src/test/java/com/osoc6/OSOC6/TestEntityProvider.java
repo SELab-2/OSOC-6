@@ -15,13 +15,13 @@ import com.osoc6.OSOC6.database.models.UserSkill;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
+import com.osoc6.OSOC6.database.models.student.Status;
 import com.osoc6.OSOC6.database.models.student.Student;
 
 import java.util.List;
 
 /**
- * This class provides some entities to classes it doesn't need any web calls so it can be a Utility class.
+ * This class provides some entities to classes. It doesn't need any web calls so it can be a Utility class.
  * Using this class you can create base entities more easily.
  */
 public final class TestEntityProvider {
@@ -40,7 +40,6 @@ public final class TestEntityProvider {
                 .additionalStudentInfo("He likes it like that")
                 .bestSkill("Finding out the Spring ways")
                 .currentDiploma("Master")
-                .educationLevel("higher level")
                 .englishProficiency(EnglishProficiency.FLUENT)
                 .firstName("Kasper")
                 .lastName("Demeyere")
@@ -49,11 +48,14 @@ public final class TestEntityProvider {
                 .institutionName("Ghent University")
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.YES_NO_STUDENT_COACH)
+                .status(Status.MAYBE)
                 .phoneNumber("+324992772")
-                .pronounsType(PronounsType.HE)
+                .workType("Yes, I can work with a student employment agreement in Belgium")
+                .pronouns("he/him/his")
                 .writtenMotivation("I love to Spring Spring in java Spring!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
+                .funFact("I am groot.")
                 .edition(performer.getBaseActiveUserEdition())
                 .motivationURI("www.I-like-bananas.com")
                 .skills(List.of("Gaming on a nice chair", "programming whilst thinking about sleeping"))
@@ -74,7 +76,6 @@ public final class TestEntityProvider {
                 .additionalStudentInfo("I like boulders")
                 .bestSkill("standing on hands")
                 .currentDiploma("Master")
-                .educationLevel("Lower level")
                 .englishProficiency(EnglishProficiency.FLUENT)
                 .firstName("Jitse")
                 .lastName("De Smet")
@@ -83,15 +84,16 @@ public final class TestEntityProvider {
                 .institutionName("Ghent University")
                 .mostFluentLanguage("Dutch")
                 .osocExperience(OsocExperience.NONE)
+                .status(Status.APPROVED)
                 .phoneNumber("+324982672")
-                .pronounsType(PronounsType.OTHER)
-                .objectivePronoun("he")
-                .subjectivePronoun("her")
-                .possessivePronoun("them")
+                .workType("Yes, I can work as a volunteer in Belgium")
+                .daytimeResponsibilities("Being the boss")
+                .pronouns("they")
                 .writtenMotivation("I love to code!")
                 .yearInCourse("3")
                 .durationCurrentDegree(5)
                 .edition(performer.getBaseActiveUserEdition())
+                .funFact("Boulder de boulder")
                 .motivationURI("www.ILikeApples.com")
                 .curriculumVitaeURI("www.my-life-in-bel-air.com")
                 .writtenMotivation("www.I-just-want-it.com")

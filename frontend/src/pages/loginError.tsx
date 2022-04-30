@@ -4,6 +4,7 @@ import LoginForm from "../components/loginForm";
 import { Card } from "react-bootstrap";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../utility/stringUtil";
 
 const LoginError: NextPage = () => {
     const { t } = useTranslation();
@@ -16,7 +17,7 @@ const LoginError: NextPage = () => {
             <main className="m-4">
                 <Card>
                     <Card.Body>
-                        <Card.Text>{t("errorMessages:invalid_credentials")}</Card.Text>
+                        <Card.Text>{capitalize(t("errorMessages:invalid_credentials"))}</Card.Text>
                     </Card.Body>
                 </Card>
                 <LoginForm submitHandler={loginSubmitHandler} />

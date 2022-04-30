@@ -26,18 +26,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<SkillType, Long, SkillTypeRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link SkillType} in the database.
      */
     @Autowired
     private SkillTypeRepository repository;
 
     /**
-     * First sample skillTypes that gets loaded before every test.
+     * First sample skillType that gets loaded before every test.
      */
     private final SkillType skillType1 = TestEntityProvider.getBaseSkillType1(this);
 
     /**
-     * The actual path skillPaths are served on, with '/' as prefix.
+     * The actual path skillTypes are served on, with '/' as prefix.
      */
     private static final String SKILLTYPES_PATH = "/" + DumbledorePathWizard.SKILLTYPE_PATH;
 

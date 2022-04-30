@@ -20,7 +20,7 @@ public final class AdminCommunicationTemplateEndpointTests extends
         AdminEndpointTest<CommunicationTemplate, Long, CommunicationTemplateRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database.
      */
     @Autowired
     private CommunicationTemplateRepository repository;

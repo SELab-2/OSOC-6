@@ -1,5 +1,8 @@
 package com.osoc6.OSOC6.database.models.student;
 
+import com.osoc6.OSOC6.exception.WebhookException;
+import lombok.Getter;
+
 /**
  * An enum listing the different kinds of genders a {@link Student} can have.
  */
@@ -7,46 +10,45 @@ public enum Gender {
     /**
      * identified gender as female.
      */
-    FEMALE {
-        @Override
-        public PronounsType getDefaultPronouns() {
-            return PronounsType.SHE;
-        }
-    },
+    FEMALE("Female"),
 
     /**
      * identified gender as male.
      */
-    MALE {
-        @Override
-        public PronounsType getDefaultPronouns() {
-            return PronounsType.HE;
-        }
-    },
+    MALE("Male"),
 
     /**
      * identified gender as transgender.
      */
-    TRANSGENDER {
-        @Override
-        public PronounsType getDefaultPronouns() {
-            return PronounsType.THEY;
-        }
-    },
+    TRANSGENDER("Transgender"),
 
     /**
      * Gender was not specified. If no pronouns are specified either, we will default to pronouns THEY/THEM/THEIRS.
      */
-     NOT_SPECIFIED {
-         @Override
-         public PronounsType getDefaultPronouns() {
-             return PronounsType.THEY;
-         }
-     };
+     NOT_SPECIFIED("Rather not say");
 
     /**
-     * IMPORTANT: should NEVER return PronounsType.None. An infinite loop will be triggered.
-     * @return default pronouns for a gender if pronouns are not specified.
+     * The gender as a string. Used to parse the data from the tally webhook.
      */
-    public abstract PronounsType getDefaultPronouns();
+    @Getter
+    private final String genderString;
+
+    Gender(final String newGenderString) {
+        genderString = newGenderString;
+    }
+
+    /**
+     * Parse a string into a Gender enum object.
+     * @param text the string to parse
+     * @return the corresponding Gender enum
+     * @throws WebhookException if no matching gender was found
+     */
+    public static Gender fromText(final String text) {
+        for (Gender gender : Gender.values()) {
+            if (gender.genderString.equalsIgnoreCase(text)) {
+                return gender;
+            }
+        }
+        throw new WebhookException(String.format("No gender matching '%s' found.", text));
+    }
 }
