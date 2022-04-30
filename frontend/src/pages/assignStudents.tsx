@@ -1,18 +1,11 @@
 import { NextPage } from "next";
-import { Modal, Col, Row, ModalTitle, ModalBody, ModalHeader, Badge } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import NavBar from "../components/navBar";
 import styles from "../styles/pageGrids.module.css";
 import { StudentList } from "../components/studentList";
 import ProjectAsignmentList from "../components/project_assignment/projectAssignmentList";
 import { useState } from "react";
-import { Field, Form, Formik } from "formik";
-import apiPaths from "../properties/apiPaths";
-import { IUser } from "../api/entities/UserEntity";
-import axios from "axios";
-import { AxiosConf } from "../api/calls/baseCalls";
-import { Assignment } from "../api/entities/AssignmentEntity";
-import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../utility/stringUtil";
+import AssignmentModal from "../components/project_assignment/assignmentModal";
 
 type SkillInfo = { skillName: string; skillColor: string; skillUrl: string };
 export type DropHandler = (
@@ -23,8 +16,6 @@ export type DropHandler = (
 ) => void;
 
 const AssignStudentsPage: NextPage = () => {
-    const { t } = useTranslation("common");
-
     const [showModal, setShowModal] = useState(false);
     const [modalInfo, setModalInfo] = useState<{
         studentName: string;
@@ -37,24 +28,6 @@ const AssignStudentsPage: NextPage = () => {
         setModalInfo({ studentName, studentUrl, skillInfo, projectName });
         setShowModal(true);
     }
-
-    async function dropStudent(values: { reason: string }) {
-        const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
-        if (modalInfo != undefined) {
-            const assignment: Assignment = new Assignment(
-                false,
-                true,
-                values.reason,
-                user._links.self.href,
-                modalInfo.studentUrl,
-                modalInfo.skillInfo.skillUrl
-            );
-            await axios.post(apiPaths.base + apiPaths.assignments, assignment, AxiosConf);
-        }
-        handleClose();
-    }
-
-    const handleClose = () => setShowModal(false);
 
     return (
         <>
@@ -92,41 +65,11 @@ const AssignStudentsPage: NextPage = () => {
                     </Col>
                 </Row>
             </div>
-
-            <Modal show={showModal} onHide={handleClose} centered>
-                <ModalHeader>
-                    <ModalTitle>{capitalize(t("assignment modal title"))}</ModalTitle>
-                </ModalHeader>
-                <ModalBody>
-                    {modalInfo != undefined ? (
-                        <p>
-                            You are suggesting {modalInfo.studentName} to project{" "}
-                            <i>{modalInfo.projectName}</i> for the role{" "}
-                            <Badge bg="" style={{ backgroundColor: modalInfo.skillInfo.skillColor }}>
-                                {modalInfo.skillInfo.skillName}
-                            </Badge>
-                            .
-                        </p>
-                    ) : (
-                        <p></p>
-                    )}
-                    <div>{capitalize(t("assignment reason"))}</div>
-                    <Formik initialValues={{ reason: "" }} onSubmit={dropStudent}>
-                        <Form>
-                            <Field
-                                className="form-control mb-2"
-                                type="text"
-                                data-testid="suggestion-reason"
-                                name="reason"
-                                required
-                            />
-                            <button className="btn btn-primary" type="submit" style={{ float: "right" }}>
-                                {capitalize(t("confirm assignment"))}
-                            </button>
-                        </Form>
-                    </Formik>
-                </ModalBody>
-            </Modal>
+            {modalInfo != undefined ? (
+                <AssignmentModal modalInfo={modalInfo} showModal={showModal} setter={setShowModal} />
+            ) : (
+                <p></p>
+            )}
         </>
     );
 };
