@@ -45,7 +45,7 @@ export default function RouteGuard({ children }: any) {
 
     useEffect(() => {
         // Check the authentication of the current path
-        const authException = pathIsAuthException(ww.asPath);
+        const authException = pathIsAuthException(router.asPath);
 
         if (!authException && userErrorMsg) {
             router
