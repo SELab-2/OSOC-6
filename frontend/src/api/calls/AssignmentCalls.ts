@@ -1,8 +1,9 @@
 import { AxiosConf, getAllEntitiesFromLinksUrl } from "./baseCalls";
-import { assignmentCollectionName, IAssignment } from "../entities/AssignmentEntity";
+import {Assignment, assignmentCollectionName, IAssignment} from "../entities/AssignmentEntity";
 import axios from "axios";
 import { IStudent } from "../entities/StudentEntity";
 import { IUser } from "../entities/UserEntity";
+import apiPaths from "../../properties/apiPaths";
 
 export type ProjectAssignments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
 
@@ -11,6 +12,25 @@ export type ProjectAssignments = { assignment: IAssignment; student: IStudent; a
  */
 export function getAllAssignmentsFormLinks(url: string): Promise<IAssignment[]> {
     return <Promise<IAssignment[]>>getAllEntitiesFromLinksUrl(url, assignmentCollectionName);
+}
+
+/**
+ * Adds one assignment with the current user as the assigner, validity is true and suggestion is false.
+ * @param studentUrl The url of the student you want to assign
+ * @param skillUrl The url of the skill you want to assign to the student
+ * @param reason The reason for the assignment
+ */
+export async function addAssignment(studentUrl:string, skillUrl:string, reason:string) {
+    const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
+    const assignment: Assignment = new Assignment(
+        false,
+        true,
+        reason,
+        user._links.self.href,
+        studentUrl,
+        skillUrl
+    );
+    await axios.post(apiPaths.base + apiPaths.assignments, assignment, AxiosConf);
 }
 
 /**

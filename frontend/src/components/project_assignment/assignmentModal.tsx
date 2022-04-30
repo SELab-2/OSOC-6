@@ -3,11 +3,7 @@ import { capitalize } from "../../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
 import { Dispatch, useState } from "react";
-import { IUser } from "../../api/entities/UserEntity";
-import axios from "axios";
-import apiPaths from "../../properties/apiPaths";
-import { AxiosConf } from "../../api/calls/baseCalls";
-import { Assignment } from "../../api/entities/AssignmentEntity";
+import {addAssignment} from "../../api/calls/AssignmentCalls";
 
 type SkillInfo = { skillName: string; skillColor: string; skillUrl: string };
 type ModalInfo = { studentName: string; studentUrl: string; skillInfo: SkillInfo; projectName: string };
@@ -20,18 +16,8 @@ function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; sett
         setShowModal(props.showModal);
     }
 
-    async function dropStudent(values: { reason: string }) {
-        const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
-        const assignment: Assignment = new Assignment(
-            false,
-            true,
-            values.reason,
-            user._links.self.href,
-            props.modalInfo.studentUrl,
-            props.modalInfo.skillInfo.skillUrl
-        );
-        await axios.post(apiPaths.base + apiPaths.assignments, assignment, AxiosConf);
-        handleClose();
+    function dropStudent(values: { studentUrl:string, skillUrl:string, reason: string }) {
+        addAssignment(values.studentUrl, values.skillUrl, values.reason).then(handleClose);
     }
 
     const handleClose = () => {
@@ -54,7 +40,7 @@ function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; sett
                     .
                 </p>
                 <div>{capitalize(t("assignment reason"))}</div>
-                <Formik initialValues={{ reason: "" }} onSubmit={dropStudent}>
+                <Formik initialValues={{ studentUrl:props.modalInfo.studentUrl, skillUrl:props.modalInfo.skillInfo.skillUrl, reason: "" }} onSubmit={dropStudent}>
                     <Form>
                         <Field
                             className="form-control mb-2"
