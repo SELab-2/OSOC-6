@@ -41,10 +41,8 @@ describe("student list", () => {
 
         await userEvent.click(studentElement);
 
-
         await waitFor(() => {
             expect(mockRouter.asPath).not.toBe(initPath);
         });
     });
 });
-

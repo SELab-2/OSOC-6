@@ -80,5 +80,5 @@ it("SubmitHandler for loginForm sends post request", async () => {
 
     await waitFor(() => {
         expect(mockRouter.pathname).toEqual("/" + applicationPaths.home);
-    })
+    });
 });

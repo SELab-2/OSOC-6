@@ -30,7 +30,7 @@ export const NavBar = () => {
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-assignstudents">
-                                <Nav.Link href={"/" + applicationPaths.assignStudents}>
+                                <Nav.Link href={withEditionQuery("/" + applicationPaths.assignStudents)}>
                                     {t("assign students")}
                                 </Nav.Link>
                             </Nav.Item>

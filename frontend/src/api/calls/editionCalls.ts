@@ -27,8 +27,9 @@ export function useCurrentEdition(): IEdition | undefined {
     return useEdition(queryParams.edition);
 }
 
-export function extractIdFromEditionUrl(url: string): number {
-    return 3;
+export function extractIdFromEditionUrl(url: string): string {
+    const split = url.split("/");
+    return split[split.length - 1];
 }
 
 export function withEditionQuery(url: string): string {

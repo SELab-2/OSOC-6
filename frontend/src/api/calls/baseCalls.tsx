@@ -79,6 +79,7 @@ export function useSwrWithEdition<T>(
 
 export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
     const data: IBaseEntity = (await axios.get(entityUrl, AxiosConf)).data;
+    // Needed so an error is thrown when type is wrong.
     data._links.self.href;
     return data;
 }
@@ -103,7 +104,7 @@ export async function getEntitiesWithCache(
 export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
     let urlConstructor = url.indexOf("?") === -1 ? url + "?" : url;
     for (const key in params) {
-        urlConstructor += key + "=" + encodeURIComponent(params[key]) + "&";
+        urlConstructor += key + "=" + params[key] + "&";
     }
     urlConstructor =
         urlConstructor[urlConstructor.length - 1] === "&"

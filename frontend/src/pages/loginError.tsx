@@ -24,7 +24,7 @@ const LoginError: NextPage = () => {
                         <Card.Text>{capitalize(t("errorMessages:invalid_credentials"))}</Card.Text>
                     </Card.Body>
                 </Card>
-                <LoginForm submitHandler={(event) => loginSubmitHandler(event, router, mutate)} />
+                <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
             </main>
         </div>
     );

@@ -16,7 +16,7 @@ jest.mock("next/router", () => require("next-router-mock"));
 
 beforeEach(() => {
     mockRouter.asPath = "/home";
-})
+});
 
 afterEach(() => {
     mockAxios.reset();
@@ -24,11 +24,13 @@ afterEach(() => {
 });
 
 describe("RouteGuard", () => {
-    render(makeCacheFree(() =>
-        (<RouteGuard>
-            <Home />
-        </RouteGuard>)
-    ));
+    render(
+        makeCacheFree(() => (
+            <RouteGuard>
+                <Home />
+            </RouteGuard>
+        ))
+    );
 
     const response: AxiosResponse = getBaseMovedResponse(ApiPaths.base + ApiPaths.loginRedirect);
     mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
