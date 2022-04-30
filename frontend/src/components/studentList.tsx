@@ -48,8 +48,12 @@ export const StudentList = (props: any) => {
                             }}
                             // Should be changed to individual student page later
                             onClick={() => {
-                                let studentPath: string = student._links.self.href.split(apiPaths.base)[1];
-                                Router.push(studentPath);
+                                if (!draggable) {
+                                    let studentPath: string = student._links.self.href.split(
+                                        apiPaths.base
+                                    )[1];
+                                    Router.push(studentPath);
+                                }
                             }}
                         >
                             <h6 className={styles.student_name}>{student.callName}</h6>
