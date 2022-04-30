@@ -4,11 +4,11 @@ import mockAxios from "jest-mock-axios";
 import { AxiosResponse } from "axios";
 import apiPaths from "../src/properties/apiPaths";
 import CreateProject from "../src/pages/projects/create";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import {
     createProjectSubmitHandler,
     ProjectCreationValues,
 } from "../src/handlers/createProjectSubmitHandler";
+import { getBaseOkResponse } from "./TestEntityProvider";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -44,19 +44,7 @@ it("SubmitHandler for createProject sends post request", async () => {
         skillInfos: [],
     };
 
-    const ownUserResponse: AxiosResponse = {
-        data: {
-            _links: {
-                self: {
-                    href: "/users/1",
-                },
-            },
-        },
-        status: StatusCodes.OK,
-        statusText: ReasonPhrases.OK,
-        headers: {},
-        config: {},
-    };
+    const ownUserResponse: AxiosResponse = getBaseOkResponse({ _links: { self: { href: "/users/1" } } });
 
     createProjectSubmitHandler(values);
     mockAxios.mockResponseFor({ url: apiPaths.ownUser }, ownUserResponse);

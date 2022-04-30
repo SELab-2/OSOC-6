@@ -15,7 +15,7 @@ import { IProject, projectCollectionName } from "../entities/ProjectEntity";
 /**
  * Fetches all SkillTypes on a given SkillTypePageUrl
  */
-export function getAllSkillTypesFormPage(url: string): Promise<ISkillType[]> {
+export function getAllSkillTypesFromPage(url: string): Promise<ISkillType[]> {
     return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
 }
 

@@ -61,8 +61,6 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
         )
     );
 
-    //await axios.put(projectResponse.data._links.coaches.href, values.coaches, ManyToManyAxiosConf);
-
     await Router.push(
         "/" + applicationPaths.projects + "/" + projectResponse.data._links.self.href.split("/").pop()
     );

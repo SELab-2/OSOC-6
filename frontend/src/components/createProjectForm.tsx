@@ -12,7 +12,7 @@ import {
     ProjectCreationValues,
 } from "../handlers/createProjectSubmitHandler";
 import { IUser } from "../api/entities/UserEntity";
-import { getAllSkillTypesFormPage } from "../api/calls/skillTypeCalls";
+import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
 import { ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
@@ -24,7 +24,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     let users: IUser[] = userResponse.data || [];
     let userError: Error = userResponse.error;
 
-    let skillTypeResponse = useSWR(apiPaths.skillTypes, getAllSkillTypesFormPage);
+    let skillTypeResponse = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
 
     let skillTypes: ISkillType[] = skillTypeResponse.data || [];
     let skillTypeError: Error = skillTypeResponse.error;
