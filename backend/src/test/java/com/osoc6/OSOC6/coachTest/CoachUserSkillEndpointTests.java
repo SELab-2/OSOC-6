@@ -27,13 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachUserSkillEndpointTests extends TestFunctionProvider<UserSkill, Long, UserSkillRepository> {
 
     /**
-     * The UserSkillRepository that saves, searches, ... in the database
+     * The UserSkillRepository that saves, searches, ... {@link UserSkill} in the database.
      */
     @Autowired
     private UserSkillRepository userSkillRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -54,7 +54,7 @@ public final class CoachUserSkillEndpointTests extends TestFunctionProvider<User
     private final UserSkill outsiderSkill = TestEntityProvider.getBaseOutsiderUserSkill(this);
 
     /**
-     * The actual path users are served on, with '/' as prefix.
+     * The actual path userSkills are served on, with '/' as prefix.
      */
     private static final String USER_SKILL_PATH = "/" + DumbledorePathWizard.USER_SKILL_PATH;
 

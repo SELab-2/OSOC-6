@@ -1,5 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
+import com.osoc6.OSOC6.database.models.Edition;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import org.springframework.stereotype.Repository;
@@ -30,7 +31,7 @@ public class PublicRepository {
     /**
      * This method finds the user with a given email address.
      * @param email email address of the searched user
-     * @return if there is an account for the given email, the user will be returned
+     * @return the user with the given email or Optional#empty if none found
      * @apiNote Since we are casting to Optional, we need to add the 'unchecked' suppress warnings annotation
      */
     @SuppressWarnings("unchecked")
@@ -39,6 +40,20 @@ public class PublicRepository {
         query.setParameter("email", email);
         List<?> results = query.getResultList();
         return (Optional<UserEntity>) results.stream().findFirst();
+    }
+
+    /**
+     * This method finds the edition with a given name.
+     * @param name name of the searched edition
+     * @return the edition with the given name or Optional#empty if none found
+     * @apiNote Since we are casting to Optional, we need to add the 'unchecked' suppress warnings annotation
+     */
+    @SuppressWarnings("unchecked")
+    public Optional<Edition> internalFindByName(final String name) {
+        Query query = entityManager.createQuery("select e from Edition e where e.name = :name");
+        query.setParameter("name", name);
+        List<?> results = query.getResultList();
+        return (Optional<Edition>) results.stream().findFirst();
     }
 
     /**
@@ -54,6 +69,17 @@ public class PublicRepository {
         query.setParameter("userRole", userRole);
         query.setParameter("enabled", enabled);
         return (Long) query.getSingleResult();
+    }
+
+    /**
+     * Update an existing entity in the database.
+     * @param entity the entity to update
+     * @apiNote The transactional annotation is needed because if the merge fails,
+     * it needs to be able to roll back the transaction.
+     */
+    @Transactional
+    public void internalUpdate(final Object entity) {
+        entityManager.merge(entity);
     }
 
     /**

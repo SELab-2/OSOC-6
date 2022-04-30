@@ -6,10 +6,7 @@ import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
-import {
-    ProjectCreationProps,
-    ProjectCreationValues,
-} from "../handlers/createProjectSubmitHandler";
+import { ProjectCreationProps, ProjectCreationValues } from "../handlers/createProjectSubmitHandler";
 import { IUser } from "../api/entities/UserEntity";
 import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
 import { ISkillType } from "../api/entities/SkillTypeEntity";

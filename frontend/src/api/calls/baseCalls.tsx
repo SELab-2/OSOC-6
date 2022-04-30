@@ -48,7 +48,7 @@ export async function getAllEntitiesFromPage(
             })
         ).data;
         entities.push(...page._embedded[collectionName]);
-        fetchedAll = currentPage + 1 === page.page.totalPages;
+        fetchedAll = currentPage + 1 >= page.page.totalPages;
         currentPage++;
     }
     return entities;
@@ -82,4 +82,33 @@ export async function getEntitiesWithCache(
         })
     );
     return urls.map((url) => cache[url]);
+}
+
+export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
+    let urlConstructor = url + "?";
+    for (const key in params) {
+        urlConstructor += key + "=" + params[key] + "&";
+    }
+    urlConstructor =
+        urlConstructor[urlConstructor.length - 1] === "&"
+            ? urlConstructor.substring(0, urlConstructor.length - 1)
+            : urlConstructor;
+    return urlConstructor;
+}
+
+export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
+    const urlQuery = url.split("?")[1];
+    let params = new Map();
+    for (const param of urlQuery.split("&")) {
+        const parameter: string[] = param.split("=");
+        params.set(parameter[0], parameter[1]);
+    }
+    return params;
+}
+
+export async function basePost(url: string, data: any, params: { [k: string]: any }) {
+    return await axios.post(url, data, {
+        params: params,
+        ...AxiosConf,
+    });
 }

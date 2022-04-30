@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminSkillTypeEndpointTests extends AdminEndpointTest<SkillType, Long, SkillTypeRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link SkillType} in the database.
      */
     @Autowired
     private SkillTypeRepository repository;

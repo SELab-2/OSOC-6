@@ -27,18 +27,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachStudentEndpointTests extends TestFunctionProvider<Student, Long, StudentRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * The actual path editions are served on, with '/' as prefix.
+     * The actual path students are served on, with '/' as prefix.
      */
     private static final String STUDENTS_PATH = "/" + DumbledorePathWizard.STUDENT_PATH;
 
     /**
-     * A test user to allowing us to write test easily.
+     * A test student to allowing us to write test easily.
      */
     private final Student testStudent = TestEntityProvider.getBaseStudentHe(this);
 
@@ -49,7 +49,7 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
     private static final String TEST_STRING = "Bananas are my signature dish";
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

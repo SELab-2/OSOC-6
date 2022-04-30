@@ -2,19 +2,17 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
 import NavBar from "../components/navBar";
-import { ProjectList } from "../components/projectList";
 
 const BeginPage: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div>
             <Head>
-                <title>Open Summer of Code : Login page</title>
+                <title className="capitalize">{t("tool name")}</title>
             </Head>
             <NavBar />
-            <ProjectList />
             <main className="m-4">
-                <h1>{t("Empty page")}</h1>
+                <h1 className="capitalize">{t("empty page")}</h1>
             </main>
         </div>
     );

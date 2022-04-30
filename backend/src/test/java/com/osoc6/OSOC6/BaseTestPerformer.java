@@ -6,7 +6,6 @@ import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.repository.InvitationRepository;
-import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
@@ -61,12 +60,6 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     private MockMvc mockMvc;
 
     /**
-     * The public repository, used to access the database without authorization.
-     */
-    @Autowired
-    private PublicRepository publicRepository;
-
-    /**
      * The edition repository which saves, searches, ... Editions in the database
      */
     @Autowired
@@ -91,7 +84,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     private final Edition baseActiveUserEdition = new Edition("Basic active test edition", 2022, true);
 
     /**
-     * The non-active test edition. Used so we test non-active edition
+     * The non-active test edition. Used so we test non-active edition interactions.
      */
     @Getter
     private final Edition baseNonActiveUserEdition = new Edition("Basic non-active test edition", 2021, false);
@@ -164,16 +157,16 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
             matchingEditionCoach);
 
     /**
-     * Load the needed edition, users and invitation.
+     * Load the needed editions, users and invitations.
      */
     public void setupBasicData() {
         editionRepository.save(baseActiveUserEdition);
         editionRepository.save(baseNonActiveUserEdition);
 
-        publicRepository.internalSave(adminUser);
-        publicRepository.internalSave(coachUser);
-        publicRepository.internalSave(outsiderCoach);
-        publicRepository.internalSave(matchingEditionCoach);
+        userRepository.save(adminUser);
+        userRepository.save(coachUser);
+        userRepository.save(outsiderCoach);
+        userRepository.save(matchingEditionCoach);
 
         invitationRepository.save(invitationActiveEditionForCoach);
         invitationRepository.save(invitationNonActiveEditionForCoach);
@@ -181,7 +174,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
-     * Remove the edition, users and invitation.
+     * Remove the editions, users and invitations.
      */
     public void removeBasicData() {
         invitationRepository.deleteAll();
@@ -253,7 +246,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     /**
      * Perform a POST request.
      *
-     * @param path   The path the entity is served on, with '/' as prefix
+     * @param path The path the entity is served on, with '/' as prefix
      * @param entity The entity we want to post
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
@@ -296,7 +289,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     /**
      * Perform a GET request that checks whether the entity is in the database.
      *
-     * @param path     the path the entity is served on, with '/' as prefix
+     * @param path the path the entity is served on, with '/' as prefix
      * @param check result matchers used to perform checks on the request
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
@@ -310,8 +303,8 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     /**
      * Perform a DELETE request.
      *
-     * @param path     the path the entity is served on, with '/' as prefix
-     * @param id       the id of the entity we want to remove
+     * @param path the path the entity is served on, with '/' as prefix
+     * @param id the id of the entity we want to remove
      * @return a result action that can be used for more checks
      * @throws Exception throws exception if the request or a check fails
      */
@@ -397,7 +390,7 @@ public abstract class BaseTestPerformer<T, I extends Serializable, R extends Jpa
     }
 
     /**
-     * Creates a resultMatcher that checks if a string is contained a maximum count.
+     * Creates a resultMatcher that checks if a string is contained a maximum of count times.
      *
      * @param str the string that should be contained a limited amount of times
      * @param maxCount the maximum amount of times the string can be contained. A count of maxCount is allowed

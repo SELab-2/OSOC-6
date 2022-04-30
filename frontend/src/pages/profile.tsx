@@ -9,9 +9,9 @@ import { capitalize } from "../utility/stringUtil";
 const Profile: NextPage = () => {
     const { t } = useTranslation("common");
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
-                <title>{capitalize(t("useroverview my profile"))}</title>
+                <title>{capitalize(t("user profile"))}</title>
             </Head>
             <main className={styles.main}>
                 <NavBar />

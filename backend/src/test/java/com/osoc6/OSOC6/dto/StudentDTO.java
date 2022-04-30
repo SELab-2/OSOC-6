@@ -7,7 +7,7 @@ import com.osoc6.OSOC6.database.models.Suggestion;
 import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
 import com.osoc6.OSOC6.database.models.student.Gender;
 import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.PronounsType;
+import com.osoc6.OSOC6.database.models.student.Status;
 import com.osoc6.OSOC6.database.models.student.Student;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
@@ -47,29 +47,15 @@ public final class StudentDTO {
     private Gender gender;
 
     /**
-     * The PronounsType of the student.
+     * The pronouns of the student.
      */
-    private PronounsType pronounsType;
+    private String pronouns;
 
     /**
      * The callName of the student.
      */
     private String callName;
 
-    /**
-     * The possessive pronoun used in case pronoun type == other.
-     */
-    private String possessivePronoun;
-
-    /**
-     * The subjective pronoun used in case pronoun type == other.
-     */
-    private String subjectivePronoun;
-
-    /**
-     * The objective pronoun used in case pronoun type == other.
-     */
-    private String objectivePronoun;
 
     /**
      * The most fluent language of a person. This is a formatted string.
@@ -85,6 +71,16 @@ public final class StudentDTO {
      * Formatted string checking the phone number of a student.
      */
     private String phoneNumber;
+
+    /**
+     * How the student would like to work for OSOC (employment agreement, volunteer, for free, ...).
+     */
+    private String workType;
+
+    /**
+     * Any responsibilities the student might have which could hinder them during the day.
+     */
+    private String daytimeResponsibilities;
 
     /**
      * A URI pointing to the CV of a student.
@@ -105,12 +101,6 @@ public final class StudentDTO {
      * A written motivation of the student.
      */
     private String writtenMotivation;
-
-    /**
-     * Highest level of education a student currently has.
-     * Represented as string instead of enum because only one choice can be provided and other is an option.
-     */
-    private String educationLevel;
 
     /**
      * Diploma a student is trying to get.
@@ -147,9 +137,19 @@ public final class StudentDTO {
     private OsocExperience osocExperience;
 
     /**
+     * The {@link Status} of a student, used to track which type of mail was last sent to them.
+     */
+    private Status status;
+
+    /**
      * Additional info that coaches or admins write about students.
      */
     private String additionalStudentInfo;
+
+    /**
+     * A fun fact about the student.
+     */
+    private String funFact;
 
     /**
      * {@link Edition} as URL in which this communication took place.
@@ -188,26 +188,26 @@ public final class StudentDTO {
         firstName = student.getFirstName();
         lastName = student.getLastName();
         gender = student.getGender();
-        pronounsType = student.getPronounsType();
+        pronouns = student.getPronouns();
         callName = student.getCallName();
-        possessivePronoun = student.getPossessivePronoun();
-        subjectivePronoun = student.getSubjectivePronoun();
-        objectivePronoun = student.getObjectivePronoun();
         mostFluentLanguage = student.getMostFluentLanguage();
         englishProficiency = student.getEnglishProficiency();
         phoneNumber = student.getPhoneNumber();
+        workType = student.getWorkType();
+        daytimeResponsibilities = student.getDaytimeResponsibilities();
         curriculumVitaeURI = student.getCurriculumVitaeURI();
         portfolioURI = student.getPortfolioURI();
         motivationURI = student.getMotivationURI();
         writtenMotivation = student.getWrittenMotivation();
-        educationLevel = student.getEducationLevel();
         currentDiploma = student.getCurrentDiploma();
         durationCurrentDegree = student.getDurationCurrentDegree();
         yearInCourse = student.getYearInCourse();
         institutionName = student.getInstitutionName();
         bestSkill = student.getBestSkill();
         osocExperience = student.getOsocExperience();
+        status = student.getStatus();
         additionalStudentInfo = student.getAdditionalStudentInfo();
+        funFact = student.getFunFact();
         studies = student.getStudies();
 
         edition = entityLinks.linkToItemResource(Edition.class, student.getEdition().getId().toString()).getHref();

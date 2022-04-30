@@ -1,4 +1,5 @@
 const applicationPaths = {
+    index: "",
     home: "home",
     projectCreation: "projects/create",
     users: "users",
@@ -7,7 +8,9 @@ const applicationPaths = {
     projects: "projects",
     students: "students",
     projectInfo: "projects/[id]",
+    registration: "registration",
     login: "login",
+    loginError: "loginError",
     changePassword: "changePassword",
     changeEmail: "changeEmail",
 };
