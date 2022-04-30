@@ -32,6 +32,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const { t } = useTranslation("common");
 
     const [coaches, setCoaches] = useState<string[] | []>([]);
+    const [hasPickedCoach, setHasPickedCoach] = useState<boolean>(false);
     const [selectedCoach, setSelectedCoach] = useState<string>("");
     const [skills, setSkills] = useState<string[] | []>([]);
     const [selectedSkill, setSelectedSkill] = useState<string>("");
@@ -58,10 +59,6 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         setSelectedSkill(e.target.value);
     }
 
-    function handleChangeCoach(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedCoach(e.target.value);
-    }
-
     function handleChangeSkillInfo(e: ChangeEvent<HTMLInputElement>) {
         setSkillInfo(e.target.value);
     }
@@ -85,12 +82,15 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         setSkillInfo("");
     }
 
-    function handleAddCoach() {
-        const newCoach = selectedCoach === "" ? users[0].callName : selectedCoach;
-        if (!(coaches as string[]).includes(newCoach)) {
-            const newCoaches: string[] = (coaches as string[]).concat(newCoach);
+    function handleAddCoach(e: ChangeEvent<HTMLInputElement>) {
+        setHasPickedCoach(true);
+
+        if (!(coaches as string[]).includes(e.target.value)) {
+            const newCoaches: string[] = (coaches as string[]).concat(e.target.value);
             setCoaches(newCoaches);
         }
+
+        setSelectedCoach(e.target.value);
     }
 
     function handleDeleteCoach(index: number) {
@@ -163,15 +163,15 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         data-testid="coach-input"
                         placeholder={capitalize(t("choose coach"))}
                         value={selectedCoach}
-                        onChange={handleChangeCoach}
+                        onChange={handleAddCoach}
                     >
+                        {!hasPickedCoach ? <option>{capitalize(t("choose coach"))}</option> : <></>}
                         {users.map((user) => (
                             <option
                                 key={user.callName}
                                 value={user.callName}
                                 label={user.callName}
                                 data-testid={"user-" + user.callName}
-                                onClick={handleAddCoach}
                             >
                                 {user.callName}
                             </option>

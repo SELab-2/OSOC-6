@@ -43,7 +43,7 @@ const common = {
     "project info placeholder": "project info",
     "choose version control URL": "github",
     "version control placeholder": "github link",
-    "choose coach": "coach",
+    "choose coach": "choose coaches",
     "choose partner name": "partner name",
     "partner name placeholder": "partner name",
     "choose partner website": "link to website",
