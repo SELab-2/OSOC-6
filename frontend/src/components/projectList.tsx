@@ -5,12 +5,12 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import { getAllProjectsFormPage } from "../api/calls/projectCalls";
-import useSWR from "swr";
+import { useSwrWithEdition } from "../api/calls/baseCalls";
 
 export function ProjectList() {
     const { t } = useTranslation("common");
 
-    let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
+    let { data, error } = useSwrWithEdition(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
 
     if (error) {

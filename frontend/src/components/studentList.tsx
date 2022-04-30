@@ -11,17 +11,15 @@ import {
 import useSWR from "swr";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
+import { useSwrWithEdition } from "../api/calls/baseCalls";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
-    let { data, error } = useSWR(
-        constructStudentQueryUrl(apiPaths.studentByQuery, {
-            ...params,
-            editionId: 3,
-        }),
+    let { data, error } = useSwrWithEdition(
+        constructStudentQueryUrl(apiPaths.studentByQuery, params),
         getAllStudentsFromPage
     );
     data = data || [];

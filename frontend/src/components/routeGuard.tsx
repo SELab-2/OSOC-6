@@ -8,7 +8,7 @@ export default function RouteGuard({ children }: any) {
     const [authorized, setAuthorized] = useState<boolean>(false);
     const { replace } = useRouter();
 
-    const { error } = useCurrentUser();
+    const { error } = useCurrentUser(true);
     const errorMsg = error?.name;
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export default function RouteGuard({ children }: any) {
             const pushed = replace({
                 pathname: applicationPaths.login,
                 query: { returnUrl: Router.asPath },
-            });
+            }).catch(console.log);
         }
         setAuthorized(authException || !errorMsg);
     }, [errorMsg]);

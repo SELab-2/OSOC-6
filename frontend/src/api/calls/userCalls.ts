@@ -26,8 +26,8 @@ export async function logoutUser() {
     await axios.get(apiPaths.base + apiPaths.logout, AxiosConf);
 }
 
-export function useCurrentUser(): { user?: IUser; error?: Error } {
-    const { data, error } = useSWR(apiPaths.ownUser, getOwnUser, { refreshInterval: 10 });
+export function useCurrentUser(shouldExec: boolean): { user?: IUser; error?: Error } {
+    const { data, error } = useSWR(shouldExec ? apiPaths.ownUser : null, getOwnUser, { refreshInterval: 10 });
     if (error) {
         // We perform a cast here since the EditionGuard resolves this problem.
         return { error: new Error("Not logged in") };
