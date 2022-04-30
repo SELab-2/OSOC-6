@@ -1,16 +1,17 @@
-import axios from "axios";
 import apiPaths from "../properties/apiPaths";
 import { basePost, getQueryUrlFromParams } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../properties/applicationPaths";
-import { getAllEditionsFromPage } from "../api/calls/editionCalls";
+import { getAllEditionsFromPage, withEditionQuery } from "../api/calls/editionCalls";
 import { getOwnUser, logoutUser } from "../api/calls/userCalls";
 
 export default function InvitationButton() {
+    const router = useRouter();
+
     async function onClick() {
         // Get the logged in user
         const user: IUser = await getOwnUser();
@@ -27,7 +28,7 @@ export default function InvitationButton() {
             invitationToken: postedInvitation.token,
         });
 
-        await Promise.all([logoutUser(), Router.push(url)]);
+        await Promise.all([logoutUser(), router.push(withEditionQuery(url))]);
     }
 
     return <Button onClick={onClick}>Create invitation for registration</Button>;

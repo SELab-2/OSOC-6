@@ -1,4 +1,4 @@
-import { getAllEntitiesFromPage, getEntityOnUrl, getQueryUrlFromParams } from "./baseCalls";
+import { getAllEntitiesFromPage, getQueryUrlFromParams } from "./baseCalls";
 import { editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
 import useSWR from "swr";
@@ -21,30 +21,16 @@ export function useEdition(editionName: string | undefined): IEdition | undefine
     return useSWR(editionName ? editionName : null, getEditionByName).data;
 }
 
-export function useCurrentEdition(shouldExec: boolean): IEdition | undefined {
+export function useCurrentEdition(): IEdition | undefined {
     const router = useRouter();
     const queryParams = router.query as { edition: string | undefined };
-    const chosenEdition = useEdition(queryParams.edition);
-
-    const { data, isValidating } = useSWR(
-        shouldExec && !chosenEdition ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" }) : null,
-        getAllEditionsFromPage
-    );
-    const newestEdition = data?.at(0);
-
-    if (shouldExec && !queryParams.edition && !isValidating) {
-        router
-            .replace({
-                query: {
-                    edition: newestEdition?.name,
-                },
-            })
-            .catch(console.log);
-    }
-
-    return chosenEdition || newestEdition;
+    return useEdition(queryParams.edition);
 }
 
 export function extractIdFromEditionUrl(url: string): number {
     return 3;
+}
+
+export function withEditionQuery(url: string): string {
+    return getQueryUrlFromParams(url, { edition: localStorage.getItem("edition") });
 }

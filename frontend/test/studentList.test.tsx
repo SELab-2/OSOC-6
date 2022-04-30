@@ -3,13 +3,12 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import Router from "next/router";
 import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { makeCacheFree } from "./Provide";
 import { getBaseOkResponse, getBasePage, getBaseStudent } from "./TestEntityProvider";
 import apiPaths from "../src/properties/apiPaths";
 import { studentCollectionName } from "../src/api/entities/StudentEntity";
+import { router } from "next/client";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -40,7 +39,7 @@ it("Render studentlist and click an item", async () => {
 
     await userEvent.click(studentElement);
 
-    waitFor(() => {
-        expect(Router.push).toHaveBeenCalled();
+    await waitFor(() => {
+        expect(router.push).toHaveBeenCalled();
     });
 });

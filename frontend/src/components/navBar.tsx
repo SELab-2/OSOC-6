@@ -2,6 +2,7 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../properties/applicationPaths";
+import { withEditionQuery } from "../api/calls/editionCalls";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
@@ -16,13 +17,17 @@ export const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className={"ms-auto"}>
                             <Nav.Item data-testid="navbar-students">
-                                <Nav.Link href={"/" + applicationPaths.students}>{t("students")}</Nav.Link>
+                                <Nav.Link href={withEditionQuery("/" + applicationPaths.students)}>
+                                    {t("students")}
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-users">
                                 <Nav.Link href={"/" + applicationPaths.users}>{t("users")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-projects">
-                                <Nav.Link href={"/" + applicationPaths.projects}>{t("projects")}</Nav.Link>
+                                <Nav.Link href={withEditionQuery("/" + applicationPaths.projects)}>
+                                    {t("projects")}
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-assignstudents">
                                 <Nav.Link href={"/" + applicationPaths.assignStudents}>

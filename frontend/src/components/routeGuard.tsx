@@ -1,45 +1,89 @@
 import applicationPaths from "../properties/applicationPaths";
 import { useCurrentUser } from "../api/calls/userCalls";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { pathIsAuthException } from "../utility/pathUtil";
-import { useCurrentEdition } from "../api/calls/editionCalls";
-import { IEdition } from "../api/entities/EditionEntity";
+import { getAllEditionsFromPage, useCurrentEdition } from "../api/calls/editionCalls";
+import useSWR from "swr";
+import { getQueryUrlFromParams } from "../api/calls/baseCalls";
+import apiPaths from "../properties/apiPaths";
 
 export default function RouteGuard({ children }: any) {
+    const router = useRouter();
+
     const [authorized, setAuthorized] = useState<boolean>(false);
-    const [edition, setEdition] = useState<IEdition | undefined>(undefined);
-    const { replace } = useRouter();
 
-    const { error } = useCurrentUser(true);
-    const errorMsg = error?.name;
+    const { error: userError } = useCurrentUser(true);
+    const userErrorMsg = userError?.message;
 
-    const curEdition = useCurrentEdition(!errorMsg);
+    const curEdition = useCurrentEdition();
     const curEditionName = curEdition?.name;
 
-    if (curEdition && edition?._links.self.href !== curEdition._links.self.href) {
-        setEdition(curEdition);
+    const { data: availableEditions } = useSWR(
+        !curEditionName ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" }) : null,
+        getAllEditionsFromPage
+    );
+    const latestEdition = availableEditions?.at(0);
+    const latestEditionName = latestEdition?.name;
+
+    let cachedEditionName: string | undefined;
+    try {
+        cachedEditionName = localStorage?.getItem("edition") || undefined;
+    } catch (e: any) {
+        // CachedEdition is not yet defined here
     }
+
+    if (curEdition && cachedEditionName !== curEditionName) {
+        console.log("edition is set");
+        localStorage.setItem("edition", curEdition.name);
+    }
+
+    // console.log(cachedEditionName);
+    // console.log(userErrorMsg)
+    // console.log(curEdition)
+    // console.log(latestEditionName)
 
     useEffect(() => {
         // Check the authentication of the current path
-        const authException = pathIsAuthException(Router.asPath);
+        const authException = pathIsAuthException(ww.asPath);
 
-        if (!authException && errorMsg) {
-            replace({
-                pathname: applicationPaths.login,
-                query: { returnUrl: Router.asPath },
-            }).catch(console.log);
+        if (!authException && userErrorMsg) {
+            router
+                .replace({
+                    pathname: applicationPaths.login,
+                    query: { returnUrl: router.asPath },
+                })
+                .catch(console.log);
         }
 
-        if (!curEdition && curEditionName) {
-            replace({
-                query: { edition: curEditionName },
-            }).catch(console.log);
+        if (cachedEditionName && !router.query.edition) {
+            router
+                .replace({
+                    query: { edition: cachedEditionName },
+                })
+                .catch(console.log);
         }
 
-        setAuthorized(authException || (!errorMsg && !!curEditionName));
-    }, [errorMsg, curEditionName]);
+        if (!cachedEditionName && !curEditionName && latestEditionName) {
+            router
+                .replace({
+                    query: {
+                        edition: latestEditionName,
+                    },
+                })
+                .catch(console.log);
+        }
+
+        setAuthorized(authException || (!userErrorMsg && !!curEditionName));
+    }, [router.asPath, userErrorMsg, curEditionName, cachedEditionName, latestEditionName]);
+
+    if (availableEditions && availableEditions.length === 0) {
+        if (router.pathname !== "/" + applicationPaths.home) {
+            return <div>No edition</div>;
+        } else {
+            return children;
+        }
+    }
 
     return authorized && children;
 }

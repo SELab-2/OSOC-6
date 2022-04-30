@@ -27,9 +27,8 @@ export async function logoutUser() {
 }
 
 export function useCurrentUser(shouldExec: boolean): { user?: IUser; error?: Error } {
-    const { data, error } = useSWR(shouldExec ? apiPaths.ownUser : null, getOwnUser, { refreshInterval: 10 });
+    const { data, error } = useSWR(shouldExec ? apiPaths.ownUser : null, getOwnUser);
     if (error) {
-        // We perform a cast here since the EditionGuard resolves this problem.
         return { error: new Error("Not logged in") };
     }
     return { user: data };

@@ -1,13 +1,15 @@
 import { ListGroup } from "react-bootstrap";
-import Router from "next/router";
 import styles from "../styles/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import { getAllProjectsFormPage } from "../api/calls/projectCalls";
 import { useSwrWithEdition } from "../api/calls/baseCalls";
+import { withEditionQuery } from "../api/calls/editionCalls";
+import { useRouter } from "next/router";
 
 export function ProjectList() {
+    const router = useRouter();
     const { t } = useTranslation("common");
 
     let { data, error } = useSwrWithEdition(apiPaths.projects, getAllProjectsFormPage);
@@ -37,7 +39,7 @@ export function ProjectList() {
                             as={"li"}
                             onClick={() => {
                                 let projectPath: string = projectId;
-                                Router.push("/" + projectPath);
+                                router.push(withEditionQuery("/" + projectPath)).catch(console.log);
                             }}
                         >
                             <h5 className="mb-1">{project.name}</h5>

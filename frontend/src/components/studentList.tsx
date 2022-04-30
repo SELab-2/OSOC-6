@@ -1,5 +1,5 @@
 import { ListGroup } from "react-bootstrap";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import styles from "../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
@@ -8,10 +8,10 @@ import {
     getAllStudentsFromPage,
     IStudentQueryParams,
 } from "../api/calls/studentCalls";
-import useSWR from "swr";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { useSwrWithEdition } from "../api/calls/baseCalls";
+import { withEditionQuery } from "../api/calls/editionCalls";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");
@@ -56,7 +56,7 @@ export const StudentList = () => {
                             // Should be changed to individual student page later
                             onClick={() => {
                                 let studentPath: string = student._links.self.href.split(apiPaths.base)[1];
-                                Router.push("/" + studentPath);
+                                router.push(withEditionQuery("/" + studentPath)).catch(console.log);
                             }}
                         >
                             <h6 className={styles.student_name}>{student.callName}</h6>

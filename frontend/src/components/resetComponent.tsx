@@ -1,19 +1,21 @@
-import { Form, FormControl, Container, Button, ToastContainer, Toast } from "react-bootstrap";
+import { Button, Container, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../styles/resetComponent.module.css";
 import { useState } from "react";
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../properties/timers";
 import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
+import { withEditionQuery } from "../api/calls/editionCalls";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
+    const router = useRouter();
     let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
     const [firstEntry, setFirstEntry] = useState<string>("");
     const [secondEntry, setSecondEntry] = useState<string>("");
@@ -45,7 +47,7 @@ export const ResetComponent = (props: any) => {
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    Router.push(applicationPaths.home);
+                    router.push(withEditionQuery("/" + applicationPaths.home));
                 }, timers.redirect);
             }
         }

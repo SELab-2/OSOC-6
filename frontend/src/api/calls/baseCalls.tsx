@@ -64,7 +64,8 @@ export function useSwrWithEdition<T>(
     fetcher: ((args_0: string) => FetcherResponse<T>) | null,
     config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
 ) {
-    const edition = useCurrentEdition(true);
+    const edition = useCurrentEdition();
+    console.log(edition);
     return useSWR(
         key
             ? getQueryUrlFromParams(key, {
@@ -77,7 +78,9 @@ export function useSwrWithEdition<T>(
 }
 
 export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
-    return (await axios.get(entityUrl, AxiosConf)).data;
+    const data: IBaseEntity = (await axios.get(entityUrl, AxiosConf)).data;
+    data._links.self.href;
+    return data;
 }
 
 export async function getEntitiesWithCache(
@@ -90,7 +93,7 @@ export async function getEntitiesWithCache(
         urls.map(async (url) => {
             if (!cache[url] && !fetched.has(url)) {
                 fetched.add(url);
-                cache[url] = await getEntityOnUrl(url);
+                cache[url] = (await getEntityOnUrl(url))!;
             }
         })
     );
