@@ -7,7 +7,6 @@ import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
 import {
-    createProjectSubmitHandler,
     ProjectCreationProps,
     ProjectCreationValues,
 } from "../handlers/createProjectSubmitHandler";
@@ -16,7 +15,6 @@ import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
 import { ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
-import { minify } from "next/dist/build/swc";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
     let userResponse = useSWR(apiPaths.users, getAllUsersFromPage);

@@ -9,8 +9,6 @@ import {
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
 import { AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage } from "./baseCalls";
-import { IUser, userCollectionName } from "../entities/UserEntity";
-import { IProject, projectCollectionName } from "../entities/ProjectEntity";
 
 /**
  * Fetches all SkillTypes on a given SkillTypePageUrl
