@@ -4,6 +4,9 @@ import axios, { AxiosRequestConfig } from "axios";
 import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
 import { extractIdFromEditionUrl, useCurrentEdition } from "./editionCalls";
 import useSWR from "swr";
+import { useRouter } from "next/router";
+import { Url } from "url";
+import useEdition from "../../hooks/useGlobalEdition";
 
 export const AxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,
@@ -75,6 +78,11 @@ export function useSwrWithEdition<T>(
         fetcher,
         config
     );
+}
+
+export function useEditionPathTransformer(): (url: string) => string {
+    const [edition, _] = useEdition();
+    return (url) => getQueryUrlFromParams(url, { edition });
 }
 
 export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {

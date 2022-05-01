@@ -11,11 +11,12 @@ import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../properties/timers";
 import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
-import { withEditionQuery } from "../api/calls/editionCalls";
+import { useEditionPathTransformer } from "../api/calls/baseCalls";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const transformer = useEditionPathTransformer();
     let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
     const [firstEntry, setFirstEntry] = useState<string>("");
     const [secondEntry, setSecondEntry] = useState<string>("");
@@ -47,7 +48,7 @@ export const ResetComponent = (props: any) => {
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(withEditionQuery("/" + applicationPaths.home));
+                    router.push(transformer("/" + applicationPaths.home));
                 }, timers.redirect);
             }
         }

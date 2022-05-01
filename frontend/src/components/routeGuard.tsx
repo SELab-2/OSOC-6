@@ -7,6 +7,7 @@ import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 import useSWR from "swr";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
 import apiPaths from "../properties/apiPaths";
+import useEdition from "../hooks/useGlobalEdition";
 
 export default function RouteGuard({ children }: any) {
     const router = useRouter();
@@ -16,12 +17,7 @@ export default function RouteGuard({ children }: any) {
     const { error: userError } = useCurrentUser(true);
     const userErrorMsg = userError?.message;
 
-    let cachedEditionName: string | undefined;
-    try {
-        cachedEditionName = localStorage.getItem("edition") || undefined;
-    } catch (e: any) {
-        // localStorage was not yet defined
-    }
+    const [cachedEditionName, setCachedEditionName] = useEdition();
 
     const routerPath = router.asPath;
     const curEditionName = (router.query as { edition?: string }).edition;
@@ -33,13 +29,13 @@ export default function RouteGuard({ children }: any) {
     const latestEdition = availableEditions?.at(0);
     const latestEditionName = latestEdition?.name;
 
-    if (curEditionName && cachedEditionName !== curEditionName) {
-        localStorage.setItem("edition", curEditionName);
-    }
-
     useEffect(() => {
         // Check the authentication of the current path
         const authException = pathIsAuthException(routerPath);
+
+        if (curEditionName && cachedEditionName !== curEditionName) {
+            setCachedEditionName(curEditionName);
+        }
 
         if (!authException && userErrorMsg) {
             Router.replace({
@@ -63,7 +59,14 @@ export default function RouteGuard({ children }: any) {
         }
 
         setAuthorized(authException || (!userErrorMsg && !!curEditionName));
-    }, [routerPath, userErrorMsg, curEditionName, cachedEditionName, latestEditionName]);
+    }, [
+        routerPath,
+        userErrorMsg,
+        curEditionName,
+        cachedEditionName,
+        latestEditionName,
+        setCachedEditionName,
+    ]);
 
     if (availableEditions && availableEditions.length === 0) {
         if (router.pathname !== "/" + applicationPaths.home) {

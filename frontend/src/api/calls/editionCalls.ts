@@ -31,7 +31,3 @@ export function extractIdFromEditionUrl(url: string): string {
     const split = url.split("/");
     return split[split.length - 1];
 }
-
-export function withEditionQuery(url: string): string {
-    return getQueryUrlFromParams(url, { edition: localStorage.getItem("edition") });
-}

@@ -1,16 +1,17 @@
 import apiPaths from "../properties/apiPaths";
-import { basePost, getQueryUrlFromParams } from "../api/calls/baseCalls";
+import { basePost, getQueryUrlFromParams, useEditionPathTransformer } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../properties/applicationPaths";
-import { getAllEditionsFromPage, withEditionQuery } from "../api/calls/editionCalls";
+import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 import { getOwnUser, logoutUser } from "../api/calls/userCalls";
 
 export default function InvitationButton() {
     const router = useRouter();
+    const transformer = useEditionPathTransformer();
 
     async function onClick() {
         // Get the logged in user
@@ -28,7 +29,7 @@ export default function InvitationButton() {
             invitationToken: postedInvitation.token,
         });
 
-        await Promise.all([logoutUser(), router.push(withEditionQuery(url))]);
+        await Promise.all([logoutUser(), router.push(transformer(url))]);
     }
 
     return <Button onClick={onClick}>Create invitation for registration</Button>;

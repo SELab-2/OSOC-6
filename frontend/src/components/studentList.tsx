@@ -10,12 +10,12 @@ import {
 } from "../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useSwrWithEdition } from "../api/calls/baseCalls";
-import { withEditionQuery } from "../api/calls/editionCalls";
+import { useEditionPathTransformer, useSwrWithEdition } from "../api/calls/baseCalls";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const transformer = useEditionPathTransformer();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
     let { data, error } = useSwrWithEdition(
@@ -56,7 +56,7 @@ export const StudentList = () => {
                             // Should be changed to individual student page later
                             onClick={() => {
                                 let studentPath: string = student._links.self.href.split(apiPaths.base)[1];
-                                router.push(withEditionQuery("/" + studentPath)).catch(console.log);
+                                router.push(transformer("/" + studentPath)).catch(console.log);
                             }}
                         >
                             <h6 className={styles.student_name}>{student.callName}</h6>

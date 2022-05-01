@@ -13,11 +13,12 @@ import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
-import { withEditionQuery } from "../api/calls/editionCalls";
+import { useEditionPathTransformer } from "../api/calls/baseCalls";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const transformer = useEditionPathTransformer();
     let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
     const { mutate } = useSWRConfig();
     const [editCallname, setEditCallname] = useState<boolean>(false);
@@ -52,7 +53,7 @@ export function ProfileOverview() {
         if (data) {
             const response: AxiosResponse = await userDeleteHandler(data._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {
-                await router.push(withEditionQuery(applicationPaths.login));
+                await router.push(transformer(applicationPaths.login));
             } else {
                 setShow(true);
             }

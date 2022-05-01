@@ -4,13 +4,13 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import { getAllProjectsFormPage } from "../api/calls/projectCalls";
-import { useSwrWithEdition } from "../api/calls/baseCalls";
-import { withEditionQuery } from "../api/calls/editionCalls";
+import { useEditionPathTransformer, useSwrWithEdition } from "../api/calls/baseCalls";
 import { useRouter } from "next/router";
 
 export function ProjectList() {
-    const router = useRouter();
     const { t } = useTranslation("common");
+    const router = useRouter();
+    const transformer = useEditionPathTransformer();
 
     let { data, error } = useSwrWithEdition(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
@@ -39,7 +39,7 @@ export function ProjectList() {
                             as={"li"}
                             onClick={() => {
                                 let projectPath: string = projectId;
-                                router.push(withEditionQuery("/" + projectPath)).catch(console.log);
+                                router.push(transformer("/" + projectPath)).catch(console.log);
                             }}
                         >
                             <h5 className="mb-1">{project.name}</h5>
