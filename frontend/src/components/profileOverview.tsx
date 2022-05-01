@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
-import { useEditionPathTransformer } from "../api/calls/baseCalls";
+import { useEditionPathTransformer } from "../hooks/utilHooks";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");

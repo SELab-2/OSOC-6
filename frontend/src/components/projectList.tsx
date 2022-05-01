@@ -4,7 +4,7 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import { getAllProjectsFormPage } from "../api/calls/projectCalls";
-import { useEditionPathTransformer, useSwrWithEdition } from "../api/calls/baseCalls";
+import { useEditionPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 import { useRouter } from "next/router";
 
 export function ProjectList() {

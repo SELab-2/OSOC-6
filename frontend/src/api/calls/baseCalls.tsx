@@ -1,12 +1,6 @@
 import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
 import axios, { AxiosRequestConfig } from "axios";
-import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
-import { extractIdFromEditionUrl, useCurrentEdition } from "./editionCalls";
-import useSWR from "swr";
-import { useRouter } from "next/router";
-import { Url } from "url";
-import useEdition from "../../hooks/useGlobalEdition";
 
 export const AxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,
@@ -62,29 +56,6 @@ export async function getAllEntitiesFromLinksUrl(
     return linksData._embedded[collectionName];
 }
 
-export function useSwrWithEdition<T>(
-    key: string | null,
-    fetcher: ((args_0: string) => FetcherResponse<T>) | null,
-    config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
-) {
-    const edition = useCurrentEdition();
-    console.log(edition);
-    return useSWR(
-        key
-            ? getQueryUrlFromParams(key, {
-                  edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
-              })
-            : null,
-        fetcher,
-        config
-    );
-}
-
-export function useEditionPathTransformer(): (url: string) => string {
-    const [edition, _] = useEdition();
-    return (url) => getQueryUrlFromParams(url, { edition });
-}
-
 export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
     const data: IBaseEntity = (await axios.get(entityUrl, AxiosConf)).data;
     // Needed so an error is thrown when type is wrong.
@@ -110,9 +81,11 @@ export async function getEntitiesWithCache(
 }
 
 export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
-    let urlConstructor = url.indexOf("?") === -1 ? url + "?" : url;
+    let urlConstructor = url.indexOf("?") === -1 ? url + "?" : url + "&";
     for (const key in params) {
-        urlConstructor += key + "=" + params[key] + "&";
+        if (params[key] !== undefined) {
+            urlConstructor += key + "=" + params[key] + "&";
+        }
     }
     urlConstructor =
         urlConstructor[urlConstructor.length - 1] === "&"

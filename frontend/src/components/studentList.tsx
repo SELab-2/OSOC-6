@@ -10,7 +10,7 @@ import {
 } from "../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useEditionPathTransformer, useSwrWithEdition } from "../api/calls/baseCalls";
+import { useEditionPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 
 export const StudentList = () => {
     const { t } = useTranslation("common");

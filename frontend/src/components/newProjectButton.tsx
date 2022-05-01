@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import applicationPaths from "../properties/applicationPaths";
 import styles from "../styles/projectList.module.css";
-import { useEditionPathTransformer } from "../api/calls/baseCalls";
+import { useEditionPathTransformer } from "../hooks/utilHooks";
 
 export const NewProjectButton = () => {
     const { t } = useTranslation("common");

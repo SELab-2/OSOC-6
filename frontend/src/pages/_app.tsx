@@ -4,18 +4,21 @@ import "bootstrap/dist/css/bootstrap.css";
 import RouteGuard from "../components/routeGuard";
 import { SWRConfig } from "swr";
 import { GlobalStateProvider } from "../context/globalContext";
+import RouteInjector from "../components/routeInjector";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <SWRConfig
             value={{
-                refreshInterval: 20,
+                refreshInterval: 5_000,
             }}
         >
             <GlobalStateProvider>
-                <RouteGuard>
-                    <Component {...pageProps} />
-                </RouteGuard>
+                <RouteInjector>
+                    <RouteGuard>
+                        <Component {...pageProps} />
+                    </RouteGuard>
+                </RouteInjector>
             </GlobalStateProvider>
         </SWRConfig>
     );

@@ -2,7 +2,7 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../properties/applicationPaths";
-import { useEditionPathTransformer } from "../api/calls/baseCalls";
+import { useEditionPathTransformer } from "../hooks/utilHooks";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
