@@ -9,11 +9,15 @@ import { IAssignment } from "../../src/api/entities/AssignmentEntity";
 import {
     EnglishProficiency,
     Gender,
+    IAllStudentInfo,
     IStudent,
     OsocExpericience,
     Status,
 } from "../../src/api/entities/StudentEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
+import apiPaths from "../src/properties/apiPaths";
+import {ISuggestion, SuggestionStrategy} from "../src/api/entities/SuggestionEntity";
+
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -206,8 +210,29 @@ export function getBaseActiveEdition(id: string, name: string): IEdition {
     };
 }
 
+export function getBaseSuggestion(): ISuggestion {
+    const baseUser = apiPaths.users + "/" + 0;
+    const baseStudent = apiPaths.students + "/" + 0;
+    const baseSuggestion = apiPaths.suggestions + "/" + 0;
+
+    return {
+        reason: "Some reason",
+        strategy: SuggestionStrategy.yes,
+        timestamp: "",
+        _links: {
+            coach: { href: baseUser },
+            student: { href: baseStudent },
+            suggestion: { href: baseSuggestion },
+            self: { href: baseSuggestion }
+        }
+    }
+}
+
 export function getBaseStudent(id: string): IStudent {
-    const baseAssignmentsPath = "http://localhost/api/assignments/" + id;
+    const baseAssignmentsPath = apiPaths.base + apiPaths.assignments + id;
+    const baseStudentPath = apiPaths.students + "/" + id;
+    const baseSuggestionsPath = baseStudentPath + "/" + apiPaths.suggestions;
+    const baseEditionsPath = baseStudentPath + "/" + apiPaths.editions;
     return {
         email: "kasper@mail.com",
         firstName: "Kasper",
@@ -240,10 +265,10 @@ export function getBaseStudent(id: string): IStudent {
         noSuggestionCount: 0,
         _links: {
             assignments: { href: baseAssignmentsPath },
-            suggestions: { href: baseAssignmentsPath },
-            edition: { href: baseAssignmentsPath },
-            student: { href: baseAssignmentsPath },
-            self: { href: baseAssignmentsPath },
+            suggestions: { href: baseSuggestionsPath },
+            edition: { href: baseEditionsPath },
+            student: { href: baseStudentPath },
+            self: { href: baseStudentPath },
         },
     };
 }

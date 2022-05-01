@@ -20,12 +20,6 @@ export function StudentInfo() {
         return null;
     }
 
-    let experiences = {
-        YES_NO_STUDENT_COACH: "student yes_noStudentCoach",
-        YES_STUDENT_COACH: "student yes_StudentCoach",
-        NONE: "student none",
-    }[data.student.osocExperience];
-
     return (
         <div>
             <div>
@@ -44,12 +38,12 @@ export function StudentInfo() {
                     </div>
                 </div>
                 <br />
-                <h2>{capitalize(t("student suggestions"))}</h2>
+                <h2>{capitalize(t("suggestions"))}</h2>
                 <ListGroup as="ul">
                     {data.suggestions
                         .map((suggestion) => ({
                             suggestion,
-                            suggestionId: suggestion.suggestion._links.self.href.split(apiPaths.base)[1],
+                            suggestionId: suggestion.suggestion._links.self.href,
                         }))
                         .map(({ suggestion, suggestionId }) => (
                             <ListGroup.Item key={suggestionId} as={"li"}>
@@ -61,48 +55,48 @@ export function StudentInfo() {
                 </ListGroup>
                 <br />
                 <h2>{capitalize(t("student about"))}</h2>
-                <a href={data.student.curriculumVitaeURI}>{capitalize(t("student cv"))}</a> <br />
-                <a href={data.student.portfolioURI}>{capitalize(t("student portfolio"))}</a> <br />
-                <a href={data.student.motivationURI}>{capitalize(t("student motivation"))}</a> <br />
+                <a href={data.student.curriculumVitaeURI}>{capitalize(t("cv"))}</a> <br />
+                <a href={data.student.portfolioURI}>{capitalize(t("portfolio"))}</a> <br />
+                <a href={data.student.motivationURI}>{capitalize(t("motivation"))}</a> <br />
                 <br />
-                <h2>{capitalize(t("student personal details"))}</h2>
+                <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("student gender"))}: {data.student.gender.toLowerCase()}{" "}
-                    {t("student pronouns")} {data.student.pronouns.toLowerCase()}
+                    {capitalize(t("gender"))}: {data.student.gender.toLowerCase()}{" "}
+                    {t("pronouns")} {data.student.pronouns.toLowerCase()}
                 </div>
                 <div>
-                    {capitalize(t("student native language"))}: {data.student.mostFluentLanguage}
+                    {capitalize(t("native language"))}: {data.student.mostFluentLanguage}
                 </div>
                 <div>
-                    {capitalize(t("student english proficiency"))}:{" "}
+                    {capitalize(t("english proficiency"))}:{" "}
                     {data.student.englishProficiency.toLowerCase()}
                 </div>
                 <div>
-                    {capitalize(t("student phone number"))}: {data.student.phoneNumber}
+                    {capitalize(t("phone number"))}: {data.student.phoneNumber}
                 </div>
                 <div>
-                    {capitalize(t("student email"))}: {data.student.email}
+                    {capitalize(t("email"))}: {data.student.email}
                 </div>
                 <br />
-                <h2>{capitalize(t("student education"))}</h2>
+                <h2>{capitalize(t("education"))}</h2>
                 <div>
-                    {capitalize(t("student studies"))}: {data.student.studies.join(", ")}
+                    {capitalize(t("studies"))}: {data.student.studies.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("student institution"))}: {data.student.institutionName}
+                    {capitalize(t("institution"))}: {data.student.institutionName}
                 </div>
                 <div>
-                    {capitalize(t("student current diploma"))}: {data.student.currentDiploma}
+                    {capitalize(t("current diploma"))}: {data.student.currentDiploma}
                 </div>
                 <div>
-                    {capitalize(t("student degree year"))}: {data.student.yearInCourse}{" "}
-                    {t("student degree duration")} {data.student.durationCurrentDegree}
+                    {capitalize(t("degree year"))}: {data.student.yearInCourse}{" "}
+                    {t("degree duration")} {data.student.durationCurrentDegree}
                 </div>
                 <div>
-                    {capitalize(t("student applied for"))}: {data.student.skills.join(", ")}
+                    {capitalize(t("applied for"))}: {data.student.skills.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("student osoc experience"))}: {t(experiences)}
+                    {capitalize(t("osoc experience"))}: {t(data.student.osocExperience)}
                 </div>
             </div>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "white" }}>
