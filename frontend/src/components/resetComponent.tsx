@@ -11,7 +11,7 @@ import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../properties/timers";
 import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
-import { useEditionPathTransformer } from "../api/calls/baseCalls";
+import { useEditionPathTransformer } from "../hooks/utilHooks";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");

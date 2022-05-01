@@ -1,5 +1,5 @@
 import apiPaths from "../properties/apiPaths";
-import { basePost, getQueryUrlFromParams, useEditionPathTransformer } from "../api/calls/baseCalls";
+import { basePost, getQueryUrlFromParams } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import applicationPaths from "../properties/applicationPaths";
 import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 import { getOwnUser, logoutUser } from "../api/calls/userCalls";
+import { useEditionPathTransformer } from "../hooks/utilHooks";
 
 export default function InvitationButton() {
     const router = useRouter();
