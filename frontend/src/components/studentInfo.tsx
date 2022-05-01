@@ -23,19 +23,16 @@ export function StudentInfo() {
     if (data.student.motivationURI == null) {
         motivation = (
             <>
-                <div>
-                    {data.student.writtenMotivation}
-                </div>
+                <div>{data.student.writtenMotivation}</div>
             </>
         );
     } else {
         motivation = (
             <>
-                <a href={data.student.motivationURI}>
-                    {capitalize(t("motivation"))}
-                </a>
-                <br/>
-            </>);
+                <a href={data.student.motivationURI}>{capitalize(t("motivation"))}</a>
+                <br />
+            </>
+        );
     }
 
     return (
@@ -48,9 +45,7 @@ export function StudentInfo() {
                     <div className="col-sm-6">
                         <ListGroup className="list-group-horizontal" as="ul">
                             {data.student.skills.map((skill) => (
-                                <ListGroupItem key={skill}>
-                                    {skill}
-                                </ListGroupItem>
+                                <ListGroupItem key={skill}>{skill}</ListGroupItem>
                             ))}
                         </ListGroup>
                     </div>
