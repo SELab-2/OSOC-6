@@ -10,6 +10,7 @@ import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
+import applicationPaths from "../../properties/applicationPaths";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
@@ -21,10 +22,25 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
     data = data || [];
 
     if (error) {
+        console.log("list");
         return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
     const projectList = data;
+
+    if (data.length == 0) {
+        return (
+            <div
+                className="d-flex justify-content-center align-items-center h-100"
+                data-testid="project-assignment-list"
+            >
+                <p>
+                    This edition has no projects, please create a project{" "}
+                    <a href={applicationPaths.projectCreation}>here</a>
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div data-testid="project-assignment-list">
@@ -32,7 +48,7 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
                 <Accordion defaultActiveKey={["0"]} alwaysOpen className={"overflow-auto"}>
                     {projectList.map((project, index) => {
                         return (
-                            <AccordionItem key={index} eventKey={`${index}`}>
+                            <AccordionItem key={index} eventKey={`${index}`} data-testid="project">
                                 <AccordionHeader className={"bg-secondary"}>
                                     <div>
                                         <h4>{project.name}</h4>

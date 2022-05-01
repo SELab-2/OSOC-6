@@ -3,7 +3,7 @@ import { capitalize } from "../../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
 import { Dispatch, useState } from "react";
-import {addAssignment} from "../../api/calls/AssignmentCalls";
+import { addAssignment } from "../../api/calls/AssignmentCalls";
 
 type SkillInfo = { skillName: string; skillColor: string; skillUrl: string };
 type ModalInfo = { studentName: string; studentUrl: string; skillInfo: SkillInfo; projectName: string };
@@ -16,7 +16,7 @@ function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; sett
         setShowModal(props.showModal);
     }
 
-    function dropStudent(values: { studentUrl:string, skillUrl:string, reason: string }) {
+    function dropStudent(values: { studentUrl: string; skillUrl: string; reason: string }) {
         addAssignment(values.studentUrl, values.skillUrl, values.reason).then(handleClose);
     }
 
@@ -40,7 +40,14 @@ function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; sett
                     .
                 </p>
                 <div>{capitalize(t("assignment reason"))}</div>
-                <Formik initialValues={{ studentUrl:props.modalInfo.studentUrl, skillUrl:props.modalInfo.skillInfo.skillUrl, reason: "" }} onSubmit={dropStudent}>
+                <Formik
+                    initialValues={{
+                        studentUrl: props.modalInfo.studentUrl,
+                        skillUrl: props.modalInfo.skillInfo.skillUrl,
+                        reason: "",
+                    }}
+                    onSubmit={dropStudent}
+                >
                     <Form>
                         <Field
                             className="form-control mb-2"

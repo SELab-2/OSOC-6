@@ -68,7 +68,7 @@ const AssignStudentsPage: NextPage = () => {
             {modalInfo != undefined ? (
                 <AssignmentModal modalInfo={modalInfo} showModal={showModal} setter={setShowModal} />
             ) : (
-                <p></p>
+                <></>
             )}
         </>
     );

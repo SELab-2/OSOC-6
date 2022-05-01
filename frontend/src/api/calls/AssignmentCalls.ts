@@ -1,5 +1,5 @@
 import { AxiosConf, getAllEntitiesFromLinksUrl } from "./baseCalls";
-import {Assignment, assignmentCollectionName, IAssignment} from "../entities/AssignmentEntity";
+import { Assignment, assignmentCollectionName, IAssignment } from "../entities/AssignmentEntity";
 import axios from "axios";
 import { IStudent } from "../entities/StudentEntity";
 import { IUser } from "../entities/UserEntity";
@@ -20,7 +20,7 @@ export function getAllAssignmentsFormLinks(url: string): Promise<IAssignment[]> 
  * @param skillUrl The url of the skill you want to assign to the student
  * @param reason The reason for the assignment
  */
-export async function addAssignment(studentUrl:string, skillUrl:string, reason:string) {
+export async function addAssignment(studentUrl: string, skillUrl: string, reason: string) {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
     const assignment: Assignment = new Assignment(
         false,
