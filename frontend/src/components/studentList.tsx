@@ -1,20 +1,35 @@
 import { ListGroup } from "react-bootstrap";
+import Router, { useRouter } from "next/router";
 import styles from "../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
-import { getAllStudentsFormLinks } from "../api/calls/studentCalls";
+import {
+    constructStudentQueryUrl,
+    getAllStudentsFromPage,
+    IStudentQueryParams,
+} from "../api/calls/studentCalls";
 import useSWR from "swr";
-import Router from "next/router";
 import { SuggestionCount } from "./suggestionCount";
+import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 
 export const StudentList = (props: any) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
-    let { data, error } = useSWR(apiPaths.students, getAllStudentsFormLinks);
+    const router = useRouter();
+    const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
+
+    let { data, error } = useSWR(
+        constructStudentQueryUrl(apiPaths.studentByQuery, {
+            ...params,
+            editionId: 3,
+        }),
+        getAllStudentsFromPage
+    );
     data = data || [];
 
     if (error) {
         console.log(error);
+        return null;
     }
 
     return (

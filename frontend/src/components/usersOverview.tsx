@@ -23,10 +23,10 @@ export function UsersOverview() {
             <h2>{capitalize(t("users manage"))}</h2>
             <Row>
                 <Col>
-                    <h6>{capitalize(t("users search name"))}</h6>
+                    <h6>{capitalize(t("search name"))}</h6>
                 </Col>
                 <Col>
-                    <h6>{capitalize(t("users email"))}</h6>
+                    <h6>{capitalize(t("email"))}</h6>
                 </Col>
                 <Col>
                     <h6>{capitalize(t("users status"))}</h6>

@@ -62,19 +62,19 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     private static final String TEST_STRING = "TEST REASON";
 
     /**
-     * The repository which saves, searches, ... a suggestion in the database
+     * The repository which saves, searches, ... {@link Suggestion} in the database.
      */
     @Autowired
     private SuggestionRepository repository;
 
     /**
-     * The repository which saves, searches, ... a student in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -141,7 +141,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     public void student_matching_query_over_suggest_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{suggestion1.getReason(),
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
@@ -153,7 +153,7 @@ public class AdminSuggestionEndpointTests extends AdminEndpointTest<Suggestion, 
     public void student_non_matching_query_over_suggest_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{"apple" + suggestion1.getReason() + "banana",
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())

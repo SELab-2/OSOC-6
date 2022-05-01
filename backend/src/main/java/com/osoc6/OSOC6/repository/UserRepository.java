@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * This is a simple class that defines a repository for {@link UserEntity}.
  * It exposes basic CRUD operations on the {@link UserEntity}.
- * It accepts requests and sends answers in a REST-full way.
+ * It accepts requests and sends answers in a RESTful way.
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
@@ -46,7 +46,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**
-     * Count how manny enabled user with the specified role there are.
+     * Count how many enabled user with the specified role there are.
      * This is needed for role patch safety.
      * @param userRole the role of the users to look for
      * @param enabled whether the user is enabled or not

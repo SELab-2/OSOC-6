@@ -62,12 +62,11 @@ Further setup is explained for
 
 ### Test
 
-[Front end](frontend/README.md#tests): 100%
-[Back end](backend/README.md#tests): 25%
+[Front end](frontend/README.md#tests): 68.42%
+[Back end](backend/README.md#tests): 100%
 
-The back end test coverage is lacking.
-We are working on the implementation of the back end REST endpoints.
-Test coverage can and will be bumped once these are implemented.
+Backend test coverage is 100% and should be kept that way.
+Our frontend test coverage is not very high since we are prioritizing the implementation of all components first.
 
 ## Team
 

@@ -33,19 +33,19 @@ public final class CoachCommunicationEndpointTests
 
 
     /**
-     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database
+     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database.
      */
     @Autowired
     private CommunicationTemplateRepository communicationTemplateRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Communication} in the database
+     * The repository which saves, searches, ... {@link Communication} in the database.
      */
     @Autowired
     private CommunicationRepository communicationRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Student} in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;

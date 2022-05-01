@@ -15,7 +15,7 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class ValidationExceptionAdvice {
     /**
-     * Handle advise given when a constraint is broken.
+     * Handle advice given when a constraint is broken.
      * @param ex the {@link ConstraintViolationException} triggering this advice
      * @return a description of what went wrong.
      */
@@ -27,7 +27,7 @@ public class ValidationExceptionAdvice {
     }
 
     /**
-     * Handle advise given when id's are overwritten.
+     * Handle advice given when id's are overwritten.
      * @param ex the {@link HibernateException} triggering this advice
      * @return a description of what went wrong.
      */

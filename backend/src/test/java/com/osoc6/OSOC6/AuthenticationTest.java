@@ -37,13 +37,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, InvitationRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The invitation repository which saves, searches, ... Invitations in the database
      */
     @Autowired
     private InvitationRepository invitationRepository;
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The user repository which saves, searches, ... UserEntities in the database
      */
     @Autowired
     private UserRepository userRepository;
