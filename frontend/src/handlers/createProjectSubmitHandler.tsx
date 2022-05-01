@@ -1,7 +1,13 @@
 import apiPaths from "../properties/apiPaths";
 import Router from "next/router";
 import axios from "axios";
-import { AxiosConf, AxiosFormConfig, ManyToManyAxiosConf } from "../api/calls/baseCalls";
+import {
+    AxiosConf,
+    AxiosFormConfig,
+    getEntityFromFullUrl,
+    getIdFromUrl,
+    ManyToManyAxiosConf,
+} from "../api/calls/baseCalls";
 import { Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
@@ -31,11 +37,11 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
         values.partnerName,
         values.partnerWebsite,
         "/editions/3",
-        "/" + ownUser.data._links.self.href.split(apiPaths.base)[1]
+        getEntityFromFullUrl(ownUser.data._links.self.href)
     );
 
     const projectResponse = await axios.post(apiPaths.projects, project, AxiosConf);
-    const projectURI: string = "/" + projectResponse.data._links.self.href.split(apiPaths.base)[1];
+    const projectURI: string = getEntityFromFullUrl(projectResponse.data._links.self.href);
 
     let projectSkills: ProjectSkill[] = [];
 
@@ -62,6 +68,6 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
     );
 
     await Router.push(
-        "/" + applicationPaths.projects + "/" + projectResponse.data._links.self.href.split("/").pop()
+        "/" + applicationPaths.projects + "/" + getIdFromUrl(projectResponse.data._links.self.href)
     );
 }

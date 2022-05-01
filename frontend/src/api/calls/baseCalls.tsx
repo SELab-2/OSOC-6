@@ -67,6 +67,14 @@ export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity> {
     return (await axios.get(entityUrl, AxiosConf)).data;
 }
 
+export function getEntityFromFullUrl(fullUrl: string): string {
+    return "/" + fullUrl.split(apiPaths.base)[1];
+}
+
+export function getIdFromUrl(entityUrl: string): string {
+    return entityUrl.split("/").pop() as string;
+}
+
 export async function getEntitiesWithCache(
     urls: string[],
     cache: { [url: string]: IBaseEntity }

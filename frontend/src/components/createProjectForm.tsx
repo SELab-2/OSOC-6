@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
-import { Badge, Col, Row } from "react-bootstrap";
+import {Badge, Col, FormSelect, Row} from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
-import { Field, Form, Formik } from "formik";
+import {Field, Form, Formik, useFormik} from "formik";
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
@@ -9,7 +9,7 @@ import { capitalize } from "../utility/stringUtil";
 import { ProjectCreationProps, ProjectCreationValues } from "../handlers/createProjectSubmitHandler";
 import { IUser } from "../api/entities/UserEntity";
 import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
-import { ISkillType } from "../api/entities/SkillTypeEntity";
+import { getSkillColorMap, ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
@@ -26,12 +26,11 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
 
     const { t } = useTranslation("common");
 
-    const [coaches, setCoaches] = useState<string[] | []>([]);
-    const [hasPickedCoach, setHasPickedCoach] = useState<boolean>(false);
+    const [coaches, setCoaches] = useState<string[]>([]);
     const [selectedCoach, setSelectedCoach] = useState<string>("");
-    const [skills, setSkills] = useState<string[] | []>([]);
+    const [skills, setSkills] = useState<string[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<string>("");
-    const [skillInfos, setSkillInfos] = useState<string[] | []>([]);
+    const [skillInfos, setSkillInfos] = useState<string[]>([]);
     const [skillInfo, setSkillInfo] = useState<string>("");
 
     if (userError) {
@@ -44,18 +43,52 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         return null;
     }
 
-    let skillColorMap = new Map<string, string>();
+    const skillColorMap = getSkillColorMap(skillTypes);
 
-    for (let skillType of skillTypes) {
-        skillColorMap.set(skillType.name, skillType.colour);
+    function handleChangeCoach(e: ChangeEvent<HTMLInputElement>) {
+        setSelectedCoach(e.target.value)
     }
 
-    function handleChangeSkill(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedSkill(e.target.value);
+    function handleChangeSkill(event: ChangeEvent<HTMLInputElement>) {
+        setSelectedSkill(event.target.value);
     }
 
-    function handleChangeSkillInfo(e: ChangeEvent<HTMLInputElement>) {
-        setSkillInfo(e.target.value);
+    function handleChangeSkillInfo(event: ChangeEvent<HTMLInputElement>) {
+        setSkillInfo(event.target.value);
+    }
+
+    function handleAddSkill() {
+        if (!selectedSkill) {
+            setSelectedSkill(skillTypes[0].name)
+        }
+
+        const newSkill: string = !selectedSkill ? skillTypes[0].name : selectedSkill;
+        const newSkills: string[] = skills.concat(newSkill);
+
+        const newSkillInfo: string = !skillInfo ? capitalize(t("empty skill info")) : skillInfo;
+        const newSkillInfos: string[] = skillInfos.concat(newSkillInfo);
+
+        setSkills(newSkills);
+        setSkillInfos(newSkillInfos);
+        setSkillInfo("");
+    }
+
+    function handleAddCoach() {
+        const newCoach = selectedCoach ? selectedCoach : users[0].callName
+
+        if (!selectedCoach) {
+            setSelectedCoach(newCoach)
+        }
+
+        if (!coaches.includes(newCoach)) {
+            const newCoaches: string[] = coaches.concat(newCoach);
+            setCoaches(newCoaches);
+        }
+    }
+
+    function handleDeleteCoach(index: number) {
+        delete coaches[index];
+        setCoaches(coaches.filter((value) => value !== undefined));
     }
 
     function handleDeleteSkill(index: number) {
@@ -65,34 +98,6 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         setSkillInfos(skillInfos.filter((value) => value !== undefined));
     }
 
-    function handleAddSkill() {
-        const newSkill = selectedSkill === "" ? skillTypes[0].name : selectedSkill;
-        const newSkills: string[] = (skills as string[]).concat(newSkill);
-
-        let newSkillInfo = skillInfo === "" ? capitalize(t("empty skill info")) : skillInfo;
-        const newSkillInfos = (skillInfos as string[]).concat(newSkillInfo);
-
-        setSkills(newSkills);
-        setSkillInfos(newSkillInfos);
-        setSkillInfo("");
-    }
-
-    function handleAddCoach(e: ChangeEvent<HTMLInputElement>) {
-        setHasPickedCoach(true);
-
-        if (!(coaches as string[]).includes(e.target.value)) {
-            const newCoaches: string[] = (coaches as string[]).concat(e.target.value);
-            setCoaches(newCoaches);
-        }
-
-        setSelectedCoach(e.target.value);
-    }
-
-    function handleDeleteCoach(index: number) {
-        delete coaches[index];
-        setCoaches(coaches.filter((value) => value !== undefined));
-    }
-
     async function handleSubmit(values: ProjectCreationValues) {
         values.skills = skills;
         values.skillInfos = skillInfos;
@@ -100,9 +105,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         const coachURLs: string[] = [];
         for (let coach of coaches) {
             coachURLs.push(
-                // @ts-ignore
                 // We know there will always be a user with this callname
-                users.find((item) => item.callName === coach)._links.self.href
+                users.find((item) => item.callName === coach)!._links.self.href
             );
         }
 
@@ -110,8 +114,13 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         props.submitHandler(values);
     }
 
+    function initialize() {
+        setSelectedCoach(users[0].callName)
+        setSelectedSkill(skillTypes[0].name)
+    }
+
     return (
-        <div className={styles.create_project_box} data-testid="create-project-form">
+        <div className={styles.create_project_box} data-testid="create-project-form" onLoad={initialize}>
             <Formik
                 initialValues={{
                     projectName: "",
@@ -126,7 +135,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                 onSubmit={handleSubmit}
             >
                 <Form>
-                    <h2>Create new project</h2>
+                    <h2>{capitalize(t("create project"))}</h2>
                     <Field
                         className="form-control mb-2"
                         label={capitalize(t("choose project name"))}
@@ -150,28 +159,6 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         placeholder={capitalize(t("version control placeholder"))}
                         required
                     />
-                    <Field
-                        className="form-control mb-2"
-                        label={capitalize(t("choose coach"))}
-                        as="select"
-                        name="coach"
-                        data-testid="coach-input"
-                        placeholder={capitalize(t("choose coach"))}
-                        value={selectedCoach}
-                        onChange={handleAddCoach}
-                    >
-                        {!hasPickedCoach ? <option>{capitalize(t("choose coach"))}</option> : <></>}
-                        {users.map((user) => (
-                            <option
-                                key={user.callName}
-                                value={user.callName}
-                                label={user.callName}
-                                data-testid={"user-" + user.callName}
-                            >
-                                {user.callName}
-                            </option>
-                        ))}
-                    </Field>
                     {coaches.map((coach: string, index: number) => (
                         <Row key={index}>
                             <Col>{coach}</Col>
@@ -190,6 +177,35 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     ))}
                     <Field
                         className="form-control mb-2"
+                        label={capitalize(t("choose coach"))}
+                        as="select"
+                        name="coach"
+                        data-testid="coach-input"
+                        placeholder={capitalize(t("choose coach"))}
+                        value={selectedCoach}
+                        onChange={handleChangeCoach}
+                    >
+                        {users.map((user) => (
+                            <option
+                                key={user.callName}
+                                value={user.callName}
+                                label={user.callName}
+                                data-testid={"user-" + user.callName}
+                            >
+                                {user.callName}
+                            </option>
+                        ))}
+                    </Field>
+                    <button
+                        className="btn btn-secondary"
+                        type="button"
+                        onClick={handleAddCoach}
+                        data-testid="add-coach-button"
+                    >
+                        {capitalize(t("add coach"))}
+                    </button>
+                    <Field
+                        className="form-control mb-2"
                         label={capitalize(t("choose partner name"))}
                         name="partnerName"
                         data-testid="partnername-input"
@@ -204,7 +220,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         placeholder={capitalize(t("partner website placeholder"))}
                         required
                     />
-                    {skillInfos.length !== 0 ? <h5>{capitalize(t("project expertise"))}</h5> : <h5 />}
+                    {skillInfos.length ? <h5>{capitalize(t("project expertise"))}</h5> : <h5 />}
                     {skillInfos.map((skillInfo: string, index: number) => (
                         <Row key={index}>
                             <Col>

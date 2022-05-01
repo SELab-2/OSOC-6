@@ -16,40 +16,50 @@ afterEach(() => {
     mockAxios.reset();
 });
 
-describe("CreateProjectForm initialization", () => {
-    it("Should call axios.get() upon rendering", () => {
-        render(<CreateProject />);
-        expect(mockAxios.get).toHaveBeenCalled();
+describe("Create project form", () => {
+    describe("CreateProjectForm initialization", () => {
+        it("Should call axios.get() upon rendering", () => {
+            render(<CreateProject />);
+            expect(mockAxios.get).toHaveBeenCalled();
 
-        expect(screen.getByTestId("projectname-input")).toBeInTheDocument();
-        expect(screen.getByTestId("projectinfo-input")).toBeInTheDocument();
-        expect(screen.getByTestId("versionmanagement-input")).toBeInTheDocument();
-        expect(screen.getByTestId("partnername-input")).toBeInTheDocument();
-        expect(screen.getByTestId("partnerwebsite-input")).toBeInTheDocument();
-        expect(screen.getByTestId("skillinfo-input")).toBeInTheDocument();
-        expect(screen.getByTestId("coach-input")).toBeInTheDocument();
-        expect(screen.getByTestId("skill-input")).toBeInTheDocument();
+            expect(screen.getByTestId("projectname-input")).toBeInTheDocument();
+            expect(screen.getByTestId("projectinfo-input")).toBeInTheDocument();
+            expect(screen.getByTestId("versionmanagement-input")).toBeInTheDocument();
+            expect(screen.getByTestId("partnername-input")).toBeInTheDocument();
+            expect(screen.getByTestId("partnerwebsite-input")).toBeInTheDocument();
+            expect(screen.getByTestId("skillinfo-input")).toBeInTheDocument();
+            expect(screen.getByTestId("coach-input")).toBeInTheDocument();
+            expect(screen.getByTestId("skill-input")).toBeInTheDocument();
+        });
     });
-});
 
-it("SubmitHandler for createProject sends post request", async () => {
-    const values: ProjectCreationValues = {
-        projectName: "Test project",
-        projectInfo: "This is a test project",
-        versionManagement: "https://github.com/Test",
-        partnerName: "Test company",
-        partnerWebsite: "testcompany.com",
-        coaches: [],
-        skills: [],
-        skillInfos: [],
-    };
+    describe("Submit the form", () => {
+        it("SubmitHandler for createProject sends post request", async () => {
+            const values: ProjectCreationValues = {
+                projectName: "Test project",
+                projectInfo: "This is a test project",
+                versionManagement: "http://www.example.com/",
+                partnerName: "Test company",
+                partnerWebsite: "testcompany.com",
+                coaches: [],
+                skills: [],
+                skillInfos: [],
+            };
 
-    const ownUserResponse: AxiosResponse = getBaseOkResponse({ _links: { self: { href: "/users/1" } } });
+            const ownUserResponse: AxiosResponse = getBaseOkResponse({
+                _links: { self: { href: "/users/1" } },
+            });
 
-    createProjectSubmitHandler(values);
-    mockAxios.mockResponseFor({ url: apiPaths.ownUser }, ownUserResponse);
+            createProjectSubmitHandler(values);
+            mockAxios.mockResponseFor({ url: apiPaths.ownUser }, ownUserResponse);
 
-    waitFor(() => {
-        expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.projects, expect.anything(), expect.anything());
+            await waitFor(() => {
+                expect(mockAxios.post).toHaveBeenCalledWith(
+                    apiPaths.projects,
+                    expect.anything(),
+                    expect.anything()
+                );
+            });
+        });
     });
 });
