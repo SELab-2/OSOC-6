@@ -5,7 +5,6 @@ import useSWR from "swr";
 import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
-import styles from "../styles/studentList.module.css";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { CustomDialogContent } from "./suggestionModal";
 
@@ -20,6 +19,25 @@ export function StudentInfo() {
         return null;
     }
 
+    let motivation;
+    if (data.student.motivationURI == null) {
+        motivation = (
+            <>
+                <div>
+                    {data.student.writtenMotivation}
+                </div>
+            </>
+        );
+    } else {
+        motivation = (
+            <>
+                <a href={data.student.motivationURI}>
+                    {capitalize(t("motivation"))}
+                </a>
+                <br/>
+            </>);
+    }
+
     return (
         <div>
             <div>
@@ -30,8 +48,8 @@ export function StudentInfo() {
                     <div className="col-sm-6">
                         <ListGroup className="list-group-horizontal" as="ul">
                             {data.student.skills.map((skill) => (
-                                <ListGroupItem key={skill} className={styles.skillStyle}>
-                                    <p>{skill}</p>
+                                <ListGroupItem key={skill}>
+                                    {skill}
                                 </ListGroupItem>
                             ))}
                         </ListGroup>
@@ -57,7 +75,7 @@ export function StudentInfo() {
                 <h2>{capitalize(t("student about"))}</h2>
                 <a href={data.student.curriculumVitaeURI}>{capitalize(t("cv"))}</a> <br />
                 <a href={data.student.portfolioURI}>{capitalize(t("portfolio"))}</a> <br />
-                <a href={data.student.motivationURI}>{capitalize(t("motivation"))}</a> <br />
+                {motivation}
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
