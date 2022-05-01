@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
-import {Badge, Col, FormSelect, Row} from "react-bootstrap";
+import { Badge, Col, FormSelect, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
-import {Field, Form, Formik, useFormik} from "formik";
+import { Field, Form, Formik, useFormik } from "formik";
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
@@ -46,7 +46,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const skillColorMap = getSkillColorMap(skillTypes);
 
     function handleChangeCoach(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedCoach(e.target.value)
+        setSelectedCoach(e.target.value);
     }
 
     function handleChangeSkill(event: ChangeEvent<HTMLInputElement>) {
@@ -59,7 +59,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
 
     function handleAddSkill() {
         if (!selectedSkill) {
-            setSelectedSkill(skillTypes[0].name)
+            setSelectedSkill(skillTypes[0].name);
         }
 
         const newSkill: string = !selectedSkill ? skillTypes[0].name : selectedSkill;
@@ -74,10 +74,10 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     function handleAddCoach() {
-        const newCoach = selectedCoach ? selectedCoach : users[0].callName
+        const newCoach = selectedCoach ? selectedCoach : users[0].callName;
 
         if (!selectedCoach) {
-            setSelectedCoach(newCoach)
+            setSelectedCoach(newCoach);
         }
 
         if (!coaches.includes(newCoach)) {
@@ -115,8 +115,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     function initialize() {
-        setSelectedCoach(users[0].callName)
-        setSelectedSkill(skillTypes[0].name)
+        setSelectedCoach(users[0].callName);
+        setSelectedSkill(skillTypes[0].name);
     }
 
     return (
