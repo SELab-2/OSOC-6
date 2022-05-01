@@ -61,15 +61,14 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {data.student.gender.toLowerCase()}{" "}
-                    {t("pronouns")} {data.student.pronouns.toLowerCase()}
+                    {capitalize(t("gender"))}: {data.student.gender.toLowerCase()} {t("pronouns")}{" "}
+                    {data.student.pronouns.toLowerCase()}
                 </div>
                 <div>
                     {capitalize(t("native language"))}: {data.student.mostFluentLanguage}
                 </div>
                 <div>
-                    {capitalize(t("english proficiency"))}:{" "}
-                    {data.student.englishProficiency.toLowerCase()}
+                    {capitalize(t("english proficiency"))}: {data.student.englishProficiency.toLowerCase()}
                 </div>
                 <div>
                     {capitalize(t("phone number"))}: {data.student.phoneNumber}
@@ -89,8 +88,8 @@ export function StudentInfo() {
                     {capitalize(t("current diploma"))}: {data.student.currentDiploma}
                 </div>
                 <div>
-                    {capitalize(t("degree year"))}: {data.student.yearInCourse}{" "}
-                    {t("degree duration")} {data.student.durationCurrentDegree}
+                    {capitalize(t("degree year"))}: {data.student.yearInCourse} {t("degree duration")}{" "}
+                    {data.student.durationCurrentDegree}
                 </div>
                 <div>
                     {capitalize(t("applied for"))}: {data.student.skills.join(", ")}

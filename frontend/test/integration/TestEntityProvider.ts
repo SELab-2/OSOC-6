@@ -16,8 +16,7 @@ import {
 } from "../../src/api/entities/StudentEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import apiPaths from "../src/properties/apiPaths";
-import {ISuggestion, SuggestionStrategy} from "../src/api/entities/SuggestionEntity";
-
+import { ISuggestion, SuggestionStrategy } from "../src/api/entities/SuggestionEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -223,9 +222,9 @@ export function getBaseSuggestion(): ISuggestion {
             coach: { href: baseUser },
             student: { href: baseStudent },
             suggestion: { href: baseSuggestion },
-            self: { href: baseSuggestion }
-        }
-    }
+            self: { href: baseSuggestion },
+        },
+    };
 }
 
 export function getBaseStudent(id: string): IStudent {
