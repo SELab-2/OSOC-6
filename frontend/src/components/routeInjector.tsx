@@ -6,8 +6,10 @@ import apiPaths from "../properties/apiPaths";
 import { getAllEditionsFromPage, getEditionByName } from "../api/calls/editionCalls";
 import { useEffect } from "react";
 import applicationPaths from "../properties/applicationPaths";
+import useTranslation from "next-translate/useTranslation";
 
 export default function RouteInjector({ children }: any) {
+    const { t } = useTranslation("common");
     const [cachedEdition, setCachedEdition] = useEdition();
 
     const router = useRouter();
@@ -47,7 +49,7 @@ export default function RouteInjector({ children }: any) {
 
     if (availableEditions && availableEditions.length === 0) {
         if (router.pathname !== "/" + applicationPaths.home) {
-            return <div>No edition</div>;
+            return <div>{t("no edition")}</div>;
         } else {
             return children;
         }
