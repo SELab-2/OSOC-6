@@ -8,7 +8,8 @@ import {
     createProjectSubmitHandler,
     ProjectCreationValues,
 } from "../src/handlers/createProjectSubmitHandler";
-import { getBaseOkResponse } from "./TestEntityProvider";
+import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
+import { UserRole } from "../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -46,9 +47,7 @@ describe("Create project form", () => {
                 skillInfos: [],
             };
 
-            const ownUserResponse: AxiosResponse = getBaseOkResponse({
-                _links: { self: { href: "/users/1" } },
-            });
+            const ownUserResponse: AxiosResponse = getBaseOkResponse(getBaseUser("1", UserRole.admin, true));
 
             createProjectSubmitHandler(values);
             mockAxios.mockResponseFor({ url: apiPaths.ownUser }, ownUserResponse);

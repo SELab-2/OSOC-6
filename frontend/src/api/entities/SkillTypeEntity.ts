@@ -1,7 +1,4 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import axios from "axios";
-import { AxiosConf } from "../calls/baseCalls";
-import { IUser } from "./UserEntity";
 
 export interface ISkillType extends IBaseEntity {
     name: string;
@@ -19,6 +16,10 @@ export type ISkillTypeLinks = IEntityLinks<{ skillTypes: ISkillType[] }>;
 
 export const baseSkillType: string = "other";
 
+/**
+ * Returns a map, mapping the name of a SkillType to its colour
+ * @param skillTypes the list of available SkillTypes
+ */
 export function getSkillColorMap(skillTypes: ISkillType[]): Map<string, string> {
     let skillColorMap = new Map<string, string>();
 

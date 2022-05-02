@@ -60,6 +60,8 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
         )
     );
 
+    console.log([...projectSkills, values.coaches]);
+
     await Promise.all(
         values.coaches.map(
             async (coach) =>

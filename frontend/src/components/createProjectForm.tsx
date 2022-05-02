@@ -105,7 +105,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         const coachURLs: string[] = [];
         for (let coach of coaches) {
             coachURLs.push(
-                // We know there will always be a user with this callname
+                // We know there will always be a user with this callname,
+                // as every option of the Select contains a value that originates from the users-array
                 users.find((item) => item.callName === coach)!._links.self.href
             );
         }
