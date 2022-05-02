@@ -36,8 +36,8 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     }
 
     async function removeAssignment(event: any) {
-        await deleteAssignment(event.target.value, assign);
-        await mutate(item.skill._links.assignments.href);
+        const assignments = await deleteAssignment(event.target.value, assign);
+        await mutate(item.skill._links.assignments.href, assignments);
     }
 
     if (assign.length == 0) {
@@ -78,6 +78,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                                     aria-label={"Remove student from project"}
                                     value={assignment.assignment._links.assignment.href}
                                     onClick={(assignment) => removeAssignment(assignment)}
+                                    data-testid="remove assignment button"
                                 />
                             </Col>
                         </Row>

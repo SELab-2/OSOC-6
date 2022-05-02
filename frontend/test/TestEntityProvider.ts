@@ -13,6 +13,7 @@ import {
     OsocExpericience,
     Status,
 } from "../src/api/entities/StudentEntity";
+import apiPaths from "../src/properties/apiPaths";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -182,9 +183,9 @@ export function getBaseAssignment(id: string): IAssignment {
         timestamp: "Now",
 
         _links: {
-            assigner: { href: baseAssignmentsPath },
+            assigner: { href: apiPaths.users + "/" + id },
             projectSkill: { href: baseAssignmentsPath },
-            student: { href: baseAssignmentsPath },
+            student: { href: apiPaths.students + "/" + id },
             assignment: { href: baseAssignmentsPath },
             self: { href: baseAssignmentsPath },
         },
