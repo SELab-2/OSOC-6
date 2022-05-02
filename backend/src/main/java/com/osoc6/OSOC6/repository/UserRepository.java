@@ -5,6 +5,8 @@ import com.osoc6.OSOC6.database.models.UserRole;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -82,6 +84,18 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("select u from UserEntity u where u.id = :#{authentication.principal.id}")
     UserEntity findSelf();
 
-//    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
-//    Page<UserEntity> findByEdition(@Param("edition") Long edition);
+    /**
+     * Find a user by its edition.
+     * @param edition the edition the user search is restricted to
+     * @param pageable argument needed to return a page
+     * @return page of matching users
+     */
+    @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+            rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
+    @Query(value =
+        "SELECT DISTINCT ON (u.id) u.* FROM users u LEFT JOIN invitation i ON u.id = i.subject_id "
+            + "WHERE :edition IS NOT NULL and (u.user_role = 'ADMIN' or "
+            + "i.edition_id = :#{@spelUtil.safeLong(#edition)})", nativeQuery = true)
+    Page<UserEntity> findByEdition(@Param("edition") Long edition, Pageable pageable);
 }

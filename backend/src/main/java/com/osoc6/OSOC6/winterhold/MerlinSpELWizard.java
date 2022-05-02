@@ -9,9 +9,9 @@ public final class MerlinSpELWizard {
     private MerlinSpELWizard() { }
 
     /**
-     * Get the id of the logged-in user in a query. (Query notation)
+     * Admin role as string representation.
      */
-    public static final String Q_USER_ID = ":#{authentication.principal.id}";
+    public static final String Q_ADMIN_ROLE = "'ADMIN'";
 
     /**
      * Check if the current user has the admin authority.

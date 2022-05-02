@@ -90,7 +90,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     /**
      * Return the students that are assigned to multiple projects through valid assignments.
      * @param edition the edition in which this query operates.
-     * @param pageable field in student that is looked for
+     * @param pageable argument needed to return a page
      * @return Page of matching students
      */
     @RestResource(path = DumbledorePathWizard.STUDENT_CONFLICT_PATH,
