@@ -10,15 +10,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <SWRConfig
             value={{
-                refreshInterval: 5_000,
+                refreshInterval: 10_000,
             }}
         >
             <GlobalStateProvider>
-                <RouteInjector>
-                    <RouteGuard>
+                <RouteGuard>
+                    <RouteInjector>
                         <Component {...pageProps} />
-                    </RouteGuard>
-                </RouteInjector>
+                    </RouteInjector>
+                </RouteGuard>
             </GlobalStateProvider>
         </SWRConfig>
     );
