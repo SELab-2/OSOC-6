@@ -42,7 +42,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
 
     if (assign.length == 0) {
         return (
-            <div>
+            <div data-testid="assignment-item">
                 <Badge bg="" style={{ background: color }}>
                     {item.skill.name}
                 </Badge>
@@ -52,7 +52,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     }
 
     return (
-        <>
+        <div data-testid="assignment-item">
             <Badge bg="" style={{ backgroundColor: color }}>
                 {item.skill.name}
             </Badge>
@@ -86,7 +86,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                     </div>
                 );
             })}
-        </>
+        </div>
     );
 }
 

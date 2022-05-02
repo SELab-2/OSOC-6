@@ -4,7 +4,7 @@ import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
-import SkillItem from "./skillItem";
+import AssignmentSkillList from "./assignmentSkillList";
 import useSWR from "swr";
 import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
@@ -50,7 +50,7 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
                                     </div>
                                 </AccordionHeader>
                                 <AccordionBody>
-                                    <SkillItem project={project} dropHandler={props.dropHandler} />
+                                    <AssignmentSkillList project={project} dropHandler={props.dropHandler} />
                                 </AccordionBody>
                             </AccordionItem>
                         );

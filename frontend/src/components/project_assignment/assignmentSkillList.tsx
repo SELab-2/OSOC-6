@@ -15,7 +15,7 @@ import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
  * @param props Properties
  * @constructor
  */
-export default function SkillItem(props: { project: IProject; dropHandler: DropHandler }) {
+export default function AssignmentSkillList(props: { project: IProject; dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
 
     const { mutate } = useSWRConfig();
@@ -52,11 +52,11 @@ export default function SkillItem(props: { project: IProject; dropHandler: DropH
     });
 
     if (skillList.length == 0) {
-        return <p>{capitalize(t("no skills for project"))}</p>;
+        return <p data-testid="assignment-skill-list">{capitalize(t("no skills for project"))}</p>;
     }
 
     return (
-        <>
+        <div data-testid="assignment-skill-list">
             {skillList.map((skill, index) => {
                 return (
                     <Container
@@ -68,11 +68,12 @@ export default function SkillItem(props: { project: IProject; dropHandler: DropH
                         onDragOver={(event) => {
                             event.preventDefault();
                         }}
+                        data-testid="dropzone"
                     >
                         <AssignmentItem skill={skill} />
                     </Container>
                 );
             })}
-        </>
+        </div>
     );
 }
