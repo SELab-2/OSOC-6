@@ -202,7 +202,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "A fun fact about me",
             ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
             ["I love to Spring Spring in java Spring!"],
-            "",
+            faker.lorem.paragraph(5),
             "3th",
             editionUrl
         );

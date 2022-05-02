@@ -7,6 +7,7 @@ import { capitalize } from "../utility/stringUtil";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { CustomDialogContent } from "./suggestionModal";
+import {AdminSuggestion} from "./adminSuggestion";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
@@ -20,7 +21,7 @@ export function StudentInfo() {
     }
 
     let motivation;
-    if (data.student.motivationURI == null) {
+    if (data.student.motivationURI == "") {
         motivation = (
             <>
                 <div>{data.student.writtenMotivation}</div>
@@ -138,7 +139,9 @@ export function StudentInfo() {
                             </div>
                         </div>
                     </Col>
-                    <Col sm={4}>Add definite decision</Col>
+                    <Col sm={4}>
+
+                    </Col>
                 </Row>
             </footer>
         </div>
