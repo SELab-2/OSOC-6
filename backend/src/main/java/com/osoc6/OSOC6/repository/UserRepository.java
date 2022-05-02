@@ -81,4 +81,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @Query("select u from UserEntity u where u.id = :#{authentication.principal.id}")
     UserEntity findSelf();
+
+//    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
+//    Page<UserEntity> findByEdition(@Param("edition") Long edition);
 }

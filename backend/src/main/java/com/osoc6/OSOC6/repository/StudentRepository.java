@@ -47,8 +47,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
     @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
             rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query("select s from Student s where s.edition.id = :edition")
     Page<Student> findByEdition(@Param("edition") Long editionId, @NonNull Pageable pageable);
 
@@ -67,8 +66,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
     @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query(value = // We need to use cast keyword instead of native :: because ':' means something to Spring.
             "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
                 + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
@@ -97,8 +95,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
     @RestResource(path = DumbledorePathWizard.STUDENT_CONFLICT_PATH,
             rel = DumbledorePathWizard.STUDENT_CONFLICT_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query(value =
         "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
             + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "

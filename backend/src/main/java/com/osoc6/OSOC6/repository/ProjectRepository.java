@@ -45,8 +45,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
      */
     @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
             rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query("select p from Project p where p.edition.id = :edition")
     Page<Project> findByEdition(@Param("edition") Long editionId, @NonNull Pageable pageable);
 }
