@@ -10,7 +10,6 @@ import WarningToast from "./warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
-import applicationPaths from "../../properties/applicationPaths";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
@@ -20,9 +19,7 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
     let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
     data = data || [];
-
     if (error) {
-        console.log("list");
         return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
@@ -34,10 +31,7 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
                 className="d-flex justify-content-center align-items-center h-100"
                 data-testid="project-assignment-list"
             >
-                <p>
-                    This edition has no projects, please create a project{" "}
-                    <a href={applicationPaths.projectCreation}>here</a>
-                </p>
+                <p>{capitalize(t("no projects"))}</p>
             </div>
         );
     }

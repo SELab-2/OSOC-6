@@ -59,6 +59,7 @@ const common = {
     "suggested by": "Suggested by ",
     "no skills for project": "No skills have been assigned to this project",
     loading: "Loading...",
+    "no projects": "This edition has no projects :(.",
 };
 
 export default common;
