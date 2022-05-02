@@ -85,7 +85,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findSelf();
 
     /**
-     * Find a user by its edition.
+     * Find all users linked to the given edition through their received invitations.
      * @param edition the edition the user search is restricted to
      * @param pageable argument needed to return a page
      * @return page of matching users
