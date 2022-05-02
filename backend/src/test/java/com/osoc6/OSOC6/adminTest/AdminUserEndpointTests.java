@@ -379,4 +379,30 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getOutsiderCoach().getCallName()));
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_is_found_by_edition_id() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_is_found_by_edition_illegal_id() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_is_not_found_when_not_providing_edition() throws Exception {
+        perform_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(getAdminUser().getCallName()));
+    }
 }

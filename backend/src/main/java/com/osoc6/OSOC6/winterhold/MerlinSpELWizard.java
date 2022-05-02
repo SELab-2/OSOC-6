@@ -9,9 +9,9 @@ public final class MerlinSpELWizard {
     private MerlinSpELWizard() { }
 
     /**
-     * Get the id of the logged-in user in a query. (Query notation)
+     * Admin role as string representation.
      */
-    public static final String Q_USER_ID = ":#{authentication.principal.id}";
+    public static final String Q_ADMIN_ROLE = "'ADMIN'";
 
     /**
      * Check if the current user has the admin authority.
@@ -34,8 +34,15 @@ public final class MerlinSpELWizard {
     public static final String Q_USER_EDITIONS = ":#{@spelUtil.userEditions(authentication.principal)}";
 
     /**
-     * SpEll expression checking that a non admin user has access to the optional returnObject.
+     * SpEl expression checking that a non admin user has access to the optional returnObject.
      */
     public static final String USER_HAS_ACCESS_ON_OPTIONAL = "!returnObject.present or "
         + "@spelUtil.userEditions(authentication.principal).contains(returnObject.get.controllingEdition.id)";
+
+
+    /**
+     * SpEL expression checking if the authorized user can query over a certain edition.
+     */
+    public static final String USER_CAN_QUERY_EDITION = ADMIN_AUTH
+            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)";
 }
