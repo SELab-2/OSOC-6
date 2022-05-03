@@ -42,6 +42,7 @@ public class UserEntityEventHandler {
      */
     @HandleBeforeSave
     public void handleBeforeSaveEvent(final UserEntity newUserEntity) {
+        // We need to detach the user to be able to get the old user entity
         entityManager.detach(newUserEntity);
         Optional<UserEntity> currentUserEntity = userRepository.findById(newUserEntity.getId());
         if (currentUserEntity.isPresent()
