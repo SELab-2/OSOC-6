@@ -39,7 +39,7 @@ public final class Invitation implements WeakToEdition {
 
     /**
      * The unique token of the invitation.
-     * @apiNote we cannot use the Base64StringKeyGenerator here because it can contain special html characters
+     * We cannot use the Base64StringKeyGenerator here because it can contain special html characters.
      */
     @Basic(optional = false)
     @Column(unique = true) @ReadOnlyProperty
