@@ -10,36 +10,38 @@ import useTranslation from "next-translate/useTranslation";
 
 export default function RouteInjector({ children }: any) {
     const { t } = useTranslation("common");
-    const [cachedEdition, setCachedEdition] = useEdition();
+    const [contextEdition, setContextEdition] = useEdition();
 
     const router = useRouter();
     const replace = router.replace;
     const query = router.query as { edition?: string };
-    const curEditionName = query.edition;
-    const curEdition = useSWR(
-        !cachedEdition && curEditionName ? curEditionName : null,
+    const routerEditionName = query.edition;
+    const fetchedRouterEdition = useSWR(
+        !contextEdition && routerEditionName ? routerEditionName : null,
         getEditionByName
     ).data;
 
     const { data: availableEditions } = useSWR(
-        !cachedEdition && !curEditionName ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" }) : null,
+        !contextEdition && !routerEditionName
+            ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" })
+            : null,
         getAllEditionsFromPage
     );
     const latestEdition = availableEditions?.at(0);
     const latestEditionName = latestEdition?.name;
 
     useEffect(() => {
-        if (curEdition && cachedEdition?.name !== curEdition.name) {
-            setCachedEdition(curEdition);
+        if (fetchedRouterEdition && contextEdition?.name !== fetchedRouterEdition.name) {
+            setContextEdition(fetchedRouterEdition);
         }
 
-        if (cachedEdition && !curEditionName) {
+        if (contextEdition && !routerEditionName) {
             replace({
-                query: { ...query, edition: cachedEdition.name },
+                query: { ...query, edition: contextEdition.name },
             }).catch(console.log);
         }
 
-        if (!cachedEdition && !curEditionName && latestEditionName) {
+        if (!contextEdition && !routerEditionName && latestEditionName) {
             replace({
                 query: {
                     ...query,
@@ -47,7 +49,15 @@ export default function RouteInjector({ children }: any) {
                 },
             }).catch(console.log);
         }
-    }, [replace, query, curEdition, curEditionName, cachedEdition, latestEditionName, setCachedEdition]);
+    }, [
+        replace,
+        query,
+        fetchedRouterEdition,
+        routerEditionName,
+        contextEdition,
+        latestEditionName,
+        setContextEdition,
+    ]);
 
     if (availableEditions && availableEditions.length === 0) {
         if (router.pathname !== "/" + applicationPaths.home) {

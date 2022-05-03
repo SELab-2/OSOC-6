@@ -1,5 +1,5 @@
 import { IProject } from "../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage } from "../src/api/entities/BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "../src/api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { IProjectSkill } from "../src/api/entities/ProjectSkillEntity";
@@ -13,6 +13,7 @@ import {
     OsocExpericience,
     Status,
 } from "../src/api/entities/StudentEntity";
+import { IEdition } from "../src/api/entities/EditionEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -187,6 +188,20 @@ export function getBaseAssignment(id: string): IAssignment {
             student: { href: baseAssignmentsPath },
             assignment: { href: baseAssignmentsPath },
             self: { href: baseAssignmentsPath },
+        },
+    };
+}
+
+export function getBaseActiveEdition(id: string, name: string): IEdition {
+    const baseEditionPath = "http://localhost/api/editions/" + id;
+    return {
+        name,
+        year: 2022,
+        active: true,
+
+        _links: {
+            edition: { href: baseEditionPath },
+            self: { href: baseEditionPath },
         },
     };
 }
