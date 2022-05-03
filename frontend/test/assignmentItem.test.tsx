@@ -100,6 +100,48 @@ async function renderAssignmentItem(
     }
 }
 
+async function createResponse(
+    assignment: IAssignment,
+    id: string,
+    studentName: string,
+    assignerName: string
+) {
+    const assigner = getBaseUser(id, UserRole.admin, true);
+    const student = getBaseStudent(id);
+    student.firstName = studentName;
+    assigner.username = assignerName;
+    const studentResponse: AxiosResponse = getBaseOkResponse(student);
+
+    await waitFor(() => {
+        expect(mockAxios.get).toHaveBeenCalled();
+    });
+
+    await act(() => mockAxios.mockResponseFor({ url: assignment._links.student.href }, studentResponse));
+
+    const assignerResponse: AxiosResponse = getBaseOkResponse(assigner);
+
+    await waitFor(() => {
+        expect(mockAxios.get).toHaveBeenCalled();
+    });
+
+    await act(() => mockAxios.mockResponseFor({ url: assignment._links.assigner.href }, assignerResponse));
+}
+
+async function removeAssignment(assignment: IAssignment) {
+    await waitFor(() => {
+        expect(screen.getByTestId("remove assignment button 0")).toBeInTheDocument();
+    });
+
+    await act(async () => await userEvent.click(screen.getByTestId("remove assignment button 0")));
+
+    await waitFor(() => {
+        expect(mockAxios.delete).toHaveBeenCalled();
+    });
+
+    const response: AxiosResponse = getBaseNoContentResponse();
+    await act(() => mockAxios.mockResponseFor({ url: assignment._links.self.href }, response));
+}
+
 describe("Assignmnent item tests", () => {
     it("should render with users assigned", async () => {
         const skillType = getBaseSkillType("1");
@@ -135,21 +177,90 @@ describe("Assignmnent item tests", () => {
         const projectSkill = getBaseProjectSkill("100");
         await renderAssignmentItem([skillType], [assignment], assigner, student, projectSkill);
 
-        await waitFor(() => {
-            expect(screen.getByTestId("remove assignment button")).toBeInTheDocument();
-        });
-
-        await act(async () => await userEvent.click(screen.getByTestId("remove assignment button")));
-
-        await waitFor(() => {
-            expect(mockAxios.delete).toHaveBeenCalled();
-        });
-
-        const response: AxiosResponse = getBaseNoContentResponse();
-        await act(() => mockAxios.mockResponseFor({ url: assignment._links.self.href }, response));
+        await removeAssignment(assignment);
 
         await waitFor(() => {
             expect(screen.getByText(capitalize("no users for skill"))).toBeInTheDocument();
+        });
+    });
+
+    it("Remove one assignment of list", async () => {
+        const skillType = getBaseSkillType("1");
+        const assignment = getBaseAssignment("2");
+        const baseAssignmentsPath = "http://localhost/api/assignments/" + 3;
+        const assignment2 = {
+            isSuggestion: true,
+            isValid: true,
+            reason: "This assignment was mendetory, we don't have any other",
+            timestamp: "Now",
+
+            _links: {
+                assigner: { href: apiPaths.users + "/2" },
+                projectSkill: { href: baseAssignmentsPath },
+                student: { href: apiPaths.students + "/2" },
+                assignment: { href: baseAssignmentsPath },
+                self: { href: baseAssignmentsPath },
+            },
+        };
+        const assigner = getBaseUser("2", UserRole.admin, true);
+        const student = getBaseStudent("2");
+        const projectSkill = getBaseProjectSkill("100");
+        await renderAssignmentItem([skillType], [assignment, assignment2], assigner, student, projectSkill);
+
+        await removeAssignment(assignment);
+
+        await waitFor(() => {
+            expect(screen.getByText(projectSkill.name)).toBeInTheDocument();
+            expect(screen.getByText(student.firstName)).toBeInTheDocument();
+            expect(screen.getByText(assigner.callName, { exact: false })).toBeInTheDocument();
+            expect(screen.getByText(assignment2.reason, { exact: false })).toBeInTheDocument();
+        });
+    });
+
+    it("Test if assignments are sorted", async () => {
+        const skillType = getBaseSkillType("1");
+        const assignment = getBaseAssignment("2");
+        const assignment3 = getBaseAssignment("3");
+        assignment3.reason = "assignment3";
+        const assignment4 = getBaseAssignment("4");
+        assignment4.reason = "assignment4";
+        const assignment5 = getBaseAssignment("5");
+        assignment5.reason = "assignment5";
+        const assignment6 = getBaseAssignment("6");
+        assignment6.reason = "assignment6";
+        const assignment7 = getBaseAssignment("7");
+        assignment7.reason = "assignment7";
+        const assigner = getBaseUser("2", UserRole.admin, true);
+        const student = getBaseStudent("2");
+        const projectSkill = getBaseProjectSkill("100");
+        await renderAssignmentItem(
+            [skillType],
+            [assignment, assignment3, assignment4, assignment5, assignment6, assignment7],
+            assigner,
+            student,
+            projectSkill
+        );
+
+        await createResponse(assignment3, "3", "a", "assigner1");
+        await createResponse(assignment4, "4", "c", "assigner1");
+        await createResponse(assignment5, "5", "b", "assigner1");
+        await createResponse(assignment6, "6", "b", "assigner3");
+        await createResponse(assignment7, "7", "b", "assigner2");
+
+        await waitFor(() => {
+            const html = document.body.innerHTML;
+            const a1 = html.search(assignment.reason);
+            const a2 = html.search(assignment3.reason);
+            const a3 = html.search(assignment5.reason);
+            const a4 = html.search(assignment7.reason);
+            const a5 = html.search(assignment6.reason);
+            const a6 = html.search(assignment4.reason);
+            expect(screen.getByTestId("assignment-item")).toBeInTheDocument();
+            expect(a1).toBeLessThan(a2);
+            expect(a2).toBeLessThan(a3);
+            expect(a3).toBeLessThan(a4);
+            expect(a4).toBeLessThan(a5);
+            expect(a5).toBeLessThan(a6);
         });
     });
 });

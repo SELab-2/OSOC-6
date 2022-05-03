@@ -78,7 +78,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                                     aria-label={"Remove student from project"}
                                     value={assignment.assignment._links.assignment.href}
                                     onClick={(assignment) => removeAssignment(assignment)}
-                                    data-testid="remove assignment button"
+                                    data-testid={"remove assignment button " + index}
                                 />
                             </Col>
                         </Row>

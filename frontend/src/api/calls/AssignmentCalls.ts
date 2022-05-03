@@ -119,7 +119,6 @@ function sortAssignments(assignments: ProjectAssignments) {
         if (assignment1.assigner.username < assignment2.assigner.username) {
             return -1;
         }
-
         return 0;
     });
 }
