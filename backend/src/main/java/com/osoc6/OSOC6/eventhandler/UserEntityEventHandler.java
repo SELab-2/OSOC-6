@@ -45,8 +45,7 @@ public class UserEntityEventHandler {
         // We need to detach the user to be able to get the old user entity
         entityManager.detach(newUserEntity);
         Optional<UserEntity> currentUserEntity = userRepository.findById(newUserEntity.getId());
-        if (currentUserEntity.isPresent()
-                && !newUserEntity.getPassword().equals(currentUserEntity.get().getPassword())) {
+        if (!newUserEntity.getPassword().equals(currentUserEntity.get().getPassword())) {
             String encodedPassword = passwordEncoder.encode(newUserEntity.getPassword());
             newUserEntity.setPassword(encodedPassword);
         }
