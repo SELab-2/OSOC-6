@@ -1,5 +1,5 @@
 import useEdition from "../hooks/useGlobalEdition";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
 import apiPaths from "../properties/apiPaths";
@@ -13,7 +13,9 @@ export default function RouteInjector({ children }: any) {
     const [cachedEdition, setCachedEdition] = useEdition();
 
     const router = useRouter();
-    const curEditionName = (router.query as { edition?: string }).edition;
+    const replace = router.replace;
+    const query = router.query as { edition?: string };
+    const curEditionName = query.edition;
     const curEdition = useSWR(
         !cachedEdition && curEditionName ? curEditionName : null,
         getEditionByName
@@ -32,20 +34,20 @@ export default function RouteInjector({ children }: any) {
         }
 
         if (cachedEdition && !curEditionName) {
-            Router.replace({
-                query: { ...Router.query, edition: cachedEdition.name },
+            replace({
+                query: { ...query, edition: cachedEdition.name },
             }).catch(console.log);
         }
 
         if (!cachedEdition && !curEditionName && latestEditionName) {
-            Router.replace({
+            replace({
                 query: {
-                    ...Router.query,
+                    ...query,
                     edition: latestEditionName,
                 },
             }).catch(console.log);
         }
-    }, [curEdition, curEditionName, cachedEdition, latestEditionName, setCachedEdition]);
+    }, [replace, query, curEdition, curEditionName, cachedEdition, latestEditionName, setCachedEdition]);
 
     if (availableEditions && availableEditions.length === 0) {
         if (router.pathname !== "/" + applicationPaths.home) {

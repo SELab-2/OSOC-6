@@ -87,10 +87,9 @@ export function getQueryUrlFromParams(url: string, params: { [k: string]: any })
             urlConstructor += key + "=" + params[key] + "&";
         }
     }
-    urlConstructor =
-        urlConstructor[urlConstructor.length - 1] === "&"
-            ? urlConstructor.substring(0, urlConstructor.length - 1)
-            : urlConstructor;
+    urlConstructor = ["&", "?"].includes(urlConstructor[urlConstructor.length - 1])
+        ? urlConstructor.substring(0, urlConstructor.length - 1)
+        : urlConstructor;
     return urlConstructor;
 }
 
