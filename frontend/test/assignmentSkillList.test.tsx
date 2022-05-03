@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { SWRConfig } from "swr";
 import AssignmentSkillList from "../src/components/project_assignment/assignmentSkillList";
 import { DropHandler } from "../src/pages/assignStudents";
 import { IProject } from "../src/api/entities/ProjectEntity";
@@ -9,6 +8,7 @@ import { AxiosResponse } from "axios";
 import { getBaseLinks, getBaseOkResponse, getBaseProject, getBaseProjectSkill } from "./TestEntityProvider";
 import { IProjectSkill, projectSkillCollectionName } from "../src/api/entities/ProjectSkillEntity";
 import { capitalize } from "../src/utility/stringUtil";
+import { makeCacheFree } from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -22,11 +22,7 @@ async function renderSkillList(project: IProject, projectSkills: IProjectSkill[]
     };
 
     await act(() => {
-        render(
-            <SWRConfig value={{ provider: () => new Map() }}>
-                <AssignmentSkillList project={project} dropHandler={drop} />
-            </SWRConfig>
-        );
+        render(makeCacheFree(() => <AssignmentSkillList project={project} dropHandler={drop} />));
     });
 
     const projectSkillsResponse: AxiosResponse = getBaseOkResponse(
