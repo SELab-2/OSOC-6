@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
-import { act, createEvent, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { SWRConfig } from "swr";
 import AssignmentSkillList from "../src/components/project_assignment/assignmentSkillList";
 import { DropHandler } from "../src/pages/assignStudents";
@@ -64,13 +64,23 @@ describe("Assignment skill list tests", () => {
         });
     });
 
-    it("Add a second skill", async () => {
+    it("Add a second skill and test sort", async () => {
         const project = getBaseProject("1");
         const projectSkill = getBaseProjectSkill("2");
-        await renderSkillList(project, [projectSkill]);
+        const projectSkill2 = getBaseProjectSkill("3");
+        projectSkill2.name = "Second project that should be first";
+        const projectSkill3 = getBaseProjectSkill("4");
+        projectSkill3.name = "Second project that should be first";
+        const projectSkill4 = getBaseProjectSkill("4");
+        projectSkill4.name = "Another one but this one should be first";
+        await renderSkillList(project, [projectSkill4, projectSkill, projectSkill2, projectSkill3]);
 
         await waitFor(() => {
+            const html = document.body.innerHTML;
+            const a = html.search(projectSkill2.name);
+            const b = html.search(projectSkill.name);
             expect(screen.getByTestId("assignment-skill-list")).toBeInTheDocument();
+            expect(a).toBeLessThan(b);
         });
     });
 });

@@ -20,12 +20,8 @@ async function renderAssignProject(projectList: IProject[]) {
     const response: AxiosResponse = getBaseOkResponse(
         getBasePage(apiPaths.projects, "projects", projectList)
     );
-
-    render(
-        makeCacheFree((drop: DropHandler) => {
-            return ProjectAsignmentList({ dropHandler: drop });
-        })
-    );
+    const drop: DropHandler = () => {};
+    render(makeCacheFree(() => ProjectAsignmentList({ dropHandler: drop })));
 
     await waitFor(() => {
         expect(mockAxios.get).toHaveBeenCalled();
