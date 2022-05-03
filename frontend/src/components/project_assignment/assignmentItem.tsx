@@ -2,7 +2,7 @@ import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { Badge, CloseButton, Col, Row } from "react-bootstrap";
 import useSWR, { useSWRConfig } from "swr";
 import { deleteAssignment, getAssignments } from "../../api/calls/AssignmentCalls";
-import WarningToast from "./warningToast";
+import WarningToast from "../warningToast";
 import apiPaths from "../../properties/apiPaths";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";

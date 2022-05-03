@@ -6,7 +6,7 @@ import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
 import AssignmentSkillList from "./assignmentSkillList";
 import useSWR from "swr";
-import WarningToast from "./warningToast";
+import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";

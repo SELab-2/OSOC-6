@@ -2,7 +2,7 @@ import { Container } from "react-bootstrap";
 import AssignmentItem from "./assignmentItem";
 import useSWR, { useSWRConfig } from "swr";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
-import WarningToast from "./warningToast";
+import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { IProject } from "../../api/entities/ProjectEntity";

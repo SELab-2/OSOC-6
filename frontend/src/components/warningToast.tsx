@@ -1,6 +1,6 @@
 import { Toast, ToastContainer } from "react-bootstrap";
-import timers from "../../properties/timers";
-import { capitalize } from "../../utility/stringUtil";
+import timers from "../properties/timers";
+import { capitalize } from "../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
 
@@ -17,6 +17,7 @@ function WarningToast(props: any) {
                     show={showDanger}
                     delay={timers.toast}
                     autohide
+                    data-testid="toast"
                 >
                     <Toast.Body>{capitalize(t(props.message))}</Toast.Body>
                 </Toast>
