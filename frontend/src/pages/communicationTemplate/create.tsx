@@ -17,18 +17,27 @@ export default function CommunicationTemplateCreate() {
                 {({ values, setFieldValue }) => (
                     <Form>
                         <label htmlFor="communicationTemplateNameField">Name:</label>
-                        <Field type="text" name="name" required id="communicationTemplateNameField" />
+                        <Field
+                            type="text"
+                            name="name"
+                            required
+                            id="communicationTemplateNameField"
+                            data-testid="name"
+                        />
 
                         <textarea
                             placeholder="Write your template here"
                             className="form-control"
                             style={{ height: "100px" }}
                             id="communicationTemplateTemplateField"
+                            data-testid="template"
                             value={values.template}
                             onChange={(event) => setFieldValue("template", event.target.value)}
                         />
 
-                        <button type="submit">submit</button>
+                        <button data-testid="submit" type="submit">
+                            submit
+                        </button>
                     </Form>
                 )}
             </Formik>
