@@ -1,6 +1,10 @@
 import { CommunicationTemplateEntity, ICommunicationTemplate } from "../entities/CommunicationTemplateEntity";
-import { basePost, extractIdFromApiEntityUrl } from "./baseCalls";
+import { basePost, extractIdFromApiEntityUrl, getEntityOnUrl } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
+
+export function getCommunicationTemplateOnUrl(url: string): Promise<ICommunicationTemplate> {
+    return <Promise<ICommunicationTemplate>>getEntityOnUrl(url);
+}
 
 export async function createNewCommunicationTemplate(
     template: CommunicationTemplateEntity
