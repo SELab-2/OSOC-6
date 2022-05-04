@@ -1,4 +1,4 @@
-import { getAllEntitiesFromPage, getQueryUrlFromParams } from "./baseCalls";
+import { extractIdFromApiEntityUrl, getAllEntitiesFromPage, getQueryUrlFromParams } from "./baseCalls";
 import { editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
 
@@ -16,6 +16,5 @@ export async function getEditionByName(editionName: string): Promise<IEdition | 
 }
 
 export function extractIdFromEditionUrl(url: string): string {
-    const split = url.split("/");
-    return split[split.length - 1];
+    return extractIdFromApiEntityUrl(url);
 }
