@@ -3,9 +3,9 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import RegistrationForm from "../components/registrationForm";
 import NavBar from "../components/navBar";
-import { capitalize } from '../utility/stringUtil';
-import styles from '../styles/registration.module.css';
-import { Col, Row } from 'react-bootstrap';
+import { capitalize } from "../utility/stringUtil";
+import styles from "../styles/registration.module.css";
+import { Col, Row } from "react-bootstrap";
 
 const Registration: NextPage = () => {
     const { t } = useTranslation("common");
