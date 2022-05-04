@@ -40,8 +40,8 @@ export default function CommunicationTemplateCreate() {
                             onChange={(event) => setFieldValue("template", event.target.value)}
                         />
 
-                        <button data-testid="submit" type="submit">
-                            submit
+                        <button className="capitalize" data-testid="submit" type="submit">
+                            {t("confirm")}
                         </button>
                     </Form>
                 )}
