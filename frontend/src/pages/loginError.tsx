@@ -5,9 +5,13 @@ import { Card } from "react-bootstrap";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
+import { useRouter } from "next/router";
+import { useSWRConfig } from "swr";
 
 const LoginError: NextPage = () => {
     const { t } = useTranslation();
+    const router = useRouter();
+    const { mutate } = useSWRConfig();
     return (
         <div>
             <Head>
@@ -20,7 +24,7 @@ const LoginError: NextPage = () => {
                         <Card.Text>{capitalize(t("errorMessages:invalid_credentials"))}</Card.Text>
                     </Card.Body>
                 </Card>
-                <LoginForm submitHandler={loginSubmitHandler} />
+                <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
             </main>
         </div>
     );

@@ -18,6 +18,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -197,6 +199,24 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_password_updates_and_encrypts_new_password() throws Exception {
+        String oldPassword = getCoachUser().getPassword();
+        String newPassword = "mynewpw123";
+        Map<String, String> map = Map.of(
+                "password", newPassword
+        );
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
+                .andExpect(status().is2xxSuccessful());
+
+        // We check that the password no longer equals the previous one, and that the new one has been encrypted
+        UserEntity updatedUserEntity = get_repository_entity_by_id(getCoachUser().getId());
+        assertNotEquals(oldPassword, updatedUserEntity.getPassword());
+        assertNotEquals(newPassword, updatedUserEntity.getPassword());
+        assertTrue(updatedUserEntity.getPassword().length() > 0);
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void coach_delete_user_is_forbidden() throws Exception {
         perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isForbidden());
@@ -241,5 +261,49 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     public void coach_does_NOT_see_other_edition_by_id() throws Exception {
         perform_get(getEntityPath() + "/" + getCoachUser().getId())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_can_not_query_non_containing_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_can_find_self_by_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_can_find_admin_by_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_matching_by_editions() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_editions_does_filter_on_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(getOutsiderCoach().getCallName()));
     }
 }

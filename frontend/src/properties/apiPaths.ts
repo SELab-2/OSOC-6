@@ -7,6 +7,7 @@ const apiPaths = {
     logout: "logout",
 
     editions: "editions",
+    editionByName: "editions/search/by-name",
 
     skillTypes: "skillTypes",
     skillTypesByName: "skillTypes/search/by-name",

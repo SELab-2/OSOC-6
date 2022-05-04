@@ -20,10 +20,7 @@ export function getStudentOnUrl(url: string): Promise<IStudent> {
     return <Promise<IStudent>>getEntityOnUrl(url);
 }
 
-export function constructStudentQueryUrl(
-    url: string,
-    params: IStudentQueryParams & { editionId: number }
-): string {
+export function constructStudentQueryUrl(url: string, params: IStudentQueryParams): string {
     const experience: string[] = [];
     if (params.studentCoach) {
         experience.push(OsocExpericience.yes_studentCoach);
@@ -33,7 +30,6 @@ export function constructStudentQueryUrl(
     }
 
     const queryParams: { [k: string]: any } = {};
-    queryParams.edition = params.editionId;
     if (params.roles) {
         queryParams.roles = params.roles;
     }

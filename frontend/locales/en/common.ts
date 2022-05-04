@@ -68,6 +68,11 @@ const common = {
     coach: "coach",
     disabled: "disabled",
     edit: "edit",
+
+    "no edition": "no edition",
+
+    "create communication template": "create communication template",
+    "template placeholder": "Write your template here",
 };
 
 export default common;
