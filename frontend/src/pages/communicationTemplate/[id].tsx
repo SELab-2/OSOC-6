@@ -32,7 +32,7 @@ export default function CommunicationTemplateInfo() {
                 Open in mail application
             </Button>
             <div className="text-wrap">{"subject: " + data?.subject}</div>
-            <hr/>
+            <hr />
             <div className="text-wrap">{data?.template}</div>
         </div>
     );
