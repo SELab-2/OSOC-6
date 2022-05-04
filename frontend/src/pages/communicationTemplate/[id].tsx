@@ -20,16 +20,20 @@ export default function CommunicationTemplateInfo() {
     }
 
     return (
-        <>
+        <div data-testid="communication-template-info">
             <h1>{"Communication Template: " + data?.name}</h1>
             <Button
+                data-testid="mail-to-button"
                 href={mailTo({
                     body: data?.template,
+                    subject: data?.subject,
                 })}
             >
                 Open in mail application
             </Button>
+            <div className="text-wrap">{"subject: " + data?.subject}</div>
+            <hr/>
             <div className="text-wrap">{data?.template}</div>
-        </>
+        </div>
     );
 }

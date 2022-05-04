@@ -8,7 +8,7 @@ import { capitalize } from "../../utility/stringUtil";
 export default function CommunicationTemplateCreate() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "");
+    const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "", "");
 
     return (
         <div data-testid="communication-template-create">
@@ -28,6 +28,14 @@ export default function CommunicationTemplateCreate() {
                             required
                             id="communicationTemplateNameField"
                             data-testid="name"
+                        />
+
+                        <Field
+                            type="text"
+                            name="subject"
+                            required
+                            id="communicationTemplateSubjectField"
+                            data-testid="subject"
                         />
 
                         <textarea
