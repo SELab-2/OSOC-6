@@ -3,12 +3,12 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { makeCacheFree } from "./Provide";
-import ChangeEmail from "../src/pages/changeEmail";
-import ChangePassword from "../src/pages/changePassword";
+import ChangeEmail from "../../src/pages/changeEmail";
+import ChangePassword from "../../src/pages/changePassword";
 import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
-import { IUser, UserRole } from "../src/api/entities/UserEntity";
+import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import { AxiosResponse } from "axios";
-import apiPaths from "../src/properties/apiPaths";
+import apiPaths from "../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
