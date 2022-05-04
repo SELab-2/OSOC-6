@@ -1,15 +1,15 @@
-import Login from "../src/pages/login";
-import LoginForm from "../src/components/loginForm";
+import Login from "../../src/pages/login";
+import LoginForm from "../../src/components/loginForm";
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { loginSubmitHandler, LoginValues } from "../src/handlers/loginSubmitHandler";
-import apiPaths from "../src/properties/apiPaths";
+import { loginSubmitHandler, LoginValues } from "../../src/handlers/loginSubmitHandler";
+import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
-import applicationPaths from "../src/properties/applicationPaths";
+import applicationPaths from "../../src/properties/applicationPaths";
 import { ScopedMutator } from "swr/dist/types";
 
 jest.mock("next/router", () => require("next-router-mock"));

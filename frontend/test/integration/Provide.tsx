@@ -1,5 +1,5 @@
 import { SWRConfig } from "swr";
-import { ProjectList } from "../src/components/projectList";
+import { ProjectList } from "../../src/components/projectList";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

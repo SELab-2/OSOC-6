@@ -59,6 +59,9 @@ const common = {
 
     "no edition": "no edition",
     "no error": "no error",
+
+    "create communication template": "create communication template",
+    "template placeholder": "Write your template here",
 };
 
 export default common;

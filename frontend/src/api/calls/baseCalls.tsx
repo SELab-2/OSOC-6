@@ -1,6 +1,6 @@
 import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export const AxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,
@@ -103,9 +103,18 @@ export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
     return params;
 }
 
-export async function basePost(url: string, data: any, params: { [k: string]: any }) {
-    return await axios.post(url, data, {
+export function basePost(
+    url: string,
+    data: any,
+    params?: { [k: string]: any }
+): Promise<AxiosResponse<any, any>> {
+    return axios.post(url, data, {
         params: params,
         ...AxiosConf,
     });
+}
+
+export function extractIdFromApiEntityUrl(url: string): string {
+    const split = url.split("/");
+    return split[split.length - 1];
 }
