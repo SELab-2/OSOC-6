@@ -51,6 +51,8 @@ const common = {
     edit: "edit",
 
     "no edition": "no edition",
+
+    logout: "logout",
 };
 
 export default common;
