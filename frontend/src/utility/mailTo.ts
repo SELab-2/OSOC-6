@@ -16,11 +16,16 @@ export default function mailTo(option?: MailOptions): string {
         return "";
     }
     let builder = "mailto:" + (option.recipients || []).join(";");
+
+    function addSeparatorToken(url: string): string {
+        return url.indexOf("?") === -1 ? url + "?" : url + "&";
+    }
+
     if (option.subject) {
-        builder += "?subject=" + encodeURIComponent(option.subject);
+        builder = addSeparatorToken(builder) + "subject=" + encodeURIComponent(option.subject);
     }
     if (option.body) {
-        builder += "&body=" + encodeURIComponent(option.body);
+        builder = addSeparatorToken(builder) + "body=" + encodeURIComponent(option.body);
     }
     return builder;
 }
