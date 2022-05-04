@@ -16,7 +16,7 @@ import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import { UserRole } from "../api/entities/UserEntity";
 import timers from "../properties/timers";
-import styles from '../styles/usersOverview.module.css';
+import styles from "../styles/usersOverview.module.css";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -68,7 +68,7 @@ export function UserComponent(props: any) {
 
     return (
         <Container>
-                <Row data-testid="user-row" className={styles.users_row}>
+            <Row data-testid="user-row" className={styles.users_row}>
                 <Col>{user.callName}</Col>
                 <Col>{user.email}</Col>
                 <Col>
@@ -94,7 +94,7 @@ export function UserComponent(props: any) {
                     </DropdownButton>
                 </Col>
                 <Col xs={1}>
-                    <a onClick={deleteUser} data-testid="overview-delete-user" style={{cursor: "pointer"}}>
+                    <a onClick={deleteUser} data-testid="overview-delete-user" style={{ cursor: "pointer" }}>
                         <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                     </a>
                 </Col>

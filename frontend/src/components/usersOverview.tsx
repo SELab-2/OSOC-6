@@ -21,8 +21,8 @@ export function UsersOverview() {
 
     return (
         <div data-testid="user-overview" className={styles.users_full_div}>
-            <Container style={{marginTop: "50px"}}>
-                <h2 style={{marginBottom: "40px"}}>{capitalize(t("users manage"))}</h2>
+            <Container style={{ marginTop: "50px" }}>
+                <h2 style={{ marginBottom: "40px" }}>{capitalize(t("users manage"))}</h2>
                 <Row className={styles.users_row}>
                     <Col>
                         <h6>{capitalize(t("search name"))}</h6>

@@ -7,6 +7,8 @@ const common = {
     "let's get started": "let's get started!",
     login: "login",
 
+    callname: "callname",
+
     "empty page": "empty page",
     confirm: "confirm",
     apply: "apply",
@@ -56,6 +58,7 @@ const common = {
     edit: "edit",
 
     "no edition": "no edition",
+    "no error": "no error",
 };
 
 export default common;
