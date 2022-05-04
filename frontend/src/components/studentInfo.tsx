@@ -7,7 +7,7 @@ import { capitalize } from "../utility/stringUtil";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { CustomDialogContent } from "./suggestionModal";
-import { AdminSuggestion } from "./adminSuggestion";
+import { StudentStatus } from "./studentStatus";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
@@ -113,9 +113,9 @@ export function StudentInfo() {
                 </div>
             </div>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "white" }}>
-                <Row className="row">
+                <Row>
                     <Col sm={8}>
-                        <div className="row">
+                        <Row>
                             <div className="col-sm">
                                 <CustomDialogContent
                                     suggestion={SuggestionStrategy.yes}
@@ -137,9 +137,11 @@ export function StudentInfo() {
                                     studentUrl={data.student._links.self.href}
                                 />
                             </div>
-                        </div>
+                        </Row>
                     </Col>
-                    <Col sm={4}></Col>
+                    <Col sm={4}>
+                        <StudentStatus studentUrl={data.student._links.self.href} status={data.student.status}/>
+                    </Col>
                 </Row>
             </footer>
         </div>

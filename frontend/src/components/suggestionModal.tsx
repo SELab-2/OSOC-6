@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { Suggestion, SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { Field, Form, Formik } from "formik";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
+import {getOwnUser} from "../api/calls/userCalls";
 
 export function CustomDialogContent(props: {
     suggestion: SuggestionStrategy;
@@ -19,8 +20,7 @@ export function CustomDialogContent(props: {
 
     async function submitSuggestionHandler(values: { reason: string }) {
         // Get the logged in user
-        const userResponse: AxiosResponse = await axios.get(apiPaths.ownUser, AxiosConf);
-        const user: IUser = userResponse.data;
+        const user: IUser = await getOwnUser();
         const suggestion = new Suggestion(
             props.suggestion,
             values.reason,
@@ -53,9 +53,9 @@ export function CustomDialogContent(props: {
                                 name="reason"
                                 required
                             />
-                            <button className="btn btn-primary" type="submit" style={{ float: "right" }}>
+                            <Button type="submit" style={{ float: "right" }}>
                                 Confirm suggestion
-                            </button>
+                            </Button>
                         </Form>
                     </Formik>
                 </Modal.Body>
