@@ -1,15 +1,19 @@
 import { Field, Form, Formik } from "formik";
+import { CommunicationTemplateEntity } from "../../api/entities/CommunicationTemplateEntity";
+import { createCommunicationTemplateSubmitHandler } from "../../handlers/createCommunicationTemplateSubmitHandler";
+import { useRouter } from "next/router";
 
 export default function CommunicationTemplateCreate() {
-    const initialValues = {
-        name: "",
-        template: "",
-    };
+    const router = useRouter();
+    const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "");
 
     return (
         <div>
             <h1>Create communication template</h1>
-            <Formik initialValues={initialValues} onSubmit={(values) => console.log(values)}>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={(values) => createCommunicationTemplateSubmitHandler(values, router)}
+            >
                 {({ values, setFieldValue }) => (
                     <Form>
                         <label htmlFor="communicationTemplateNameField">Name:</label>
