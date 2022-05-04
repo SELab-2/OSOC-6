@@ -30,7 +30,7 @@ import {
     SuggestionStrategy,
 } from "../api/entities/SuggestionEntity";
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
-import {getRandomColor, getSkillTypeFromSkill} from "../api/calls/skillTypeCalls";
+import { getRandomColor, getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
 import { AxiosConf } from "../api/calls/baseCalls";
 import faker from "@faker-js/faker";
 
@@ -270,10 +270,9 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         );
 
         possibleSkills.map(async (skillName) => {
-            const skill = new SkillType(skillName, getRandomColor())
-            return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
-        })
-
+            const skill = new SkillType(skillName, getRandomColor());
+            return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data;
+        });
     } else {
         containedSkillTypes = skillTypes._embedded.skillTypes;
     }

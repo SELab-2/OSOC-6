@@ -7,8 +7,8 @@ import {
 } from "../entities/StudentEntity";
 import { IFullSuggestion, ISuggestion } from "../entities/SuggestionEntity";
 import { getAllSuggestionsFromLinks, getFullSuggestionFromSuggestion } from "./suggestionCalls";
-import {getSkillTypeWithName} from "./skillTypeCalls";
-import {ISkillType, SkillType} from "../entities/SkillTypeEntity";
+import { getSkillTypeWithName } from "./skillTypeCalls";
+import { ISkillType, SkillType } from "../entities/SkillTypeEntity";
 
 export interface IStudentQueryParams {
     freeText: string;
@@ -63,8 +63,8 @@ export async function getAllStudentInfo(studentUrl: string): Promise<IAllStudent
     );
     let skills: ISkillType[] = [];
     for (let item of student.skills) {
-        const skill = await getSkillTypeWithName(item)
-        skills.push(skill)
+        const skill = await getSkillTypeWithName(item);
+        skills.push(skill);
     }
 
     return { student: student, suggestions: fullSuggestions, skills: skills };

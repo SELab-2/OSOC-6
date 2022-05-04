@@ -4,7 +4,7 @@ import apiPaths from "../properties/apiPaths";
 import useSWR from "swr";
 import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
-import {Badge, Col, ListGroup, ListGroupItem, Row} from "react-bootstrap";
+import { Badge, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { CustomDialogContent } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -47,12 +47,11 @@ export function StudentInfo() {
                         <ListGroup className="list-group-horizontal" as="ul">
                             {data.skills.map((skill) => {
                                 return (
-                                <ListGroupItem key={skill.name} style={{ background: skill.colour }}>
-                                    <Badge bg="">
-                                        {skill.name}
-                                    </Badge>
-                                </ListGroupItem>
-                            )})}
+                                    <ListGroupItem key={skill.name} style={{ background: skill.colour }}>
+                                        <Badge bg="">{skill.name}</Badge>
+                                    </ListGroupItem>
+                                );
+                            })}
                         </ListGroup>
                     </div>
                 </div>

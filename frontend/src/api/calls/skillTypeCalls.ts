@@ -45,28 +45,28 @@ export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
 }
 
 export async function getSkillTypeWithName(skillName: string): Promise<ISkillType> {
-    console.log(skillName.slice(0,20))
+    console.log(skillName.slice(0, 20));
     let skills = await getAllSkillTypesFromLinks(apiPaths.skillTypes);
-    console.log(skills)
-    const skill = skills.find(skill => skill.name === skillName.slice(0,20));
-    console.log("Skill")
-    console.log(skill)
+    console.log(skills);
+    const skill = skills.find((skill) => skill.name === skillName.slice(0, 20));
+    console.log("Skill");
+    console.log(skill);
     let skillType: ISkillType;
     if (skill == undefined) {
-        skillType = await createNewSkill(skillName)
-        console.log(skillType)
+        skillType = await createNewSkill(skillName);
+        console.log(skillType);
     } else {
-        skillType = skill
+        skillType = skill;
     }
-    return skillType
+    return skillType;
 }
 
 export function getRandomColor() {
     let color = Math.floor(Math.random() * 16777216).toString(16);
-    return '#000000'.slice(0, -color.length) + color;
+    return "#000000".slice(0, -color.length) + color;
 }
 
 export async function createNewSkill(skillName: string): Promise<ISkillType> {
-    const skill = new SkillType(skillName.slice(0,20), getRandomColor())
-    return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
+    const skill = new SkillType(skillName.slice(0, 20), getRandomColor());
+    return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data;
 }
