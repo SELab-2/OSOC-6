@@ -67,15 +67,51 @@ export function ProfileOverview() {
     }
 
     return (
-        <Container>
-            <h2>{t("user profile")}</h2>
-            <Row data-testid="profile-overview">
-                <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
-                {/*show callname if not editing*/}
-                {!editCallname && <Col>{data.callName}</Col>}
-                {!editCallname && (
-                    <Col>
-                        <a data-testid="edit-callname" onClick={handleEditCallName}>
+        <div className={styles.profile_full_div}>
+            <div className={styles.profile_center}>
+                <h2 style={{marginRight: "20px", marginBottom: "50px"}}>{t("user profile")}</h2>
+                <Row data-testid="profile-overview" className={styles.profile_row}>
+                    <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
+                    {/*show callname if not editing*/}
+                    {!editCallname && <Col>{data.callName}</Col>}
+                    {!editCallname && (
+                        <Col className={styles.profile_last_col}>
+                            <a data-testid="edit-callname" onClick={handleEditCallName}>
+                                <Image
+                                    alt={capitalize(t("edit"))}
+                                    src={"/resources/edit.svg"}
+                                    width="15"
+                                    height="15"
+                                />
+                            </a>
+                        </Col>
+                    )}
+
+                    {/*input field and save mark if editing*/}
+                    {editCallname && (
+                        <Col>
+                            <input
+                                data-testid="input-callname"
+                                name="callname"
+                                defaultValue={data.callName}
+                                onChange={onChange}
+                            />
+                            <button data-testid="save-callname" onClick={handleSaveCallName}>
+                                <Image
+                                    alt={capitalize(t("confirm"))}
+                                    src={"/resources/checkmark.svg"}
+                                    width="15"
+                                    height="15"
+                                />
+                            </button>
+                        </Col>
+                    )}
+                </Row>
+                <Row className={styles.profile_row}>
+                    <Col className={styles.first_element}>{capitalize(t("email")) + ":"}</Col>
+                    <Col>{data.email}</Col>
+                    <Col className={styles.profile_last_col}>
+                        <a href={applicationPaths.changeEmail}>
                             <Image
                                 alt={capitalize(t("edit"))}
                                 src={"/resources/edit.svg"}
@@ -84,74 +120,40 @@ export function ProfileOverview() {
                             />
                         </a>
                     </Col>
-                )}
-
-                {/*input field and save mark if editing*/}
-                {editCallname && (
-                    <Col>
-                        <input
-                            data-testid="input-callname"
-                            name="callname"
-                            defaultValue={data.callName}
-                            onChange={onChange}
-                        />
-                        <button data-testid="save-callname" onClick={handleSaveCallName}>
+                </Row>
+                <Row className={styles.profile_row}>
+                    <Col className={styles.first_element}>{capitalize(t("user password") + ":")}</Col>
+                    <Col>******</Col>
+                    <Col className={styles.profile_last_col}>
+                        <a href={applicationPaths.changePassword}>
                             <Image
-                                alt={capitalize(t("confirm"))}
-                                src={"/resources/checkmark.svg"}
+                                alt={capitalize(t("edit"))}
+                                src={"/resources/edit.svg"}
                                 width="15"
                                 height="15"
                             />
-                        </button>
+                        </a>
                     </Col>
-                )}
-            </Row>
-            <Row>
-                <Col className={styles.first_element}>{capitalize(t("email")) + ":"}</Col>
-                <Col>{data.email}</Col>
-                <Col>
-                    <a href={applicationPaths.changeEmail}>
-                        <Image
-                            alt={capitalize(t("edit"))}
-                            src={"/resources/edit.svg"}
-                            width="15"
-                            height="15"
-                        />
-                    </a>
-                </Col>
-            </Row>
-            <Row>
-                <Col className={styles.first_element}>{capitalize(t("user password") + ":")}</Col>
-                <Col>******</Col>
-                <Col>
-                    <a href={applicationPaths.changePassword}>
-                        <Image
-                            alt={capitalize(t("edit"))}
-                            src={"/resources/edit.svg"}
-                            width="15"
-                            height="15"
-                        />
-                    </a>
-                </Col>
-            </Row>
-            <Row>
-                <Col className={styles.first_element}>{capitalize(t("user status"))}</Col>
-                <Col>
-                    {data.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
-                    {data.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
-                </Col>
-            </Row>
-            <Row>
-                <Button data-testid="delete-userprofile" onClick={deleteCurrentUser}>
-                    {capitalize(t("user delete"))}
-                </Button>
-            </Row>
+                </Row>
+                <Row className={styles.profile_row}>
+                    <Col className={styles.first_element}>{capitalize(t("user status"))}</Col>
+                    <Col>
+                        {data.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
+                        {data.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
+                    </Col>
+                </Row>
+                <Row className={styles.profile_row}>
+                    <Button data-testid="delete-userprofile" onClick={deleteCurrentUser}>
+                        {capitalize(t("user delete"))}
+                    </Button>
+                </Row>
+            </div>
             <ToastContainer position="bottom-end">
                 <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
                     <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
-        </Container>
+        </div>
     );
 }
 
