@@ -69,14 +69,14 @@ export function ProfileOverview() {
     return (
         <div className={styles.profile_full_div}>
             <div className={styles.profile_center}>
-                <h2 style={{marginRight: "20px", marginBottom: "50px"}}>{t("user profile")}</h2>
+                <h2 style={{ marginRight: "20px", marginBottom: "50px" }}>{t("user profile")}</h2>
                 <Row data-testid="profile-overview" className={styles.profile_row}>
                     <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                     {/*show callname if not editing*/}
                     {!editCallname && <Col>{data.callName}</Col>}
                     {!editCallname && (
                         <Col className={styles.profile_last_col}>
-                            <a data-testid="edit-callname" onClick={handleEditCallName}>
+                            <a data-testid="edit-callname" onClick={handleEditCallName} className={styles.clickable}>
                                 <Image
                                     alt={capitalize(t("edit"))}
                                     src={"/resources/edit.svg"}
@@ -91,12 +91,13 @@ export function ProfileOverview() {
                     {editCallname && (
                         <Col>
                             <input
+                                className={styles.callname_field}
                                 data-testid="input-callname"
                                 name="callname"
                                 defaultValue={data.callName}
                                 onChange={onChange}
                             />
-                            <button data-testid="save-callname" onClick={handleSaveCallName}>
+                            <button data-testid="save-callname" onClick={handleSaveCallName} className={styles.callname_confirm}>
                                 <Image
                                     alt={capitalize(t("confirm"))}
                                     src={"/resources/checkmark.svg"}
@@ -111,7 +112,7 @@ export function ProfileOverview() {
                     <Col className={styles.first_element}>{capitalize(t("email")) + ":"}</Col>
                     <Col>{data.email}</Col>
                     <Col className={styles.profile_last_col}>
-                        <a href={applicationPaths.changeEmail}>
+                        <a href={applicationPaths.changeEmail} className={styles.clickable}>
                             <Image
                                 alt={capitalize(t("edit"))}
                                 src={"/resources/edit.svg"}
@@ -125,7 +126,7 @@ export function ProfileOverview() {
                     <Col className={styles.first_element}>{capitalize(t("user password") + ":")}</Col>
                     <Col>******</Col>
                     <Col className={styles.profile_last_col}>
-                        <a href={applicationPaths.changePassword}>
+                        <a href={applicationPaths.changePassword} className={styles.clickable}>
                             <Image
                                 alt={capitalize(t("edit"))}
                                 src={"/resources/edit.svg"}

@@ -29,3 +29,24 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.callname_field {
+    border-color: white;
+    background: #1a1a32;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.callname_field:focus {
+    background: #1a1a32;
+    color: white;
+}
+
+.callname_confirm {
+    background: #1a1a32;
+    border-color: white;
+}
+
+.clickable {
+    cursor: pointer;
+}
