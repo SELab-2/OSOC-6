@@ -1,15 +1,15 @@
 import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
-export const AxiosConf = {
+export const AxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,
     headers: {
         "Content-Type": "application/json; charset=UTF-8",
     },
 };
 
-export const AxiosFormConfig = {
+export const AxiosFormConfig: AxiosRequestConfig = {
     baseURL: apiPaths.base,
     headers: {
         "Content-Type": "multipart/form-data",
@@ -41,7 +41,7 @@ export async function getAllEntitiesFromPage(
             })
         ).data;
         entities.push(...page._embedded[collectionName]);
-        fetchedAll = currentPage + 1 === page.page.totalPages;
+        fetchedAll = currentPage + 1 >= page.page.totalPages;
         currentPage++;
     }
     return entities;
@@ -56,8 +56,11 @@ export async function getAllEntitiesFromLinksUrl(
     return linksData._embedded[collectionName];
 }
 
-export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity> {
-    return (await axios.get(entityUrl, AxiosConf)).data;
+export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
+    const data: IBaseEntity = (await axios.get(entityUrl, AxiosConf)).data;
+    // Needed so an error is thrown when type is wrong.
+    data._links.self.href;
+    return data;
 }
 
 export async function getEntitiesWithCache(
@@ -70,7 +73,7 @@ export async function getEntitiesWithCache(
         urls.map(async (url) => {
             if (!cache[url] && !fetched.has(url)) {
                 fetched.add(url);
-                cache[url] = await getEntityOnUrl(url);
+                cache[url] = (await getEntityOnUrl(url))!;
             }
         })
     );
@@ -78,14 +81,15 @@ export async function getEntitiesWithCache(
 }
 
 export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
-    let urlConstructor = url + "?";
+    let urlConstructor = url.indexOf("?") === -1 ? url + "?" : url + "&";
     for (const key in params) {
-        urlConstructor += key + "=" + params[key] + "&";
+        if (params[key] !== undefined) {
+            urlConstructor += key + "=" + params[key] + "&";
+        }
     }
-    urlConstructor =
-        urlConstructor[urlConstructor.length - 1] === "&"
-            ? urlConstructor.substring(0, urlConstructor.length - 1)
-            : urlConstructor;
+    urlConstructor = ["&", "?"].includes(urlConstructor[urlConstructor.length - 1])
+        ? urlConstructor.substring(0, urlConstructor.length - 1)
+        : urlConstructor;
     return urlConstructor;
 }
 

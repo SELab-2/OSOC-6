@@ -49,6 +49,8 @@ const common = {
     coach: "coach",
     disabled: "disabled",
     edit: "edit",
+
+    "no edition": "no edition",
 };
 
 export default common;

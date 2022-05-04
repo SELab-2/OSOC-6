@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.ReadOnlyProperty;
-import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +19,7 @@ import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * The database entity for an Invitation.
@@ -39,11 +39,12 @@ public final class Invitation implements WeakToEdition {
 
     /**
      * The unique token of the invitation.
+     * We cannot use the Base64StringKeyGenerator here because it can contain special html characters.
      */
     @Basic(optional = false)
     @Column(unique = true) @ReadOnlyProperty
     @Getter
-    private final String token = new Base64StringKeyGenerator().generateKey();
+    private final String token = UUID.randomUUID().toString();
 
     /**
      * The timestamp of the invitation.

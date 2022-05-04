@@ -1,4 +1,3 @@
-import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
 import { getStudentOnUrl } from "../api/calls/studentCalls";
 import styles from "../styles/studentList.module.css";
