@@ -2,6 +2,7 @@ import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface ICommunicationTemplate extends IBaseEntity {
     name: string;
+    subject: string;
     template: string;
 
     _links: {
@@ -19,11 +20,13 @@ export type ICommunicationTemplateLinks = IEntityLinks<{
 }>;
 
 export class CommunicationTemplateEntity {
-    constructor(name: string, template: string) {
+    constructor(name: string, subject: string, template: string) {
         this.name = name;
+        this.subject = subject;
         this.template = template;
     }
 
     name: string;
+    subject: string;
     template: string;
 }

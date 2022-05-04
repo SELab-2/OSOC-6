@@ -127,7 +127,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static CommunicationTemplate getBaseCommunicationTemplate1(final BaseTestPerformer<?, ?, ?> performer) {
-        return new CommunicationTemplate("A well deserved yes",
+        return new CommunicationTemplate("A well deserved yes", "Selected for OSOC",
                 "We would like to inform you... You are the best candidate we ever had! We want you! Need you!");
     }
 
@@ -138,7 +138,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static CommunicationTemplate getBaseCommunicationTemplate2(final BaseTestPerformer<?, ?, ?> performer) {
-        return new CommunicationTemplate("Love Letter",
+        return new CommunicationTemplate("Love Letter", "A little note",
                 "Romeo Oh romeo thou make my hearth melt.");
     }
 
