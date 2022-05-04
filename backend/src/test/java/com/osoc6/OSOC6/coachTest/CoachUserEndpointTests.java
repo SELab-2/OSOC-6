@@ -18,6 +18,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -193,6 +195,24 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
         );
         perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_update_password_updates_and_encrypts_new_password() throws Exception {
+        String oldPassword = getCoachUser().getPassword();
+        String newPassword = "mynewpw123";
+        Map<String, String> map = Map.of(
+                "password", newPassword
+        );
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
+                .andExpect(status().is2xxSuccessful());
+
+        // We check that the password no longer equals the previous one, and that the new one has been encrypted
+        UserEntity updatedUserEntity = get_repository_entity_by_id(getCoachUser().getId());
+        assertNotEquals(oldPassword, updatedUserEntity.getPassword());
+        assertNotEquals(newPassword, updatedUserEntity.getPassword());
+        assertTrue(updatedUserEntity.getPassword().length() > 0);
     }
 
     @Test
