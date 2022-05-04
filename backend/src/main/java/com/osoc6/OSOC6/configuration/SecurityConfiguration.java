@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        // In production, we use secured communication (https)
+        // In production, we only use secured communication (https)
         if (Arrays.asList(environment.getActiveProfiles()).contains("production")) {
             http.requiresChannel().anyRequest().requiresSecure();
         }
