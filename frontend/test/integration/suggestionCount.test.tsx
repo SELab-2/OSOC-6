@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
-import { SuggestionCount } from "../src/components/suggestionCount";
+import { SuggestionCount } from "../../src/components/suggestionCount";
 import mockAxios from "jest-mock-axios";
-import apiPaths from "../src/properties/apiPaths";
+import apiPaths from "../../src/properties/apiPaths";
 import { getBaseOkResponse, getBaseStudent } from "./TestEntityProvider";
 import "@testing-library/jest-dom/extend-expect";
 
