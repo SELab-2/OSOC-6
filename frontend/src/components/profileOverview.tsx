@@ -76,7 +76,11 @@ export function ProfileOverview() {
                     {!editCallname && <Col>{data.callName}</Col>}
                     {!editCallname && (
                         <Col className={styles.profile_last_col}>
-                            <a data-testid="edit-callname" onClick={handleEditCallName} className={styles.clickable}>
+                            <a
+                                data-testid="edit-callname"
+                                onClick={handleEditCallName}
+                                className={styles.clickable}
+                            >
                                 <Image
                                     alt={capitalize(t("edit"))}
                                     src={"/resources/edit.svg"}
@@ -97,7 +101,11 @@ export function ProfileOverview() {
                                 defaultValue={data.callName}
                                 onChange={onChange}
                             />
-                            <button data-testid="save-callname" onClick={handleSaveCallName} className={styles.callname_confirm}>
+                            <button
+                                data-testid="save-callname"
+                                onClick={handleSaveCallName}
+                                className={styles.callname_confirm}
+                            >
                                 <Image
                                     alt={capitalize(t("confirm"))}
                                     src={"/resources/checkmark.svg"}
