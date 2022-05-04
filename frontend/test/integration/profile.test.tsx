@@ -2,11 +2,11 @@ import "@testing-library/jest-dom";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
 import { getBaseNoContentResponse, getBaseOkResponse, getBasePage, getBaseUser } from "./TestEntityProvider";
-import { UserRole } from "../src/api/entities/UserEntity";
+import { UserRole } from "../../src/api/entities/UserEntity";
 import { AxiosResponse } from "axios";
-import apiPaths from "../src/properties/apiPaths";
+import apiPaths from "../../src/properties/apiPaths";
 import mockAxios from "jest-mock-axios";
-import Profile from "../src/pages/profile";
+import Profile from "../../src/pages/profile";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("next/router", () => require("next-router-mock"));

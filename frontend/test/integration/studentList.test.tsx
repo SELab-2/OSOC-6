@@ -1,4 +1,4 @@
-import { StudentList } from "../src/components/studentList";
+import { StudentList } from "../../src/components/studentList";
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -6,8 +6,8 @@ import mockAxios from "jest-mock-axios";
 import { AxiosResponse } from "axios";
 import { makeCacheFree } from "./Provide";
 import { getBaseOkResponse, getBasePage, getBaseStudent } from "./TestEntityProvider";
-import apiPaths from "../src/properties/apiPaths";
-import { studentCollectionName } from "../src/api/entities/StudentEntity";
+import apiPaths from "../../src/properties/apiPaths";
+import { studentCollectionName } from "../../src/api/entities/StudentEntity";
 import mockRouter from "next-router-mock";
 
 jest.mock("next/router", () => require("next-router-mock"));

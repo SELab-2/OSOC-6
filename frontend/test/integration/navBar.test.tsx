@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import NavBar from "../src/components/navBar";
+import NavBar from "../../src/components/navBar";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import applicationPaths from "../src/properties/applicationPaths";
+import applicationPaths from "../../src/properties/applicationPaths";
 import mockRouter from "next-router-mock";
 
 it("Should be able to render.", async () => {

@@ -1,19 +1,19 @@
-import { IProject } from "../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "../src/api/entities/BaseEntities";
+import { IProject } from "../../src/api/entities/ProjectEntity";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "../../src/api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { IProjectSkill } from "../src/api/entities/ProjectSkillEntity";
-import { IUser, UserRole } from "../src/api/entities/UserEntity";
-import { baseSkillType, ISkillType } from "../src/api/entities/SkillTypeEntity";
-import { IAssignment } from "../src/api/entities/AssignmentEntity";
+import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
+import { IUser, UserRole } from "../../src/api/entities/UserEntity";
+import { baseSkillType, ISkillType } from "../../src/api/entities/SkillTypeEntity";
+import { IAssignment } from "../../src/api/entities/AssignmentEntity";
 import {
     EnglishProficiency,
     Gender,
     IStudent,
     OsocExpericience,
     Status,
-} from "../src/api/entities/StudentEntity";
-import { IEdition } from "../src/api/entities/EditionEntity";
+} from "../../src/api/entities/StudentEntity";
+import { IEdition } from "../../src/api/entities/EditionEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {

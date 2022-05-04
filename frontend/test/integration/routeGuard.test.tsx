@@ -1,11 +1,11 @@
 import { cleanup, render } from "@testing-library/react";
-import RouteGuard from "../src/components/routeGuard";
-import Home from "../src/pages/home";
+import RouteGuard from "../../src/components/routeGuard";
+import Home from "../../src/pages/home";
 import { AxiosResponse } from "axios";
-import ApiPaths from "../src/properties/apiPaths";
-import apiPaths from "../src/properties/apiPaths";
+import ApiPaths from "../../src/properties/apiPaths";
+import apiPaths from "../../src/properties/apiPaths";
 import mockAxios from "jest-mock-axios";
-import { AxiosConf } from "../src/api/calls/baseCalls";
+import { AxiosConf } from "../../src/api/calls/baseCalls";
 import React from "react";
 import { jest } from "@jest/globals";
 import { getBaseMovedResponse } from "./TestEntityProvider";
