@@ -140,7 +140,10 @@ export function StudentInfo() {
                         </Row>
                     </Col>
                     <Col sm={4}>
-                        <StudentStatus studentUrl={data.student._links.self.href} status={data.student.status}/>
+                        <StudentStatus
+                            studentUrl={data.student._links.self.href}
+                            status={data.student.status}
+                        />
                     </Col>
                 </Row>
             </footer>

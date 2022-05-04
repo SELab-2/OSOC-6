@@ -1,14 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import apiPaths from "../properties/apiPaths";
-import {AxiosConf} from "../api/calls/baseCalls";
-import {Button, Modal} from "react-bootstrap";
-import {Status} from "../api/entities/StudentEntity";
+import { AxiosConf } from "../api/calls/baseCalls";
+import { Button, Modal } from "react-bootstrap";
+import { Status } from "../api/entities/StudentEntity";
 
-export function StudentStatusModal(props: {
-    status: Status;
-    studentUrl: string;
-}) {
+export function StudentStatusModal(props: { status: Status; studentUrl: string }) {
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);
@@ -21,7 +18,11 @@ export function StudentStatusModal(props: {
 
     return (
         <>
-            <Button variant="btn-outline" onClick={handleShow} style={{ color: "#0a0839", borderColor: "#0a0839", width: 110 }}>
+            <Button
+                variant="btn-outline"
+                onClick={handleShow}
+                style={{ color: "#0a0839", borderColor: "#0a0839", width: 110 }}
+            >
                 Confirm
             </Button>
 
@@ -29,9 +30,7 @@ export function StudentStatusModal(props: {
                 <Modal.Header closeButton>
                     <Modal.Title>Change status</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    Would you like to change the status to {props.status}?
-                </Modal.Body>
+                <Modal.Body>Would you like to change the status to {props.status}?</Modal.Body>
                 <Button onClick={changeStatus}>Confirm</Button>
             </Modal>
         </>

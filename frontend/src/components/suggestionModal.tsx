@@ -6,7 +6,7 @@ import axios from "axios";
 import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
-import {getOwnUser} from "../api/calls/userCalls";
+import { getOwnUser } from "../api/calls/userCalls";
 
 export function CustomDialogContent(props: {
     suggestion: SuggestionStrategy;
