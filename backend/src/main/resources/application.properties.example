@@ -5,6 +5,7 @@ spring.datasource.driverClassName = org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
 server.servlet.contextPath=/api/
 
+# The current active profile, use 'production' in production and 'development' in development.
 spring.profiles.active=production
 
 # Tally webhook secret token
