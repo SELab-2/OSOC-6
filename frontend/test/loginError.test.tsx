@@ -17,7 +17,7 @@ describe("LoginError page", () => {
         const error = screen.getByText(capitalize("errorMessages:invalid_credentials"));
         expect(error).toBeInTheDocument();
 
-        const submitButton = screen.getByRole("button");
+        const submitButton = screen.getByTestId("login-submit");
         expect(submitButton).toBeInTheDocument();
     });
 });
