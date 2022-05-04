@@ -31,7 +31,9 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
                     <Modal.Title>Change status</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Would you like to change the status to {props.status}?</Modal.Body>
-                <Button onClick={changeStatus}>Confirm</Button>
+                <Modal.Footer>
+                    <Button onClick={changeStatus}>Confirm</Button>
+                </Modal.Footer>
             </Modal>
         </>
     );

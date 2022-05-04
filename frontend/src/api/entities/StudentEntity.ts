@@ -1,8 +1,6 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { IProject } from "./ProjectEntity";
-import { IUser } from "./UserEntity";
-import { IFullProjectSkill } from "../calls/projectSkillCalls";
-import { IFullSuggestion, ISuggestion } from "./SuggestionEntity";
+import { IFullSuggestion } from "./SuggestionEntity";
+import { ISkillType } from "./SkillTypeEntity";
 
 export enum EnglishProficiency {
     /**
@@ -99,6 +97,7 @@ export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
 export type IAllStudentInfo = {
     student: IStudent;
     suggestions: IFullSuggestion[];
+    skills: ISkillType[];
 };
 
 export class Student {

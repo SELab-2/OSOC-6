@@ -30,7 +30,7 @@ import {
     SuggestionStrategy,
 } from "../api/entities/SuggestionEntity";
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
-import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
+import {getRandomColor, getSkillTypeFromSkill} from "../api/calls/skillTypeCalls";
 import { AxiosConf } from "../api/calls/baseCalls";
 import faker from "@faker-js/faker";
 
@@ -161,8 +161,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const students: IStudentPage = (await axios.get(apiPaths.students, AxiosConf)).data;
     let containedStudents: IStudent[];
     const possibleSkills = [
-        "front-end developer",
-        "back-end developer",
+        "Front-end developer",
+        "Back-end developer",
         "UX / UI designer",
         "Graphic designer",
         "Business Modeller",
@@ -200,7 +200,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "",
             "he/him/his",
             "A fun fact about me",
-            ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+            skillList,
             ["I love to Spring Spring in java Spring!"],
             faker.lorem.paragraph(5),
             "3th",
@@ -209,6 +209,10 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         let students = [student1];
         for (let i = 0; i < 10; i++) {
+            const bestSkill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
+            const skill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
+            const skillList = bestSkill == skill ? [bestSkill] : [bestSkill, skill];
+
             const firstname = faker.name.firstName();
             const lastname = faker.name.lastName();
             const newStudent: Student = new Student(
@@ -234,7 +238,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 "",
                 "they",
                 "",
-                ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+                skillList,
                 ["I love to Spring Spring in java Spring!"],
                 "",
                 "3th",
@@ -254,6 +258,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
     const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
     let containedSkillTypes: ISkillType[];
+
     if (skillTypes._embedded.skillTypes.length == 0) {
         const skillType1 = new SkillType("V10 boulderer", "#427162");
         const skillTypeOther = new SkillType(baseSkillType, "#929199");
@@ -263,6 +268,12 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 async (skill) => (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
             )
         );
+
+        possibleSkills.map(async (skillName) => {
+            const skill = new SkillType(skillName, getRandomColor())
+            return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
+        })
+
     } else {
         containedSkillTypes = skillTypes._embedded.skillTypes;
     }
