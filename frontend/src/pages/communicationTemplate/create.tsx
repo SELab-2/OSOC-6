@@ -11,7 +11,7 @@ export default function CommunicationTemplateCreate() {
     const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "");
 
     return (
-        <div>
+        <div data-testid="communication-template-create">
             <h1 className="capitalize">{t("create communication template")}</h1>
             <Formik
                 initialValues={initialValues}

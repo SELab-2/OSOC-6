@@ -11,7 +11,8 @@ jest.mock("next/router", () => require("next-router-mock"));
 
 describe("create communication template", () => {
     it("renders", () => {
-        render(<CommunicationTemplateCreate />);
+        const page = render(<CommunicationTemplateCreate />);
+        expect(page.getByTestId("communication-template-create")).toBeInTheDocument();
     });
 
     afterEach(() => {
