@@ -5,6 +5,9 @@ import { getCommunicationTemplateOnUrl } from "../../api/calls/communicationTemp
 import { Button } from "react-bootstrap";
 import mailTo from "../../utility/mailTo";
 
+/**
+ * Component that renders the information of a communication template.
+ */
 export default function CommunicationTemplateInfo() {
     const router = useRouter();
     const query = router.query as { id: string };

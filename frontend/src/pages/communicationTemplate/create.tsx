@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 
+/**
+ * Component allowing the creation of a new communication template.
+ */
 export default function CommunicationTemplateCreate() {
     const { t } = useTranslation("common");
     const router = useRouter();
