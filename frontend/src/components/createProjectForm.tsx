@@ -34,6 +34,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const { t } = useTranslation("common");
     const [edition] = useEdition();
 
+    const [goals, setGoals] = useState<string[]>([]);
+    const [goalInput, setGoalInput] = useState<string>("");
     const [coaches, setCoaches] = useState<string[]>([]);
     const [selectedCoach, setSelectedCoach] = useState<string>("");
     const [skills, setSkills] = useState<string[]>([]);
@@ -53,6 +55,10 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
 
     const skillColorMap = getSkillColorMap(skillTypes);
 
+    function handleChangeGoalInput(e: ChangeEvent<HTMLInputElement>) {
+        setGoalInput(e.target.value);
+    }
+
     function handleChangeCoach(e: ChangeEvent<HTMLInputElement>) {
         setSelectedCoach(e.target.value);
     }
@@ -63,6 +69,15 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
 
     function handleChangeSkillInfo(event: ChangeEvent<HTMLInputElement>) {
         setSkillInfo(event.target.value);
+    }
+
+    function handleAddGoal() {
+        if (goalInput) {
+            const newGoals: string[] = goals.concat(goalInput);
+
+            setGoals(newGoals);
+            setGoalInput("");
+        }
     }
 
     function handleAddSkill() {
@@ -94,6 +109,11 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         }
     }
 
+    function handleDeleteGoal(index: number) {
+        delete goals[index];
+        setCoaches(goals.filter((value) => value !== undefined));
+    }
+
     function handleDeleteCoach(index: number) {
         delete coaches[index];
         setCoaches(coaches.filter((value) => value !== undefined));
@@ -107,6 +127,15 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     async function handleSubmit(submitValues: FormSubmitValues) {
+        const coachURLs: string[] = [];
+        for (let coach of coaches) {
+            coachURLs.push(
+                // We know there will always be a user with this callname,
+                // as every option of the Select contains a value that originates from the users-array
+                users.find((item) => item.callName === coach)!._links.self.href
+            );
+        }
+
         const createValues: ProjectCreationValues = {
             name: submitValues.name,
             info: submitValues.info,
@@ -117,20 +146,10 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             creator: "",
             edition: getEntityFromFullUrl(edition!._links.self.href),
             skillInfos: skillInfos,
-            goals: [],
-            coaches: [],
+            goals: goals,
+            coaches: coachURLs
         };
 
-        const coachURLs: string[] = [];
-        for (let coach of coaches) {
-            coachURLs.push(
-                // We know there will always be a user with this callname,
-                // as every option of the Select contains a value that originates from the users-array
-                users.find((item) => item.callName === coach)!._links.self.href
-            );
-        }
-
-        createValues.coaches = coachURLs;
         props.submitHandler(createValues);
     }
 
@@ -146,11 +165,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     name: "",
                     info: "",
                     versionManagement: "",
-                    coaches: [],
                     partnerName: "",
                     partnerWebsite: "",
-                    skills: [],
-                    skillInfos: [],
                 }}
                 onSubmit={handleSubmit}
             >
@@ -171,6 +187,38 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         data-testid="projectinfo-input"
                         placeholder={capitalize(t("project info placeholder"))}
                     />
+                    {goals.map((goal: string, index: number) => (
+                        <Row key={index}>
+                            <Col>{goal}</Col>
+                            <Col xs={1}>
+                                <a>
+                                    <Image
+                                        onClick={() => handleDeleteGoal(index)}
+                                        alt=""
+                                        src={"/resources/delete.svg"}
+                                        width="15"
+                                        height="15"
+                                    />
+                                </a>
+                            </Col>
+                        </Row>
+                    ))}
+                    <Field
+                        className="form-control mb-2"
+                        label={capitalize(t("enter project goal"))}
+                        data-testid="goal-input"
+                        value={goalInput}
+                        placeholder={capitalize(t("project goal placeholder"))}
+                        onChange={handleChangeGoalInput}
+                    />
+                    <button
+                        className="btn btn-secondary"
+                        type="button"
+                        onClick={handleAddGoal}
+                        data-testid="add-goal-button"
+                    >
+                        {capitalize(t("add goal"))}
+                    </button>
                     <Field
                         className="form-control mb-2"
                         label={capitalize(t("choose version control URL"))}

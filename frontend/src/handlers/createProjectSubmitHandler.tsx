@@ -46,7 +46,7 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues):
         values.name,
         values.info,
         values.versionManagement,
-        [],
+        values.goals,
         values.partnerName,
         values.partnerWebsite,
         values.edition,
