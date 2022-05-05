@@ -147,7 +147,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             edition: getEntityFromFullUrl(edition!._links.self.href),
             skillInfos: skillInfos,
             goals: goals,
-            coaches: coachURLs
+            coaches: coachURLs,
         };
 
         props.submitHandler(createValues);
