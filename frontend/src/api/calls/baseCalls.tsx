@@ -121,6 +121,11 @@ export function basePost(
     });
 }
 
+// Extract entity-part from a URL, for example: get /users/1 from https://localhost/api/users/1
+export function getEntityFromFullUrl(fullUrl: string): string {
+    return "/" + fullUrl.split(apiPaths.base)[1];
+}
+
 export function extractIdFromApiEntityUrl(url: string): string {
     const split = url.split("/");
     return split[split.length - 1];

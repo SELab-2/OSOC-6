@@ -5,38 +5,51 @@ import {
     AxiosConf,
     AxiosFormConfig,
     getEntityFromFullUrl,
-    getIdFromUrl,
+    extractIdFromApiEntityUrl,
     ManyToManyAxiosConf,
 } from "../api/calls/baseCalls";
 import { Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
+import useEdition from "../hooks/useGlobalEdition";
 
 export interface ProjectCreationValues {
-    projectName: string;
-    projectInfo: string;
+    name: string;
+    info: string;
     versionManagement: string;
     partnerName: string;
     partnerWebsite: string;
+    creator: string;
+    edition: string;
+    goals: string[];
     skills: string[];
     skillInfos: string[];
     coaches: string[];
+}
+
+export interface FormSubmitValues {
+    name: string;
+    info: string;
+    versionManagement: string;
+    partnerName: string;
+    partnerWebsite: string;
 }
 
 export type ProjectCreationProps = {
     submitHandler: (values: ProjectCreationValues) => void;
 };
 
-export async function createProjectSubmitHandler(values: ProjectCreationValues) {
+export async function createProjectSubmitHandler(values: ProjectCreationValues): Promise<string> {
     const ownUser = await axios.get(apiPaths.ownUser, AxiosConf);
+
     const project: Project = new Project(
-        values.projectName,
-        values.projectInfo,
+        values.name,
+        values.info,
         values.versionManagement,
         [],
         values.partnerName,
         values.partnerWebsite,
-        "/editions/3",
+        values.edition,
         getEntityFromFullUrl(ownUser.data._links.self.href)
     );
 
@@ -60,8 +73,6 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
         )
     );
 
-    console.log([...projectSkills, values.coaches]);
-
     await Promise.all(
         values.coaches.map(
             async (coach) =>
@@ -70,6 +81,11 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues) 
     );
 
     await Router.push(
-        "/" + applicationPaths.projects + "/" + getIdFromUrl(projectResponse.data._links.self.href)
+        "/" +
+            applicationPaths.projects +
+            "/" +
+            extractIdFromApiEntityUrl(projectResponse.data._links.self.href)
     );
+
+    return getEntityFromFullUrl(projectResponse.data._links.coaches.href);
 }

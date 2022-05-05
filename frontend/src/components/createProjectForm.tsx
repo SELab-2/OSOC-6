@@ -6,25 +6,33 @@ import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
-import { ProjectCreationProps, ProjectCreationValues } from "../handlers/createProjectSubmitHandler";
+import {
+    FormSubmitValues,
+    ProjectCreationProps,
+    ProjectCreationValues,
+} from "../handlers/createProjectSubmitHandler";
 import { IUser } from "../api/entities/UserEntity";
 import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
 import { getSkillColorMap, ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
+import { useSwrWithEdition } from "../hooks/utilHooks";
+import useEdition from "../hooks/useGlobalEdition";
+import { getEntityFromFullUrl } from "../api/calls/baseCalls";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
-    let userResponse = useSWR(apiPaths.users, getAllUsersFromPage);
+    let userResponse = useSwrWithEdition(apiPaths.users, getAllUsersFromPage);
 
     let users: IUser[] = userResponse.data || [];
     let userError: Error = userResponse.error;
 
-    let skillTypeResponse = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
+    let skillTypeResponse = useSwrWithEdition(apiPaths.skillTypes, getAllSkillTypesFromPage);
 
     let skillTypes: ISkillType[] = skillTypeResponse.data || [];
     let skillTypeError: Error = skillTypeResponse.error;
 
     const { t } = useTranslation("common");
+    const [edition] = useEdition();
 
     const [coaches, setCoaches] = useState<string[]>([]);
     const [selectedCoach, setSelectedCoach] = useState<string>("");
@@ -98,9 +106,20 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         setSkillInfos(skillInfos.filter((value) => value !== undefined));
     }
 
-    async function handleSubmit(values: ProjectCreationValues) {
-        values.skills = skills;
-        values.skillInfos = skillInfos;
+    async function handleSubmit(submitValues: FormSubmitValues) {
+        const createValues: ProjectCreationValues = {
+            name: submitValues.name,
+            info: submitValues.info,
+            versionManagement: submitValues.versionManagement,
+            partnerName: submitValues.partnerName,
+            partnerWebsite: submitValues.partnerWebsite,
+            skills: skills,
+            creator: "",
+            edition: getEntityFromFullUrl(edition!._links.self.href),
+            skillInfos: skillInfos,
+            goals: [],
+            coaches: [],
+        };
 
         const coachURLs: string[] = [];
         for (let coach of coaches) {
@@ -111,8 +130,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             );
         }
 
-        values.coaches = coachURLs;
-        props.submitHandler(values);
+        createValues.coaches = coachURLs;
+        props.submitHandler(createValues);
     }
 
     function initialize() {
@@ -124,8 +143,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         <div className={styles.create_project_box} data-testid="create-project-form" onLoad={initialize}>
             <Formik
                 initialValues={{
-                    projectName: "",
-                    projectInfo: "",
+                    name: "",
+                    info: "",
                     versionManagement: "",
                     coaches: [],
                     partnerName: "",
@@ -140,7 +159,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     <Field
                         className="form-control mb-2"
                         label={capitalize(t("choose project name"))}
-                        name="projectName"
+                        name="name"
                         data-testid="projectname-input"
                         placeholder={capitalize(t("project name placeholder"))}
                         required
@@ -148,7 +167,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     <Field
                         className="form-control mb-2"
                         label={capitalize(t("enter project info"))}
-                        name="projectInfo"
+                        name="info"
                         data-testid="projectinfo-input"
                         placeholder={capitalize(t("project info placeholder"))}
                     />
