@@ -14,6 +14,8 @@ import {
     Status,
 } from "../../src/api/entities/StudentEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
+import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
+import { ICommunication } from "../../src/api/entities/CommunicationEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -202,6 +204,37 @@ export function getBaseActiveEdition(id: string, name: string): IEdition {
         _links: {
             edition: { href: baseEditionPath },
             self: { href: baseEditionPath },
+        },
+    };
+}
+
+export function getBaseCommunicationTemplate(id: string): ICommunicationTemplate {
+    const baseCommunicationPath = "http://localhost/api/communication-templates/" + id;
+    return {
+        name: "Selected",
+        subject: "Selection nottification",
+        template: "You have been selected to join the OSOC experience.",
+
+        _links: {
+            communicationTemplate: { href: baseCommunicationPath },
+            self: { href: baseCommunicationPath },
+        },
+    };
+}
+
+export function getBaseCommunication(id: string): ICommunication {
+    const baseCommunicationPath = "http://localhost/api/communications/" + id;
+    return {
+        timestamp: "2022-05-05T17:57:49.963+00:00",
+        medium: "email",
+        content: "Good job Kasper, you have been selected.",
+
+        _links: {
+            self: { href: baseCommunicationPath },
+            communication: { href: baseCommunicationPath },
+            student: { href: baseCommunicationPath + "/student" },
+            sender: { href: baseCommunicationPath + "/sender" },
+            template: { href: baseCommunicationPath + "/template" },
         },
     };
 }
