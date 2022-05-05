@@ -54,6 +54,9 @@ const common = {
 
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
+    subject: "subject",
+    "communication template": "Communication Template",
+    "open in mail application": "open in mail application",
 };
 
 export default common;
