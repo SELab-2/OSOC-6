@@ -12,12 +12,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * This test is used to check that the application uses https communication when in the production profile.
+ * This test is used to check that the application uses http communication when in the development profile.
  */
-@ActiveProfiles("production")
+@ActiveProfiles("development")
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProductionUsesHttpsTest {
+public class DevelopmentUsesHttpTest {
     /**
      * This mocks the server without starting it.
      */
@@ -31,8 +31,8 @@ public class ProductionUsesHttpsTest {
     }
 
     @Test
-    public void sending_http_request_is_redirect() throws Exception {
+    public void sending_http_request_is_ok() throws Exception {
         mockMvc.perform(get("/" + DumbledorePathWizard.LOGIN_PATH).secure(false))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 }
