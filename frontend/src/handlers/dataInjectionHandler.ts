@@ -135,8 +135,16 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     ).data;
     let containedTemplates: ICommunicationTemplate[];
     if (templates._embedded.communicationTemplates.length == 0) {
-        const template1 = new CommunicationTemplateEntity("yes", "I say yes {reason}");
-        const template2 = new CommunicationTemplateEntity("no", "I say no {reason}");
+        const template1 = new CommunicationTemplateEntity(
+            "yes",
+            "You have been selected",
+            "I say yes {reason}"
+        );
+        const template2 = new CommunicationTemplateEntity(
+            "no",
+            "You where not good enough",
+            "I say no {reason}"
+        );
         containedTemplates = await Promise.all(
             [template1, template2].map(
                 async (template) =>

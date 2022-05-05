@@ -36,6 +36,15 @@ public final class CommunicationTemplate {
     private String name;
 
     /**
+     * The subject for the CommunicationTemplate.
+     */
+    @Basic(optional = false)
+    @Column(columnDefinition = "text")
+    @Getter @Setter
+    private String subject = "";
+
+
+    /**
      * The template for the CommunicationTemplate.
      */
     @Basic(optional = false)
@@ -46,11 +55,13 @@ public final class CommunicationTemplate {
     /**
      *
      * @param newName the name of the template
+     * @param newSubject the subject of the template
      * @param newTemplate the content of the template
      */
-    public CommunicationTemplate(final String newName, final String newTemplate) {
+    public CommunicationTemplate(final String newName, final String newSubject, final String newTemplate) {
         super();
         name = newName;
+        subject = newSubject;
         template = newTemplate;
     }
 }

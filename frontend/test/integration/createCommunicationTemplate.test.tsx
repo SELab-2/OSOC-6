@@ -28,13 +28,16 @@ describe("create communication template", () => {
         const form = render(<CommunicationTemplateCreate />);
 
         const nameElement = form.getByTestId("name");
+        const subjectElement = form.getByTestId("subject");
         const templateElement = form.getByTestId("template");
 
         const name = "Invitation mail";
+        const subject = "test@example.com";
         const template = "We invite you to participate selecting students with out\nstudent selection tool";
-        const comTemplate = new CommunicationTemplateEntity(name, template);
+        const comTemplate = new CommunicationTemplateEntity(name, subject, template);
 
         await userEvent.type(nameElement, name);
+        await userEvent.type(subjectElement, subject);
         await userEvent.type(templateElement, template);
 
         await userEvent.click(form.getByTestId("submit"));

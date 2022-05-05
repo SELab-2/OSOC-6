@@ -1,3 +1,6 @@
+/**
+ * Paths used the web-application.
+ */
 const applicationPaths = {
     index: "",
     home: "home",
