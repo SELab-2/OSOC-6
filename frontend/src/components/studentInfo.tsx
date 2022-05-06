@@ -8,13 +8,14 @@ import { Badge, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { SuggestionModal } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
+import {useSwrWithEdition} from "../hooks/utilHooks";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
 
-    const { data, error } = useSWR(apiPaths.students + "/" + id, getAllStudentInfo);
+    const { data, error } = useSwrWithEdition(apiPaths.students + "/" + id, getAllStudentInfo);
 
     if (error || !data) {
         return null;
