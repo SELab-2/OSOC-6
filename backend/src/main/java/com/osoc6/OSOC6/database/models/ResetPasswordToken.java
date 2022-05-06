@@ -76,7 +76,6 @@ public class ResetPasswordToken {
      */
     @JsonIgnore
     public boolean isValid() {
-        // TODO cronjob toevoegen aan server die verlopen reset password tokens verwijdert
         Calendar cal = Calendar.getInstance();
         cal.setTime(creationTimestamp);
         cal.add(Calendar.HOUR_OF_DAY, RadagastNumberWizard.PASSWORD_TOKEN_EXPIRATION_HOURS);

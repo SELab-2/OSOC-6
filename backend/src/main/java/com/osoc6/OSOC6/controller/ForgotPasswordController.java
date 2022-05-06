@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * This controller is used to handle the forgot and reset password process.
@@ -33,10 +34,11 @@ public class ForgotPasswordController {
      * Reset the password of the user linked to the reset password token with the provided token.
      * @param token the token of the reset password token
      * @param newPassword the new password of the user
+     * @return a redirect to the application login page
      */
     @PostMapping("/" + DumbledorePathWizard.RESET_PASSWORD_PATH)
-    public void resetPassword(@RequestParam final String token, @RequestBody final String newPassword) {
+    public RedirectView resetPassword(@RequestParam final String token, @RequestBody final String newPassword) {
         userService.resetUserPassword(token, newPassword);
-        // TODO na reset, redirect naar login
+        return new RedirectView(DumbledorePathWizard.LOGIN_PATH);
     }
 }
