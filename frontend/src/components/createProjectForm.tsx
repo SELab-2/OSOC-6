@@ -2,7 +2,6 @@ import useTranslation from "next-translate/useTranslation";
 import { Badge, Col, FormSelect, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik, useFormik } from "formik";
-import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
@@ -18,7 +17,8 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
-import { getEntityFromFullUrl } from "../api/calls/baseCalls";
+import { extractIdFromApiEntityUrl } from "../api/calls/baseCalls";
+import { useRouter } from "next/router";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
     let userResponse = useSwrWithEdition(apiPaths.users, getAllUsersFromPage);
@@ -32,6 +32,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     let skillTypeError: Error = skillTypeResponse.error;
 
     const { t } = useTranslation("common");
+    const router = useRouter();
     const [edition] = useEdition();
 
     const [goals, setGoals] = useState<string[]>([]);
@@ -88,7 +89,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         const newSkill: string = !selectedSkill ? skillTypes[0].name : selectedSkill;
         const newSkills: string[] = skills.concat(newSkill);
 
-        const newSkillInfo: string = !skillInfo ? capitalize(t("empty skill info")) : skillInfo;
+        const newSkillInfo: string = !skillInfo ? capitalize(t("skill info")) : skillInfo;
         const newSkillInfos: string[] = skillInfos.concat(newSkillInfo);
 
         setSkills(newSkills);
@@ -144,13 +145,13 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             partnerWebsite: submitValues.partnerWebsite,
             skills: skills,
             creator: "",
-            edition: getEntityFromFullUrl(edition!._links.self.href),
+            edition: apiPaths.editions + "/" + extractIdFromApiEntityUrl(edition!._links.self.href),
             skillInfos: skillInfos,
             goals: goals,
             coaches: coachURLs,
         };
 
-        props.submitHandler(createValues);
+        props.submitHandler(createValues, router);
     }
 
     function initialize() {
@@ -174,7 +175,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     <h2>{capitalize(t("create project"))}</h2>
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("choose project name"))}
+                        label={capitalize(t("project name"))}
                         name="name"
                         data-testid="projectname-input"
                         placeholder={capitalize(t("project name placeholder"))}
@@ -221,7 +222,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     </button>
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("choose version control URL"))}
+                        label={capitalize(t("version control URL"))}
                         name="versionManagement"
                         data-testid="versionmanagement-input"
                         placeholder={capitalize(t("version control placeholder"))}
@@ -245,11 +246,11 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     ))}
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("choose coach"))}
+                        label={capitalize(t("coach"))}
                         as="select"
                         name="coach"
                         data-testid="coach-input"
-                        placeholder={capitalize(t("choose coach"))}
+                        placeholder={capitalize(t("coach"))}
                         value={selectedCoach}
                         onChange={handleChangeCoach}
                     >
@@ -274,7 +275,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     </button>
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("choose partner name"))}
+                        label={capitalize(t("partner name"))}
                         name="partnerName"
                         data-testid="partnername-input"
                         placeholder={capitalize(t("partner name placeholder"))}
@@ -282,7 +283,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     />
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("choose partner website"))}
+                        label={capitalize(t("partner website"))}
                         name="partnerWebsite"
                         data-testid="partnerwebsite-input"
                         placeholder={capitalize(t("partner website placeholder"))}
@@ -299,7 +300,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                             <Col>{": " + skillInfo}</Col>
                         </Row>
                     ))}
-                    <h5>{capitalize(t("choose roles"))}</h5>
+                    <h5>{capitalize(t("roles"))}</h5>
                     {skills.map((skillType: string, index: number) => (
                         <Row key={index}>
                             <Col>
@@ -320,12 +321,12 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     ))}
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("choose skill type"))}
+                        label={capitalize(t("skill type"))}
                         as="select"
                         name="skillType"
                         data-testid="skill-input"
                         value={selectedSkill}
-                        placeholder={capitalize(t("choose skill type"))}
+                        placeholder={capitalize(t("skill type"))}
                         onChange={handleChangeSkill}
                     >
                         {skillTypes.map((skillType) => (

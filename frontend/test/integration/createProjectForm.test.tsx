@@ -13,10 +13,11 @@ import { IUser, User, UserRole } from "../../src/api/entities/UserEntity";
 import { CreateProjectForm } from "../../src/components/createProjectForm";
 import userEvent from "@testing-library/user-event";
 import { Project } from "../../src/api/entities/ProjectEntity";
-import { getEntityFromFullUrl } from "../../src/api/calls/baseCalls";
+import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
 import { ISkillType, SkillType } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { makeCacheFree } from "./Provide";
+import mockRouter from "next-router-mock";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -102,8 +103,8 @@ describe("Create project form", () => {
             versionManagement: testVersionManagement,
             partnerName: testPartnerName,
             partnerWebsite: testPartnerWebsite,
-            edition: getEntityFromFullUrl(baseEdition._links.self.href),
-            creator: getEntityFromFullUrl(ownUser._links.self.href),
+            edition: apiPaths.editions + "/" + extractIdFromApiEntityUrl(baseEdition._links.self.href),
+            creator: apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser._links.self.href),
             goals: [testGoal],
             skills: [baseSkillType.name],
             skillInfos: [testSkillInfo],
@@ -118,12 +119,12 @@ describe("Create project form", () => {
             [testGoal],
             testPartnerName,
             testPartnerWebsite,
-            getEntityFromFullUrl(baseEdition._links.self.href),
-            getEntityFromFullUrl(ownUser._links.self.href)
+            apiPaths.editions + "/" + extractIdFromApiEntityUrl(baseEdition._links.self.href),
+            apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser._links.self.href)
         );
 
         await waitFor(() => {
-            createProjectSubmitHandler(createValues);
+            createProjectSubmitHandler(createValues, mockRouter);
         });
 
         const ownUserResponse: AxiosResponse = getBaseOkResponse(getBaseUser("1", UserRole.admin, true));

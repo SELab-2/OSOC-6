@@ -1,17 +1,10 @@
 import apiPaths from "../properties/apiPaths";
-import Router from "next/router";
+import Router, { NextRouter } from "next/router";
 import axios from "axios";
-import {
-    AxiosConf,
-    AxiosFormConfig,
-    getEntityFromFullUrl,
-    extractIdFromApiEntityUrl,
-    ManyToManyAxiosConf,
-} from "../api/calls/baseCalls";
+import { AxiosConf, extractIdFromApiEntityUrl, ManyToManyAxiosConf } from "../api/calls/baseCalls";
 import { Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
-import useEdition from "../hooks/useGlobalEdition";
 
 export interface ProjectCreationValues {
     name: string;
@@ -36,10 +29,10 @@ export interface FormSubmitValues {
 }
 
 export type ProjectCreationProps = {
-    submitHandler: (values: ProjectCreationValues) => void;
+    submitHandler: (values: ProjectCreationValues, router: NextRouter) => void;
 };
 
-export async function createProjectSubmitHandler(values: ProjectCreationValues): Promise<string> {
+export async function createProjectSubmitHandler(values: ProjectCreationValues, router: NextRouter) {
     const ownUser = await axios.get(apiPaths.ownUser, AxiosConf);
 
     const project: Project = new Project(
@@ -50,11 +43,12 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues):
         values.partnerName,
         values.partnerWebsite,
         values.edition,
-        getEntityFromFullUrl(ownUser.data._links.self.href)
+        apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser.data._links.self.href)
     );
 
     const projectResponse = await axios.post(apiPaths.projects, project, AxiosConf);
-    const projectURI: string = getEntityFromFullUrl(projectResponse.data._links.self.href);
+    const projectURI: string =
+        apiPaths.projects + "/" + extractIdFromApiEntityUrl(projectResponse.data._links.self.href);
 
     let projectSkills: ProjectSkill[] = [];
 
@@ -80,12 +74,10 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues):
         )
     );
 
-    await Router.push(
+    await router.push(
         "/" +
             applicationPaths.projects +
             "/" +
             extractIdFromApiEntityUrl(projectResponse.data._links.self.href)
     );
-
-    return getEntityFromFullUrl(projectResponse.data._links.coaches.href);
 }
