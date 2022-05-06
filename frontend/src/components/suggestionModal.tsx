@@ -8,11 +8,7 @@ import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { getOwnUser } from "../api/calls/userCalls";
 
-export function SuggestionModal(props: {
-    suggestion: SuggestionStrategy;
-    style: any;
-    studentUrl: string;
-}) {
+export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);
@@ -34,7 +30,12 @@ export function SuggestionModal(props: {
 
     return (
         <>
-            <Button variant="btn-outline" onClick={handleShow} style={props.style} data-testid="suggest-button">
+            <Button
+                variant="btn-outline"
+                onClick={handleShow}
+                style={props.style}
+                data-testid="suggest-button"
+            >
                 Suggest {props.suggestion.toLowerCase()}
             </Button>
 
@@ -53,7 +54,11 @@ export function SuggestionModal(props: {
                                 name="reason"
                                 required
                             />
-                            <Button type="submit" style={{ float: "right" }} data-testid="suggestion-confirmation">
+                            <Button
+                                type="submit"
+                                style={{ float: "right" }}
+                                data-testid="suggestion-confirmation"
+                            >
                                 Confirm suggestion
                             </Button>
                         </Form>

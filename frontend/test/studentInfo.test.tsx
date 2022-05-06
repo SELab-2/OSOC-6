@@ -2,7 +2,8 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import {
     getBaseLinks,
-    getBaseOkResponse, getBaseSkillType,
+    getBaseOkResponse,
+    getBaseSkillType,
     getBaseStudent,
     getBaseSuggestion,
     getBaseUser,
@@ -15,7 +16,7 @@ import { ISuggestion, suggestionCollectionName } from "../src/api/entities/Sugge
 import mockAxios from "jest-mock-axios";
 import { IUser, UserRole } from "../src/api/entities/UserEntity";
 import mockRouter from "next-router-mock";
-import {ISkillType} from "../src/api/entities/SkillTypeEntity";
+import { ISkillType } from "../src/api/entities/SkillTypeEntity";
 import apiPaths from "../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
