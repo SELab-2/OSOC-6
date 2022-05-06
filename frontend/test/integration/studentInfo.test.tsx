@@ -2,7 +2,8 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import {
     getBaseLinks,
-    getBaseOkResponse, getBaseSkillType,
+    getBaseOkResponse,
+    getBaseSkillType,
     getBaseStudent,
     getBaseSuggestion,
     getBaseUser,
@@ -70,9 +71,7 @@ describe("StudentInfo", () => {
         await waitFor(() =>
             mockAxios.mockResponseFor(
                 { method: "GET", url: apiPaths.skillTypes },
-                getBaseOkResponse(
-                    getBaseLinks(apiPaths.skillTypes, skillTypeCollectionName, [baseSkill])
-                )
+                getBaseOkResponse(getBaseLinks(apiPaths.skillTypes, skillTypeCollectionName, [baseSkill]))
             )
         );
 
