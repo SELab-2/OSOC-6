@@ -15,7 +15,7 @@ import {
 } from "../../src/api/entities/StudentEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import apiPaths from "../../src/properties/apiPaths";
-import {ISuggestion, SuggestionStrategy} from "../../src/api/entities/SuggestionEntity";
+import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
