@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { SuggestionModal } from "../src/components/suggestionModal";
-import { SuggestionStrategy } from "../src/api/entities/SuggestionEntity";
-import apiPaths from "../src/properties/apiPaths";
+import { SuggestionModal } from "../../src/components/suggestionModal";
+import { SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
+import apiPaths from "../../src/properties/apiPaths";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import { IUser, UserRole } from "../src/api/entities/UserEntity";
+import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
-import { capitalize } from "../src/utility/stringUtil";
+import { capitalize } from "../../src/utility/stringUtil";
 
 afterEach(() => {
     mockAxios.reset();

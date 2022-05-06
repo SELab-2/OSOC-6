@@ -3,21 +3,18 @@ import { render, screen, waitFor } from "@testing-library/react";
 import {
     getBaseLinks,
     getBaseOkResponse,
-    getBaseSkillType,
     getBaseStudent,
     getBaseSuggestion,
     getBaseUser,
 } from "./TestEntityProvider";
 import { makeCacheFree } from "./Provide";
-import { StudentInfo } from "../src/components/studentInfo";
-import { IStudent } from "../src/api/entities/StudentEntity";
+import { StudentInfo } from "../../src/components/studentInfo";
+import { IStudent } from "../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
-import { ISuggestion, suggestionCollectionName } from "../src/api/entities/SuggestionEntity";
+import { ISuggestion, suggestionCollectionName } from "../../src/api/entities/SuggestionEntity";
 import mockAxios from "jest-mock-axios";
-import { IUser, UserRole } from "../src/api/entities/UserEntity";
+import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import mockRouter from "next-router-mock";
-import { ISkillType } from "../src/api/entities/SkillTypeEntity";
-import apiPaths from "../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
