@@ -8,7 +8,7 @@ import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { getOwnUser } from "../api/calls/userCalls";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../utility/stringUtil";
+import { capitalize } from "../utility/stringUtil";
 
 export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
     const { t } = useTranslation("common");
@@ -44,7 +44,9 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
 
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{capitalize(t("suggest"))} {props.suggestion}</Modal.Title>
+                    <Modal.Title>
+                        {capitalize(t("suggest"))} {props.suggestion}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div>{capitalize(t("reason suggestion"))}: </div>

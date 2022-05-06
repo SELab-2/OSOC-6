@@ -6,7 +6,6 @@ import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { StudentStatusModal } from "../src/components/studentStatusModal";
 import { Status } from "../src/api/entities/StudentEntity";
-import {capitalize} from "../src/utility/stringUtil";
 
 afterEach(() => {
     mockAxios.reset();

@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { IUser, UserRole } from "../src/api/entities/UserEntity";
 import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
-import {capitalize} from "../src/utility/stringUtil";
+import { capitalize } from "../src/utility/stringUtil";
 
 afterEach(() => {
     mockAxios.reset();

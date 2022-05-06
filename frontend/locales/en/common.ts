@@ -88,7 +88,7 @@ const common = {
     YES_STUDENT_COACH: "yes, wants to be student coach",
 
     "change status title": "change status",
-    "change status": "would you like to change the status to"
+    "change status": "would you like to change the status to",
 };
 
 export default common;

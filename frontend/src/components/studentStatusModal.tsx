@@ -4,7 +4,7 @@ import { AxiosConf } from "../api/calls/baseCalls";
 import { Button, Modal } from "react-bootstrap";
 import { Status } from "../api/entities/StudentEntity";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../utility/stringUtil";
+import { capitalize } from "../utility/stringUtil";
 
 export function StudentStatusModal(props: { status: Status; studentUrl: string }) {
     const { t } = useTranslation("common");
@@ -33,7 +33,9 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
                 <Modal.Header closeButton>
                     <Modal.Title>{capitalize(t("change status title"))}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body data-testid="change-status">{capitalize(t("change status"))} {props.status}?</Modal.Body>
+                <Modal.Body data-testid="change-status">
+                    {capitalize(t("change status"))} {props.status}?
+                </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={changeStatus} data-testid="confirm-button-modal">
                         {capitalize(t("confirm"))}
