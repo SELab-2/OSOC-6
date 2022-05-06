@@ -8,7 +8,7 @@ import { Badge, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { SuggestionModal } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import {useSwrWithEdition} from "../hooks/utilHooks";
+import { useSwrWithEdition } from "../hooks/utilHooks";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
