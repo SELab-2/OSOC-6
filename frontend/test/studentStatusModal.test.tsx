@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { StudentStatusModal } from "../src/components/studentStatusModal";
 import { Status } from "../src/api/entities/StudentEntity";
+import {capitalize} from "../src/utility/stringUtil";
 
 afterEach(() => {
     mockAxios.reset();
@@ -21,7 +22,7 @@ describe("SuggestionModal", () => {
     it("should render modal on click", async () => {
         render(<StudentStatusModal status={Status.approved} studentUrl={studentUrl} />);
         await userEvent.click(screen.getByTestId("confirm-button"));
-        expect(screen.getByText("Would you like to change the status to APPROVED?"));
+        expect(screen.getByTestId("change-status"));
     });
 
     it("confirming modal should post suggestion", async () => {

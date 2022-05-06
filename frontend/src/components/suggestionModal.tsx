@@ -7,8 +7,11 @@ import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { getOwnUser } from "../api/calls/userCalls";
+import useTranslation from "next-translate/useTranslation";
+import {capitalize} from "../utility/stringUtil";
 
 export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
+    const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);
@@ -36,15 +39,15 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
                 style={props.style}
                 data-testid="suggest-button"
             >
-                Suggest {props.suggestion.toLowerCase()}
+                {capitalize(t("suggest"))} {props.suggestion.toLowerCase()}
             </Button>
 
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Suggest {props.suggestion}</Modal.Title>
+                    <Modal.Title>{capitalize(t("suggest"))} {props.suggestion}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>Reason for the suggestion: </div>
+                    <div>{capitalize(t("reason suggestion"))}: </div>
                     <Formik initialValues={{ reason: "" }} onSubmit={submitSuggestionHandler}>
                         <Form>
                             <Field
@@ -59,7 +62,7 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
                                 style={{ float: "right" }}
                                 data-testid="suggestion-confirmation"
                             >
-                                Confirm suggestion
+                                {capitalize(t("confirm suggestion"))}
                             </Button>
                         </Form>
                     </Formik>

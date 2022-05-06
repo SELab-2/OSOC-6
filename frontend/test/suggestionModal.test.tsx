@@ -7,6 +7,7 @@ import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { IUser, UserRole } from "../src/api/entities/UserEntity";
 import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
+import {capitalize} from "../src/utility/stringUtil";
 
 afterEach(() => {
     mockAxios.reset();
@@ -22,7 +23,7 @@ describe("SuggestionModal", () => {
     it("should render modal on click", async () => {
         render(<SuggestionModal suggestion={SuggestionStrategy.yes} style={{}} studentUrl={studentUrl} />);
         await userEvent.click(screen.getByTestId("suggest-button"));
-        expect(screen.getByText("Reason for the suggestion:"));
+        expect(screen.getByText(capitalize("reason suggestion:")));
     });
 
     it("confirming modal should post suggestion", async () => {

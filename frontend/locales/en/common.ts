@@ -56,6 +56,9 @@ const common = {
     "template placeholder": "Write your template here",
 
     suggestions: "suggestions",
+    suggest: "suggest",
+    "reason suggestion": "reason for the suggestion",
+    "confirm suggestion": "confirm suggestion",
     "personal details": "personal details",
     "native language": "native language",
     "english proficiency": "english proficiency",
@@ -83,6 +86,9 @@ const common = {
     NONE: "no experience yet",
     YES_NO_STUDENT_COACH: "yes, but does not want to be student coach",
     YES_STUDENT_COACH: "yes, wants to be student coach",
+
+    "change status title": "change status",
+    "change status": "would you like to change the status to"
 };
 
 export default common;

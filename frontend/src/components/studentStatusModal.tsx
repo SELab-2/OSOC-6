@@ -3,8 +3,11 @@ import axios from "axios";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { Button, Modal } from "react-bootstrap";
 import { Status } from "../api/entities/StudentEntity";
+import useTranslation from "next-translate/useTranslation";
+import {capitalize} from "../utility/stringUtil";
 
 export function StudentStatusModal(props: { status: Status; studentUrl: string }) {
+    const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);
@@ -23,17 +26,17 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
                 style={{ color: "#0a0839", borderColor: "#0a0839", width: 110 }}
                 data-testid="confirm-button"
             >
-                Confirm
+                {capitalize(t("confirm"))}
             </Button>
 
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Change status</Modal.Title>
+                    <Modal.Title>{capitalize(t("change status title"))}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Would you like to change the status to {props.status}?</Modal.Body>
+                <Modal.Body data-testid="change-status">{capitalize(t("change status"))} {props.status}?</Modal.Body>
                 <Modal.Footer>
                     <Button onClick={changeStatus} data-testid="confirm-button-modal">
-                        Confirm
+                        {capitalize(t("confirm"))}
                     </Button>
                 </Modal.Footer>
             </Modal>
