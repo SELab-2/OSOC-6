@@ -62,6 +62,10 @@ export async function getAllStudentInfo(studentUrl: string): Promise<IAllStudent
         suggestions.map((suggestion: ISuggestion) => getFullSuggestionFromSuggestion(suggestion))
     );
     let skills: ISkillType[] = [];
+    for (let item of student.skills) {
+        const skill = await getSkillTypeWithName(item);
+        skills.push(skill);
+    }
 
     return { student: student, suggestions: fullSuggestions, skills: skills };
 }

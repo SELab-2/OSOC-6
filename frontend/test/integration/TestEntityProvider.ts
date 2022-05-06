@@ -164,7 +164,7 @@ export function getBaseProjectSkill(id: string): IProjectSkill {
 }
 
 export function getBaseSkillType(id: string): ISkillType {
-    const baseSkillTypePath = "http://localhost/api/skill-type/" + id;
+    const baseSkillTypePath = "http://localhost/api/skillTypes/" + id;
     return {
         name: baseSkillType,
         colour: "#5377e1",
@@ -257,7 +257,7 @@ export function getBaseStudent(id: string): IStudent {
         status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],
-        skills: ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+        skills: ["other"],
         yesSuggestionCount: 0,
         maybeSuggestionCount: 0,
         noSuggestionCount: 0,
