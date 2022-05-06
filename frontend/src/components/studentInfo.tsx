@@ -6,7 +6,7 @@ import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
 import { Badge, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
-import { CustomDialogContent } from "./suggestionModal";
+import { SuggestionModal } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
 
 export function StudentInfo() {
@@ -121,21 +121,21 @@ export function StudentInfo() {
                     <Col sm={8}>
                         <Row>
                             <div className="col-sm">
-                                <CustomDialogContent
+                                <SuggestionModal
                                     suggestion={SuggestionStrategy.yes}
                                     style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
                                     studentUrl={data.student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
-                                <CustomDialogContent
+                                <SuggestionModal
                                     suggestion={SuggestionStrategy.maybe}
                                     style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
                                     studentUrl={data.student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
-                                <CustomDialogContent
+                                <SuggestionModal
                                     suggestion={SuggestionStrategy.no}
                                     style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
                                     studentUrl={data.student._links.self.href}

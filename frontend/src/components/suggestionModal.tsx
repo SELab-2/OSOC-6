@@ -8,7 +8,7 @@ import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { getOwnUser } from "../api/calls/userCalls";
 
-export function CustomDialogContent(props: {
+export function SuggestionModal(props: {
     suggestion: SuggestionStrategy;
     style: any;
     studentUrl: string;
@@ -34,7 +34,7 @@ export function CustomDialogContent(props: {
 
     return (
         <>
-            <Button variant="btn-outline" onClick={handleShow} style={props.style}>
+            <Button variant="btn-outline" onClick={handleShow} style={props.style} data-testid="suggest-button">
                 Suggest {props.suggestion.toLowerCase()}
             </Button>
 
@@ -53,7 +53,7 @@ export function CustomDialogContent(props: {
                                 name="reason"
                                 required
                             />
-                            <Button type="submit" style={{ float: "right" }}>
+                            <Button type="submit" style={{ float: "right" }} data-testid="suggestion-confirmation">
                                 Confirm suggestion
                             </Button>
                         </Form>

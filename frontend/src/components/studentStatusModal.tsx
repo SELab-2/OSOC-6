@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import apiPaths from "../properties/apiPaths";
 import { AxiosConf } from "../api/calls/baseCalls";
 import { Button, Modal } from "react-bootstrap";
 import { Status } from "../api/entities/StudentEntity";
@@ -22,6 +21,7 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
                 variant="btn-outline"
                 onClick={handleShow}
                 style={{ color: "#0a0839", borderColor: "#0a0839", width: 110 }}
+                data-testid="confirm-button"
             >
                 Confirm
             </Button>
@@ -32,7 +32,7 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
                 </Modal.Header>
                 <Modal.Body>Would you like to change the status to {props.status}?</Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={changeStatus}>Confirm</Button>
+                    <Button onClick={changeStatus} data-testid="confirm-button-modal">Confirm</Button>
                 </Modal.Footer>
             </Modal>
         </>

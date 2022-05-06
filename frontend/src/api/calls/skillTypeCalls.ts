@@ -45,16 +45,11 @@ export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
 }
 
 export async function getSkillTypeWithName(skillName: string): Promise<ISkillType> {
-    console.log(skillName.slice(0, 20));
     let skills = await getAllSkillTypesFromLinks(apiPaths.skillTypes);
-    console.log(skills);
     const skill = skills.find((skill) => skill.name === skillName.slice(0, 20));
-    console.log("Skill");
-    console.log(skill);
     let skillType: ISkillType;
     if (skill == undefined) {
         skillType = await createNewSkill(skillName);
-        console.log(skillType);
     } else {
         skillType = skill;
     }
