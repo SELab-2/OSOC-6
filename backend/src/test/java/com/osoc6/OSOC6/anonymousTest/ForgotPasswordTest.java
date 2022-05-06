@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -141,8 +140,7 @@ public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken,
                         .content(newPw)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(DumbledorePathWizard.LOGIN_PATH));
+                .andExpect(status().isOk());
 
         String newEncodedPw = publicRepository.internalFindByEmail(getAdminUser().getEmail()).get().getPassword();
 
