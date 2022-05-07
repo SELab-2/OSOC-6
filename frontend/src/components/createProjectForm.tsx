@@ -178,15 +178,15 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         label={capitalize(t("project name"))}
                         name="name"
                         data-testid="projectname-input"
-                        placeholder={capitalize(t("project name placeholder"))}
+                        placeholder={capitalize(t("project name"))}
                         required
                     />
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("enter project info"))}
+                        label={capitalize(t("project info"))}
                         name="info"
                         data-testid="projectinfo-input"
-                        placeholder={capitalize(t("project info placeholder"))}
+                        placeholder={capitalize(t("project info"))}
                     />
                     {goals.map((goal: string, index: number) => (
                         <Row key={index}>
@@ -206,10 +206,10 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     ))}
                     <Field
                         className="form-control mb-2"
-                        label={capitalize(t("enter project goal"))}
+                        label={capitalize(t("project goal"))}
                         data-testid="goal-input"
                         value={goalInput}
-                        placeholder={capitalize(t("project goal placeholder"))}
+                        placeholder={capitalize(t("project goal"))}
                         onChange={handleChangeGoalInput}
                     />
                     <button
@@ -225,7 +225,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         label={capitalize(t("version control URL"))}
                         name="versionManagement"
                         data-testid="versionmanagement-input"
-                        placeholder={capitalize(t("version control placeholder"))}
+                        placeholder={capitalize(t("version control URL"))}
                         required
                     />
                     {coaches.map((coach: string, index: number) => (
@@ -278,7 +278,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         label={capitalize(t("partner name"))}
                         name="partnerName"
                         data-testid="partnername-input"
-                        placeholder={capitalize(t("partner name placeholder"))}
+                        placeholder={capitalize(t("partner name"))}
                         required
                     />
                     <Field
@@ -286,7 +286,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         label={capitalize(t("partner website"))}
                         name="partnerWebsite"
                         data-testid="partnerwebsite-input"
-                        placeholder={capitalize(t("partner website placeholder"))}
+                        placeholder={capitalize(t("partner website"))}
                         required
                     />
                     {skillInfos.length ? <h5>{capitalize(t("project expertise"))}</h5> : <h5 />}
