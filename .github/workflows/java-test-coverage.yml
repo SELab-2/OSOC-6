@@ -28,7 +28,7 @@ jobs:
           echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
           echo "baseuser.email =baseUser@mail.com" > initial-user.properties
           echo "baseuser.password =abcVanJe123SpringOpEnNeer" >> initial-user.properties
-          cd backend/src/test/resources/
+          cd ../../test/resources/
           echo "spring.datasource.username = ${{ secrets.DB_USERNAME }}" > application.properties
           echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
