@@ -1,9 +1,5 @@
 import { getAllEntitiesFromPage, getEntityOnUrl, getQueryUrlFromParams } from "./baseCalls";
-import {
-    IStudent,
-    OsocExpericience,
-    studentCollectionName,
-} from "../entities/StudentEntity";
+import { IStudent, OsocExpericience, studentCollectionName } from "../entities/StudentEntity";
 import { IFullSuggestion, ISuggestion } from "../entities/SuggestionEntity";
 import { getAllSuggestionsFromLinks, getFullSuggestionFromSuggestion } from "./suggestionCalls";
 import { getSkillTypeByName } from "./skillTypeCalls";
@@ -71,6 +67,5 @@ export async function getAllStudentInfo(studentUrl: string): Promise<IAllStudent
         const skill = await getSkillTypeByName(item);
         skills.push(skill);
     }
-
     return { student: student, suggestions: fullSuggestions, skills: skills };
 }

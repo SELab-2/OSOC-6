@@ -9,7 +9,12 @@ import {
     SkillType,
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
-import {AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getQueryUrlFromParams} from "./baseCalls";
+import {
+    AxiosConf,
+    getAllEntitiesFromLinksUrl,
+    getAllEntitiesFromPage,
+    getQueryUrlFromParams,
+} from "./baseCalls";
 
 /**
  * Get the skillType for a certain Skill.
@@ -54,7 +59,6 @@ export async function getSkillTypeByName(skillName: string): Promise<ISkillType>
             name: skillName,
         })
     );
-
     return skills.length == 0 ? await createNewSkill(skillName) : skills[0];
 }
 
