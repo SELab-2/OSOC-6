@@ -1,14 +1,19 @@
 package com.osoc6.OSOC6.anonymousTest;
 
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.ServerSetup;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.database.models.ResetPasswordToken;
 import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.repository.ResetPasswordTokenRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
+import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -22,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,6 +37,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken, Long, ResetPasswordTokenRepository> {
+
+    /**
+     * A test email server that can send and receive emails.
+     */
+    @RegisterExtension
+    private static final GreenMailExtension GREEN_MAIL_EXTENSION =
+            new GreenMailExtension(new ServerSetup(2525, null, ServerSetup.PROTOCOL_SMTP));
+
+    /**
+     * The username of the account to send mails from.
+     * This will use the one defined in test/java/resources/application.properties.
+     */
+    @Value("${spring.mail.username}")
+    private String mailUser;
+
+    /**
+     * The password of the account to send mails from.
+     * This will use the one defined in test/java/resources/application.properties.
+     */
+    @Value("${spring.mail.password}")
+    private String mailPassword;
+
     /**
      * The public repository, used to access the database without authorization.
      */
@@ -98,6 +126,9 @@ public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken,
 
     @Test
     public void existing_user_request_password_reset_creates_password_reset_token() throws Exception {
+        // Set the account of the sending mail user
+        GREEN_MAIL_EXTENSION.setUser(mailUser, mailPassword);
+
         String email = getCoachUser().getEmail();
 
         getMockMvc().perform(post("/" + DumbledorePathWizard.FORGOT_PASSWORD_PATH)
@@ -111,6 +142,9 @@ public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken,
 
         assertTrue(optionalResetPasswordToken.isPresent());
         assertTrue(optionalResetPasswordToken.get().isValid());
+
+        // Check that a mail was sent
+        assertEquals(1, GREEN_MAIL_EXTENSION.getReceivedMessages().length);
     }
 
     @Test
@@ -188,7 +222,8 @@ public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken,
     public void reset_password_with_existing_but_expired_token_fails() throws Exception {
         String oldPw = publicRepository.internalFindByEmail(getAdminUser().getEmail()).get().getPassword();
 
-        Instant inTheFuture = Instant.now().plus(2, ChronoUnit.HOURS);
+        Instant inTheFuture = Instant.now().
+                plus(RadagastNumberWizard.PASSWORD_TOKEN_EXPIRATION_HOURS + 2, ChronoUnit.HOURS);
 
         try (MockedStatic<Instant> mockedStatic = mockStatic(Instant.class)) {
             mockedStatic.when(Instant::now).thenReturn(inTheFuture);
