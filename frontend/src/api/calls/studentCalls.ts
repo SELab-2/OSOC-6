@@ -1,13 +1,12 @@
 import { getAllEntitiesFromPage, getEntityOnUrl, getQueryUrlFromParams } from "./baseCalls";
 import {
-    IAllStudentInfo,
     IStudent,
     OsocExpericience,
     studentCollectionName,
 } from "../entities/StudentEntity";
 import { IFullSuggestion, ISuggestion } from "../entities/SuggestionEntity";
 import { getAllSuggestionsFromLinks, getFullSuggestionFromSuggestion } from "./suggestionCalls";
-import { getSkillTypeWithName } from "./skillTypeCalls";
+import { getSkillTypeByName } from "./skillTypeCalls";
 import { ISkillType, SkillType } from "../entities/SkillTypeEntity";
 
 export interface IStudentQueryParams {
@@ -17,6 +16,12 @@ export interface IStudentQueryParams {
     alumni: boolean;
     unmatched: boolean;
 }
+
+export type IAllStudentInfo = {
+    student: IStudent;
+    suggestions: IFullSuggestion[];
+    skills: ISkillType[];
+};
 
 /**
  * Fetches all students on a given StudentLinksUrl
@@ -63,7 +68,7 @@ export async function getAllStudentInfo(studentUrl: string): Promise<IAllStudent
     );
     let skills: ISkillType[] = [];
     for (let item of student.skills) {
-        const skill = await getSkillTypeWithName(item);
+        const skill = await getSkillTypeByName(item);
         skills.push(skill);
     }
 

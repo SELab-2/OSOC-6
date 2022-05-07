@@ -9,7 +9,7 @@ import {
     SkillType,
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
-import { AxiosConf, getAllEntitiesFromLinksUrl } from "./baseCalls";
+import {AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getQueryUrlFromParams} from "./baseCalls";
 
 /**
  * Get the skillType for a certain Skill.
@@ -44,16 +44,18 @@ export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
     return <Promise<ISkillType[]>>getAllEntitiesFromLinksUrl(url, skillTypeCollectionName);
 }
 
-export async function getSkillTypeWithName(skillName: string): Promise<ISkillType> {
-    let skills = await getAllSkillTypesFromLinks(apiPaths.skillTypes);
-    const skill = skills.find((skill) => skill.name === skillName.slice(0, 20));
-    let skillType: ISkillType;
-    if (skill == undefined) {
-        skillType = await createNewSkill(skillName);
-    } else {
-        skillType = skill;
-    }
-    return skillType;
+export function getAllSkillTypesFromPage(url: string): Promise<ISkillType[]> {
+    return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
+}
+
+export async function getSkillTypeByName(skillName: string): Promise<ISkillType> {
+    const skills = await getAllSkillTypesFromPage(
+        getQueryUrlFromParams(apiPaths.skillTypesByName, {
+            name: skillName,
+        })
+    );
+
+    return skills.length == 0 ? await createNewSkill(skillName) : skills[0];
 }
 
 export function getRandomColor() {
@@ -62,6 +64,6 @@ export function getRandomColor() {
 }
 
 export async function createNewSkill(skillName: string): Promise<ISkillType> {
-    const skill = new SkillType(skillName.slice(0, 20), getRandomColor());
+    const skill = new SkillType(skillName, getRandomColor());
     return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data;
 }

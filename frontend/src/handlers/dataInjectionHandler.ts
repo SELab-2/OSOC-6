@@ -160,7 +160,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
     const students: IStudentPage = (await axios.get(apiPaths.students, AxiosConf)).data;
     let containedStudents: IStudent[];
-    const possibleSkills = [
+    const commonSkills = [
         "Front-end developer",
         "Back-end developer",
         "UX / UI designer",
@@ -174,8 +174,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         "Other",
     ];
     if (students._embedded.students.length == 0) {
-        const bestSkill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
-        const skill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
+        const bestSkill = commonSkills[(Math.random() * commonSkills.length) | 0];
+        const skill = commonSkills[(Math.random() * commonSkills.length) | 0];
         const skillList = bestSkill == skill ? [bestSkill] : [bestSkill, skill];
         const student1: Student = new Student(
             "kasper@mail.com",
@@ -209,8 +209,8 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
         let students = [student1];
         for (let i = 0; i < 10; i++) {
-            const bestSkill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
-            const skill = possibleSkills[(Math.random() * possibleSkills.length) | 0];
+            const bestSkill = commonSkills[(Math.random() * commonSkills.length) | 0];
+            const skill = commonSkills[(Math.random() * commonSkills.length) | 0];
             const skillList = bestSkill == skill ? [bestSkill] : [bestSkill, skill];
 
             const firstname = faker.name.firstName();
@@ -269,7 +269,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             )
         );
 
-        possibleSkills.map(async (skillName) => {
+        commonSkills.map(async (skillName) => {
             const skill = new SkillType(skillName, getRandomColor());
             return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data;
         });

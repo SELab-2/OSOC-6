@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import {
+    getBaseActiveEdition,
     getBaseLinks,
-    getBaseOkResponse,
+    getBaseOkResponse, getBasePage,
     getBaseSkillType,
     getBaseStudent,
     getBaseSuggestion,
@@ -18,6 +19,8 @@ import { IUser, userCollectionName, UserRole } from "../../src/api/entities/User
 import mockRouter from "next-router-mock";
 import apiPaths from "../../src/properties/apiPaths";
 import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
+import {getQueryUrlFromParams} from "../../src/api/calls/baseCalls";
+import {editionCollectionName} from "../../src/api/entities/EditionEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -68,12 +71,19 @@ describe("StudentInfo", () => {
         );
 
         const baseSkill = getBaseSkillType("5");
-        await waitFor(() =>
+        const skillUrl = getQueryUrlFromParams(apiPaths.skillTypesByName, {
+            name: baseSkill.name,
+        })
+        console.log("SkillUrl")
+        console.log(skillUrl)
+        await waitFor(() => {
             mockAxios.mockResponseFor(
-                { method: "GET", url: apiPaths.skillTypes },
-                getBaseOkResponse(getBaseLinks(apiPaths.skillTypes, skillTypeCollectionName, [baseSkill]))
-            )
-        );
+                { method: "GET", url: skillUrl },
+                getBaseOkResponse(
+                    getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [baseSkill])
+                )
+            );
+        });
 
         await waitFor(() => expect(screen.getByText(baseStudent.callName)).toBeInTheDocument());
     });
