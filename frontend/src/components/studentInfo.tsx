@@ -9,6 +9,7 @@ import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { SuggestionModal } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
 import { useSwrWithEdition } from "../hooks/utilHooks";
+import Image from "next/image";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
@@ -36,6 +37,8 @@ export function StudentInfo() {
             </>
         );
     }
+
+    const strategyIndication = {"YES": "/resources/check_green.svg", "NO": "/resources/x.svg", "MAYBE": "/resources/question.svg"}
 
     return (
         <div>
@@ -66,9 +69,21 @@ export function StudentInfo() {
                         }))
                         .map(({ suggestion, suggestionId }) => (
                             <ListGroup.Item key={suggestionId} as={"li"}>
-                                <div>
-                                    {suggestion.coach.callName}: {suggestion.suggestion.reason}
-                                </div>
+                                <Row>
+                                    <Col sm={1}>
+                                        <Image
+                                            alt={capitalize(t("edit"))}
+                                            src={strategyIndication[suggestion.suggestion.strategy]}
+                                            width="20"
+                                            height="20"
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <div>
+                                            {suggestion.coach.callName}: {suggestion.suggestion.reason}
+                                        </div>
+                                    </Col>
+                                </Row>
                             </ListGroup.Item>
                         ))}
                 </ListGroup>
