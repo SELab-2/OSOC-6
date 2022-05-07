@@ -38,7 +38,11 @@ export function StudentInfo() {
         );
     }
 
-    const strategyIndication = {"YES": "/resources/check_green.svg", "NO": "/resources/x.svg", "MAYBE": "/resources/question.svg"}
+    const strategyIndication = {
+        YES: "/resources/check_green.svg",
+        NO: "/resources/x.svg",
+        MAYBE: "/resources/question.svg",
+    };
 
     return (
         <div>
