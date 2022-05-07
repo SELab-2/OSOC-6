@@ -5,6 +5,7 @@ import com.osoc6.OSOC6.database.models.ResetPasswordToken;
 import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
 import com.osoc6.OSOC6.exception.InvalidResetPasswordTokenException;
+import com.osoc6.OSOC6.mail.EmailService;
 import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.repository.ResetPasswordTokenRepository;
 import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
@@ -38,6 +39,11 @@ public class UserEntityService implements UserDetailsService {
      * The encoder used to encode the passwords.
      */
     private final BCryptPasswordEncoder passwordEncoder;
+
+    /**
+     * The email service, used to send mails.
+     */
+    private final EmailService emailService;
 
     /**
      *
@@ -82,8 +88,18 @@ public class UserEntityService implements UserDetailsService {
         if (optionalUserEntity.isPresent()) {
             ResetPasswordToken resetPasswordToken = new ResetPasswordToken(optionalUserEntity.get());
             resetPasswordTokenRepository.save(resetPasswordToken);
-            // TODO mail reset password url naar de gegeven email
+            emailService.sendResetPasswordMessage(email, resetPasswordToken.getToken());
         }
+    }
+
+    /**
+     * Check whether the given token corresponds to a valid reset password token entity.
+     * @param token the token to check
+     * @return whether the corresponding entity exists and is still valid
+     */
+    public boolean isPasswordResetTokenValid(final String token) {
+        Optional<ResetPasswordToken> optionalResetPasswordToken = resetPasswordTokenRepository.findByToken(token);
+        return optionalResetPasswordToken.isPresent() && optionalResetPasswordToken.get().isValid();
     }
 
     /**
