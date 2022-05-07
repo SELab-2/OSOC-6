@@ -130,6 +130,37 @@ public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken,
     }
 
     @Test
+    public void get_reset_password_with_valid_token_works() throws Exception {
+        getMockMvc().perform(get("/" + DumbledorePathWizard.RESET_PASSWORD_PATH)
+                        .queryParam("token", resetPasswordToken.getToken()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void get_reset_password_with_non_existing_token_fails() throws Exception {
+        getMockMvc().perform(get("/" + DumbledorePathWizard.RESET_PASSWORD_PATH)
+                        .queryParam("token", "123-45"))
+                .andExpect(status().isForbidden())
+                .andExpect(string_to_contains_string(MeguminExceptionWizard.INVALID_RESET_PASSWORD_TOKEN_EXCEPTION));
+    }
+
+    @Test
+    public void get_reset_password_with_existing_but_expired_token_fails() throws Exception {
+        Instant inTheFuture = Instant.now().
+                plus(RadagastNumberWizard.PASSWORD_TOKEN_EXPIRATION_HOURS + 2, ChronoUnit.HOURS);
+
+        try (MockedStatic<Instant> mockedStatic = mockStatic(Instant.class)) {
+            mockedStatic.when(Instant::now).thenReturn(inTheFuture);
+
+            getMockMvc().perform(get("/" + DumbledorePathWizard.RESET_PASSWORD_PATH)
+                            .queryParam("token", resetPasswordToken.getToken()))
+                    .andExpect(status().isForbidden())
+                    .andExpect(string_to_contains_string(
+                            MeguminExceptionWizard.INVALID_RESET_PASSWORD_TOKEN_EXCEPTION));
+        }
+    }
+
+    @Test
     public void reset_password_with_existing_and_valid_token_works() throws Exception {
         String oldPw = publicRepository.internalFindByEmail(getAdminUser().getEmail()).get().getPassword();
 
