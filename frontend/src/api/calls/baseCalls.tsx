@@ -61,6 +61,10 @@ export async function getAllEntitiesFromLinksUrl(
     return linksData._embedded[collectionName];
 }
 
+/**
+ * Get an [IBaseEntity] from a URL.
+ * @param entityUrl the url where the [IBaseEntity] is hosted on
+ */
 export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
     const data: IBaseEntity = (await axios.get(entityUrl, AxiosConf)).data;
     // Needed so an error is thrown when type is wrong.
