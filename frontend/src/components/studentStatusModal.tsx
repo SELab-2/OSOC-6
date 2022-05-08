@@ -5,6 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 import { Status } from "../api/entities/StudentEntity";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
+import {patchStudentStatus} from "../api/calls/studentCalls";
 
 /**
  * Modal to confirm change of student status
@@ -19,7 +20,7 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
     const handleClose = () => setShowModal(false);
 
     async function changeStatus() {
-        await axios.patch(props.studentUrl, { status: props.status }, AxiosConf);
+        await patchStudentStatus(props.studentUrl, props.status);
         handleClose();
     }
 

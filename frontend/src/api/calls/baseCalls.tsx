@@ -123,6 +123,17 @@ export function basePost(
     });
 }
 
+export function basePatch(
+    url: string,
+    data: any,
+    params?: { [k: string]: any }
+): Promise<AxiosResponse<any, any>> {
+    return axios.patch(url, data, {
+        params: params,
+        ...AxiosConf,
+    });
+}
+
 export function extractIdFromApiEntityUrl(url: string): string {
     const split = url.split("/");
     return split[split.length - 1];

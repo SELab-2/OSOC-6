@@ -9,6 +9,7 @@ import { IUser } from "../api/entities/UserEntity";
 import { getOwnUser } from "../api/calls/userCalls";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
+import {postStudentSuggestion} from "../api/calls/studentCalls";
 
 /**
  * Modal asking the reason for a certain suggestion
@@ -32,7 +33,7 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
             props.studentUrl
         );
 
-        await axios.post(apiPaths.suggestions, suggestion, AxiosConf);
+        await postStudentSuggestion(apiPaths.suggestions, suggestion);
         handleClose();
     }
 
