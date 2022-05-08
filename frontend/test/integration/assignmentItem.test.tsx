@@ -127,7 +127,7 @@ async function createResponse(
     await act(() => mockAxios.mockResponseFor({ url: assignment._links.assigner.href }, assignerResponse));
 }
 
-async function removeAssignment(assignment: IAssignment, id:string) {
+async function removeAssignment(assignment: IAssignment, id: string) {
     await waitFor(() => {
         expect(screen.getByTestId("remove assignment button " + id)).toBeInTheDocument();
     });
