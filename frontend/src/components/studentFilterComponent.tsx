@@ -34,7 +34,7 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
         values.unmatched = query.unmatched !== "false";
     }
     values.status = (query.status || "") as string;
-    console.log(values)
+    console.log(values);
     return values;
 }
 
