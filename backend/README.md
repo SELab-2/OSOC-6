@@ -61,9 +61,9 @@ webhook.token=your_secret_token_here
 ```
 
 Next, you'll need to configure the email settings needed to send password reset mails automatically. 
-In this guide, we will be using gmail for sending the automatic mails (other mail servers can also be used, you will need to change the `spring.mail.host` property to the used smtp host). 
+In this guide, we will be using gmail for sending the automatic mails (other mail servers can also be used, you will need to change the `spring.mail.host` property in application.properties to the used smtp host). 
 
-First, create a new [Google account](https://accounts.google.com/signup/v2/webcreateaccount?continue=https%3A%2F%2Fmyaccount.google.com%3Futm_source%3Daccount-marketing-page%26utm_medium%3Dcreate-account-button&flowName=GlifWebSignIn&flowEntry=SignUp) (or use an existing one).
+First, create a new [Google account](https://accounts.google.com/signup/v2/webcreateaccount?flowName=GlifWebSignIn&flowEntry=SignUp) (or use an existing one).
 Replace the placeholder username with your email.
 ```
 spring.mail.username=your_mail_here

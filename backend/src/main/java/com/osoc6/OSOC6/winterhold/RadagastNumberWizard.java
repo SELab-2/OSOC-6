@@ -64,5 +64,5 @@ public final class RadagastNumberWizard {
     /**
      * Amount of hours before a reset password token is invalid.
      */
-    public static final int PASSWORD_TOKEN_EXPIRATION_HOURS = 6;
+    public static final int PASSWORD_TOKEN_EXPIRATION_HOURS = 1;
 }

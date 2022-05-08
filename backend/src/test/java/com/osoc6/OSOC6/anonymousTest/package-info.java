@@ -1,5 +1,5 @@
 /**
- * This module contains all tests that test without being authenticated.
+ * This module contains all tests that run without authentication.
  *
  * @author KasperDemeyere
  */

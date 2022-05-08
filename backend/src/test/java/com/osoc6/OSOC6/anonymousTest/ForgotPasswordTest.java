@@ -149,7 +149,7 @@ public class ForgotPasswordTest extends TestFunctionProvider<ResetPasswordToken,
 
     @Test
     public void non_existing_user_request_password_reset_does_not_create_password_reset_token() throws Exception {
-        String email = "idontexist@nope.com";
+        String email = "idontexist@example.com";
 
         getMockMvc().perform(post("/" + DumbledorePathWizard.FORGOT_PASSWORD_PATH)
                         .content(email)
