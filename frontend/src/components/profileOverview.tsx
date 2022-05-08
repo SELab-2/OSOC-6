@@ -33,7 +33,10 @@ export function ProfileOverview() {
     }
 
     function handleEditCallName() {
-        setEditCallname(true);
+        if (data) {
+            setEditCallname(true);
+            setCallname(data.callName);
+        }
     }
 
     async function handleSaveCallName() {
