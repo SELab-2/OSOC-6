@@ -7,8 +7,7 @@ import { StudentStatusModal } from "./studentStatusModal";
 
 /**
  * Component to change the status of a student
- * @param props
- * @constructor
+ * @param props properties needed to render this component
  */
 export function StudentStatus(props: { studentUrl: string; status: Status }) {
     const [suggestionValue, setSuggestionValue] = useState(props.status);
