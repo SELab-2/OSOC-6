@@ -1,3 +1,6 @@
+/**
+ * The paths used by our api.
+ */
 const apiPaths = {
     base: "http://localhost/api/",
 

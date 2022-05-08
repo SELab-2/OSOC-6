@@ -3,7 +3,7 @@ import {
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
-    getEntityOnUrl
+    getEntityOnUrl,
 } from "./baseCalls";
 import { IUser, userCollectionName } from "../entities/UserEntity";
 import axios from "axios";

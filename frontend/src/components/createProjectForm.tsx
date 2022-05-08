@@ -3,7 +3,7 @@ import { Badge, Col, FormSelect, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik, useFormik } from "formik";
 import apiPaths from "../properties/apiPaths";
-import {extractIdFromUserUrl, getAllUsersFromPage} from "../api/calls/userCalls";
+import { extractIdFromUserUrl, getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
 import {
     FormSubmitValues,
@@ -17,9 +17,9 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
-import {AxiosConf, extractIdFromApiEntityUrl} from "../api/calls/baseCalls";
+import { AxiosConf, extractIdFromApiEntityUrl } from "../api/calls/baseCalls";
 import { useRouter } from "next/router";
-import {extractIdFromEditionUrl} from "../api/calls/editionCalls";
+import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
 import axios from "axios";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {

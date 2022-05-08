@@ -1,5 +1,9 @@
 import applicationPaths from "../properties/applicationPaths";
 
+/**
+ * Function that checks if a path is a path that can be accessed without authentication.
+ * @param url
+ */
 export function pathIsAuthException(url: string): boolean {
     // Define the public paths for which authentication is not needed.
     const publicPaths = [
