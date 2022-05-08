@@ -17,12 +17,13 @@ import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
  */
 export default function AssignmentSkillList(props: { project: IProject; dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
+    const { t: errort } = useTranslation("errorMessages");
 
     const { mutate } = useSWRConfig();
     let { data, error } = useSWR(props.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
 
     if (error) {
-        return <WarningToast message={capitalize(t("error reload page"))} />;
+        return <WarningToast message={capitalize(errort("error reload page"))} />;
     }
 
     async function dropStudent(studentName: string, studentUrl: string, skill: IProjectSkill) {
@@ -40,15 +41,7 @@ export default function AssignmentSkillList(props: { project: IProject; dropHand
     let skillList = data || [];
 
     skillList.sort((skill1, skill2) => {
-        if (skill1.name > skill2.name) {
-            return 1;
-        }
-
-        if (skill1.name < skill2.name) {
-            return -1;
-        }
-
-        return 0;
+        return skill1.name.localeCompare(skill2.name);
     });
 
     if (skillList.length == 0) {

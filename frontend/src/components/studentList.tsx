@@ -5,6 +5,7 @@ import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import {
     constructStudentQueryUrl,
+    extractIdFromStudentUrl,
     getAllStudentsFromPage,
     IStudentQueryParams,
 } from "../api/calls/studentCalls";
@@ -12,7 +13,7 @@ import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { useEditionPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 
-export const StudentList = (props: any) => {
+export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
@@ -62,9 +63,9 @@ export const StudentList = (props: any) => {
                             // Should be changed to individual student page later
                             onClick={() => {
                                 if (!draggable) {
-                                    let studentPath: string = student._links.self.href.split(
-                                        apiPaths.base
-                                    )[1];
+                                    let studentPath: string = extractIdFromStudentUrl(
+                                        student._links.self.href
+                                    );
                                     router.push(transformer("/" + studentPath)).catch(console.log);
                                 }
                             }}

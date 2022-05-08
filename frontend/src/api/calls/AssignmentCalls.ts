@@ -5,7 +5,7 @@ import { IStudent } from "../entities/StudentEntity";
 import { IUser } from "../entities/UserEntity";
 import apiPaths from "../../properties/apiPaths";
 
-export type ProjectAssignments = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
+export type IFullAssignment = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
 
 /**
  * Fetches all assignments on a given AssignmentLinksUrl
@@ -40,10 +40,10 @@ export async function addAssignment(studentUrl: string, skillUrl: string, reason
  */
 export async function deleteAssignment(
     assignmentURL: string,
-    oldAssignments: ProjectAssignments
-): Promise<ProjectAssignments> {
+    oldAssignments: IFullAssignment
+): Promise<IFullAssignment> {
     await axios.delete(assignmentURL, AxiosConf);
-    const assignments: ProjectAssignments = [];
+    const assignments: IFullAssignment = [];
     for (let assignment of oldAssignments) {
         if (assignment.assignment._links.assignment.href != assignmentURL) {
             assignments.push(assignment);
@@ -57,13 +57,13 @@ export async function deleteAssignment(
  * It returns a list of ProjectAssignments.
  * @param url The URL of the assignments for a project.
  */
-export async function getAssignments(url: string): Promise<ProjectAssignments> {
+export async function getAssignments(url: string): Promise<IFullAssignment> {
     const assignmentList: IAssignment[] = await getAllAssignmentsFormLinks(url);
-    let assignments: ProjectAssignments = [];
+    let assignments: IFullAssignment = [];
     const assigners: { [url: string]: IUser } = {};
     const students: { [url: string]: IStudent } = {};
 
-    if (assignmentList == undefined) {
+    if (assignmentList === undefined) {
         return assignments;
     }
 
@@ -73,7 +73,7 @@ export async function getAssignments(url: string): Promise<ProjectAssignments> {
             const assignerURL = assignment._links.assigner.href;
 
             let student: IStudent;
-            if (students[studentURL] == undefined) {
+            if (students[studentURL] === undefined) {
                 student = (await axios.get(studentURL, AxiosConf)).data;
                 students[studentURL] = student;
             } else {
@@ -81,7 +81,7 @@ export async function getAssignments(url: string): Promise<ProjectAssignments> {
             }
 
             let assigner: IUser;
-            if (assigners[assignerURL] == undefined) {
+            if (assigners[assignerURL] === undefined) {
                 assigner = (await axios.get(assignerURL, AxiosConf)).data;
                 assigners[assignerURL] = assigner;
             } else {
@@ -102,23 +102,12 @@ export async function getAssignments(url: string): Promise<ProjectAssignments> {
  * if the students have the same name we sort on the username of the assigner.
  * @param assignments
  */
-function sortAssignments(assignments: ProjectAssignments) {
+function sortAssignments(assignments: IFullAssignment) {
     assignments.sort((assignment1, assignment2) => {
-        if (assignment1.student.firstName > assignment2.student.firstName) {
-            return 1;
+        const compareStudents = assignment1.student.firstName.localeCompare(assignment2.student.firstName);
+        if (compareStudents == 0) {
+            return assignment1.assigner.callName.localeCompare(assignment2.assigner.callName);
         }
-
-        if (assignment1.student.firstName < assignment2.student.firstName) {
-            return -1;
-        }
-
-        if (assignment1.assigner.callName > assignment2.assigner.callName) {
-            return 1;
-        }
-
-        if (assignment1.assigner.callName < assignment2.assigner.callName) {
-            return -1;
-        }
-        return 0;
+        return compareStudents;
     });
 }

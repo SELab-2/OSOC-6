@@ -26,9 +26,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     });
 
     const { mutate } = useSWRConfig();
-    let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments, {
-        refreshInterval: 10,
-    });
+    let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments);
     let assign = data || [];
 
     if (error) {

@@ -127,11 +127,11 @@ async function createResponse(
     await act(() => mockAxios.mockResponseFor({ url: assignment._links.assigner.href }, assignerResponse));
 }
 
-async function removeAssignment(assignment: IAssignment) {
+async function removeAssignment(assignment: IAssignment, id:string) {
     await waitFor(() => {
-        expect(screen.getByTestId("remove assignment button 0")).toBeInTheDocument();
+        expect(screen.getByTestId("remove assignment button " + id)).toBeInTheDocument();
     });
-    await act(async () => await userEvent.click(screen.getByTestId("remove assignment button 0")));
+    await act(async () => await userEvent.click(screen.getByTestId("remove assignment button " + id)));
 
     await waitFor(() => {
         expect(mockAxios.delete).toHaveBeenCalled();
@@ -176,7 +176,7 @@ describe("Assignmnent item tests", () => {
         const projectSkill = getBaseProjectSkill("100");
         await renderAssignmentItem([skillType], [assignment], assigner, student, projectSkill);
 
-        await removeAssignment(assignment);
+        await removeAssignment(assignment, "0");
 
         await waitFor(() => {
             expect(screen.getByText(capitalize("no users for skill"))).toBeInTheDocument();
@@ -193,7 +193,7 @@ describe("Assignmnent item tests", () => {
         await renderAssignmentItem([skillType], [assignment, assignment2], assigner, student, projectSkill);
         await createResponse(assignment2, "3", "a", "assigner1");
 
-        await removeAssignment(assignment);
+        await removeAssignment(assignment, "1");
 
         await waitFor(() => {
             expect(screen.getByText(projectSkill.name)).toBeInTheDocument();
@@ -235,12 +235,12 @@ describe("Assignmnent item tests", () => {
 
         await waitFor(() => {
             const html = document.body.innerHTML;
-            const a1 = html.search(assignment.reason);
-            const a2 = html.search(assignment3.reason);
-            const a3 = html.search(assignment5.reason);
-            const a4 = html.search(assignment7.reason);
-            const a5 = html.search(assignment6.reason);
-            const a6 = html.search(assignment4.reason);
+            const a1 = html.search(assignment3.reason);
+            const a2 = html.search(assignment5.reason);
+            const a3 = html.search(assignment7.reason);
+            const a4 = html.search(assignment6.reason);
+            const a5 = html.search(assignment4.reason);
+            const a6 = html.search(assignment.reason);
             expect(screen.getByTestId("assignment-item")).toBeInTheDocument();
             expect(a1).toBeLessThan(a2);
             expect(a2).toBeLessThan(a3);

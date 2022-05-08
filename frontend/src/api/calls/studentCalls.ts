@@ -1,4 +1,9 @@
-import { getAllEntitiesFromPage, getEntityOnUrl, getQueryUrlFromParams } from "./baseCalls";
+import {
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+    getQueryUrlFromParams,
+} from "./baseCalls";
 import { IStudent, OsocExpericience, studentCollectionName } from "../entities/StudentEntity";
 
 export interface IStudentQueryParams {
@@ -44,4 +49,8 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     }
 
     return getQueryUrlFromParams(url, queryParams);
+}
+
+export function extractIdFromStudentUrl(url: string): string {
+    return extractIdFromApiEntityUrl(url);
 }

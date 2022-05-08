@@ -5,8 +5,13 @@ import useTranslation from "next-translate/useTranslation";
 import { Dispatch, useState } from "react";
 import { addAssignment } from "../../api/calls/AssignmentCalls";
 
-type SkillInfo = { skillName: string; skillColor: string; skillUrl: string };
-type ModalInfo = { studentName: string; studentUrl: string; skillInfo: SkillInfo; projectName: string };
+export type ModalSkillInfo = { skillName: string; skillColor: string; skillUrl: string };
+export type ModalInfo = {
+    studentName: string;
+    studentUrl: string;
+    skillInfo: ModalSkillInfo;
+    projectName: string;
+};
 
 function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; setter: Dispatch<boolean> }) {
     const { t } = useTranslation("common");
@@ -32,8 +37,9 @@ function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; sett
             </ModalHeader>
             <ModalBody>
                 <p>
-                    You are suggesting {props.modalInfo.studentName} to project{" "}
-                    <i>{props.modalInfo.projectName}</i> for the role{" "}
+                    {capitalize(t("suggesting"))}
+                    {props.modalInfo.studentName} {capitalize(t("to project"))}
+                    <i>{props.modalInfo.projectName}</i> {capitalize(t("for role"))}
                     <Badge bg="" style={{ backgroundColor: props.modalInfo.skillInfo.skillColor }}>
                         {props.modalInfo.skillInfo.skillName}
                     </Badge>
