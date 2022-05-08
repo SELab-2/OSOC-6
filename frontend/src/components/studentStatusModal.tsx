@@ -5,7 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 import { Status } from "../api/entities/StudentEntity";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
-import {patchStudentStatus} from "../api/calls/studentCalls";
+import { patchStudentStatus } from "../api/calls/studentCalls";
 
 /**
  * Modal to confirm change of student status

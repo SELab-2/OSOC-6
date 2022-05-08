@@ -1,7 +1,8 @@
-import { getAllEntitiesFromLinksUrl, getEntityOnUrl } from "./baseCalls";
-import { ISuggestion, suggestionCollectionName } from "../entities/SuggestionEntity";
+import { basePost, getAllEntitiesFromLinksUrl, getEntityOnUrl } from "./baseCalls";
+import { ISuggestion, Suggestion, suggestionCollectionName } from "../entities/SuggestionEntity";
 import { IUser } from "../entities/UserEntity";
 import { getUserOnUrl } from "./userCalls";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * An interface describing the shape of a suggestion entity with extra entities,
@@ -18,6 +19,14 @@ export interface IFullSuggestion {
  */
 export function getAllSuggestionsFromLinks(url: string): Promise<ISuggestion[]> {
     return <Promise<ISuggestion[]>>getAllEntitiesFromLinksUrl(url, suggestionCollectionName);
+}
+
+/**
+ * Creates a project.
+ * @param suggestion the suggestion that should be created
+ */
+export async function createNewSuggestion(suggestion: Suggestion): Promise<ISuggestion> {
+    return (await basePost(apiPaths.suggestions, suggestion)).data;
 }
 
 /**

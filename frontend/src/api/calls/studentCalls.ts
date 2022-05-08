@@ -3,10 +3,10 @@ import {
     basePost,
     getAllEntitiesFromPage,
     getEntityOnUrl,
-    getQueryUrlFromParams
+    getQueryUrlFromParams,
 } from "./baseCalls";
-import {IStudent, OsocExpericience, Status, studentCollectionName} from "../entities/StudentEntity";
-import {Suggestion} from "../entities/SuggestionEntity";
+import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
+import { Suggestion } from "../entities/SuggestionEntity";
 
 export interface IStudentQueryParams {
     freeText: string;
@@ -24,11 +24,7 @@ export function getAllStudentsFromPage(url: string): Promise<IStudent[]> {
 }
 
 export async function patchStudentStatus(url: string, status: Status) {
-    await basePatch(url, {status: status});
-}
-
-export async function postStudentSuggestion(url: string, suggestion: Suggestion) {
-    await basePost(url, suggestion);
+    await basePatch(url, { status: status });
 }
 
 export function getStudentOnUrl(url: string): Promise<IStudent> {

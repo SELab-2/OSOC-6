@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { Suggestion, SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { Field, Form, Formik } from "formik";
-import axios from "axios";
-import apiPaths from "../properties/apiPaths";
-import { AxiosConf } from "../api/calls/baseCalls";
 import { IUser } from "../api/entities/UserEntity";
 import { getOwnUser } from "../api/calls/userCalls";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
-import {postStudentSuggestion} from "../api/calls/studentCalls";
+import { createNewSuggestion } from "../api/calls/suggestionCalls";
 
 /**
  * Modal asking the reason for a certain suggestion
@@ -32,7 +29,7 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
             props.studentUrl
         );
 
-        await postStudentSuggestion(apiPaths.suggestions, suggestion);
+        await createNewSuggestion(suggestion);
         handleClose();
     }
 
