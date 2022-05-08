@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, RenderResult, waitFor } from "@testing-library/react";
-import CommunicationTemplateInfo from "../src/pages/communicationTemplate/[id]";
+import CommunicationTemplateInfo from "../src/pages/communicationTemplates/[id]";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../src/properties/apiPaths";
