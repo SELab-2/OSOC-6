@@ -23,6 +23,7 @@ import { IStudent } from "../../src/api/entities/StudentEntity";
 import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
 import { capitalize } from "../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
+import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -61,7 +62,12 @@ async function renderAssignmentItem(
         expect(mockAxios.get).toHaveBeenCalled();
     });
 
-    await act(() => mockAxios.mockResponseFor({ url: apiPaths.skillTypesByName }, response));
+    await act(() =>
+        mockAxios.mockResponseFor(
+            { url: getQueryUrlFromParams(apiPaths.skillTypesByName, { name: projectSkill.name }) },
+            response
+        )
+    );
 
     const assignmentResponse: AxiosResponse = getBaseOkResponse(
         getBaseLinks(projectSkill._links.assignments.href, assignmentCollectionName, assignments)
