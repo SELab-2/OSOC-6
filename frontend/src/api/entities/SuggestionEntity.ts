@@ -23,7 +23,6 @@ export interface ISuggestion extends IBaseEntity {
 export const suggestionCollectionName: string = "suggestions";
 export type ISuggestionPage = IPage<{ suggestions: ISuggestion[] }>;
 export type ISuggestionLinks = IEntityLinks<{ suggestions: ISuggestion[] }>;
-export type IFullSuggestion = { suggestion: ISuggestion; coach: IUser };
 
 export class Suggestion {
     constructor(strategy: SuggestionStrategy, reason: string, coach: string, student: string) {

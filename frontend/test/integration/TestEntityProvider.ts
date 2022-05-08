@@ -208,29 +208,25 @@ export function getBaseActiveEdition(id: string, name: string): IEdition {
     };
 }
 
-export function getBaseSuggestion(): ISuggestion {
-    const baseUser = apiPaths.users + "/" + 0;
-    const baseStudent = apiPaths.students + "/" + 0;
-    const baseSuggestion = apiPaths.suggestions + "/" + 0;
+export function getBaseSuggestion(id: string): ISuggestion {
+    const baseSuggestionPath = "http://localhost/api/suggestions/" + id;
 
     return {
         reason: "Some reason",
         strategy: SuggestionStrategy.yes,
         timestamp: "",
         _links: {
-            coach: { href: baseUser },
-            student: { href: baseStudent },
-            suggestion: { href: baseSuggestion },
-            self: { href: baseSuggestion },
+            coach: { href: baseSuggestionPath + "/coach" },
+            student: { href: baseSuggestionPath + "/student" },
+            suggestion: { href: baseSuggestionPath },
+            self: { href: baseSuggestionPath },
         },
     };
 }
 
 export function getBaseStudent(id: string): IStudent {
-    const baseAssignmentsPath = apiPaths.base + apiPaths.assignments + id;
-    const baseStudentPath = apiPaths.students + "/" + id;
-    const baseSuggestionsPath = baseStudentPath + "/" + apiPaths.suggestions;
-    const baseEditionsPath = baseStudentPath + "/" + apiPaths.editions;
+    const baseStudentPath = "http://localhost/api/students/" + id;
+
     return {
         email: "kasper@mail.com",
         firstName: "Kasper",
@@ -257,14 +253,14 @@ export function getBaseStudent(id: string): IStudent {
         status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],
-        skills: ["other"],
+        skills: ["Gaming on a nice chair"],
         yesSuggestionCount: 0,
         maybeSuggestionCount: 0,
         noSuggestionCount: 0,
         _links: {
-            assignments: { href: baseAssignmentsPath },
-            suggestions: { href: baseSuggestionsPath },
-            edition: { href: baseEditionsPath },
+            assignments: { href: baseStudentPath + "/assignments" },
+            suggestions: { href: baseStudentPath + "/suggestions" },
+            edition: { href: baseStudentPath + "/edition" },
             student: { href: baseStudentPath },
             self: { href: baseStudentPath },
         },

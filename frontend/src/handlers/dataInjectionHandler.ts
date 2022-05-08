@@ -30,7 +30,7 @@ import {
     SuggestionStrategy,
 } from "../api/entities/SuggestionEntity";
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
-import { getRandomColor, getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
+import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
 import { AxiosConf } from "../api/calls/baseCalls";
 import faker from "@faker-js/faker";
 
@@ -174,9 +174,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         "Other",
     ];
     if (students._embedded.students.length == 0) {
-        const bestSkill = commonSkills[(Math.random() * commonSkills.length) | 0];
-        const skill = commonSkills[(Math.random() * commonSkills.length) | 0];
-        const skillList = bestSkill == skill ? [bestSkill] : [bestSkill, skill];
         const student1: Student = new Student(
             "kasper@mail.com",
             "He likes it like that",
@@ -200,7 +197,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "",
             "he/him/his",
             "A fun fact about me",
-            skillList,
+            ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
             ["I love to Spring Spring in java Spring!"],
             faker.lorem.paragraph(5),
             "3th",
@@ -268,11 +265,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 async (skill) => (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
             )
         );
-
-        commonSkills.map(async (skillName) => {
-            const skill = new SkillType(skillName, getRandomColor());
-            return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data;
-        });
     } else {
         containedSkillTypes = skillTypes._embedded.skillTypes;
     }

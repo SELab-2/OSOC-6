@@ -1,6 +1,4 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { IFullSuggestion } from "./SuggestionEntity";
-import { ISkillType } from "./SkillTypeEntity";
 
 export enum EnglishProficiency {
     /**
@@ -90,6 +88,45 @@ export interface IStudent extends IBaseEntity {
         self: IReferencer;
     };
 }
+
+export const emptyStudent: IStudent = {
+    callName: "",
+    noSuggestionCount: 0,
+    maybeSuggestionCount: 0,
+    additionalStudentInfo: "",
+    yesSuggestionCount: 0,
+    bestSkill: "",
+    currentDiploma: "",
+    curriculumVitaeURI: "",
+    daytimeResponsibilities: "",
+    email: "",
+    durationCurrentDegree: 0,
+    englishProficiency: EnglishProficiency.readNotWrite,
+    firstName: "",
+    funFact: "",
+    gender: Gender.not_specified,
+    institutionName: "",
+    lastName: "",
+    mostFluentLanguage: "",
+    motivationURI: "",
+    osocExperience: OsocExpericience.none,
+    phoneNumber: "",
+    portfolioURI: "",
+    pronouns: "",
+    skills: [],
+    status: Status.undecided,
+    studies: [],
+    workType: "",
+    writtenMotivation: "",
+    yearInCourse: "",
+    _links: {
+        student: { href: "" },
+        self: { href: "" },
+        assignments: { href: "" },
+        edition: { href: "" },
+        suggestions: { href: "" },
+    },
+};
 
 export const studentCollectionName: string = "students";
 export type IStudentPage = IPage<{ students: IStudent[] }>;

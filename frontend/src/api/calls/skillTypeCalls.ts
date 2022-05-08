@@ -6,7 +6,6 @@ import {
     baseSkillType,
     ISkillType,
     ISkillTypePage,
-    SkillType,
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
 import {
@@ -16,30 +15,27 @@ import {
     getQueryUrlFromParams,
 } from "./baseCalls";
 
+export async function getSkillTypeByName(skillName: string): Promise<ISkillType> {
+    let type: ISkillTypePage = (
+        await axios.get(getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillName }), AxiosConf)
+    ).data;
+    if (type._embedded.skillTypes.length == 0) {
+        type = (
+            await axios.get(
+                getQueryUrlFromParams(apiPaths.skillTypesByName, { name: baseSkillType }),
+                AxiosConf
+            )
+        ).data;
+    }
+    return type._embedded.skillTypes[0];
+}
+
 /**
  * Get the skillType for a certain Skill.
  * @param skill The skill you want the skillTypeFrom
  */
-export async function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): Promise<ISkillType> {
-    let type: ISkillTypePage = (
-        await axios.get(apiPaths.skillTypesByName, {
-            params: {
-                name: skill.name,
-            },
-            ...AxiosConf,
-        })
-    ).data;
-    if (type._embedded.skillTypes.length == 0) {
-        type = (
-            await axios.get(apiPaths.skillTypesByName, {
-                params: {
-                    name: baseSkillType,
-                },
-                ...AxiosConf,
-            })
-        ).data;
-    }
-    return type._embedded.skillTypes[0];
+export function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): Promise<ISkillType> {
+    return getSkillTypeByName(skill.name);
 }
 
 /**
@@ -51,23 +47,4 @@ export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
 
 export function getAllSkillTypesFromPage(url: string): Promise<ISkillType[]> {
     return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
-}
-
-export async function getSkillTypeByName(skillName: string): Promise<ISkillType> {
-    const skills = await getAllSkillTypesFromPage(
-        getQueryUrlFromParams(apiPaths.skillTypesByName, {
-            name: skillName,
-        })
-    );
-    return skills.length == 0 ? await createNewSkill(skillName) : skills[0];
-}
-
-export function getRandomColor() {
-    let color = Math.floor(Math.random() * 16777216).toString(16);
-    return "#000000".slice(0, -color.length) + color;
-}
-
-export async function createNewSkill(skillName: string): Promise<ISkillType> {
-    const skill = new SkillType(skillName, getRandomColor());
-    return (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data;
 }

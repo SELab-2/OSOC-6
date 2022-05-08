@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import {
-    getBaseActiveEdition,
     getBaseLinks,
     getBaseOkResponse,
     getBasePage,
@@ -21,7 +20,6 @@ import mockRouter from "next-router-mock";
 import apiPaths from "../../src/properties/apiPaths";
 import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import { editionCollectionName } from "../../src/api/entities/EditionEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -36,23 +34,26 @@ describe("StudentInfo", () => {
     });
 
     it("should render with data.", async () => {
-        mockRouter.setCurrentUrl("/students/10");
-        mockRouter.query = { id: "10" };
-        await render(makeCacheFree(StudentInfo));
+        const studentId = "10";
 
-        const id = "10";
-        const baseStudent: IStudent = getBaseStudent(id);
+        mockRouter.setCurrentUrl("/students/" + studentId);
+        mockRouter.query = { id: studentId };
+
+        render(makeCacheFree(StudentInfo));
+
+        const baseStudent: IStudent = getBaseStudent(studentId);
+        const baseSuggestion: ISuggestion = getBaseSuggestion("11");
+        const baseCoach: IUser = getBaseUser("12", UserRole.admin, true);
+        const baseSkillType = getBaseSkillType("13");
+        baseSkillType.name = baseStudent.skills[0];
+
         await waitFor(() =>
-            mockAxios.mockResponseFor(
-                { method: "GET", url: baseStudent._links.self.href },
-                getBaseOkResponse(baseStudent)
-            )
+            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
         );
 
-        const baseSuggestion: ISuggestion = getBaseSuggestion();
         await waitFor(() =>
             mockAxios.mockResponseFor(
-                { method: "GET", url: baseStudent._links.suggestions.href },
+                baseStudent._links.suggestions.href,
                 getBaseOkResponse(
                     getBaseLinks(baseStudent._links.suggestions.href, suggestionCollectionName, [
                         baseSuggestion,
@@ -61,25 +62,21 @@ describe("StudentInfo", () => {
             )
         );
 
-        const baseCoach: IUser = getBaseUser("5", UserRole.admin, true);
         await waitFor(() =>
             mockAxios.mockResponseFor(
-                { method: "GET", url: baseSuggestion._links.coach.href },
+                baseSuggestion._links.coach.href,
                 getBaseOkResponse(
                     getBaseLinks(baseSuggestion._links.coach.href, userCollectionName, [baseCoach])
                 )
             )
         );
 
-        const baseSkill = getBaseSkillType("5");
-        const skillUrl = getQueryUrlFromParams(apiPaths.skillTypesByName, {
-            name: baseSkill.name,
-        });
-
         await waitFor(() => {
             mockAxios.mockResponseFor(
-                { method: "GET", url: skillUrl },
-                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [baseSkill]))
+                getQueryUrlFromParams(apiPaths.skillTypesByName, {
+                    name: baseStudent.skills[0],
+                }),
+                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [baseSkillType]))
             );
         });
 

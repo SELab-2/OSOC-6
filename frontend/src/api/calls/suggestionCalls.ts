@@ -1,7 +1,12 @@
-import { getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
-import { IFullSuggestion, ISuggestion, suggestionCollectionName } from "../entities/SuggestionEntity";
+import { getAllEntitiesFromLinksUrl, getEntityOnUrl } from "./baseCalls";
+import { ISuggestion, suggestionCollectionName } from "../entities/SuggestionEntity";
 import { IUser } from "../entities/UserEntity";
 import { getUserOnUrl } from "./userCalls";
+
+export interface IFullSuggestion {
+    suggestion: ISuggestion;
+    coach: IUser;
+}
 
 /**
  * Fetches all students on a given StudentLinksUrl
@@ -14,7 +19,12 @@ export function getSuggestionOnUrl(url: string): Promise<ISuggestion> {
     return <Promise<ISuggestion>>getEntityOnUrl(url);
 }
 
-export async function getFullSuggestionFromSuggestion(suggestion: ISuggestion): Promise<IFullSuggestion> {
-    const coach: IUser = await getUserOnUrl(suggestion._links.coach.href);
-    return { suggestion: suggestion, coach: coach };
+export async function getFullSuggestionsFromPage(url: string): Promise<IFullSuggestion[]> {
+    const suggestions: ISuggestion[] = await getAllSuggestionsFromLinks(url);
+    return await Promise.all(
+        suggestions.map(async (suggestion) => ({
+            suggestion,
+            coach: await getUserOnUrl(suggestion._links.coach.href),
+        }))
+    );
 }

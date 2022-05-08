@@ -10,6 +10,16 @@ export interface ISkillType extends IBaseEntity {
     };
 }
 
+export const emptySkillType: ISkillType = {
+    name: "",
+    colour: "grey",
+
+    _links: {
+        skillType: { href: "" },
+        self: { href: "" },
+    },
+};
+
 export const skillTypeCollectionName: string = "skillTypes";
 export type ISkillTypePage = IPage<{ skillTypes: ISkillType[] }>;
 export type ISkillTypeLinks = IEntityLinks<{ skillTypes: ISkillType[] }>;
