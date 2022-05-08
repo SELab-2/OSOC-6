@@ -15,6 +15,10 @@ import {
     getQueryUrlFromParams,
 } from "./baseCalls";
 
+/**
+ * Get the skillType entity provided the name of a Skill. If the name does not match, [baseSkillType] will be used.
+ * @param skillName the name on which to search for the [ISkillType].
+ */
 export async function getSkillTypeByName(skillName: string): Promise<ISkillType> {
     let type: ISkillTypePage = (
         await axios.get(getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillName }), AxiosConf)
@@ -45,6 +49,10 @@ export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
     return <Promise<ISkillType[]>>getAllEntitiesFromLinksUrl(url, skillTypeCollectionName);
 }
 
+/**
+ * Gets all [ISkillType] entities on an url hosting [IPage].
+ * @param url url hosting the IPage
+ */
 export function getAllSkillTypesFromPage(url: string): Promise<ISkillType[]> {
     return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
 }
