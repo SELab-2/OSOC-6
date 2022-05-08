@@ -3,7 +3,7 @@ import { IStudent, OsocExpericience, studentCollectionName } from "../entities/S
 import { IFullSuggestion, ISuggestion } from "../entities/SuggestionEntity";
 import { getAllSuggestionsFromLinks, getFullSuggestionFromSuggestion } from "./suggestionCalls";
 import { getSkillTypeByName } from "./skillTypeCalls";
-import { ISkillType, SkillType } from "../entities/SkillTypeEntity";
+import { ISkillType } from "../entities/SkillTypeEntity";
 
 export interface IStudentQueryParams {
     freeText: string;
