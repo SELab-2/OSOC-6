@@ -3,7 +3,7 @@ import { Badge, Col, FormSelect, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik, useFormik } from "formik";
 import apiPaths from "../properties/apiPaths";
-import { getAllUsersFromPage } from "../api/calls/userCalls";
+import {extractIdFromUserUrl, getAllUsersFromPage} from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
 import {
     FormSubmitValues,
@@ -17,8 +17,10 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
-import { extractIdFromApiEntityUrl } from "../api/calls/baseCalls";
+import {AxiosConf, extractIdFromApiEntityUrl} from "../api/calls/baseCalls";
 import { useRouter } from "next/router";
+import {extractIdFromEditionUrl} from "../api/calls/editionCalls";
+import axios from "axios";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
     let userResponse = useSwrWithEdition(apiPaths.users, getAllUsersFromPage);
@@ -44,13 +46,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const [skillInfos, setSkillInfos] = useState<string[]>([]);
     const [skillInfo, setSkillInfo] = useState<string>("");
 
-    if (userError) {
-        console.log(userError);
-        return null;
-    }
-
-    if (skillTypeError) {
-        console.log(skillTypeError);
+    if (userError || skillTypeError) {
+        console.log(userError || skillTypeError);
         return null;
     }
 
@@ -128,6 +125,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     async function handleSubmit(submitValues: FormSubmitValues) {
+        //const ownUser = await axios.get(apiPaths.ownUser, AxiosConf).data;
+
         const coachURLs: string[] = [];
         for (let coach of coaches) {
             coachURLs.push(
@@ -145,7 +144,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             partnerWebsite: submitValues.partnerWebsite,
             skills: skills,
             creator: "",
-            edition: apiPaths.editions + "/" + extractIdFromApiEntityUrl(edition!._links.self.href),
+            edition: apiPaths.editions + "/" + extractIdFromEditionUrl(edition!._links.self.href),
             skillInfos: skillInfos,
             goals: goals,
             coaches: coachURLs,

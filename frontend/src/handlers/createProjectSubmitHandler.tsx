@@ -5,6 +5,8 @@ import { AxiosConf, extractIdFromApiEntityUrl, ManyToManyAxiosConf } from "../ap
 import { Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
+import {extractIdFromUserUrl} from "../api/calls/userCalls";
+import {IUser} from "../api/entities/UserEntity";
 
 export interface ProjectCreationValues {
     name: string;
@@ -33,8 +35,6 @@ export type ProjectCreationProps = {
 };
 
 export async function createProjectSubmitHandler(values: ProjectCreationValues, router: NextRouter) {
-    const ownUser = await axios.get(apiPaths.ownUser, AxiosConf);
-
     const project: Project = new Project(
         values.name,
         values.info,
@@ -43,7 +43,7 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues, 
         values.partnerName,
         values.partnerWebsite,
         values.edition,
-        apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser.data._links.self.href)
+        ""//apiPaths.users + "/" + extractIdFromUserUrl(ownUser.data._links.self.href)
     );
 
     const projectResponse = await axios.post(apiPaths.projects, project, AxiosConf);
