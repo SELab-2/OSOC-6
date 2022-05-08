@@ -26,8 +26,6 @@ export default function CommunicationInfo({ url }: ICommunicationInfoParams) {
 
     const template: ICommunicationTemplate = data?.template || emptyCommunicationTemplate;
 
-    console.log(communication);
-
     if (error) {
         console.log(error);
         return null;

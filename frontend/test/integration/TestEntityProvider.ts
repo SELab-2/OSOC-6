@@ -181,7 +181,7 @@ export function getBaseAssignment(id: string): IAssignment {
     return {
         isSuggestion: true,
         isValid: true,
-        reason: "This assignment was mendetory, we don't have any other",
+        reason: "This assignment was mandatory, we don't have any other",
         timestamp: "Now",
 
         _links: {
@@ -212,7 +212,7 @@ export function getBaseCommunicationTemplate(id: string): ICommunicationTemplate
     const baseCommunicationPath = "http://localhost/api/communication-templates/" + id;
     return {
         name: "Selected",
-        subject: "Selection nottification",
+        subject: "Selection notification",
         template: "You have been selected to join the OSOC experience.",
 
         _links: {
