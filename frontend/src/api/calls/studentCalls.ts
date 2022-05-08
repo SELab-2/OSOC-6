@@ -13,6 +13,7 @@ export interface IStudentQueryParams {
     studentCoach: boolean;
     alumni: boolean;
     unmatched: boolean;
+    status: string;
 }
 
 /**
@@ -51,6 +52,9 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     }
     if (experience.length > 0) {
         queryParams.experience = experience;
+    }
+    if (params.status) {
+        queryParams.status = params.status;
     }
 
     return getQueryUrlFromParams(url, queryParams);

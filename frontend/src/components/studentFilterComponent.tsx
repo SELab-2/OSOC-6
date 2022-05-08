@@ -20,6 +20,7 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
         studentCoach: false,
         alumni: false,
         unmatched: false,
+        status: "",
     };
     values.freeText = (query.freeText || "") as string;
     values.roles = (query.roles || "") as string;
@@ -32,6 +33,8 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
     if (query.unmatched !== undefined) {
         values.unmatched = query.unmatched !== "false";
     }
+    values.status = (query.status || "") as string;
+    console.log(values)
     return values;
 }
 
@@ -42,6 +45,7 @@ function fromFormStudentQueryParams(values: IStudentQueryParams): ParsedUrlQuery
     queryObject.studentCoach = boolToString(values.studentCoach);
     queryObject.alumni = boolToString(values.alumni);
     queryObject.unmatched = boolToString(values.unmatched);
+    queryObject.status = "";
     return queryObject;
 }
 
