@@ -98,7 +98,8 @@ public class UserEntityService implements UserDetailsService {
      * @return whether the corresponding entity exists and is still valid
      */
     public boolean isPasswordResetTokenValid(final String token) {
-        Optional<ResetPasswordToken> optionalResetPasswordToken = resetPasswordTokenRepository.findByToken(token);
+        Optional<ResetPasswordToken> optionalResetPasswordToken =
+                resetPasswordTokenRepository.internalFindByToken(token);
         return optionalResetPasswordToken.isPresent() && optionalResetPasswordToken.get().isValid();
     }
 
@@ -108,7 +109,8 @@ public class UserEntityService implements UserDetailsService {
      * @param newPassword the new password of the user
      */
     public void resetUserPassword(final String token, final String newPassword) {
-        Optional<ResetPasswordToken> optionalResetPasswordToken = resetPasswordTokenRepository.findByToken(token);
+        Optional<ResetPasswordToken> optionalResetPasswordToken =
+                resetPasswordTokenRepository.internalFindByToken(token);
         if (optionalResetPasswordToken.isPresent() && optionalResetPasswordToken.get().isValid()) {
             UserEntity userEntity = optionalResetPasswordToken.get().getSubject();
 

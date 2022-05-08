@@ -56,7 +56,7 @@ public class ResetPasswordToken {
     private Timestamp creationTimestamp;
 
     /**
-     * User that requested the password reset.
+     * For whom the reset password was requested.
      */
     @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id")

@@ -53,6 +53,16 @@ public final class DumbledorePathWizard {
     public static final String OWN_USERS_PATH = "own-user";
 
     /**
+     * Path used to request a password reset.
+     */
+    public static final String FORGOT_PASSWORD_PATH = "forgot-password";
+
+    /**
+     * Path used to actually reset the password.
+     */
+    public static final String RESET_PASSWORD_PATH = "reset-password";
+
+    /**
      * Path that registration is served on.
      */
     public static final String REGISTRATION_PATH = "registration";
@@ -156,14 +166,4 @@ public final class DumbledorePathWizard {
      * Path that our webhook is served on.
      */
     public static final String WEBHOOK_PATH = "webhook";
-
-    /**
-     * Path used to request a password reset.
-     */
-    public static final String FORGOT_PASSWORD_PATH = "forgot-password";
-
-    /**
-     * Path used to actually reset the password.
-     */
-    public static final String RESET_PASSWORD_PATH = "reset-password";
 }

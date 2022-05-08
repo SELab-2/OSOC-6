@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * This controller is used to handle the forgot and reset password process.
+ * There is no authorization since this needs to be accessible without login.
  */
 @RestController
 @AllArgsConstructor

@@ -2,6 +2,7 @@ package com.osoc6.OSOC6.repository;
 
 import com.osoc6.OSOC6.database.models.ResetPasswordToken;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 /**
  * This repository is used to access {@link ResetPasswordToken} in the database.
- * It is not exported as an endpoint.
+ * It is not exported as an endpoint, and therefore does not need any authorization.
  */
 @RepositoryRestResource(exported = false)
 public interface ResetPasswordTokenRepository extends JpaRepository<ResetPasswordToken, Long> {
@@ -19,7 +20,8 @@ public interface ResetPasswordTokenRepository extends JpaRepository<ResetPasswor
      * @param token the unique token of the reset password token
      * @return the reset password token with the given token or Optional#empty if none found
      */
-    Optional<ResetPasswordToken> findByToken(@Param("token") String token);
+    @Query("select r from ResetPasswordToken r where r.token = :token")
+    Optional<ResetPasswordToken> internalFindByToken(@Param("token") String token);
 
     /**
      * Find a reset password token belonging to the user with the given email.
