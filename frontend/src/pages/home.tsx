@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { dataInjectionHandler } from "../handlers/dataInjectionHandler";
 import NavBar from "../components/navBar";
@@ -10,9 +9,6 @@ const Home: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div>
-            <Head>
-                <title className="capitalize">{t("home page title")}</title>
-            </Head>
             <NavBar />
             <main className={styles.main}>
                 <div className="capitalize">
