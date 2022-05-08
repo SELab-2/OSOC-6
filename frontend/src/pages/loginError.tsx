@@ -14,9 +14,6 @@ const LoginError: NextPage = () => {
     const { mutate } = useSWRConfig();
     return (
         <div>
-            <Head>
-                <title className="capitalize">{t("common:login page title")}</title>
-            </Head>
             <h1 className="display-6 mb-3 capitalize">{t("common:tool name")}</h1>
             <main className="m-4">
                 <Card>
