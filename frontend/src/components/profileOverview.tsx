@@ -71,7 +71,7 @@ export function ProfileOverview() {
 
     return (
         <Container>
-            <h2>{t("user profile")}</h2>
+            <h2>{capitalize(t("user profile"))}</h2>
             <Row data-testid="profile-overview">
                 <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                 {/*show callname if not editing*/}
