@@ -4,7 +4,7 @@ import NavBar from "../../components/navBar";
 import styles from "../../styles/pageGrids.module.css";
 import { StudentList } from "../../components/studentList";
 import { StudentInfo } from "../../components/studentInfo";
-import {StudentFilterComponent} from "../../components/studentFilterComponent";
+import { StudentFilterComponent } from "../../components/studentFilterComponent";
 
 const StudentsIDPage: NextPage = () => {
     return (

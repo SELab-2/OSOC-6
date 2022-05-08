@@ -4,7 +4,7 @@ import { ParsedUrlQueryInput } from "querystring";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
 import { IStudentQueryParams } from "../api/calls/studentCalls";
-import {Row, Col, ButtonGroup, Dropdown} from "react-bootstrap";
+import { Row, Col, ButtonGroup, Dropdown } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import Image from "next/image";
@@ -52,13 +52,13 @@ export function StudentFilterComponent() {
 
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
     return (
-        <div data-testid="student-filter" style={{backgroundColor: "#0a0839"}}>
-            <div style={{color: "white", padding: 20}}>
+        <div data-testid="student-filter" style={{ backgroundColor: "#0a0839" }}>
+            <div style={{ color: "white", padding: 20 }}>
                 <Row>
                     <h1>Filters</h1>
                 </Row>
 
-                <Row style={{paddingLeft: 20}}>
+                <Row style={{ paddingLeft: 20 }}>
                     <Formik
                         enableReinitialize={true}
                         initialValues={values}
@@ -108,35 +108,59 @@ export function StudentFilterComponent() {
                                     </Col>
                                     <Col sm={9}>
                                         <Row>
-                                            <Col sm={4} style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                            <Col
+                                                sm={4}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                }}
+                                            >
                                                 <div>Roles</div>
                                                 <Dropdown as={ButtonGroup} drop="down">
-                                                    <Dropdown.Toggle style={{backgroundColor: "#0a0839", borderColor: "white", height: 30, alignItems: "center", display: "flex"}}>Choose one or more</Dropdown.Toggle>
+                                                    <Dropdown.Toggle
+                                                        style={{
+                                                            backgroundColor: "#0a0839",
+                                                            borderColor: "white",
+                                                            height: 30,
+                                                            alignItems: "center",
+                                                            display: "flex",
+                                                        }}
+                                                    >
+                                                        Choose one or more
+                                                    </Dropdown.Toggle>
                                                     <DropdownMenu>
                                                         {["Marketing", "Communication"].map((value) => (
-                                                            <DropdownItem key={value}>
-                                                                {value}
-                                                            </DropdownItem>
+                                                            <DropdownItem key={value}>{value}</DropdownItem>
                                                         ))}
                                                     </DropdownMenu>
                                                 </Dropdown>
                                             </Col>
                                             <Col sm={8}>
-                                                <Field type="text" name="freeText" className="textfield"
-                                                       style={{backgroundColor: "#0a0839", borderColor: "white",
-                                                           borderWidth: 1,
-                                                           color: "white", width: 400, paddingLeft: 10}}
-                                                       placeholder="Search students with keywords"
-                                                       InputProps={{
-                                                           startAdornment: (
-                                                               <Image
-                                                                   alt={capitalize(t("edit"))}
-                                                                   src={"/resources/edit.svg"}
-                                                                   width="15"
-                                                                   height="15"
-                                                               />
-                                                           ),
-                                                       }}/>
+                                                <Field
+                                                    type="text"
+                                                    name="freeText"
+                                                    className="textfield"
+                                                    style={{
+                                                        backgroundColor: "#0a0839",
+                                                        borderColor: "white",
+                                                        borderWidth: 1,
+                                                        color: "white",
+                                                        width: 400,
+                                                        paddingLeft: 10,
+                                                    }}
+                                                    placeholder="Search students with keywords"
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <Image
+                                                                alt={capitalize(t("edit"))}
+                                                                src={"/resources/edit.svg"}
+                                                                width="15"
+                                                                height="15"
+                                                            />
+                                                        ),
+                                                    }}
+                                                />
                                             </Col>
                                         </Row>
                                         <Row>
@@ -144,11 +168,21 @@ export function StudentFilterComponent() {
                                                 <p>Marketing</p>
                                             </Col>
                                         </Row>
-                                        <Row style={{flexDirection: "row-reverse", paddingRight: 10}}>
-                                            <button type="submit" disabled={isSubmitting}
-                                                    style={{width: 100, color: "white", height: 25,
-                                                        alignItems: "center", display: "flex", justifyContent: "center",
-                                                        borderColor: "white", backgroundColor: "#0a0839"}}>
+                                        <Row style={{ flexDirection: "row-reverse", paddingRight: 10 }}>
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                style={{
+                                                    width: 100,
+                                                    color: "white",
+                                                    height: 25,
+                                                    alignItems: "center",
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    borderColor: "white",
+                                                    backgroundColor: "#0a0839",
+                                                }}
+                                            >
                                                 {capitalize(t("apply"))}
                                             </button>
                                         </Row>
