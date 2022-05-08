@@ -15,6 +15,20 @@ export interface ICommunicationTemplate extends IBaseEntity {
 }
 
 /**
+ * Empty [ICommunicationTemplate] object that can be used to render even when no communication template was found.
+ * Reduces null/ undefined checks.
+ */
+export const emptyCommunicationTemplate = {
+    template: "",
+    subject: "",
+    name: "",
+    _links: {
+        self: { href: "" },
+        communicationTemplate: { href: "" },
+    },
+};
+
+/**
  * The collection name of communication templates.
  */
 export const communicationTemplateCollectionName: string = "communicationTemplates";

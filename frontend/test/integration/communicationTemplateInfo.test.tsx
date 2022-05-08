@@ -1,33 +1,28 @@
+import { render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { render, RenderResult, waitFor } from "@testing-library/react";
-import CommunicationTemplateInfo from "../../src/pages/communicationTemplate/[id]";
-import mockRouter from "next-router-mock";
+import { getBaseCommunicationTemplate, getBaseOkResponse } from "./TestEntityProvider";
+import { makeCacheFree } from "./Provide";
+import CommunicationInfo from "../../src/components/CommunicationInfo";
 import mockAxios from "jest-mock-axios";
-import apiPaths from "../../src/properties/apiPaths";
-import userEvent from "@testing-library/user-event";
+import CommunicationTemplateInfo from "../../src/components/CommunicationTemplateInfo";
 
-jest.mock("next/router", () => require("next-router-mock"));
+describe("Communication template info", () => {
+    const template = getBaseCommunicationTemplate("1");
 
-describe("communication template info", () => {
-    const templateId = "1";
-    let page: RenderResult;
+    it("should be able to render.", () => {
+        const info = render(<CommunicationTemplateInfo url={template._links.self.href} />);
 
-    beforeEach(() => {
-        mockRouter.query.id = templateId;
-        page = render(<CommunicationTemplateInfo />);
+        expect(info.getByTestId("communication-template-info")).toBeInTheDocument();
     });
 
-    it("renders component", () => {
-        expect(page.getByTestId("communication-template-info")).toBeInTheDocument();
-        expect(page.getByTestId("mail-to-button")).toBeInTheDocument();
-    });
+    it("should render when answered", async () => {
+        const info = render(
+            makeCacheFree(() => CommunicationTemplateInfo({ url: template._links.self.href }))
+        );
 
-    it("calls correct template", async () => {
         await waitFor(() => {
-            expect(mockAxios.get).toHaveBeenCalledWith(
-                apiPaths.communicationTemplates + "/" + templateId,
-                expect.anything()
-            );
+            mockAxios.mockResponseFor(template._links.self.href, getBaseOkResponse(template));
         });
+        expect(await info.findByText(template.template));
     });
 });

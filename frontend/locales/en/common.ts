@@ -29,6 +29,7 @@ const common = {
     "repeat new email": "repeat new email",
     registration: "registration",
     register: "register",
+    logout: "logout",
     "enter callname": "enter callname",
     "enter email": "enter email address",
     "enter password": "enter password",
@@ -52,6 +53,9 @@ const common = {
 
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
+    subject: "subject",
+    "communication template": "communication template",
+    "open in mail application": "open in mail application",
 
     "student page title": "studentpage title",
     "assignment modal title": "Why do you want this student here?",
