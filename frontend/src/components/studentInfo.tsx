@@ -14,7 +14,6 @@ import SkillBadge from "./skillBadge";
 
 /**
  * Give an overview of all the studentinfo
- * @constructor
  */
 export function StudentInfo() {
     const { t } = useTranslation("common");

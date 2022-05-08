@@ -13,8 +13,7 @@ import {postStudentSuggestion} from "../api/calls/studentCalls";
 
 /**
  * Modal asking the reason for a certain suggestion
- * @param props
- * @constructor
+ * @param props properties needed to render this component
  */
 export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
     const { t } = useTranslation("common");

@@ -9,8 +9,7 @@ import {patchStudentStatus} from "../api/calls/studentCalls";
 
 /**
  * Modal to confirm change of student status
- * @param props
- * @constructor
+ * @param props properties needed to render this component
  */
 export function StudentStatusModal(props: { status: Status; studentUrl: string }) {
     const { t } = useTranslation("common");
