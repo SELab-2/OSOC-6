@@ -1,7 +1,5 @@
 const common = {
     "tool name": "open summer of code tool",
-    "home page title": "OSOC-6",
-    "login page title": "OSOC : login page",
     "empty page": "empty page",
     confirm: "confirm",
     apply: "apply",
