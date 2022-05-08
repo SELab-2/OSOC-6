@@ -11,8 +11,7 @@ export interface SkillBadgeParams {
 
 /**
  * Create a badge for a given skill
- * @param skill
- * @constructor
+ * @param skill the name of the skill this Badge represents
  */
 export default function SkillBadge({ skill }: SkillBadgeParams) {
     const { data: skillType, error } = useSWR(skill, getSkillTypeByName);
