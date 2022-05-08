@@ -5,17 +5,20 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../properties/timers";
 import { useState } from "react";
 import { User } from "../api/entities/UserEntity";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import apiPaths from "../properties/apiPaths";
 import { basePost, getParamsFromQueryUrl } from "../api/calls/baseCalls";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import { capitalize } from "../utility/stringUtil";
-import { Formik, Field, Form } from "formik";
+import { Field, Form, Formik } from "formik";
 import styles from "../styles/loginForm.module.css";
 import applicationPaths from "../properties/applicationPaths";
+import { useSWRConfig } from "swr";
 
 const RegistrationForm: NextPage = () => {
     const { t } = useTranslation("common");
+    const router = useRouter();
+    const { mutate } = useSWRConfig();
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [error, setError] = useState<string>(t("no_error"));
 
@@ -37,8 +40,12 @@ const RegistrationForm: NextPage = () => {
                 await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
                     token: invitationToken,
                 });
-                await loginSubmitHandler({ username: values.email, password: values.password });
-                await Router.push(applicationPaths.home);
+                await loginSubmitHandler(
+                    { username: values.email, password: values.password },
+                    router,
+                    mutate
+                );
+                await router.push("/" + applicationPaths.home);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);

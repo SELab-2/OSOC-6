@@ -33,21 +33,11 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
 
 function fromFormStudentQueryParams(values: IStudentQueryParams): ParsedUrlQueryInput {
     const queryObject: ParsedUrlQueryInput = {};
-    if (values.freeText) {
-        queryObject.freeText = values.freeText;
-    }
-    if (values.roles) {
-        queryObject.roles = values.roles;
-    }
-    if (values.studentCoach) {
-        queryObject.studentCoach = boolToString(values.studentCoach);
-    }
-    if (values.alumni) {
-        queryObject.alumni = boolToString(values.alumni);
-    }
-    if (values.unmatched) {
-        queryObject.unmatched = boolToString(values.unmatched);
-    }
+    queryObject.freeText = values.freeText;
+    queryObject.roles = values.roles;
+    queryObject.studentCoach = boolToString(values.studentCoach);
+    queryObject.alumni = boolToString(values.alumni);
+    queryObject.unmatched = boolToString(values.unmatched);
     return queryObject;
 }
 
@@ -64,7 +54,7 @@ export function StudentFilterComponent() {
                 initialValues={values}
                 onSubmit={async (values) => {
                     await router.replace({
-                        query: fromFormStudentQueryParams(values),
+                        query: { ...router.query, ...fromFormStudentQueryParams(values) },
                     });
                 }}
             >

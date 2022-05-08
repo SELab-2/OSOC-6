@@ -1,4 +1,4 @@
-import { Formik, Field, Form } from "formik";
+import { Field, Form, Formik } from "formik";
 import styles from "../styles/loginForm.module.css";
 
 import { LoginProps } from "../handlers/loginSubmitHandler";

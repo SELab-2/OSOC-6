@@ -1,22 +1,24 @@
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import { Button, Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
 import styles from "../styles/profileOverview.module.css";
 import { profileSaveHandler, userDeleteHandler } from "../handlers/profileHandler";
-import { getEmtpyUser, getUserInfo, IAuthority, IUser, UserRole } from "../api/entities/UserEntity";
+import { getEmtpyUser, getUserInfo, UserRole } from "../api/entities/UserEntity";
 import { StatusCodes } from "http-status-codes";
 import useSWR, { useSWRConfig } from "swr";
-import Router from "next/router";
-import { IReferencer } from "../api/entities/BaseEntities";
+import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
+import { useEditionPathTransformer } from "../hooks/utilHooks";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
+    const router = useRouter();
+    const transformer = useEditionPathTransformer();
     let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
     const { mutate } = useSWRConfig();
     const [editCallname, setEditCallname] = useState<boolean>(false);
@@ -31,7 +33,10 @@ export function ProfileOverview() {
     }
 
     function handleEditCallName() {
-        setEditCallname(true);
+        if (data) {
+            setEditCallname(true);
+            setCallname(data.callName);
+        }
     }
 
     async function handleSaveCallName() {
@@ -51,7 +56,7 @@ export function ProfileOverview() {
         if (data) {
             const response: AxiosResponse = await userDeleteHandler(data._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {
-                await Router.push(applicationPaths.login);
+                await router.push(transformer(applicationPaths.login));
             } else {
                 setShow(true);
             }

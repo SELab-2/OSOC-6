@@ -1,6 +1,7 @@
 package com.osoc6.OSOC6.database.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,9 +56,10 @@ public final class UserEntity implements UserDetails {
 
     /**
      * The password of the user.
-     * @apiNote We need {@link JsonIgnore} here so the JSON user object does not contain their password.
+     * @apiNote We need to set the json property to write only here
+     * so the JSON user object does not contain their password.
      */
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Getter @Setter
     private String password;
 

@@ -112,11 +112,11 @@ function sortAssignments(assignments: ProjectAssignments) {
             return -1;
         }
 
-        if (assignment1.assigner.username > assignment2.assigner.username) {
+        if (assignment1.assigner.callName > assignment2.assigner.callName) {
             return 1;
         }
 
-        if (assignment1.assigner.username < assignment2.assigner.username) {
+        if (assignment1.assigner.callName < assignment2.assigner.callName) {
             return -1;
         }
         return 0;

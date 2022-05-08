@@ -1,18 +1,30 @@
+/**
+ * Paths used the web-application.
+ */
 const applicationPaths = {
     index: "",
     home: "home",
+
+    projects: "projects",
     projectCreation: "projects/create",
+    projectInfo: "projects/[id]",
+
     users: "users",
     profile: "profile",
+    changeEmail: "changeEmail",
+
     assignStudents: "assignStudents",
-    projects: "projects",
+
     students: "students",
-    projectInfo: "projects/[id]",
-    registration: "registration",
+
     login: "login",
     loginError: "loginError",
     changePassword: "changePassword",
-    changeEmail: "changeEmail",
+    registration: "registration",
+
+    communicationTemplateBase: "communicationTemplate",
+    communicationTemplateCreation: "communicationTemplate/create",
+    communicationTemplateInfo: "communicationTemplate/[id]",
 };
 
 export default applicationPaths;
