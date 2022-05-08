@@ -38,6 +38,7 @@ const apiPaths = {
 
     students: "students",
     studentByQuery: "students/search/full-query",
+    studentByStatus: "students/search/by-status",
 };
 
 export default apiPaths;

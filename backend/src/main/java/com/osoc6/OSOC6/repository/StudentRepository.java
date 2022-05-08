@@ -52,6 +52,18 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> findByEdition(@Param("edition") Long editionId, @NonNull Pageable pageable);
 
     /**
+     * Get all students with specified status.
+     * @param status the id of the edition you want to see the projects of
+     * @param pageable argument needed to return a page
+     * @return page of matching students
+     */
+    @RestResource(path = DumbledorePathWizard.STUDENT_BY_STATUS,
+            rel = DumbledorePathWizard.STUDENT_BY_STATUS)
+    @Query("select s from Student s where s.status = :status")
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    Page<Student> findByStatus(@Param("status") String status, @NonNull Pageable pageable);
+
+    /**
      * Query over students by their experience, edition, skills and free text search.
      *
      * @param edition the id of the edition this search is restricted to (required argument).
