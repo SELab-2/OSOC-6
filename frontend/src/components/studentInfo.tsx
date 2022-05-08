@@ -1,38 +1,42 @@
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../properties/apiPaths";
-import useSWR from "swr";
-import { getAllStudentInfo } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
-import { Badge, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { Col, ListGroup, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { SuggestionModal } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import { useSwrWithEdition } from "../hooks/utilHooks";
 import Image from "next/image";
+import useFullStudentInfo from "../hooks/useFullStudentInfo";
+import { emptyStudent, IStudent } from "../api/entities/StudentEntity";
+import { IFullSuggestion } from "../api/calls/suggestionCalls";
+import SkillBadge from "./skillBadge";
 
 export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
 
-    const { data, error } = useSwrWithEdition(apiPaths.students + "/" + id, getAllStudentInfo);
+    const { data, error } = useFullStudentInfo(apiPaths.students + "/" + id);
 
     if (error || !data) {
         return null;
     }
 
+    const student: IStudent = data.student || emptyStudent;
+    const suggestions: IFullSuggestion[] = data.suggestions || [];
+
     let motivation;
-    if (data.student.motivationURI == "") {
+    if (student.motivationURI == "") {
         motivation = (
             <>
-                <div>{data.student.writtenMotivation}</div>
+                <div>{student.writtenMotivation}</div>
             </>
         );
     } else {
         motivation = (
             <>
-                <a href={data.student.motivationURI}>{capitalize(t("motivation"))}</a>
+                <a href={student.motivationURI}>{capitalize(t("motivation"))}</a>
                 <br />
             </>
         );
@@ -49,24 +53,20 @@ export function StudentInfo() {
             <div>
                 <div className="row">
                     <div className="col-sm-6">
-                        <h1>{data.student.callName}</h1>
+                        <h1>{student.callName}</h1>
                     </div>
                     <div className="col-sm-6">
                         <ListGroup className="list-group-horizontal" as="ul">
-                            {data.skills.map((skill) => {
-                                return (
-                                    <ListGroupItem key={skill.name} style={{ background: skill.colour }}>
-                                        <Badge bg="">{skill.name}</Badge>
-                                    </ListGroupItem>
-                                );
-                            })}
+                            {student.skills.map((skill) => (
+                                <SkillBadge skill={skill} key={skill} />
+                            ))}
                         </ListGroup>
                     </div>
                 </div>
                 <br />
                 <h2>{capitalize(t("suggestions"))}</h2>
                 <ListGroup as="ul">
-                    {data.suggestions
+                    {suggestions
                         .map((suggestion) => ({
                             suggestion,
                             suggestionId: suggestion.suggestion._links.self.href,
@@ -93,47 +93,47 @@ export function StudentInfo() {
                 </ListGroup>
                 <br />
                 <h2>{capitalize(t("student about"))}</h2>
-                <a href={data.student.curriculumVitaeURI}>{capitalize(t("cv"))}</a> <br />
-                <a href={data.student.portfolioURI}>{capitalize(t("portfolio"))}</a> <br />
+                <a href={student.curriculumVitaeURI}>{capitalize(t("cv"))}</a> <br />
+                <a href={student.portfolioURI}>{capitalize(t("portfolio"))}</a> <br />
                 {motivation}
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {data.student.gender.toLowerCase()} {t("pronouns")}{" "}
-                    {data.student.pronouns.toLowerCase()}
+                    {capitalize(t("gender"))}: {student.gender.toLowerCase()} {t("pronouns")}{" "}
+                    {student.pronouns.toLowerCase()}
                 </div>
                 <div>
-                    {capitalize(t("native language"))}: {data.student.mostFluentLanguage}
+                    {capitalize(t("native language"))}: {student.mostFluentLanguage}
                 </div>
                 <div>
-                    {capitalize(t("english proficiency"))}: {data.student.englishProficiency.toLowerCase()}
+                    {capitalize(t("english proficiency"))}: {student.englishProficiency.toLowerCase()}
                 </div>
                 <div>
-                    {capitalize(t("phone number"))}: {data.student.phoneNumber}
+                    {capitalize(t("phone number"))}: {student.phoneNumber}
                 </div>
                 <div>
-                    {capitalize(t("email"))}: {data.student.email}
+                    {capitalize(t("email"))}: {student.email}
                 </div>
                 <br />
                 <h2>{capitalize(t("education"))}</h2>
                 <div>
-                    {capitalize(t("studies"))}: {data.student.studies.join(", ")}
+                    {capitalize(t("studies"))}: {student.studies.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("institution"))}: {data.student.institutionName}
+                    {capitalize(t("institution"))}: {student.institutionName}
                 </div>
                 <div>
-                    {capitalize(t("current diploma"))}: {data.student.currentDiploma}
+                    {capitalize(t("current diploma"))}: {student.currentDiploma}
                 </div>
                 <div>
-                    {capitalize(t("degree year"))}: {data.student.yearInCourse} {t("degree duration")}{" "}
-                    {data.student.durationCurrentDegree}
+                    {capitalize(t("degree year"))}: {student.yearInCourse} {t("degree duration")}{" "}
+                    {student.durationCurrentDegree}
                 </div>
                 <div>
-                    {capitalize(t("applied for"))}: {data.student.skills.join(", ")}
+                    {capitalize(t("applied for"))}: {student.skills.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("osoc experience"))}: {t(data.student.osocExperience)}
+                    {capitalize(t("osoc experience"))}: {t(student.osocExperience)}
                 </div>
             </div>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "white" }}>
@@ -144,30 +144,27 @@ export function StudentInfo() {
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.yes}
                                     style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
-                                    studentUrl={data.student._links.self.href}
+                                    studentUrl={student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.maybe}
                                     style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
-                                    studentUrl={data.student._links.self.href}
+                                    studentUrl={student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.no}
                                     style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
-                                    studentUrl={data.student._links.self.href}
+                                    studentUrl={student._links.self.href}
                                 />
                             </div>
                         </Row>
                     </Col>
                     <Col sm={4}>
-                        <StudentStatus
-                            studentUrl={data.student._links.self.href}
-                            status={data.student.status}
-                        />
+                        <StudentStatus studentUrl={student._links.self.href} status={student.status} />
                     </Col>
                 </Row>
             </footer>
