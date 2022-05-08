@@ -1,4 +1,5 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import { IUser } from "./UserEntity";
 
 export enum SuggestionStrategy {
     yes = "YES",

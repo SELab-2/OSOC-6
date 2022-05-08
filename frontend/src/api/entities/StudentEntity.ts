@@ -89,6 +89,9 @@ export interface IStudent extends IBaseEntity {
     };
 }
 
+/**
+ * An [IStudent] that is completely empty. Using this we don't need as much ?. in our code.
+ */
 export const emptyStudent: IStudent = {
     callName: "",
     noSuggestionCount: 0,

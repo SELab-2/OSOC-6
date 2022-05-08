@@ -40,7 +40,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findById(@NonNull Long aLong);
 
     /**
-     * Get all projects within an edition.
+     * Get all students within an edition.
      * @param editionId the id of the edition you want to see the projects of
      * @param pageable argument needed to return a page
      * @return page of matching students

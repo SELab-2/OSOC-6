@@ -35,8 +35,7 @@ public final class SkillType {
      * The type of skill.
      */
     @NaturalId
-    @Column(length = RadagastNumberWizard.SMALL_DESCRIPTION_LENGTH)
-    @ReadOnlyProperty
+    @Column(columnDefinition = "text") @ReadOnlyProperty
     @NotNull @Getter
     private String name;
 
