@@ -12,7 +12,6 @@ import { emptyStudent, IStudent } from "../api/entities/StudentEntity";
 import { IFullSuggestion } from "../api/calls/suggestionCalls";
 import SkillBadge from "./skillBadge";
 
-
 /**
  * Give an overview of all the studentinfo
  * @constructor

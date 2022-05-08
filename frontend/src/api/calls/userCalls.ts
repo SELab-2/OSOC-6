@@ -22,7 +22,6 @@ export function getOwnUser(): Promise<IUser> {
     return <Promise<IUser>>getEntityOnUrl(apiPaths.ownUser);
 }
 
-
 /**
  * Get user on url
  * @param url
