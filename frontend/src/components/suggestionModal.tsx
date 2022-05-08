@@ -10,6 +10,11 @@ import { getOwnUser } from "../api/calls/userCalls";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
 
+/**
+ * Modal asking the reason for a certain suggestion
+ * @param props
+ * @constructor
+ */
 export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);

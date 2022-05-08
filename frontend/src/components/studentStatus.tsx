@@ -5,6 +5,11 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import { Status } from "../api/entities/StudentEntity";
 import { StudentStatusModal } from "./studentStatusModal";
 
+/**
+ * Component to change the status of a student
+ * @param props
+ * @constructor
+ */
 export function StudentStatus(props: { studentUrl: string; status: Status }) {
     const [suggestionValue, setSuggestionValue] = useState(props.status);
 

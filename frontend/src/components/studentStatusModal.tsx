@@ -6,6 +6,11 @@ import { Status } from "../api/entities/StudentEntity";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
 
+/**
+ * Modal to confirm change of student status
+ * @param props
+ * @constructor
+ */
 export function StudentStatusModal(props: { status: Status; studentUrl: string }) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);

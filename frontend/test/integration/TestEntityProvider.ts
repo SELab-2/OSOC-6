@@ -210,6 +210,10 @@ export function getBaseActiveEdition(id: string, name: string): IEdition {
     };
 }
 
+/**
+ * Get a base suggestion
+ * @param id
+ */
 export function getBaseSuggestion(id: string): ISuggestion {
     const baseSuggestionPath = "http://localhost/api/suggestions/" + id;
 
@@ -257,6 +261,10 @@ export function getBaseCommunication(id: string): ICommunication {
     };
 }
 
+/**
+ * Get a basic student
+ * @param id
+ */
 export function getBaseStudent(id: string): IStudent {
     const baseStudentPath = "http://localhost/api/students/" + id;
     return {
