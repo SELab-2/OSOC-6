@@ -1,9 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
-import { Badge, Col, FormSelect, Row } from "react-bootstrap";
+import { Badge, Col, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
-import { Field, Form, Formik, useFormik } from "formik";
+import { Field, Form, Formik } from "formik";
 import apiPaths from "../properties/apiPaths";
-import { extractIdFromUserUrl, getAllUsersFromPage, useCurrentUser } from "../api/calls/userCalls";
+import { getAllUsersFromPage, useCurrentUser } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
 import {
     FormSubmitValues,
@@ -18,15 +18,15 @@ import Image from "next/image";
 import { useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
-import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
+import useSWR from "swr";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
-    let userResponse = useSwrWithEdition(apiPaths.users, getAllUsersFromPage);
+    let userResponse = useSwrWithEdition(apiPaths.userByEdition, getAllUsersFromPage);
 
-    let users: IUser[] = userResponse.data || [];
+    let allUsers: IUser[] = userResponse.data || [];
     let userError: Error = userResponse.error;
 
-    let skillTypeResponse = useSwrWithEdition(apiPaths.skillTypes, getAllSkillTypesFromPage);
+    let skillTypeResponse = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
 
     let skillTypes: ISkillType[] = skillTypeResponse.data || [];
     let skillTypeError: Error = skillTypeResponse.error;
@@ -94,7 +94,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     function handleAddCoach() {
-        const newCoach = selectedCoach ? selectedCoach : users[0].callName;
+        const newCoach = selectedCoach ? selectedCoach : allUsers[0].callName;
 
         if (!selectedCoach) {
             setSelectedCoach(newCoach);
@@ -129,7 +129,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             coachURLs.push(
                 // We know there will always be a user with this callname,
                 // as every option of the Select contains a value that originates from the users-array
-                users.find((item) => item.callName === coach)!._links.self.href
+                allUsers.find((item) => item.callName === coach)!._links.self.href
             );
         }
 
@@ -152,7 +152,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     function initialize() {
-        setSelectedCoach(users[0].callName);
+        setSelectedCoach(allUsers[0].callName);
         setSelectedSkill(skillTypes[0].name);
     }
 
@@ -251,7 +251,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         value={selectedCoach}
                         onChange={handleChangeCoach}
                     >
-                        {users.map((user) => (
+                        {allUsers.map((user) => (
                             <option
                                 key={user.callName}
                                 value={user.callName}

@@ -8,15 +8,21 @@ import {
     createProjectSubmitHandler,
     ProjectCreationValues,
 } from "../../src/handlers/createProjectSubmitHandler";
-import { getBaseActiveEdition, getBaseOkResponse, getBaseSkillType, getBaseUser } from "./TestEntityProvider";
-import { IUser, User, UserRole } from "../../src/api/entities/UserEntity";
+import {
+    getBaseActiveEdition,
+    getBaseOkResponse,
+    getBasePage,
+    getBaseSkillType,
+    getBaseUser,
+} from "./TestEntityProvider";
+import { IUser, User, userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
 import { CreateProjectForm } from "../../src/components/createProjectForm";
 import userEvent from "@testing-library/user-event";
 import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
-import { ISkillType, SkillType } from "../../src/api/entities/SkillTypeEntity";
+import { ISkillType, SkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
-import { makeCacheFree } from "./Provide";
+import { enableOwnUser, enableUseEdition, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
@@ -31,8 +37,13 @@ afterEach(() => {
 });
 
 describe("Create project form", () => {
-    it("Should render all components", () => {
-        render(makeCacheFree(CreateProject));
+    it("Should render all components", async () => {
+        const user: IUser = getBaseUser("1", UserRole.admin, true);
+        const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
+
+        render(makeCacheFree(() => enableUseEdition(CreateProject, edition)));
+
+        await enableOwnUser(user);
 
         expect(screen.getByTestId("projectname-input")).toBeInTheDocument();
         expect(screen.getByTestId("projectinfo-input")).toBeInTheDocument();
@@ -60,25 +71,30 @@ describe("Create project form", () => {
         const testSkillInfo: string = "Test skill info";
 
         // All used base entities
-        const baseSkillType: ISkillType = getBaseSkillType("1");
-        const ownUser: IUser = getBaseUser("1", UserRole.admin, true);
-        const baseUser: IUser = getBaseUser("2", UserRole.admin, true);
+        const skillType: ISkillType = getBaseSkillType("1");
+        const user: IUser = getBaseUser("1", UserRole.admin, true);
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
 
-        const skillTypeResponse: AxiosResponse = getBaseOkResponse(baseSkillType);
-        const userResponse: AxiosResponse = getBaseOkResponse(baseUser);
-        const ownUserResponse: AxiosResponse = getBaseOkResponse(ownUser);
-
         const projectCreate: RenderResult = render(
-            <GlobalContext.Provider value={{ edition, setEdition: () => {} }}>
-                <CreateProjectForm submitHandler={submitProject} />
-            </GlobalContext.Provider>
+            makeCacheFree(() =>
+                enableUseEdition(() => <CreateProjectForm submitHandler={submitProject} />, edition)
+            )
         );
 
         // Make sure there are at least one skillType and one user
-        mockAxios.mockResponseFor({ url: apiPaths.ownUser }, userResponse);
-        mockAxios.mockResponseFor({ url: apiPaths.skillTypes }, skillTypeResponse);
-        mockAxios.mockResponseFor({ url: apiPaths.users }, ownUserResponse);
+        await waitFor(() => {
+            mockAxios.mockResponseFor(
+                getAxiosCallWithEdition(apiPaths.userByEdition, edition),
+                getBaseOkResponse(getBasePage(apiPaths.users, userCollectionName, [user]))
+            );
+        });
+        await enableOwnUser(user);
+        await waitFor(() => {
+            mockAxios.mockResponseFor(
+                { url: apiPaths.skillTypes },
+                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType]))
+            );
+        });
 
         // All form components
         const projectName = projectCreate.getByTestId("projectname-input");
@@ -115,11 +131,11 @@ describe("Create project form", () => {
             partnerName: testPartnerName,
             partnerWebsite: testPartnerWebsite,
             edition: apiPaths.editions + "/" + extractIdFromApiEntityUrl(edition._links.self.href),
-            creator: apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser._links.self.href),
+            creator: apiPaths.users + "/" + extractIdFromApiEntityUrl(user._links.self.href),
             goals: [testGoal],
-            skills: [baseSkillType.name],
+            skills: [skillType.name],
             skillInfos: [testSkillInfo],
-            coaches: [baseUser._links.self.href],
+            coaches: [user._links.self.href],
         };
 
         // Project that will be created
@@ -131,11 +147,11 @@ describe("Create project form", () => {
             testPartnerName,
             testPartnerWebsite,
             apiPaths.editions + "/" + extractIdFromEditionUrl(edition._links.self.href),
-            apiPaths.users + "/" + extractIdFromUserUrl(ownUser._links.self.href)
+            apiPaths.users + "/" + extractIdFromUserUrl(user._links.self.href)
         );
 
         await waitFor(() => {
-            createProjectSubmitHandler(createValues, mockRouter, edition, ownUser);
+            createProjectSubmitHandler(createValues, mockRouter, edition, user);
         });
 
         // Check if project is posted with correct value
