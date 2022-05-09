@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.eventhandler;
 
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.entities.UserEntity;
 import com.osoc6.OSOC6.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;

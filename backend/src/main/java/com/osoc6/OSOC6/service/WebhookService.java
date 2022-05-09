@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.service;
 
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.webhook.FormField;

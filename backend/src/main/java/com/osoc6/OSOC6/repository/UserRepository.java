@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
@@ -64,7 +64,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      */
     @Override
     @PreAuthorize("( " + MerlinSpELWizard.ADMIN_AUTH + " and "
-    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.database.models.UserRole).ADMIN, true) > 1"
+    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.entities.UserRole).ADMIN, true) > 1"
         + " or #userEntity.id == null" // new user check
         + " or authentication.principal.id != #userEntity.id " // updating a different user than yourself
         + " or authentication.principal.userRole == #userEntity.userRole))" // don't update your own role

@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models.student;
+package com.osoc6.OSOC6.entities.student;
 
 /**
  * An enum listing the different kinds of English proficiency a {@link Student} can have.

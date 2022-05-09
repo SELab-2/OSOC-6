@@ -2,10 +2,10 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.ProjectSkill;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.AssignmentDTO;
 import com.osoc6.OSOC6.repository.AssignmentRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;

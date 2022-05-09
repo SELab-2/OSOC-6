@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.UserSkill;
+import com.osoc6.OSOC6.entities.UserSkill;
 import com.osoc6.OSOC6.dto.UserSkillDTO;
 import com.osoc6.OSOC6.repository.UserSkillRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;

@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.controller;
 
-import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.entities.Invitation;
 import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.exception.InvalidInvitationTokenException;
 import com.osoc6.OSOC6.service.RegistrationService;
