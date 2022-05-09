@@ -60,4 +60,9 @@ public final class RadagastNumberWizard {
      * Amount of milliseconds in a second.
      */
     public static final int MILLISECOND_IN_SECOND = 1000;
+
+    /**
+     * Amount of hours before a reset password token is invalid.
+     */
+    public static final int PASSWORD_TOKEN_EXPIRATION_HOURS = 1;
 }
