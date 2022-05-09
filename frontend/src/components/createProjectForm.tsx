@@ -3,7 +3,7 @@ import { Badge, Col, FormSelect, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik, useFormik } from "formik";
 import apiPaths from "../properties/apiPaths";
-import { extractIdFromUserUrl, getAllUsersFromPage } from "../api/calls/userCalls";
+import { extractIdFromUserUrl, getAllUsersFromPage, useCurrentUser } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
 import {
     FormSubmitValues,
@@ -17,10 +17,8 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
-import { AxiosConf, extractIdFromApiEntityUrl } from "../api/calls/baseCalls";
 import { useRouter } from "next/router";
 import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
-import axios from "axios";
 
 export const CreateProjectForm = (props: ProjectCreationProps) => {
     let userResponse = useSwrWithEdition(apiPaths.users, getAllUsersFromPage);
@@ -36,6 +34,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const [edition] = useEdition();
+    const currentUser = useCurrentUser(true);
 
     const [goals, setGoals] = useState<string[]>([]);
     const [goalInput, setGoalInput] = useState<string>("");
@@ -46,8 +45,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const [skillInfos, setSkillInfos] = useState<string[]>([]);
     const [skillInfo, setSkillInfo] = useState<string>("");
 
-    if (userError || skillTypeError) {
-        console.log(userError || skillTypeError);
+    if (userError || skillTypeError || !currentUser || !edition) {
+        console.log(userError || skillTypeError || !currentUser || !edition);
         return null;
     }
 
@@ -125,8 +124,6 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     async function handleSubmit(submitValues: FormSubmitValues) {
-        //const ownUser = await axios.get(apiPaths.ownUser, AxiosConf).data;
-
         const coachURLs: string[] = [];
         for (let coach of coaches) {
             coachURLs.push(
@@ -144,13 +141,14 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             partnerWebsite: submitValues.partnerWebsite,
             skills: skills,
             creator: "",
-            edition: apiPaths.editions + "/" + extractIdFromEditionUrl(edition!._links.self.href),
+            edition: "",
             skillInfos: skillInfos,
             goals: goals,
             coaches: coachURLs,
         };
 
-        props.submitHandler(createValues, router);
+        // We can use ! for edition and currentUser because this function is never called if it is undefined.
+        props.submitHandler(createValues, router, edition!, currentUser.user!);
     }
 
     function initialize() {

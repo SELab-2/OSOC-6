@@ -7,6 +7,8 @@ import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
 import { extractIdFromUserUrl } from "../api/calls/userCalls";
 import { IUser } from "../api/entities/UserEntity";
+import { IEdition } from "../api/entities/EditionEntity";
+import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
 
 export interface ProjectCreationValues {
     name: string;
@@ -31,10 +33,20 @@ export interface FormSubmitValues {
 }
 
 export type ProjectCreationProps = {
-    submitHandler: (values: ProjectCreationValues, router: NextRouter) => void;
+    submitHandler: (
+        values: ProjectCreationValues,
+        router: NextRouter,
+        edition: IEdition,
+        ownUser: IUser
+    ) => void;
 };
 
-export async function createProjectSubmitHandler(values: ProjectCreationValues, router: NextRouter) {
+export async function createProjectSubmitHandler(
+    values: ProjectCreationValues,
+    router: NextRouter,
+    edition: IEdition,
+    ownUser: IUser
+) {
     const project: Project = new Project(
         values.name,
         values.info,
@@ -42,8 +54,8 @@ export async function createProjectSubmitHandler(values: ProjectCreationValues, 
         values.goals,
         values.partnerName,
         values.partnerWebsite,
-        values.edition,
-        "" //apiPaths.users + "/" + extractIdFromUserUrl(ownUser.data._links.self.href)
+        apiPaths.editions + "/" + extractIdFromEditionUrl(edition._links.self.href),
+        apiPaths.users + "/" + extractIdFromUserUrl(ownUser._links.self.href)
     );
 
     const projectResponse = await axios.post(apiPaths.projects, project, AxiosConf);

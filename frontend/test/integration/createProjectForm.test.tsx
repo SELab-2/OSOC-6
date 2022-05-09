@@ -18,6 +18,10 @@ import { ISkillType, SkillType } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
+import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
+import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
+import RouteInjector from "../../src/components/routeInjector";
+import GlobalContext from "../../src/context/globalContext";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -59,15 +63,22 @@ describe("Create project form", () => {
         const baseSkillType: ISkillType = getBaseSkillType("1");
         const ownUser: IUser = getBaseUser("1", UserRole.admin, true);
         const baseUser: IUser = getBaseUser("2", UserRole.admin, true);
-        const baseEdition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
+        const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
 
         const skillTypeResponse: AxiosResponse = getBaseOkResponse(baseSkillType);
         const userResponse: AxiosResponse = getBaseOkResponse(baseUser);
+        const ownUserResponse: AxiosResponse = getBaseOkResponse(ownUser);
 
-        const projectCreate: RenderResult = render(<CreateProjectForm submitHandler={submitProject} />);
+        const projectCreate: RenderResult = render(
+            <GlobalContext.Provider value={{ edition, setEdition: () => {} }}>
+                <CreateProjectForm submitHandler={submitProject} />
+            </GlobalContext.Provider>
+        );
+
         // Make sure there are at least one skillType and one user
-        mockAxios.mockResponseFor({ url: apiPaths.users }, userResponse);
+        mockAxios.mockResponseFor({ url: apiPaths.ownUser }, userResponse);
         mockAxios.mockResponseFor({ url: apiPaths.skillTypes }, skillTypeResponse);
+        mockAxios.mockResponseFor({ url: apiPaths.users }, ownUserResponse);
 
         // All form components
         const projectName = projectCreate.getByTestId("projectname-input");
@@ -103,7 +114,7 @@ describe("Create project form", () => {
             versionManagement: testVersionManagement,
             partnerName: testPartnerName,
             partnerWebsite: testPartnerWebsite,
-            edition: apiPaths.editions + "/" + extractIdFromApiEntityUrl(baseEdition._links.self.href),
+            edition: apiPaths.editions + "/" + extractIdFromApiEntityUrl(edition._links.self.href),
             creator: apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser._links.self.href),
             goals: [testGoal],
             skills: [baseSkillType.name],
@@ -119,16 +130,13 @@ describe("Create project form", () => {
             [testGoal],
             testPartnerName,
             testPartnerWebsite,
-            apiPaths.editions + "/" + extractIdFromApiEntityUrl(baseEdition._links.self.href),
-            apiPaths.users + "/" + extractIdFromApiEntityUrl(ownUser._links.self.href)
+            apiPaths.editions + "/" + extractIdFromEditionUrl(edition._links.self.href),
+            apiPaths.users + "/" + extractIdFromUserUrl(ownUser._links.self.href)
         );
 
         await waitFor(() => {
-            createProjectSubmitHandler(createValues, mockRouter);
+            createProjectSubmitHandler(createValues, mockRouter, edition, ownUser);
         });
-
-        const ownUserResponse: AxiosResponse = getBaseOkResponse(getBaseUser("1", UserRole.admin, true));
-        mockAxios.mockResponseFor({ url: apiPaths.ownUser }, ownUserResponse);
 
         // Check if project is posted with correct value
         await waitFor(() => {
