@@ -71,7 +71,7 @@ describe("routeInjector", () => {
             makeCacheFree(() => (
                 <GlobalContext.Provider value={{ edition, setEdition: () => {} }}>
                     <RouteInjector>
-                        <StudentList />
+                        <StudentList isDraggable={false} />
                     </RouteInjector>
                 </GlobalContext.Provider>
             ))
