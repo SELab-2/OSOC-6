@@ -5,7 +5,7 @@ import { IStudent } from "../entities/StudentEntity";
 import { IUser } from "../entities/UserEntity";
 import apiPaths from "../../properties/apiPaths";
 
-export type IFullAssignment = { assignment: IAssignment; student: IStudent; assigner: IUser }[];
+export type IFullAssignment = { assignment: IAssignment; student: IStudent; assigner: IUser };
 
 /**
  * Fetches all assignments on a given AssignmentLinksUrl
@@ -40,10 +40,10 @@ export async function addAssignment(studentUrl: string, skillUrl: string, reason
  */
 export async function deleteFullAssignment(
     assignmentURL: string,
-    oldAssignments: IFullAssignment
-): Promise<IFullAssignment> {
+    oldAssignments: IFullAssignment[]
+): Promise<IFullAssignment[]> {
     await axios.delete(assignmentURL, AxiosConf);
-    const assignments: IFullAssignment = [];
+    const assignments: IFullAssignment[] = [];
     for (let assignment of oldAssignments) {
         if (assignment.assignment._links.assignment.href != assignmentURL) {
             assignments.push(assignment);
@@ -57,9 +57,9 @@ export async function deleteFullAssignment(
  * It returns a list of ProjectAssignments.
  * @param url The URL of the assignments for a project.
  */
-export async function getFullAssignments(url: string): Promise<IFullAssignment> {
+export async function getFullAssignments(url: string): Promise<IFullAssignment[]> {
     const assignmentList: IAssignment[] = await getAllAssignmentsFormLinks(url);
-    let assignments: IFullAssignment = [];
+    let assignments: IFullAssignment[] = [];
     const assigners: { [url: string]: IUser } = {};
     const students: { [url: string]: IStudent } = {};
 
@@ -102,7 +102,7 @@ export async function getFullAssignments(url: string): Promise<IFullAssignment> 
  * if the students have the same name we sort on the username of the assigner.
  * @param assignments
  */
-function sortAssignments(assignments: IFullAssignment) {
+function sortAssignments(assignments: IFullAssignment[]) {
     assignments.sort((assignment1, assignment2) => {
         const compareStudents = assignment1.student.firstName.localeCompare(assignment2.student.firstName);
         if (compareStudents == 0) {

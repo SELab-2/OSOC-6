@@ -25,7 +25,7 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
 
     const projectList = data;
 
-    if (data.length == 0) {
+    if (data.length === 0) {
         return (
             <div
                 className="d-flex justify-content-center align-items-center h-100"
