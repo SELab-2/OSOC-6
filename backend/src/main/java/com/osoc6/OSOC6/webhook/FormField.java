@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.webhook;
 
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import lombok.Data;
 import lombok.NoArgsConstructor;

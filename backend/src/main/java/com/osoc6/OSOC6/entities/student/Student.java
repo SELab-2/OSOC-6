@@ -1,12 +1,12 @@
-package com.osoc6.OSOC6.database.models.student;
+package com.osoc6.OSOC6.entities.student;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.WeakToEdition;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.Communication;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.Suggestion;
+import com.osoc6.OSOC6.entities.SuggestionStrategy;
+import com.osoc6.OSOC6.entities.WeakToEdition;
 import com.osoc6.OSOC6.winterhold.RadagastNumberWizard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

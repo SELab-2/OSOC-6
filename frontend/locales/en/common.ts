@@ -106,6 +106,19 @@ const common = {
 
     "change status title": "change status",
     "change status": "would you like to change the status to",
+
+    "assignment modal title": "Why do you want this student here?",
+    "confirm assignment": "confirm assignment",
+    "assignment reason": "Reason for the assignment: ",
+    "no users for skill": "No students have been assigned for this skill.",
+    "suggested by": "Suggested by ",
+    "no skills for project": "No skills have been assigned to this project",
+    loading: "Loading...",
+    "no projects": "This edition has no projects :(.",
+
+    suggesting: "You are suggesting ",
+    "to project": "to project ",
+    "for role": "for the role ",
 };
 
 export default common;

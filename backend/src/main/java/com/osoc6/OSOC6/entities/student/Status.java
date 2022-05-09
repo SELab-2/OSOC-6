@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models.student;
+package com.osoc6.OSOC6.entities.student;
 
 /**
  * This enum contains the different status a student can have.

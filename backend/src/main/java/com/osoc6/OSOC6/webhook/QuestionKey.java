@@ -1,10 +1,10 @@
 package com.osoc6.OSOC6.webhook;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.EnglishProficiency;
+import com.osoc6.OSOC6.entities.student.Gender;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 
 import java.util.List;

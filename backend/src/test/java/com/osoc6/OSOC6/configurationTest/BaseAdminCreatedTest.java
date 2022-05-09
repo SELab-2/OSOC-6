@@ -1,8 +1,8 @@
 package com.osoc6.OSOC6.configurationTest;
 
 import com.osoc6.OSOC6.configuration.WebConfiguration;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.repository.PublicRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;

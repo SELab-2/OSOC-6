@@ -2,8 +2,8 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.UserEntity;
 import com.osoc6.OSOC6.dto.ProjectDTO;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;

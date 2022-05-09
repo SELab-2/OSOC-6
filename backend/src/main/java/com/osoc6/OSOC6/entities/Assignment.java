@@ -1,7 +1,7 @@
-package com.osoc6.OSOC6.database.models;
+package com.osoc6.OSOC6.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.Student;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +22,7 @@ import java.sql.Timestamp;
 
 /**
  * The database entity for an Assignment.
- * An Assignment is the registration of a user assigning a {@link com.osoc6.OSOC6.database.models.student.Student}
+ * An Assignment is the registration of a user assigning a {@link Student}
  * on a {@link Project}.
  * The assignment can be invalid, this means the assignment was performed but is no longer looked at.
  * The assignment can be non-suggestive, this means the project of this assignment has been locked.

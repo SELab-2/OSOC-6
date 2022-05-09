@@ -19,7 +19,7 @@ afterEach(() => {
 describe("student list", () => {
     describe("StudentList initialization", () => {
         it("Should call axios.get() upon rendering", () => {
-            render(<StudentList />);
+            render(<StudentList isDraggable={false} />);
             expect(mockAxios.get).toHaveBeenCalled();
         });
     });

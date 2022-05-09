@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models;
+package com.osoc6.OSOC6.entities;
 
 /**
  * This enum represents the different technical roles a user can have within the application.

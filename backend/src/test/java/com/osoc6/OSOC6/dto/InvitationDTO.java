@@ -1,8 +1,8 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.UserEntity;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 

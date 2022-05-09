@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
-import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.entities.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;

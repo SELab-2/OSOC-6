@@ -5,6 +5,7 @@ import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import {
     constructStudentQueryUrl,
+    extractIdFromStudentUrl,
     getAllStudentsFromPage,
     IStudentQueryParams,
 } from "../api/calls/studentCalls";
@@ -12,7 +13,8 @@ import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { useEditionPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 
-export const StudentList = () => {
+export const StudentList = (props: { isDraggable: boolean }) => {
+    const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionPathTransformer();
@@ -53,10 +55,19 @@ export const StudentList = () => {
                             className={styles.student_list_element}
                             action
                             as={"li"}
+                            draggable={draggable}
+                            onDragStart={(event) => {
+                                event.dataTransfer.setData("url", student._links.self.href);
+                                event.dataTransfer.setData("name", student.firstName);
+                            }}
                             // Should be changed to individual student page later
                             onClick={() => {
-                                let studentPath: string = student._links.self.href.split(apiPaths.base)[1];
-                                router.push(transformer("/" + studentPath)).catch(console.log);
+                                if (!draggable) {
+                                    let studentPath: string = extractIdFromStudentUrl(
+                                        student._links.self.href
+                                    );
+                                    router.push(transformer("/" + studentPath)).catch(console.log);
+                                }
                             }}
                         >
                             <h6 className={styles.student_name}>{student.callName}</h6>

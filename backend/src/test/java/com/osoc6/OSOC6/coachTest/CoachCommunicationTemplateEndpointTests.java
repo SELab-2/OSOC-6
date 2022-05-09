@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;

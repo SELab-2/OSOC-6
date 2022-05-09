@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models;
+package com.osoc6.OSOC6.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

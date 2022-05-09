@@ -1,12 +1,11 @@
 import {
     basePatch,
-    basePost,
+    extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
 } from "./baseCalls";
 import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
-import { Suggestion } from "../entities/SuggestionEntity";
 
 export interface IStudentQueryParams {
     freeText: string;
@@ -55,4 +54,8 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     }
 
     return getQueryUrlFromParams(url, queryParams);
+}
+
+export function extractIdFromStudentUrl(url: string): string {
+    return extractIdFromApiEntityUrl(url);
 }

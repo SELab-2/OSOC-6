@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models;
+package com.osoc6.OSOC6.entities;
 
 /**
  * Different methods to make a suggestion about a user.

@@ -1,5 +1,5 @@
 import { IProject } from "../../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "../../src/api/entities/BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage } from "../../src/api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
@@ -16,7 +16,6 @@ import {
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
 import { ICommunication } from "../../src/api/entities/CommunicationEntity";
-import apiPaths from "../../src/properties/apiPaths";
 import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
@@ -187,9 +186,9 @@ export function getBaseAssignment(id: string): IAssignment {
         timestamp: "Now",
 
         _links: {
-            assigner: { href: baseAssignmentsPath },
-            projectSkill: { href: baseAssignmentsPath },
-            student: { href: baseAssignmentsPath },
+            assigner: { href: baseAssignmentsPath + "/assigner" },
+            projectSkill: { href: baseAssignmentsPath + "/projectSkill" },
+            student: { href: baseAssignmentsPath + "/student" },
             assignment: { href: baseAssignmentsPath },
             self: { href: baseAssignmentsPath },
         },

@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.entities.Project;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
