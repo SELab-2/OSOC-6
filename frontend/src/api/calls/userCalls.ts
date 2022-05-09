@@ -18,10 +18,6 @@ export function getAllUsersFromLinks(url: string): Promise<IUser[]> {
     return <Promise<IUser[]>>getAllEntitiesFromLinksUrl(url, userCollectionName);
 }
 
-export function getOwnUser(): Promise<IUser> {
-    return <Promise<IUser>>getEntityOnUrl(apiPaths.ownUser);
-}
-
 /**
  * Get user on url
  * @param url
@@ -32,12 +28,4 @@ export function getUserOnUrl(url: string): Promise<IUser> {
 
 export async function logoutUser() {
     await axios.get(apiPaths.base + apiPaths.logout, AxiosConf);
-}
-
-export function useCurrentUser(shouldExec: boolean): { user?: IUser; error?: Error } {
-    const { data, error } = useSWR(shouldExec ? apiPaths.ownUser : null, getOwnUser);
-    if (error) {
-        return { error: new Error("Not logged in") };
-    }
-    return { user: data };
 }
