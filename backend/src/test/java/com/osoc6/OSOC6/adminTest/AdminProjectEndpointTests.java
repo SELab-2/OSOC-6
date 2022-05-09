@@ -3,6 +3,7 @@ package com.osoc6.OSOC6.adminTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Project;
+import com.osoc6.OSOC6.database.models.UserEntity;
 import com.osoc6.OSOC6.dto.ProjectDTO;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -16,6 +17,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -135,6 +137,18 @@ public class AdminProjectEndpointTests extends AdminEndpointTest<Project, Long, 
                 new String[]{Long.toString(getILLEGAL_ID())})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(project1.getName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void add_coach_to_project_works() throws Exception {
+        String coaches = entityLinks.linkToItemResource(
+                UserEntity.class, getCoachUser().getId().toString()).getHref();
+        getMockMvc().perform(put(PROJECTS_PATH + "/" + project1.getId() + "/coaches")
+                .content(coaches)
+                .contentType("text/uri-list")
+                .accept("*/*"))
+                .andExpect(status().is2xxSuccessful());
     }
 }
 

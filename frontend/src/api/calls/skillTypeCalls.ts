@@ -8,6 +8,7 @@ import {
     ISkillTypePage,
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
+
 import {
     AxiosConf,
     getAllEntitiesFromLinksUrl,

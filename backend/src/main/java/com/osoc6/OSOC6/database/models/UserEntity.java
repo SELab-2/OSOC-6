@@ -134,7 +134,6 @@ public final class UserEntity implements UserDetails {
      * The projects this User Coaches.
      */
     @ManyToMany(mappedBy = "coaches")
-    @OrderColumn(name = "edition_name")
     @Getter
     private List<Project> projects = new ArrayList<>();
 
