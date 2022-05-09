@@ -4,7 +4,7 @@ import { capitalize } from "../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
 
-function WarningToast(props: {message:string}) {
+function WarningToast(props: { message: string }) {
     const { t } = useTranslation("common");
     const [showDanger, setShowDanger] = useState<boolean>(true);
 

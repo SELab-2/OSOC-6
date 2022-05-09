@@ -23,7 +23,7 @@ import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
 import { capitalize } from "../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import {makeCacheFree} from "./Provide";
+import { makeCacheFree } from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -51,9 +51,7 @@ async function renderAssignmentItem(
         getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, skillType)
     );
     await act(() => {
-        render(
-            makeCacheFree(() => <AssignmentItem skill={projectSkill} />)
-        );
+        render(makeCacheFree(() => <AssignmentItem skill={projectSkill} />));
     });
 
     await waitFor(() => {
