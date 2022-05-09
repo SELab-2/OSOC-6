@@ -79,23 +79,6 @@ export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | u
     return data;
 }
 
-export async function getEntitiesWithCache(
-    urls: string[],
-    cache: { [url: string]: IBaseEntity }
-): Promise<IBaseEntity[]> {
-    // Register when starting fetch and build cache first. This way we have no problems fighting the event loop.
-    const fetched: Set<string> = new Set();
-    await Promise.all(
-        urls.map(async (url) => {
-            if (!cache[url] && !fetched.has(url)) {
-                fetched.add(url);
-                cache[url] = (await getEntityOnUrl(url))!;
-            }
-        })
-    );
-    return urls.map((url) => cache[url]);
-}
-
 export function getQueryUrlFromParams(url: string, params: { [k: string]: any }): string {
     let urlConstructor = url.indexOf("?") === -1 ? url + "?" : url + "&";
     for (const key in params) {
@@ -136,6 +119,13 @@ export function basePatch(
     params?: { [k: string]: any }
 ): Promise<AxiosResponse<any, any>> {
     return axios.patch(url, data, {
+        params: params,
+        ...AxiosConf,
+    });
+}
+
+export function baseDelete(url: string, params?: { [k: string]: any }): Promise<AxiosResponse<any, any>> {
+    return axios.delete(url, {
         params: params,
         ...AxiosConf,
     });

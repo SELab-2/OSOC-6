@@ -1,49 +1,56 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { Badge, CloseButton, Col, Row } from "react-bootstrap";
 import useSWR, { useSWRConfig } from "swr";
-import { deleteFullAssignment, getFullAssignments } from "../../api/calls/AssignmentCalls";
+import { deleteAssignment, getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
 import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
-import { getSkillTypeFromSkill } from "../../api/calls/skillTypeCalls";
 import { useEffect, useState } from "react";
 import applicationPaths from "../../properties/applicationPaths";
 import { extractIdFromStudentUrl } from "../../api/calls/studentCalls";
+import useSkillTypeByName from "../../hooks/useSkillTypeByName";
+import { emptySkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import AssignmentStudentRow from "./assignmentStudentRow";
+
+export interface IAssignmentItemProps {
+    skill: IProjectSkill;
+}
 
 /**
  * An item containing the information about the assignments to a skill of a project.
  * It contains the name of the skill followed by a list of assignments for that skill.
  * The list contains the first name of the student, the name of the person that did the assignment and the motivation.
  * Furthermore, it contains a delete button to delete the assignment.
- * @param item Skill you want the assignments from
+ * @param skill [IProjectSkill] you want the assignments from
  * @constructor
  */
-function AssignmentItem(item: { skill: IProjectSkill }) {
+function AssignmentItem({ skill }: IAssignmentItemProps) {
     const { t } = useTranslation("common");
-
-    const [color, setColor] = useState("secondary");
-    useEffect(() => {
-        getSkillTypeFromSkill(item.skill).then((skillType) => setColor(skillType.colour));
-    });
-
     const { mutate } = useSWRConfig();
-    let { data, error } = useSWR(item.skill._links.assignments.href, getFullAssignments);
-    let assign = data || [];
+    const { data: resSkillType, error: skillTypeError } = useSkillTypeByName(skill.name);
+    const { data: resAssignments, error: assignmentsError } = useSWR(
+        skill._links.assignments.href,
+        getAllAssignmentsFormLinks
+    );
 
-    if (error) {
+    if (skillTypeError || assignmentsError) {
         return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
-    async function removeAssignment(event: any) {
-        const assignments = await deleteFullAssignment(event.target.value, assign);
-        await mutate(item.skill._links.assignments.href, assignments);
+    const skillType: ISkillType = resSkillType || emptySkillType;
+    const assignments: IAssignment[] = resAssignments || [];
+
+    async function removeAssignment(assignmentUrl: string) {
+        const newAssignments = await deleteAssignment(assignmentUrl, assignments);
+        await mutate(skill._links.assignments.href, newAssignments);
     }
 
-    if (assign.length == 0) {
+    if (assignments.length === 0) {
         return (
             <div data-testid="assignment-item">
-                <Badge bg="" style={{ background: color }}>
-                    {item.skill.name}
+                <Badge bg="" style={{ background: skillType.colour }}>
+                    {skill.name}
                 </Badge>
                 <p>{capitalize(t("no users for skill"))}</p>
             </div>
@@ -52,43 +59,15 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
 
     return (
         <div data-testid="assignment-item">
-            <Badge bg="" style={{ backgroundColor: color }}>
-                {item.skill.name}
+            <Badge bg="" style={{ backgroundColor: skillType.colour }}>
+                {skill.name}
             </Badge>
-            {assign.map((assignment, index) => {
-                return (
-                    <div key={index}>
-                        <Row className={"align-items-center"}>
-                            <Col xs={10} md={11}>
-                                <a
-                                    rel="noreferrer"
-                                    href={
-                                        applicationPaths.students +
-                                        "/" +
-                                        extractIdFromStudentUrl(assignment.student._links.self.href)
-                                    }
-                                    target="_blank"
-                                >
-                                    <h6>{assignment.student.firstName}</h6>
-                                </a>
-                                <p>
-                                    {capitalize(t("suggested by"))}
-                                    {assignment.assigner.callName}: <br /> {assignment.assignment.reason}
-                                </p>
-                            </Col>
-                            <Col xs={2} md={1}>
-                                <CloseButton
-                                    aria-label={"Remove student from project"}
-                                    value={assignment.assignment._links.assignment.href}
-                                    onClick={(assignment) => removeAssignment(assignment)}
-                                    data-testid={"remove assignment button " + index}
-                                />
-                            </Col>
-                        </Row>
-                        <hr />
-                    </div>
-                );
-            })}
+            {assignments.map((assignment) => (
+                <div key={assignment._links.self.href}>
+                    <AssignmentStudentRow assignment={assignment} removeCallback={removeAssignment} />
+                    <hr />
+                </div>
+            ))}
         </div>
     );
 }

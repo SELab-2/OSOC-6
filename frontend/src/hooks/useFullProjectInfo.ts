@@ -1,6 +1,6 @@
 import { IProject } from "../api/entities/ProjectEntity";
 import { IUser } from "../api/entities/UserEntity";
-import { getAllProjectSkillsFromLinks, IFullProjectSkill } from "../api/calls/projectSkillCalls";
+import { getAllProjectSkillsFromLinks } from "../api/calls/projectSkillCalls";
 import { getProjectOnUrl } from "../api/calls/projectCalls";
 import useSWR from "swr";
 import { CommonSWRConfig } from "./shared";

@@ -4,8 +4,10 @@ import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
 import { Dispatch, useState } from "react";
 import { addAssignment } from "../../api/calls/AssignmentCalls";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import SkillBadge from "../skillBadge";
 
-export type ModalSkillInfo = { skillName: string; skillColor: string; skillUrl: string };
+export type ModalSkillInfo = { skillName: string; skillUrl: string };
 export type ModalInfo = {
     studentName: string;
     studentUrl: string;
@@ -16,13 +18,14 @@ type ModalProps = ModalInfo & { showModal: boolean; setter: Dispatch<boolean> };
 function AssignmentModal(props: ModalProps) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState<boolean>();
+    const { user } = useCurrentUser(true);
 
     if (showModal != props.showModal) {
         setShowModal(props.showModal);
     }
 
     async function dropStudent(values: { studentUrl: string; skillUrl: string; reason: string }) {
-        await addAssignment(values.studentUrl, values.skillUrl, values.reason);
+        await addAssignment(values.studentUrl, values.skillUrl, values.reason, user!);
         handleClose();
     }
 
@@ -41,10 +44,7 @@ function AssignmentModal(props: ModalProps) {
                     {capitalize(t("suggesting"))}
                     {props.studentName} {capitalize(t("to project"))}
                     <i>{props.projectName}</i> {capitalize(t("for role"))}
-                    <Badge bg="" style={{ backgroundColor: props.skillColor }}>
-                        {props.skillName}
-                    </Badge>
-                    .
+                    <SkillBadge skill={props.skillName} />.
                 </p>
                 <div>{capitalize(t("assignment reason"))}</div>
                 <Formik

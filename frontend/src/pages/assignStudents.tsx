@@ -76,7 +76,6 @@ const AssignStudentsPage: NextPage = () => {
                     projectName={modalInfo.projectName}
                     skillName={modalInfo.skillInfo.skillName}
                     skillUrl={modalInfo.skillInfo.skillUrl}
-                    skillColor={modalInfo.skillInfo.skillColor}
                     showModal={showModal}
                     setter={setShowModal}
                 />
