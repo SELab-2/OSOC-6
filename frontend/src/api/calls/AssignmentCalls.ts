@@ -38,7 +38,7 @@ export async function addAssignment(studentUrl: string, skillUrl: string, reason
  * @param assignmentURL URL of the assignment to be deleted
  * @param oldAssignments List of the assignments for a project
  */
-export async function deleteAssignment(
+export async function deleteFullAssignment(
     assignmentURL: string,
     oldAssignments: IFullAssignment
 ): Promise<IFullAssignment> {
@@ -57,7 +57,7 @@ export async function deleteAssignment(
  * It returns a list of ProjectAssignments.
  * @param url The URL of the assignments for a project.
  */
-export async function getAssignments(url: string): Promise<IFullAssignment> {
+export async function getFullAssignments(url: string): Promise<IFullAssignment> {
     const assignmentList: IAssignment[] = await getAllAssignmentsFormLinks(url);
     let assignments: IFullAssignment = [];
     const assigners: { [url: string]: IUser } = {};

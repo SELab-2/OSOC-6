@@ -9,11 +9,11 @@ export type ModalSkillInfo = { skillName: string; skillColor: string; skillUrl: 
 export type ModalInfo = {
     studentName: string;
     studentUrl: string;
-    skillInfo: ModalSkillInfo;
     projectName: string;
-};
+} & ModalSkillInfo;
+type ModalProps = ModalInfo & { showModal: boolean; setter: Dispatch<boolean> };
 
-function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; setter: Dispatch<boolean> }) {
+function AssignmentModal(props: ModalProps) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState<boolean>();
 
@@ -38,18 +38,18 @@ function AssignmentModal(props: { modalInfo: ModalInfo; showModal: boolean; sett
             <ModalBody>
                 <p>
                     {capitalize(t("suggesting"))}
-                    {props.modalInfo.studentName} {capitalize(t("to project"))}
-                    <i>{props.modalInfo.projectName}</i> {capitalize(t("for role"))}
-                    <Badge bg="" style={{ backgroundColor: props.modalInfo.skillInfo.skillColor }}>
-                        {props.modalInfo.skillInfo.skillName}
+                    {props.studentName} {capitalize(t("to project"))}
+                    <i>{props.projectName}</i> {capitalize(t("for role"))}
+                    <Badge bg="" style={{ backgroundColor: props.skillColor }}>
+                        {props.skillName}
                     </Badge>
                     .
                 </p>
                 <div>{capitalize(t("assignment reason"))}</div>
                 <Formik
                     initialValues={{
-                        studentUrl: props.modalInfo.studentUrl,
-                        skillUrl: props.modalInfo.skillInfo.skillUrl,
+                        studentUrl: props.studentUrl,
+                        skillUrl: props.skillUrl,
                         reason: "",
                     }}
                     onSubmit={dropStudent}

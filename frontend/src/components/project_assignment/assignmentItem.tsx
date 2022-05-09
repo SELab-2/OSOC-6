@@ -1,13 +1,14 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { Badge, CloseButton, Col, Row } from "react-bootstrap";
 import useSWR, { useSWRConfig } from "swr";
-import { deleteAssignment, getAssignments } from "../../api/calls/AssignmentCalls";
+import { deleteFullAssignment, getFullAssignments } from "../../api/calls/AssignmentCalls";
 import WarningToast from "../warningToast";
-import apiPaths from "../../properties/apiPaths";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { getSkillTypeFromSkill } from "../../api/calls/skillTypeCalls";
 import { useEffect, useState } from "react";
+import applicationPaths from "../../properties/applicationPaths";
+import { extractIdFromStudentUrl } from "../../api/calls/studentCalls";
 
 /**
  * An item containing the information about the assignments to a skill of a project.
@@ -26,7 +27,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     });
 
     const { mutate } = useSWRConfig();
-    let { data, error } = useSWR(item.skill._links.assignments.href, getAssignments);
+    let { data, error } = useSWR(item.skill._links.assignments.href, getFullAssignments);
     let assign = data || [];
 
     if (error) {
@@ -34,7 +35,7 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
     }
 
     async function removeAssignment(event: any) {
-        const assignments = await deleteAssignment(event.target.value, assign);
+        const assignments = await deleteFullAssignment(event.target.value, assign);
         await mutate(item.skill._links.assignments.href, assignments);
     }
 
@@ -61,7 +62,11 @@ function AssignmentItem(item: { skill: IProjectSkill }) {
                             <Col xs={10} md={11}>
                                 <a
                                     rel="noreferrer"
-                                    href={assignment.student._links.self.href.split(apiPaths.base)[1]}
+                                    href={
+                                        applicationPaths.students +
+                                        "/" +
+                                        extractIdFromStudentUrl(assignment.student._links.self.href)
+                                    }
                                     target="_blank"
                                 >
                                     <h6>{assignment.student.firstName}</h6>

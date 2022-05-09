@@ -92,7 +92,6 @@ const common = {
     "change status title": "change status",
     "change status": "would you like to change the status to",
 
-    "student page title": "studentpage title",
     "assignment modal title": "Why do you want this student here?",
     "confirm assignment": "confirm assignment",
     "assignment reason": "Reason for the assignment: ",

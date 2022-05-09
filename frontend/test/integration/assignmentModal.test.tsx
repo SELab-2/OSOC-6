@@ -10,10 +10,7 @@ import {
 } from "./TestEntityProvider";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
-import AssignmentModal, {
-    ModalInfo,
-    ModalSkillInfo,
-} from "../../src/components/project_assignment/assignmentModal";
+import AssignmentModal, { ModalInfo } from "../../src/components/project_assignment/assignmentModal";
 import { Dispatch } from "react";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
@@ -28,7 +25,18 @@ afterEach(() => {
 
 async function renderAssignmentModal(modalInfo: ModalInfo, showModal: boolean, setter: Dispatch<boolean>) {
     render(
-        makeCacheFree(() => AssignmentModal({ modalInfo: modalInfo, showModal: showModal, setter: setter }))
+        makeCacheFree(() =>
+            AssignmentModal({
+                studentName: modalInfo.studentName,
+                studentUrl: modalInfo.studentUrl,
+                skillName: modalInfo.skillName,
+                skillUrl: modalInfo.skillUrl,
+                skillColor: modalInfo.skillColor,
+                projectName: modalInfo.projectName,
+                showModal: showModal,
+                setter: setter,
+            })
+        )
     );
 }
 
@@ -37,16 +45,13 @@ describe("Assignment modal", () => {
         const student = getBaseStudent("1");
         const projectSkill = getBaseProjectSkill("2");
         const skillType = getBaseSkillType("3");
-        const skillInfo: ModalSkillInfo = {
-            skillName: projectSkill.name,
-            skillColor: skillType.colour,
-            skillUrl: projectSkill._links.self.href,
-        };
         const project = getBaseProject("4");
         const modalInfo = {
             studentName: student.firstName,
             studentUrl: student._links.self.href,
-            skillInfo: skillInfo,
+            skillName: projectSkill.name,
+            skillColor: skillType.colour,
+            skillUrl: projectSkill._links.self.href,
             projectName: project.name,
         };
         const setter: Dispatch<boolean> = (_) => {};
@@ -63,16 +68,13 @@ describe("Assignment modal", () => {
         const student = getBaseStudent("1");
         const projectSkill = getBaseProjectSkill("2");
         const skillType = getBaseSkillType("3");
-        const skillInfo: ModalSkillInfo = {
-            skillName: projectSkill.name,
-            skillColor: skillType.colour,
-            skillUrl: projectSkill._links.self.href,
-        };
         const project = getBaseProject("4");
         const modalInfo = {
             studentName: student.firstName,
             studentUrl: student._links.self.href,
-            skillInfo: skillInfo,
+            skillName: projectSkill.name,
+            skillColor: skillType.colour,
+            skillUrl: projectSkill._links.self.href,
             projectName: project.name,
         };
         let testBool = true;

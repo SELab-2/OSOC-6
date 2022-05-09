@@ -5,13 +5,12 @@ import styles from "../styles/pageGrids.module.css";
 import { StudentList } from "../components/studentList";
 import ProjectAsignmentList from "../components/project_assignment/projectAssignmentList";
 import { useState } from "react";
-import AssignmentModal from "../components/project_assignment/assignmentModal";
+import AssignmentModal, { ModalSkillInfo } from "../components/project_assignment/assignmentModal";
 
-type SkillInfo = { skillName: string; skillColor: string; skillUrl: string };
 export type DropHandler = (
     studentName: string,
     studentUrl: string,
-    skillInfo: SkillInfo,
+    skillInfo: ModalSkillInfo,
     projectName: string
 ) => void;
 
@@ -20,11 +19,16 @@ const AssignStudentsPage: NextPage = () => {
     const [modalInfo, setModalInfo] = useState<{
         studentName: string;
         studentUrl: string;
-        skillInfo: SkillInfo;
+        skillInfo: ModalSkillInfo;
         projectName: string;
     }>();
 
-    function handleShow(studentName: string, studentUrl: string, skillInfo: SkillInfo, projectName: string) {
+    function handleShow(
+        studentName: string,
+        studentUrl: string,
+        skillInfo: ModalSkillInfo,
+        projectName: string
+    ) {
         setModalInfo({ studentName, studentUrl, skillInfo, projectName });
         setShowModal(true);
     }
@@ -66,7 +70,16 @@ const AssignStudentsPage: NextPage = () => {
                 </Row>
             </div>
             {modalInfo != undefined ? (
-                <AssignmentModal modalInfo={modalInfo} showModal={showModal} setter={setShowModal} />
+                <AssignmentModal
+                    studentName={modalInfo.studentName}
+                    studentUrl={modalInfo.studentUrl}
+                    projectName={modalInfo.projectName}
+                    skillName={modalInfo.skillInfo.skillName}
+                    skillUrl={modalInfo.skillInfo.skillUrl}
+                    skillColor={modalInfo.skillInfo.skillColor}
+                    showModal={showModal}
+                    setter={setShowModal}
+                />
             ) : (
                 <></>
             )}
