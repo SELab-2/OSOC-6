@@ -10,6 +10,9 @@ import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
 
+/**
+ * All values that a project contains
+ */
 export interface ProjectCreationValues {
     name: string;
     info: string;
@@ -24,6 +27,9 @@ export interface ProjectCreationValues {
     coaches: string[];
 }
 
+/**
+ * All values contained directly in the Formik form
+ */
 export interface FormSubmitValues {
     name: string;
     info: string;
@@ -32,6 +38,9 @@ export interface FormSubmitValues {
     partnerWebsite: string;
 }
 
+/**
+ * The props that have to be passed to the component
+ */
 export type ProjectCreationProps = {
     submitHandler: (
         values: ProjectCreationValues,
@@ -41,6 +50,13 @@ export type ProjectCreationProps = {
     ) => void;
 };
 
+/**
+ * Takes care of the creation of a new project and the associated ProjectSkills
+ * @param values values needed to create a new project
+ * @param router the next router object
+ * @param edition the current edition
+ * @param ownUser the currently logged in user
+ */
 export async function createProjectSubmitHandler(
     values: ProjectCreationValues,
     router: NextRouter,

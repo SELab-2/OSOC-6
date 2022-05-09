@@ -20,6 +20,10 @@ import useEdition from "../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
+/**
+ * A React component containing a form for project creation
+ * @param props ProjectCreationProps containing the submitHandler
+ */
 export const CreateProjectForm = (props: ProjectCreationProps) => {
     let userResponse = useSwrWithEdition(apiPaths.userByEdition, getAllUsersFromPage);
 

@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
 import { act, render, RenderResult, screen, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
-import { AxiosResponse } from "axios";
 import apiPaths from "../../src/properties/apiPaths";
 import CreateProject from "../../src/pages/projects/create";
 import {
@@ -26,8 +25,6 @@ import { enableOwnUser, enableUseEdition, getAxiosCallWithEdition, makeCacheFree
 import mockRouter from "next-router-mock";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
-import RouteInjector from "../../src/components/routeInjector";
-import GlobalContext from "../../src/context/globalContext";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
