@@ -10,6 +10,19 @@ export interface ISkillType extends IBaseEntity {
     };
 }
 
+/**
+ * An [ISkillType] that is completely empty. Using this we don't need as much ?. in our code.
+ */
+export const emptySkillType: ISkillType = {
+    name: "",
+    colour: "grey",
+
+    _links: {
+        skillType: { href: "" },
+        self: { href: "" },
+    },
+};
+
 export const skillTypeCollectionName: string = "skillTypes";
 export type ISkillTypePage = IPage<{ skillTypes: ISkillType[] }>;
 export type ISkillTypeLinks = IEntityLinks<{ skillTypes: ISkillType[] }>;

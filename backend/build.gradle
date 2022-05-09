@@ -23,6 +23,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// Needed for creating a test mail server
+	testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
+
 
 	// Needed to mock static methods
 	testImplementation 'org.mockito:mockito-inline'

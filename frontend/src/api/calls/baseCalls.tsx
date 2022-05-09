@@ -25,7 +25,7 @@ export const ManyToManyAxiosConf: AxiosRequestConfig = {
 };
 
 /**
- * Gets all IBaseEntities on an url hosting IEntityLinks
+ * Gets all IBaseEntities on an url hosting [IPage].
  * @param pageUrl url hosting the IPage
  * @param collectionName name of the collection as defined in the IEntityLinks type extension.
  */
@@ -54,6 +54,11 @@ export async function getAllEntitiesFromPage(
     return entities;
 }
 
+/**
+ * Gets all [IBaseEntity] entities on an url hosting [IEntityLinks]
+ * @param linksUrl url hosting the [IEntityLinks]
+ * @param collectionName name of the collection as defined in the IEntityLinks type extension.
+ */
 export async function getAllEntitiesFromLinksUrl(
     linksUrl: string,
     collectionName: string
@@ -63,6 +68,10 @@ export async function getAllEntitiesFromLinksUrl(
     return linksData._embedded[collectionName];
 }
 
+/**
+ * Get an [IBaseEntity] from a URL.
+ * @param entityUrl the url where the [IBaseEntity] is hosted on
+ */
 export async function getEntityOnUrl(entityUrl: string): Promise<IBaseEntity | undefined> {
     const data: IBaseEntity = (await axios.get(entityUrl, AxiosConf)).data;
     // Needed so an error is thrown when type is wrong.
@@ -116,6 +125,17 @@ export function basePost(
     params?: { [k: string]: any }
 ): Promise<AxiosResponse<any, any>> {
     return axios.post(url, data, {
+        params: params,
+        ...AxiosConf,
+    });
+}
+
+export function basePatch(
+    url: string,
+    data: any,
+    params?: { [k: string]: any }
+): Promise<AxiosResponse<any, any>> {
+    return axios.patch(url, data, {
         params: params,
         ...AxiosConf,
     });

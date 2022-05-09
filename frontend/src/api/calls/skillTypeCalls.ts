@@ -8,39 +8,39 @@ import {
     ISkillTypePage,
     skillTypeCollectionName,
 } from "../entities/SkillTypeEntity";
-import { AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage } from "./baseCalls";
+
+import {
+    AxiosConf,
+    getAllEntitiesFromLinksUrl,
+    getAllEntitiesFromPage,
+    getQueryUrlFromParams,
+} from "./baseCalls";
 
 /**
- * Fetches all SkillTypes on a given SkillTypePageUrl
+ * Get the skillType entity provided the name of a Skill. If the name does not match, [baseSkillType] will be used.
+ * @param skillName the name on which to search for the [ISkillType].
  */
-export function getAllSkillTypesFromPage(url: string): Promise<ISkillType[]> {
-    return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
+export async function getSkillTypeByName(skillName: string): Promise<ISkillType> {
+    let type: ISkillTypePage = (
+        await axios.get(getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillName }), AxiosConf)
+    ).data;
+    if (type._embedded.skillTypes.length == 0) {
+        type = (
+            await axios.get(
+                getQueryUrlFromParams(apiPaths.skillTypesByName, { name: baseSkillType }),
+                AxiosConf
+            )
+        ).data;
+    }
+    return type._embedded.skillTypes[0];
 }
 
 /**
  * Get the skillType for a certain Skill.
  * @param skill The skill you want the skillTypeFrom
  */
-export async function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): Promise<ISkillType> {
-    let type: ISkillTypePage = (
-        await axios.get(apiPaths.skillTypesByName, {
-            params: {
-                name: skill.name,
-            },
-            ...AxiosConf,
-        })
-    ).data;
-    if (type._embedded.skillTypes.length == 0) {
-        type = (
-            await axios.get(apiPaths.skillTypesByName, {
-                params: {
-                    name: baseSkillType,
-                },
-                ...AxiosConf,
-            })
-        ).data;
-    }
-    return type._embedded.skillTypes[0];
+export function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): Promise<ISkillType> {
+    return getSkillTypeByName(skill.name);
 }
 
 /**
@@ -48,4 +48,12 @@ export async function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): 
  */
 export function getAllSkillTypesFromLinks(url: string): Promise<ISkillType[]> {
     return <Promise<ISkillType[]>>getAllEntitiesFromLinksUrl(url, skillTypeCollectionName);
+}
+
+/**
+ * Gets all [ISkillType] entities on an url hosting [IPage].
+ * @param url url hosting the IPage
+ */
+export function getAllSkillTypesFromPage(url: string): Promise<ISkillType[]> {
+    return <Promise<ISkillType[]>>getAllEntitiesFromPage(url, skillTypeCollectionName);
 }

@@ -1,5 +1,8 @@
-package com.osoc6.OSOC6;
+package com.osoc6.OSOC6.anonymousTest;
 
+import com.osoc6.OSOC6.TestEntityProvider;
+import com.osoc6.OSOC6.TestFunctionProvider;
+import com.osoc6.OSOC6.Util;
 import com.osoc6.OSOC6.database.models.Invitation;
 import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;

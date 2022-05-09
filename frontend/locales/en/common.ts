@@ -71,6 +71,41 @@ const common = {
     subject: "subject",
     "communication template": "communication template",
     "open in mail application": "open in mail application",
+
+    suggestions: "suggestions",
+    suggest: "suggest",
+    "reason suggestion": "reason for the suggestion",
+    "confirm suggestion": "confirm suggestion",
+    "personal details": "personal details",
+    "native language": "native language",
+    "english proficiency": "english proficiency",
+    "phone number": "phone number",
+    gender: "gender",
+    pronouns: "with pronouns",
+    about: "about the student",
+    "more info": "more info about this student",
+    education: "student education and experience",
+    cv: "cv",
+    motivation: "motivation",
+
+    "info current": "currently in",
+    "info year": "year of",
+    "info institution": "at",
+    "info current diploma": "",
+
+    studies: "studies",
+    institution: "institution",
+    "current diploma": "studying for",
+    "degree year": "currently in",
+    "degree duration": "year out of",
+    "applied for": "applied for",
+    "osoc experience": "osoc experience",
+    NONE: "no experience yet",
+    YES_NO_STUDENT_COACH: "yes, but does not want to be student coach",
+    YES_STUDENT_COACH: "yes, wants to be student coach",
+
+    "change status title": "change status",
+    "change status": "would you like to change the status to",
 };
 
 export default common;

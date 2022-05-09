@@ -28,6 +28,14 @@ export function getOwnUser(): Promise<IUser> {
     return <Promise<IUser>>getEntityOnUrl(apiPaths.ownUser);
 }
 
+/**
+ * Get user on url
+ * @param url
+ */
+export function getUserOnUrl(url: string): Promise<IUser> {
+    return <Promise<IUser>>getEntityOnUrl(url);
+}
+
 export async function logoutUser() {
     await axios.get(apiPaths.base + apiPaths.logout, AxiosConf);
 }
