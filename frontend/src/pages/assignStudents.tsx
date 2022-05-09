@@ -69,7 +69,7 @@ const AssignStudentsPage: NextPage = () => {
                     </Col>
                 </Row>
             </div>
-            {modalInfo != undefined ? (
+            {modalInfo !== undefined ? (
                 <AssignmentModal
                     studentName={modalInfo.studentName}
                     studentUrl={modalInfo.studentUrl}

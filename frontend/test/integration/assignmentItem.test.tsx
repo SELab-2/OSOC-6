@@ -16,7 +16,6 @@ import apiPaths from "../../src/properties/apiPaths";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { ISkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import AssignmentItem from "../../src/components/project_assignment/assignmentItem";
-import { SWRConfig } from "swr";
 import { assignmentCollectionName, IAssignment } from "../../src/api/entities/AssignmentEntity";
 import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import { IStudent } from "../../src/api/entities/StudentEntity";
@@ -24,6 +23,7 @@ import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
 import { capitalize } from "../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
+import {makeCacheFree} from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -52,9 +52,7 @@ async function renderAssignmentItem(
     );
     await act(() => {
         render(
-            <SWRConfig value={{ provider: () => new Map() }}>
-                <AssignmentItem skill={projectSkill} />
-            </SWRConfig>
+            makeCacheFree(() => <AssignmentItem skill={projectSkill} />)
         );
     });
 

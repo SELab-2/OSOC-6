@@ -40,7 +40,7 @@ describe("Project assignment list", () => {
         });
     });
 
-    it("Test no projects", async () => {
+    it("Renders 'no projects' when not provided with projects", async () => {
         await renderAssignProject([]);
 
         await waitFor(() => {
