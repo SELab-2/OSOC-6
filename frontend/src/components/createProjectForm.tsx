@@ -3,7 +3,7 @@ import { Badge, Col, Row } from "react-bootstrap";
 import styles from "../styles/createProjectForm.module.css";
 import { Field, Form, Formik } from "formik";
 import apiPaths from "../properties/apiPaths";
-import { getAllUsersFromPage, useCurrentUser } from "../api/calls/userCalls";
+import { getAllUsersFromPage } from "../api/calls/userCalls";
 import { capitalize } from "../utility/stringUtil";
 import {
     FormSubmitValues,
@@ -19,6 +19,7 @@ import { useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 /**
  * A React component containing a form for project creation

@@ -30,7 +30,6 @@ import {
     SuggestionStrategy,
 } from "../api/entities/SuggestionEntity";
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
-import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
 import { AxiosConf } from "../api/calls/baseCalls";
 import faker from "@faker-js/faker";
 
@@ -269,10 +268,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedSkillTypes = skillTypes._embedded.skillTypes;
     }
     console.log(containedSkillTypes);
-
-    console.log("Test getSkillTypeFromSkill:");
-    console.log(await getSkillTypeFromSkill(projectBoulderSkill));
-    console.log(await getSkillTypeFromSkill(simpleUserSkill));
 
     const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];

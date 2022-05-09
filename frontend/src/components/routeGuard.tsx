@@ -1,8 +1,8 @@
 import applicationPaths from "../properties/applicationPaths";
-import { useCurrentUser } from "../api/calls/userCalls";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { pathIsAuthException } from "../utility/pathUtil";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export default function RouteGuard({ children }: any) {
     const router = useRouter();

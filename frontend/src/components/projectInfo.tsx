@@ -2,55 +2,52 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../properties/apiPaths";
 import useSWR from "swr";
-import { getFullProjectInfo } from "../api/calls/projectCalls";
 import { capitalize } from "../utility/stringUtil";
+import useFullProjectInfo from "../hooks/useFullProjectInfo";
+import { emptyProject } from "../api/entities/ProjectEntity";
+import ProjectSkillStudent from "./projectSkillStudent";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
 
-    const { data, error } = useSWR(apiPaths.projects + "/" + id, getFullProjectInfo);
+    const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
 
     if (error || !data) {
         return null;
     }
 
+    const info = data.info || emptyProject;
+    const projectSkills = data.skills;
+    const coaches = data.coaches;
+
     return (
         <div>
-            <h1>{data.info.name}</h1>
-            <a href={data.info.partnerWebsite || undefined}>{data.info.partnerName}</a>
+            <h1>{info.name}</h1>
+            <a href={info.partnerWebsite || undefined}>{info.partnerName}</a>
             <br />
             {capitalize(t("coaches"))}
             <ul>
-                {data.coaches.map((user) => (
+                {coaches.map((user) => (
                     <li key={user._links.self.href}>{user.callName}</li>
                 ))}
             </ul>
             <hr />
             {capitalize(t("project about"))}
             <br />
-            {data.info.info}
+            {info.info}
             <hr />
             {capitalize(t("project expertise"))}
             <ul>
-                {data.skills.map((skill) => (
-                    <li key={skill.skill._links.self.href}>
-                        {skill.skill.name + ": " + skill.skill.additionalInfo}
-                    </li>
+                {projectSkills.map((skill) => (
+                    <li key={skill._links.self.href}>{skill.name + ": " + skill.additionalInfo}</li>
                 ))}
             </ul>
             {capitalize(t("project roles"))}
             <ul>
-                {data.skills.map((skill) => (
-                    <li style={{ color: skill.type.colour }} key={skill.skill._links.self.href}>
-                        {skill.type.name}
-                        <ul>
-                            {skill.assignees.map((student) => (
-                                <li key={student._links.self.href}>{student.callName}</li>
-                            ))}
-                        </ul>
-                    </li>
+                {projectSkills.map((skill) => (
+                    <ProjectSkillStudent projectSkill={skill} key={skill._links.self.href} />
                 ))}
             </ul>
         </div>

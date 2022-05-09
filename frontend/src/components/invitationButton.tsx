@@ -7,23 +7,27 @@ import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../properties/applicationPaths";
 import { getAllEditionsFromPage } from "../api/calls/editionCalls";
-import { getOwnUser, logoutUser } from "../api/calls/userCalls";
+import { logoutUser } from "../api/calls/userCalls";
 import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export default function InvitationButton() {
     const router = useRouter();
     const transformer = useEditionPathTransformer();
+    const { user, error } = useCurrentUser(true);
+
+    if (error || !user) {
+        return null;
+    }
 
     async function onClick() {
-        // Get the logged in user
-        const user: IUser = await getOwnUser();
-
         // Get an edition
         const editions: IEdition[] = await getAllEditionsFromPage(apiPaths.editions);
         const edition: IEdition = editions[0];
 
         // Create an invitation
-        const invitation = new Invitation(user._links.self.href, edition._links.self.href);
+        // We can never call this function if user is undefined.
+        const invitation = new Invitation(user!._links.self.href, edition._links.self.href);
         const postedInvitation = (await basePost(apiPaths.invitations, invitation, {})).data;
 
         const url = getQueryUrlFromParams(applicationPaths.registration, {

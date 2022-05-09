@@ -1,6 +1,6 @@
 import { Badge } from "react-bootstrap";
 import useSWR from "swr";
-import { getSkillTypeByName } from "../api/calls/skillTypeCalls";
+import useSkillTypeByName from "../hooks/useSkillTypeByName";
 
 /**
  * Parameters to be added to skillBadge
@@ -14,7 +14,7 @@ export interface SkillBadgeParams {
  * @param skill the name of the skill this Badge represents
  */
 export default function SkillBadge({ skill }: SkillBadgeParams) {
-    const { data: skillType, error } = useSWR(skill, getSkillTypeByName);
+    const { data: skillType, error } = useSkillTypeByName(skill);
 
     if (error) {
         console.log(error);
