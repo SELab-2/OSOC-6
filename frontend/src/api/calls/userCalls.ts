@@ -1,8 +1,13 @@
-import { AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    AxiosConf,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromLinksUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
 import { IUser, userCollectionName } from "../entities/UserEntity";
 import axios from "axios";
 import apiPaths from "../../properties/apiPaths";
-import useSWR, { SWRResponse } from "swr";
 
 /**
  * Fetches all users on a given UserPageUrl
@@ -28,4 +33,8 @@ export function getUserOnUrl(url: string): Promise<IUser> {
 
 export async function logoutUser() {
     await axios.get(apiPaths.base + apiPaths.logout, AxiosConf);
+}
+
+export function extractIdFromUserUrl(url: string): string {
+    return extractIdFromApiEntityUrl(url);
 }

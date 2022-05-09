@@ -17,6 +17,13 @@ export const AxiosFormConfig: AxiosRequestConfig = {
     },
 };
 
+export const ManyToManyAxiosConf: AxiosRequestConfig = {
+    baseURL: apiPaths.base,
+    headers: {
+        "Content-Type": "text/uri-list; charset=UTF-8",
+    },
+};
+
 /**
  * Gets all IBaseEntities on an url hosting [IPage].
  * @param pageUrl url hosting the IPage
