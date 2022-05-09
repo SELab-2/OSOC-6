@@ -9,7 +9,7 @@ import {
     getBaseUser,
 } from "./TestEntityProvider";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
+import { enableCurrentUser, makeCacheFree } from "./Provide";
 import AssignmentModal, { ModalInfo } from "../../src/components/project_assignment/assignmentModal";
 import { Dispatch } from "react";
 import userEvent from "@testing-library/user-event";
@@ -23,24 +23,30 @@ afterEach(() => {
     mockAxios.reset();
 });
 
-async function renderAssignmentModal(modalInfo: ModalInfo, showModal: boolean, setter: Dispatch<boolean>) {
-    render(
-        makeCacheFree(() =>
-            AssignmentModal({
-                studentName: modalInfo.studentName,
-                studentUrl: modalInfo.studentUrl,
-                skillName: modalInfo.skillName,
-                skillUrl: modalInfo.skillUrl,
-                skillColor: modalInfo.skillColor,
-                projectName: modalInfo.projectName,
-                showModal: showModal,
-                setter: setter,
-            })
-        )
-    );
-}
-
 describe("Assignment modal", () => {
+    const user = getBaseUser("5", UserRole.admin, true);
+
+    async function renderAssignmentModal(
+        modalInfo: ModalInfo,
+        showModal: boolean,
+        setter: Dispatch<boolean>
+    ) {
+        render(
+            makeCacheFree(() =>
+                AssignmentModal({
+                    studentName: modalInfo.studentName,
+                    studentUrl: modalInfo.studentUrl,
+                    skillName: modalInfo.skillName,
+                    skillUrl: modalInfo.skillUrl,
+                    projectName: modalInfo.projectName,
+                    showModal: showModal,
+                    setter: setter,
+                })
+            )
+        );
+        await enableCurrentUser(user);
+    }
+
     it("It should render", async () => {
         const student = getBaseStudent("1");
         const projectSkill = getBaseProjectSkill("2");
@@ -85,14 +91,9 @@ describe("Assignment modal", () => {
 
         await userEvent.click(screen.getByRole("button"));
 
-        const user = getBaseUser("5", UserRole.admin, true);
-        const ownUserResponse: AxiosResponse = getBaseOkResponse(user);
-
         await waitFor(() => {
             expect(mockAxios.get).toHaveBeenCalled();
         });
-
-        await act(() => mockAxios.mockResponseFor({ method: "GET" }, ownUserResponse));
 
         const assignment = new Assignment(
             false,

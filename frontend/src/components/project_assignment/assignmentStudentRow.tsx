@@ -1,6 +1,6 @@
 import { CloseButton, Col, Row } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
-import { extractIdFromStudentUrl } from "../../api/calls/studentCalls";
+import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { capitalize } from "../../utility/stringUtil";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import useSWR, { mutate } from "swr";
@@ -8,6 +8,7 @@ import useTranslation from "next-translate/useTranslation";
 import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
 import { emptyUser, IUser } from "../../api/entities/UserEntity";
 import { deleteAssignment, extractIdFromAssignmentUrl } from "../../api/calls/AssignmentCalls";
+import { getUserOnUrl } from "../../api/calls/userCalls";
 
 interface IAssignmentStudentProps {
     assignment: IAssignment;
@@ -16,8 +17,8 @@ interface IAssignmentStudentProps {
 
 export default function AssignmentStudentRow({ assignment, removeCallback }: IAssignmentStudentProps) {
     const { t } = useTranslation("common");
-    const { data: resStudent, error: studentError } = useSWR(assignment._links.student.href);
-    const { data: resAssigner, error: assignerError } = useSWR(assignment._links.assigner.href);
+    const { data: resStudent, error: studentError } = useSWR(assignment._links.student.href, getStudentOnUrl);
+    const { data: resAssigner, error: assignerError } = useSWR(assignment._links.assigner.href, getUserOnUrl);
 
     if (studentError || assignerError) {
         console.log(studentError || assignerError);
