@@ -31,7 +31,7 @@ export function getAxiosCallWithEdition(url: string, edition: IEdition) {
     return getQueryUrlFromParams(url, { edition: extractIdFromEditionUrl(edition._links.self.href) });
 }
 
-export function enableOwnUser(user: IUser): Promise<void> {
+export function enableCurrentUser(user: IUser): Promise<void> {
     return waitFor(() => {
         mockAxios.mockResponseFor({ url: apiPaths.ownUser }, getBaseOkResponse(user));
     });

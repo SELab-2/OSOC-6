@@ -21,7 +21,7 @@ import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
 import { ISkillType, SkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
-import { enableOwnUser, enableUseEdition, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
+import { enableCurrentUser, enableUseEdition, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
@@ -40,7 +40,7 @@ describe("Create project form", () => {
 
         render(makeCacheFree(() => enableUseEdition(CreateProject, edition)));
 
-        await enableOwnUser(user);
+        await enableCurrentUser(user);
 
         expect(screen.getByTestId("projectname-input")).toBeInTheDocument();
         expect(screen.getByTestId("projectinfo-input")).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe("Create project form", () => {
                 getBaseOkResponse(getBasePage(apiPaths.users, userCollectionName, [user]))
             );
         });
-        await enableOwnUser(user);
+        await enableCurrentUser(user);
         await waitFor(() => {
             mockAxios.mockResponseFor(
                 { url: apiPaths.skillTypes },

@@ -18,7 +18,9 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
     const { user, error: userError } = useCurrentUser(true);
 
     if (userError || !user) {
-        console.log(userError);
+        if (userError) {
+            console.log(userError);
+        }
         return null;
     }
 

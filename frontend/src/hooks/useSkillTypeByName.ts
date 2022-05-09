@@ -30,7 +30,8 @@ export default function useSkillTypeByName(
             error: matchNameError || defaultSkillTypeError,
         };
     }
+
     return {
-        data: matchingName?.at(0) || defaultSkillType?.at(0),
+        data: matchingName ? matchingName[0] : defaultSkillType ? defaultSkillType[0] : undefined,
     };
 }

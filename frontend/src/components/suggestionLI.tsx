@@ -13,7 +13,7 @@ export interface suggestionLIProps {
 
 export default function SuggestionLI({ suggestion }: suggestionLIProps) {
     const { t } = useTranslation("common");
-    let { data: coach, error: coachError } = useSWR(suggestion._links.coach, getUserOnUrl);
+    let { data: coach, error: coachError } = useSWR(suggestion._links.coach.href, getUserOnUrl);
 
     if (coachError) {
         console.log(coachError);
