@@ -1,9 +1,9 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.ProjectSkill;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.student.Student;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 

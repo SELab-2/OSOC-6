@@ -1,4 +1,4 @@
-package com.osoc6.OSOC6.database.models;
+package com.osoc6.OSOC6.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

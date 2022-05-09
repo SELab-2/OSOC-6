@@ -1,9 +1,9 @@
 package com.osoc6.OSOC6.webhookTest;
 
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.EnglishProficiency;
+import com.osoc6.OSOC6.entities.student.Gender;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import com.osoc6.OSOC6.webhook.FormField;
 import com.osoc6.OSOC6.webhook.Option;

@@ -1,11 +1,11 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
-import com.osoc6.OSOC6.database.models.UserSkill;
+import com.osoc6.OSOC6.entities.Communication;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
+import com.osoc6.OSOC6.entities.UserSkill;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 
@@ -30,7 +30,6 @@ public final class UserDTO {
 
     /**
      * The password of the user.
-     * @apiNote We need {@link JsonIgnore} here so the JSON user object does not contain their password.
      */
     private String password;
 
@@ -57,17 +56,11 @@ public final class UserDTO {
     /**
      * {@link List} of {@link Invitation} that was sent out by the user.
      * A user can only create invitations if it has the {@link UserRole} admin.
-     * @apiNote We need to set {@link RestResource} exported to false and add {@link JsonIgnore}
-     * so the JSON user object does not contain it's sent invitations.
-     * This is because a user needs to be accessible to anyone,
-     * but the sent invitations should not, since these might contain invitation tokens that are not used yet.
      */
     private List<String> sendInvitations;
 
     /**
-     * The {@link Invitation} that allowed the user to participate in an {@link Edition}.
-     * @apiNote We need to add {@link JsonIgnore} here because otherwise,
-     * when we convert this entity to JSON during testing, we will get infinite recursion.
+     * The {@link Invitation} that allowed the user to participate in an {@link com.osoc6.OSOC6.entities.Edition}.
      */
     private List<String> receivedInvitations;
 

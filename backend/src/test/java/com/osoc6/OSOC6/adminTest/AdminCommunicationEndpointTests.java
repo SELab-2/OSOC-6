@@ -2,9 +2,9 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Communication;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.CommunicationDTO;
 import com.osoc6.OSOC6.repository.CommunicationRepository;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
