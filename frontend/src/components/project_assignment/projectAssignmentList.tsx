@@ -50,7 +50,10 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
                                     </div>
                                 </AccordionHeader>
                                 <AccordionBody>
-                                    <AssignmentSkillList project={project} dropHandler={props.dropHandler} />
+                                    <AssignmentSkillList
+                                        projectURL={project._links.self.href}
+                                        dropHandler={props.dropHandler}
+                                    />
                                 </AccordionBody>
                             </AccordionItem>
                         );

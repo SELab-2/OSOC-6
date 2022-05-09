@@ -5,37 +5,40 @@ import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls"
 import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
-import { IProject } from "../../api/entities/ProjectEntity";
 import { DropHandler } from "../../pages/assignStudents";
 import { getSkillTypeFromSkill } from "../../api/calls/skillTypeCalls";
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
+import { getProjectOnUrl } from "../../api/calls/projectCalls";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
  * @param props Properties
  * @constructor
  */
-export default function AssignmentSkillList(props: { project: IProject; dropHandler: DropHandler }) {
+export default function AssignmentSkillList(props: { projectURL: string; dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
     const { t: errort } = useTranslation("errorMessages");
 
     const { mutate } = useSWRConfig();
-    let { data, error } = useSWR(props.project._links.neededSkills.href, getAllProjectSkillsFromLinks);
+    let { data: project, error: projectError } = useSWR(props.projectURL, getProjectOnUrl);
+    let { data, error } = useSWR(project?._links.neededSkills.href, getAllProjectSkillsFromLinks);
 
-    if (error) {
+    if (error || projectError) {
         return <WarningToast message={capitalize(errort("error reload page"))} />;
     }
 
     async function dropStudent(studentName: string, studentUrl: string, skill: IProjectSkill) {
         const skillType = await getSkillTypeFromSkill(skill);
         const skillColor = skillType.colour;
-        props.dropHandler(
-            studentName,
-            studentUrl,
-            { skillUrl: skill._links.self.href, skillName: skill.name, skillColor },
-            props.project.name
-        );
-        await mutate(props.project._links.neededSkills.href);
+        if (project !== undefined) {
+            props.dropHandler(
+                studentName,
+                studentUrl,
+                { skillUrl: skill._links.self.href, skillName: skill.name, skillColor },
+                project.name
+            );
+            await mutate(props.projectURL);
+        }
     }
 
     let skillList = data || [];

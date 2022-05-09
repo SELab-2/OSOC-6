@@ -21,8 +21,9 @@ function AssignmentModal(props: ModalProps) {
         setShowModal(props.showModal);
     }
 
-    function dropStudent(values: { studentUrl: string; skillUrl: string; reason: string }) {
-        addAssignment(values.studentUrl, values.skillUrl, values.reason).then(handleClose);
+    async function dropStudent(values: { studentUrl: string; skillUrl: string; reason: string }) {
+        await addAssignment(values.studentUrl, values.skillUrl, values.reason);
+        handleClose();
     }
 
     const handleClose = () => {

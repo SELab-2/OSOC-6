@@ -22,8 +22,20 @@ async function renderSkillList(project: IProject, projectSkills: IProjectSkill[]
     };
 
     await act(() => {
-        render(makeCacheFree(() => <AssignmentSkillList project={project} dropHandler={drop} />));
+        render(
+            makeCacheFree(() => (
+                <AssignmentSkillList projectURL={project._links.self.href} dropHandler={drop} />
+            ))
+        );
     });
+
+    const projectResponse: AxiosResponse = getBaseOkResponse(project);
+
+    await waitFor(() => {
+        expect(mockAxios.get).toHaveBeenCalled();
+    });
+
+    await act(() => mockAxios.mockResponseFor({ url: project._links.self.href }, projectResponse));
 
     const projectSkillsResponse: AxiosResponse = getBaseOkResponse(
         getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, projectSkills)
