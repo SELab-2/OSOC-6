@@ -2,12 +2,12 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../properties/applicationPaths";
-import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
 import OptionsMenu from "./optionsMenu";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
-    const transformer = useEditionPathTransformer();
+    const transformer = useEditionApplicationPathTransformer();
 
     return (
         <div className="capitalize" data-testid="nav-bar">

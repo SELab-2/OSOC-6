@@ -19,14 +19,14 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
     };
     values.freeText = (query.freeText || "") as string;
     values.roles = (query.roles || "") as string;
-    if (query.studentCoach != undefined) {
-        values.studentCoach = query.studentCoach != "false";
+    if (query.studentCoach !== undefined) {
+        values.studentCoach = query.studentCoach !== "false";
     }
-    if (query.alumni != undefined) {
-        values.alumni = query.alumni != "false";
+    if (query.alumni !== undefined) {
+        values.alumni = query.alumni !== "false";
     }
-    if (query.unmatched != undefined) {
-        values.unmatched = query.unmatched != "false";
+    if (query.unmatched !== undefined) {
+        values.unmatched = query.unmatched !== "false";
     }
     return values;
 }

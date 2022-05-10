@@ -7,12 +7,13 @@ import { Button } from "react-bootstrap";
 import applicationPaths from "../properties/applicationPaths";
 import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 import { logoutUser } from "../api/calls/userCalls";
-import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import { createInvitation } from "../api/calls/invitationCalls";
 
 export default function InvitationButton() {
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
+    const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
 
     if (error || !user) {
@@ -27,7 +28,7 @@ export default function InvitationButton() {
         // Create an invitation
         // We can never call this function if user is undefined.
         const invitation = new Invitation(user!._links.self.href, edition._links.self.href);
-        const postedInvitation = (await basePost(apiPaths.invitations, invitation, {})).data;
+        const postedInvitation = await createInvitation(invitation);
 
         const url = getQueryUrlFromParams(applicationPaths.registration, {
             invitationToken: postedInvitation.token,

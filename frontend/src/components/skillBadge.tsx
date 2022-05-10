@@ -1,5 +1,4 @@
 import { Badge } from "react-bootstrap";
-import useSWR from "swr";
 import useSkillTypeByName from "../hooks/useSkillTypeByName";
 
 /**

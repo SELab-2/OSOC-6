@@ -12,18 +12,18 @@ import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
-import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { saveCallNameOfUser, userDelete } from "../api/calls/userCalls";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
+    const transformer = useEditionApplicationPathTransformer();
     let { user: userResponse, error } = useCurrentUser();
     const { mutate } = useSWRConfig();
-    const [editCallname, setEditCallname] = useState<boolean>(false);
-    const [callname, setCallname] = useState<string>("");
+    const [editCallName, setEditCallName] = useState<boolean>(false);
+    const [callName, setCallName] = useState<string>("");
     const [show, setShow] = useState<boolean>(false);
 
     const user = userResponse || emptyUser;
@@ -35,15 +35,15 @@ export function ProfileOverview() {
 
     function handleEditCallName() {
         if (user) {
-            setEditCallname(true);
-            setCallname(user.callName);
+            setEditCallName(true);
+            setCallName(user.callName);
         }
     }
 
     async function handleSaveCallName() {
-        setEditCallname(false);
+        setEditCallName(false);
         if (user) {
-            const response: AxiosResponse = await saveCallNameOfUser(user._links.self.href, callname);
+            const response: AxiosResponse = await saveCallNameOfUser(user._links.self.href, callName);
             if (response.status == StatusCodes.OK) {
                 await mutate(apiPaths.ownUser, response.data);
             } else {
@@ -66,7 +66,7 @@ export function ProfileOverview() {
     function onChange(event: any) {
         // Intended to run on the change of every form element
         event.preventDefault();
-        setCallname(event.target.value);
+        setCallName(event.target.value);
     }
 
     return (
@@ -75,8 +75,8 @@ export function ProfileOverview() {
             <Row data-testid="profile-overview">
                 <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                 {/*show callname if not editing*/}
-                {!editCallname && <Col>{user.callName}</Col>}
-                {!editCallname && (
+                {!editCallName && <Col>{user.callName}</Col>}
+                {!editCallName && (
                     <Col>
                         <a data-testid="edit-callname" onClick={handleEditCallName}>
                             <Image
@@ -90,7 +90,7 @@ export function ProfileOverview() {
                 )}
 
                 {/*input field and save mark if editing*/}
-                {editCallname && (
+                {editCallName && (
                     <Col>
                         <input
                             data-testid="input-callname"

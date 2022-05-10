@@ -8,14 +8,14 @@ import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../properties/timers";
-import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { emptyUser } from "../api/entities/UserEntity";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
+    const transformer = useEditionApplicationPathTransformer();
     let { user: userResponse, error } = useCurrentUser();
     const [firstEntry, setFirstEntry] = useState<string>("");
     const [secondEntry, setSecondEntry] = useState<string>("");

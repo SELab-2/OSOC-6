@@ -15,10 +15,10 @@ import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
 import { getSkillColorMap, ISkillType } from "../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
-import { useSwrWithEdition } from "../hooks/utilHooks";
+import { useEditionAPIUrlTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 import useEdition from "../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 
 /**
@@ -40,6 +40,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const router = useRouter();
     const [edition] = useEdition();
     const currentUser = useCurrentUser(true);
+    const apiTransformer = useEditionAPIUrlTransformer();
+    const { mutate } = useSWRConfig();
 
     const [goals, setGoals] = useState<string[]>([]);
     const [goalInput, setGoalInput] = useState<string>("");
@@ -153,7 +155,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         };
 
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
-        props.submitHandler(createValues, router, edition!, currentUser.user!);
+        props.submitHandler(createValues, router, edition!, currentUser.user!, mutate, apiTransformer);
     }
 
     function initialize() {

@@ -148,7 +148,14 @@ describe("Create project form", () => {
         );
 
         await waitFor(() => {
-            createProjectSubmitHandler(createValues, mockRouter, edition, user);
+            createProjectSubmitHandler(
+                createValues,
+                mockRouter,
+                edition,
+                user,
+                async () => {},
+                (x) => x
+            );
         });
 
         // Check if project is posted with correct value

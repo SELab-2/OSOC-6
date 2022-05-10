@@ -16,23 +16,27 @@ export function useSwrWithEdition<T>(
     fetcher: ((args_0: string) => FetcherResponse<T>) | null,
     config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
 ) {
+    const apiTransformer = useEditionAPIUrlTransformer();
+    return useSWR(url ? apiTransformer(url) : null, fetcher, config);
+}
+
+/**
+ * Hook returning an API url transformer.
+ * The transformer makes sure an api url has the needed query parameter.
+ */
+export function useEditionAPIUrlTransformer(): (url: string) => string {
     const [edition] = useEdition();
-    return useSWR(
-        url
-            ? getQueryUrlFromParams(url, {
-                  edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
-              })
-            : null,
-        fetcher,
-        config
-    );
+    return (url) =>
+        getQueryUrlFromParams(url, {
+            edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
+        });
 }
 
 /**
  * Hook returning an application path transformer.
  * The transformer makes sure an application path has the needed query parameter.
  */
-export function useEditionPathTransformer(): (url: string) => string {
+export function useEditionApplicationPathTransformer(): (url: string) => string {
     const [edition] = useEdition();
     return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
 }
