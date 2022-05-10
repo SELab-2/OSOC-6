@@ -42,7 +42,7 @@ export const ResetComponent = (props: any) => {
     async function onConfirm() {
         if (firstEntry !== secondEntry) {
             setShowDanger(true);
-        } else {
+        } else if (user) {
             const response: AxiosResponse = await props.handler(user._links.self.href, firstEntry);
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);

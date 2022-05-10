@@ -26,12 +26,12 @@ export function ProfileOverview() {
     const [callname, setCallname] = useState<string>("");
     const [show, setShow] = useState<boolean>(false);
 
+    const user = userResponse || emptyUser;
+
     if (error) {
         console.log(error);
         return null;
     }
-
-    const user = userResponse || emptyUser;
 
     function handleEditCallName() {
         if (user) {
@@ -42,20 +42,24 @@ export function ProfileOverview() {
 
     async function handleSaveCallName() {
         setEditCallname(false);
-        const response: AxiosResponse = await profileSaveHandler(user._links.self.href, callname);
-        if (response.status == StatusCodes.OK) {
-            const user = mutate(apiPaths.ownUser, response.data);
-        } else {
-            setShow(true);
+        if (user) {
+            const response: AxiosResponse = await profileSaveHandler(user._links.self.href, callname);
+            if (response.status == StatusCodes.OK) {
+                await mutate(apiPaths.ownUser, response.data);
+            } else {
+                setShow(true);
+            }
         }
     }
 
     async function deleteCurrentUser() {
-        const response: AxiosResponse = await userDeleteHandler(user._links.self.href);
-        if (response.status == StatusCodes.NO_CONTENT) {
-            await router.push(transformer(applicationPaths.login));
-        } else {
-            setShow(true);
+        if (user) {
+            const response: AxiosResponse = await userDeleteHandler(user._links.self.href);
+            if (response.status == StatusCodes.NO_CONTENT) {
+                await router.push(transformer(applicationPaths.login));
+            } else {
+                setShow(true);
+            }
         }
     }
 
