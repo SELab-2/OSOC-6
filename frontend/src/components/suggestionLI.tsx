@@ -7,6 +7,9 @@ import useSWR from "swr";
 import { getUserOnUrl } from "../api/calls/userCalls";
 import { emptyUser } from "../api/entities/UserEntity";
 
+/**
+ * Properties used by [SuggestionLI].
+ */
 export interface suggestionLIProps {
     suggestion: ISuggestion;
 }

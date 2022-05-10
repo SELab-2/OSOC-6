@@ -6,8 +6,9 @@ import apiPaths from "../properties/apiPaths";
 import { CommonSWRConfig } from "./shared";
 
 /**
- * Get the skillType entity provided the name of a Skill. If the name does not match, [baseSkillType] will be used.
- * @param name the name on which to search for the [ISkillType].
+ * SWR based hook returning a [ISkillType] that with the matching name or the default if no matching is found.
+ * @param name the name of the skill the skillType is search of.
+ * @param config [CommonSWRConfig] config that allows to set shared SWR configurations.
  */
 export default function useSkillTypeByName(
     name: string,
@@ -25,13 +26,8 @@ export default function useSkillTypeByName(
         getAllSkillTypesFromPage
     );
 
-    if (matchNameError || defaultSkillTypeError) {
-        return {
-            error: matchNameError || defaultSkillTypeError,
-        };
-    }
-
     return {
         data: matchingName ? matchingName[0] : defaultSkillType ? defaultSkillType[0] : undefined,
+        error: matchNameError || defaultSkillTypeError,
     };
 }

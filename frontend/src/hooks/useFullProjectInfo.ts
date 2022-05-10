@@ -7,12 +7,20 @@ import { CommonSWRConfig } from "./shared";
 import { getAllUsersFromLinks } from "../api/calls/userCalls";
 import { IProjectSkill } from "../api/entities/ProjectSkillEntity";
 
+/**
+ * Interface describing the shape of a single full Project type.
+ */
 export interface IFullProjectInfo {
     info?: IProject;
     coaches: IUser[];
     skills: IProjectSkill[];
 }
 
+/**
+ * SWR based hook returning a [IFullProjectInfo].
+ * @param url the url hosting the [IProject] entity that should be completed.
+ * @param config [CommonSWRConfig] config that allows to set shared SWR configurations.
+ */
 export default function useFullProjectInfo(
     url: string,
     config?: CommonSWRConfig
@@ -28,16 +36,12 @@ export default function useFullProjectInfo(
         getAllProjectSkillsFromLinks,
         config
     );
-    if (projectError || coachesError || neededSkillsError) {
-        return {
-            error: projectError || coachesError || neededSkillsError,
-        };
-    }
     return {
         data: {
             info: project,
             coaches: coaches || [],
             skills: neededSkills || [],
         },
+        error: projectError || coachesError || neededSkillsError,
     };
 }

@@ -12,9 +12,14 @@ import { getUserOnUrl } from "../../api/calls/userCalls";
 import { IAssignmentSortKey } from "./assignmentItem";
 import { useEffect } from "react";
 
+/**
+ * Properties used by [AssignmentStudentRow].
+ */
 interface IAssignmentStudentProps {
     assignment: IAssignment;
     removeCallback: (assignmentUrl: string) => Promise<void>;
+    // This callback registers the data fetched by [AssignmentStudentRow].
+    // This allows the object in need of this data to for example sort the [AssignmentStudentRow] components.
     registerSortKey: (assignment: IAssignment, sortKey: IAssignmentSortKey) => void;
 }
 

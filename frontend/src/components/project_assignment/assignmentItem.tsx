@@ -1,11 +1,7 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { Badge } from "react-bootstrap";
 import useSWR, { useSWRConfig } from "swr";
-import {
-    deleteAssignment,
-    extractIdFromAssignmentUrl,
-    getAllAssignmentsFormLinks,
-} from "../../api/calls/AssignmentCalls";
+import { deleteAssignment, getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
 import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
@@ -14,7 +10,7 @@ import { emptySkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import AssignmentStudentRow from "./assignmentStudentRow";
 import { useState } from "react";
-import { number } from "prop-types";
+import SkillBadge from "../skillBadge";
 
 export interface IAssignmentItemProps {
     skill: IProjectSkill;
@@ -24,7 +20,8 @@ export interface IAssignmentItemProps {
  * Custom sort function for assignment items.
  * It sorts the assignments on the students first name,
  * if the students have the same name we sort on the username of the assigner.
- * @param assignments
+ * @param assignments list of [IAssignment] that should be sorted in place.
+ * @param keyHolder the keyHolder object that enables the sort on fields not contained within [IAssignment].
  */
 function sortAssignments(assignments: IAssignment[], keyHolder: IStudentAssignmentSortKeyHolder) {
     assignments.sort((assign1, assign2) => {
@@ -68,7 +65,6 @@ interface IStudentAssignmentSortKeyHolder {
 function AssignmentItem({ skill }: IAssignmentItemProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
-    const { data: resSkillType, error: skillTypeError } = useSkillTypeByName(skill.name);
     const { data: resAssignments, error: assignmentsError } = useSWR(
         skill._links.assignments.href,
         getAllAssignmentsFormLinks
@@ -90,11 +86,10 @@ function AssignmentItem({ skill }: IAssignmentItemProps) {
         setMutated(false);
     }
 
-    if (skillTypeError || assignmentsError) {
+    if (assignmentsError) {
         return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
-    const skillType: ISkillType = resSkillType || emptySkillType;
     const assignments: IAssignment[] = resAssignments || [];
     sortAssignments(assignments, sortKeyHolder);
 
@@ -106,9 +101,7 @@ function AssignmentItem({ skill }: IAssignmentItemProps) {
     if (assignments.length === 0) {
         return (
             <div data-testid="assignment-item">
-                <Badge bg="" style={{ background: skillType.colour }}>
-                    {skill.name}
-                </Badge>
+                <SkillBadge skill={skill.name} />
                 <p>{capitalize(t("no users for skill"))}</p>
             </div>
         );
@@ -116,9 +109,7 @@ function AssignmentItem({ skill }: IAssignmentItemProps) {
 
     return (
         <div data-testid="assignment-item">
-            <Badge bg="" style={{ backgroundColor: skillType.colour }}>
-                {skill.name}
-            </Badge>
+            <SkillBadge skill={skill.name} />
             {assignments.map((assignment) => (
                 <div key={assignment._links.self.href}>
                     <AssignmentStudentRow

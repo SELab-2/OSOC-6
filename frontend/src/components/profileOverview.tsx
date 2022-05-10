@@ -6,60 +6,56 @@ import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
 import styles from "../styles/profileOverview.module.css";
 import { profileSaveHandler, userDeleteHandler } from "../handlers/profileHandler";
-import { getEmtpyUser, getUserInfo, UserRole } from "../api/entities/UserEntity";
+import { emptyUser, UserRole } from "../api/entities/UserEntity";
 import { StatusCodes } from "http-status-codes";
-import useSWR, { useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
 import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionPathTransformer();
-    let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
+    let { user: userResponse, error } = useCurrentUser();
     const { mutate } = useSWRConfig();
     const [editCallname, setEditCallname] = useState<boolean>(false);
     const [callname, setCallname] = useState<string>("");
     const [show, setShow] = useState<boolean>(false);
-
-    data = data || getEmtpyUser();
 
     if (error) {
         console.log(error);
         return null;
     }
 
+    const user = userResponse || emptyUser;
+
     function handleEditCallName() {
-        if (data) {
+        if (user) {
             setEditCallname(true);
-            setCallname(data.callName);
+            setCallname(user.callName);
         }
     }
 
     async function handleSaveCallName() {
         setEditCallname(false);
-        if (data) {
-            const response: AxiosResponse = await profileSaveHandler(data._links.self.href, callname);
-            if (response.status == StatusCodes.OK) {
-                data = response.data;
-                const user = mutate(apiPaths.ownUser);
-            } else {
-                setShow(true);
-            }
+        const response: AxiosResponse = await profileSaveHandler(user._links.self.href, callname);
+        if (response.status == StatusCodes.OK) {
+            const user = mutate(apiPaths.ownUser, response.data);
+        } else {
+            setShow(true);
         }
     }
 
     async function deleteCurrentUser() {
-        if (data) {
-            const response: AxiosResponse = await userDeleteHandler(data._links.self.href);
-            if (response.status == StatusCodes.NO_CONTENT) {
-                await router.push(transformer(applicationPaths.login));
-            } else {
-                setShow(true);
-            }
+        const response: AxiosResponse = await userDeleteHandler(user._links.self.href);
+        if (response.status == StatusCodes.NO_CONTENT) {
+            await router.push(transformer(applicationPaths.login));
+        } else {
+            setShow(true);
         }
     }
 
@@ -75,7 +71,7 @@ export function ProfileOverview() {
             <Row data-testid="profile-overview">
                 <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                 {/*show callname if not editing*/}
-                {!editCallname && <Col>{data.callName}</Col>}
+                {!editCallname && <Col>{user.callName}</Col>}
                 {!editCallname && (
                     <Col>
                         <a data-testid="edit-callname" onClick={handleEditCallName}>
@@ -95,7 +91,7 @@ export function ProfileOverview() {
                         <input
                             data-testid="input-callname"
                             name="callname"
-                            defaultValue={data.callName}
+                            defaultValue={user.callName}
                             onChange={onChange}
                         />
                         <button data-testid="save-callname" onClick={handleSaveCallName}>
@@ -111,7 +107,7 @@ export function ProfileOverview() {
             </Row>
             <Row>
                 <Col className={styles.first_element}>{capitalize(t("email")) + ":"}</Col>
-                <Col>{data.email}</Col>
+                <Col>{user.email}</Col>
                 <Col>
                     <a href={applicationPaths.changeEmail}>
                         <Image
@@ -140,8 +136,8 @@ export function ProfileOverview() {
             <Row>
                 <Col className={styles.first_element}>{capitalize(t("user status"))}</Col>
                 <Col>
-                    {data.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
-                    {data.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
+                    {user.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
+                    {user.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
                 </Col>
             </Row>
             <Row>

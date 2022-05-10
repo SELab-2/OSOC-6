@@ -11,6 +11,11 @@ import { IUser } from "../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
+/**
+ * Function that makes sure teh SWR cache is disabled in the provided component.
+ * This is needed in tests when data changes.
+ * @param Component that should be made cache free.
+ */
 export function makeCacheFree(Component: any) {
     return (
         <SWRConfig value={{ provider: () => new Map() }}>
@@ -19,6 +24,11 @@ export function makeCacheFree(Component: any) {
     );
 }
 
+/**
+ * Makes sure the provided component can use the useEdition hook.
+ * @param Component the component that needs to use the useEdition hook.
+ * @param edition the [IEdition] that should be returned by useEdition.
+ */
 export function enableUseEdition(Component: any, edition: IEdition) {
     return (
         <GlobalContext.Provider value={{ edition, setEdition: () => {} }}>
@@ -27,10 +37,20 @@ export function enableUseEdition(Component: any, edition: IEdition) {
     );
 }
 
+/**
+ * Function that will provide you with the url useSWR with edition will call when
+ * the useEdition edition is set to edition.
+ * @param url the url provided to useSWRWithEdition
+ * @param edition the edition provided to enableUseEdition.
+ */
 export function getAxiosCallWithEdition(url: string, edition: IEdition) {
     return getQueryUrlFromParams(url, { edition: extractIdFromEditionUrl(edition._links.self.href) });
 }
 
+/**
+ * Function that makes sure the useCurrentUser hook is enabled with a certain user.
+ * @param user the user that should be returned by useCurrentEdition.
+ */
 export function enableCurrentUser(user: IUser): Promise<void> {
     return waitFor(() => {
         mockAxios.mockResponseFor({ url: apiPaths.ownUser }, getBaseOkResponse(user));

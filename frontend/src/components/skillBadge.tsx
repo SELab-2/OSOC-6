@@ -14,12 +14,7 @@ export interface SkillBadgeParams {
  * @param skill the name of the skill this Badge represents
  */
 export default function SkillBadge({ skill }: SkillBadgeParams) {
-    const { data: skillType, error } = useSkillTypeByName(skill);
-
-    if (error) {
-        console.log(error);
-        return null;
-    }
+    const { data: skillType } = useSkillTypeByName(skill);
 
     return (
         <Badge bg="" style={{ background: skillType?.colour || "grey" }}>

@@ -15,8 +15,9 @@ export interface IFullSuggestion {
 }
 
 /**
- * Get a [IFullSuggestion] from a URL.
- * @param url the url where the [ISuggestion] is hosted on.
+ * SWR based hook returning a [IFullSuggestion].
+ * @param url the url hosting the [ISuggestion] entity that should be completed.
+ * @param config [CommonSWRConfig] config that allows to set shared SWR configurations.
  */
 export function useFullSuggestions(
     url: string,
@@ -28,15 +29,11 @@ export function useFullSuggestions(
         getUserOnUrl,
         config
     );
-    if (suggestionError || coachError) {
-        return {
-            error: suggestionError || coachError,
-        };
-    }
     return {
         data: {
             suggestion,
             coach,
         },
+        error: suggestionError || coachError,
     };
 }

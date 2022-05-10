@@ -19,22 +19,23 @@ export function getAllAssignmentsFormLinks(url: string): Promise<IAssignment[]> 
 }
 
 /**
- * Adds one assignment with the current user as the assigner, validity is true and suggestion is false.
+ * Adds one assignment with the provided user as the assigner, validity is true and suggestion is false.
  * @param studentUrl The url of the student you want to assign
  * @param skillUrl The url of the skill you want to assign to the student
  * @param reason The reason for the assignment
+ * @param currentUser The user that executes the assignment. (Should be received with [useCurrentUser])
  */
 export async function addAssignment(
     studentUrl: string,
     skillUrl: string,
     reason: string,
-    ownUser: IUser
+    currentUser: IUser
 ): Promise<void> {
     const assignment: Assignment = new Assignment(
         false,
         true,
         reason,
-        ownUser._links.self.href,
+        currentUser._links.self.href,
         studentUrl,
         skillUrl
     );
@@ -49,10 +50,13 @@ export async function deleteAssignment(
     oldAssignments: IAssignment[]
 ): Promise<IAssignment[]> {
     await baseDelete(assignmentURL);
-
     return oldAssignments.filter((assignment) => assignment._links.self.href !== assignmentURL);
 }
 
+/**
+ * Extracts the id of a [IAssignment] from a URL hosting a single [IAssignment].
+ * @param url hosting the [IAssignment].
+ */
 export function extractIdFromAssignmentUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
 }

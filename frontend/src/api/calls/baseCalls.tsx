@@ -102,6 +102,12 @@ export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
     return params;
 }
 
+/**
+ * Function performing a POST on the provided url with the [AxiosConf].
+ * @param url to perform the POST on.
+ * @param data the data that should be contained in the POST.
+ * @param params that should be added to the POST query.
+ */
 export function basePost(
     url: string,
     data: any,
@@ -113,6 +119,12 @@ export function basePost(
     });
 }
 
+/**
+ * Function performing a PATCH on the provided url with the [AxiosConf].
+ * @param url to perform the PATCH on.
+ * @param data the data that should be contained in the PATCH.
+ * @param params that should be added to the PATCH query.
+ */
 export function basePatch(
     url: string,
     data: any,
@@ -124,6 +136,11 @@ export function basePatch(
     });
 }
 
+/**
+ * Function performing a DELETE on the provided url with the [AxiosConf].
+ * @param url to perform the DELETE on.
+ * @param params that should be added to the DELETE query.
+ */
 export function baseDelete(url: string, params?: { [k: string]: any }): Promise<AxiosResponse<any, any>> {
     return axios.delete(url, {
         params: params,
@@ -131,6 +148,10 @@ export function baseDelete(url: string, params?: { [k: string]: any }): Promise<
     });
 }
 
+/**
+ * Extracts the id of a [IBaseEntity] from a URL hosting a single [IBaseEntity].
+ * @param url hosting the [IBaseEntity].
+ */
 export function extractIdFromApiEntityUrl(url: string): string {
     const split = url.split("/");
     return split[split.length - 1];

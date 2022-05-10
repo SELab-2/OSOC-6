@@ -4,15 +4,22 @@ import useSWR from "swr";
 import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
 
+/**
+ * useSWR wrapper that fills in the global edition as an edition query.
+ * Note: this should only be used on search paths. These are paths containing `/search/`
+ * @param url the query url that should be edition enabled. [Null] if the fetch should not be performed.
+ * @param fetcher the fetcher function as defined in the SWR documentation.
+ * @param config the SWR config object as defined in the SWR documentation.
+ */
 export function useSwrWithEdition<T>(
-    key: string | null,
+    url: string | null,
     fetcher: ((args_0: string) => FetcherResponse<T>) | null,
     config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
 ) {
     const [edition] = useEdition();
     return useSWR(
-        key
-            ? getQueryUrlFromParams(key, {
+        url
+            ? getQueryUrlFromParams(url, {
                   edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
               })
             : null,
@@ -21,6 +28,10 @@ export function useSwrWithEdition<T>(
     );
 }
 
+/**
+ * Hook returning an application path transformer.
+ * The transformer makes sure an application path has the needed query parameter.
+ */
 export function useEditionPathTransformer(): (url: string) => string {
     const [edition] = useEdition();
     return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
