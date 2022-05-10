@@ -7,6 +7,7 @@ build/
 /src/main/resources/application.properties
 /src/test/resources/application.properties
 /src/main/resources/initial-user.properties
+/src/main/resources/tally-ids.properties
 
 ### STS ###
 .apt_generated
