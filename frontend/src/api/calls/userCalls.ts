@@ -1,12 +1,14 @@
 import {
     AxiosConf,
+    AxiosFormConfig,
+    basePatch,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
 } from "./baseCalls";
-import { IUser, userCollectionName } from "../entities/UserEntity";
-import axios from "axios";
+import { IUser, userCollectionName, UserRole } from "../entities/UserEntity";
+import axios, { AxiosResponse } from "axios";
 import apiPaths from "../../properties/apiPaths";
 
 /**
@@ -37,4 +39,37 @@ export async function logoutUser() {
 
 export function extractIdFromUserUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
+}
+
+export function saveEmailOfUser(url: string, email: string): Promise<AxiosResponse> {
+    return basePatch(url, { email });
+}
+
+export function savePasswordOfUser(url: string, password: string): Promise<AxiosResponse> {
+    return basePatch(url, { password });
+}
+
+export function saveCallNameOfUser(url: string, callName: string): Promise<AxiosResponse> {
+    return basePatch(url, { callName });
+}
+
+export function setRoleCoachOfUser(url: string): Promise<AxiosResponse> {
+    return basePatch(url, { enabled: true, userRole: UserRole.coach });
+}
+
+export function setRoleAdminOfUser(url: string): Promise<AxiosResponse> {
+    return basePatch(url, { enabled: true, userRole: UserRole.admin });
+}
+
+export function disabledUser(url: string): Promise<AxiosResponse> {
+    return basePatch(url, { enabled: false });
+}
+
+export async function postLoginFromForm(form: FormData): Promise<AxiosResponse> {
+    return axios.post(apiPaths.login, form, AxiosFormConfig);
+}
+
+export function userDelete(url: string) {
+    // For reviewer @ruvmello, why this config?
+    return axios.delete(url, AxiosFormConfig);
 }

@@ -1,6 +1,5 @@
 import apiPaths from "../properties/apiPaths";
 import { basePost, getQueryUrlFromParams } from "../api/calls/baseCalls";
-import { IUser } from "../api/entities/UserEntity";
 import { IEdition } from "../api/entities/EditionEntity";
 import { Invitation } from "../api/entities/InvitationEntity";
 import { useRouter } from "next/router";

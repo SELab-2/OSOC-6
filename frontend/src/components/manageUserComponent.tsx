@@ -1,12 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
-import { Row, Col, DropdownButton, Toast, Container, ToastContainer } from "react-bootstrap";
+import { Col, Container, DropdownButton, Row, Toast, ToastContainer } from "react-bootstrap";
 import Image from "next/image";
-import {
-    disabledUserHandler,
-    setRoleAdminHandler,
-    setRoleCoachHandler,
-    userDeleteHandler,
-} from "../handlers/usersHandler";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
@@ -16,6 +10,7 @@ import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import { UserRole } from "../api/entities/UserEntity";
 import timers from "../properties/timers";
+import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../api/calls/userCalls";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -27,18 +22,17 @@ export function UserComponent(props: any) {
         return null;
     }
 
-    function deleteUser() {
-        userDeleteHandler(user._links.self.href).then((response) => {
-            if (response.status == StatusCodes.NO_CONTENT) {
-                try {
-                    const user = mutate(apiPaths.users);
-                } catch (error) {
-                    setShow(true);
-                }
-            } else {
+    async function deleteUser() {
+        const response = await userDelete(user._links.self.href);
+        if (response.status == StatusCodes.NO_CONTENT) {
+            try {
+                const user = mutate(apiPaths.users);
+            } catch (error) {
                 setShow(true);
             }
-        });
+        } else {
+            setShow(true);
+        }
     }
 
     function setUserPatch(response: AxiosResponse) {
@@ -51,17 +45,17 @@ export function UserComponent(props: any) {
     }
 
     async function setUserRoleAdmin() {
-        const response: AxiosResponse = await setRoleAdminHandler(user._links.self.href);
+        const response: AxiosResponse = await setRoleAdminOfUser(user._links.self.href);
         setUserPatch(response);
     }
 
     async function setUserRoleCoach() {
-        const response: AxiosResponse = await setRoleCoachHandler(user._links.self.href);
+        const response: AxiosResponse = await setRoleCoachOfUser(user._links.self.href);
         setUserPatch(response);
     }
 
     async function disableUser() {
-        const response: AxiosResponse = await disabledUserHandler(user._links.self.href);
+        const response: AxiosResponse = await disabledUser(user._links.self.href);
         setUserPatch(response);
     }
 

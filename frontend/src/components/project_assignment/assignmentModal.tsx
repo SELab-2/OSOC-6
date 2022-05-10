@@ -1,4 +1,4 @@
-import { Badge, Modal, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
+import { Modal, ModalBody, ModalHeader, ModalTitle } from "react-bootstrap";
 import { capitalize } from "../../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";

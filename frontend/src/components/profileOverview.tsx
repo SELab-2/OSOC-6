@@ -5,7 +5,6 @@ import { useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
 import styles from "../styles/profileOverview.module.css";
-import { profileSaveHandler, userDeleteHandler } from "../handlers/profileHandler";
 import { emptyUser, UserRole } from "../api/entities/UserEntity";
 import { StatusCodes } from "http-status-codes";
 import { useSWRConfig } from "swr";
@@ -15,6 +14,7 @@ import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
 import { useEditionPathTransformer } from "../hooks/utilHooks";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import { saveCallNameOfUser, userDelete } from "../api/calls/userCalls";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
@@ -43,7 +43,7 @@ export function ProfileOverview() {
     async function handleSaveCallName() {
         setEditCallname(false);
         if (user) {
-            const response: AxiosResponse = await profileSaveHandler(user._links.self.href, callname);
+            const response: AxiosResponse = await saveCallNameOfUser(user._links.self.href, callname);
             if (response.status == StatusCodes.OK) {
                 await mutate(apiPaths.ownUser, response.data);
             } else {
@@ -54,7 +54,7 @@ export function ProfileOverview() {
 
     async function deleteCurrentUser() {
         if (user) {
-            const response: AxiosResponse = await userDeleteHandler(user._links.self.href);
+            const response: AxiosResponse = await userDelete(user._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {
                 await router.push(transformer(applicationPaths.login));
             } else {

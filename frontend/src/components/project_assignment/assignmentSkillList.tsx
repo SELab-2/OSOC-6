@@ -8,7 +8,6 @@ import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { getProjectOnUrl } from "../../api/calls/projectCalls";
-import apiPaths from "../../properties/apiPaths";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.

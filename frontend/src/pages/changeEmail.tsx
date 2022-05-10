@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
 import { ResetComponent } from "../components/resetComponent";
 import Navbar from "../components/navBar";
-import { saveEmailHandler } from "../handlers/confirmResetHandler";
+import { saveEmailOfUser } from "../api/calls/userCalls";
 
 const ChangeEmail: NextPage = () => {
     return (
         <div>
             <Navbar />
-            <ResetComponent name="email" handler={saveEmailHandler} />
+            <ResetComponent name="email" handler={saveEmailOfUser} />
         </div>
     );
 };

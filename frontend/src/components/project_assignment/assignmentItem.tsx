@@ -1,12 +1,9 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
-import { Badge } from "react-bootstrap";
 import useSWR, { useSWRConfig } from "swr";
 import { deleteAssignment, getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
 import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
-import useSkillTypeByName from "../../hooks/useSkillTypeByName";
-import { emptySkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import AssignmentStudentRow from "./assignmentStudentRow";
 import { useState } from "react";
