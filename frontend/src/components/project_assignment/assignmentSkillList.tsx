@@ -8,6 +8,7 @@ import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { getProjectOnUrl } from "../../api/calls/projectCalls";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
@@ -20,7 +21,10 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
 
     const { mutate } = useSWRConfig();
     let { data: project, error: projectError } = useSWR(props.projectURL, getProjectOnUrl);
-    let { data, error } = useSWR(project?._links.neededSkills.href, getAllProjectSkillsFromLinks);
+    let { data, error } = useSWR(
+        project ? project._links.neededSkills.href : null,
+        getAllProjectSkillsFromLinks
+    );
 
     if (error || projectError) {
         return <WarningToast message={capitalize(errort("error reload page"))} />;
@@ -34,7 +38,7 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
                 { skillUrl: skill._links.self.href, skillName: skill.name },
                 project.name
             );
-            await mutate(props.projectURL);
+            await mutate(skill._links.assignments.href);
         }
     }
 

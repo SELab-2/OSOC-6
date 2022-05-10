@@ -3,30 +3,44 @@ import applicationPaths from "../../properties/applicationPaths";
 import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { capitalize } from "../../utility/stringUtil";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import useTranslation from "next-translate/useTranslation";
 import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
 import { emptyUser, IUser } from "../../api/entities/UserEntity";
-import { deleteAssignment, extractIdFromAssignmentUrl } from "../../api/calls/AssignmentCalls";
+import { extractIdFromAssignmentUrl } from "../../api/calls/AssignmentCalls";
 import { getUserOnUrl } from "../../api/calls/userCalls";
+import { IAssignmentSortKey } from "./assignmentItem";
+import { useEffect } from "react";
 
 interface IAssignmentStudentProps {
     assignment: IAssignment;
     removeCallback: (assignmentUrl: string) => Promise<void>;
+    registerSortKey: (assignment: IAssignment, sortKey: IAssignmentSortKey) => void;
 }
 
-export default function AssignmentStudentRow({ assignment, removeCallback }: IAssignmentStudentProps) {
+export default function AssignmentStudentRow({
+    assignment,
+    removeCallback,
+    registerSortKey,
+}: IAssignmentStudentProps) {
     const { t } = useTranslation("common");
     const { data: resStudent, error: studentError } = useSWR(assignment._links.student.href, getStudentOnUrl);
     const { data: resAssigner, error: assignerError } = useSWR(assignment._links.assigner.href, getUserOnUrl);
+    console.log(resAssigner);
+
+    const student: IStudent = resStudent || emptyStudent;
+    const assigner: IUser = resAssigner || emptyUser;
+
+    const studentFirstName = student.firstName;
+    const assignerCallName = assigner.callName;
+    useEffect(() => {
+        registerSortKey(assignment, { studentFirstName, assignerCallName });
+    }, [assignment._links.self.href, studentFirstName, assignerCallName]);
 
     if (studentError || assignerError) {
         console.log(studentError || assignerError);
         return null;
     }
-
-    const student: IStudent = resStudent || emptyStudent;
-    const assigner: IUser = resAssigner || emptyUser;
 
     async function removeAssignment(event: any) {
         await removeCallback(event.target.value);
