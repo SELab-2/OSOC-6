@@ -112,7 +112,7 @@ Because the ids of the questions from the tally form differ for each owner of th
 In `./src/main/resources/tally-ids.properties.example` you can find all of the question names that need to be mapped to their ids. 
 Just above each mapping you can find the full question. In this file all occurences of `question_id_here` will need to be replaced with the corresponding question id.
 You can get these ids by going to the webhook integration on your tally form and sending a test request. Then you should be able to see the following json (with different values):
-```json
+```json lines
 {
   "eventId": "eb3e6aee-c64f-4e23-a39d-bbbd4018145a",
   "eventType": "FORM_RESPONSE",
@@ -142,6 +142,9 @@ You can get these ids by going to the webhook integration on your tally form and
         ]
       },
       ...
+    ]
+  }
+}
 ```
 
 The fields section is the important part here. This section contains all questions and their corresponding keys. 
@@ -160,6 +163,7 @@ From the json above, we see that this question has id `question_wAveXB`, so we r
 tally.ids.WORK_TYPE=question_wAveXB
 ```
 
+When you are done filling in all question ids, rename the file to `tally-ids.properties`.
 
 ## Developers
 
