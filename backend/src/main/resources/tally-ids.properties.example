@@ -1,0 +1,69 @@
+# This file contains a mapping of the enum string value of the QuestionKey class,
+# to the ids of the questions of the tally form.
+
+# Are you able to work 128 hours with a student employment agreement, or as a volunteer?.
+tally.ids.WORK_TYPE=question_id_here
+# Are there any responsibilities you might have which could hinder you during the day?
+tally.ids.DAY_RESPONSIBILITIES=question_id_here
+# Birth name.
+tally.ids.BIRTH_NAME=question_id_here
+# Last name.
+tally.ids.LAST_NAME=question_id_here
+# How would you like to be called?
+tally.ids.CALL_NAME=question_id_here
+# What is your gender?
+tally.ids.GENDER=question_id_here
+# Which pronouns do you prefer?
+tally.ids.WHICH_PRONOUNS=question_id_here
+# Enter your pronouns.
+tally.ids.OTHER_PRONOUNS=question_id_here
+# What language are you most fluent in?
+tally.ids.WHICH_LANGUAGE=question_id_here
+# What language are you most fluent in?
+tally.ids.OTHER_LANGUAGE=question_id_here
+# How would you rate your English?
+tally.ids.RATE_ENGLISH=question_id_here
+# Phone number.
+tally.ids.PHONE_NUMBER=question_id_here
+# Your email address.
+tally.ids.EMAIL_ADDRESS=question_id_here
+# Upload your CV size limit 10MB.
+tally.ids.UPLOAD_CV=question_id_here
+# Or link to your CV.
+tally.ids.LINK_CV=question_id_here
+# Upload your portfolio size limit 10MB.
+tally.ids.UPLOAD_PORTFOLIO=question_id_here
+# Or link to your portfolio / GitHub.
+tally.ids.LINK_PORTOFLIO=question_id_here
+# Upload your motivation size limit 10MB.
+tally.ids.UPLOAD_MOTIVATION=question_id_here
+# Or link to your motivation.
+tally.ids.LINK_MOTIVATION=question_id_here
+# Or write about your motivation.
+tally.ids.WRITE_MOTIVATION=question_id_here
+# Add a fun fact about yourself.
+tally.ids.FUN_FACT=question_id_here
+# What do/did you study?
+tally.ids.STUDY=question_id_here
+# What do/did you study?
+tally.ids.OTHER_STUDY=question_id_here
+# What kind of diploma are you currently going for?
+tally.ids.DIPLOMA=question_id_here
+# What kind of diploma are you currently going for?
+tally.ids.OTHER_DIPLOMA=question_id_here
+# How many years does your degree take?
+tally.ids.TOTAL_DEGREE_YEARS=question_id_here
+# Which year of your degree are you in?
+tally.ids.CURRENT_DEGREE_YEAR=question_id_here
+# What is the name of your college or university?
+tally.ids.COLLEGE_NAME=question_id_here
+# Which role are you applying for?
+tally.ids.ROLES=question_id_here
+# Which role are you applying for that is not in the list above?
+tally.ids.OTHER_ROLE=question_id_here
+# Which skill would you list as your best one?
+tally.ids.BEST_SKILL=question_id_here
+# Have you participated in osoc before?
+tally.ids.OSOC_EXPERIENCE=question_id_here
+# Would you like to be a student coach this year?
+tally.ids.STUDENT_COACH=question_id_here

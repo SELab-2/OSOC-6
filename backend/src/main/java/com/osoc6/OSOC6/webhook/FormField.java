@@ -1,6 +1,5 @@
 package com.osoc6.OSOC6.webhook;
 
-import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,18 +16,19 @@ public class FormField {
 
     /**
      * Constructor for creating a new form field with a given QuestionKey and value.
-     * @param newQuestionKey the key of the question
+     * @param newKey the key of the question
      * @param newValue the answer value to the question
      */
-    public FormField(final QuestionKey newQuestionKey, final Object newValue) {
-        key = newQuestionKey;
+    public FormField(final String newKey, final Object newValue) {
+        key = newKey;
         value = newValue;
     }
 
     /**
      * The unique identifying key of the question.
      */
-    private QuestionKey key;
+    private String key;
+
     /**
      * The actual question.
      */
@@ -46,14 +46,6 @@ public class FormField {
      * The options of the question.
      */
     private List<Option> options;
-
-    /**
-     * Add the answer to this form field to the given student.
-     * @param student the student to add the answer to
-     */
-    public void addToStudent(final Student student) {
-        key.addToStudent(this, student);
-    }
 
     /**
      * Given an id and a list of options, get the option from the list with the same id.
