@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import AssignmentSkillList from "../../src/components/project_assignment/assignmentSkillList";
+import AssignmentSkillList from "../../src/components/projectAssignment/assignmentSkillList";
 import { DropHandler } from "../../src/pages/assignStudents";
 import { IProject } from "../../src/api/entities/ProjectEntity";
 import { AxiosResponse } from "axios";

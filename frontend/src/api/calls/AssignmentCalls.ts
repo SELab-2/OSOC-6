@@ -23,7 +23,7 @@ export function getAllAssignmentsFormLinks(url: string): Promise<IAssignment[]> 
  * @param studentUrl The url of the student you want to assign
  * @param skillUrl The url of the skill you want to assign to the student
  * @param reason The reason for the assignment
- * @param currentUser The user that executes the assignment. (Should be received with [useCurrentUser])
+ * @param currentUser The user that executes the assignment. (Should be requested with [useCurrentUser])
  */
 export async function addAssignment(
     studentUrl: string,

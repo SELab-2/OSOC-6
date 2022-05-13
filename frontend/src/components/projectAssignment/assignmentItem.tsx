@@ -62,7 +62,7 @@ interface IStudentAssignmentSortKeyHolder {
 function AssignmentItem({ skill }: IAssignmentItemProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
-    const { data: resAssignments, error: assignmentsError } = useSWR(
+    const { data: receivedAssignments, error: assignmentsError } = useSWR(
         skill._links.assignments.href,
         getAllAssignmentsFormLinks
     );
@@ -87,7 +87,7 @@ function AssignmentItem({ skill }: IAssignmentItemProps) {
         return <WarningToast message={capitalize(t("error reload page"))} />;
     }
 
-    const assignments: IAssignment[] = resAssignments || [];
+    const assignments: IAssignment[] = receivedAssignments || [];
     sortAssignments(assignments, sortKeyHolder);
 
     async function removeAssignment(assignmentUrl: string) {

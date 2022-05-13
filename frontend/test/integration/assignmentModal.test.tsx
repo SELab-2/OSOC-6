@@ -10,7 +10,7 @@ import {
 } from "./TestEntityProvider";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { enableCurrentUser, makeCacheFree } from "./Provide";
-import AssignmentModal, { ModalInfo } from "../../src/components/project_assignment/assignmentModal";
+import AssignmentModal, { ModalInfo } from "../../src/components/projectAssignment/assignmentModal";
 import { Dispatch } from "react";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";

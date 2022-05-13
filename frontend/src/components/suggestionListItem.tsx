@@ -14,7 +14,7 @@ export interface suggestionLIProps {
     suggestion: ISuggestion;
 }
 
-export default function SuggestionLI({ suggestion }: suggestionLIProps) {
+export default function SuggestionListItem({ suggestion }: suggestionLIProps) {
     const { t } = useTranslation("common");
     let { data: coach, error: coachError } = useSWR(suggestion._links.coach.href, getUserOnUrl);
 

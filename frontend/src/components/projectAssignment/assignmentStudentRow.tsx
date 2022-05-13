@@ -29,11 +29,17 @@ export default function AssignmentStudentRow({
     registerSortKey,
 }: IAssignmentStudentProps) {
     const { t } = useTranslation("common");
-    const { data: resStudent, error: studentError } = useSWR(assignment._links.student.href, getStudentOnUrl);
-    const { data: resAssigner, error: assignerError } = useSWR(assignment._links.assigner.href, getUserOnUrl);
+    const { data: receivedStudent, error: studentError } = useSWR(
+        assignment._links.student.href,
+        getStudentOnUrl
+    );
+    const { data: receivedAssigner, error: assignerError } = useSWR(
+        assignment._links.assigner.href,
+        getUserOnUrl
+    );
 
-    const student: IStudent = resStudent || emptyStudent;
-    const assigner: IUser = resAssigner || emptyUser;
+    const student: IStudent = receivedStudent || emptyStudent;
+    const assigner: IUser = receivedAssigner || emptyUser;
 
     const studentFirstName = student.firstName;
     const assignerCallName = assigner.callName;

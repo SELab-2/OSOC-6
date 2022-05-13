@@ -13,7 +13,7 @@ import { IFullSuggestion } from "../hooks/useFullSuggestion";
 import useSWR from "swr";
 import { getStudentOnUrl } from "../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../api/calls/suggestionCalls";
-import SuggestionLI from "./suggestionLI";
+import SuggestionListItem from "./suggestionListItem";
 
 /**
  * Give an overview of all the studentinfo
@@ -72,7 +72,7 @@ export function StudentInfo() {
                 <h2>{capitalize(t("suggestions"))}</h2>
                 <ListGroup as="ul">
                     {suggestions.map((suggestion) => (
-                        <SuggestionLI suggestion={suggestion} key={suggestion._links.self.href} />
+                        <SuggestionListItem suggestion={suggestion} key={suggestion._links.self.href} />
                     ))}
                 </ListGroup>
                 <br />

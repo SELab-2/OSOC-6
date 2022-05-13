@@ -12,7 +12,7 @@ import { IUser } from "../../src/api/entities/UserEntity";
 jest.mock("next/router", () => require("next-router-mock"));
 
 /**
- * Function that makes sure teh SWR cache is disabled in the provided component.
+ * Function that makes sure the SWR cache is disabled in the provided component.
  * This is needed in tests when data changes.
  * @param Component that should be made cache free.
  */

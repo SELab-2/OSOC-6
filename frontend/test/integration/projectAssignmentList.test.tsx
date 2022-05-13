@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import ProjectAsignmentList from "../../src/components/project_assignment/projectAssignmentList";
+import ProjectAsignmentList from "../../src/components/projectAssignment/projectAssignmentList";
 import { getBaseOkResponse, getBasePage, getBaseProject } from "./TestEntityProvider";
 import apiPaths from "../../src/properties/apiPaths";
 import { AxiosResponse } from "axios";

@@ -3,9 +3,9 @@ import { Col, Row } from "react-bootstrap";
 import NavBar from "../components/navBar";
 import styles from "../styles/pageGrids.module.css";
 import { StudentList } from "../components/studentList";
-import ProjectAsignmentList from "../components/project_assignment/projectAssignmentList";
+import ProjectAsignmentList from "../components/projectAssignment/projectAssignmentList";
 import { useState } from "react";
-import AssignmentModal, { ModalSkillInfo } from "../components/project_assignment/assignmentModal";
+import AssignmentModal, { ModalSkillInfo } from "../components/projectAssignment/assignmentModal";
 
 export type DropHandler = (
     studentName: string,

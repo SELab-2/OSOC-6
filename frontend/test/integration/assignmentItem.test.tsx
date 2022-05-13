@@ -15,7 +15,7 @@ import {
 import apiPaths from "../../src/properties/apiPaths";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { ISkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import AssignmentItem from "../../src/components/project_assignment/assignmentItem";
+import AssignmentItem from "../../src/components/projectAssignment/assignmentItem";
 import { assignmentCollectionName, IAssignment } from "../../src/api/entities/AssignmentEntity";
 import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import { IStudent } from "../../src/api/entities/StudentEntity";
