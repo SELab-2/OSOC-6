@@ -11,7 +11,7 @@ import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../src/properties/applicationPaths";
 import { ScopedMutator } from "swr/dist/types";
-import { getBaseRedirectResponse } from './TestEntityProvider';
+import { getBaseRedirectResponse } from "./TestEntityProvider";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
