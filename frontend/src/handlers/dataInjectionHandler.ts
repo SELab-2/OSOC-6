@@ -135,8 +135,16 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     ).data;
     let containedTemplates: ICommunicationTemplate[];
     if (templates._embedded.communicationTemplates.length == 0) {
-        const template1 = new CommunicationTemplateEntity("yes", "I say yes {reason}");
-        const template2 = new CommunicationTemplateEntity("no", "I say no {reason}");
+        const template1 = new CommunicationTemplateEntity(
+            "yes",
+            "You have been selected",
+            "I say yes {reason}"
+        );
+        const template2 = new CommunicationTemplateEntity(
+            "no",
+            "You where not good enough",
+            "I say no {reason}"
+        );
         containedTemplates = await Promise.all(
             [template1, template2].map(
                 async (template) =>
@@ -152,6 +160,19 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
     const students: IStudentPage = (await axios.get(apiPaths.students, AxiosConf)).data;
     let containedStudents: IStudent[];
+    const commonSkills = [
+        "Front-end developer",
+        "Back-end developer",
+        "UX / UI designer",
+        "Graphic designer",
+        "Business Modeller",
+        "Storyteller",
+        "Marketer",
+        "Copywriter",
+        "Video editor",
+        "Photographer",
+        "Other",
+    ];
     if (students._embedded.students.length == 0) {
         const student1: Student = new Student(
             "kasper@mail.com",
@@ -178,13 +199,17 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "A fun fact about me",
             ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
             ["I love to Spring Spring in java Spring!"],
-            "",
+            faker.lorem.paragraph(5),
             "3th",
             editionUrl
         );
 
         let students = [student1];
         for (let i = 0; i < 10; i++) {
+            const bestSkill = commonSkills[(Math.random() * commonSkills.length) | 0];
+            const skill = commonSkills[(Math.random() * commonSkills.length) | 0];
+            const skillList = bestSkill == skill ? [bestSkill] : [bestSkill, skill];
+
             const firstname = faker.name.firstName();
             const lastname = faker.name.lastName();
             const newStudent: Student = new Student(
@@ -210,7 +235,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 "",
                 "they",
                 "",
-                ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+                skillList,
                 ["I love to Spring Spring in java Spring!"],
                 "",
                 "3th",
@@ -230,6 +255,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
     const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
     let containedSkillTypes: ISkillType[];
+
     if (skillTypes._embedded.skillTypes.length == 0) {
         const skillType1 = new SkillType("V10 boulderer", "#427162");
         const skillTypeOther = new SkillType(baseSkillType, "#929199");

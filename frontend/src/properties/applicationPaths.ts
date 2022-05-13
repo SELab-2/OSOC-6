@@ -1,3 +1,6 @@
+/**
+ * Paths used the web-application.
+ */
 const applicationPaths = {
     index: "",
     home: "home",
@@ -19,9 +22,12 @@ const applicationPaths = {
     changePassword: "changePassword",
     registration: "registration",
 
-    communicationTemplateBase: "communicationTemplate",
-    communicationTemplateCreation: "communicationTemplate/create",
-    communicationTemplateInfo: "communicationTemplate/[id]",
+    communicationTemplateBase: "communicationTemplates",
+    communicationTemplateCreation: "communicationTemplates/create",
+    communicationTemplateInfo: "communicationTemplates/[id]",
+
+    communicationBase: "communications",
+    communicationInfo: "communications/[id]",
 };
 
 export default applicationPaths;

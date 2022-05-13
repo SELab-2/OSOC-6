@@ -3,6 +3,7 @@ import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../properties/applicationPaths";
 import { useEditionPathTransformer } from "../hooks/utilHooks";
+import OptionsMenu from "./optionsMenu";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
@@ -37,14 +38,7 @@ export const NavBar = () => {
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-profile">
-                                <Nav.Link href={"/" + applicationPaths.profile}>
-                                    <Image
-                                        alt=""
-                                        src={"/resources/profile-icon.svg"}
-                                        width="25"
-                                        height="25"
-                                    />
-                                </Nav.Link>
+                                <OptionsMenu />
                             </Nav.Item>
                         </Nav>
                     </Navbar.Collapse>

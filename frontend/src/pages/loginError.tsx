@@ -15,38 +15,31 @@ const LoginError: NextPage = () => {
     const router = useRouter();
     const { mutate } = useSWRConfig();
     return (
-        <div>
-            <Head>
-                <title className="capitalize">{t("login page title")}</title>
-            </Head>
-            <main>
-                <NavBar />
-                <div className={styles.login_full_div}>
-                    <Row className={styles.login_row}>
-                        <Col>
-                            <h2 style={{ marginTop: "100px", marginLeft: "100px" }}>
-                                {capitalize(t("let's get started"))}
-                            </h2>
-                        </Col>
-                        <Col>
-                            <div className={styles.login_div}>
-                                <h3>{capitalize(t("signin"))}</h3>
-                                <Card>
-                                    <Card.Body className={styles.login_card}>
-                                        <Card.Text>
-                                            {capitalize(t("errorMessages:invalid_credentials"))}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                                <LoginForm
-                                    submitHandler={(form) => loginSubmitHandler(form, router, mutate)}
-                                />
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            </main>
-        </div>
+        <main>
+            <NavBar />
+            <div className={styles.login_full_div}>
+                <Row className={styles.login_row}>
+                    <Col>
+                        <h2 style={{ marginTop: "100px", marginLeft: "100px" }}>
+                            {capitalize(t("let's get started"))}
+                        </h2>
+                    </Col>
+                    <Col>
+                        <div className={styles.login_div}>
+                            <h3>{capitalize(t("signin"))}</h3>
+                            <Card>
+                                <Card.Body className={styles.login_card}>
+                                    <Card.Text>
+                                        {capitalize(t("errorMessages:invalid_credentials"))}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                            <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+        </main>
     );
 };
 

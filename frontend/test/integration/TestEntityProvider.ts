@@ -14,6 +14,10 @@ import {
     Status,
 } from "../../src/api/entities/StudentEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
+import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
+import { ICommunication } from "../../src/api/entities/CommunicationEntity";
+import apiPaths from "../../src/properties/apiPaths";
+import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -162,7 +166,7 @@ export function getBaseProjectSkill(id: string): IProjectSkill {
 }
 
 export function getBaseSkillType(id: string): ISkillType {
-    const baseSkillTypePath = "http://localhost/api/skill-type/" + id;
+    const baseSkillTypePath = "http://localhost/api/skillTypes/" + id;
     return {
         name: baseSkillType,
         colour: "#5377e1",
@@ -179,7 +183,7 @@ export function getBaseAssignment(id: string): IAssignment {
     return {
         isSuggestion: true,
         isValid: true,
-        reason: "This assignment was mendetory, we don't have any other",
+        reason: "This assignment was mandatory, we don't have any other",
         timestamp: "Now",
 
         _links: {
@@ -206,8 +210,63 @@ export function getBaseActiveEdition(id: string, name: string): IEdition {
     };
 }
 
+/**
+ * Get a base suggestion
+ * @param id
+ */
+export function getBaseSuggestion(id: string): ISuggestion {
+    const baseSuggestionPath = "http://localhost/api/suggestions/" + id;
+
+    return {
+        reason: "Some reason",
+        strategy: SuggestionStrategy.yes,
+        timestamp: "",
+        _links: {
+            coach: { href: baseSuggestionPath + "/coach" },
+            student: { href: baseSuggestionPath + "/student" },
+            suggestion: { href: baseSuggestionPath },
+            self: { href: baseSuggestionPath },
+        },
+    };
+}
+
+export function getBaseCommunicationTemplate(id: string): ICommunicationTemplate {
+    const baseCommunicationPath = "http://localhost/api/communication-templates/" + id;
+    return {
+        name: "Selected",
+        subject: "Selection notification",
+        template: "You have been selected to join the OSOC experience.",
+
+        _links: {
+            communicationTemplate: { href: baseCommunicationPath },
+            self: { href: baseCommunicationPath },
+        },
+    };
+}
+
+export function getBaseCommunication(id: string): ICommunication {
+    const baseCommunicationPath = "http://localhost/api/communications/" + id;
+    return {
+        timestamp: "2022-05-05T17:57:49.963+00:00",
+        medium: "email",
+        content: "Good job Kasper, you have been selected.",
+
+        _links: {
+            self: { href: baseCommunicationPath },
+            communication: { href: baseCommunicationPath },
+            student: { href: baseCommunicationPath + "/student" },
+            sender: { href: baseCommunicationPath + "/sender" },
+            template: { href: baseCommunicationPath + "/template" },
+        },
+    };
+}
+
+/**
+ * Get a basic student
+ * @param id
+ */
 export function getBaseStudent(id: string): IStudent {
-    const baseAssignmentsPath = "http://localhost/api/assignments/" + id;
+    const baseStudentPath = "http://localhost/api/students/" + id;
     return {
         email: "kasper@mail.com",
         firstName: "Kasper",
@@ -234,16 +293,16 @@ export function getBaseStudent(id: string): IStudent {
         status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],
-        skills: ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
+        skills: ["Gaming on a nice chair"],
         yesSuggestionCount: 0,
         maybeSuggestionCount: 0,
         noSuggestionCount: 0,
         _links: {
-            assignments: { href: baseAssignmentsPath },
-            suggestions: { href: baseAssignmentsPath },
-            edition: { href: baseAssignmentsPath },
-            student: { href: baseAssignmentsPath },
-            self: { href: baseAssignmentsPath },
+            assignments: { href: baseStudentPath + "/assignments" },
+            suggestions: { href: baseStudentPath + "/suggestions" },
+            edition: { href: baseStudentPath + "/edition" },
+            student: { href: baseStudentPath },
+            self: { href: baseStudentPath },
         },
     };
 }

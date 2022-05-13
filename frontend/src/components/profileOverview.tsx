@@ -33,7 +33,10 @@ export function ProfileOverview() {
     }
 
     function handleEditCallName() {
-        setEditCallname(true);
+        if (data) {
+            setEditCallname(true);
+            setCallname(data.callName);
+        }
     }
 
     async function handleSaveCallName() {
@@ -69,7 +72,7 @@ export function ProfileOverview() {
     return (
         <div className={styles.profile_full_div}>
             <div className={styles.profile_center}>
-                <h2 style={{ marginRight: "20px", marginBottom: "50px" }}>{t("user profile")}</h2>
+                <h2 style={{ marginRight: "20px", marginBottom: "50px" }}>{capitalize(t("user profile"))}</h2>
                 <Row data-testid="profile-overview" className={styles.profile_row}>
                     <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                     {/*show callname if not editing*/}

@@ -89,6 +89,48 @@ export interface IStudent extends IBaseEntity {
     };
 }
 
+/**
+ * An [IStudent] that is completely empty. Using this we don't need as much ?. in our code.
+ */
+export const emptyStudent: IStudent = {
+    callName: "",
+    noSuggestionCount: 0,
+    maybeSuggestionCount: 0,
+    additionalStudentInfo: "",
+    yesSuggestionCount: 0,
+    bestSkill: "",
+    currentDiploma: "",
+    curriculumVitaeURI: "",
+    daytimeResponsibilities: "",
+    email: "",
+    durationCurrentDegree: 0,
+    englishProficiency: EnglishProficiency.readNotWrite,
+    firstName: "",
+    funFact: "",
+    gender: Gender.not_specified,
+    institutionName: "",
+    lastName: "",
+    mostFluentLanguage: "",
+    motivationURI: "",
+    osocExperience: OsocExpericience.none,
+    phoneNumber: "",
+    portfolioURI: "",
+    pronouns: "",
+    skills: [],
+    status: Status.undecided,
+    studies: [],
+    workType: "",
+    writtenMotivation: "",
+    yearInCourse: "",
+    _links: {
+        student: { href: "" },
+        self: { href: "" },
+        assignments: { href: "" },
+        edition: { href: "" },
+        suggestions: { href: "" },
+    },
+};
+
 export const studentCollectionName: string = "students";
 export type IStudentPage = IPage<{ students: IStudent[] }>;
 export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;

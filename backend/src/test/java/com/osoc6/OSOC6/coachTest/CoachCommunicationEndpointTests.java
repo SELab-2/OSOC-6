@@ -59,8 +59,7 @@ public final class CoachCommunicationEndpointTests
     /**
      * Sample {@link CommunicationTemplate} that gets loaded before every test.
      */
-    private final CommunicationTemplate testTemplate = new CommunicationTemplate("informative",
-            "I have to tell you...");
+    private final CommunicationTemplate testTemplate = TestEntityProvider.getBaseCommunicationTemplate1(this);
 
     /**
      * Test student that is loaded before every test.

@@ -1,0 +1,31 @@
+# This file contains the application properties that are used when running the tests.
+
+spring.datasource.username = username
+spring.datasource.password = password
+spring.datasource.driverClassName = org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
+server.servlet.contextPath=/api/
+
+# Settings needed for mailing to work.
+spring.mail.host=localhost
+spring.mail.port=2525
+spring.mail.username=username
+spring.mail.password=secret
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# The localhost testing domain.
+domain=localhost:8080
+
+# The current active profile, use 'production' in production and 'development' in development.
+spring.profiles.active=development
+
+# Tally webhook secret token
+webhook.token=123
+
+#drop n create table again, good for testing, comment this in production
+spring.jpa.hibernate.ddl-auto=create
+
+# Debug query tools
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true

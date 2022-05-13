@@ -5,10 +5,13 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 
+/**
+ * Component allowing the creation of a new communication template.
+ */
 export default function CommunicationTemplateCreate() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "");
+    const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "", "");
 
     return (
         <div data-testid="communication-template-create">
@@ -28,6 +31,14 @@ export default function CommunicationTemplateCreate() {
                             required
                             id="communicationTemplateNameField"
                             data-testid="name"
+                        />
+
+                        <Field
+                            type="text"
+                            name="subject"
+                            required
+                            id="communicationTemplateSubjectField"
+                            data-testid="subject"
                         />
 
                         <textarea
