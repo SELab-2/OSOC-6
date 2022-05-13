@@ -36,6 +36,21 @@ const common = {
     "repeat new password": "repeat new password",
     "new email": "new email",
     "repeat new email": "repeat new email",
+    "project name": "project name",
+    "project info": "project info",
+    "project goal": "project goal",
+    "version control URL": "version control link",
+    "partner name": "partner name",
+    "partner website": "link to website",
+    "extra skill info": "skill info",
+    "extra skill info placeholder": "ex. needs to know React",
+    "skill type": "skill type",
+    roles: "needed roles",
+    "create project": "create project",
+    "add skill": "add skill",
+    "add coach": "add coach",
+    "add goal": "add goal",
+    "skill info": "no special info",
     registration: "registration",
     register: "register",
     logout: "logout",
@@ -101,6 +116,19 @@ const common = {
 
     "change status title": "change status",
     "change status": "would you like to change the status to",
+
+    "assignment modal title": "Why do you want this student here?",
+    "confirm assignment": "confirm assignment",
+    "assignment reason": "Reason for the assignment: ",
+    "no users for skill": "No students have been assigned for this skill.",
+    "suggested by": "Suggested by ",
+    "no skills for project": "No skills have been assigned to this project",
+    loading: "Loading...",
+    "no projects": "This edition has no projects :(.",
+
+    suggesting: "You are suggesting ",
+    "to project": "to project ",
+    "for role": "for the role ",
 };
 
 export default common;

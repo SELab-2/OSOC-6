@@ -1,14 +1,14 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Status;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.Communication;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.Suggestion;
+import com.osoc6.OSOC6.entities.student.EnglishProficiency;
+import com.osoc6.OSOC6.entities.student.Gender;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Status;
+import com.osoc6.OSOC6.entities.student.Student;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 

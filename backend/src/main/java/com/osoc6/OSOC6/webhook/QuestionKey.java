@@ -1,24 +1,23 @@
 package com.osoc6.OSOC6.webhook;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.EnglishProficiency;
+import com.osoc6.OSOC6.entities.student.Gender;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 
 import java.util.List;
 
 /**
  * This enum holds all questions used to fill in a new {@link Student}.
- * Every QuestionKey enum object has it's own addToStudent method
- * which extracts the answer from it's given form field and adds it to the given student.
+ * Every QuestionKey enum object has its own addToStudent method
+ * which extracts the answer from its given form field and adds it to the given student.
  */
 public enum QuestionKey {
     /**
      * Are you able to work 128 hours with a student employment agreement, or as a volunteer?.
      */
-    WORK_TYPE("question_mB7WR7") {
+    WORK_TYPE {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setWorkType((String) formField.getValue());
@@ -27,7 +26,7 @@ public enum QuestionKey {
     /**
      * Are there any responsibilities you might have which could hinder you during the day?
      */
-    DAY_RESPONSIBILITIES("question_wvY59A") {
+    DAY_RESPONSIBILITIES {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -38,7 +37,7 @@ public enum QuestionKey {
     /**
      * Birth name.
      */
-    BIRTH_NAME("question_mK1KjM") {
+    BIRTH_NAME {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setFirstName((String) formField.getValue());
@@ -47,7 +46,7 @@ public enum QuestionKey {
     /**
      * Last name.
      */
-    LAST_NAME("question_wLpL2G") {
+    LAST_NAME {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setLastName((String) formField.getValue());
@@ -56,7 +55,7 @@ public enum QuestionKey {
     /**
      * How would you like to be called?
      */
-    CALL_NAME("question_31VoaM") {
+    CALL_NAME {
         /**
          * If the student specified a callName, use the specified one.
          * Otherwise, the callName is set to a combination of their first and last name.
@@ -73,7 +72,7 @@ public enum QuestionKey {
     /**
      * What is your gender?
      */
-    GENDER("question_wMRpxY") {
+    GENDER {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             String optionValue = formField.getMatchingOptionValue();
@@ -83,7 +82,7 @@ public enum QuestionKey {
     /**
      * Which pronouns do you prefer?
      */
-    WHICH_PRONOUNS("question_wgG6oN") {
+    WHICH_PRONOUNS {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -94,7 +93,7 @@ public enum QuestionKey {
     /**
      * Enter your pronouns.
      */
-    OTHER_PRONOUNS("question_3yY5a0") {
+    OTHER_PRONOUNS {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -105,7 +104,7 @@ public enum QuestionKey {
     /**
      * What language are you most fluent in?
      */
-    WHICH_LANGUAGE("question_3X0PbO") {
+    WHICH_LANGUAGE {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setMostFluentLanguage((String) formField.getValue());
@@ -114,7 +113,7 @@ public enum QuestionKey {
     /**
      * What language are you most fluent in?
      */
-    OTHER_LANGUAGE("question_w8x4lA") {
+    OTHER_LANGUAGE {
         /**
          * Only set the most fluent language here if the student specified a 'other' language.
          */
@@ -128,7 +127,7 @@ public enum QuestionKey {
     /**
      * How would you rate your English?
      */
-    RATE_ENGLISH("question_n0ORWZ") {
+    RATE_ENGLISH {
         /**
          * We determine the student's English proficiency
          * by counting the amount of stars in the multiple choice answer.
@@ -150,7 +149,7 @@ public enum QuestionKey {
     /**
      * Phone number.
      */
-    PHONE_NUMBER("question_wzY561") {
+    PHONE_NUMBER {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setPhoneNumber((String) formField.getValue());
@@ -159,7 +158,7 @@ public enum QuestionKey {
     /**
      * Your email address.
      */
-    EMAIL_ADDRESS("question_w5xPAM") {
+    EMAIL_ADDRESS {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setEmail((String) formField.getValue());
@@ -168,7 +167,7 @@ public enum QuestionKey {
     /**
      * Upload your CV – size limit 10MB.
      */
-    UPLOAD_CV("question_wddeyz") {
+    UPLOAD_CV {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -179,7 +178,7 @@ public enum QuestionKey {
     /**
      * Or link to your CV.
      */
-    LINK_CV("question_mYalAq") {
+    LINK_CV {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -190,7 +189,7 @@ public enum QuestionKey {
     /**
      * Upload your portfolio – size limit 10MB.
      */
-    UPLOAD_PORTFOLIO("question_mDz6Gb") {
+    UPLOAD_PORTFOLIO {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -201,7 +200,7 @@ public enum QuestionKey {
     /**
      * Or link to your portfolio / GitHub.
      */
-    LINK_PORTOFLIO("question_3lrkE5") {
+    LINK_PORTOFLIO {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -212,7 +211,7 @@ public enum QuestionKey {
     /**
      * Upload your motivation – size limit 10MB.
      */
-    UPLOAD_MOTIVATION("question_mRPy9l") {
+    UPLOAD_MOTIVATION {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -223,7 +222,7 @@ public enum QuestionKey {
     /**
      * Or link to your motivation.
      */
-    LINK_MOTIVATION("question_woGLj1") {
+    LINK_MOTIVATION {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -234,7 +233,7 @@ public enum QuestionKey {
     /**
      * Or write about your motivation.
      */
-    WRITE_MOTIVATION("question_nGlAPj") {
+    WRITE_MOTIVATION {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -245,7 +244,7 @@ public enum QuestionKey {
     /**
      * Add a fun fact about yourself.
      */
-    FUN_FACT("question_mOGMNK") {
+    FUN_FACT {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setFunFact((String) formField.getValue());
@@ -254,7 +253,7 @@ public enum QuestionKey {
     /**
      * What do/did you study?
      */
-    STUDY("question_mVJO6a") {
+    STUDY {
         /**
          * Add all chosen studies to the list of the student's studies, except for the 'Other' study.
          */
@@ -267,7 +266,7 @@ public enum QuestionKey {
     /**
      * What do/did you study?
      */
-    OTHER_STUDY("question_nPOJqQ") {
+    OTHER_STUDY {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -278,7 +277,7 @@ public enum QuestionKey {
     /**
      * What kind of diploma are you currently going for?
      */
-    DIPLOMA("question_3EW7Oo") {
+    DIPLOMA {
         /**
          * In the form, this question is a checkbox question, but it only allows one answer...
          * So this means that the value of the formField is a list.
@@ -295,7 +294,7 @@ public enum QuestionKey {
     /**
      * What kind of diploma are you currently going for?
      */
-    OTHER_DIPLOMA("question_nrPMZM") {
+    OTHER_DIPLOMA {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -306,7 +305,7 @@ public enum QuestionKey {
     /**
      * How many years does your degree take?
      */
-    TOTAL_DEGREE_YEARS("question_w4rVbb") {
+    TOTAL_DEGREE_YEARS {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -317,7 +316,7 @@ public enum QuestionKey {
     /**
      * Which year of your degree are you in?
      */
-    CURRENT_DEGREE_YEAR("question_3jPAVR") {
+    CURRENT_DEGREE_YEAR {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -328,7 +327,7 @@ public enum QuestionKey {
     /**
      * What is the name of your college or university?
      */
-    COLLEGE_NAME("question_w2PG6p") {
+    COLLEGE_NAME {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -339,7 +338,7 @@ public enum QuestionKey {
     /**
      * Which role are you applying for?
      */
-    ROLES("question_3xY5WG") {
+    ROLES {
         /**
          * Add all chosen roles/skills to the list of the student's skills, except for the 'Other' role/skill.
          */
@@ -352,7 +351,7 @@ public enum QuestionKey {
     /**
      * Which role are you applying for that is not in the list above?
      */
-    OTHER_ROLE("question_mZarB0") {
+    OTHER_ROLE {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -363,7 +362,7 @@ public enum QuestionKey {
     /**
      * Which skill would you list as your best one?
      */
-    BEST_SKILL("question_3No1ZG") {
+    BEST_SKILL {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             student.setBestSkill((String) formField.getValue());
@@ -372,7 +371,7 @@ public enum QuestionKey {
     /**
      * Have you participated in osoc before?
      */
-    OSOC_EXPERIENCE("question_3qV1l2") {
+    OSOC_EXPERIENCE {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             String participationValue = formField.getMatchingOptionValue();
@@ -383,7 +382,7 @@ public enum QuestionKey {
     /**
      * Would you like to be a student coach this year?
      */
-    STUDENT_COACH("question_wQVlQg") {
+    STUDENT_COACH {
         @Override
         public void addToStudent(final FormField formField, final Student student) {
             if (formField.getValue() != null) {
@@ -393,39 +392,10 @@ public enum QuestionKey {
             }
         }
     };
-
-
-    /**
-     * The key of the question.
-     * When adding new questions, make sure the key matches the key of the corresponding tally question.
-     */
-    private final String key;
-
     /**
      * Add the answer from the given form field to the given student.
      * @param formField the field to get the answer from
      * @param student the student to add the answer to
      */
     public abstract void addToStudent(FormField formField, Student student);
-
-    QuestionKey(final String newKey) {
-        key = newKey;
-    }
-
-    /**
-     * Parse a string into a QuestionKey enum object.
-     * @param text the string to parse
-     * @return the corresponding QuestionKey enum, or null if the key is not found
-     */
-    @JsonCreator
-    public static QuestionKey fromText(final String text) {
-        for (QuestionKey questionKey : QuestionKey.values()) {
-            if (questionKey.key.equals(text)) {
-                return questionKey;
-            }
-        }
-        // If the key does not exist, return null. This way, all unhandled questions can be filtered out
-        // by simply removing all questions with a null QuestionKey.
-        return null;
-    }
 }

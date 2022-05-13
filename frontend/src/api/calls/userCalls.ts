@@ -1,4 +1,10 @@
-import { AxiosConf, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    AxiosConf,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromLinksUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
 import { IUser, userCollectionName } from "../entities/UserEntity";
 import axios from "axios";
 import apiPaths from "../../properties/apiPaths";
@@ -40,4 +46,8 @@ export function useCurrentUser(shouldExec: boolean): { user?: IUser; error?: Err
         return { error: new Error("Not logged in") };
     }
     return { user: data };
+}
+
+export function extractIdFromUserUrl(url: string): string {
+    return extractIdFromApiEntityUrl(url);
 }

@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.anonymousTest;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.osoc6.OSOC6.TestFunctionProvider;
-import com.osoc6.OSOC6.database.models.ResetPasswordToken;
+import com.osoc6.OSOC6.entities.ResetPasswordToken;
 import com.osoc6.OSOC6.repository.PublicRepository;
 import com.osoc6.OSOC6.repository.ResetPasswordTokenRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;

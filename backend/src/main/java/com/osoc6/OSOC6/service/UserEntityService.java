@@ -1,8 +1,8 @@
 package com.osoc6.OSOC6.service;
 
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.ResetPasswordToken;
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.ResetPasswordToken;
+import com.osoc6.OSOC6.entities.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
 import com.osoc6.OSOC6.exception.InvalidResetPasswordTokenException;
 import com.osoc6.OSOC6.mail.EmailService;

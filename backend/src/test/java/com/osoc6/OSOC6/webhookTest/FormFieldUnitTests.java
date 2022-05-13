@@ -3,7 +3,6 @@ package com.osoc6.OSOC6.webhookTest;
 import com.osoc6.OSOC6.exception.WebhookException;
 import com.osoc6.OSOC6.webhook.FormField;
 import com.osoc6.OSOC6.webhook.Option;
-import com.osoc6.OSOC6.webhook.QuestionKey;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -117,7 +116,6 @@ public class FormFieldUnitTests {
     public void get_url_from_value_with_wrong_typed_value_throws_exception() {
         String url = "https://test.com";
         FormField formField = new FormField();
-        formField.setKey(QuestionKey.UPLOAD_PORTFOLIO);
         formField.setValue(url);
 
         assertThrows(WebhookException.class, formField::getUrlFromValue);

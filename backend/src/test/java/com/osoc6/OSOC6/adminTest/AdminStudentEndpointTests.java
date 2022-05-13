@@ -2,9 +2,9 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Status;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Status;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;

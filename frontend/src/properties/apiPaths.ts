@@ -17,6 +17,7 @@ const apiPaths = {
 
     users: "users",
     ownUser: "users/search/own-user",
+    userByEdition: "users/search/by-edition",
 
     communicationTemplates: "communicationTemplates",
 

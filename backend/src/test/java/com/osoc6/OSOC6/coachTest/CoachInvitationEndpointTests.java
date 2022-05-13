@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.entities.Invitation;
 import com.osoc6.OSOC6.dto.InvitationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;

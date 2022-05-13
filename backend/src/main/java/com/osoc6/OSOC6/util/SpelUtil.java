@@ -1,8 +1,8 @@
 package com.osoc6.OSOC6.util;
 
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,22 +1,22 @@
 package com.osoc6.OSOC6;
 
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
-import com.osoc6.OSOC6.database.models.SkillType;
-import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
-import com.osoc6.OSOC6.database.models.UserSkill;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Status;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.ProjectSkill;
+import com.osoc6.OSOC6.entities.SkillType;
+import com.osoc6.OSOC6.entities.Suggestion;
+import com.osoc6.OSOC6.entities.SuggestionStrategy;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
+import com.osoc6.OSOC6.entities.UserSkill;
+import com.osoc6.OSOC6.entities.student.EnglishProficiency;
+import com.osoc6.OSOC6.entities.student.Gender;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Status;
+import com.osoc6.OSOC6.entities.student.Student;
 
 import java.util.List;
 

@@ -3,8 +3,36 @@ import { Col, Row } from "react-bootstrap";
 import NavBar from "../components/navBar";
 import styles from "../styles/pageGrids.module.css";
 import { StudentList } from "../components/studentList";
+import ProjectAsignmentList from "../components/project_assignment/projectAssignmentList";
+import { useState } from "react";
+import AssignmentModal, { ModalSkillInfo } from "../components/project_assignment/assignmentModal";
+
+export type DropHandler = (
+    studentName: string,
+    studentUrl: string,
+    skillInfo: ModalSkillInfo,
+    projectName: string
+) => void;
 
 const AssignStudentsPage: NextPage = () => {
+    const [showModal, setShowModal] = useState(false);
+    const [modalInfo, setModalInfo] = useState<{
+        studentName: string;
+        studentUrl: string;
+        skillInfo: ModalSkillInfo;
+        projectName: string;
+    }>();
+
+    function handleShow(
+        studentName: string,
+        studentUrl: string,
+        skillInfo: ModalSkillInfo,
+        projectName: string
+    ) {
+        setModalInfo({ studentName, studentUrl, skillInfo, projectName });
+        setShowModal(true);
+    }
+
     return (
         <>
             <NavBar />
@@ -21,18 +49,12 @@ const AssignStudentsPage: NextPage = () => {
                 </Row>
                 <Row xs={1} className={"h-75 w-100 gx-0 gx-sm-4 "}>
                     <Col sm={3} xxl={2} className="h-100">
-                        <StudentList />
+                        <StudentList isDraggable={true} />
                     </Col>
                     <Col sm={9} xxl={10} className={"h-100"}>
                         <Row className={"h-100"}>
-                            <Col>
-                                {/* Replace this div with the correct component */}
-                                <div
-                                    className={"d-flex justify-content-center align-items-center w-100 h-100"}
-                                    data-testid="project-assignment-list"
-                                >
-                                    <p>Assign project list placeholder</p>
-                                </div>
+                            <Col className="h-100 overflow-auto pb-2">
+                                <ProjectAsignmentList dropHandler={handleShow} />
                             </Col>
                             <Col className={"visually-hidden"}>
                                 {/* Replace this div with the correct component */}
@@ -47,6 +69,20 @@ const AssignStudentsPage: NextPage = () => {
                     </Col>
                 </Row>
             </div>
+            {modalInfo !== undefined ? (
+                <AssignmentModal
+                    studentName={modalInfo.studentName}
+                    studentUrl={modalInfo.studentUrl}
+                    projectName={modalInfo.projectName}
+                    skillName={modalInfo.skillInfo.skillName}
+                    skillUrl={modalInfo.skillInfo.skillUrl}
+                    skillColor={modalInfo.skillInfo.skillColor}
+                    showModal={showModal}
+                    setter={setShowModal}
+                />
+            ) : (
+                <></>
+            )}
         </>
     );
 };

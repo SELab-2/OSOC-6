@@ -1,15 +1,14 @@
 package com.osoc6.OSOC6.service;
 
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.exception.WebhookException;
 import com.osoc6.OSOC6.repository.PublicRepository;
-import com.osoc6.OSOC6.webhook.FormField;
+import com.osoc6.OSOC6.webhook.FormProcessor;
 import com.osoc6.OSOC6.webhook.WebhookForm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,6 +23,11 @@ public class WebhookService {
     private final PublicRepository publicRepository;
 
     /**
+     * The class used to process received forms.
+     */
+    private final FormProcessor formProcessor;
+
+    /**
      * Process the webhook form by creating a new student and adding the form answers to them.
      * Afterwards, save the student to the database.
      * @param webhookForm the received form to process
@@ -33,12 +37,7 @@ public class WebhookService {
         Optional<Edition> optionalEdition = publicRepository.internalFindByName(editionName);
         if (optionalEdition.isPresent()) {
             Student student = new Student();
-            List<FormField> fields = webhookForm.getData().getFields().stream()
-                    .filter(formField -> formField.getKey() != null)
-                    .toList();
-            for (FormField formField : fields) {
-                formField.addToStudent(student);
-            }
+            formProcessor.processFormToStudent(webhookForm, student);
             student.setEdition(optionalEdition.get());
             publicRepository.internalSave(student);
         } else {
