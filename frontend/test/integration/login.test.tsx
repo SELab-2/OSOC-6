@@ -11,6 +11,7 @@ import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../src/properties/applicationPaths";
 import { ScopedMutator } from "swr/dist/types";
+import { getBaseRedirectResponse } from './TestEntityProvider';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -61,17 +62,9 @@ describe("Login page", () => {
 
     it("SubmitHandler for loginForm sends post request", async () => {
         const values: LoginValues = { username: "test@mail.com", password: "pass" };
-        const response: AxiosResponse = {
-            data: {},
-            status: StatusCodes.TEMPORARY_REDIRECT,
-            statusText: ReasonPhrases.TEMPORARY_REDIRECT,
-            headers: {},
-            config: {},
-            request: { responseURL: "/home" },
-        };
 
         loginSubmitHandler(values, mockRouter, (() => {}) as any as ScopedMutator);
-        mockAxios.mockResponseFor({ url: apiPaths.login }, response);
+        mockAxios.mockResponseFor({ url: apiPaths.login }, getBaseRedirectResponse("/home"));
 
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.login, expect.anything(), expect.anything());
