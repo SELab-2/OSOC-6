@@ -70,6 +70,5 @@ export async function postLoginFromForm(form: FormData): Promise<AxiosResponse> 
 }
 
 export function userDelete(url: string) {
-    // For reviewer @ruvmello, why this config?
-    return axios.delete(url, AxiosFormConfig);
+    return axios.delete(url, AxiosConf);
 }
