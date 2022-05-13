@@ -11,7 +11,7 @@
     "docs": "typedoc src/pages/_app.tsx"
   },
   "dependencies": {
-    "@testing-library/user-event": "^14.1.1",
+    "@testing-library/user-event": "^14.2.0",
     "@types/react-dom": "^18.0.3",
     "axios": "^0.27.2",
     "bootstrap": "^5.1.3",
