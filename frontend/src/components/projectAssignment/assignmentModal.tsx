@@ -44,7 +44,7 @@ function AssignmentModal(props: ModalProps) {
                     {capitalize(t("suggesting"))}
                     {props.studentName} {capitalize(t("to project"))}
                     <i>{props.projectName}</i> {capitalize(t("for role"))}
-                    <SkillBadge skill={props.skillName} />.
+                    <SkillBadge skill={props.skillName} />
                 </p>
                 <div>{capitalize(t("assignment reason"))}</div>
                 <Formik
