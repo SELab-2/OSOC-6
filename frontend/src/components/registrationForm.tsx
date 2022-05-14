@@ -11,7 +11,7 @@ import { basePost, getParamsFromQueryUrl } from "../api/calls/baseCalls";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import { capitalize } from "../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
-import styles from "../styles/loginForm.module.css";
+import styles from "../styles/registration.module.css";
 import applicationPaths from "../properties/applicationPaths";
 import { useSWRConfig } from "swr";
 
@@ -20,7 +20,7 @@ const RegistrationForm: NextPage = () => {
     const router = useRouter();
     const { mutate } = useSWRConfig();
     const [showDanger, setShowDanger] = useState<boolean>(false);
-    const [error, setError] = useState<string>(t("no_error"));
+    const [error, setError] = useState<string>(t("no error"));
 
     async function registrationHandler(values: {
         callname: string;
@@ -58,11 +58,7 @@ const RegistrationForm: NextPage = () => {
 
     return (
         <div>
-            <Head>
-                <title className="capitalize">{capitalize(t("registration"))}</title>
-            </Head>
-            <h1 className="display-6 mb-3 capitalize">{capitalize(t("registration"))}</h1>
-            <div className={styles.login_box}>
+            <div className={styles.registration_box}>
                 <Formik
                     initialValues={{
                         callname: "",
@@ -73,32 +69,36 @@ const RegistrationForm: NextPage = () => {
                     onSubmit={registrationHandler}
                 >
                     <Form>
+                        <h6>{capitalize(t("callname"))}</h6>
                         <Field
-                            className="form-control mb-2"
+                            className={"form-control " + styles.registration_field}
                             type="text"
                             data-testid="callname"
                             name="callname"
                             placeholder={capitalize(t("enter callname"))}
                             required
                         />
+                        <h6>{capitalize(t("email"))}</h6>
                         <Field
-                            className="form-control mb-2"
+                            className={"form-control " + styles.registration_field}
                             type="email"
                             data-testid="email"
                             name="email"
                             placeholder={capitalize(t("enter email"))}
                             required
                         />
+                        <h6>{capitalize(t("enter password"))}</h6>
                         <Field
-                            className="form-control mb-2"
+                            className={"form-control " + styles.registration_field}
                             type="password"
                             data-testid="password"
                             name="password"
                             placeholder={capitalize(t("enter password"))}
                             required
                         />
+                        <h6>{capitalize(t("repeat passwordd"))}</h6>
                         <Field
-                            className="form-control mb-2"
+                            className={"form-control " + styles.registration_field}
                             type="password"
                             data-testid="repeat"
                             name="repeat"

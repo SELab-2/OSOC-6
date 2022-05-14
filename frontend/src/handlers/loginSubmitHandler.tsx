@@ -1,7 +1,5 @@
 import apiPaths from "../properties/apiPaths";
 import { NextRouter } from "next/router";
-import axios from "axios";
-import { AxiosFormConfig } from "../api/calls/baseCalls";
 import { ScopedMutator } from "swr/dist/types";
 import { postLoginFromForm } from "../api/calls/userCalls";
 

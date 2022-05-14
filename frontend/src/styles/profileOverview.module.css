@@ -1,4 +1,52 @@
 .first_element {
     flex: 0 0 auto;
-    width: 11%;
+    width: 20%;
+}
+
+.profile_full_div {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    z-index: 10;
+    color: white;
+    background: #1b1a32;
+    margin: auto;
+}
+
+.profile_center {
+    width: 50%;
+    padding: 10px;
+    top: 50%;
+    margin: 9rem auto auto;
+}
+
+.profile_row {
+    margin: 20px;
+}
+
+.profile_last_col {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.callname_field {
+    border-color: white;
+    background: #1a1a32;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.callname_field:focus {
+    background: #1a1a32;
+    color: white;
+}
+
+.callname_confirm {
+    background: #1a1a32;
+    border-color: white;
+}
+
+.clickable {
+    cursor: pointer;
 }
