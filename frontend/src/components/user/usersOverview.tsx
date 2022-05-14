@@ -1,12 +1,12 @@
 import useTranslation from "next-translate/useTranslation";
 import { Col, Container, Row } from "react-bootstrap";
-import apiPaths from "../properties/apiPaths";
+import apiPaths from "../../properties/apiPaths";
 import UserComponent from "./manageUserComponent";
-import { IUser } from "../api/entities/UserEntity";
+import { IUser } from "../../api/entities/UserEntity";
 import useSWR from "swr";
-import styles from "../styles/usersOverview.module.css";
-import { capitalize } from "../utility/stringUtil";
-import { getAllUsersFromPage } from "../api/calls/userCalls";
+import styles from "../../styles/usersOverview.module.css";
+import { capitalize } from "../../utility/stringUtil";
+import { getAllUsersFromPage } from "../../api/calls/userCalls";
 
 export function UsersOverview() {
     const { t } = useTranslation("common");

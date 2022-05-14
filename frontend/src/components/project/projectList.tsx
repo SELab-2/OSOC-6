@@ -1,10 +1,10 @@
 import { ListGroup } from "react-bootstrap";
-import styles from "../styles/projectList.module.css";
+import styles from "../../styles/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
-import apiPaths from "../properties/apiPaths";
-import { getAllProjectsFormPage } from "../api/calls/projectCalls";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
+import apiPaths from "../../properties/apiPaths";
+import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 
 export function ProjectList() {

@@ -1,17 +1,17 @@
 import { ListGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
-import styles from "../styles/studentList.module.css";
+import styles from "../../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
-import apiPaths from "../properties/apiPaths";
+import apiPaths from "../../properties/apiPaths";
 import {
     constructStudentQueryUrl,
     extractIdFromStudentUrl,
     getAllStudentsFromPage,
     IStudentQueryParams,
-} from "../api/calls/studentCalls";
+} from "../../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;

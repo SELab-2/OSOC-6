@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import mailTo from "../../utility/mailTo";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
-import CommunicationTemplateInfo from "../../components/CommunicationTemplateInfo";
+import CommunicationTemplateInfo from "../../components/communication/CommunicationTemplateInfo";
 
 /**
  * Component that renders the information of a communication template.

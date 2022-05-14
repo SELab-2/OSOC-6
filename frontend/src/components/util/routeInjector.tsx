@@ -1,11 +1,11 @@
-import useEdition from "../hooks/useGlobalEdition";
+import useEdition from "../../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { getQueryUrlFromParams } from "../api/calls/baseCalls";
-import apiPaths from "../properties/apiPaths";
-import { getAllEditionsFromPage, getEditionByName } from "../api/calls/editionCalls";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import apiPaths from "../../properties/apiPaths";
+import { getAllEditionsFromPage, getEditionByName } from "../../api/calls/editionCalls";
 import { useEffect } from "react";
-import applicationPaths from "../properties/applicationPaths";
+import applicationPaths from "../../properties/applicationPaths";
 import useTranslation from "next-translate/useTranslation";
 
 export default function RouteInjector({ children }: any) {

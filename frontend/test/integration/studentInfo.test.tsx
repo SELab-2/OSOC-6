@@ -10,7 +10,7 @@ import {
     getBaseUser,
 } from "./TestEntityProvider";
 import { makeCacheFree } from "./Provide";
-import { StudentInfo } from "../../src/components/studentInfo";
+import { StudentInfo } from "../../src/components/student/studentInfo";
 import { IStudent } from "../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
 import { ISuggestion, suggestionCollectionName } from "../../src/api/entities/SuggestionEntity";

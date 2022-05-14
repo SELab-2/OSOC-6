@@ -4,13 +4,13 @@ import Image from "next/image";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import apiPaths from "../properties/apiPaths";
+import apiPaths from "../../properties/apiPaths";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
-import { capitalize } from "../utility/stringUtil";
-import { UserRole } from "../api/entities/UserEntity";
-import timers from "../properties/timers";
-import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../api/calls/userCalls";
+import { capitalize } from "../../utility/stringUtil";
+import { UserRole } from "../../api/entities/UserEntity";
+import timers from "../../properties/timers";
+import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");

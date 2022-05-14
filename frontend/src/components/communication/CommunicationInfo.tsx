@@ -1,10 +1,10 @@
-import useCompleteCommunicationOnUrl from "../hooks/useCompleteCommunication";
-import { emptyCommunication, ICommunication } from "../api/entities/CommunicationEntity";
-import { emptyStudent, IStudent } from "../api/entities/StudentEntity";
+import useCompleteCommunicationOnUrl from "../../hooks/useCompleteCommunication";
+import { emptyCommunication, ICommunication } from "../../api/entities/CommunicationEntity";
+import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
 import {
     emptyCommunicationTemplate,
     ICommunicationTemplate,
-} from "../api/entities/CommunicationTemplateEntity";
+} from "../../api/entities/CommunicationTemplateEntity";
 
 /**
  * The parameters you can provide to [CommunicationInfo].

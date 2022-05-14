@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import RegistrationForm from "../components/registrationForm";
-import NavBar from "../components/navBar";
+import RegistrationForm from "../components/user/registrationForm";
+import NavBar from "../components/util/navBar";
 import { capitalize } from "../utility/stringUtil";
 import styles from "../styles/registration.module.css";
 import { Col, Row } from "react-bootstrap";

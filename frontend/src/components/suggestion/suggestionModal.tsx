@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { Suggestion, SuggestionStrategy } from "../api/entities/SuggestionEntity";
+import { Suggestion, SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../utility/stringUtil";
-import { createNewSuggestion } from "../api/calls/suggestionCalls";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { capitalize } from "../../utility/stringUtil";
+import { createNewSuggestion } from "../../api/calls/suggestionCalls";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 /**
  * Modal asking the reason for a certain suggestion

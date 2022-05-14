@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ButtonGroup, Dropdown, Row } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import { Status } from "../api/entities/StudentEntity";
+import { Status } from "../../api/entities/StudentEntity";
 import { StudentStatusModal } from "./studentStatusModal";
 
 /**

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
-import NavBar from "../components/navBar";
+import NavBar from "../components/util/navBar";
 
 const BeginPage: NextPage = () => {
     const { t } = useTranslation("common");

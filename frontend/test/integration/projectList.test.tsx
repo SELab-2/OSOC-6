@@ -1,4 +1,4 @@
-import { ProjectList } from "../../src/components/projectList";
+import { ProjectList } from "../../src/components/project/projectList";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

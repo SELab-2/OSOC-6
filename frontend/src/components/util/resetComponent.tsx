@@ -1,18 +1,26 @@
 import { Button, Container, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
-import styles from "../styles/resetComponent.module.css";
+import styles from "../../styles/resetComponent.module.css";
 import { useState } from "react";
-import applicationPaths from "../properties/applicationPaths";
+import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
-import { capitalize } from "../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
-import timers from "../properties/timers";
-import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import { emptyUser } from "../api/entities/UserEntity";
+import timers from "../../properties/timers";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { emptyUser } from "../../api/entities/UserEntity";
 
-export const ResetComponent = (props: any) => {
+interface ResetComponentProps {
+    name: string;
+    handler: (url: string, email: string) => Promise<AxiosResponse>;
+}
+
+/**
+ * Component able to edit field using a handler.
+ */
+export function ResetComponent({ handler, name }: ResetComponentProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
@@ -43,7 +51,7 @@ export const ResetComponent = (props: any) => {
         if (firstEntry !== secondEntry) {
             setShowDanger(true);
         } else if (user) {
-            const response: AxiosResponse = await props.handler(user._links.self.href, firstEntry);
+            const response: AxiosResponse = await handler(user._links.self.href, firstEntry);
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
@@ -55,11 +63,11 @@ export const ResetComponent = (props: any) => {
 
     return (
         <Container className={styles.reset_component} data-testid="reset-component">
-            <h4>{capitalize(t("reset " + props.name))}</h4>
-            <Form.Label>{capitalize(t("new " + props.name))}</Form.Label>
-            <FormControl id="" data-testid="reset-input-1" type={props.name} onChange={onChangeFirstEntry} />
-            <Form.Label>{capitalize(t("repeat new " + props.name))}</Form.Label>
-            <FormControl id="" data-testid="reset-input-2" type={props.name} onChange={onChangeSecondEntry} />
+            <h4>{capitalize(t("reset " + name))}</h4>
+            <Form.Label>{capitalize(t("new " + name))}</Form.Label>
+            <FormControl id="" data-testid="reset-input-1" type={name} onChange={onChangeFirstEntry} />
+            <Form.Label>{capitalize(t("repeat new " + name))}</Form.Label>
+            <FormControl id="" data-testid="reset-input-2" type={name} onChange={onChangeSecondEntry} />
             <Button data-testid="confirm-reset" onClick={onConfirm}>
                 {capitalize(t("confirm button"))}
             </Button>
@@ -71,7 +79,7 @@ export const ResetComponent = (props: any) => {
                     delay={timers.toast}
                     autohide
                 >
-                    <Toast.Body>{capitalize(t(props.name + " identical"))}</Toast.Body>
+                    <Toast.Body>{capitalize(t(name + " identical"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
             <ToastContainer position="bottom-end" data-testid="toast-reset">
@@ -87,4 +95,4 @@ export const ResetComponent = (props: any) => {
             </ToastContainer>
         </Container>
     );
-};
+}

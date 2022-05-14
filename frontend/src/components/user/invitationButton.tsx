@@ -1,15 +1,15 @@
-import apiPaths from "../properties/apiPaths";
-import { basePost, getQueryUrlFromParams } from "../api/calls/baseCalls";
-import { IEdition } from "../api/entities/EditionEntity";
-import { Invitation } from "../api/entities/InvitationEntity";
+import apiPaths from "../../properties/apiPaths";
+import { basePost, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { IEdition } from "../../api/entities/EditionEntity";
+import { Invitation } from "../../api/entities/InvitationEntity";
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
-import applicationPaths from "../properties/applicationPaths";
-import { getAllEditionsFromPage } from "../api/calls/editionCalls";
-import { logoutUser } from "../api/calls/userCalls";
-import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import { createInvitation } from "../api/calls/invitationCalls";
+import applicationPaths from "../../properties/applicationPaths";
+import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
+import { logoutUser } from "../../api/calls/userCalls";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { createInvitation } from "../../api/calls/invitationCalls";
 
 export default function InvitationButton() {
     const router = useRouter();

@@ -2,19 +2,19 @@ import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import { Button, Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
 import { useState } from "react";
-import apiPaths from "../properties/apiPaths";
-import applicationPaths from "../properties/applicationPaths";
-import styles from "../styles/profileOverview.module.css";
-import { emptyUser, UserRole } from "../api/entities/UserEntity";
+import apiPaths from "../../properties/apiPaths";
+import applicationPaths from "../../properties/applicationPaths";
+import styles from "../../styles/profileOverview.module.css";
+import { emptyUser, UserRole } from "../../api/entities/UserEntity";
 import { StatusCodes } from "http-status-codes";
 import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
-import { capitalize } from "../utility/stringUtil";
-import timers from "../properties/timers";
-import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import { saveCallNameOfUser, userDelete } from "../api/calls/userCalls";
+import { capitalize } from "../../utility/stringUtil";
+import timers from "../../properties/timers";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { saveCallNameOfUser, userDelete } from "../../api/calls/userCalls";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");

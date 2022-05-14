@@ -1,11 +1,11 @@
-import { ISuggestion } from "../api/entities/SuggestionEntity";
+import { ISuggestion } from "../../api/entities/SuggestionEntity";
 import { Col, ListGroup, Row } from "react-bootstrap";
 import Image from "next/image";
-import { capitalize } from "../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
-import { getUserOnUrl } from "../api/calls/userCalls";
-import { emptyUser } from "../api/entities/UserEntity";
+import { getUserOnUrl } from "../../api/calls/userCalls";
+import { emptyUser } from "../../api/entities/UserEntity";
 
 /**
  * Properties used by [SuggestionLI].

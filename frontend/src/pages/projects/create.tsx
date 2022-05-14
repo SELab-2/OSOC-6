@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../../styles/Home.module.css";
-import { CreateProjectForm } from "../../components/createProjectForm";
+import { CreateProjectForm } from "../../components/project/createProjectForm";
 import { createProjectSubmitHandler } from "../../handlers/createProjectSubmitHandler";
-import NavBar from "../../components/navBar";
+import NavBar from "../../components/util/navBar";
 
 const CreateProject: NextPage = () => {
     const { t } = useTranslation("common");

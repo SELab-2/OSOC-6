@@ -5,7 +5,7 @@ import useTranslation from "next-translate/useTranslation";
 import { Dispatch, useState } from "react";
 import { addAssignment } from "../../api/calls/AssignmentCalls";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import SkillBadge from "../skillBadge";
+import SkillBadge from "../util/skillBadge";
 
 export type ModalSkillInfo = { skillName: string; skillUrl: string };
 export type ModalInfo = {

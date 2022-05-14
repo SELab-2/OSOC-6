@@ -1,8 +1,8 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
-import applicationPaths from "../properties/applicationPaths";
-import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
+import applicationPaths from "../../properties/applicationPaths";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import OptionsMenu from "./optionsMenu";
 
 export const NavBar = () => {

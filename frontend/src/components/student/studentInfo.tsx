@@ -1,19 +1,19 @@
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import apiPaths from "../properties/apiPaths";
-import { capitalize } from "../utility/stringUtil";
+import apiPaths from "../../properties/apiPaths";
+import { capitalize } from "../../utility/stringUtil";
 import { Col, ListGroup, Row } from "react-bootstrap";
-import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
-import { SuggestionModal } from "./suggestionModal";
+import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
+import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
 import Image from "next/image";
-import { emptyStudent, IStudent } from "../api/entities/StudentEntity";
-import SkillBadge from "./skillBadge";
-import { IFullSuggestion } from "../hooks/useFullSuggestion";
+import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
+import SkillBadge from "../util/skillBadge";
+import { IFullSuggestion } from "../../hooks/useFullSuggestion";
 import useSWR from "swr";
-import { getStudentOnUrl } from "../api/calls/studentCalls";
-import { getAllSuggestionsFromLinks } from "../api/calls/suggestionCalls";
-import SuggestionListItem from "./suggestionListItem";
+import { getStudentOnUrl } from "../../api/calls/studentCalls";
+import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
+import SuggestionListItem from "../suggestion/suggestionListItem";
 
 /**
  * Give an overview of all the studentinfo

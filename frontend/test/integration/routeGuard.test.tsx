@@ -1,5 +1,5 @@
 import { cleanup, render } from "@testing-library/react";
-import RouteGuard from "../../src/components/routeGuard";
+import RouteGuard from "../../src/components/util/routeGuard";
 import Home from "../../src/pages/home";
 import { AxiosResponse } from "axios";
 import ApiPaths from "../../src/properties/apiPaths";

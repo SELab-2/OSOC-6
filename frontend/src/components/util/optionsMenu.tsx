@@ -1,9 +1,9 @@
 import { Nav, OverlayTrigger, Popover } from "react-bootstrap";
-import applicationPaths from "../properties/applicationPaths";
-import { capitalize } from "../utility/stringUtil";
-import apiPaths from "../properties/apiPaths";
+import applicationPaths from "../../properties/applicationPaths";
+import { capitalize } from "../../utility/stringUtil";
+import apiPaths from "../../properties/apiPaths";
 import useTranslation from "next-translate/useTranslation";
-import styles from "../styles/optionsMenu.module.css";
+import styles from "../../styles/optionsMenu.module.css";
 import Image from "next/image";
 
 export const OptionsMenu = () => {

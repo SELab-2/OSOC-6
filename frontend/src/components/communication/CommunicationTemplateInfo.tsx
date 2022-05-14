@@ -1,9 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
-import { getCommunicationTemplateOnUrl } from "../api/calls/communicationTemplateCalls";
+import { getCommunicationTemplateOnUrl } from "../../api/calls/communicationTemplateCalls";
 import { Button } from "react-bootstrap";
-import mailTo from "../utility/mailTo";
-import { capitalize } from "../utility/stringUtil";
+import mailTo from "../../utility/mailTo";
+import { capitalize } from "../../utility/stringUtil";
 
 /**
  * The parameters you can provide to [CommunicationTemplateInfo].
