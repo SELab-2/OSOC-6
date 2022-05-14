@@ -4,6 +4,7 @@ import apiPaths from "../properties/apiPaths";
 import UserComponent from "./manageUserComponent";
 import { IUser } from "../api/entities/UserEntity";
 import useSWR from "swr";
+import styles from "../styles/usersOverview.module.css";
 import { capitalize } from "../utility/stringUtil";
 import { getAllUsersFromPage } from "../api/calls/userCalls";
 
@@ -19,24 +20,26 @@ export function UsersOverview() {
     }
 
     return (
-        <Container data-testid="user-overview">
-            <h2>{capitalize(t("users manage"))}</h2>
-            <Row>
-                <Col>
-                    <h6>{capitalize(t("search name"))}</h6>
-                </Col>
-                <Col>
-                    <h6>{capitalize(t("email"))}</h6>
-                </Col>
-                <Col>
-                    <h6>{capitalize(t("users status"))}</h6>
-                </Col>
-                <Col xs={1} />
-            </Row>
-            {data.map((user: IUser) => (
-                <UserComponent key={user.email} user={user} />
-            ))}
-        </Container>
+        <div data-testid="user-overview" className={styles.users_full_div}>
+            <Container style={{ marginTop: "50px" }}>
+                <h2 style={{ marginBottom: "40px" }}>{capitalize(t("users manage"))}</h2>
+                <Row className={styles.users_row}>
+                    <Col>
+                        <h6>{capitalize(t("search name"))}</h6>
+                    </Col>
+                    <Col>
+                        <h6>{capitalize(t("email"))}</h6>
+                    </Col>
+                    <Col>
+                        <h6>{capitalize(t("users status"))}</h6>
+                    </Col>
+                    <Col xs={1} />
+                </Row>
+                {data.map((user: IUser) => (
+                    <UserComponent key={user.email} user={user} />
+                ))}
+            </Container>
+        </div>
     );
 }
 

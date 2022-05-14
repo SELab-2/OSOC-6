@@ -71,6 +71,17 @@ export function getBaseMovedResponse(url: string): AxiosResponse {
     };
 }
 
+export function getBaseRedirectResponse(url: string): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.TEMPORARY_REDIRECT,
+        statusText: ReasonPhrases.TEMPORARY_REDIRECT,
+        headers: {},
+        config: {},
+        request: { responseURL: url },
+    };
+}
+
 export function getBasePage<T extends IBaseEntity>(
     apiPath: string,
     collectionName: string,
