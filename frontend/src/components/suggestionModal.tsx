@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Suggestion, SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { Field, Form, Formik } from "formik";
-import { IUser } from "../api/entities/UserEntity";
-import { getOwnUser } from "../api/calls/userCalls";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../utility/stringUtil";
 import { createNewSuggestion } from "../api/calls/suggestionCalls";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 /**
  * Modal asking the reason for a certain suggestion
@@ -16,16 +15,24 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
 
+    const { user, error: userError } = useCurrentUser(true);
+
+    if (userError || !user) {
+        if (userError) {
+            console.log(userError);
+        }
+        return null;
+    }
+
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
 
     async function submitSuggestionHandler(values: { reason: string }) {
-        // Get the logged in user
-        const user: IUser = await getOwnUser();
         const suggestion = new Suggestion(
             props.suggestion,
             values.reason,
-            user._links.self.href,
+            // function will never be executed if user is undefined
+            user!._links.self.href,
             props.studentUrl
         );
 

@@ -1,4 +1,5 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import { ISkillType } from "./SkillTypeEntity";
 
 export interface IProject extends IBaseEntity {
     goals: string[];
@@ -17,6 +18,27 @@ export interface IProject extends IBaseEntity {
         self: IReferencer;
     };
 }
+
+/**
+ * An [IProject] that is completely empty. Using this we don't need as much ?. in our code.
+ */
+export const emptyProject: IProject = {
+    goals: [],
+    name: "",
+    info: "",
+    versionManagement: "",
+    partnerName: "",
+    partnerWebsite: "",
+
+    _links: {
+        coaches: { href: "" },
+        creator: { href: "" },
+        edition: { href: "" },
+        neededSkills: { href: "" },
+        project: { href: "" },
+        self: { href: "" },
+    },
+};
 
 export const projectCollectionName: string = "projects";
 export type IProjectPage = IPage<{ projects: IProject[] }>;

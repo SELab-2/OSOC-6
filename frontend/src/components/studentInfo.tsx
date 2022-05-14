@@ -7,10 +7,13 @@ import { SuggestionStrategy } from "../api/entities/SuggestionEntity";
 import { SuggestionModal } from "./suggestionModal";
 import { StudentStatus } from "./studentStatus";
 import Image from "next/image";
-import useFullStudentInfo from "../hooks/useFullStudentInfo";
 import { emptyStudent, IStudent } from "../api/entities/StudentEntity";
-import { IFullSuggestion } from "../api/calls/suggestionCalls";
 import SkillBadge from "./skillBadge";
+import { IFullSuggestion } from "../hooks/useFullSuggestion";
+import useSWR from "swr";
+import { getStudentOnUrl } from "../api/calls/studentCalls";
+import { getAllSuggestionsFromLinks } from "../api/calls/suggestionCalls";
+import SuggestionListItem from "./suggestionListItem";
 
 /**
  * Give an overview of all the studentinfo
@@ -20,14 +23,19 @@ export function StudentInfo() {
     const router = useRouter();
     const { id } = router.query as { id: string };
 
-    const { data, error } = useFullStudentInfo(apiPaths.students + "/" + id);
+    let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
+    let { data: suggestions, error: suggestionsError } = useSWR(
+        student ? student._links.suggestions.href : null,
+        getAllSuggestionsFromLinks
+    );
 
-    if (error || !data) {
+    if (studentError || suggestionsError) {
+        console.log(studentError || suggestionsError);
         return null;
     }
 
-    const student: IStudent = data.student || emptyStudent;
-    const suggestions: IFullSuggestion[] = data.suggestions || [];
+    student = student || emptyStudent;
+    suggestions = suggestions || [];
 
     let motivation;
     if (student.motivationURI == "") {
@@ -44,12 +52,6 @@ export function StudentInfo() {
             </>
         );
     }
-
-    const strategyIndication = {
-        YES: "/resources/check_green.svg",
-        NO: "/resources/x.svg",
-        MAYBE: "/resources/question.svg",
-    };
 
     return (
         <div>
@@ -69,30 +71,9 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("suggestions"))}</h2>
                 <ListGroup as="ul">
-                    {suggestions
-                        .map((suggestion) => ({
-                            suggestion,
-                            suggestionId: suggestion.suggestion._links.self.href,
-                        }))
-                        .map(({ suggestion, suggestionId }) => (
-                            <ListGroup.Item key={suggestionId} as={"li"}>
-                                <Row>
-                                    <Col sm={1}>
-                                        <Image
-                                            alt={capitalize(t("edit"))}
-                                            src={strategyIndication[suggestion.suggestion.strategy]}
-                                            width="20"
-                                            height="20"
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <div>
-                                            {suggestion.coach.callName}: {suggestion.suggestion.reason}
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </ListGroup.Item>
-                        ))}
+                    {suggestions.map((suggestion) => (
+                        <SuggestionListItem suggestion={suggestion} key={suggestion._links.self.href} />
+                    ))}
                 </ListGroup>
                 <br />
                 <h2>{capitalize(t("student about"))}</h2>

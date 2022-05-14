@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { AxiosConf } from "../api/calls/baseCalls";
 import { Button, Modal } from "react-bootstrap";
 import { Status } from "../api/entities/StudentEntity";
 import useTranslation from "next-translate/useTranslation";

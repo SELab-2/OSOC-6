@@ -2,28 +2,27 @@ import { Button, Container, Form, FormControl, Toast, ToastContainer } from "rea
 import useTranslation from "next-translate/useTranslation";
 import styles from "../styles/resetComponent.module.css";
 import { useState } from "react";
-import useSWR from "swr";
-import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
 import { useRouter } from "next/router";
 import { capitalize } from "../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../properties/timers";
-import { getEmtpyUser, getUserInfo } from "../api/entities/UserEntity";
-import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { emptyUser } from "../api/entities/UserEntity";
 
 export const ResetComponent = (props: any) => {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
-    let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
+    const transformer = useEditionApplicationPathTransformer();
+    let { user: userResponse, error } = useCurrentUser();
     const [firstEntry, setFirstEntry] = useState<string>("");
     const [secondEntry, setSecondEntry] = useState<string>("");
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-    data = data || getEmtpyUser();
+    const user = userResponse || emptyUser;
 
     if (error) {
         console.log(error);
@@ -43,8 +42,8 @@ export const ResetComponent = (props: any) => {
     async function onConfirm() {
         if (firstEntry !== secondEntry) {
             setShowDanger(true);
-        } else if (data) {
-            const response: AxiosResponse = await props.handler(data._links.self.href, firstEntry);
+        } else if (user) {
+            const response: AxiosResponse = await props.handler(user._links.self.href, firstEntry);
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {

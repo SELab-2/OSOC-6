@@ -11,13 +11,13 @@ import {
 } from "../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useEditionPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
+    const transformer = useEditionApplicationPathTransformer();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
     let { data, error } = useSwrWithEdition(

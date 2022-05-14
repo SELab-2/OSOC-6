@@ -63,12 +63,7 @@ describe("StudentInfo", () => {
         );
 
         await waitFor(() =>
-            mockAxios.mockResponseFor(
-                baseSuggestion._links.coach.href,
-                getBaseOkResponse(
-                    getBaseLinks(baseSuggestion._links.coach.href, userCollectionName, [baseCoach])
-                )
-            )
+            mockAxios.mockResponseFor(baseSuggestion._links.coach.href, getBaseOkResponse(baseCoach))
         );
 
         await waitFor(() => {

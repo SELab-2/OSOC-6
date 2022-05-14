@@ -4,8 +4,6 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { loginSubmitHandler, LoginValues } from "../../src/handlers/loginSubmitHandler";
 import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";

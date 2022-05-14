@@ -5,27 +5,28 @@ import { useState } from "react";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
 import styles from "../styles/profileOverview.module.css";
-import { profileSaveHandler, userDeleteHandler } from "../handlers/profileHandler";
-import { getEmtpyUser, getUserInfo, UserRole } from "../api/entities/UserEntity";
+import { emptyUser, UserRole } from "../api/entities/UserEntity";
 import { StatusCodes } from "http-status-codes";
-import useSWR, { useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../utility/stringUtil";
 import timers from "../properties/timers";
-import { useEditionPathTransformer } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { saveCallNameOfUser, userDelete } from "../api/calls/userCalls";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
-    let { data, error } = useSWR(apiPaths.ownUser, getUserInfo);
+    const transformer = useEditionApplicationPathTransformer();
+    let { user: userResponse, error } = useCurrentUser();
     const { mutate } = useSWRConfig();
-    const [editCallname, setEditCallname] = useState<boolean>(false);
-    const [callname, setCallname] = useState<string>("");
+    const [editCallName, setEditCallName] = useState<boolean>(false);
+    const [callName, setCallName] = useState<string>("");
     const [show, setShow] = useState<boolean>(false);
 
-    data = data || getEmtpyUser();
+    const user = userResponse || emptyUser;
 
     if (error) {
         console.log(error);
@@ -33,19 +34,18 @@ export function ProfileOverview() {
     }
 
     function handleEditCallName() {
-        if (data) {
-            setEditCallname(true);
-            setCallname(data.callName);
+        if (user) {
+            setEditCallName(true);
+            setCallName(user.callName);
         }
     }
 
     async function handleSaveCallName() {
-        setEditCallname(false);
-        if (data) {
-            const response: AxiosResponse = await profileSaveHandler(data._links.self.href, callname);
+        setEditCallName(false);
+        if (user) {
+            const response: AxiosResponse = await saveCallNameOfUser(user._links.self.href, callName);
             if (response.status == StatusCodes.OK) {
-                data = response.data;
-                const user = mutate(apiPaths.ownUser);
+                await mutate(apiPaths.ownUser, response.data);
             } else {
                 setShow(true);
             }
@@ -53,8 +53,8 @@ export function ProfileOverview() {
     }
 
     async function deleteCurrentUser() {
-        if (data) {
-            const response: AxiosResponse = await userDeleteHandler(data._links.self.href);
+        if (user) {
+            const response: AxiosResponse = await userDelete(user._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {
                 await router.push(transformer(applicationPaths.login));
             } else {
@@ -66,7 +66,7 @@ export function ProfileOverview() {
     function onChange(event: any) {
         // Intended to run on the change of every form element
         event.preventDefault();
-        setCallname(event.target.value);
+        setCallName(event.target.value);
     }
 
     return (
@@ -76,8 +76,8 @@ export function ProfileOverview() {
                 <Row data-testid="profile-overview" className={styles.profile_row}>
                     <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                     {/*show callname if not editing*/}
-                    {!editCallname && <Col>{data.callName}</Col>}
-                    {!editCallname && (
+                    {!editCallName && <Col>{user.callName}</Col>}
+                    {!editCallName && (
                         <Col className={styles.profile_last_col}>
                             <a
                                 data-testid="edit-callname"
@@ -95,13 +95,13 @@ export function ProfileOverview() {
                     )}
 
                     {/*input field and save mark if editing*/}
-                    {editCallname && (
+                    {editCallName && (
                         <Col>
                             <input
                                 className={styles.callname_field}
                                 data-testid="input-callname"
                                 name="callname"
-                                defaultValue={data.callName}
+                                defaultValue={user.callName}
                                 onChange={onChange}
                             />
                             <button
@@ -121,7 +121,7 @@ export function ProfileOverview() {
                 </Row>
                 <Row className={styles.profile_row}>
                     <Col className={styles.first_element}>{capitalize(t("email")) + ":"}</Col>
-                    <Col>{data.email}</Col>
+                    <Col>{user.email}</Col>
                     <Col className={styles.profile_last_col}>
                         <a href={applicationPaths.changeEmail} className={styles.clickable}>
                             <Image
@@ -150,8 +150,8 @@ export function ProfileOverview() {
                 <Row className={styles.profile_row}>
                     <Col className={styles.first_element}>{capitalize(t("user status"))}</Col>
                     <Col>
-                        {data.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
-                        {data.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
+                        {user.userRole == UserRole.admin && <a>{capitalize(t("admin"))}</a>}
+                        {user.userRole == UserRole.coach && <a>{capitalize(t("coach"))}</a>}
                     </Col>
                 </Row>
                 <Row className={styles.profile_row}>

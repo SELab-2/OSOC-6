@@ -1,47 +1,5 @@
-import { IUserSkill } from "../entities/UserSkillEntity";
-import { IProjectSkill } from "../entities/ProjectSkillEntity";
-import axios from "axios";
-import apiPaths from "../../properties/apiPaths";
-import {
-    baseSkillType,
-    ISkillType,
-    ISkillTypePage,
-    skillTypeCollectionName,
-} from "../entities/SkillTypeEntity";
-
-import {
-    AxiosConf,
-    getAllEntitiesFromLinksUrl,
-    getAllEntitiesFromPage,
-    getQueryUrlFromParams,
-} from "./baseCalls";
-
-/**
- * Get the skillType entity provided the name of a Skill. If the name does not match, [baseSkillType] will be used.
- * @param skillName the name on which to search for the [ISkillType].
- */
-export async function getSkillTypeByName(skillName: string): Promise<ISkillType> {
-    let type: ISkillTypePage = (
-        await axios.get(getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillName }), AxiosConf)
-    ).data;
-    if (type._embedded.skillTypes.length == 0) {
-        type = (
-            await axios.get(
-                getQueryUrlFromParams(apiPaths.skillTypesByName, { name: baseSkillType }),
-                AxiosConf
-            )
-        ).data;
-    }
-    return type._embedded.skillTypes[0];
-}
-
-/**
- * Get the skillType for a certain Skill.
- * @param skill The skill you want the skillTypeFrom
- */
-export function getSkillTypeFromSkill(skill: IUserSkill | IProjectSkill): Promise<ISkillType> {
-    return getSkillTypeByName(skill.name);
-}
+import { ISkillType, skillTypeCollectionName } from "../entities/SkillTypeEntity";
+import { getAllEntitiesFromLinksUrl, getAllEntitiesFromPage } from "./baseCalls";
 
 /**
  * Fetches all SkillTypes on a given SkillTypeLinksUrl

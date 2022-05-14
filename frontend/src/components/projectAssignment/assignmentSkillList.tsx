@@ -6,7 +6,6 @@ import WarningToast from "../warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
-import { getSkillTypeFromSkill } from "../../api/calls/skillTypeCalls";
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { getProjectOnUrl } from "../../api/calls/projectCalls";
 
@@ -21,23 +20,24 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
 
     const { mutate } = useSWRConfig();
     let { data: project, error: projectError } = useSWR(props.projectURL, getProjectOnUrl);
-    let { data, error } = useSWR(project?._links.neededSkills.href, getAllProjectSkillsFromLinks);
+    let { data, error } = useSWR(
+        project ? project._links.neededSkills.href : null,
+        getAllProjectSkillsFromLinks
+    );
 
     if (error || projectError) {
         return <WarningToast message={capitalize(errort("error reload page"))} />;
     }
 
     async function dropStudent(studentName: string, studentUrl: string, skill: IProjectSkill) {
-        const skillType = await getSkillTypeFromSkill(skill);
-        const skillColor = skillType.colour;
         if (project !== undefined) {
             props.dropHandler(
                 studentName,
                 studentUrl,
-                { skillUrl: skill._links.self.href, skillName: skill.name, skillColor },
+                { skillUrl: skill._links.self.href, skillName: skill.name },
                 project.name
             );
-            await mutate(props.projectURL);
+            await mutate(skill._links.assignments.href);
         }
     }
 

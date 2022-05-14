@@ -4,15 +4,15 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../properties/apiPaths";
 import { getAllProjectsFormPage } from "../api/calls/projectCalls";
-import { useEditionPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 import { useRouter } from "next/router";
 
 export function ProjectList() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionPathTransformer();
+    const transformer = useEditionApplicationPathTransformer();
 
-    let { data, error } = useSwrWithEdition(apiPaths.projects, getAllProjectsFormPage);
+    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFormPage);
     data = data || [];
 
     if (error) {
