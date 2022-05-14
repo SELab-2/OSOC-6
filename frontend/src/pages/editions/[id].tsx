@@ -11,18 +11,12 @@ const Edition: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const id = router.query.id;
-    console.log("PAGE ID");
-    console.log(id);
+
     return (
-        <div className={styles.main}>
-            <Head>
-                <title>{capitalize(t("edition overview"))}</title>
-            </Head>
-            <main className={styles.main}>
-                <NavBar />
-                <EditionOverview editionId={id} />
-            </main>
-        </div>
+        <main className={styles.main}>
+            <NavBar />
+            <EditionOverview editionId={id} />
+        </main>
     );
 };
 

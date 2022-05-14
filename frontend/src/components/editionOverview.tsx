@@ -31,7 +31,6 @@ export function EditionOverview(editionId: any) {
     let { data, error } = useSWR(apiPaths.editions + "/" + editionId.editionId, getEditionOnUrl);
 
     if (error || !data) {
-        console.log("ERROR");
         return null;
     }
 
@@ -46,7 +45,6 @@ export function EditionOverview(editionId: any) {
         setEditName(false);
         if (data) {
             const response: AxiosResponse = await editionSaveNameHandler(data._links.self.href, name);
-            console.log(response);
             if (response.status == StatusCodes.OK) {
                 data = response.data;
                 mutate(apiPaths.editions);
@@ -70,9 +68,7 @@ export function EditionOverview(editionId: any) {
             return;
         }
         if (data) {
-            console.log("YEAR: " + year);
             const response: AxiosResponse = await editionSaveYearHandler(data._links.self.href, year);
-            console.log(response);
             if (response.status == StatusCodes.OK) {
                 data = response.data;
                 mutate(apiPaths.editions);
@@ -106,6 +102,7 @@ export function EditionOverview(editionId: any) {
 
     return (
         <Container>
+            <h2>{capitalize(t("edition overview"))}</h2>
             <div data-testid="edition-overview">
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
@@ -124,7 +121,6 @@ export function EditionOverview(editionId: any) {
                         </Col>
                     )}
 
-                    {/*input field and save mark if editing*/}
                     {editName && (
                         <Col>
                             <input
@@ -161,7 +157,6 @@ export function EditionOverview(editionId: any) {
                         </Col>
                     )}
 
-                    {/*input field and save mark if editing*/}
                     {editYear && (
                         <Col>
                             <input
@@ -195,7 +190,7 @@ export function EditionOverview(editionId: any) {
                             onChange={() => {
                                 if (
                                     window.confirm(
-                                        "Are you want to change this attribute? This change has a huge impact, so proceed with caution..."
+                                        capitalize(t("change edition state"))
                                     )
                                 ) {
                                     handleSaveActive();
@@ -223,7 +218,7 @@ export function EditionOverview(editionId: any) {
                         delay={timers.toast}
                         autohide
                     >
-                        <Toast.Body>{capitalize(t("please provide a number"))}</Toast.Body>
+                        <Toast.Body>{capitalize(t("invalid edition year"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>
             </div>
