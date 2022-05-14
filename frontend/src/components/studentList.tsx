@@ -14,6 +14,7 @@ import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
 import {Status} from "../api/entities/StudentEntity";
+import applicationPaths from "../properties/applicationPaths";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
@@ -68,7 +69,7 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                     let studentPath: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
-                                    router.push(transformer("/" + studentPath)).catch(console.log);
+                                    router.push(transformer("/" + applicationPaths.students + "/" + studentPath)).catch(console.log);
                                 }
                             }}
                         >
