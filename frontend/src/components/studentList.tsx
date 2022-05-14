@@ -12,6 +12,8 @@ import {
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../hooks/utilHooks";
+import { StudentStatusButton } from "./studentStatusButton";
+import {Status} from "../api/entities/StudentEntity";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
@@ -76,6 +78,16 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                         </ListGroup.Item>
                     ))}
             </ListGroup>
+            <footer className={"py-3 position-sticky bottom-0"} style={{backgroundColor: "#0a0839"}}>
+                <StudentStatusButton status={Status.approved}
+                                     style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}/>
+                <StudentStatusButton status={Status.maybe}
+                                     style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}/>
+                <StudentStatusButton status={Status.rejected}
+                                     style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}/>
+                <StudentStatusButton status={Status.undecided}
+                                     style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}/>
+            </footer>
         </div>
     );
 };
