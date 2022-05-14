@@ -80,7 +80,7 @@ export function StudentFilterComponent() {
                         initialValues={values}
                         onSubmit={async (values) => {
                             values.roles = selectedSkills.join(" ");
-                            console.log(values.roles)
+                            console.log(values.roles);
                             await router.replace({
                                 query: { ...router.query, ...fromFormStudentQueryParams(values) },
                             });
@@ -149,13 +149,23 @@ export function StudentFilterComponent() {
                                                     </Dropdown.Toggle>
                                                     <DropdownMenu>
                                                         {skills.map((value) => (
-                                                            <DropdownItem key={value.name} onClick={() => {
-                                                                console.log("selectedSkills")
-                                                                console.log(selectedSkills)
-                                                                if (!selectedSkills.includes(value.name)) {
-                                                                    setSelectedSkills([...selectedSkills, value.name]);
-                                                                }
-                                                            }}>{value.name}</DropdownItem>
+                                                            <DropdownItem
+                                                                key={value.name}
+                                                                onClick={() => {
+                                                                    console.log("selectedSkills");
+                                                                    console.log(selectedSkills);
+                                                                    if (
+                                                                        !selectedSkills.includes(value.name)
+                                                                    ) {
+                                                                        setSelectedSkills([
+                                                                            ...selectedSkills,
+                                                                            value.name,
+                                                                        ]);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {value.name}
+                                                            </DropdownItem>
                                                         ))}
                                                     </DropdownMenu>
                                                 </Dropdown>
@@ -196,10 +206,14 @@ export function StudentFilterComponent() {
                                                     id="skillFilter"
                                                     data-testid="template"
                                                     value={selectedSkills.join(" ")}
-                                                    onChange={(event) => setFieldValue("roles", selectedSkills.join(" "))}
+                                                    onChange={(event) =>
+                                                        setFieldValue("roles", selectedSkills.join(" "))
+                                                    }
                                                 />
                                                 <div id="skillFilters">
-                                                    {selectedSkills.map(skill => (<SkillBadge key={skill} skill={skill}/>))}
+                                                    {selectedSkills.map((skill) => (
+                                                        <SkillBadge key={skill} skill={skill} />
+                                                    ))}
                                                 </div>
                                             </Col>
                                         </Row>

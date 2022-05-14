@@ -69,12 +69,10 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                     let studentPath: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
-                                    let url = transformer("/" + applicationPaths.students + "/" + studentPath)
-                                    router
-                                        .push(
-                                            url
-                                        )
-                                        .catch(console.log);
+                                    let url = transformer(
+                                        "/" + applicationPaths.students + "/" + studentPath
+                                    );
+                                    router.push(url).catch(console.log);
                                 }
                             }}
                         >
