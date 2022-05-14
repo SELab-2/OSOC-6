@@ -2,17 +2,17 @@ import { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { Toast, ToastContainer } from "react-bootstrap";
-import timers from "../properties/timers";
+import timers from "../../properties/timers";
 import { useState } from "react";
-import { User } from "../api/entities/UserEntity";
+import { User } from "../../api/entities/UserEntity";
 import Router, { useRouter } from "next/router";
-import apiPaths from "../properties/apiPaths";
-import { basePost, getParamsFromQueryUrl } from "../api/calls/baseCalls";
-import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
-import { capitalize } from "../utility/stringUtil";
+import apiPaths from "../../properties/apiPaths";
+import { basePost, getParamsFromQueryUrl } from "../../api/calls/baseCalls";
+import { loginSubmitHandler } from "../../handlers/loginSubmitHandler";
+import { capitalize } from "../../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
-import styles from "../styles/registration.module.css";
-import applicationPaths from "../properties/applicationPaths";
+import styles from "../../styles/registration.module.css";
+import applicationPaths from "../../properties/applicationPaths";
 import { useSWRConfig } from "swr";
 
 const RegistrationForm: NextPage = () => {

@@ -1,9 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
-import applicationPaths from "../properties/applicationPaths";
-import styles from "../styles/projectList.module.css";
-import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
+import applicationPaths from "../../properties/applicationPaths";
+import styles from "../../styles/projectList.module.css";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
 export const NewProjectButton = () => {
     const { t } = useTranslation("common");

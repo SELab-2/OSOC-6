@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import LoginForm from "../components/loginForm";
+import LoginForm from "../components/user/loginForm";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import useTranslation from "next-translate/useTranslation";
 import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
-import NavBar from "../components/navBar";
+import NavBar from "../components/util/navBar";
 import { Col, Row } from "react-bootstrap";
 import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";

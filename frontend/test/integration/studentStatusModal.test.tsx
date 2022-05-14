@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { SuggestionModal } from "../../src/components/suggestionModal";
+import { SuggestionModal } from "../../src/components/suggestion/suggestionModal";
 import apiPaths from "../../src/properties/apiPaths";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import { StudentStatusModal } from "../../src/components/studentStatusModal";
+import { StudentStatusModal } from "../../src/components/student/studentStatusModal";
 import { Status } from "../../src/api/entities/StudentEntity";
 
 afterEach(() => {

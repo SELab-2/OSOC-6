@@ -1,10 +1,10 @@
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import apiPaths from "../properties/apiPaths";
+import apiPaths from "../../properties/apiPaths";
 import useSWR from "swr";
-import { capitalize } from "../utility/stringUtil";
-import useFullProjectInfo from "../hooks/useFullProjectInfo";
-import { emptyProject } from "../api/entities/ProjectEntity";
+import { capitalize } from "../../utility/stringUtil";
+import useFullProjectInfo from "../../hooks/useFullProjectInfo";
+import { emptyProject } from "../../api/entities/ProjectEntity";
 import ProjectSkillStudent from "./projectSkillStudent";
 
 export function ProjectInfo() {

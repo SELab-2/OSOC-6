@@ -1,25 +1,25 @@
 import useTranslation from "next-translate/useTranslation";
 import { Badge, Col, Row } from "react-bootstrap";
-import styles from "../styles/createProjectForm.module.css";
+import styles from "../../styles/createProjectForm.module.css";
 import { Field, Form, Formik } from "formik";
-import apiPaths from "../properties/apiPaths";
-import { getAllUsersFromPage } from "../api/calls/userCalls";
-import { capitalize } from "../utility/stringUtil";
+import apiPaths from "../../properties/apiPaths";
+import { getAllUsersFromPage } from "../../api/calls/userCalls";
+import { capitalize } from "../../utility/stringUtil";
 import {
     FormSubmitValues,
     ProjectCreationProps,
     ProjectCreationValues,
-} from "../handlers/createProjectSubmitHandler";
-import { IUser } from "../api/entities/UserEntity";
-import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
-import { getSkillColorMap, ISkillType } from "../api/entities/SkillTypeEntity";
+} from "../../handlers/createProjectSubmitHandler";
+import { IUser } from "../../api/entities/UserEntity";
+import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
+import { getSkillColorMap, ISkillType } from "../../api/entities/SkillTypeEntity";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
-import { useEditionAPIUrlTransformer, useSwrWithEdition } from "../hooks/utilHooks";
-import useEdition from "../hooks/useGlobalEdition";
+import { useEditionAPIUrlTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import useEdition from "../../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 /**
  * A React component containing a form for project creation

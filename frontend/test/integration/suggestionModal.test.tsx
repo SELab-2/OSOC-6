@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { SuggestionModal } from "../../src/components/suggestionModal";
+import { SuggestionModal } from "../../src/components/suggestion/suggestionModal";
 import { SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
 import apiPaths from "../../src/properties/apiPaths";
 import userEvent from "@testing-library/user-event";

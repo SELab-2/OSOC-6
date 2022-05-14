@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import LoginForm from "../components/loginForm";
+import LoginForm from "../components/user/loginForm";
 import { Card, Col, Row } from "react-bootstrap";
 import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import useTranslation from "next-translate/useTranslation";
@@ -7,7 +7,7 @@ import { capitalize } from "../utility/stringUtil";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import styles from "../styles/loginForm.module.css";
-import NavBar from "../components/navBar";
+import NavBar from "../components/util/navBar";
 
 const LoginError: NextPage = () => {
     const { t } = useTranslation();

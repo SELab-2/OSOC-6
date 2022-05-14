@@ -1,5 +1,5 @@
 import Login from "../../src/pages/login";
-import LoginForm from "../../src/components/loginForm";
+import LoginForm from "../../src/components/user/loginForm";
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

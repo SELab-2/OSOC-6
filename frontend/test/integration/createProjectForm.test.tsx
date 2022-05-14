@@ -15,7 +15,7 @@ import {
     getBaseUser,
 } from "./TestEntityProvider";
 import { IUser, User, userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { CreateProjectForm } from "../../src/components/createProjectForm";
+import { CreateProjectForm } from "../../src/components/project/createProjectForm";
 import userEvent from "@testing-library/user-event";
 import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";

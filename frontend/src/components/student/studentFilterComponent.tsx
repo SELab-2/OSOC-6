@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import { Field, Form, Formik } from "formik";
 import { ParsedUrlQueryInput } from "querystring";
 import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../utility/stringUtil";
-import { IStudentQueryParams } from "../api/calls/studentCalls";
+import { capitalize } from "../../utility/stringUtil";
+import { IStudentQueryParams } from "../../api/calls/studentCalls";
 
 function boolToString(bool: boolean | undefined) {
     return bool ? "true" : "false";

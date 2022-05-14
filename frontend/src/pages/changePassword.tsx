@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import { ResetComponent } from "../components/resetComponent";
-import Navbar from "../components/navBar";
+import { ResetComponent } from "../components/util/resetComponent";
+import Navbar from "../components/util/navBar";
 import { savePasswordOfUser } from "../api/calls/userCalls";
 
 const ChangePassword: NextPage = () => {

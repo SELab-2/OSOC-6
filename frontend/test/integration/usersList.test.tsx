@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
-import UsersOverview from "../../src/components/usersOverview";
-import UserComponent from "../../src/components/manageUserComponent";
+import UsersOverview from "../../src/components/user/usersOverview";
+import UserComponent from "../../src/components/user/manageUserComponent";
 import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import {
     getBaseBadRequestResponse,
