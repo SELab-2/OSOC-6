@@ -69,9 +69,10 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                     let studentPath: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
+                                    let url = transformer("/" + applicationPaths.students + "/" + studentPath)
                                     router
                                         .push(
-                                            transformer("/" + applicationPaths.students + "/" + studentPath)
+                                            url
                                         )
                                         .catch(console.log);
                                 }
@@ -98,7 +99,7 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                 />
                 <StudentStatusButton
                     status={Status.undecided}
-                    style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
+                    style={{ color: "gray", borderColor: "gray", width: 150 }}
                 />
             </footer>
         </div>

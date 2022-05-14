@@ -8,6 +8,11 @@ import { Row, Col, ButtonGroup, Dropdown } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import Image from "next/image";
+import useSWR from "swr";
+import apiPaths from "../properties/apiPaths";
+import { getAllSkillTypesFromPage } from "../api/calls/skillTypeCalls";
+import { useState } from "react";
+import SkillBadge from "./skillBadge";
 
 function boolToString(bool: boolean | undefined) {
     return bool ? "true" : "false";
@@ -51,10 +56,17 @@ function fromFormStudentQueryParams(values: IStudentQueryParams): ParsedUrlQuery
 
 export function StudentFilterComponent() {
     const { t } = useTranslation("common");
-
+    const { data: skillsRes, error: skillError } = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
     const router = useRouter();
-
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
+    const initalSkills: string[] = values.roles === "" ? [] : values.roles.split(" ");
+    const [selectedSkills, setSelectedSkills] = useState<string[]>(initalSkills);
+    let skills = skillsRes === undefined ? [] : skillsRes;
+
+    if (skillError) {
+        console.log(skillError);
+        return null;
+    }
     return (
         <div data-testid="student-filter" style={{ backgroundColor: "#0a0839" }}>
             <div style={{ color: "white", padding: 20 }}>
@@ -67,12 +79,14 @@ export function StudentFilterComponent() {
                         enableReinitialize={true}
                         initialValues={values}
                         onSubmit={async (values) => {
+                            values.roles = selectedSkills.join(" ");
+                            console.log(values.roles)
                             await router.replace({
                                 query: { ...router.query, ...fromFormStudentQueryParams(values) },
                             });
                         }}
                     >
-                        {({ isSubmitting }) => (
+                        {({ isSubmitting, setFieldValue }) => (
                             <Form>
                                 <Row>
                                     <Col sm={3}>
@@ -134,8 +148,14 @@ export function StudentFilterComponent() {
                                                         Choose one or more
                                                     </Dropdown.Toggle>
                                                     <DropdownMenu>
-                                                        {["Marketing", "Communication"].map((value) => (
-                                                            <DropdownItem key={value}>{value}</DropdownItem>
+                                                        {skills.map((value) => (
+                                                            <DropdownItem key={value.name} onClick={() => {
+                                                                console.log("selectedSkills")
+                                                                console.log(selectedSkills)
+                                                                if (!selectedSkills.includes(value.name)) {
+                                                                    setSelectedSkills([...selectedSkills, value.name]);
+                                                                }
+                                                            }}>{value.name}</DropdownItem>
                                                         ))}
                                                     </DropdownMenu>
                                                 </Dropdown>
@@ -169,7 +189,18 @@ export function StudentFilterComponent() {
                                         </Row>
                                         <Row>
                                             <Col sm={8}>
-                                                <p>Marketing</p>
+                                                <input
+                                                    type="hidden"
+                                                    name="roles"
+                                                    style={{ height: "100px" }}
+                                                    id="skillFilter"
+                                                    data-testid="template"
+                                                    value={selectedSkills.join(" ")}
+                                                    onChange={(event) => setFieldValue("roles", selectedSkills.join(" "))}
+                                                />
+                                                <div id="skillFilters">
+                                                    {selectedSkills.map(skill => (<SkillBadge key={skill} skill={skill}/>))}
+                                                </div>
                                             </Col>
                                         </Row>
                                         <Row style={{ flexDirection: "row-reverse", paddingRight: 10 }}>

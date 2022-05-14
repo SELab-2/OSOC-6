@@ -269,6 +269,10 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedSkillTypes);
 
+    commonSkills.map(async (skill) => {
+        await axios.post(apiPaths.skillTypes, new SkillType(skill, '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)), AxiosConf)
+    })
+
     const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];
     if (communications._embedded.communications.length == 0) {
