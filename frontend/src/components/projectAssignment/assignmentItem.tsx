@@ -1,13 +1,13 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import useSWR, { useSWRConfig } from "swr";
 import { deleteAssignment, getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
-import WarningToast from "../warningToast";
+import WarningToast from "../util/warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import AssignmentStudentRow from "./assignmentStudentRow";
 import { useState } from "react";
-import SkillBadge from "../skillBadge";
+import SkillBadge from "../util/skillBadge";
 
 export interface IAssignmentItemProps {
     skill: IProjectSkill;

@@ -4,13 +4,13 @@ import mockAxios from "jest-mock-axios";
 import { cleanup, render, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
 import React from "react";
-import RouteInjector from "../../src/components/routeInjector";
+import RouteInjector from "../../src/components/util/routeInjector";
 import { getBaseActiveEdition, getBaseOkResponse, getBasePage } from "./TestEntityProvider";
 import GlobalContext from "../../src/context/globalContext";
 import apiPaths from "../../src/properties/apiPaths";
 import { editionCollectionName } from "../../src/api/entities/EditionEntity";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import { StudentList } from "../../src/components/studentList";
+import { StudentList } from "../../src/components/student/studentList";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { makeCacheFree } from "./Provide";
-import CommunicationInfo from "../../src/components/CommunicationInfo";
+import CommunicationInfo from "../../src/components/communication/CommunicationInfo";
 import {
     getBaseCommunication,
     getBaseCommunicationTemplate,
