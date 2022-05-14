@@ -62,6 +62,8 @@ const common = {
     admin: "admin",
     coach: "coach",
     disabled: "disabled",
+    year: "year",
+    active: "active",
     edit: "edit",
 
     "no edition": "no edition",
