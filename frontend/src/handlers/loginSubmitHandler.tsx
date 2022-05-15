@@ -2,6 +2,7 @@ import apiPaths from "../properties/apiPaths";
 import { NextRouter } from "next/router";
 import { ScopedMutator } from "swr/dist/types";
 import { postLoginFromForm } from "../api/calls/userCalls";
+import applicationPaths from "../properties/applicationPaths";
 
 export interface LoginValues {
     username: string;
@@ -21,11 +22,13 @@ export async function loginSubmitHandler(
     const loginFormData = new FormData();
     loginFormData.append("username", values.username);
     loginFormData.append("password", values.password);
+    await postLoginFromForm(loginFormData);
 
-    const response = await postLoginFromForm(loginFormData);
     // redirect to the url specified in the response
-    let redirect =
-        router.query.returnUrl != undefined ? router.query.returnUrl : response.request.responseURL;
+    const redirect: string =
+        router.query.returnUrl?.at(0) !== undefined
+            ? router.query.returnUrl[0]
+            : "/" + applicationPaths.assignStudents;
     await Promise.all([mutate(apiPaths.ownUser), mutate(apiPaths.editions)]);
     await router.push(redirect);
 }

@@ -34,7 +34,7 @@ export function getUserOnUrl(url: string): Promise<IUser> {
 }
 
 export async function logoutUser() {
-    await axios.get(apiPaths.base + apiPaths.logout, AxiosConf);
+    await axios.get(apiPaths.logout, AxiosConf);
 }
 
 export function extractIdFromUserUrl(url: string): string {
