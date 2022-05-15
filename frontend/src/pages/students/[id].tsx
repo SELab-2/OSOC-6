@@ -6,7 +6,6 @@ import { StudentList } from "../../components/student/studentList";
 import { StudentInfo } from "../../components/student/studentInfo";
 import { StudentFilterComponent } from "../../components/student/studentFilterComponent";
 
-
 const StudentsIDPage: NextPage = () => {
     return (
         <>

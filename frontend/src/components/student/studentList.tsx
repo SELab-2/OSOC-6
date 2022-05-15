@@ -15,7 +15,7 @@ import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../h
 import { StudentStatusButton } from "./studentStatusButton";
 import { Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
-import {getParamsFromQueryUrl, getQueryUrlFromParams} from "../../api/calls/baseCalls";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
@@ -23,8 +23,8 @@ export const StudentList = (props: { isDraggable: boolean }) => {
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
-    console.log("Params:")
-    console.log(params)
+    console.log("Params:");
+    console.log(params);
 
     let { data, error } = useSwrWithEdition(
         constructStudentQueryUrl(apiPaths.studentByQuery, params),
@@ -74,12 +74,12 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                     let url = transformer(
                                         "/" + applicationPaths.students + "/" + studentPath
                                     );
-                                    const params = getParamsFromQueryUrl(router.asPath)
-                                    console.log("Params from url")
-                                    console.log(params)
-                                    console.log("New url")
-                                    console.log(getQueryUrlFromParams(url, params))
-                                    router.push({pathname: url, query: params}).catch(console.log);
+                                    const params = getParamsFromQueryUrl(router.asPath);
+                                    console.log("Params from url");
+                                    console.log(params);
+                                    console.log("New url");
+                                    console.log(getQueryUrlFromParams(url, params));
+                                    router.push({ pathname: url, query: params }).catch(console.log);
                                 }
                             }}
                         >
