@@ -65,6 +65,7 @@ const common = {
     "project about": "about this project",
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
+    "select a project to start": "select a project to start",
 
     email: "e-mail",
     name: "name",
@@ -136,7 +137,10 @@ const common = {
     "for role": "for the role ",
 
     "create new edition": "create new edition",
+    "manage editions": "manage editions",
+    editions: "editions",
     active: "active",
+    "not active": "not active",
     year: "year",
 };
 

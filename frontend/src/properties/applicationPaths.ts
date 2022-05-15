@@ -30,6 +30,7 @@ const applicationPaths = {
     communicationInfo: "communications/[id]",
 
     editionBase: "editions",
+    editionCreate: "editions/create",
 };
 
 export default applicationPaths;

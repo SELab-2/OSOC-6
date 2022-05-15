@@ -1,4 +1,5 @@
 import {
+    AxiosConf,
     basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
@@ -6,6 +7,7 @@ import {
 } from "./baseCalls";
 import { Edition, editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
+import axios from "axios";
 
 /**
  * Get all editions from a page
@@ -42,4 +44,12 @@ export function extractIdFromEditionUrl(url: string): string {
  */
 export async function createNewEdition(template: Edition): Promise<IEdition> {
     return <Promise<IEdition>>(await basePost(apiPaths.editions, template)).data;
+}
+
+/**
+ * Delete an edition.
+ * @param url of the edition
+ */
+export function editionDelete(url: string) {
+    return axios.delete(url, AxiosConf);
 }

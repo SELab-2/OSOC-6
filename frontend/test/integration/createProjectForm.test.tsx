@@ -56,6 +56,8 @@ describe("Create project form", () => {
     });
 
     it("Filling in form and submitting it", async () => {
+        jest.setTimeout(7500);
+
         const submitProject = jest.fn();
 
         // All used string constants

@@ -16,6 +16,9 @@ export const OptionsMenu = () => {
             <Nav.Link href={"/" + applicationPaths.profile} className={styles.menu_option}>
                 {capitalize(t("user profile"))}
             </Nav.Link>
+            <Nav.Link href={"/" + applicationPaths.editionBase} className={styles.menu_option}>
+                {capitalize(t("editions"))}
+            </Nav.Link>
             <Nav.Link href={apiPaths.base + apiPaths.logout} className={styles.menu_option}>
                 {capitalize(t("logout"))}
             </Nav.Link>
