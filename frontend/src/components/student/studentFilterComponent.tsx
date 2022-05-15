@@ -86,7 +86,6 @@ export function StudentFilterComponent() {
                         initialValues={values}
                         onSubmit={async (values) => {
                             values.skills = selectedSkills;
-                            console.log(values.skills);
                             await router.replace({
                                 query: { ...router.query, ...fromFormStudentQueryParams(values) },
                             });
@@ -207,7 +206,8 @@ export function StudentFilterComponent() {
                                             <Col sm={8}>
                                                 <div id="skillFilters">
                                                     {selectedSkills.map((skill) => (
-                                                        <SkillBadge key={skill} skill={skill} />
+                                                        <SkillBadge key={skill} skill={skill}
+                                                                    onClick={() => setSelectedSkills(selectedSkills.filter(selected => selected !== skill))}/>
                                                     ))}
                                                 </div>
                                             </Col>
