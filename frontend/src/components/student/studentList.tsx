@@ -11,20 +11,16 @@ import {
 } from "../../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import { useSwrWithEdition } from "../../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
 import { Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
-import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
-    console.log("Params:");
-    console.log(params);
 
     let { data, error } = useSwrWithEdition(
         constructStudentQueryUrl(apiPaths.studentByQuery, params),
@@ -66,20 +62,15 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                 event.dataTransfer.setData("url", student._links.self.href);
                                 event.dataTransfer.setData("name", student.firstName);
                             }}
-                            onClick={() => {
+                            onClick={async () => {
                                 if (!draggable) {
-                                    let studentPath: string = extractIdFromStudentUrl(
+                                    let studentId: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
-                                    let url = transformer(
-                                        "/" + applicationPaths.students + "/" + studentPath
-                                    );
-                                    const params = getParamsFromQueryUrl(router.asPath);
-                                    console.log("Params from url");
-                                    console.log(params);
-                                    console.log("New url");
-                                    console.log(getQueryUrlFromParams(url, params));
-                                    router.push({ pathname: url, query: params }).catch(console.log);
+                                    await router.replace({
+                                        pathname: "/" + applicationPaths.students + "/" + studentId,
+                                        query: { ...router.query },
+                                    });
                                 }
                             }}
                         >
