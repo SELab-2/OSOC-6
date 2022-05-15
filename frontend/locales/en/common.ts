@@ -134,6 +134,10 @@ const common = {
     suggesting: "You are suggesting ",
     "to project": "to project ",
     "for role": "for the role ",
+
+    "create new edition": "create new edition",
+    active: "active",
+    year: "year",
 };
 
 export default common;

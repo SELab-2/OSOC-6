@@ -28,6 +28,8 @@ const applicationPaths = {
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
+
+    editionBase: "editions",
 };
 
 export default applicationPaths;
