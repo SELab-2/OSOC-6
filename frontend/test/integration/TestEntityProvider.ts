@@ -241,7 +241,7 @@ export function getBaseSuggestion(id: string): ISuggestion {
 }
 
 export function getBaseCommunicationTemplate(id: string): ICommunicationTemplate {
-    const baseCommunicationPath = "http://localhost/api/communication-templates/" + id;
+    const baseCommunicationPath = "http://localhost/api/communicationTemplates/" + id;
     return {
         name: "Selected",
         subject: "Selection notification",
