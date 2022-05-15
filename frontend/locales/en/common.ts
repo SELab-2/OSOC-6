@@ -119,7 +119,8 @@ const common = {
     "no projects": "This edition has no projects :(.",
 
     "edition overview": "edition overview",
-    "change edition state": "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "change edition state":
+        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
     "invalid edition year": "please provide a valid year",
 
     suggesting: "You are suggesting ",

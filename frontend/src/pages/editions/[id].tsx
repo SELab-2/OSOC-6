@@ -11,7 +11,7 @@ const Edition: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const id = router.query.id;
-
+    console.log("PAGE ID: " + id);
     return (
         <main className={styles.main}>
             <NavBar />

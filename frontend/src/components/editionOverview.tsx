@@ -15,8 +15,11 @@ import {
     editionSaveYearHandler,
 } from "../handlers/editionHandler";
 import timers from "../properties/timers";
+export interface EditionOverviewProps {
+    editionId: string;
+}
 
-export function EditionOverview(editionId: any) {
+export function EditionOverview({ editionId }: EditionOverviewProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
 
@@ -28,9 +31,10 @@ export function EditionOverview(editionId: any) {
     const [showGeneralError, setShowGeneralError] = useState<boolean>(false);
     const [showYearError, setShowYearError] = useState<boolean>(false);
 
-    let { data, error } = useSWR(apiPaths.editions + "/" + editionId.editionId, getEditionOnUrl);
+    let { data, error } = useSWR(apiPaths.editions + "/" + editionId, getEditionOnUrl);
 
     if (error || !data) {
+        console.log(editionId);
         return null;
     }
 
@@ -78,6 +82,12 @@ export function EditionOverview(editionId: any) {
         }
     }
 
+    function handleChangeActive() {
+        if (window.confirm(capitalize(t("change edition state")))) {
+            handleSaveActive();
+        }
+    }
+
     async function handleSaveActive() {
         setActive(!active);
         if (data) {
@@ -107,7 +117,7 @@ export function EditionOverview(editionId: any) {
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                     {/*show edition name if not editing*/}
-                    {!editName && <Col>{name ? name : data.name}</Col>}
+                    {!editName && <Col data-testid="edition-name">{name ? name : data.name}</Col>}
                     {!editName && (
                         <Col>
                             <a data-testid="edit-name" onClick={handleEditName}>
@@ -143,7 +153,7 @@ export function EditionOverview(editionId: any) {
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("year") + ":")}</Col>
                     {/*show edition year if not editing*/}
-                    {!editYear && <Col>{year ? year : data.year}</Col>}
+                    {!editYear && <Col data-testid="edition-year">{year ? year : data.year}</Col>}
                     {!editYear && (
                         <Col>
                             <a data-testid="edit-year" onClick={handleEditYear}>
@@ -179,7 +189,7 @@ export function EditionOverview(editionId: any) {
                 </Row>
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("active") + ":")}</Col>
-                    <Col>{active ? active : data.active}</Col>
+                    <Col data-testid="edition-active">{active ? active : data.active}</Col>
 
                     <Col>
                         <input
@@ -187,15 +197,8 @@ export function EditionOverview(editionId: any) {
                             type="checkbox"
                             name="active"
                             checked={data.active}
-                            onChange={() => {
-                                if (
-                                    window.confirm(
-                                        capitalize(t("change edition state"))
-                                    )
-                                ) {
-                                    handleSaveActive();
-                                }
-                            }}
+                            onChange={() => handleChangeActive()}
+                            onClick={() => handleChangeActive()}
                         />
                     </Col>
                 </Row>
@@ -212,6 +215,7 @@ export function EditionOverview(editionId: any) {
                 </ToastContainer>
                 <ToastContainer position="bottom-end">
                     <Toast
+                        data-testid="error-year"
                         bg="warning"
                         onClose={() => setShowYearError(false)}
                         show={showYearError}
