@@ -13,8 +13,6 @@ export default function CommunicationTemplatePage() {
     const query = router.query as { id: string };
     const templateId = query.id;
 
-    console.log(apiPaths.communicationTemplates + "/" + templateId);
-
     const { data, error } = useSWR(
         apiPaths.communicationTemplates + "/" + templateId,
         getCommunicationTemplateOnUrl
