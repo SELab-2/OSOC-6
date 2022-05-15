@@ -206,8 +206,17 @@ export function StudentFilterComponent() {
                                             <Col sm={8}>
                                                 <div id="skillFilters">
                                                     {selectedSkills.map((skill) => (
-                                                        <SkillBadge key={skill} skill={skill}
-                                                                    onClick={() => setSelectedSkills(selectedSkills.filter(selected => selected !== skill))}/>
+                                                        <SkillBadge
+                                                            key={skill}
+                                                            skill={skill}
+                                                            onClick={() =>
+                                                                setSelectedSkills(
+                                                                    selectedSkills.filter(
+                                                                        (selected) => selected !== skill
+                                                                    )
+                                                                )
+                                                            }
+                                                        />
                                                     ))}
                                                 </div>
                                             </Col>
