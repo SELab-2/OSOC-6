@@ -21,14 +21,21 @@ function boolToString(bool: boolean | undefined) {
 export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStudentQueryParams {
     const values: IStudentQueryParams = {
         freeText: "",
-        roles: "",
+        skills: [],
         studentCoach: false,
         alumni: false,
         unmatched: false,
         status: "",
     };
     values.freeText = (query.freeText || "") as string;
-    values.roles = (query.roles || "") as string;
+    if (query.skills) {
+        // If skills has only 1 element it will be interpreted as a string instead of a list
+        if (typeof query.skills == "string") {
+            values.skills = [query.skills];
+        } else {
+            values.skills = query.skills as string[];
+        }
+    }
     if (query.studentCoach !== undefined) {
         values.studentCoach = query.studentCoach !== "false";
     }
@@ -46,7 +53,7 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
 function fromFormStudentQueryParams(values: IStudentQueryParams): ParsedUrlQueryInput {
     const queryObject: ParsedUrlQueryInput = {};
     queryObject.freeText = values.freeText;
-    queryObject.roles = values.roles;
+    queryObject.skills = values.skills;
     queryObject.studentCoach = boolToString(values.studentCoach);
     queryObject.alumni = boolToString(values.alumni);
     queryObject.unmatched = boolToString(values.unmatched);
@@ -59,8 +66,7 @@ export function StudentFilterComponent() {
     const { data: skillsRes, error: skillError } = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
     const router = useRouter();
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
-    const initalSkills: string[] = values.roles === "" ? [] : values.roles.split(" ");
-    const [selectedSkills, setSelectedSkills] = useState<string[]>(initalSkills);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>(values.skills);
     let skills = skillsRes === undefined ? [] : skillsRes;
 
     if (skillError) {
@@ -79,14 +85,14 @@ export function StudentFilterComponent() {
                         enableReinitialize={true}
                         initialValues={values}
                         onSubmit={async (values) => {
-                            values.roles = selectedSkills.join(" ");
-                            console.log(values.roles);
+                            values.skills = selectedSkills;
+                            console.log(values.skills);
                             await router.replace({
                                 query: { ...router.query, ...fromFormStudentQueryParams(values) },
                             });
                         }}
                     >
-                        {({ isSubmitting, setFieldValue }) => (
+                        {({ isSubmitting }) => (
                             <Form>
                                 <Row>
                                     <Col sm={3}>
@@ -134,7 +140,7 @@ export function StudentFilterComponent() {
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <div>Roles</div>
+                                                <div>Skills</div>
                                                 <Dropdown as={ButtonGroup} drop="down">
                                                     <Dropdown.Toggle
                                                         style={{
@@ -199,17 +205,6 @@ export function StudentFilterComponent() {
                                         </Row>
                                         <Row>
                                             <Col sm={8}>
-                                                <input
-                                                    type="hidden"
-                                                    name="roles"
-                                                    style={{ height: "100px" }}
-                                                    id="skillFilter"
-                                                    data-testid="template"
-                                                    value={selectedSkills.join(" ")}
-                                                    onChange={(event) =>
-                                                        setFieldValue("roles", selectedSkills.join(" "))
-                                                    }
-                                                />
                                                 <div id="skillFilters">
                                                     {selectedSkills.map((skill) => (
                                                         <SkillBadge key={skill} skill={skill} />

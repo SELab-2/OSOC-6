@@ -9,7 +9,7 @@ import { IStudent, OsocExpericience, Status, studentCollectionName } from "../en
 
 export interface IStudentQueryParams {
     freeText: string;
-    roles: string;
+    skills: string[];
     studentCoach: boolean;
     alumni: boolean;
     unmatched: boolean;
@@ -41,8 +41,8 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     }
 
     const queryParams: { [k: string]: any } = {};
-    if (params.roles) {
-        queryParams.roles = params.roles;
+    if (params.skills.length != 0) {
+        queryParams.skills = params.skills.join(" ");
     }
     if (params.freeText) {
         queryParams.freeText = params.freeText;
