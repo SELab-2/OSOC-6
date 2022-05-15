@@ -69,7 +69,7 @@ describe("Login page", () => {
         });
 
         await waitFor(() => {
-            expect(mockRouter.pathname).toEqual("/" + applicationPaths.home);
+            expect(mockRouter.pathname).toEqual("/" + applicationPaths.assignStudents);
         });
     });
 });

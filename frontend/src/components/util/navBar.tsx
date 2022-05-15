@@ -20,7 +20,7 @@ export const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className={"ms-auto"}>
                             <Nav.Item data-testid="navbar-students">
-                                <Nav.Link href={transformer("/" + applicationPaths.students)}>
+                                <Nav.Link href={transformer("/" + applicationPaths.assignStudents)}>
                                     {t("students")}
                                 </Nav.Link>
                             </Nav.Item>
