@@ -65,6 +65,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                                     alignItems: "center",
                                     display: "flex",
                                 }}
+                                data-testid="template-select-main"
                             >
                                 {capitalize(t("choose your template"))}
                             </Dropdown.Toggle>
@@ -72,6 +73,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                                 {templates.map((template) => (
                                     <DropdownItem
                                         key={template._links.self.href}
+                                        data-testid={"template-select-" + template._links.self.href}
                                         onClick={() => {
                                             setSelectedTemplate(template);
                                             setFieldValue("template", template._links.self.href);
