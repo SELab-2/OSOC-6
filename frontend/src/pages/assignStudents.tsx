@@ -6,6 +6,7 @@ import { StudentList } from "../components/student/studentList";
 import ProjectAsignmentList from "../components/projectAssignment/projectAssignmentList";
 import { useState } from "react";
 import AssignmentModal, { ModalSkillInfo } from "../components/projectAssignment/assignmentModal";
+import { StudentFilterComponent } from "../components/student/studentFilterComponent";
 
 export type DropHandler = (
     studentName: string,
@@ -37,15 +38,8 @@ const AssignStudentsPage: NextPage = () => {
         <>
             <NavBar />
             <div className={styles.projects} data-testid="assign-students-grid">
-                <Row className="gx-0 h-25 w-100" data-testid="student-filter">
-                    {/* Replace this div with the correct component */}
-                    <div
-                        className={
-                            "d-flex justify-content-center align-items-center h-100 " + styles.placeholder
-                        }
-                    >
-                        <p>Student filter placeholder</p>
-                    </div>
+                <Row className="gx-0 h-25 w-100">
+                    <StudentFilterComponent />
                 </Row>
                 <Row xs={1} className={"h-75 w-100 gx-0 gx-sm-4 "}>
                     <Col sm={3} xxl={2} className="h-100">
