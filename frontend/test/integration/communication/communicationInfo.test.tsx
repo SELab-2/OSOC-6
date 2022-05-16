@@ -4,7 +4,7 @@ import {
     getBaseCommunication,
     getBaseCommunicationTemplate,
     getBaseOkResponse,
-    getBaseStudent
+    getBaseStudent,
 } from "../TestEntityProvider";
 import { render, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";

@@ -11,7 +11,7 @@ import {
     getBaseOkResponse,
     getBasePage,
     getBaseStudent,
-    getBaseUser
+    getBaseUser,
 } from "../TestEntityProvider";
 import { Communication } from "../../../src/api/entities/CommunicationEntity";
 import { UserRole } from "../../../src/api/entities/UserEntity";
