@@ -1,17 +1,30 @@
 import axios, { AxiosResponse } from "axios";
 import { AxiosConf } from "../api/calls/baseCalls";
+import { saveEditionActiveState, saveEditionName, saveEditionYear } from "../api/calls/editionCalls";
 
-// Patch the name of an edition
+/**
+ * Changes the name of an edition.
+ * @param url the url hosting the edition.
+ * @param name the new name of the edition.
+ */
 export async function editionSaveNameHandler(url: string, name: string): Promise<AxiosResponse> {
-    return await axios.patch(url, { name: name }, AxiosConf);
+    return await saveEditionName(url, name);
 }
 
-// Patch the year of an edition
+/**
+ * Changes the year of an edition.
+ * @param url the url hosting the edition.
+ * @param year the new year of the edition.
+ */
 export async function editionSaveYearHandler(url: string, year: string): Promise<AxiosResponse> {
-    return await axios.patch(url, { year: year }, AxiosConf);
+    return await saveEditionYear(url, year);
 }
 
-// Patch the active-state of an edition
+/**
+ * Changes the active-state of an edition.
+ * @param url the url hosting the edition.
+ * @param active the new state of the edition.
+ */
 export async function editionSaveActiveHandler(url: string, active: boolean): Promise<AxiosResponse> {
-    return await axios.patch(url, { active: active }, AxiosConf);
+    return await saveEditionActiveState(url, active);
 }

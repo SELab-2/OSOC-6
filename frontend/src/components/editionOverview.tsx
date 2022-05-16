@@ -15,10 +15,16 @@ import {
     editionSaveYearHandler,
 } from "../handlers/editionHandler";
 import timers from "../properties/timers";
+import { emptyCommunication } from "../api/entities/CommunicationEntity";
+import { emptyEdition } from "../api/entities/EditionEntity";
 export interface EditionOverviewProps {
     editionId: string;
 }
 
+/**
+ * Component showing the attributes of an edition and allowing the user to change them.
+ * @param editionId the id of the edition that is to be displayed and maybe changed.
+ */
 export function EditionOverview({ editionId }: EditionOverviewProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
@@ -34,8 +40,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     let { data, error } = useSWR(apiPaths.editions + "/" + editionId, getEditionOnUrl);
 
     if (error || !data) {
-        console.log(editionId);
-        return null;
+        data = emptyEdition;
     }
 
     function handleEditName() {
@@ -49,7 +54,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
         setEditName(false);
         if (data) {
             const response: AxiosResponse = await editionSaveNameHandler(data._links.self.href, name);
-            if (response.status == StatusCodes.OK) {
+            if (response.status === StatusCodes.OK) {
                 data = response.data;
                 mutate(apiPaths.editions);
             } else {
@@ -73,7 +78,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
         }
         if (data) {
             const response: AxiosResponse = await editionSaveYearHandler(data._links.self.href, year);
-            if (response.status == StatusCodes.OK) {
+            if (response.status === StatusCodes.OK) {
                 data = response.data;
                 mutate(apiPaths.editions);
             } else {
@@ -83,6 +88,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     }
 
     function handleChangeActive() {
+        // Ask the user if they REALLY want to change this attribute with a popup window, as it is very impactful
         if (window.confirm(capitalize(t("change edition state")))) {
             handleSaveActive();
         }
@@ -92,7 +98,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
         setActive(!active);
         if (data) {
             const response: AxiosResponse = await editionSaveActiveHandler(data._links.self.href, active);
-            if (response.status == StatusCodes.OK) {
+            if (response.status === StatusCodes.OK) {
                 data = response.data;
                 mutate(apiPaths.editions);
             } else {
