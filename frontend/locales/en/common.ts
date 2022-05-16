@@ -134,6 +134,8 @@ const common = {
     suggesting: "You are suggesting ",
     "to project": "to project ",
     "for role": "for the role ",
+
+    "edit communicationTemplate": "edit communication template",
 };
 
 export default common;

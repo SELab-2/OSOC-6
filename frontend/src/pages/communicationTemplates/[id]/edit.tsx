@@ -8,8 +8,10 @@ import {
     emptyCommunicationTemplate,
     ICommunicationTemplate,
 } from "../../../api/entities/CommunicationTemplateEntity";
+import { capitalize } from "../../../utility/stringUtil";
 
 export default function CommunicationTemplateEditPage() {
+    const { t } = useTranslation("common");
     const router = useRouter();
     const query = router.query as { id: string };
     const templateId = query.id;
@@ -27,7 +29,9 @@ export default function CommunicationTemplateEditPage() {
 
     return (
         <div data-testid="communication-template-edit">
-            <h1 className="capitalize">Edit template: {template.name}</h1>
+            <h1 className="capitalize">
+                {capitalize(t("edit communicationTemplate")) + ": " + template.name}
+            </h1>
             <CreateCommunicationTemplateForm template={template} />
         </div>
     );

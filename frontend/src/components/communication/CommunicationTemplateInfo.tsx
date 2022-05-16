@@ -47,7 +47,9 @@ export default function CommunicationTemplateInfo({ template, student }: ICommun
                         "/" +
                         extractIdFromCommunicationTemplateUrl(template._links.self.href) +
                         "/" +
-                        "edit"
+                        applicationPaths.communicationTemplateEdit.split(
+                            applicationPaths.communicationTemplateInfo
+                        )[1]
                 )}
             >
                 edit

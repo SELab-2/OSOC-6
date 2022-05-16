@@ -25,6 +25,7 @@ const applicationPaths = {
     communicationTemplateBase: "communicationTemplates",
     communicationTemplateCreation: "communicationTemplates/create",
     communicationTemplateInfo: "communicationTemplates/[id]",
+    communicationTemplateEdit: "communicationTemplates/[id]/edit",
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
