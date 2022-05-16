@@ -26,7 +26,7 @@ export default function CommunicationTemplateEditPage() {
     const template: ICommunicationTemplate = receivedTemplate || emptyCommunicationTemplate;
 
     return (
-        <div data-testid="communication-template-create">
+        <div data-testid="communication-template-edit">
             <h1 className="capitalize">Edit template: {template.name}</h1>
             <CreateCommunicationTemplateForm template={template} />
         </div>
