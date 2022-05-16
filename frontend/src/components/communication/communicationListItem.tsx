@@ -5,12 +5,14 @@ import {
     emptyCommunicationTemplate,
     ICommunicationTemplate,
 } from "../../api/entities/CommunicationTemplateEntity";
+import useTranslation from "next-translate/useTranslation";
 
 export interface CommunicationListItemProps {
     communication: ICommunication;
 }
 
 export default function CommunicationListItem({ communication }: CommunicationListItemProps) {
+    const { t } = useTranslation("common");
     const { data: receivedTemplate, error: templateError } = useSWR(
         communication._links.template.href,
         getCommunicationTemplateOnUrl
@@ -27,7 +29,7 @@ export default function CommunicationListItem({ communication }: CommunicationLi
     return (
         <li>
             <div>{template.name}</div>
-            <div>{date.toLocaleString() + " via " + communication.medium}</div>
+            <div>{date.toLocaleString() + " " + t("by medium") + " " + communication.medium}</div>
         </li>
     );
 }

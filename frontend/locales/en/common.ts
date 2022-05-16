@@ -85,6 +85,7 @@ const common = {
     "additional communication info": "additional communication info",
     "communication content": "content of the communication",
     medium: "medium",
+    "by medium": "by",
     "register communication for": "register communication for",
 
     suggestions: "suggestions",
