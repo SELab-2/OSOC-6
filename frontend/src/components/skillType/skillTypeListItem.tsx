@@ -47,7 +47,7 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                                 type="button"
                                 onClick={() => setEditing(!editing)}
                             >
-                                Edit colour
+                                {capitalize(t("edit colour"))}
                             </button>
                         </div>
 
@@ -75,7 +75,7 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                 )}
             </Formik>
             <button data-testid="delete" onClick={() => deleteHandler(selfUrl)}>
-                Delete
+                {capitalize(t("delete"))}
             </button>
         </li>
     );

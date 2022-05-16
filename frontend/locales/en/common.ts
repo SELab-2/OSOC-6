@@ -147,6 +147,8 @@ const common = {
 
     // SkillType strings
     "color representing skill type": "choose the color representing the skill type",
+    "edit colour": "edit colour",
+    delete: "delete",
 };
 
 export default common;
