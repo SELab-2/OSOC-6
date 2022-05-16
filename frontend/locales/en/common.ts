@@ -1,7 +1,9 @@
 const common = {
+    // Application string
     "tool name": "open summer of code tool",
     "home page title": "OSOC-6",
 
+    // Login strings
     "login page title": "OSOC : login page",
     signin: "sign in",
     "let's get started": "let's get started!",
@@ -15,12 +17,14 @@ const common = {
     "search name": "search name",
     "something went wrong": "oops, something went wrong.",
 
+    // Student strings
     students: "students",
     "assign students": "assign students",
     "student coach": "student coach",
     alumni: "alumni",
     unmatched: "unmatched",
 
+    // User management strings
     users: "users",
     coaches: "coaches",
     "reset password": "reset password",
@@ -59,6 +63,7 @@ const common = {
     "enter password": "enter password",
     "repeat password": "repeat password",
 
+    // Profile strings
     profile: "profile",
     projects: "projects",
     "new project": "new project",
@@ -66,6 +71,7 @@ const common = {
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
 
+    // People strings
     email: "e-mail",
     name: "name",
     admin: "admin",
@@ -73,9 +79,11 @@ const common = {
     disabled: "disabled",
     edit: "edit",
 
+    // Edition strings
     "no edition": "no edition",
     "no error": "no error",
 
+    // Communication strings
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",
@@ -87,6 +95,7 @@ const common = {
     medium: "medium",
     "register communication for": "register communication for",
 
+    // Student info strings
     suggestions: "suggestions",
     suggest: "suggest",
     "reason suggestion": "reason for the suggestion",
@@ -122,6 +131,7 @@ const common = {
     "change status title": "change status",
     "change status": "would you like to change the status to",
 
+    // Assignment strings
     "assignment modal title": "Why do you want this student here?",
     "confirm assignment": "confirm assignment",
     "assignment reason": "Reason for the assignment: ",
@@ -134,6 +144,9 @@ const common = {
     suggesting: "You are suggesting ",
     "to project": "to project ",
     "for role": "for the role ",
+
+    // SkillType strings
+    "color representing skill type": "choose the color representing the skill type",
 };
 
 export default common;
