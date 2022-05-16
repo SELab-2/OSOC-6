@@ -1,12 +1,13 @@
 import { ISkillType, SkillType, skillTypeCollectionName } from "../entities/SkillTypeEntity";
 import {
-    AxiosConf, baseDelete,
+    AxiosConf,
+    baseDelete,
     basePatch,
     basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
-    getEntityOnUrl
+    getEntityOnUrl,
 } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 import { IBaseEntity } from "../entities/BaseEntities";
@@ -54,7 +55,7 @@ export async function editSkillTypeColourOnUrl(url: string, colour: string): Pro
 
 export function deleteSkillTypeFromList(url: string, skillTypes: ISkillType[]): ISkillType[] {
     baseDelete(url).catch(console.log);
-    return skillTypes.filter(skillType => skillType._links.self.href !== url);
+    return skillTypes.filter((skillType) => skillType._links.self.href !== url);
 }
 
 /**

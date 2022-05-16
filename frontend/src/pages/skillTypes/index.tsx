@@ -5,10 +5,11 @@ import { ISkillType } from "../../api/entities/SkillTypeEntity";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import SkillTypeList from "../../components/skillType/skillTypeList";
 
-
 export default function SkillTypeIndexPage() {
     const { data: receiveSkillTypes, error: skillTypesError } = useSWR(
-        getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }), getAllSkillTypesFromPage);
+        getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
+        getAllSkillTypesFromPage
+    );
 
     if (skillTypesError) {
         console.log(skillTypesError);
@@ -17,5 +18,5 @@ export default function SkillTypeIndexPage() {
 
     const skillTypes: ISkillType[] = receiveSkillTypes || [];
 
-    return <SkillTypeList skillTypes={skillTypes} />
+    return <SkillTypeList skillTypes={skillTypes} />;
 }

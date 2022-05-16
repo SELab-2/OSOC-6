@@ -12,7 +12,6 @@ export interface SkillTypeListProps {
 export default function SkillTypeList({ skillTypes }: SkillTypeListProps) {
     const { mutate } = useSWRConfig();
 
-
     async function handleDelete(url: string) {
         const newSkillTypes = deleteSkillTypeFromList(url, skillTypes);
         await Promise.all([
@@ -23,9 +22,9 @@ export default function SkillTypeList({ skillTypes }: SkillTypeListProps) {
     }
 
     async function handleSkillTypeEdit(url: string, values: EditSkillTypeFields) {
-        const newSkillType = await editSkillTypeColourOnUrl(url, values.colour)
+        const newSkillType = await editSkillTypeColourOnUrl(url, values.colour);
 
-        const newSkillTypes = skillTypes.map(skillType =>
+        const newSkillTypes = skillTypes.map((skillType) =>
             skillType._links.self.href === url ? newSkillType : skillType
         );
 
@@ -37,15 +36,17 @@ export default function SkillTypeList({ skillTypes }: SkillTypeListProps) {
     }
 
     return (
-        <ul>
-            { skillTypes.map(skillType =>
-                <SkillTypeListItem
-                    skillType={skillType}
-                    key={skillType._links.self.href}
-                    deleteHandler={handleDelete}
-                    editHandler={handleSkillTypeEdit}
-                />
-            )}
-        </ul>
-    )
+        <div data-testid="skill-type-list">
+            <ul>
+                {skillTypes.map((skillType) => (
+                    <SkillTypeListItem
+                        skillType={skillType}
+                        key={skillType._links.self.href}
+                        deleteHandler={handleDelete}
+                        editHandler={handleSkillTypeEdit}
+                    />
+                ))}
+            </ul>
+        </div>
+    );
 }
