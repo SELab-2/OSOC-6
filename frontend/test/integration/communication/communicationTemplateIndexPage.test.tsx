@@ -26,11 +26,9 @@ describe("Communication template index page", () => {
 
         const template = getBaseCommunicationTemplate("1");
 
-        console.log(getQueryUrlFromParams(apiPaths.communicationTemplates, { sort: "name " }));
-
         await waitFor(() => {
             mockAxios.mockResponseFor(
-                getQueryUrlFromParams(apiPaths.communicationTemplates, { sort: "name " }),
+                getQueryUrlFromParams(apiPaths.communicationTemplates, { sort: "name" }),
                 getBaseOkResponse(
                     getBasePage(apiPaths.communicationTemplates, communicationTemplateCollectionName, [
                         template,
