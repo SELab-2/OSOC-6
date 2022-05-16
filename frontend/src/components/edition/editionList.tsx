@@ -11,10 +11,12 @@ import { IEdition } from "../../api/entities/EditionEntity";
 import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
 export function EditionList() {
     const { t } = useTranslation("common");
     let { data, error } = useSWR(apiPaths.editions, getAllEditionsFromPage);
+    const transformer = useEditionApplicationPathTransformer();
 
     data = data || [];
 
@@ -27,7 +29,9 @@ export function EditionList() {
         <div data-testid="edition-list">
             <Container style={{ marginTop: "50px" }}>
                 <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
-                <Button href={applicationPaths.editionCreate}>{capitalize(t("create new edition"))}</Button>
+                <Button href={transformer(applicationPaths.editionCreate)}>
+                    {capitalize(t("create new edition"))}
+                </Button>
                 <Row>
                     <Col>
                         <h6>{capitalize(t("name"))}</h6>

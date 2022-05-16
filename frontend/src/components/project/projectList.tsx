@@ -3,7 +3,7 @@ import styles from "../../styles/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
-import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
+import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 
@@ -12,7 +12,7 @@ export function ProjectList() {
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
 
-    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFormPage);
+    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
     data = data || [];
 
     if (error) {

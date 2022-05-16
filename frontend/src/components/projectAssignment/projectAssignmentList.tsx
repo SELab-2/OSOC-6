@@ -3,13 +3,14 @@ import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import apiPaths from "../../properties/apiPaths";
-import { getAllProjectsFormPage } from "../../api/calls/projectCalls";
+import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
 import AssignmentSkillList from "./assignmentSkillList";
 import useSWR from "swr";
 import WarningToast from "../util/warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
+import { useSwrWithEdition } from "../../hooks/utilHooks";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
@@ -17,7 +18,7 @@ import { DropHandler } from "../../pages/assignStudents";
  */
 function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
-    let { data, error } = useSWR(apiPaths.projects, getAllProjectsFormPage);
+    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
     data = data || [];
     if (error) {
         return <WarningToast message={capitalize(t("error reload page"))} />;

@@ -74,7 +74,7 @@ const common = {
     disabled: "disabled",
     edit: "edit",
 
-    "no edition": "no edition",
+    "no edition": "there are no editions made yet.",
     "no error": "no error",
 
     "create communication template": "create communication template",

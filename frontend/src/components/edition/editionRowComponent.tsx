@@ -13,15 +13,23 @@ import timers from "../../properties/timers";
 import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
+import useEdition from "../../hooks/useGlobalEdition";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
 export function EditionRowComponent(props: any) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const [show, setShow] = useState<boolean>(false);
+    const [contextEdition, setContextEdition] = useEdition();
     const edition = props.edition;
+    const transformer = useEditionApplicationPathTransformer();
 
     if (!edition) {
         return null;
+    }
+
+    async function changeGlobalEdition() {
+        setContextEdition(edition);
     }
 
     async function deleteEdition() {
@@ -44,15 +52,15 @@ export function EditionRowComponent(props: any) {
                 <Col>{edition.year}</Col>
                 <Col>{edition.active ? capitalize(t("active")) : capitalize(t("not active"))}</Col>
                 <Col xs={1}>
-                    <a href={undefined} data-testid="list-edit-edition">
+                    <a onClick={changeGlobalEdition} data-testid="list-edit-edition">
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
                     <a
-                        href={
+                        href={transformer(
                             applicationPaths.editionBase +
-                            "/" +
-                            extractIdFromEditionUrl(edition._links.self.href)
-                        }
+                                "/" +
+                                extractIdFromEditionUrl(edition._links.self.href)
+                        )}
                         data-testid="list-edit-edition"
                     >
                         <Image
@@ -62,7 +70,7 @@ export function EditionRowComponent(props: any) {
                             height="15"
                         />
                     </a>
-                    <a href={undefined} onClick={deleteEdition} data-testid="list-delete-edition">
+                    <a onClick={deleteEdition} data-testid="list-delete-edition">
                         <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                     </a>
                 </Col>
