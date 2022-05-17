@@ -16,22 +16,39 @@ describe("Student status button", () => {
         render(
             <StudentStatusButton
                 status={Status.approved}
-                style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                colour="#1DE1AE"
             />
         );
     });
 
-    it("should alter the query", async () => {
+    it("should add skillfilter to query", async () => {
         const status: Status = Status.approved;
         mockRouter.query = {};
         let statusFilter: RenderResult = render(
             <StudentStatusButton
                 status={status}
-                style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                colour="#1DE1AE"
             />
         );
 
         await userEvent.click(statusFilter.getByTestId("suggest-button"));
         expect(mockRouter.query?.status).toEqual(status);
+    });
+
+    it("double click should remove filter from query", async () => {
+        const status: Status = Status.approved;
+        mockRouter.query = {};
+        let statusFilter: RenderResult = render(
+            <StudentStatusButton
+                status={status}
+                colour="#1DE1AE"
+            />
+        );
+
+        await userEvent.click(statusFilter.getByTestId("suggest-button"));
+        expect(mockRouter.query?.status).toEqual(status);
+
+        await userEvent.click(statusFilter.getByTestId("suggest-button"));
+        expect(mockRouter.query?.status).toEqual("");
     });
 });
