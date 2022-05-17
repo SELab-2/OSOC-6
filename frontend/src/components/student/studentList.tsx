@@ -81,19 +81,19 @@ export const StudentList = (props: { isDraggable: boolean }) => {
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#0a0839" }}>
                 <StudentStatusButton
                     status={Status.approved}
-                    style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                    colour="#1DE1AE"
                 />
                 <StudentStatusButton
                     status={Status.maybe}
-                    style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
+                    colour="#FCB70F"
                 />
                 <StudentStatusButton
                     status={Status.rejected}
-                    style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
+                    colour="#F14A3B"
                 />
                 <StudentStatusButton
                     status={Status.undecided}
-                    style={{ color: "gray", borderColor: "gray", width: 150 }}
+                    colour="gray"
                 />
             </footer>
         </div>
