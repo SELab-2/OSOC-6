@@ -1,15 +1,14 @@
 import "@testing-library/jest-dom";
-import mockAxios from 'jest-mock-axios';
-import { act, render, screen, waitFor } from '@testing-library/react';
-import { makeCacheFree } from '../Provide';
-import EditionPage from '../../../src/pages/editions';
-import { getBaseActiveEdition, getBaseNoContentResponse } from '../TestEntityProvider';
-import { IEdition } from '../../../src/api/entities/EditionEntity';
-import EditionRowComponent from '../../../src/components/edition/editionRowComponent';
-import userEvent from '@testing-library/user-event';
-import { AxiosResponse } from 'axios';
-import { GlobalStateProvider } from '../../../src/context/globalContext';
-
+import mockAxios from "jest-mock-axios";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import { makeCacheFree } from "../Provide";
+import EditionPage from "../../../src/pages/editions";
+import { getBaseActiveEdition, getBaseNoContentResponse } from "../TestEntityProvider";
+import { IEdition } from "../../../src/api/entities/EditionEntity";
+import EditionRowComponent from "../../../src/components/edition/editionRowComponent";
+import userEvent from "@testing-library/user-event";
+import { AxiosResponse } from "axios";
+import { GlobalStateProvider } from "../../../src/context/globalContext";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -51,10 +50,10 @@ describe("EditionList", () => {
         const edition: IEdition = getBaseActiveEdition("3", "edition 1");
         render(
             <GlobalStateProvider>
-                <EditionRowComponent key={edition.name} edition={edition}/>
+                <EditionRowComponent key={edition.name} edition={edition} />
             </GlobalStateProvider>
         );
 
         await userEvent.click(screen.getByTestId("list-view-edition"));
     });
-})
+});

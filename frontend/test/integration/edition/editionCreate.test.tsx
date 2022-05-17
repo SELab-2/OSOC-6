@@ -1,9 +1,9 @@
-import mockAxios from 'jest-mock-axios';
-import { act, render, screen, waitFor } from '@testing-library/react';
-import { makeCacheFree } from '../Provide';
-import CreateEdition from '../../../src/pages/editions/create';
+import mockAxios from "jest-mock-axios";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import { makeCacheFree } from "../Provide";
+import CreateEdition from "../../../src/pages/editions/create";
 import "@testing-library/jest-dom";
-import userEvent from '@testing-library/user-event';
+import userEvent from "@testing-library/user-event";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -36,4 +36,4 @@ describe("EditionCreate", () => {
             expect(mockAxios.post).toHaveBeenCalled();
         });
     });
-})
+});
