@@ -57,6 +57,7 @@ export default function RouteInjector({ children }: any) {
                 },
             }).catch(console.log);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedRouterEditionUrl, contextEditionName, contextEditionUrl, latestEditionName]);
 
     if (fetchedEditionError || availableEditionsError || contextEditionError) {

@@ -45,6 +45,7 @@ export default function AssignmentStudentRow({
     const assignerCallName = assigner.callName;
     useEffect(() => {
         registerSortKey(assignment, { studentFirstName, assignerCallName });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [assignment._links.self.href, studentFirstName, assignerCallName]);
 
     if (studentError || assignerError) {
