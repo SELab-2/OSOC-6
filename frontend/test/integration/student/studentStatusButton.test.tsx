@@ -13,23 +13,13 @@ describe("Student status button", () => {
     });
 
     it("should render", () => {
-        render(
-            <StudentStatusButton
-                status={Status.approved}
-                colour="#1DE1AE"
-            />
-        );
+        render(<StudentStatusButton status={Status.approved} colour="#1DE1AE" />);
     });
 
     it("should add skillfilter to query", async () => {
         const status: Status = Status.approved;
         mockRouter.query = {};
-        let statusFilter: RenderResult = render(
-            <StudentStatusButton
-                status={status}
-                colour="#1DE1AE"
-            />
-        );
+        let statusFilter: RenderResult = render(<StudentStatusButton status={status} colour="#1DE1AE" />);
 
         await userEvent.click(statusFilter.getByTestId("suggest-button"));
         expect(mockRouter.query?.status).toEqual(status);
@@ -38,12 +28,7 @@ describe("Student status button", () => {
     it("double click should remove filter from query", async () => {
         const status: Status = Status.approved;
         mockRouter.query = {};
-        let statusFilter: RenderResult = render(
-            <StudentStatusButton
-                status={status}
-                colour="#1DE1AE"
-            />
-        );
+        let statusFilter: RenderResult = render(<StudentStatusButton status={status} colour="#1DE1AE" />);
 
         await userEvent.click(statusFilter.getByTestId("suggest-button"));
         expect(mockRouter.query?.status).toEqual(status);
