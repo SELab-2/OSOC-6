@@ -6,16 +6,15 @@ import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import useSWR, { useSWRConfig } from "swr";
 import apiPaths from "../properties/apiPaths";
-import { getEditionOnUrl } from "../api/calls/editionCalls";
+import {
+    getEditionOnUrl,
+    saveEditionActiveState,
+    saveEditionName,
+    saveEditionYear,
+} from "../api/calls/editionCalls";
 import { AxiosResponse } from "axios";
 import { StatusCodes } from "http-status-codes";
-import {
-    editionSaveActiveHandler,
-    editionSaveNameHandler,
-    editionSaveYearHandler,
-} from "../handlers/editionHandler";
 import timers from "../properties/timers";
-import { emptyCommunication } from "../api/entities/CommunicationEntity";
 import { emptyEdition } from "../api/entities/EditionEntity";
 export interface EditionOverviewProps {
     editionId: string;
@@ -37,7 +36,10 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     const [showGeneralError, setShowGeneralError] = useState<boolean>(false);
     const [showYearError, setShowYearError] = useState<boolean>(false);
 
-    const { data: receivedEdition, error: editionError } = useSWR(apiPaths.editions + "/" + editionId, getEditionOnUrl);
+    const { data: receivedEdition, error: editionError } = useSWR(
+        apiPaths.editions + "/" + editionId,
+        getEditionOnUrl
+    );
 
     if (editionError) {
         console.log(editionError);
@@ -56,10 +58,13 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     async function handleSaveName() {
         setEditName(false);
         if (edition) {
-            const response: AxiosResponse = await editionSaveNameHandler(edition._links.self.href, name);
+            const response: AxiosResponse = await saveEditionName(edition._links.self.href, name);
             if (response.status === StatusCodes.OK) {
                 if (response.data) {
-                    await Promise.all([mutate(apiPaths.editions), mutate(edition._links.self.href, response.data)]);
+                    await Promise.all([
+                        mutate(apiPaths.editions),
+                        mutate(edition._links.self.href, response.data),
+                    ]);
                 } else {
                     setShowGeneralError(true);
                 }
@@ -83,10 +88,13 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
             return;
         }
         if (edition) {
-            const response: AxiosResponse = await editionSaveYearHandler(edition._links.self.href, year);
+            const response: AxiosResponse = await saveEditionYear(edition._links.self.href, year);
             if (response.status === StatusCodes.OK) {
                 if (edition) {
-                    await Promise.all([mutate(apiPaths.editions), mutate(edition._links.self.href, edition)]);
+                    await Promise.all([
+                        mutate(apiPaths.editions),
+                        mutate(edition._links.self.href, response.data),
+                    ]);
                     setShowYearError(false);
                 } else {
                     setShowGeneralError(true);
@@ -107,10 +115,13 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     async function handleSaveActive() {
         setActive(!active);
         if (edition) {
-            const response: AxiosResponse = await editionSaveActiveHandler(edition._links.self.href, active);
+            const response: AxiosResponse = await saveEditionActiveState(edition._links.self.href, active);
             if (response.status === StatusCodes.OK) {
                 if (edition) {
-                    await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
+                    await Promise.all([
+                        mutate(apiPaths.editions),
+                        mutate(edition._links.self.href, response.data),
+                    ]);
                 } else {
                     setShowGeneralError(true);
                 }
