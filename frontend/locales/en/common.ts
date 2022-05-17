@@ -134,6 +134,10 @@ const common = {
     suggesting: "You are suggesting ",
     "to project": "to project ",
     "for role": "for the role ",
+
+    filters: "filters",
+    skills: "skills",
+    "choose roles": "choose one or more"
 };
 
 export default common;

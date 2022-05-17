@@ -41,7 +41,7 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     }
 
     const queryParams: { [k: string]: any } = {};
-    if (params.skills.length != 0) {
+    if (params.skills.length !== 0) {
         queryParams.skills = params.skills.join(" ");
     }
     if (params.freeText) {

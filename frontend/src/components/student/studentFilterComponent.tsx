@@ -76,7 +76,7 @@ export function StudentFilterComponent() {
         <div data-testid="student-filter" style={{ backgroundColor: "#0a0839" }}>
             <div style={{ color: "white", padding: 20 }}>
                 <Row>
-                    <h1>Filters</h1>
+                    <h1>{capitalize(t("filters"))}</h1>
                 </Row>
 
                 <Row style={{ paddingLeft: 20 }}>
@@ -141,7 +141,7 @@ export function StudentFilterComponent() {
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <div>Skills</div>
+                                                <div>{capitalize(t("skills"))}</div>
                                                 <Dropdown as={ButtonGroup} drop="down">
                                                     <Dropdown.Toggle
                                                         style={{
@@ -153,7 +153,7 @@ export function StudentFilterComponent() {
                                                         }}
                                                         data-testid="skill-dropdown"
                                                     >
-                                                        Choose one or more
+                                                        {capitalize(t("choose roles"))}
                                                     </Dropdown.Toggle>
                                                     <DropdownMenu>
                                                         {skills.map((value) => (
