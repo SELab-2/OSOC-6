@@ -1,7 +1,7 @@
 import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
 import useEdition from "./useGlobalEdition";
 import useSWR from "swr";
-import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
+import { extractIdFromEditionUrl, getEditionByName, getEditionOnUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
 
 /**
@@ -25,10 +25,10 @@ export function useSwrWithEdition<T>(
  * The transformer makes sure an api url has the needed query parameter.
  */
 export function useEditionAPIUrlTransformer(): (url: string) => string {
-    const [edition] = useEdition();
+    const [editionUrl] = useEdition();
     return (url) =>
         getQueryUrlFromParams(url, {
-            edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
+            edition: editionUrl ? extractIdFromEditionUrl(editionUrl) : undefined,
         });
 }
 
@@ -37,6 +37,6 @@ export function useEditionAPIUrlTransformer(): (url: string) => string {
  * The transformer makes sure an application path has the needed query parameter.
  */
 export function useEditionApplicationPathTransformer(): (url: string) => string {
-    const [edition] = useEdition();
-    return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
+    const [editionUrl] = useEdition();
+    return (url) => url;
 }
