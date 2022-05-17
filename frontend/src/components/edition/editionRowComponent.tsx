@@ -38,7 +38,6 @@ export function EditionRowComponent(props: any) {
         }).catch(console.log);
     }
 
-
     async function deleteEdition() {
         const response = await editionDelete(edition._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
@@ -59,7 +58,7 @@ export function EditionRowComponent(props: any) {
                 <Col>{edition.year}</Col>
                 <Col>{edition.active ? capitalize(t("active")) : capitalize(t("not active"))}</Col>
                 <Col xs={1}>
-                    <a onClick={changeGlobalEdition} data-testid="list-edit-edition">
+                    <a onClick={changeGlobalEdition} data-testid="list-view-edition">
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
                     <a

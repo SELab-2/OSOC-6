@@ -32,6 +32,7 @@ export default function CreateEditionForm() {
                         step="1"
                         value={values.year}
                         onChange={(event) => setFieldValue("year", event.target.value)}
+                        data-testid="year"
                     />
 
                     <label className="capitalize" htmlFor="editionActiveField">
