@@ -6,7 +6,7 @@ import NavBar from "../../components/navBar";
 import EditionOverview from "../../components/editionOverview";
 import { useRouter } from "next/router";
 
-const Edition: NextPage = () => {
+const EditionInfoPage: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const id = router.query.id;
@@ -18,4 +18,4 @@ const Edition: NextPage = () => {
     );
 };
 
-export default Edition;
+export default EditionInfoPage;
