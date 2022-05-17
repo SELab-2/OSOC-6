@@ -1,20 +1,17 @@
 import useTranslation from "next-translate/useTranslation";
-import { Col, Container, DropdownButton, Row, Toast, ToastContainer } from "react-bootstrap";
+import { Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
 import Image from "next/image";
-import DropdownItem from "react-bootstrap/DropdownItem";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { StatusCodes } from "http-status-codes";
-import { AxiosResponse } from "axios";
 import { capitalize } from "../../utility/stringUtil";
-import { UserRole } from "../../api/entities/UserEntity";
 import timers from "../../properties/timers";
-import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import useEdition from "../../hooks/useGlobalEdition";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useRouter } from "next/router";
 
 export function EditionRowComponent(props: any) {
     const { t } = useTranslation("common");
@@ -24,13 +21,23 @@ export function EditionRowComponent(props: any) {
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
 
+    const router = useRouter();
+
     if (!edition) {
         return null;
     }
 
     async function changeGlobalEdition() {
-        setContextEdition(edition);
+        const replace = router.replace;
+        const query = router.query as { edition?: string };
+
+        setContextEdition(edition._links.self.href);
+
+        replace({
+            query: { ...query, edition: edition.name },
+        }).catch(console.log);
     }
+
 
     async function deleteEdition() {
         const response = await editionDelete(edition._links.self.href);

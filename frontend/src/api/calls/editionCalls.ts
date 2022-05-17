@@ -1,10 +1,11 @@
 import {
-    AxiosConf, basePost,
+    AxiosConf,
+    basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
-} from './baseCalls';
+} from "./baseCalls";
 import { Edition, editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
 import axios from "axios";
