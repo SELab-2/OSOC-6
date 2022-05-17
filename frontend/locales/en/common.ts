@@ -137,7 +137,7 @@ const common = {
 
     filters: "filters",
     skills: "skills",
-    "choose roles": "choose one or more"
+    "choose roles": "choose one or more",
 };
 
 export default common;
