@@ -35,7 +35,7 @@ public final class Assignment implements WeakToEdition {
      * The id of the Assignment.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 
