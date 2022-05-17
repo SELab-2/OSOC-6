@@ -8,7 +8,6 @@ export function StudentStatusButton(props: { status: Status; style: any }) {
         await router.replace({
             query: { ...router.query, status: props.status },
         });
-        console.log(props.status);
     }
     return (
         <>

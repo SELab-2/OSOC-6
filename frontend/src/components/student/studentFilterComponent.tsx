@@ -46,7 +46,6 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
         values.unmatched = query.unmatched !== "false";
     }
     values.status = (query.status || "") as string;
-    console.log(values);
     return values;
 }
 
@@ -67,7 +66,7 @@ export function StudentFilterComponent() {
     const router = useRouter();
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
     const [selectedSkills, setSelectedSkills] = useState<string[]>(values.skills);
-    let skills = skillsRes === undefined ? [] : skillsRes;
+    let skills = skillsRes || [];
 
     if (skillError) {
         console.log(skillError);
@@ -152,6 +151,7 @@ export function StudentFilterComponent() {
                                                             alignItems: "center",
                                                             display: "flex",
                                                         }}
+                                                        data-testid="skill-dropdown"
                                                     >
                                                         Choose one or more
                                                     </Dropdown.Toggle>
@@ -159,9 +159,8 @@ export function StudentFilterComponent() {
                                                         {skills.map((value) => (
                                                             <DropdownItem
                                                                 key={value.name}
+                                                                data-testid={"select-option-" + value.name}
                                                                 onClick={() => {
-                                                                    console.log("selectedSkills");
-                                                                    console.log(selectedSkills);
                                                                     if (
                                                                         !selectedSkills.includes(value.name)
                                                                     ) {
@@ -193,7 +192,7 @@ export function StudentFilterComponent() {
                                                     }}
                                                     data-testid="freeText"
                                                     placeholder="Search students with keywords"
-                                                    InputProps={{
+                                                    initprops={{
                                                         startAdornment: (
                                                             <Image
                                                                 alt={capitalize(t("edit"))}
@@ -211,6 +210,7 @@ export function StudentFilterComponent() {
                                                 <div data-testid="roles">
                                                     {selectedSkills.map((skill) => (
                                                         <SkillBadge
+                                                            data-testid={"skillbadge-" + skill}
                                                             key={skill}
                                                             skill={skill}
                                                             onClick={() =>
