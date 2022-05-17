@@ -79,22 +79,10 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                     ))}
             </ListGroup>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#0a0839" }}>
-                <StudentStatusButton
-                    status={Status.approved}
-                    colour="#1DE1AE"
-                />
-                <StudentStatusButton
-                    status={Status.maybe}
-                    colour="#FCB70F"
-                />
-                <StudentStatusButton
-                    status={Status.rejected}
-                    colour="#F14A3B"
-                />
-                <StudentStatusButton
-                    status={Status.undecided}
-                    colour="gray"
-                />
+                <StudentStatusButton status={Status.approved} colour="#1DE1AE" />
+                <StudentStatusButton status={Status.maybe} colour="#FCB70F" />
+                <StudentStatusButton status={Status.rejected} colour="#F14A3B" />
+                <StudentStatusButton status={Status.undecided} colour="gray" />
             </footer>
         </div>
     );
