@@ -1,12 +1,12 @@
 import "@testing-library/jest-dom";
-import { makeCacheFree } from "./Provide";
-import CommunicationInfo from "../../src/components/communication/CommunicationInfo";
+import { makeCacheFree } from "../Provide";
+import CommunicationInfo from "../../../src/components/communication/CommunicationInfo";
 import {
     getBaseCommunication,
     getBaseCommunicationTemplate,
     getBaseOkResponse,
     getBaseStudent,
-} from "./TestEntityProvider";
+} from "../TestEntityProvider";
 import { render, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 

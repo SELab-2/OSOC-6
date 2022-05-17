@@ -51,6 +51,11 @@ export type ICommunicationPage = IPage<{ communications: ICommunication[] }>;
 export type ICommunicationLinks = IEntityLinks<{ communications: ICommunication[] }>;
 
 /**
+ * The communication medium that is used by default.
+ */
+export const defaultCommunicationMedium = "email";
+
+/**
  * Constructor that allows us to easily post Communication entities to our backend.
  */
 export class Communication {

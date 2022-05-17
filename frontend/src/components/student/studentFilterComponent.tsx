@@ -100,6 +100,7 @@ export function StudentFilterComponent() {
                                                 type="checkbox"
                                                 className="form-check-input"
                                                 name="studentCoach"
+                                                data-testid="coachCheck"
                                                 id="coachCheck"
                                             />
                                             <label className="form-check-label" htmlFor="coachCheck">
@@ -111,6 +112,7 @@ export function StudentFilterComponent() {
                                                 type="checkbox"
                                                 className="form-check-input"
                                                 name="alumni"
+                                                data-testid="alumniCheck"
                                                 id="alumniCheck"
                                             />
                                             <label className="form-check-label" htmlFor="alumniCheck">
@@ -188,6 +190,7 @@ export function StudentFilterComponent() {
                                                         width: 400,
                                                         paddingLeft: 10,
                                                     }}
+                                                    data-testid="freeText"
                                                     placeholder="Search students with keywords"
                                                     InputProps={{
                                                         startAdornment: (
@@ -204,7 +207,7 @@ export function StudentFilterComponent() {
                                         </Row>
                                         <Row>
                                             <Col sm={8}>
-                                                <div id="skillFilters">
+                                                <div data-testid="roles">
                                                     {selectedSkills.map((skill) => (
                                                         <SkillBadge
                                                             key={skill}

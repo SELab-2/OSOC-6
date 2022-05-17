@@ -5,18 +5,30 @@ import apiPaths from "../../properties/apiPaths";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/optionsMenu.module.css";
 import Image from "next/image";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { logoutUser } from "../../api/calls/userCalls";
+import { useRouter } from "next/router";
 
 export const OptionsMenu = () => {
     const { t } = useTranslation("common");
+    const transformer = useEditionApplicationPathTransformer();
+    const router = useRouter();
 
     // All options are defined here
     // This gets shown when the image is clicked.
     const menu = (
         <Popover id={styles.popover} className={styles.menu}>
-            <Nav.Link href={"/" + applicationPaths.profile} className={styles.menu_option}>
+            <Nav.Link href={transformer("/" + applicationPaths.profile)} className={styles.menu_option}>
                 {capitalize(t("user profile"))}
             </Nav.Link>
-            <Nav.Link href={apiPaths.base + apiPaths.logout} className={styles.menu_option}>
+            <Nav.Link
+                onClick={async () => {
+                    await router.push(transformer("/" + applicationPaths.login));
+                    await logoutUser();
+                }}
+                href={undefined}
+                className={styles.menu_option}
+            >
                 {capitalize(t("logout"))}
             </Nav.Link>
         </Popover>
