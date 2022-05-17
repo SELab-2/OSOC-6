@@ -1,10 +1,10 @@
 import {
-    AxiosConf,
-    basePost,
+    AxiosConf, basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
+    getEntityOnUrl,
     getQueryUrlFromParams,
-} from "./baseCalls";
+} from './baseCalls';
 import { Edition, editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
 import axios from "axios";
@@ -28,6 +28,14 @@ export async function getEditionByName(editionName: string): Promise<IEdition | 
         })
     );
     return editions[0];
+}
+
+/**
+ * Get an [IEdition] from a URL.
+ * @param url the url where the [IEdition] is hosted on
+ */
+export function getEditionOnUrl(url: string): Promise<IEdition | undefined> {
+    return <Promise<IEdition>>getEntityOnUrl(url);
 }
 
 /**
