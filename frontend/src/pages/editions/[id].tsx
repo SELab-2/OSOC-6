@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../../styles/Home.module.css";
-import NavBar from "../../components/navBar";
-import EditionOverview from "../../components/editionOverview";
+import EditionOverview from "../../components/edition/editionOverview";
 import { useRouter } from "next/router";
+import NavBar from '../../components/util/navBar';
 
 const EditionInfoPage: NextPage = () => {
     const { t } = useTranslation("common");
