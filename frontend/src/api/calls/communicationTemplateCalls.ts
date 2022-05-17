@@ -42,7 +42,7 @@ export async function createNewCommunicationTemplate(
 }
 
 /**
- * Function posting creating a new communication template on the backend.
+ * Function posting the creation of a new communication template on the backend.
  * @param template the communication template that needs to be created.
  */
 export async function editCommunicationTemplate(
