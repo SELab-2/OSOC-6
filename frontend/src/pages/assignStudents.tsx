@@ -7,6 +7,7 @@ import ProjectAsignmentList from "../components/projectAssignment/projectAssignm
 import { useState } from "react";
 import AssignmentModal, { ModalSkillInfo } from "../components/projectAssignment/assignmentModal";
 import { StudentFilterComponent } from "../components/student/studentFilterComponent";
+import ConflictResolutionList from "../components/conflictResolution/conflictResolutionList";
 
 export type DropHandler = (
     studentName: string,
@@ -50,14 +51,8 @@ const AssignStudentsPage: NextPage = () => {
                             <Col className="h-100 overflow-auto pb-2">
                                 <ProjectAsignmentList dropHandler={handleShow} />
                             </Col>
-                            <Col className={"visually-hidden"}>
-                                {/* Replace this div with the correct component */}
-                                <div
-                                    className={"d-flex justify-content-center align-items-center w-100 h-100"}
-                                    data-testid="conflicts"
-                                >
-                                    <p>Conflicts placeholder</p>
-                                </div>
+                            <Col hidden={false}>
+                                <ConflictResolutionList />
                             </Col>
                         </Row>
                     </Col>

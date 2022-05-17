@@ -38,6 +38,7 @@ const apiPaths = {
 
     students: "students",
     studentByQuery: "students/search/full-query",
+    studentConflict: "students/search/conflict-query",
 };
 
 export default apiPaths;
