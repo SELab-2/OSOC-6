@@ -49,7 +49,6 @@ export default function RouteInjector({ children }: any) {
 
         // You have no context edition and no path edition.
         if (!contextEditionUrl && !routerEditionName && latestEditionName) {
-            console.log("nope");
             replace({
                 query: {
                     ...query,
