@@ -7,7 +7,7 @@ import {
 } from "./baseCalls";
 import { editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 /**
  * Fetches all editions on a given EditionLinksUrl.
