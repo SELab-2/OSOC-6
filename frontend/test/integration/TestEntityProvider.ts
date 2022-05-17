@@ -71,6 +71,17 @@ export function getBaseMovedResponse(url: string): AxiosResponse {
     };
 }
 
+export function getBaseRedirectResponse(url: string): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.TEMPORARY_REDIRECT,
+        statusText: ReasonPhrases.TEMPORARY_REDIRECT,
+        headers: {},
+        config: {},
+        request: { responseURL: url },
+    };
+}
+
 export function getBasePage<T extends IBaseEntity>(
     apiPath: string,
     collectionName: string,
@@ -230,7 +241,7 @@ export function getBaseSuggestion(id: string): ISuggestion {
 }
 
 export function getBaseCommunicationTemplate(id: string): ICommunicationTemplate {
-    const baseCommunicationPath = "http://localhost/api/communication-templates/" + id;
+    const baseCommunicationPath = "http://localhost/api/communicationTemplates/" + id;
     return {
         name: "Selected",
         subject: "Selection notification",

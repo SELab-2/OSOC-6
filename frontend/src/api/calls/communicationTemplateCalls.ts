@@ -1,6 +1,11 @@
-import { CommunicationTemplateEntity, ICommunicationTemplate } from "../entities/CommunicationTemplateEntity";
-import { basePost, extractIdFromApiEntityUrl, getEntityOnUrl } from "./baseCalls";
+import {
+    communicationTemplateCollectionName,
+    CommunicationTemplateEntity,
+    ICommunicationTemplate,
+} from "../entities/CommunicationTemplateEntity";
+import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
+import { communicationCollectionName } from "../entities/CommunicationEntity";
 
 /**
  * Function getting a communication template on the provided url.
@@ -8,6 +13,16 @@ import apiPaths from "../../properties/apiPaths";
  */
 export function getCommunicationTemplateOnUrl(url: string): Promise<ICommunicationTemplate> {
     return <Promise<ICommunicationTemplate>>getEntityOnUrl(url);
+}
+
+/**
+ * Function getting all [ICommunicationTemplate] entities on an [IPage] url.
+ * @param url the [IPage] url hosting the communications.
+ */
+export function getAllCommunicationTemplatesFromPage(url: string): Promise<ICommunicationTemplate[]> {
+    return <Promise<ICommunicationTemplate[]>>(
+        getAllEntitiesFromPage(url, communicationTemplateCollectionName)
+    );
 }
 
 /**

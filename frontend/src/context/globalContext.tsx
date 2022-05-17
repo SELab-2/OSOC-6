@@ -1,19 +1,35 @@
-import { Context, createContext, Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
+import {
+    Context,
+    createContext,
+    Dispatch,
+    PropsWithChildren,
+    SetStateAction,
+    useEffect,
+    useState,
+} from "react";
 import { IEdition } from "../api/entities/EditionEntity";
 
 type ProviderProps = Record<string, unknown>;
 
 interface GlobalContextProps {
-    edition: IEdition | undefined;
-    setEdition: Dispatch<SetStateAction<IEdition | undefined>>;
+    editionUrl: string | undefined;
+    setEditionUrl: (editionUrl: string) => void;
 }
 
 const GlobalContext: Context<GlobalContextProps> = createContext({} as GlobalContextProps);
 
 export function GlobalStateProvider({ children }: PropsWithChildren<ProviderProps>) {
-    const [edition, setEdition] = useState<IEdition | undefined>(undefined);
+    const [editionUrl, setEditionUrl] = useState<string | undefined>(undefined);
 
-    return <GlobalContext.Provider value={{ edition, setEdition }}>{children}</GlobalContext.Provider>;
+    useEffect(() => {
+        if (editionUrl) {
+            localStorage.setItem("editionUrl", editionUrl);
+        } else {
+            setEditionUrl(localStorage.getItem("editionUrl") || undefined);
+        }
+    }, [editionUrl]);
+
+    return <GlobalContext.Provider value={{ editionUrl, setEditionUrl }}>{children}</GlobalContext.Provider>;
 }
 
 export default GlobalContext;

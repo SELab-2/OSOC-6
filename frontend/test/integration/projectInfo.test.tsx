@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
-import { ProjectInfo } from "../../src/components/projectInfo";
+import { ProjectInfo } from "../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";

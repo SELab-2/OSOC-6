@@ -15,13 +15,19 @@ import {
     getBaseUser,
 } from "./TestEntityProvider";
 import { IUser, User, userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { CreateProjectForm } from "../../src/components/createProjectForm";
+import { CreateProjectForm } from "../../src/components/project/createProjectForm";
 import userEvent from "@testing-library/user-event";
 import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
 import { ISkillType, SkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
-import { enableOwnUser, enableUseEdition, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
+import {
+    enableCurrentUser,
+    enableUseEditionAxiosCall,
+    enableUseEditionComponentWrapper,
+    getAxiosCallWithEdition,
+    makeCacheFree,
+} from "./Provide";
 import mockRouter from "next-router-mock";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
@@ -38,9 +44,10 @@ describe("Create project form", () => {
         const user: IUser = getBaseUser("1", UserRole.admin, true);
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
 
-        render(makeCacheFree(() => enableUseEdition(CreateProject, edition)));
+        render(makeCacheFree(() => enableUseEditionComponentWrapper(CreateProject, edition)));
 
-        await enableOwnUser(user);
+        // await enableUseEditionAxiosCall(edition);
+        await enableCurrentUser(user);
 
         expect(screen.getByTestId("projectname-input")).toBeInTheDocument();
         expect(screen.getByTestId("projectinfo-input")).toBeInTheDocument();
@@ -74,7 +81,10 @@ describe("Create project form", () => {
 
         const projectCreate: RenderResult = render(
             makeCacheFree(() =>
-                enableUseEdition(() => <CreateProjectForm submitHandler={submitProject} />, edition)
+                enableUseEditionComponentWrapper(
+                    () => <CreateProjectForm submitHandler={submitProject} />,
+                    edition
+                )
             )
         );
 
@@ -85,7 +95,7 @@ describe("Create project form", () => {
                 getBaseOkResponse(getBasePage(apiPaths.users, userCollectionName, [user]))
             );
         });
-        await enableOwnUser(user);
+        await enableCurrentUser(user);
         await waitFor(() => {
             mockAxios.mockResponseFor(
                 { url: apiPaths.skillTypes },
@@ -143,12 +153,19 @@ describe("Create project form", () => {
             [testGoal],
             testPartnerName,
             testPartnerWebsite,
-            apiPaths.editions + "/" + extractIdFromEditionUrl(edition._links.self.href),
+            edition._links.self.href,
             apiPaths.users + "/" + extractIdFromUserUrl(user._links.self.href)
         );
 
         await waitFor(() => {
-            createProjectSubmitHandler(createValues, mockRouter, edition, user);
+            createProjectSubmitHandler(
+                createValues,
+                mockRouter,
+                edition._links.self.href,
+                user,
+                async () => {},
+                (x) => x
+            );
         });
 
         // Check if project is posted with correct value

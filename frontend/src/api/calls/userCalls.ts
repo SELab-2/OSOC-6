@@ -1,14 +1,15 @@
 import {
     AxiosConf,
+    AxiosFormConfig,
+    basePatch,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
 } from "./baseCalls";
-import { IUser, userCollectionName } from "../entities/UserEntity";
-import axios from "axios";
+import { IUser, userCollectionName, UserRole } from "../entities/UserEntity";
+import axios, { AxiosResponse } from "axios";
 import apiPaths from "../../properties/apiPaths";
-import useSWR, { SWRResponse } from "swr";
 
 /**
  * Fetches all users on a given UserPageUrl
@@ -24,10 +25,6 @@ export function getAllUsersFromLinks(url: string): Promise<IUser[]> {
     return <Promise<IUser[]>>getAllEntitiesFromLinksUrl(url, userCollectionName);
 }
 
-export function getOwnUser(): Promise<IUser> {
-    return <Promise<IUser>>getEntityOnUrl(apiPaths.ownUser);
-}
-
 /**
  * Get user on url
  * @param url
@@ -37,17 +34,41 @@ export function getUserOnUrl(url: string): Promise<IUser> {
 }
 
 export async function logoutUser() {
-    await axios.get(apiPaths.base + apiPaths.logout, AxiosConf);
-}
-
-export function useCurrentUser(shouldExec: boolean): { user?: IUser; error?: Error } {
-    const { data, error } = useSWR(shouldExec ? apiPaths.ownUser : null, getOwnUser);
-    if (error) {
-        return { error: new Error("Not logged in") };
-    }
-    return { user: data };
+    await axios.get(apiPaths.logout, AxiosConf);
 }
 
 export function extractIdFromUserUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
+}
+
+export function saveEmailOfUser(url: string, email: string): Promise<AxiosResponse> {
+    return basePatch(url, { email });
+}
+
+export function savePasswordOfUser(url: string, password: string): Promise<AxiosResponse> {
+    return basePatch(url, { password });
+}
+
+export function saveCallNameOfUser(url: string, callName: string): Promise<AxiosResponse> {
+    return basePatch(url, { callName });
+}
+
+export function setRoleCoachOfUser(url: string): Promise<AxiosResponse> {
+    return basePatch(url, { enabled: true, userRole: UserRole.coach });
+}
+
+export function setRoleAdminOfUser(url: string): Promise<AxiosResponse> {
+    return basePatch(url, { enabled: true, userRole: UserRole.admin });
+}
+
+export function disabledUser(url: string): Promise<AxiosResponse> {
+    return basePatch(url, { enabled: false });
+}
+
+export async function postLoginFromForm(form: FormData): Promise<AxiosResponse> {
+    return axios.post(apiPaths.login, form, AxiosFormConfig);
+}
+
+export function userDelete(url: string) {
+    return axios.delete(url, AxiosConf);
 }
