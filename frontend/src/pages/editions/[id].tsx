@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "../../styles/Home.module.css";
 import EditionOverview from "../../components/edition/editionOverview";
 import { useRouter } from "next/router";
-import NavBar from '../../components/util/navBar';
+import NavBar from "../../components/util/navBar";
 
 const EditionInfoPage: NextPage = () => {
     const { t } = useTranslation("common");
