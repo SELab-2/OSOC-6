@@ -3,26 +3,30 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import apiPaths from "../../properties/apiPaths";
-import { getAllEditionsFromPage, getEditionByName } from "../../api/calls/editionCalls";
+import { getAllEditionsFromPage, getEditionByName, getEditionOnUrl } from "../../api/calls/editionCalls";
 import { useEffect } from "react";
 import applicationPaths from "../../properties/applicationPaths";
 import useTranslation from "next-translate/useTranslation";
 
 export default function RouteInjector({ children }: any) {
     const { t } = useTranslation("common");
-    const [contextEdition, setContextEdition] = useEdition();
+    const [contextEditionUrl, setContextEditionUrl] = useEdition();
+    const { data: contextEdition, error: contextEditionError } = useSWR(contextEditionUrl, getEditionOnUrl);
+
+    const contextEditionName = contextEdition?.name;
 
     const router = useRouter();
     const replace = router.replace;
     const query = router.query as { edition?: string };
     const routerEditionName = query.edition;
-    const fetchedRouterEdition = useSWR(
-        !contextEdition && routerEditionName ? routerEditionName : null,
+    const { data: fetchedRouterEdition, error: fetchedEditionError } = useSWR(
+        routerEditionName,
         getEditionByName
-    ).data;
+    );
+    const fetchedRouterEditionUrl = fetchedRouterEdition?._links?.self?.href;
 
-    const { data: availableEditions } = useSWR(
-        !contextEdition && !routerEditionName
+    const { data: availableEditions, error: availableEditionsError } = useSWR(
+        !contextEditionUrl && !routerEditionName
             ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" })
             : null,
         getAllEditionsFromPage
@@ -31,17 +35,21 @@ export default function RouteInjector({ children }: any) {
     const latestEditionName = latestEdition?.name;
 
     useEffect(() => {
-        if (fetchedRouterEdition && contextEdition?.name !== fetchedRouterEdition.name) {
-            setContextEdition(fetchedRouterEdition);
+        // The edition in your path is set, but you don't have the context, or they differ.
+        if (fetchedRouterEditionUrl && contextEditionUrl !== fetchedRouterEditionUrl) {
+            setContextEditionUrl(fetchedRouterEditionUrl);
         }
 
-        if (contextEdition && !routerEditionName) {
+        // You do not have a path edition set but your config edition is set.
+        if (contextEditionName && !routerEditionName) {
             replace({
-                query: { ...query, edition: contextEdition.name },
+                query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
 
-        if (!contextEdition && !routerEditionName && latestEditionName) {
+        // You have no context edition and no path edition.
+        if (!contextEditionUrl && !routerEditionName && latestEditionName) {
+            console.log("nope");
             replace({
                 query: {
                     ...query,
@@ -49,15 +57,12 @@ export default function RouteInjector({ children }: any) {
                 },
             }).catch(console.log);
         }
-    }, [
-        replace,
-        query,
-        fetchedRouterEdition,
-        routerEditionName,
-        contextEdition,
-        latestEditionName,
-        setContextEdition,
-    ]);
+    }, [fetchedRouterEditionUrl, contextEditionName, contextEditionUrl, latestEditionName]);
+
+    if (fetchedEditionError || availableEditionsError || contextEditionError) {
+        console.log(fetchedEditionError || availableEditionsError || contextEditionError);
+        return null;
+    }
 
     if (availableEditions && availableEditions.length === 0) {
         if (router.pathname !== "/" + applicationPaths.home) {
