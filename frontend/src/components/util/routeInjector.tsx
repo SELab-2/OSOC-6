@@ -15,7 +15,6 @@ export default function RouteInjector({ children }: any) {
 
     const { t } = useTranslation("common");
     const [contextEditionUrl, setContextEditionUrl] = useEdition();
-    console.log(contextEditionUrl);
     const { data: contextEdition, error: contextEditionError } = useSWR(
         userIsLoggedIn ? contextEditionUrl : null,
         getEditionOnUrl
@@ -43,8 +42,6 @@ export default function RouteInjector({ children }: any) {
     );
     const latestEdition = availableEditions?.at(0);
     const latestEditionName = latestEdition?.name;
-
-    console.log(contextEditionError || fetchedEditionError || availableEditionsError);
 
     useEffect(() => {
         // The edition in your path is set, but you don't have the context, or they differ. -> set context
@@ -92,7 +89,6 @@ export default function RouteInjector({ children }: any) {
         hadContextError,
         latestEditionName,
     ]);
-    // console.log([fetchedRouterEditionUrl, hadRouterError, contextEditionName, contextEditionUrl, hadContextError, latestEditionName])
 
     if (availableEditionsError) {
         console.log(availableEditionsError);
