@@ -95,6 +95,12 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_all_skillTypes_works() throws Exception {
+        base_get_all_entities_succeeds().andExpect(string_to_contains_string(skillType1.getName()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_by_name_works() throws Exception {
         SkillType skillType = get_random_repository_entity();
         base_test_all_queried_assertions(SKILLTYPES_PATH + "/search/" + DumbledorePathWizard.SKILLTYPE_BY_NAME_PATH,

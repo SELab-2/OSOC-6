@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { Col, Row } from "react-bootstrap";
-import NavBar from "../../components/navBar";
-import { ProjectList } from "../../components/projectList";
+import NavBar from "../../components/util/navBar";
+import { ProjectList } from "../../components/project/projectList";
 import styles from "../../styles/pageGrids.module.css";
 
 const ProjectPage: NextPage = () => {

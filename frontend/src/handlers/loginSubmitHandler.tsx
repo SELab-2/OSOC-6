@@ -1,8 +1,8 @@
 import apiPaths from "../properties/apiPaths";
 import { NextRouter } from "next/router";
-import axios from "axios";
-import { AxiosFormConfig } from "../api/calls/baseCalls";
 import { ScopedMutator } from "swr/dist/types";
+import { postLoginFromForm } from "../api/calls/userCalls";
+import applicationPaths from "../properties/applicationPaths";
 
 export interface LoginValues {
     username: string;
@@ -22,12 +22,13 @@ export async function loginSubmitHandler(
     const loginFormData = new FormData();
     loginFormData.append("username", values.username);
     loginFormData.append("password", values.password);
+    await postLoginFromForm(loginFormData);
 
-    const response = await axios.post(apiPaths.login, loginFormData, AxiosFormConfig);
     // redirect to the url specified in the response
-    let redirect =
-        router.query.returnUrl != undefined ? router.query.returnUrl : response.request.responseURL;
-    await mutate(apiPaths.ownUser);
-    await mutate(apiPaths.editions);
+    const redirect: string =
+        router.query.returnUrl?.at(0) !== undefined
+            ? router.query.returnUrl[0]
+            : "/" + applicationPaths.assignStudents;
+    await Promise.all([mutate(apiPaths.ownUser), mutate(apiPaths.editions)]);
     await router.push(redirect);
 }

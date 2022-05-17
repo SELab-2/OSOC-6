@@ -11,6 +11,11 @@ import { IUser } from "../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
+/**
+ * Function that makes sure the SWR cache is disabled in the provided component.
+ * This is needed in tests when data changes.
+ * @param Component that should be made cache free.
+ */
 export function makeCacheFree(Component: any) {
     return (
         <SWRConfig value={{ provider: () => new Map() }}>
@@ -19,19 +24,44 @@ export function makeCacheFree(Component: any) {
     );
 }
 
-export function enableUseEdition(Component: any, edition: IEdition) {
+/**
+ * Makes sure the provided component can use the useEdition hook.
+ * @param Component the component that needs to use the useEdition hook.
+ * @param edition the [IEdition] that should be returned by useEdition.
+ */
+export function enableUseEditionComponentWrapper(Component: any, edition: IEdition) {
     return (
-        <GlobalContext.Provider value={{ edition, setEdition: () => {} }}>
+        <GlobalContext.Provider value={{ editionUrl: edition._links.self.href, setEditionUrl: () => {} }}>
             <Component />
         </GlobalContext.Provider>
     );
 }
 
+/**
+ * Function that makes sure the useEdition hook can also fetch the edition.
+ * @param edition the [IEdition] that should be used by useEdition.
+ */
+export function enableUseEditionAxiosCall(edition: IEdition): Promise<void> {
+    return waitFor(() => {
+        mockAxios.mockResponseFor({ url: edition._links.self.href }, getBaseOkResponse(edition));
+    });
+}
+
+/**
+ * Function that will provide you with the url useSWR with edition will call when
+ * the useEdition edition is set to edition.
+ * @param url the url provided to useSWRWithEdition
+ * @param edition the edition provided to enableUseEdition.
+ */
 export function getAxiosCallWithEdition(url: string, edition: IEdition) {
     return getQueryUrlFromParams(url, { edition: extractIdFromEditionUrl(edition._links.self.href) });
 }
 
-export function enableOwnUser(user: IUser): Promise<void> {
+/**
+ * Function that makes sure the useCurrentUser hook is enabled with a certain user.
+ * @param user the user that should be returned by useCurrentEdition.
+ */
+export function enableCurrentUser(user: IUser): Promise<void> {
     return waitFor(() => {
         mockAxios.mockResponseFor({ url: apiPaths.ownUser }, getBaseOkResponse(user));
     });

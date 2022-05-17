@@ -66,8 +66,8 @@ export function saveEditionActiveState(url: string, active: boolean): Promise<Ax
 }
 
 /**
- * Extracts the id from an Edition URL.
- * @param url the url hosting the edition.
+ * Extract the id from a Edition url
+ * @param url the url that we want the id from
  */
 export function extractIdFromEditionUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);

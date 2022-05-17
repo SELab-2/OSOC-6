@@ -16,9 +16,3 @@ export function getAllProjectSkillsFromPage(url: string): Promise<IProjectSkill[
 export function getAllProjectSkillsFromLinks(url: string): Promise<IProjectSkill[]> {
     return <Promise<IProjectSkill[]>>getAllEntitiesFromLinksUrl(url, projectSkillCollectionName);
 }
-
-export interface IFullProjectSkill {
-    skill: IProjectSkill;
-    type: ISkillType;
-    assignees: IStudent[];
-}

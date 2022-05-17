@@ -15,7 +15,7 @@ import {
 import apiPaths from "../../src/properties/apiPaths";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { ISkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import AssignmentItem from "../../src/components/project_assignment/assignmentItem";
+import AssignmentItem from "../../src/components/projectAssignment/assignmentItem";
 import { assignmentCollectionName, IAssignment } from "../../src/api/entities/AssignmentEntity";
 import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import { IStudent } from "../../src/api/entities/StudentEntity";
@@ -24,6 +24,7 @@ import { capitalize } from "../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 import { makeCacheFree } from "./Provide";
+import { extractIdFromAssignmentUrl } from "../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -47,6 +48,7 @@ async function renderAssignmentItem(
     student: IStudent | undefined,
     projectSkill: IProjectSkill
 ) {
+    // answer projectSkill
     const response: AxiosResponse = getBaseOkResponse(
         getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, skillType)
     );
@@ -54,10 +56,10 @@ async function renderAssignmentItem(
         render(makeCacheFree(() => <AssignmentItem skill={projectSkill} />));
     });
 
+    // answer skillType
     await waitFor(() => {
         expect(mockAxios.get).toHaveBeenCalled();
     });
-
     await act(() =>
         mockAxios.mockResponseFor(
             { url: getQueryUrlFromParams(apiPaths.skillTypesByName, { name: projectSkill.name }) },
@@ -65,19 +67,19 @@ async function renderAssignmentItem(
         )
     );
 
+    // answer assignments
     const assignmentResponse: AxiosResponse = getBaseOkResponse(
         getBaseLinks(projectSkill._links.assignments.href, assignmentCollectionName, assignments)
     );
-
     await waitFor(() => {
         expect(mockAxios.get).toHaveBeenCalled();
     });
-
     await act(() =>
         mockAxios.mockResponseFor({ url: projectSkill._links.assignments.href }, assignmentResponse)
     );
 
-    if (student != undefined) {
+    // answer Student on first assignment
+    if (student !== undefined) {
         const studentResponse: AxiosResponse = getBaseOkResponse(student);
 
         await waitFor(() => {
@@ -89,7 +91,8 @@ async function renderAssignmentItem(
         );
     }
 
-    if (assigner != undefined) {
+    // answer assigner on first assignment
+    if (assigner !== undefined) {
         const assignerResponse: AxiosResponse = getBaseOkResponse(assigner);
 
         await waitFor(() => {
@@ -129,7 +132,8 @@ async function createResponse(
     await act(() => mockAxios.mockResponseFor({ url: assignment._links.assigner.href }, assignerResponse));
 }
 
-async function removeAssignment(assignment: IAssignment, id: string) {
+async function removeAssignment(assignment: IAssignment) {
+    const id = extractIdFromAssignmentUrl(assignment._links.self.href);
     await waitFor(() => {
         expect(screen.getByTestId("remove assignment button " + id)).toBeInTheDocument();
     });
@@ -178,7 +182,7 @@ describe("Assignmnent item tests", () => {
         const projectSkill = getBaseProjectSkill("100");
         await renderAssignmentItem([skillType], [assignment], assigner, student, projectSkill);
 
-        await removeAssignment(assignment, "0");
+        await removeAssignment(assignment);
 
         await waitFor(() => {
             expect(screen.getByText(capitalize("no users for skill"))).toBeInTheDocument();
@@ -187,27 +191,36 @@ describe("Assignmnent item tests", () => {
 
     it("Remove one assignment of list", async () => {
         const skillType = getBaseSkillType("1");
-        const assignment = getBaseAssignment("2");
-        const assignment2 = getBaseAssignment("3");
-        const assigner = getBaseUser("2", UserRole.admin, true);
-        const student = getBaseStudent("2");
-        const projectSkill = getBaseProjectSkill("100");
-        await renderAssignmentItem([skillType], [assignment, assignment2], assigner, student, projectSkill);
-        await createResponse(assignment2, "3", "a", "assigner1");
 
-        await removeAssignment(assignment, "1");
+        const assignment1 = getBaseAssignment("2");
+        const assignment2 = getBaseAssignment("3");
+
+        const projectSkill = getBaseProjectSkill("6");
+        await renderAssignmentItem(
+            [skillType],
+            [assignment1, assignment2],
+            undefined,
+            undefined,
+            projectSkill
+        );
+        await createResponse(assignment1, "7", "b", "assigner1");
+        await createResponse(assignment2, "8", "a", "assigner1");
+
+        await removeAssignment(assignment1);
 
         await waitFor(() => {
             expect(screen.getByText(projectSkill.name)).toBeInTheDocument();
             expect(screen.getByText("a")).toBeInTheDocument();
             expect(screen.getByText("assigner1", { exact: false })).toBeInTheDocument();
-            expect(screen.getByText(assignment.reason, { exact: false })).toBeInTheDocument();
+            expect(screen.getByText(assignment1.reason, { exact: false })).toBeInTheDocument();
         });
     });
 
     it("Test if assignments are sorted", async () => {
+        const projectSkill = getBaseProjectSkill("100");
+
         const skillType = getBaseSkillType("1");
-        const assignment = getBaseAssignment("2");
+
         const assignment3 = getBaseAssignment("3");
         assignment3.reason = "assignment3";
         const assignment4 = getBaseAssignment("4");
@@ -218,22 +231,20 @@ describe("Assignmnent item tests", () => {
         assignment6.reason = "assignment6";
         const assignment7 = getBaseAssignment("7");
         assignment7.reason = "assignment7";
-        const assigner = getBaseUser("2", UserRole.admin, true);
-        const student = getBaseStudent("2");
-        const projectSkill = getBaseProjectSkill("100");
+
         await renderAssignmentItem(
             [skillType],
-            [assignment, assignment3, assignment4, assignment5, assignment6, assignment7],
-            assigner,
-            student,
+            [assignment3, assignment4, assignment5, assignment6, assignment7],
+            undefined,
+            undefined,
             projectSkill
         );
 
-        await createResponse(assignment3, "3", "a", "assigner1");
-        await createResponse(assignment4, "4", "c", "assigner1");
-        await createResponse(assignment5, "5", "b", "assigner1");
-        await createResponse(assignment6, "6", "b", "assigner3");
-        await createResponse(assignment7, "7", "b", "assigner2");
+        await createResponse(assignment3, "9", "a", "assigner1");
+        await createResponse(assignment4, "10", "c", "assigner1");
+        await createResponse(assignment5, "11", "b", "assigner1");
+        await createResponse(assignment6, "12", "b", "assigner3");
+        await createResponse(assignment7, "13", "b", "assigner2");
 
         await waitFor(() => {
             const html = document.body.innerHTML;
@@ -242,13 +253,11 @@ describe("Assignmnent item tests", () => {
             const a3 = html.search(assignment7.reason);
             const a4 = html.search(assignment6.reason);
             const a5 = html.search(assignment4.reason);
-            const a6 = html.search(assignment.reason);
             expect(screen.getByTestId("assignment-item")).toBeInTheDocument();
             expect(a1).toBeLessThan(a2);
             expect(a2).toBeLessThan(a3);
             expect(a3).toBeLessThan(a4);
             expect(a4).toBeLessThan(a5);
-            expect(a5).toBeLessThan(a6);
         });
     });
 });

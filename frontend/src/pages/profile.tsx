@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import ProfileOverview from "../components/profileOverview";
-import NavBar from "../components/navBar";
+import ProfileOverview from "../components/user/profileOverview";
+import NavBar from "../components/util/navBar";
 
 const Profile: NextPage = () => {
     return (

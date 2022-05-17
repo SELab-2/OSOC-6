@@ -22,6 +22,7 @@ const apiPaths = {
     communicationTemplates: "communicationTemplates",
 
     projects: "projects",
+    projectsByEdition: "projects/search/by-edition",
 
     invitations: "invitations",
 

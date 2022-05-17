@@ -1,3 +1,40 @@
 .login_box {
     width: 400px;
 }
+
+.login_div {
+    background: #0c083a;
+    width: 500px;
+    color: white;
+    padding: 40px;
+}
+
+.login_field {
+    background: #140c6c;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.login_field:focus {
+    background: #140c6c;
+    color: white;
+}
+
+.login_full_div {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    z-index: 10;
+    color: white;
+    background: #1b1a32;
+}
+
+.login_row {
+    margin-top: 200px;
+}
+
+.login_card {
+    background: #0d083a;
+    color: red;
+}

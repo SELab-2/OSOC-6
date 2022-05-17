@@ -1,5 +1,14 @@
 const common = {
     "tool name": "open summer of code tool",
+    "home page title": "OSOC-6",
+
+    "login page title": "OSOC : login page",
+    signin: "sign in",
+    "let's get started": "let's get started!",
+    login: "login",
+
+    callname: "callname",
+
     "empty page": "empty page",
     confirm: "confirm",
     apply: "apply",
@@ -67,12 +76,18 @@ const common = {
     edit: "edit",
 
     "no edition": "no edition",
+    "no error": "no error",
 
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",
     "communication template": "communication template",
     "open in mail application": "open in mail application",
+    "choose template": "choose your template",
+    "additional communication info": "additional communication info",
+    "communication content": "content of the communication",
+    medium: "medium",
+    "register communication for": "register communication for",
 
     suggestions: "suggestions",
     suggest: "suggest",

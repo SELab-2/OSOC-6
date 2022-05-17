@@ -1,5 +1,6 @@
-import { extractIdFromApiEntityUrl, getEntityOnUrl } from "./baseCalls";
-import { ICommunication } from "../entities/CommunicationEntity";
+import { basePost, extractIdFromApiEntityUrl, getEntityOnUrl } from "./baseCalls";
+import { Communication, ICommunication } from "../entities/CommunicationEntity";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * Function getting a communication template on the provided url.
@@ -7,6 +8,14 @@ import { ICommunication } from "../entities/CommunicationEntity";
  */
 export function getCommunicationOnUrl(url: string): Promise<ICommunication> {
     return <Promise<ICommunication>>getEntityOnUrl(url);
+}
+
+/**
+ * Function creating a new [ICommunication] entity on the backend.
+ * @param communication the communication that needs to be created.
+ */
+export async function createNewCommunication(communication: Communication): Promise<ICommunication> {
+    return <Promise<ICommunication>>(await basePost(apiPaths.communications, communication)).data;
 }
 
 /**
