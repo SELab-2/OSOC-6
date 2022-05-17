@@ -1,4 +1,5 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import { ICommunication } from "./CommunicationEntity";
 
 export interface IEdition extends IBaseEntity {
     name: string;
@@ -26,3 +27,17 @@ export class Edition {
     name: string;
     year: number;
 }
+
+/**
+ * Empty [IEdition] object that can be used to render even when no edition was found.
+ * Reduces null/ undefined checks.
+ */
+export const emptyEdition: IEdition = {
+    name: "",
+    year: 0,
+    active: false,
+    _links: {
+        edition: { href: "" },
+        self: { href: "" },
+    },
+};
