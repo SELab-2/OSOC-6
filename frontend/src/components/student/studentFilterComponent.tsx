@@ -124,6 +124,7 @@ export function StudentFilterComponent() {
                                                 type="checkbox"
                                                 className="form-check-input"
                                                 name="unmatched"
+                                                data-testid="unmatchedCheck"
                                                 id="unmatchedCheck"
                                             />
                                             <label className="form-check-label" htmlFor="unmatchedCheck">
@@ -238,6 +239,7 @@ export function StudentFilterComponent() {
                                                     borderColor: "white",
                                                     backgroundColor: "#0a0839",
                                                 }}
+                                                data-testid="submit"
                                             >
                                                 {capitalize(t("apply"))}
                                             </button>
