@@ -75,7 +75,7 @@ export default function RouteInjector({ children }: any) {
             return (
                 <>
                     <NavBar />
-                    <div style={{ textAlign: "center", padding: "15em 0" }}>
+                    <div data-testid="no-edition" style={{ textAlign: "center", padding: "15em 0" }}>
                         <div style={{ padding: "10px", fontWeight: "bold", fontSize: "130%" }}>
                             {capitalize(t("no edition"))}
                         </div>

@@ -4,6 +4,11 @@ import { makeCacheFree } from "../Provide";
 import CreateEdition from "../../../src/pages/editions/create";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
+import mockRouter from "next-router-mock";
+import applicationPaths from "../../../src/properties/applicationPaths";
+import { IEdition } from "../../../src/api/entities/EditionEntity";
+import { getBaseActiveEdition, getBaseOkResponse, getBaseRedirectResponse } from "../TestEntityProvider";
+import apiPaths from "../../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -34,6 +39,15 @@ describe("EditionCreate", () => {
 
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalled();
+        });
+
+        const id = "3";
+        const edition: IEdition = getBaseActiveEdition(id, "edition 1");
+
+        mockAxios.mockResponseFor({ method: "post" }, getBaseOkResponse(edition));
+
+        await waitFor(() => {
+            expect(mockRouter.pathname).toEqual("/" + applicationPaths.editionBase + "/" + id);
         });
     });
 });
