@@ -89,7 +89,7 @@ describe("student filter", () => {
             expect(page.getByTestId("student-filter")).toBeInTheDocument();
         });
 
-        it("is empty instead for the queried field", async () => {
+        it("is empty except for the queried field", async () => {
             const coachElement = (await page.findByTestId("coachCheck")) as HTMLInputElement;
             const alumniElement = (await page.findByTestId("alumniCheck")) as HTMLInputElement;
             const unmatchedElement = (await page.findByTestId("unmatchedCheck")) as HTMLInputElement;
@@ -127,7 +127,7 @@ describe("student filter", () => {
             expect(page.getByTestId("student-filter")).toBeInTheDocument();
         });
 
-        it("is empty instead for the queried field", async () => {
+        it("is empty except for the queried field", async () => {
             const coachElement = (await page.findByTestId("coachCheck")) as HTMLInputElement;
             const alumniElement = (await page.findByTestId("alumniCheck")) as HTMLInputElement;
             const unmatchedElement = (await page.findByTestId("unmatchedCheck")) as HTMLInputElement;
