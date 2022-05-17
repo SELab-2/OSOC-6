@@ -37,27 +37,29 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     const [showGeneralError, setShowGeneralError] = useState<boolean>(false);
     const [showYearError, setShowYearError] = useState<boolean>(false);
 
-    let { data, error } = useSWR(apiPaths.editions + "/" + editionId, getEditionOnUrl);
+    const { data: receivedEdition, error: editionError } = useSWR(apiPaths.editions + "/" + editionId, getEditionOnUrl);
 
-    if (error || !data) {
-        data = emptyEdition;
+    if (editionError) {
+        console.log(editionError);
+        return null;
     }
 
+    const edition = receivedEdition || emptyEdition;
+
     function handleEditName() {
-        if (data) {
+        if (receivedEdition) {
             setEditName(true);
-            setName(data.name);
+            setName(receivedEdition.name);
         }
     }
 
     async function handleSaveName() {
         setEditName(false);
-        if (data) {
-            const response: AxiosResponse = await editionSaveNameHandler(data._links.self.href, name);
+        if (edition) {
+            const response: AxiosResponse = await editionSaveNameHandler(edition._links.self.href, name);
             if (response.status === StatusCodes.OK) {
-                data = response.data;
-                if (data) {
-                    await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
+                if (response.data) {
+                    await Promise.all([mutate(apiPaths.editions), mutate(edition._links.self.href, response.data)]);
                 } else {
                     setShowGeneralError(true);
                 }
@@ -68,9 +70,9 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     }
 
     function handleEditYear() {
-        if (data) {
+        if (edition) {
             setEditYear(true);
-            setYear(data.year.toString());
+            setYear(edition.year.toString());
         }
     }
 
@@ -80,12 +82,11 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
             setShowYearError(true);
             return;
         }
-        if (data) {
-            const response: AxiosResponse = await editionSaveYearHandler(data._links.self.href, year);
+        if (edition) {
+            const response: AxiosResponse = await editionSaveYearHandler(edition._links.self.href, year);
             if (response.status === StatusCodes.OK) {
-                data = response.data;
-                if (data) {
-                    await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
+                if (edition) {
+                    await Promise.all([mutate(apiPaths.editions), mutate(edition._links.self.href, edition)]);
                     setShowYearError(false);
                 } else {
                     setShowGeneralError(true);
@@ -105,11 +106,10 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
 
     async function handleSaveActive() {
         setActive(!active);
-        if (data) {
-            const response: AxiosResponse = await editionSaveActiveHandler(data._links.self.href, active);
+        if (edition) {
+            const response: AxiosResponse = await editionSaveActiveHandler(edition._links.self.href, active);
             if (response.status === StatusCodes.OK) {
-                data = response.data;
-                if (data) {
+                if (edition) {
                     await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
                 } else {
                     setShowGeneralError(true);
@@ -136,7 +136,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
                     {/*show edition name if not editing*/}
-                    {!editName && <Col data-testid="edition-name">{name ? name : data.name}</Col>}
+                    {!editName && <Col data-testid="edition-name">{name ? name : edition.name}</Col>}
                     {!editName && (
                         <Col>
                             <a data-testid="edit-name" onClick={handleEditName}>
@@ -155,7 +155,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                             <input
                                 data-testid="input-name"
                                 name="name"
-                                defaultValue={data.name}
+                                defaultValue={edition.name}
                                 onChange={onChange}
                             />
                             <button data-testid="save-name" onClick={handleSaveName}>
@@ -172,7 +172,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("year") + ":")}</Col>
                     {/*show edition year if not editing*/}
-                    {!editYear && <Col data-testid="edition-year">{year ? year : data.year}</Col>}
+                    {!editYear && <Col data-testid="edition-year">{year ? year : edition.year}</Col>}
                     {!editYear && (
                         <Col>
                             <a data-testid="edit-year" onClick={handleEditYear}>
@@ -192,7 +192,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                                 data-testid="input-year"
                                 type="number"
                                 name="year"
-                                defaultValue={data.year}
+                                defaultValue={edition.year}
                                 onChange={onChange}
                             />
                             <button data-testid="save-year" onClick={handleSaveYear}>
@@ -208,14 +208,14 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                 </Row>
                 <Row>
                     <Col className={styles.first_element}>{capitalize(t("active") + ":")}</Col>
-                    <Col data-testid="edition-active">{active ? active : data.active}</Col>
+                    <Col data-testid="edition-active">{active ? active : edition.active}</Col>
 
                     <Col>
                         <input
                             data-testid="input-active"
                             type="checkbox"
                             name="active"
-                            checked={data.active}
+                            checked={edition.active}
                             onChange={() => handleChangeActive()}
                             onClick={() => handleChangeActive()}
                         />

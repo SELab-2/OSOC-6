@@ -64,10 +64,7 @@ describe("Edition overview", () => {
         expect(mockAxios.patch).toHaveBeenCalledWith(
             apiPaths.base + apiPaths.editions + "/1",
             { name: "New Name" },
-            {
-                baseURL: "http://localhost/api/",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
-            }
+            expect.anything()
         );
     });
 
@@ -96,10 +93,7 @@ describe("Edition overview", () => {
         expect(mockAxios.patch).toHaveBeenCalledWith(
             apiPaths.base + apiPaths.editions + "/1",
             { year: "2023" },
-            {
-                baseURL: "http://localhost/api/",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
-            }
+            expect.anything()
         );
     });
 
@@ -128,10 +122,7 @@ describe("Edition overview", () => {
         expect(mockAxios.patch).toHaveBeenCalledWith(
             apiPaths.base + apiPaths.editions + "/1",
             { year: "2023" },
-            {
-                baseURL: "http://localhost/api/",
-                headers: { "Content-Type": "application/json; charset=UTF-8" },
-            }
+            expect.anything()
         );
     });
 
@@ -176,7 +167,6 @@ describe("Edition overview", () => {
 
         // Always ask for confirmation if state needs to be changed
         await waitFor(() => {
-            //window.confirm = jest.fn(() => true)
             expect(window.confirm).toBeCalled();
         });
     });

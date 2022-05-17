@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from "axios";
-import { AxiosConf } from "../api/calls/baseCalls";
+import { AxiosResponse } from "axios";
 import { saveEditionActiveState, saveEditionName, saveEditionYear } from "../api/calls/editionCalls";
 
 /**
