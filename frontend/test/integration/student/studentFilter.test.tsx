@@ -1,20 +1,14 @@
 import "@testing-library/jest-dom";
-import {
-    act, findByTestId,
-    render,
-    RenderResult,
-    screen,
-    waitFor
-} from "@testing-library/react";
+import { act, findByTestId, render, RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
-import {getBaseOkResponse, getBasePage, getBaseSkillType} from "../TestEntityProvider";
-import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
-import {AxiosResponse} from "axios";
-import {makeCacheFree} from "../Provide";
+import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import { AxiosResponse } from "axios";
+import { makeCacheFree } from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -157,7 +151,7 @@ describe("student filter", () => {
         render(makeCacheFree(StudentFilterComponent));
         await act(async () => {
             await waitFor(() => {
-                mockAxios.mockResponseFor(apiPaths.skillTypes, skillTypeResponse)
+                mockAxios.mockResponseFor(apiPaths.skillTypes, skillTypeResponse);
             });
         });
 
@@ -165,13 +159,13 @@ describe("student filter", () => {
         const submitElement = await screen.findByTestId("submit");
 
         await userEvent.click(filterDropdown);
-        const skill = await screen.findByTestId("select-option-" + skillType.name)
+        const skill = await screen.findByTestId("select-option-" + skillType.name);
         await userEvent.click(skill);
 
         await userEvent.click(submitElement);
 
         await waitFor(() => {
-            expect(mockRouter.query?.skills).toEqual([skillType.name])
+            expect(mockRouter.query?.skills).toEqual([skillType.name]);
         });
     });
 });
