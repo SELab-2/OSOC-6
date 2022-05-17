@@ -57,10 +57,9 @@ describe("skillType list", () => {
             const openEditButton = await page.findByTestId("start-edit");
             userEvent.click(openEditButton);
 
-            const colourPick = await page.findByTestId("colour");
+            const colourPick = (await page.findByTestId("colour")) as HTMLInputElement;
             // Just check if it takes the default colour. Setting it in the test is a pain.
-            // @ts-ignore
-            const colour: string = colourPick._wrapperState.initialValue;
+            const colour: string = colourPick.value;
 
             const submitButton = await page.findByTestId("submit-edit");
             userEvent.click(submitButton);

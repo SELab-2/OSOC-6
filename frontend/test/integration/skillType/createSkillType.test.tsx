@@ -28,12 +28,11 @@ describe("create skillType", () => {
         const form = render(<SkillTypeForm />);
 
         const nameElement = form.getByTestId("name");
-        const colourElement = form.getByTestId("colour");
+        const colourElement = form.getByTestId("colour") as HTMLInputElement;
 
         const name = "Racing cars";
         // Just check if it takes the default colour. Setting it in the test is a pain.
-        // @ts-ignore
-        const colour: string = colourElement._wrapperState.initialValue;
+        const colour: string = colourElement.value;
         const skillType = new SkillType(name, colour);
 
         await userEvent.type(nameElement, name);
