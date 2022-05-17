@@ -56,7 +56,11 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
             const response: AxiosResponse = await editionSaveNameHandler(data._links.self.href, name);
             if (response.status === StatusCodes.OK) {
                 data = response.data;
-                mutate(apiPaths.editions);
+                if (data) {
+                    await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
+                } else {
+                    setShowGeneralError(true);
+                }
             } else {
                 setShowGeneralError(true);
             }
@@ -80,7 +84,12 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
             const response: AxiosResponse = await editionSaveYearHandler(data._links.self.href, year);
             if (response.status === StatusCodes.OK) {
                 data = response.data;
-                mutate(apiPaths.editions);
+                if (data) {
+                    await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
+                    setShowYearError(false);
+                } else {
+                    setShowGeneralError(true);
+                }
             } else {
                 setShowGeneralError(true);
             }
@@ -100,7 +109,11 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
             const response: AxiosResponse = await editionSaveActiveHandler(data._links.self.href, active);
             if (response.status === StatusCodes.OK) {
                 data = response.data;
-                mutate(apiPaths.editions);
+                if (data) {
+                    await Promise.all([mutate(apiPaths.editions), mutate(data._links.self.href, data)]);
+                } else {
+                    setShowGeneralError(true);
+                }
             } else {
                 setShowGeneralError(true);
             }
