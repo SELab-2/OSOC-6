@@ -81,7 +81,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     /**
      * Sample {@link Assignment} that gets loaded before every test.
      */
-    private final Assignment testAssignment = TestEntityProvider.getBaseSuggestionAssignment(getAdminUser(),
+    private final Assignment testAssignment = TestEntityProvider.getBaseValidAssignment1(getAdminUser(),
             testStudent, projectSkill1);
 
     /**
@@ -134,7 +134,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @Override
     public Assignment create_entity() {
         Assignment assignment = TestEntityProvider
-                .getBaseNonSuggestionAssignment(getAdminUser(), testStudent, projectSkill1);
+                .getBaseValidAssignment2(getAdminUser(), testStudent, projectSkill1);
         assignment.setReason(TEST_STRING);
         return assignment;
     }
@@ -191,7 +191,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_matching_query_conflict_works() throws Exception {
         perform_post(getEntityPath(), TestEntityProvider
-                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill2));
+                .getBaseValidAssignment2(getCoachUser(), testStudent, projectSkill2));
 
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
@@ -205,7 +205,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_conflict_no_edition_works() throws Exception {
         perform_post(getEntityPath(), TestEntityProvider
-                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill2));
+                .getBaseValidAssignment2(getCoachUser(), testStudent, projectSkill2));
 
         perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH)
@@ -284,7 +284,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void find_non_valid_works() throws Exception {
         Assignment nonValidAssignment = TestEntityProvider
-                .getNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
+                .getBaseNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
         assignmentRepository.save(nonValidAssignment);
 
         perform_queried_get(getEntityPath()
@@ -299,7 +299,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void filter_non_valid_works() throws Exception {
         Assignment nonValidAssignment = TestEntityProvider
-                .getNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
+                .getBaseNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
         assignmentRepository.save(nonValidAssignment);
 
         perform_queried_get(getEntityPath()

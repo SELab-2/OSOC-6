@@ -83,7 +83,7 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
      * Sample {@link Assignment} that gets loaded before every test.
      */
     private final Assignment testAssignment = TestEntityProvider
-            .getBaseSuggestionAssignment(getCoachUser(), testStudent, projectSkill);
+            .getBaseValidAssignment1(getCoachUser(), testStudent, projectSkill);
 
     /**
      * The string that will be set on a patch and will be looked for.
@@ -134,7 +134,7 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
     @Override
     public Assignment create_entity() {
         Assignment assignment = TestEntityProvider
-                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill);
+                .getBaseValidAssignment2(getCoachUser(), testStudent, projectSkill);
         assignment.setReason(TEST_STRING);
         return assignment;
     }

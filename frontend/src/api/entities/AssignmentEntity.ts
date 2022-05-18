@@ -1,7 +1,6 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IAssignment extends IBaseEntity {
-    isSuggestion: boolean;
     isValid: boolean;
     reason: string;
     timestamp: string;
@@ -20,15 +19,7 @@ export type IAssignmentPage = IPage<{ assignments: IAssignment[] }>;
 export type IAssignmentLinks = IEntityLinks<{ assignments: IAssignment[] }>;
 
 export class Assignment {
-    constructor(
-        isSuggestion: boolean,
-        isValid: boolean,
-        reason: string,
-        assigner: string,
-        student: string,
-        projectSkill: string
-    ) {
-        this.isSuggestion = isSuggestion;
+    constructor(isValid: boolean, reason: string, assigner: string, student: string, projectSkill: string) {
         this.isValid = isValid;
         this.reason = reason;
         this.assigner = assigner;
@@ -36,7 +27,6 @@ export class Assignment {
         this.projectSkill = projectSkill;
     }
 
-    isSuggestion: boolean;
     isValid: boolean;
     reason: string;
     assigner: string;
