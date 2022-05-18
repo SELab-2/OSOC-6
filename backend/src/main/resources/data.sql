@@ -16,10 +16,10 @@ INSERT INTO communication_template (name, subject, template)
                     'We are pleased to tell you that you have been accepted for OSOC!\n Someone will be in touch with you shortly to work out the details.');
 INSERT INTO communication_template (name, subject, template)
             VALUES ('No', 'Rejected for OSOC',
-                    'Unfortunately we are unable to find a fitting spot for you in this edition of OSOC.\n You can always try again next year!');
+                    'Unfortunately we were unable to find a fitting position for you in this edition of OSOC.\n You can always try again next year!');
 INSERT INTO communication_template (name, subject, template)
             VALUES ('Maybe', 'OSOC application status',
-                    'We might have a spot for you in the next edition of OSOC, but we are still figuring some things out.\n Hold on tight!');
+                    'We might have a spot for you in the upcoming edition of OSOC, but we are still figuring some things out.\n Hold on tight!');
 INSERT INTO communication_template (name, subject, template)
             VALUES ('Invite', 'OSOC selection tool invitation',
                     'This is an invite for the OSOC selection tool. Please use the link provided below to register.');
