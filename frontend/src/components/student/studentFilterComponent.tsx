@@ -65,6 +65,7 @@ export function StudentFilterComponent() {
                                 type="checkbox"
                                 className="form-check-input"
                                 name="studentCoach"
+                                data-testid="coachCheck"
                                 id="coachCheck"
                             />
                             <label className="form-check-label" htmlFor="coachCheck">
@@ -76,6 +77,7 @@ export function StudentFilterComponent() {
                                 type="checkbox"
                                 className="form-check-input"
                                 name="alumni"
+                                data-testid="alumniCheck"
                                 id="alumniCheck"
                             />
                             <label className="form-check-label" htmlFor="alumniCheck">
@@ -87,15 +89,26 @@ export function StudentFilterComponent() {
                                 type="checkbox"
                                 className="form-check-input"
                                 name="unmatched"
+                                data-testid="unmatchedCheck"
                                 id="unmatchedCheck"
                             />
                             <label className="form-check-label" htmlFor="unmatchedCheck">
                                 {capitalize(t("unmatched"))}
                             </label>
                         </div>
-                        <Field type="text" name="freeText" placeholder="Search students with key words" />
-                        <Field type="text" name="roles" placeholder="Search students with roles" />
-                        <button type="submit" disabled={isSubmitting}>
+                        <Field
+                            type="text"
+                            name="freeText"
+                            placeholder="Search students with key words"
+                            data-testid="freeText"
+                        />
+                        <Field
+                            type="text"
+                            name="roles"
+                            placeholder="Search students with roles"
+                            data-testid="roles"
+                        />
+                        <button type="submit" disabled={isSubmitting} data-testid="submit">
                             {capitalize(t("apply"))}
                         </button>
                     </Form>

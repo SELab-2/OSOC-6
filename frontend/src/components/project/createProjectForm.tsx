@@ -38,7 +38,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
 
     const { t } = useTranslation("common");
     const router = useRouter();
-    const [edition] = useEdition();
+    const [editionUrl] = useEdition();
     const currentUser = useCurrentUser(true);
     const apiTransformer = useEditionAPIUrlTransformer();
     const { mutate } = useSWRConfig();
@@ -52,8 +52,8 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const [skillInfos, setSkillInfos] = useState<string[]>([]);
     const [skillInfo, setSkillInfo] = useState<string>("");
 
-    if (userError || skillTypeError || !currentUser || !edition) {
-        console.log(userError || skillTypeError || !currentUser || !edition);
+    if (userError || skillTypeError || !currentUser || !editionUrl) {
+        console.log(userError || skillTypeError || !currentUser || !editionUrl);
         return null;
     }
 
@@ -155,7 +155,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         };
 
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
-        props.submitHandler(createValues, router, edition!, currentUser.user!, mutate, apiTransformer);
+        props.submitHandler(createValues, router, editionUrl!, currentUser.user!, mutate, apiTransformer);
     }
 
     function initialize() {

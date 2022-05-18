@@ -21,7 +21,13 @@ import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
 import { ISkillType, SkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
-import { enableCurrentUser, enableUseEdition, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
+import {
+    enableCurrentUser,
+    enableUseEditionAxiosCall,
+    enableUseEditionComponentWrapper,
+    getAxiosCallWithEdition,
+    makeCacheFree,
+} from "./Provide";
 import mockRouter from "next-router-mock";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
@@ -38,8 +44,9 @@ describe("Create project form", () => {
         const user: IUser = getBaseUser("1", UserRole.admin, true);
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
 
-        render(makeCacheFree(() => enableUseEdition(CreateProject, edition)));
+        render(makeCacheFree(() => enableUseEditionComponentWrapper(CreateProject, edition)));
 
+        // await enableUseEditionAxiosCall(edition);
         await enableCurrentUser(user);
 
         expect(screen.getByTestId("projectname-input")).toBeInTheDocument();
@@ -74,7 +81,10 @@ describe("Create project form", () => {
 
         const projectCreate: RenderResult = render(
             makeCacheFree(() =>
-                enableUseEdition(() => <CreateProjectForm submitHandler={submitProject} />, edition)
+                enableUseEditionComponentWrapper(
+                    () => <CreateProjectForm submitHandler={submitProject} />,
+                    edition
+                )
             )
         );
 
@@ -143,7 +153,7 @@ describe("Create project form", () => {
             [testGoal],
             testPartnerName,
             testPartnerWebsite,
-            apiPaths.editions + "/" + extractIdFromEditionUrl(edition._links.self.href),
+            edition._links.self.href,
             apiPaths.users + "/" + extractIdFromUserUrl(user._links.self.href)
         );
 
@@ -151,7 +161,7 @@ describe("Create project form", () => {
             createProjectSubmitHandler(
                 createValues,
                 mockRouter,
-                edition,
+                edition._links.self.href,
                 user,
                 async () => {},
                 (x) => x

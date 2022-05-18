@@ -29,12 +29,22 @@ export function makeCacheFree(Component: any) {
  * @param Component the component that needs to use the useEdition hook.
  * @param edition the [IEdition] that should be returned by useEdition.
  */
-export function enableUseEdition(Component: any, edition: IEdition) {
+export function enableUseEditionComponentWrapper(Component: any, edition: IEdition) {
     return (
-        <GlobalContext.Provider value={{ edition, setEdition: () => {} }}>
+        <GlobalContext.Provider value={{ editionUrl: edition._links.self.href, setEditionUrl: () => {} }}>
             <Component />
         </GlobalContext.Provider>
     );
+}
+
+/**
+ * Function that makes sure the useEdition hook can also fetch the edition.
+ * @param edition the [IEdition] that should be used by useEdition.
+ */
+export function enableUseEditionAxiosCall(edition: IEdition): Promise<void> {
+    return waitFor(() => {
+        mockAxios.mockResponseFor({ url: edition._links.self.href }, getBaseOkResponse(edition));
+    });
 }
 
 /**

@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import { makeCacheFree } from "../Provide";
-import CommunicationInfo from "../../../src/components/communication/CommunicationInfo";
 import {
     getBaseCommunication,
     getBaseCommunicationTemplate,
@@ -9,6 +8,7 @@ import {
 } from "../TestEntityProvider";
 import { render, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
+import CommunicationInfo from "../../../src/components/communication/communicationInfo";
 
 describe("Communication info", () => {
     const communication = getBaseCommunication("1");
