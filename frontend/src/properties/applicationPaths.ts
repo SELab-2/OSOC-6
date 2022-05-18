@@ -22,12 +22,19 @@ const applicationPaths = {
     changePassword: "changePassword",
     registration: "registration",
 
+    forgotPassword: "forgotPassword",
+    resetPassword: "resetPassword",
+
     communicationTemplateBase: "communicationTemplates",
     communicationTemplateCreation: "communicationTemplates/create",
     communicationTemplateInfo: "communicationTemplates/[id]",
+    communicationTemplateEdit: "communicationTemplates/[id]/edit",
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
+
+    editionBase: "editions",
+    editionCreate: "editions/create",
 
     skillTypesBase: "skillTypes",
 };

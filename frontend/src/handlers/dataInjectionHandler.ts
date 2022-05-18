@@ -356,7 +356,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     if (assignments._embedded.assignments.length == 0) {
         const assignment1: Assignment = new Assignment(
             true,
-            true,
             "You! here! now!",
             own_user_url,
             someStudentUri,

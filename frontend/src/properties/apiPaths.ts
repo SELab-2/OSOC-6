@@ -9,6 +9,9 @@ const apiPaths = {
     registration: "registration",
     logout: "logout",
 
+    forgotPassword: "forgot-password",
+    resetPassword: "reset-password",
+
     editions: "editions",
     editionByName: "editions/search/by-name",
 

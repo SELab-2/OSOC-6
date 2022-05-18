@@ -8,6 +8,7 @@ import NavBar from "../components/util/navBar";
 import { Col, Row } from "react-bootstrap";
 import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";
+import applicationPaths from "../properties/applicationPaths";
 
 const Login: NextPage = () => {
     const { t } = useTranslation("common");
@@ -27,6 +28,11 @@ const Login: NextPage = () => {
                         <div className={styles.login_div}>
                             <h3>{capitalize(t("signin"))}</h3>
                             <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
+                            <div className="mt-2">
+                                <a href={"/" + applicationPaths.forgotPassword}>
+                                    {capitalize(t("forgot password link"))}
+                                </a>
+                            </div>
                         </div>
                     </Col>
                 </Row>

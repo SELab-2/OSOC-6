@@ -1,10 +1,8 @@
 package com.osoc6.OSOC6.controller;
 
-import com.osoc6.OSOC6.exception.InvalidResetPasswordTokenException;
 import com.osoc6.OSOC6.service.UserEntityService;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,17 +28,6 @@ public class ForgotPasswordController {
     @PostMapping("/" + DumbledorePathWizard.FORGOT_PASSWORD_PATH)
     public void requestPasswordReset(@RequestBody final String email) {
         userService.createPasswordResetToken(email);
-    }
-
-    /**
-     * Check whether the provided token is a valid password reset token.
-     * @param token the token of the reset password token
-     */
-    @GetMapping("/" + DumbledorePathWizard.RESET_PASSWORD_PATH)
-    public void checkPasswordResetToken(@RequestParam final String token) {
-        if (!userService.isPasswordResetTokenValid(token)) {
-            throw new InvalidResetPasswordTokenException();
-        }
     }
 
     /**

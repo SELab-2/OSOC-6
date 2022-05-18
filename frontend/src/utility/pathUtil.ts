@@ -11,6 +11,8 @@ export function pathIsAuthException(url: string): boolean {
         "/" + applicationPaths.login,
         "/" + applicationPaths.loginError,
         "/" + applicationPaths.registration,
+        "/" + applicationPaths.forgotPassword,
+        "/" + applicationPaths.resetPassword,
     ];
 
     // Check if the user is logged in. If not this will have no result

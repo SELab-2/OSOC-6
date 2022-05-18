@@ -5,7 +5,7 @@ import apiPaths from "../../properties/apiPaths";
 /**
  * Fetches all projects on a given ProjectLinksUrl
  */
-export function getAllProjectsFormPage(url: string): Promise<IProject[]> {
+export function getAllProjectsFromPage(url: string): Promise<IProject[]> {
     return <Promise<IProject[]>>getAllEntitiesFromPage(url, projectCollectionName);
 }
 

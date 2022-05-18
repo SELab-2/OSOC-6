@@ -25,6 +25,7 @@ jobs:
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
           echo "webhook.token = 123" >> application.properties
           echo "domain=localhost:8080" >> application.properties
+          echo "reset-password.route=resetPassword" >> application.properties
           echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
           echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
           echo "baseuser.email =baseUser@mail.com" > initial-user.properties
@@ -35,6 +36,7 @@ jobs:
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
           echo "webhook.token = 123" >> application.properties
           echo "domain=localhost:8080" >> application.properties
+          echo "reset-password.route=resetPassword" >> application.properties
           echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
           echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
           echo "spring.mail.host=localhost" >> application.properties

@@ -1,12 +1,15 @@
 import {
     basePatch,
+    AxiosConf,
+    basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
 } from "./baseCalls";
-import { editionCollectionName, IEdition } from "../entities/EditionEntity";
+import { Edition, editionCollectionName, IEdition } from "../entities/EditionEntity";
 import apiPaths from "../../properties/apiPaths";
+import axios from "axios";
 import { AxiosResponse } from "axios";
 
 /**
@@ -71,4 +74,20 @@ export function saveEditionActiveState(url: string, active: boolean): Promise<Ax
  */
 export function extractIdFromEditionUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
+}
+
+/**
+ * Function posting creating a edition on the backend.
+ * @param template the edition that needs to be created.
+ */
+export async function createNewEdition(template: Edition): Promise<IEdition> {
+    return <Promise<IEdition>>(await basePost(apiPaths.editions, template)).data;
+}
+
+/**
+ * Delete an edition.
+ * @param url of the edition
+ */
+export function editionDelete(url: string) {
+    return axios.delete(url, AxiosConf);
 }

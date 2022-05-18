@@ -8,6 +8,15 @@ const common = {
     signin: "sign in",
     "let's get started": "let's get started!",
     login: "login",
+    "forgot password link": "forgot password?",
+
+    "forgot password title": "forgot password",
+    "reset password email": "enter email address of your account",
+    "forgot email": "send reset password request",
+    "forgot email success": "reset password email has been sent",
+
+    "reset password title": "reset password",
+    "password identical": "passwords need to be identical",
 
     callname: "callname",
 
@@ -70,6 +79,7 @@ const common = {
     "project about": "about this project",
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
+    "select a project to start": "select a project to start",
 
     // People strings
     email: "e-mail",
@@ -82,12 +92,16 @@ const common = {
     edit: "edit",
 
     // Edition strings
-    "no edition": "no edition",
+    "no edition": "there are no editions made yet.",
     "no error": "no error",
     "edition overview": "edition overview",
     "change edition state":
         "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
     "invalid edition year": "please provide a valid year",
+    "create new edition": "create new edition",
+    "manage editions": "manage editions",
+    editions: "editions",
+    "not active": "not active",
 
     // Communication strings
     "create communication template": "create communication template",
@@ -101,6 +115,7 @@ const common = {
     medium: "medium",
     "by medium": "by",
     "register communication for": "register communication for",
+    "edit communicationTemplate": "edit communication template",
 
     // Student info strings
     suggestions: "suggestions",
