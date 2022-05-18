@@ -70,7 +70,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             <Form.Label className="mt-2">{capitalize(t("repeat new " + name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-2" type={name} onChange={onChangeSecondEntry} />
             <Button data-testid="confirm-reset" onClick={onConfirm} className="mt-3">
-                {capitalize(t("confirm button"))}
+                {capitalize(t("confirm"))}
             </Button>
             <ToastContainer position="bottom-end">
                 <Toast

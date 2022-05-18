@@ -10,13 +10,12 @@ const common = {
     login: "login",
 
     "forgot password title": "forgot password",
-    "reset password email": "Enter email address of your account",
-    "forgot email": "Send reset password request",
-    "forgot email success": "Reset password email has been sent",
+    "reset password email": "enter email address of your account",
+    "forgot email": "send reset password request",
+    "forgot email success": "reset password email has been sent",
 
     "reset password title": "reset password",
     "password identical": "passwords need to be identical",
-    "confirm button": "Confirm",
 
     callname: "callname",
 
