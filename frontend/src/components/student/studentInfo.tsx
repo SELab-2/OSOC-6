@@ -76,7 +76,7 @@ export function StudentInfo() {
                     ))}
                 </ListGroup>
                 <br />
-                <h2>{capitalize(t("student about"))}</h2>
+                <h2>{capitalize(t("about"))}</h2>
                 <a href={student.curriculumVitaeURI}>{capitalize(t("cv"))}</a> <br />
                 <a href={student.portfolioURI}>{capitalize(t("portfolio"))}</a> <br />
                 {motivation}
