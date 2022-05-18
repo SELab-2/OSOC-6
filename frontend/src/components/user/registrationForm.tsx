@@ -92,7 +92,7 @@ const RegistrationForm: NextPage = () => {
                             placeholder={capitalize(t("enter password"))}
                             required
                         />
-                        <h6>{capitalize(t("repeat passwordd"))}</h6>
+                        <h6>{capitalize(t("repeat password"))}</h6>
                         <Field
                             className={"form-control " + styles.registration_field}
                             type="password"
