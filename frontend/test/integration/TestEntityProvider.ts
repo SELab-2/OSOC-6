@@ -192,7 +192,6 @@ export function getBaseSkillType(id: string): ISkillType {
 export function getBaseAssignment(id: string): IAssignment {
     const baseAssignmentsPath = "http://localhost/api/assignments/" + id;
     return {
-        isSuggestion: true,
         isValid: true,
         reason: "This assignment was mandatory, we don't have any other",
         timestamp: "Now",

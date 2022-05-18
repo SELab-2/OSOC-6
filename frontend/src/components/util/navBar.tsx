@@ -13,7 +13,10 @@ export const NavBar = () => {
         <div className="capitalize" data-testid="nav-bar">
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href={"/" + applicationPaths.students} data-testid="navbar-brand">
+                    <Navbar.Brand
+                        href={transformer("/" + applicationPaths.students)}
+                        data-testid="navbar-brand"
+                    >
                         <Image alt="" src={"/resources/osoc-logo.svg"} width="30" height="30" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -25,7 +28,9 @@ export const NavBar = () => {
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-users">
-                                <Nav.Link href={"/" + applicationPaths.users}>{t("users")}</Nav.Link>
+                                <Nav.Link href={transformer("/" + applicationPaths.users)}>
+                                    {t("users")}
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item data-testid="navbar-projects">
                                 <Nav.Link href={transformer("/" + applicationPaths.projects)}>

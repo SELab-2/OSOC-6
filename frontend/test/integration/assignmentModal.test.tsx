@@ -96,7 +96,6 @@ describe("Assignment modal", () => {
         });
 
         const assignment = new Assignment(
-            false,
             true,
             "",
             user._links.self.href,

@@ -36,7 +36,7 @@ public final class Project implements WeakToEdition {
      * The id of the project.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 

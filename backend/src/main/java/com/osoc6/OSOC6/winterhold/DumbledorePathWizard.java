@@ -148,6 +148,16 @@ public final class DumbledorePathWizard {
     public static final String ASSIGNMENT_PATH = "assignments";
 
     /**
+     * Path that {@link com.osoc6.OSOC6.entities.Assignment} valid on student is served on.
+     */
+    public static final String ASSIGNMENT_VALID_OF_STUDENT_PATH = "validity-on-student";
+
+    /**
+     * Path that {@link com.osoc6.OSOC6.entities.Assignment} valid on project is served on.
+     */
+    public static final String ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH = "validity-on-project-skill";
+
+    /**
      * Path that {@link com.osoc6.OSOC6.entities.student.Student} is served on.
      */
     public static final String STUDENT_PATH = "students";

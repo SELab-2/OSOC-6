@@ -150,9 +150,10 @@ export function baseDelete(url: string, params?: { [k: string]: any }): Promise<
 
 /**
  * Extracts the id of a [IBaseEntity] from a URL hosting a single [IBaseEntity].
+ * If the url is invalid, this will return the invalid id 0.
  * @param url hosting the [IBaseEntity].
  */
 export function extractIdFromApiEntityUrl(url: string): string {
     const split = url.split("/");
-    return split[split.length - 1];
+    return split[split.length - 1] || "0";
 }

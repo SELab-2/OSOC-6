@@ -65,12 +65,12 @@ public final class TestEntityProvider {
     }
 
     /**
-     * Creates a student with pronouns Other.
+     * Creates a student with non formatted pronouns.
      *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
-    public static Student getBaseStudentOther(final BaseTestPerformer<?, ?, ?> performer) {
+    public static Student getBaseStudentNonFormattedPronouns(final BaseTestPerformer<?, ?, ?> performer) {
         return Student.builder()
                 .email("jitse@mail.com")
                 .additionalStudentInfo("I like boulders")
@@ -252,15 +252,19 @@ public final class TestEntityProvider {
         return new ProjectSkill("V10 Boulder-er", project, "Strong climber unites");
     }
 
-    public static Assignment getBaseSuggestionAssignment(final UserEntity user, final Student student,
-                                                         final ProjectSkill skill) {
+    public static Assignment getBaseValidAssignment1(final UserEntity user, final Student student,
+                                                     final ProjectSkill skill) {
         return new Assignment(true, "Seems like handsome boy", user, student, skill);
     }
 
-    public static Assignment getBaseNonSuggestionAssignment(final UserEntity user, final Student student,
-                                                         final ProjectSkill skill) {
-        return new Assignment(false, "Seems like handsome girl", user, student, skill);
+    public static Assignment getBaseValidAssignment2(final UserEntity user, final Student student,
+                                                     final ProjectSkill skill) {
+        return new Assignment(true, "Seems like handsome girl", user, student, skill);
+    }
 
+    public static Assignment getBaseNonValidAssignment(final UserEntity user, final Student student,
+                                                       final ProjectSkill skill) {
+        return new Assignment(false, "A suggestion to be ignored", user, student, skill);
     }
 
     public static Suggestion getBaseYesSuggestion(final UserEntity user, final Student student) {
