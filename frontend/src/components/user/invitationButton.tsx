@@ -3,7 +3,7 @@ import { basePost, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { IEdition } from "../../api/entities/EditionEntity";
 import { Invitation } from "../../api/entities/InvitationEntity";
 import { useRouter } from "next/router";
-import {Button, FormFloating} from "react-bootstrap";
+import { Button, FormFloating } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { logoutUser } from "../../api/calls/userCalls";
@@ -14,10 +14,8 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import mailTo from "../../utility/mailTo";
 import useSWR from "swr";
-import {
-    getCommunicationTemplateByName,
-} from "../../api/calls/communicationTemplateCalls";
-import {emptyCommunicationTemplate} from "../../api/entities/CommunicationTemplateEntity";
+import { getCommunicationTemplateByName } from "../../api/calls/communicationTemplateCalls";
+import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 
 export default function InvitationButton() {
     const router = useRouter();
@@ -35,7 +33,7 @@ export default function InvitationButton() {
         return null;
     }
 
-    const invitationField = document.getElementById("invitation-url")
+    const invitationField = document.getElementById("invitation-url");
 
     async function onClick() {
         // Get an edition
@@ -53,18 +51,28 @@ export default function InvitationButton() {
 
         if (invitationField !== null) {
             invitationField.setAttribute("value", applicationPaths.base + "/" + transformer(url));
-            invitationField.style.display = "inline"
+            invitationField.style.display = "inline";
         }
     }
 
     return (
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-            <Button onClick={onClick} href={mailTo({
-                body: template.template,
-                subject: template.subject,
-                recipients: undefined,
-            })}>{capitalize(t("invite user"))}</Button>
-            <input type="text" id="invitation-url" style={{display: 'none', width: 650, textAlign: "center"}} readOnly/>
+            <Button
+                onClick={onClick}
+                href={mailTo({
+                    body: template.template,
+                    subject: template.subject,
+                    recipients: undefined,
+                })}
+            >
+                {capitalize(t("invite user"))}
+            </Button>
+            <input
+                type="text"
+                id="invitation-url"
+                style={{ display: "none", width: 650, textAlign: "center" }}
+                readOnly
+            />
         </div>
     );
 }

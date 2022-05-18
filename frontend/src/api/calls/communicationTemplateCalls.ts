@@ -3,9 +3,17 @@ import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
 } from "../entities/CommunicationTemplateEntity";
-import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    basePost,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+    getQueryUrlFromParams,
+} from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 import { communicationCollectionName } from "../entities/CommunicationEntity";
+import { IEdition } from "../entities/EditionEntity";
+import { getAllEditionsFromPage } from "./editionCalls";
 
 /**
  * Function getting a communication template on the provided url.
@@ -13,6 +21,17 @@ import { communicationCollectionName } from "../entities/CommunicationEntity";
  */
 export function getCommunicationTemplateOnUrl(url: string): Promise<ICommunicationTemplate> {
     return <Promise<ICommunicationTemplate>>getEntityOnUrl(url);
+}
+
+export async function getCommunicationTemplateByName(
+    templateName: string
+): Promise<ICommunicationTemplate | undefined> {
+    const templates = await getAllCommunicationTemplatesFromPage(
+        getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
+            name: templateName,
+        })
+    );
+    return templates[0];
 }
 
 /**
