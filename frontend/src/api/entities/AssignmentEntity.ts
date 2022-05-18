@@ -2,7 +2,6 @@ import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 import { IProjectSkill } from "./ProjectSkillEntity";
 
 export interface IAssignment extends IBaseEntity {
-    isSuggestion: boolean;
     isValid: boolean;
     reason: string;
     timestamp: string;
@@ -20,7 +19,6 @@ export interface IAssignment extends IBaseEntity {
  * An [IAssignment] that is completely empty. Using this we don't need as much ?. in our code.
  */
 export const emptyAssignment: IAssignment = {
-    isSuggestion: true,
     isValid: true,
     reason: "",
     timestamp: "",
@@ -39,15 +37,7 @@ export type IAssignmentPage = IPage<{ assignments: IAssignment[] }>;
 export type IAssignmentLinks = IEntityLinks<{ assignments: IAssignment[] }>;
 
 export class Assignment {
-    constructor(
-        isSuggestion: boolean,
-        isValid: boolean,
-        reason: string,
-        assigner: string,
-        student: string,
-        projectSkill: string
-    ) {
-        this.isSuggestion = isSuggestion;
+    constructor(isValid: boolean, reason: string, assigner: string, student: string, projectSkill: string) {
         this.isValid = isValid;
         this.reason = reason;
         this.assigner = assigner;
@@ -55,7 +45,6 @@ export class Assignment {
         this.projectSkill = projectSkill;
     }
 
-    isSuggestion: boolean;
     isValid: boolean;
     reason: string;
     assigner: string;

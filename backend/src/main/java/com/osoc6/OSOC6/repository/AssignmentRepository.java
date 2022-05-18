@@ -54,6 +54,22 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
             + "@spelUtil.userEditions(authentication.principal)"
             + ".contains(@studentRepository.findById(#studentId).get.controllingEdition.id)")
     @Query("select a from Assignment a where a.isValid = :valid and a.student.id = :studentId")
-    Page<Assignment> findValidStudent(@Param("valid") Boolean valid, @Param("studentId") Long studentId,
-                                      Pageable pageable);
+    Page<Assignment> findValidOnStudent(@Param("valid") Boolean valid, @Param("studentId") Long studentId,
+                                        Pageable pageable);
+
+    /**
+     * Get all assignments made over a projectSkill that have a given validity.
+     * @param valid whether you want valid assignments or not
+     * @param projectSkillId the id of the projectSkill on which you want to search
+     * @param pageable argument needed to return a page
+     * @return page of matching assignments
+     */
+    @RestResource(path = DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+            rel = DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH)
+    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH + " or !@projectSkillRepository.findById(#projectSkillId).present or "
+            + "@spelUtil.userEditions(authentication.principal)"
+            + ".contains(@projectSkillRepository.findById(#projectSkillId).get.controllingEdition.id)")
+    @Query("select a from Assignment a where a.isValid = :valid and a.projectSkill.id = :projectSkillId")
+    Page<Assignment> findValidOnProjectSkill(@Param("valid") Boolean valid,
+                                             @Param("projectSkillId") Long projectSkillId, Pageable pageable);
 }
