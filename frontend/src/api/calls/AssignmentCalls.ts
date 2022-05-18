@@ -4,17 +4,25 @@ import {
     basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
+    getAllEntitiesFromPage,
     getEntityOnUrl,
+    getQueryUrlFromParams,
 } from "./baseCalls";
 import { Assignment, assignmentCollectionName, IAssignment } from "../entities/AssignmentEntity";
 import { IUser } from "../entities/UserEntity";
 import apiPaths from "../../properties/apiPaths";
+import { extractIdFromProjectUrl } from "./projectCalls";
+import { IProjectSkill } from "../entities/ProjectSkillEntity";
+import { IStudent } from "../entities/StudentEntity";
 
 /**
- * Fetches all assignments on a given AssignmentLinksUrl
+ * Gets all [IAssignment] entities on an url hosting [IPage].
+ * @param url url hosting the IPage
  */
-export function getAllAssignmentsFormLinks(url: string): Promise<IAssignment[]> {
-    return <Promise<IAssignment[]>>getAllEntitiesFromLinksUrl(url, assignmentCollectionName);
+export async function getAllAssignmentsFromPage(url: string): Promise<IAssignment[]> {
+    const res = await getAllEntitiesFromPage(url, assignmentCollectionName);
+    console.log(res);
+    return <IAssignment[]>res;
 }
 
 /**
@@ -69,6 +77,16 @@ export async function invalidateAssignment(assignmentUrl: string): Promise<IAssi
     } catch (e) {
         return undefined;
     }
+}
+
+export function getValidAssignmentsUrlForProjectSkill(projectSkill: IProjectSkill): string {
+    const projectSkillId = extractIdFromProjectUrl(projectSkill._links.self.href);
+    return getQueryUrlFromParams(apiPaths.assignmentsValidityByProjectSkill, { projectSkillId, valid: true });
+}
+
+export function getValidAssignmentsUrlForStudent(student: IStudent): string {
+    const studentId = extractIdFromProjectUrl(student._links.self.href);
+    return getQueryUrlFromParams(apiPaths.assignmentsValidityByStudent, { studentId, valid: true });
 }
 
 /**

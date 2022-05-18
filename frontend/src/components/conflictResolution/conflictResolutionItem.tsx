@@ -1,14 +1,15 @@
 import { IStudent } from "../../api/entities/StudentEntity";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import useSWR, { useSWRConfig } from "swr";
-import { getAllAssignmentsFormLinks, invalidateAssignment } from "../../api/calls/AssignmentCalls";
+import {
+    getAllAssignmentsFromPage,
+    getValidAssignmentsUrlForStudent,
+    invalidateAssignment,
+} from "../../api/calls/AssignmentCalls";
 import { useEffect, useState } from "react";
 import ConflictResolutionRadioButton from "./conflictResolutionRadioButton";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
-import { getProjectOnUrl } from "../../api/calls/projectCalls";
-import { emptyProjectSkill, IProjectSkill } from "../../api/entities/ProjectSkillEntity";
-import { emptyProject, IProject } from "../../api/entities/ProjectEntity";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 
@@ -56,9 +57,10 @@ export function ProjectSkillRegister({
 
 export default function ConflictResolutionItem({ student }: ConflictResolutionItemProps) {
     const { t } = useTranslation("common");
+    const assignmentsUrl = getValidAssignmentsUrlForStudent(student);
     const { data: receivedAssignments, error: assignmentsError } = useSWR(
-        student._links.assignments.href,
-        getAllAssignmentsFormLinks
+        assignmentsUrl,
+        getAllAssignmentsFromPage
     );
 
     // Mutation boolean is needed because we are changing the projectSkillMapper in place.
@@ -128,7 +130,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                                 .filter(([skillUrl]) => skillUrl !== picked)
                                 .flatMap(([, assignments]) => Array.from(assignments))
                                 .map((assignment) => invalidateAssignment(assignment)),
-                            mutate(student._links.assignments.href),
+                            mutate(assignmentsUrl),
                         ]);
                     } else {
                         // Will be refactored so keeping the hard coded string.

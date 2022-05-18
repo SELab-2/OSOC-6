@@ -2,7 +2,10 @@ import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import useSkillTypeByName from "../../hooks/useSkillTypeByName";
 import useSWR from "swr";
 import { emptySkillType } from "../../api/entities/SkillTypeEntity";
-import { getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
+import {
+    getAllAssignmentsFromPage,
+    getValidAssignmentsUrlForProjectSkill,
+} from "../../api/calls/AssignmentCalls";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import { getStudentOnUrl } from "../../api/calls/studentCalls";
 import { emptyStudent } from "../../api/entities/StudentEntity";
@@ -34,8 +37,8 @@ export function AssignmentStudentListItem({ assignment }: IAssignmentStudentList
 export default function ProjectSkillStudent({ projectSkill }: IProjectSkillStudentProps) {
     let { data: skillType, error: skillTypeError } = useSkillTypeByName(projectSkill.name);
     let { data: assignments, error: assignmentError } = useSWR(
-        projectSkill._links.assignments.href,
-        getAllAssignmentsFormLinks
+        getValidAssignmentsUrlForProjectSkill(projectSkill),
+        getAllAssignmentsFromPage
     );
 
     if (skillTypeError || assignmentError) {
