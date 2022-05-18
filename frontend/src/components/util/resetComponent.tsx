@@ -11,6 +11,9 @@ import timers from "../../properties/timers";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { IUser } from "../../api/entities/UserEntity";
 
+/**
+ * The props needed for the ResetComponent.
+ */
 interface ResetComponentProps {
     name: string;
     handler: (url: string, newValue: string) => Promise<AxiosResponse>;
@@ -19,7 +22,11 @@ interface ResetComponentProps {
 }
 
 /**
- * Component able to edit field using a handler.
+ * Component used to change a single value with a second input to check whether inputs are equal.
+ * @param handler the handler to submit the value to
+ * @param name the name of the component (used for title)
+ * @param user the user to reset the value of, emptyUser if token is provided
+ * @param token the token used for the query parameter of the reset password request
  */
 export function ResetComponent({ handler, name, user, token }: ResetComponentProps) {
     const { t } = useTranslation("common");

@@ -5,10 +5,16 @@ import { capitalize } from "../../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
 import { AxiosResponse } from "axios";
 
+/**
+ * The props needed for the ForgotComponent.
+ */
 interface ForgotComponentProps {
     handler: (email: string) => Promise<AxiosResponse>;
 }
 
+/**
+ * The value object that is passed to the doSubmit function.
+ */
 interface ForgotValue {
     email: string;
 }

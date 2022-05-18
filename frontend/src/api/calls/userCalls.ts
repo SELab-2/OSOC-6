@@ -6,7 +6,7 @@ import {
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
-    getEntityOnUrl,
+    getEntityOnUrl, getQueryUrlFromParams,
 } from "./baseCalls";
 import { IUser, userCollectionName, UserRole } from "../entities/UserEntity";
 import axios, { AxiosResponse } from "axios";
@@ -70,12 +70,21 @@ export async function postLoginFromForm(form: FormData): Promise<AxiosResponse> 
     return axios.post(apiPaths.login, form, AxiosFormConfig);
 }
 
+/**
+ * Post the provided email to the forgot password api endpoint.
+ * @param email email to send the reset password link to
+ */
 export async function postForgotPasswordEmail(email: string): Promise<AxiosResponse> {
     return basePost(apiPaths.forgotPassword, email);
 }
 
+/**
+ * Post the provided password to the reset password api endpoint with the provided token as query parameter.
+ * @param token the token of the reset password request
+ * @param password the new password
+ */
 export async function postResetPassword(token: string, password: string): Promise<AxiosResponse> {
-    return basePost(apiPaths.resetPassword + "?token=" + token, password);
+    return basePost(getQueryUrlFromParams(apiPaths.resetPassword, {token: token}), password);
 }
 
 export function userDelete(url: string) {

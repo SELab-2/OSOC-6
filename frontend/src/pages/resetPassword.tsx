@@ -8,6 +8,9 @@ import { emptyUser } from "../api/entities/UserEntity";
 import { capitalize } from "../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 
+/**
+ * The reset password page, where a user enters their new password.
+ */
 const ResetPassword: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
