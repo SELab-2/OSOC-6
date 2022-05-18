@@ -62,11 +62,11 @@ function fromFormStudentQueryParams(values: IStudentQueryParams): ParsedUrlQuery
 
 export function StudentFilterComponent() {
     const { t } = useTranslation("common");
-    const { data: skillsRes, error: skillError } = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
+    const { data: receivedSkills, error: skillError } = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
     const router = useRouter();
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
     const [selectedSkills, setSelectedSkills] = useState<string[]>(values.skills);
-    let skills = skillsRes || [];
+    let skills = receivedSkills || [];
 
     if (skillError) {
         console.log(skillError);

@@ -6,7 +6,7 @@ import useSkillTypeByName from "../../hooks/useSkillTypeByName";
  */
 export interface SkillBadgeParams {
     skill: string;
-    onClick?: (event: any) => void;
+    onClick?: () => void;
 }
 
 /**

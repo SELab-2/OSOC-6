@@ -3,13 +3,17 @@ import { Status } from "../../api/entities/StudentEntity";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+/**
+ * The StudentStatusButton filters the list of students by the passed student status
+ * @param props a status and a colour for the button
+ */
 export function StudentStatusButton(props: { status: Status; colour: string }) {
     const [clicked, setClicked] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         setClicked(router.query?.status === props.status);
-    }, [router.query]);
+    }, [router.query.status]);
 
     async function clickHandler() {
         if (clicked) {
