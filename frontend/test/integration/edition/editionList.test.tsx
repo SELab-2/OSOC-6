@@ -72,6 +72,10 @@ describe("EditionList", () => {
             )
         );
 
+        await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
+        const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
+        act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+
         await userEvent.click(screen.getByTestId("list-view-edition"));
     });
 });

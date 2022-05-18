@@ -83,27 +83,6 @@ export function EditionRowComponent(props: EditionProps) {
                             <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                         </a>
                     )}
-                    <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
-                        <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
-                    </a>
-                    <a
-                        href={transformer(
-                            applicationPaths.editionBase +
-                                "/" +
-                                extractIdFromEditionUrl(edition._links.self.href)
-                        )}
-                        data-testid="list-edit-edition"
-                    >
-                        <Image
-                            alt={capitalize(t("edit"))}
-                            src={"/resources/edit.svg"}
-                            width="15"
-                            height="15"
-                        />
-                    </a>
-                    <a onClick={deleteEdition} data-testid="list-delete-edition">
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast

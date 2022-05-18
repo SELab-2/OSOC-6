@@ -9,6 +9,12 @@ import mockRouter from "next-router-mock";
 import applicationPaths from "../../src/properties/applicationPaths";
 import ForbiddenCoachRoutes from "../../src/components/util/forbiddenCoachRoutes";
 import CreateEdition from "../../src/pages/editions/create";
+import CreateEditionForm from '../../src/components/edition/createEditionForm';
+import mockAxios from 'jest-mock-axios';
+import { AxiosResponse } from 'axios';
+import { getBaseOkResponse, getBaseUser } from './TestEntityProvider';
+import { UserRole } from '../../src/api/entities/UserEntity';
+import apiPaths from '../../src/properties/apiPaths';
 
 describe("Coach View", () => {
     it("New edition button not visible", () => {
@@ -27,10 +33,20 @@ describe("Coach View", () => {
     });
 
     it("Unallowed path", async () => {
-        await mockRouter.push(applicationPaths.editionCreate);
-        render(makeCacheFree(() => <ForbiddenCoachRoutes />));
+        await mockRouter.push("/" + applicationPaths.editionCreate);
+
+        render(makeCacheFree(() =>
+            <ForbiddenCoachRoutes>
+                <CreateEdition/>
+            </ForbiddenCoachRoutes>
+        ))
+
+        await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
+        const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
+        act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+
         await waitFor(() => {
-            expect(mockRouter.pathname).toEqual(applicationPaths.error);
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.error);
         });
     });
 });
