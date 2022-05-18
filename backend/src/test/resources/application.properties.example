@@ -17,6 +17,9 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 # The localhost testing domain.
 domain=localhost:8080
 
+# The frontend route that the reset password page is served on
+reset-password.route=resetPassword
+
 # The current active profile, use 'production' in production and 'development' in development.
 spring.profiles.active=development
 
