@@ -70,6 +70,7 @@ const common = {
     "project about": "about this project",
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
+    "select a project to start": "select a project to start",
 
     // People strings
     email: "e-mail",
@@ -82,7 +83,7 @@ const common = {
     edit: "edit",
 
     // Edition strings
-    "no edition": "no edition",
+    "no edition": "there are no editions made yet.",
     "no error": "no error",
 
     // Communication strings
@@ -158,6 +159,12 @@ const common = {
     "color representing skill type": "choose the color representing the skill type",
     "edit colour": "edit colour",
     delete: "delete",
+
+    // Edition strings
+    "create new edition": "create new edition",
+    "manage editions": "manage editions",
+    editions: "editions",
+    "not active": "not active",
 };
 
 export default common;
