@@ -84,7 +84,7 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
 
     @Override
     public Student create_entity() {
-        Student student = TestEntityProvider.getBaseStudentOther(this);
+        Student student = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
         student.setAdditionalStudentInfo(TEST_STRING);
         return student;
     }
