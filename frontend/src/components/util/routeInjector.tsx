@@ -1,5 +1,5 @@
 import useEdition from "../../hooks/useGlobalEdition";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import useSWR from "swr";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import apiPaths from "../../properties/apiPaths";
@@ -11,34 +11,35 @@ import { capitalize } from "../../utility/stringUtil";
 import { Button } from "react-bootstrap";
 import NavBar from "./navBar";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { pathIsAuthException } from "../../utility/pathUtil";
 
 export default function RouteInjector({ children }: any) {
+    const router = useRouter();
+
     const { error: userError } = useCurrentUser(true);
-    const userIsLoggedIn: boolean = !userError;
+    const injectorActive: boolean = !userError && !pathIsAuthException(router.asPath);
 
     const { t } = useTranslation("common");
     const [contextEditionUrl, setContextEditionUrl] = useEdition();
     const { data: contextEdition, error: contextEditionError } = useSWR(
-        userIsLoggedIn ? contextEditionUrl : null,
+        injectorActive ? contextEditionUrl : null,
         getEditionOnUrl
     );
 
     const contextEditionName = contextEdition?.name;
     const hadContextError = !!contextEditionError;
 
-    const router = useRouter();
-    const replace = router.replace;
     const query = router.query as { edition?: string };
     const routerEditionName = query.edition;
     const { data: fetchedRouterEdition, error: fetchedEditionError } = useSWR(
-        userIsLoggedIn ? routerEditionName : null,
+        injectorActive ? routerEditionName : null,
         getEditionByName
     );
     const fetchedRouterEditionUrl = fetchedRouterEdition?._links?.self?.href;
     const hadRouterError = !!fetchedEditionError;
 
     const { data: availableEditions, error: availableEditionsError } = useSWR(
-        !contextEditionUrl && !routerEditionName && userIsLoggedIn
+        !contextEditionUrl && !routerEditionName && injectorActive
             ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" })
             : null,
         getAllEditionsFromPage
@@ -56,14 +57,16 @@ export default function RouteInjector({ children }: any) {
         // -> You probably need to update the edition name because it was altered.
         // -> Should be handled by transformer, but we save guard here.
         if (hadRouterError && contextEditionName && contextEditionName !== routerEditionName) {
-            replace({
+            console.log("1");
+            Router.replace({
                 query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
 
         // You do not have a path edition set but your config edition is set and defined -> set path edition
         if (contextEditionName && !routerEditionName) {
-            replace({
+            console.log("2");
+            Router.replace({
                 query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
@@ -74,9 +77,10 @@ export default function RouteInjector({ children }: any) {
             setContextEditionUrl(null);
         }
 
-        // You have no context edition and no path edition. But are able to see editions.
+        // You have no context edition and no path edition, but are able to see editions.
         if (!contextEditionUrl && !routerEditionName && latestEditionName) {
-            replace({
+            console.log("3");
+            Router.replace({
                 query: {
                     ...query,
                     edition: latestEditionName,

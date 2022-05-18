@@ -5,14 +5,17 @@ import useTranslation from "next-translate/useTranslation";
 import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import NavBar from "../components/util/navBar";
-import { Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";
+import { useState } from "react";
 
 const Login: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { mutate } = useSWRConfig();
+    const [hadError, setHadError] = useState<boolean>(false);
+
     return (
         <main>
             <NavBar />
@@ -26,7 +29,18 @@ const Login: NextPage = () => {
                     <Col>
                         <div className={styles.login_div}>
                             <h3>{capitalize(t("signin"))}</h3>
-                            <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
+                            <Card hidden={!hadError}>
+                                <Card.Body className={styles.login_card}>
+                                    <Card.Text>
+                                        {capitalize(t("errorMessages:invalid_credentials"))}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                            <LoginForm
+                                submitHandler={(form) =>
+                                    loginSubmitHandler(form, setHadError, router, mutate)
+                                }
+                            />
                         </div>
                     </Col>
                 </Row>
