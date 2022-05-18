@@ -6,7 +6,7 @@ import { makeCacheFree } from "./Provide";
 import apiPaths from "../../src/properties/apiPaths";
 import ResetPassword from "../../src/pages/resetPassword";
 import mockRouter from "next-router-mock";
-import {getQueryUrlFromParams} from "../../src/api/calls/baseCalls";
+import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -51,7 +51,7 @@ describe("reset password", () => {
 
             await waitFor(() => {
                 expect(mockAxios.post).toHaveBeenCalledWith(
-                    getQueryUrlFromParams(apiPaths.resetPassword, {token: resetToken}),
+                    getQueryUrlFromParams(apiPaths.resetPassword, { token: resetToken }),
                     newpassword,
                     expect.anything()
                 );
