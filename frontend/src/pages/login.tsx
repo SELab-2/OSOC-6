@@ -29,7 +29,9 @@ const Login: NextPage = () => {
                             <h3>{capitalize(t("signin"))}</h3>
                             <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
                             <div className="mt-2">
-                                <a href={"/" + applicationPaths.forgotPassword}>{capitalize(t("forgot password"))}</a>
+                                <a href={"/" + applicationPaths.forgotPassword}>
+                                    {capitalize(t("forgot password"))}
+                                </a>
                             </div>
                         </div>
                     </Col>
