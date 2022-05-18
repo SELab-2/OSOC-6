@@ -40,9 +40,7 @@ export default function CreateCommunicationTemplateForm({ template }: CreateComm
             {({ values, setFieldValue }) => (
                 <Form>
                     <div>
-                        <label htmlFor="communicationTemplateNameField">
-                            {capitalize(t("name")) + ":"}
-                        </label>
+                        <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 
                         {template && <label id="communicationTemplateNameField">{values.name}</label>}
                         {!template && (
