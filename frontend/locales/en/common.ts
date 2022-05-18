@@ -103,6 +103,7 @@ const common = {
     "more info": "more info about this student",
     education: "student education and experience",
     cv: "cv",
+    portfolio: "portfolio",
     motivation: "motivation",
 
     "info current": "currently in",
