@@ -26,7 +26,6 @@ export function pathIsAuthException(url: string): boolean {
  * @param url
  */
 export function pathIsForbiddenForCoach(url: string): boolean {
-
     // I decided it's best to use regex, because in the future we might get
     // something/[id]/edit for example, regex makes this easier to match
     const forbiddenRoutes = [
@@ -58,9 +57,9 @@ export function pathIsForbiddenForCoach(url: string): boolean {
         routerPath = routerPath.substring(0, indexOfQuestionMark);
     }
 
-    for(const route of forbiddenRoutes) {
+    for (const route of forbiddenRoutes) {
         const matches = routerPath.match(route);
-        if (matches !== null){
+        if (matches !== null) {
             return true;
         }
     }
