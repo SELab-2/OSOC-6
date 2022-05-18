@@ -15,7 +15,7 @@ interface ResetComponentProps {
     name: string;
     handler: (url: string, newValue: string) => Promise<AxiosResponse>;
     user: IUser;
-    token: string | null;
+    token?: string;
 }
 
 /**

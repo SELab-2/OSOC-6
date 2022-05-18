@@ -11,7 +11,7 @@ const ChangeEmail: NextPage = () => {
     return (
         <div>
             <Navbar />
-            <ResetComponent name="email" handler={saveEmailOfUser} user={user!} token={null} />
+            <ResetComponent name="email" handler={saveEmailOfUser} user={user!}/>
         </div>
     );
 };

@@ -11,7 +11,7 @@ const ChangePassword: NextPage = () => {
     return (
         <div>
             <Navbar />
-            <ResetComponent name="password" handler={savePasswordOfUser} user={user!} token={null} />
+            <ResetComponent name="password" handler={savePasswordOfUser} user={user!}/>
         </div>
     );
 };
