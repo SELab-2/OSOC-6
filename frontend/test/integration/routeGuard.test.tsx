@@ -10,7 +10,7 @@ import { jest } from "@jest/globals";
 import { getBaseMovedResponse } from "./TestEntityProvider";
 import { makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
-import CreateEdition from '../../src/pages/editions/create';
+import CreateEdition from "../../src/pages/editions/create";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -27,7 +27,7 @@ describe("RouteGuard", () => {
     render(
         makeCacheFree(() => (
             <RouteGuard>
-                <CreateEdition/>
+                <CreateEdition />
             </RouteGuard>
         ))
     );
