@@ -20,6 +20,7 @@ const apiPaths = {
     userByEdition: "users/search/by-edition",
 
     communicationTemplates: "communicationTemplates",
+    communicationTemplatesByName: "communicationTemplates/search/by-name",
 
     projects: "projects",
     projectsByEdition: "projects/search/by-edition",
