@@ -260,7 +260,7 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void find_valid_works() throws Exception {
+    public void find_valid_on_student_works() throws Exception {
         perform_queried_get(getEntityPath()
                         + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
                 new String[]{"studentId", "valid"},
@@ -271,7 +271,7 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void find_valid_no_results_on_invalid_student() throws Exception {
+    public void find_valid_on_student_no_results_on_invalid_student() throws Exception {
         perform_queried_get(getEntityPath()
                         + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
                 new String[]{"studentId", "valid"},
@@ -282,11 +282,43 @@ public final class CoachAssignmentEndpointTests extends TestFunctionProvider<Ass
 
     @Test
     @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void find_valid_gives_no_access() throws Exception {
+    public void find_valid_on_student_gives_no_access() throws Exception {
         perform_queried_get(getEntityPath()
                         + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
                 new String[]{"studentId", "valid"},
                 new String[]{testStudent.getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_works() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill.getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_no_results_on_invalid_student() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{Long.toString(getILLEGAL_ID()), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = OUTSIDER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_gives_no_access() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill.getId().toString(), Boolean.toString(true)})
                 .andExpect(status().isForbidden());
     }
 
