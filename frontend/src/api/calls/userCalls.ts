@@ -1,7 +1,7 @@
 import {
     AxiosConf,
     AxiosFormConfig,
-    basePatch,
+    basePatch, basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
@@ -67,6 +67,10 @@ export function disabledUser(url: string): Promise<AxiosResponse> {
 
 export async function postLoginFromForm(form: FormData): Promise<AxiosResponse> {
     return axios.post(apiPaths.login, form, AxiosFormConfig);
+}
+
+export async function postForgotPasswordEmail(email: string): Promise<AxiosResponse> {
+    return basePost(apiPaths.forgotPassword, email);
 }
 
 export function userDelete(url: string) {

@@ -22,6 +22,9 @@ const applicationPaths = {
     changePassword: "changePassword",
     registration: "registration",
 
+    forgotPassword: "forgotPassword",
+    resetPassword: "resetPassword",
+
     communicationTemplateBase: "communicationTemplates",
     communicationTemplateCreation: "communicationTemplates/create",
     communicationTemplateInfo: "communicationTemplates/[id]",

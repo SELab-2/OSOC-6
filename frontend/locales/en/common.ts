@@ -7,6 +7,10 @@ const common = {
     "let's get started": "let's get started!",
     login: "login",
 
+    "reset password email": "Enter email address of your account",
+    "forgot email": "Send reset password request",
+    "forgot email success": "Reset password email has been sent",
+
     callname: "callname",
 
     "empty page": "empty page",
