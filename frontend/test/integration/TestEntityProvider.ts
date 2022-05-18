@@ -1,5 +1,5 @@
 import { IProject } from "../../src/api/entities/ProjectEntity";
-import {IBaseEntity, IEntityLinks, IPage, IReferencer} from "../../src/api/entities/BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "../../src/api/entities/BaseEntities";
 import { AxiosResponse } from "axios";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
@@ -17,7 +17,7 @@ import { IEdition } from "../../src/api/entities/EditionEntity";
 import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
 import { ICommunication } from "../../src/api/entities/CommunicationEntity";
 import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
-import {IInvitation, Invitation} from "../../src/api/entities/InvitationEntity";
+import { IInvitation, Invitation } from "../../src/api/entities/InvitationEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -319,16 +319,16 @@ export function getBaseStudent(id: string): IStudent {
 }
 
 export function getBaseInvitation(token: string): IInvitation {
-   return {
-       token: token,
-       creationTimestamp: "",
-       used: false,
-       _links: {
-           edition: { href: "" },
-           issuer: { href: "" },
-           subject: { href: "" },
-           self: { href: "" },
-           invitation: { href: "" },
-       }
-   }
+    return {
+        token: token,
+        creationTimestamp: "",
+        used: false,
+        _links: {
+            edition: { href: "" },
+            issuer: { href: "" },
+            subject: { href: "" },
+            self: { href: "" },
+            invitation: { href: "" },
+        },
+    };
 }
