@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import { ResetComponent } from "../components/util/resetComponent";
 import Navbar from "../components/util/navBar";
 import { savePasswordOfUser } from "../api/calls/userCalls";
-import {useCurrentUser} from "../hooks/useCurrentUser";
-import {emptyUser} from "../api/entities/UserEntity";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { emptyUser } from "../api/entities/UserEntity";
 
 const ChangePassword: NextPage = () => {
     let { user: userResponse, error } = useCurrentUser();

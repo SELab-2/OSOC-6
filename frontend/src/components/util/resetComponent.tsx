@@ -1,15 +1,15 @@
-import {Button, Container, Form, FormControl, Toast, ToastContainer} from "react-bootstrap";
+import { Button, Container, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/resetComponent.module.css";
-import {useState} from "react";
+import { useState } from "react";
 import applicationPaths from "../../properties/applicationPaths";
-import {useRouter} from "next/router";
-import {capitalize} from "../../utility/stringUtil";
-import {StatusCodes} from "http-status-codes";
-import {AxiosResponse} from "axios";
+import { useRouter } from "next/router";
+import { capitalize } from "../../utility/stringUtil";
+import { StatusCodes } from "http-status-codes";
+import { AxiosResponse } from "axios";
 import timers from "../../properties/timers";
-import {useEditionApplicationPathTransformer} from "../../hooks/utilHooks";
-import {IUser} from "../../api/entities/UserEntity";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { IUser } from "../../api/entities/UserEntity";
 
 interface ResetComponentProps {
     name: string;

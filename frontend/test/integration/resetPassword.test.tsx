@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
-import {render, RenderResult, waitFor} from "@testing-library/react";
+import { render, RenderResult, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import {makeCacheFree} from "./Provide";
+import { makeCacheFree } from "./Provide";
 import apiPaths from "../../src/properties/apiPaths";
 import ResetPassword from "../../src/pages/resetPassword";
 import mockRouter from "next-router-mock";

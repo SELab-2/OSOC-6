@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import { ResetComponent } from "../components/util/resetComponent";
 import Navbar from "../components/util/navBar";
 import { saveEmailOfUser } from "../api/calls/userCalls";
-import {emptyUser} from "../api/entities/UserEntity";
-import {useCurrentUser} from "../hooks/useCurrentUser";
+import { emptyUser } from "../api/entities/UserEntity";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const ChangeEmail: NextPage = () => {
     let { user: userResponse, error } = useCurrentUser();
