@@ -1,12 +1,10 @@
 import apiPaths from "../../properties/apiPaths";
-import { basePost, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { IEdition } from "../../api/entities/EditionEntity";
 import { Invitation } from "../../api/entities/InvitationEntity";
-import { useRouter } from "next/router";
-import { Button, FormFloating } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
-import { logoutUser } from "../../api/calls/userCalls";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { createInvitation } from "../../api/calls/invitationCalls";
@@ -18,7 +16,6 @@ import { getCommunicationTemplateByName } from "../../api/calls/communicationTem
 import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 
 export default function InvitationButton() {
-    const router = useRouter();
     const { t } = useTranslation("common");
     const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
@@ -29,14 +26,14 @@ export default function InvitationButton() {
 
     template = template || emptyCommunicationTemplate;
 
-    if (error || !user) {
+    if (templateError) {
         return null;
     }
 
     const invitationField = document.getElementById("invitation-url");
 
     async function onClick() {
-        // Get an edition
+        // Get an edition : TODO make this the current edition
         const editions: IEdition[] = await getAllEditionsFromPage(apiPaths.editions);
         const edition: IEdition = editions[0];
 
@@ -58,6 +55,7 @@ export default function InvitationButton() {
     return (
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
             <Button
+                data-testid="invite-button"
                 onClick={onClick}
                 href={mailTo({
                     body: template.template,
@@ -69,6 +67,7 @@ export default function InvitationButton() {
             </Button>
             <input
                 type="text"
+                data-testid="invitation-url"
                 id="invitation-url"
                 style={{ display: "none", width: 650, textAlign: "center" }}
                 readOnly
