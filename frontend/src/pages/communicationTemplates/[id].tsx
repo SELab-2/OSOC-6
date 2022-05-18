@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { getCommunicationTemplateOnUrl } from "../../api/calls/communicationTemplateCalls";
-import CommunicationTemplateInfo from "../../components/communication/CommunicationTemplateInfo";
 import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
+import CommunicationTemplateInfo from "../../components/communication/communicationTemplateInfo";
 
 /**
  * Component that renders the information of a communication template.

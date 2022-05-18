@@ -1,8 +1,10 @@
 import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
 import useEdition from "./useGlobalEdition";
 import useSWR from "swr";
-import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
+import { extractIdFromEditionUrl, getEditionByName, getEditionOnUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
+import { NextRouter, useRouter } from "next/router";
+import { IEdition } from "../api/entities/EditionEntity";
 
 /**
  * useSWR wrapper that fills in the global edition as an edition query.
@@ -25,10 +27,10 @@ export function useSwrWithEdition<T>(
  * The transformer makes sure an api url has the needed query parameter.
  */
 export function useEditionAPIUrlTransformer(): (url: string) => string {
-    const [edition] = useEdition();
+    const [editionUrl] = useEdition();
     return (url) =>
         getQueryUrlFromParams(url, {
-            edition: edition ? extractIdFromEditionUrl(edition._links.self.href) : undefined,
+            edition: editionUrl ? extractIdFromEditionUrl(editionUrl) : undefined,
         });
 }
 
@@ -37,6 +39,29 @@ export function useEditionAPIUrlTransformer(): (url: string) => string {
  * The transformer makes sure an application path has the needed query parameter.
  */
 export function useEditionApplicationPathTransformer(): (url: string) => string {
-    const [edition] = useEdition();
+    const [editionUrl] = useEdition();
+    const { data: edition } = useSWR(editionUrl, getEditionOnUrl);
     return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
+}
+
+/**
+ * Set the global context and change the url so the
+ * right edition name is in the url.
+ */
+export function useGlobalEditionSetter(): (edition: IEdition) => Promise<void> {
+    const router = useRouter();
+    const [contextEdition, setContextEdition] = useEdition();
+
+    async function setGlobalStateAndUrl(edition: IEdition) {
+        const replace = router.replace;
+        const query = router.query as { edition?: string };
+
+        setContextEdition(edition._links.self.href);
+
+        await replace({
+            query: { ...query, edition: edition.name },
+        });
+    }
+
+    return setGlobalStateAndUrl;
 }

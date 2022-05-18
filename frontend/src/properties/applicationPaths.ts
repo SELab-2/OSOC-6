@@ -31,6 +31,11 @@ const applicationPaths = {
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
+
+    editionBase: "editions",
+    editionCreate: "editions/create",
+
+    skillTypesBase: "skillTypes",
 };
 
 export default applicationPaths;

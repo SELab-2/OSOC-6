@@ -1,5 +1,5 @@
-import { basePost, extractIdFromApiEntityUrl, getEntityOnUrl } from "./baseCalls";
-import { Communication, ICommunication } from "../entities/CommunicationEntity";
+import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import { Communication, communicationCollectionName, ICommunication } from "../entities/CommunicationEntity";
 import apiPaths from "../../properties/apiPaths";
 
 /**
@@ -16,6 +16,14 @@ export function getCommunicationOnUrl(url: string): Promise<ICommunication> {
  */
 export async function createNewCommunication(communication: Communication): Promise<ICommunication> {
     return <Promise<ICommunication>>(await basePost(apiPaths.communications, communication)).data;
+}
+
+/**
+ * Function getting all [ICommunication] entities on an [IPage] url.
+ * @param url the [IPage] url hosting the communications.
+ */
+export function getAllCommunicationFromPage(url: string): Promise<ICommunication[]> {
+    return <Promise<ICommunication[]>>getAllEntitiesFromPage(url, communicationCollectionName);
 }
 
 /**

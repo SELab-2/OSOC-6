@@ -47,7 +47,7 @@ public final class Student implements WeakToEdition {
      * The id of the student.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 

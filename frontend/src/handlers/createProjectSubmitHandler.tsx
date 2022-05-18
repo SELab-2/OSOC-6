@@ -47,7 +47,7 @@ export type ProjectCreationProps = {
     submitHandler: (
         values: ProjectCreationValues,
         router: NextRouter,
-        edition: IEdition,
+        editionUrl: string,
         ownUser: IUser,
         mutate: ScopedMutator<any>,
         apiURLTransformer: (url: string) => string
@@ -58,7 +58,7 @@ export type ProjectCreationProps = {
  * Takes care of the creation of a new project and the associated ProjectSkills
  * @param values values needed to create a new project
  * @param router the next router object
- * @param edition the current edition
+ * @param editionUrl the current edition
  * @param ownUser the currently logged in user
  * @param mutate the global mutate function provided by SWR
  * @param apiURLTransformer function that transforms an url to an edition queried url.
@@ -66,7 +66,7 @@ export type ProjectCreationProps = {
 export async function createProjectSubmitHandler(
     values: ProjectCreationValues,
     router: NextRouter,
-    edition: IEdition,
+    editionUrl: string,
     ownUser: IUser,
     mutate: ScopedMutator<any>,
     apiURLTransformer: (url: string) => string
@@ -78,7 +78,7 @@ export async function createProjectSubmitHandler(
         values.goals,
         values.partnerName,
         values.partnerWebsite,
-        apiPaths.editions + "/" + extractIdFromEditionUrl(edition._links.self.href),
+        editionUrl,
         apiPaths.users + "/" + extractIdFromUserUrl(ownUser._links.self.href)
     );
 

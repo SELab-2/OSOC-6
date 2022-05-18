@@ -36,6 +36,7 @@ const apiPaths = {
     projectSkills: "project-skills",
 
     communications: "communications",
+    communicationsByStudent: "communications/search/by-student",
 
     assignments: "assignments",
 
