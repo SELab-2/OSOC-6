@@ -10,7 +10,7 @@ const EditionInfoPage: NextPage = () => {
     const router = useRouter();
     const id = router.query.id;
     return (
-        <main className={styles.main}>
+        <main className={styles.main} data-testid="edition-info-page">
             <NavBar />
             <EditionOverview editionId={id as string} />
         </main>

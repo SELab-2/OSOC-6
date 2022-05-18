@@ -13,6 +13,7 @@ import {
     getBaseUser,
 } from "./TestEntityProvider";
 import { AxiosResponse } from "axios";
+import Users from "../../src/pages/users";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -23,7 +24,7 @@ afterEach(() => {
 describe("Users", () => {
     describe("Users overview and rows", () => {
         it("Should have overview component", () => {
-            render(makeCacheFree(UsersOverview));
+            render(makeCacheFree(Users));
             expect(screen.getByTestId("user-overview")).toBeInTheDocument();
         });
 

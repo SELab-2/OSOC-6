@@ -6,6 +6,8 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeForm from "../../../src/components/skillType/skillTypeForm";
 import { SkillType } from "../../../src/api/entities/SkillTypeEntity";
+import { makeCacheFree } from "../Provide";
+import CreateSkillTypePage from "../../../src/pages/skillTypes/create";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -15,7 +17,7 @@ describe("create skillType", () => {
     });
 
     it("renders", () => {
-        const form = render(<SkillTypeForm />);
+        const form = render(makeCacheFree(CreateSkillTypePage));
         expect(form.getByTestId("skill-type-create-form")).toBeInTheDocument();
     });
 

@@ -7,6 +7,7 @@ import userEvent from "@testing-library/user-event";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { makeCacheFree } from "./Provide";
 import EditionOverview from "../../src/components/edition/editionOverview";
+import EditionInfoPage from "../../src/pages/editions/[id]";
 jest.mock("next/router", () => require("next-router-mock"));
 
 afterEach(() => {
@@ -20,6 +21,13 @@ beforeEach(async () => {
 });
 
 describe("Edition overview", () => {
+    it("render page", async () => {
+        await act(() => {
+            render(makeCacheFree(EditionInfoPage));
+        });
+        expect(screen.getByTestId("edition-info-page")).toBeInTheDocument();
+    });
+
     it("Should render all parts", async () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);

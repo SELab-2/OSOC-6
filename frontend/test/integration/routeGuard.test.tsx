@@ -1,6 +1,5 @@
 import { cleanup, render } from "@testing-library/react";
 import RouteGuard from "../../src/components/util/routeGuard";
-import Home from "../../src/pages/home";
 import { AxiosResponse } from "axios";
 import ApiPaths from "../../src/properties/apiPaths";
 import apiPaths from "../../src/properties/apiPaths";
@@ -11,11 +10,12 @@ import { jest } from "@jest/globals";
 import { getBaseMovedResponse } from "./TestEntityProvider";
 import { makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
+import CreateEdition from '../../src/pages/editions/create';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
 beforeEach(() => {
-    mockRouter.asPath = "/home";
+    mockRouter.asPath = "/editions/create";
 });
 
 afterEach(() => {
@@ -27,7 +27,7 @@ describe("RouteGuard", () => {
     render(
         makeCacheFree(() => (
             <RouteGuard>
-                <Home />
+                <CreateEdition/>
             </RouteGuard>
         ))
     );
