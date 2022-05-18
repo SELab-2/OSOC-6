@@ -4,7 +4,7 @@ import { render, RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { AxiosResponse } from "axios";
-import { enableUseEdition, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
+import { enableUseEditionComponentWrapper, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
 import { getBaseActiveEdition, getBaseOkResponse, getBasePage, getBaseStudent } from "./TestEntityProvider";
 import apiPaths from "../../src/properties/apiPaths";
 import { studentCollectionName } from "../../src/api/entities/StudentEntity";
@@ -54,7 +54,7 @@ describe("student list", () => {
 
         beforeEach(() => {
             mockRouter.query = query;
-            list = render(enableUseEdition(StudentList, edition));
+            list = render(enableUseEditionComponentWrapper(StudentList, edition));
         });
 
         it("uses the filter", () => {

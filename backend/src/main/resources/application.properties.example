@@ -22,6 +22,10 @@ spring.profiles.active=production
 # Tally webhook secret token
 webhook.token=your_secret_token_here
 
+# Make sure that the database is created from the entity mappings first, and then the data from data.sql is loaded
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.mode=always
+
 #drop n create table again, good for testing, comment this in production
 #spring.jpa.hibernate.ddl-auto=create
 

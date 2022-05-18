@@ -60,6 +60,10 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     return getQueryUrlFromParams(url, queryParams);
 }
 
+/**
+ * Extracts the id of a [IStudent] from a URL hosting a single [IStudent].
+ * @param url hosting the [IStudent].
+ */
 export function extractIdFromStudentUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
 }
