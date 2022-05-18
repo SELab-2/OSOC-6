@@ -32,7 +32,7 @@ export function EditionList() {
             <Container style={{ marginTop: "50px" }}>
                 <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
                 {user?.userRole === UserRole.admin && (
-                    <Button href={transformer(applicationPaths.editionCreate)}>
+                    <Button data-testid="new-edition" href={transformer(applicationPaths.editionCreate)}>
                         {capitalize(t("create new edition"))}
                     </Button>
                 )}
