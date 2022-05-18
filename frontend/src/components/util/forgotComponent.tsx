@@ -1,9 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/forgotPassword.module.css";
-import {useState} from "react";
-import {capitalize} from "../../utility/stringUtil";
-import {Field, Form, Formik} from "formik";
-import {AxiosResponse} from "axios";
+import { useState } from "react";
+import { capitalize } from "../../utility/stringUtil";
+import { Field, Form, Formik } from "formik";
+import { AxiosResponse } from "axios";
 
 interface ForgotComponentProps {
     handler: (email: string) => Promise<AxiosResponse>;
