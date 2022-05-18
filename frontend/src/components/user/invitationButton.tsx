@@ -21,10 +21,7 @@ export default function InvitationButton() {
     const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
     const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
-    const { data, error: templateError } = useSWR(
-        "Invite",
-        getCommunicationTemplateByName
-    );
+    const { data, error: templateError } = useSWR("Invite", getCommunicationTemplateByName);
 
     const template = data || emptyCommunicationTemplate;
 
@@ -55,15 +52,12 @@ export default function InvitationButton() {
             body: template.template + "\n" + registrationUrl,
             subject: template.subject,
             recipients: undefined,
-        })
+        });
     }
 
     return (
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-            <Button
-                data-testid="invite-button"
-                onClick={onClick}
-            >
+            <Button data-testid="invite-button" onClick={onClick}>
                 {capitalize(t("invite user"))}
             </Button>
             <input

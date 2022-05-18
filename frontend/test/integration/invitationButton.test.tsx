@@ -6,14 +6,12 @@ import {
     getBaseActiveEdition,
     getBaseInvitation,
     getBaseOkResponse,
-    getBasePage,
     getBaseUser,
 } from "./TestEntityProvider";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
-import { editionCollectionName } from "../../src/api/entities/EditionEntity";
 import { UserRole } from "../../src/api/entities/UserEntity";
-import { enableCurrentUser, makeCacheFree } from "./Provide";
+import {enableCurrentUser, enableUseEditionAxiosCall, enableUseEditionComponentWrapper, makeCacheFree} from "./Provide";
 
 describe("InvitationButton", () => {
     const currentUser = getBaseUser("10", UserRole.admin, true);
@@ -29,19 +27,14 @@ describe("InvitationButton", () => {
     });
 
     it("click", async () => {
-        render(makeCacheFree(InvitationButton));
-        await enableCurrentUser(currentUser);
-
         const baseEdition = getBaseActiveEdition("5", "Active edition");
+        render(makeCacheFree(() => enableUseEditionComponentWrapper(InvitationButton, baseEdition)));
+        await enableCurrentUser(currentUser);
+        await enableUseEditionAxiosCall(baseEdition);
 
         const invitationToken = "mockToken";
-        // const invitation = new Invitation(currentUser._links.self.href, baseEdition._links.self.href)
         const baseInvitation = getBaseInvitation(invitationToken);
         await userEvent.click(screen.getByTestId("invite-button"));
-        mockAxios.mockResponseFor(
-            apiPaths.editions,
-            getBaseOkResponse(getBasePage(apiPaths.editions, editionCollectionName, [baseEdition]))
-        );
 
         await waitFor(() => {
             mockAxios.mockResponseFor(apiPaths.invitations, getBaseOkResponse(baseInvitation));
