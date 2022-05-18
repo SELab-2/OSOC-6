@@ -65,12 +65,12 @@ public final class TestEntityProvider {
     }
 
     /**
-     * Creates a student with pronouns Other.
+     * Creates a student with pronouns non formatted pronouns.
      *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
-    public static Student getBaseStudentOther(final BaseTestPerformer<?, ?, ?> performer) {
+    public static Student getBaseStudentNonFormattedPronouns(final BaseTestPerformer<?, ?, ?> performer) {
         return Student.builder()
                 .email("jitse@mail.com")
                 .additionalStudentInfo("I like boulders")
@@ -254,12 +254,18 @@ public final class TestEntityProvider {
 
     public static Assignment getBaseSuggestionAssignment(final UserEntity user, final Student student,
                                                          final ProjectSkill skill) {
-        return new Assignment(true, "Seems like handsome boy", user, student, skill);
+        return new Assignment(true, true, "Seems like handsome boy", user, student, skill);
     }
 
     public static Assignment getBaseNonSuggestionAssignment(final UserEntity user, final Student student,
                                                          final ProjectSkill skill) {
-        return new Assignment(false, "Seems like handsome girl", user, student, skill);
+        return new Assignment(false, true, "Seems like handsome girl", user, student, skill);
+
+    }
+
+    public static Assignment getNonValidAssignment(final UserEntity user, final Student student,
+                                                            final ProjectSkill skill) {
+        return new Assignment(false, false, "A suggestion to be ignored", user, student, skill);
 
     }
 

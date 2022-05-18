@@ -58,7 +58,7 @@ public final class AdminCommunicationEndpointTests extends
     /**
      * Test student that is loaded before every test.
      */
-    private final Student testStudent = TestEntityProvider.getBaseStudentOther(this);
+    private final Student testStudent = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
 
     /**
      * Sample {@link Communication} that gets loaded before every test.
