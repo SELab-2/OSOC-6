@@ -6,7 +6,7 @@ import { getBaseActiveEdition, getBaseOkResponse } from "./TestEntityProvider";
 import userEvent from "@testing-library/user-event";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { makeCacheFree } from "./Provide";
-import EditionOverview from "../../src/components/editionOverview";
+import EditionOverview from "../../src/components/edition/editionOverview";
 jest.mock("next/router", () => require("next-router-mock"));
 
 afterEach(() => {

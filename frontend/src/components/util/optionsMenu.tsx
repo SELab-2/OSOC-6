@@ -21,6 +21,9 @@ export const OptionsMenu = () => {
             <Nav.Link href={transformer("/" + applicationPaths.profile)} className={styles.menu_option}>
                 {capitalize(t("user profile"))}
             </Nav.Link>
+            <Nav.Link href={transformer("/" + applicationPaths.editionBase)} className={styles.menu_option}>
+                {capitalize(t("editions"))}
+            </Nav.Link>
             <Nav.Link
                 onClick={async () => {
                     await router.push(transformer("/" + applicationPaths.login));
