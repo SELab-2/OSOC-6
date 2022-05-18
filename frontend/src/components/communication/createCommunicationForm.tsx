@@ -16,10 +16,17 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import CommunicationTemplateInfo from "./communicationTemplateInfo";
 
+/**
+ * Properties needed by the [CreateCommunicationForm] component
+ */
 export interface CreateCommunicationFormProps {
     student: IStudent;
 }
 
+/**
+ * Form component to create a new communication item with a given [IStudent].
+ * @param student the [IStudent] this communication is handled with.
+ */
 export default function CreateCommunicationForm({ student }: CreateCommunicationFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();

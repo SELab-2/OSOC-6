@@ -7,10 +7,17 @@ import { ICommunication } from "../../api/entities/CommunicationEntity";
 import { getAllCommunicationFromPage } from "../../api/calls/communicationCalls";
 import CommunicationListItem from "./communicationListItem";
 
+/**
+ * Properties needed for [CommunicationList].
+ */
 export interface CommunicationListProps {
     student: IStudent | undefined;
 }
 
+/**
+ * Component listing all communications of a given student. (In order as provided by the list)
+ * @param student [IStudent] the communications need to be listed of.
+ */
 export default function CommunicationList({ student }: CommunicationListProps) {
     const { data: receivedCommunications, error: communicationsError } = useSWR(
         student

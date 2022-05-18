@@ -7,10 +7,18 @@ import {
 } from "../../api/entities/CommunicationTemplateEntity";
 import useTranslation from "next-translate/useTranslation";
 
+/**
+ * Properties of [CommunicationListItem].
+ */
 export interface CommunicationListItemProps {
     communication: ICommunication;
 }
 
+/**
+ * An item in the [CommunicationList].
+ * Renders the details of a single [ICommunication] entity as a list item.
+ * @param communication the [ICommunication] item this list item is all about.
+ */
 export default function CommunicationListItem({ communication }: CommunicationListItemProps) {
     const { t } = useTranslation("common");
     const { data: receivedTemplate, error: templateError } = useSWR(
