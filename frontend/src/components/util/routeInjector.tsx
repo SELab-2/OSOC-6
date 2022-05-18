@@ -1,5 +1,5 @@
 import useEdition from "../../hooks/useGlobalEdition";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import apiPaths from "../../properties/apiPaths";
@@ -15,6 +15,7 @@ import { pathIsAuthException } from "../../utility/pathUtil";
 
 export default function RouteInjector({ children }: any) {
     const router = useRouter();
+    const replace = router.replace;
 
     const { error: userError } = useCurrentUser(true);
     const injectorActive: boolean = !userError && !pathIsAuthException(router.asPath);
@@ -57,16 +58,14 @@ export default function RouteInjector({ children }: any) {
         // -> You probably need to update the edition name because it was altered.
         // -> Should be handled by transformer, but we save guard here.
         if (hadRouterError && contextEditionName && contextEditionName !== routerEditionName) {
-            console.log("1");
-            Router.replace({
+            replace({
                 query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
 
         // You do not have a path edition set but your config edition is set and defined -> set path edition
         if (contextEditionName && !routerEditionName) {
-            console.log("2");
-            Router.replace({
+            replace({
                 query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
@@ -79,8 +78,7 @@ export default function RouteInjector({ children }: any) {
 
         // You have no context edition and no path edition, but are able to see editions.
         if (!contextEditionUrl && !routerEditionName && latestEditionName) {
-            console.log("3");
-            Router.replace({
+            replace({
                 query: {
                     ...query,
                     edition: latestEditionName,
