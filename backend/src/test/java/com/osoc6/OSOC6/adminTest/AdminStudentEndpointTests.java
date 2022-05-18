@@ -81,7 +81,7 @@ public final class AdminStudentEndpointTests extends AdminEndpointTest<Student, 
 
     @Override
     public Student create_entity() {
-        Student student = TestEntityProvider.getBaseStudentOther(this);
+        Student student = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
         student.setAdditionalStudentInfo(TEST_STRING);
         return student;
     }

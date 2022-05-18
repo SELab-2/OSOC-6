@@ -8,7 +8,7 @@ import UsersOverview from "../../components/user/usersOverview";
 import EditionList from "../../components/edition/editionList";
 
 /*
- * Page which shows all editions
+ * Page showing all editions
  */
 const EditionPage: NextPage = () => {
     const { t } = useTranslation("common");

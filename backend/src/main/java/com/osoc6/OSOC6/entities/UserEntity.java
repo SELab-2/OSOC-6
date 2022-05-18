@@ -42,7 +42,7 @@ public final class UserEntity implements UserDetails {
      * The id of the user.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 

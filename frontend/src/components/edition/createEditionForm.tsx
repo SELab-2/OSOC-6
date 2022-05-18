@@ -10,8 +10,8 @@ import { editionSubmitHandler } from "../../handlers/editionHandler";
 export default function CreateEditionForm() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const current_year = new Date().getFullYear();
-    const initialValues: Edition = new Edition("", current_year, false);
+    const currentYear = new Date().getFullYear();
+    const initialValues: Edition = new Edition("", currentYear, false);
 
     return (
         <Formik initialValues={initialValues} onSubmit={(values) => editionSubmitHandler(values, router)}>
@@ -28,7 +28,7 @@ export default function CreateEditionForm() {
                     <input
                         type="number"
                         min="1980"
-                        max={current_year + 10}
+                        max={currentYear + 10}
                         step="1"
                         value={values.year}
                         onChange={(event) => setFieldValue("year", event.target.value)}

@@ -32,6 +32,8 @@ const applicationPaths = {
     editionBase: "editions",
     editionCreate: "editions/create",
 
+    skillTypesBase: "skillTypes",
+
     error: "_error",
 };
 

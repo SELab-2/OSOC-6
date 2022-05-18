@@ -10,42 +10,39 @@ import timers from "../../properties/timers";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import useEdition from "../../hooks/useGlobalEdition";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { IEdition } from "../../api/entities/EditionEntity";
 import { UserRole } from "../../api/entities/UserEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
-export function EditionRowComponent(props: any) {
+type EditionProps = {
+    edition: IEdition;
+};
+
+export function EditionRowComponent(props: EditionProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const [show, setShow] = useState<boolean>(false);
-    const [contextEdition, setContextEdition] = useEdition();
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
+    const globalEditionSetter = useGlobalEditionSetter();
     const { user: user } = useCurrentUser(true);
-
-    const router = useRouter();
 
     if (!edition) {
         return null;
     }
 
-    async function changeGlobalEdition() {
-        const replace = router.replace;
-        const query = router.query as { edition?: string };
-
-        setContextEdition(edition._links.self.href);
-
-        replace({
-            query: { ...query, edition: edition.name },
-        }).catch(console.log);
+    async function useRightUrlAndGlobalContext() {
+        await globalEditionSetter(edition);
     }
 
     async function deleteEdition() {
         const response = await editionDelete(edition._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
-                const edition = mutate(apiPaths.editions);
+                const editionsMutate = mutate(apiPaths.editions);
+                const editionMutate = mutate(edition._links.self.href);
             } catch (error) {
                 setShow(true);
             }
@@ -61,7 +58,7 @@ export function EditionRowComponent(props: any) {
                 <Col>{edition.year}</Col>
                 <Col>{edition.active ? capitalize(t("active")) : capitalize(t("not active"))}</Col>
                 <Col xs={1}>
-                    <a onClick={changeGlobalEdition} data-testid="list-view-edition">
+                    <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
                     {user?.userRole === UserRole.admin && (
@@ -86,6 +83,27 @@ export function EditionRowComponent(props: any) {
                             <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                         </a>
                     )}
+                    <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
+                        <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
+                    </a>
+                    <a
+                        href={transformer(
+                            applicationPaths.editionBase +
+                                "/" +
+                                extractIdFromEditionUrl(edition._links.self.href)
+                        )}
+                        data-testid="list-edit-edition"
+                    >
+                        <Image
+                            alt={capitalize(t("edit"))}
+                            src={"/resources/edit.svg"}
+                            width="15"
+                            height="15"
+                        />
+                    </a>
+                    <a onClick={deleteEdition} data-testid="list-delete-edition">
+                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                    </a>
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast

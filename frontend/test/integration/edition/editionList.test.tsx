@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "../Provide";
+import { enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
 import {
     getBaseActiveEdition,
@@ -16,7 +16,6 @@ import { AxiosResponse } from "axios";
 import { GlobalStateProvider } from "../../../src/context/globalContext";
 import apiPaths from "../../../src/properties/apiPaths";
 import { UserRole } from "../../../src/api/entities/UserEntity";
-import exp from "constants";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -65,9 +64,12 @@ describe("EditionList", () => {
     it("edition view", async () => {
         const edition: IEdition = getBaseActiveEdition("3", "edition 1");
         render(
-            <GlobalStateProvider>
-                <EditionRowComponent key={edition.name} edition={edition} />
-            </GlobalStateProvider>
+            makeCacheFree(() =>
+                enableUseEditionComponentWrapper(
+                    () => <EditionRowComponent key={edition.name} edition={edition} />,
+                    edition
+                )
+            )
         );
 
         await userEvent.click(screen.getByTestId("list-view-edition"));
