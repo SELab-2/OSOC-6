@@ -71,6 +71,7 @@ export default function ConflictResolutionRadioButton({
                     name={fieldName}
                     id={skill._links.self.href}
                     value={skill._links.self.href}
+                    data-testid={"radio-conflict-" + skill._links.self.href}
                 />
                 {project.name} <SkillBadge skill={skill.name} />
                 <div>

@@ -132,7 +132,9 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                         }
                     </div>
 
-                    <button type="submit">{capitalize(t("confirm"))}</button>
+                    <button data-testid="conflicts-submit" type="submit">
+                        {capitalize(t("confirm"))}
+                    </button>
                 </Form>
             </Formik>
         </div>
