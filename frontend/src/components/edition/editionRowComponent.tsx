@@ -10,39 +10,30 @@ import timers from "../../properties/timers";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import useEdition from "../../hooks/useGlobalEdition";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useGlobalContextAndUrl } from '../../hooks/utilHooks';
 import { useRouter } from "next/router";
 
 export function EditionRowComponent(props: any) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const [show, setShow] = useState<boolean>(false);
-    const [contextEdition, setContextEdition] = useEdition();
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
-
-    const router = useRouter();
 
     if (!edition) {
         return null;
     }
 
-    async function changeGlobalEdition() {
-        const replace = router.replace;
-        const query = router.query as { edition?: string };
-
-        setContextEdition(edition._links.self.href);
-
-        replace({
-            query: { ...query, edition: edition.name },
-        }).catch(console.log);
+    async function useRightUrlAndGlobalContext() {
+        useGlobalContextAndUrl(edition);
     }
 
     async function deleteEdition() {
         const response = await editionDelete(edition._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
-                const edition = mutate(apiPaths.editions);
+                const editionsMutate = mutate(apiPaths.editions);
+                const editionMutate = mutate(edition._links_self.href);
             } catch (error) {
                 setShow(true);
             }
@@ -58,7 +49,7 @@ export function EditionRowComponent(props: any) {
                 <Col>{edition.year}</Col>
                 <Col>{edition.active ? capitalize(t("active")) : capitalize(t("not active"))}</Col>
                 <Col xs={1}>
-                    <a onClick={changeGlobalEdition} data-testid="list-view-edition">
+                    <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
                     <a

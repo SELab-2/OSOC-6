@@ -3,6 +3,8 @@ import useEdition from "./useGlobalEdition";
 import useSWR from "swr";
 import { extractIdFromEditionUrl, getEditionByName, getEditionOnUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
+import { NextRouter, useRouter } from 'next/router';
+import { IEdition } from '../api/entities/EditionEntity';
 
 /**
  * useSWR wrapper that fills in the global edition as an edition query.
@@ -38,5 +40,24 @@ export function useEditionAPIUrlTransformer(): (url: string) => string {
  */
 export function useEditionApplicationPathTransformer(): (url: string) => string {
     const [editionUrl] = useEdition();
-    return (url) => url;
+    const { data: edition } = useSWR(editionUrl, getEditionOnUrl)
+    return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
+}
+
+/**
+ * Set the global context and change the url so the
+ * right edition name is in the url.
+ */
+export function useGlobalContextAndUrl(edition: IEdition) {
+    const router = useRouter();
+    const [contextEdition, setContextEdition] = useEdition();
+
+    const replace = router.replace;
+    const query = router.query as { edition?: string };
+
+    setContextEdition(edition._links.self.href);
+
+    replace({
+        query: { ...query, edition: edition.name },
+    }).catch(console.log);
 }
