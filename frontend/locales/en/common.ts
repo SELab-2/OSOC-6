@@ -164,9 +164,7 @@ const common = {
     "create new edition": "create new edition",
     "manage editions": "manage editions",
     editions: "editions",
-    active: "active",
     "not active": "not active",
-    year: "year",
 };
 
 export default common;
