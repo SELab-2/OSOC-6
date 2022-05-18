@@ -1,13 +1,12 @@
 import {
-    AxiosConf,
     baseDelete,
+    basePatch,
     basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
+    getEntityOnUrl,
 } from "./baseCalls";
 import { Assignment, assignmentCollectionName, IAssignment } from "../entities/AssignmentEntity";
-import axios from "axios";
-import { IStudent } from "../entities/StudentEntity";
 import { IUser } from "../entities/UserEntity";
 import apiPaths from "../../properties/apiPaths";
 
@@ -16,6 +15,14 @@ import apiPaths from "../../properties/apiPaths";
  */
 export function getAllAssignmentsFormLinks(url: string): Promise<IAssignment[]> {
     return <Promise<IAssignment[]>>getAllEntitiesFromLinksUrl(url, assignmentCollectionName);
+}
+
+/**
+ * Function getting an [IAssignment] entity on the provided url.
+ * @param url the url hosting the [IAssignment] entity.
+ */
+export function getAssignmentOnUrl(url: string): Promise<IAssignment> {
+    return <Promise<IAssignment>>getEntityOnUrl(url);
 }
 
 /**
@@ -51,6 +58,18 @@ export async function deleteAssignment(
 ): Promise<IAssignment[]> {
     await baseDelete(assignmentURL);
     return oldAssignments.filter((assignment) => assignment._links.self.href !== assignmentURL);
+}
+
+export async function invalidateAssignment(assignmentUrl: string): Promise<IAssignment | undefined> {
+    const response = await basePatch(assignmentUrl, { isValid: false });
+    const assignment = <IAssignment>response.data;
+    try {
+        // Check if response is a valid assignment.
+        assignment._links.self.href;
+        return assignment;
+    } catch (e) {
+        return undefined;
+    }
 }
 
 /**

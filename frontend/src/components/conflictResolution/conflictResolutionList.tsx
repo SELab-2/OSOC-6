@@ -7,7 +7,8 @@ import ConflictResolutionItem from "./conflictResolutionItem";
 export default function ConflictResolutionList() {
     const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
         apiPaths.studentConflict,
-        getAllStudentsFromPage
+        getAllStudentsFromPage,
+        { refreshInterval: 1000 }
     );
 
     if (studentsError) {
@@ -21,7 +22,7 @@ export default function ConflictResolutionList() {
         <div data-testid="conflicts">
             {students.map((student, index) => (
                 <div key={student._links.self.href}>
-                    Conflict #{index}
+                    Conflict #{index + 1}
                     <ConflictResolutionItem student={student} />
                 </div>
             ))}
