@@ -29,7 +29,7 @@ export default function CommunicationTemplateEditPage() {
 
     return (
         <div data-testid="communication-template-edit">
-            <h1 className="capitalize">
+            <h1>
                 {capitalize(t("edit communicationTemplate")) + ": " + template.name}
             </h1>
             <CreateCommunicationTemplateForm template={template} />

@@ -40,7 +40,7 @@ export default function CreateCommunicationTemplateForm({ template }: CreateComm
             {({ values, setFieldValue }) => (
                 <Form>
                     <div>
-                        <label className="capitalize" htmlFor="communicationTemplateNameField">
+                        <label htmlFor="communicationTemplateNameField">
                             {capitalize(t("name")) + ":"}
                         </label>
 
@@ -57,7 +57,7 @@ export default function CreateCommunicationTemplateForm({ template }: CreateComm
                         )}
                     </div>
                     <div>
-                        <label className="capitalize" htmlFor="communicationTemplateSubjectField">
+                        <label htmlFor="communicationTemplateSubjectField">
                             {capitalize(t("subject")) + ":"}
                         </label>
                         <Field
