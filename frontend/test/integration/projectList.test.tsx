@@ -1,14 +1,15 @@
 import { ProjectList } from "../../src/components/project/projectList";
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import applicationPaths from "../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
-import { getBaseOkResponse, getBasePage, getBaseProject } from "./TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "./TestEntityProvider";
 import mockRouter from "next-router-mock";
 import { makeCacheFree } from "./Provide";
+import { UserRole } from "../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -18,9 +19,14 @@ afterEach(() => {
 
 describe("Project", () => {
     describe("ProjectList header and button", () => {
-        it("Should have the 'New project'-button", () => {
+        it("Should have the 'New project'-button", async () => {
             render(makeCacheFree(ProjectList));
-            expect(screen.getByTestId("new-project-button")).toBeInTheDocument();
+
+            await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
+            const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
+            act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+
+            await waitFor(() => expect(screen.getByTestId("new-project-button")).toBeInTheDocument());
         });
 
         it("Should have the 'Projects'-header", () => {
