@@ -11,7 +11,12 @@ import {
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import { UserRole } from "../../src/api/entities/UserEntity";
-import {enableCurrentUser, enableUseEditionAxiosCall, enableUseEditionComponentWrapper, makeCacheFree} from "./Provide";
+import {
+    enableCurrentUser,
+    enableUseEditionAxiosCall,
+    enableUseEditionComponentWrapper,
+    makeCacheFree,
+} from "./Provide";
 
 describe("InvitationButton", () => {
     const currentUser = getBaseUser("10", UserRole.admin, true);
