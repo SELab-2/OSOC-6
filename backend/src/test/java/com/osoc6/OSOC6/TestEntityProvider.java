@@ -65,7 +65,7 @@ public final class TestEntityProvider {
     }
 
     /**
-     * Creates a student with pronouns non formatted pronouns.
+     * Creates a student with non formatted pronouns.
      *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
