@@ -1,7 +1,8 @@
 import {
     AxiosConf,
     AxiosFormConfig,
-    basePatch, basePost,
+    basePatch,
+    basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,

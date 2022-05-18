@@ -1,15 +1,15 @@
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/forgotPassword.module.css";
-import {useState} from "react";
-import {capitalize} from "../../utility/stringUtil";
-import {Field, Form, Formik} from "formik";
-import {ForgotProps, ForgotValue} from "../../handlers/forgotPasswordSubmitHandler";
+import { useState } from "react";
+import { capitalize } from "../../utility/stringUtil";
+import { Field, Form, Formik } from "formik";
+import { ForgotProps, ForgotValue } from "../../handlers/forgotPasswordSubmitHandler";
 
 /**
  * Component used to enter email for a change password request.
  * @param submitHandler the handler to submit the email to
  */
-export function ForgotComponent({submitHandler}: ForgotProps) {
+export function ForgotComponent({ submitHandler }: ForgotProps) {
     const { t } = useTranslation("common");
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
