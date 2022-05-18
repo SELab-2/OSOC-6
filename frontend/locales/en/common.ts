@@ -147,6 +147,10 @@ const common = {
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
 
+    // Conflict strings
+    conflict: "conflict",
+    "reason(s)": "reasons(s)",
+
     "edition overview": "edition overview",
     "change edition state":
         "are you want to change this attribute? this change has a huge impact, so proceed with caution...",

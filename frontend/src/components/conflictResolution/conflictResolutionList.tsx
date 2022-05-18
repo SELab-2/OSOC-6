@@ -3,8 +3,11 @@ import { useSwrWithEdition } from "../../hooks/utilHooks";
 import { getAllStudentsFromPage } from "../../api/calls/studentCalls";
 import { sortStudentsByName } from "../../api/entities/StudentEntity";
 import ConflictResolutionItem from "./conflictResolutionItem";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
 
 export default function ConflictResolutionList() {
+    const { t } = useTranslation("common");
     const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
         apiPaths.studentConflict,
         getAllStudentsFromPage,
@@ -22,7 +25,7 @@ export default function ConflictResolutionList() {
         <div data-testid="conflicts">
             {students.map((student, index) => (
                 <div key={student._links.self.href}>
-                    Conflict #{index + 1}
+                    {capitalize(t("conflict"))} #{index + 1}
                     <ConflictResolutionItem student={student} />
                 </div>
             ))}

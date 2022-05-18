@@ -9,6 +9,8 @@ import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
 import { getProjectOnUrl } from "../../api/calls/projectCalls";
 import { emptyProjectSkill, IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { emptyProject, IProject } from "../../api/entities/ProjectEntity";
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 export interface ConflictResolutionItemProps {
     student: IStudent;
@@ -46,12 +48,14 @@ export function ProjectSkillRegister({
             // Let us hope this doesn't happen too often
             removeAssignment(assignmentUrl);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [receivedProjectSkillUrl, assignmentUrl, hasErrored]);
 
     return null;
 }
 
 export default function ConflictResolutionItem({ student }: ConflictResolutionItemProps) {
+    const { t } = useTranslation("common");
     const { data: receivedAssignments, error: assignmentsError } = useSWR(
         student._links.assignments.href,
         getAllAssignmentsFormLinks
@@ -127,33 +131,30 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                             mutate(student._links.assignments.href),
                         ]);
                     } else {
+                        // Will be refactored so keeping the hard coded string.
                         alert("pick a skill to keep the student on");
                     }
                 }}
             >
-                {({ values }) => (
-                    <Form>
-                        <div role="group">
-                            {
-                                // Sort for consistency
-                                Object.entries(projectSkillMapper)
-                                    .sort(([projSkillA], [projSkillB]) =>
-                                        projSkillA.localeCompare(projSkillB)
-                                    )
-                                    .map(([projectSkillUrl, assignments]) => (
-                                        <ConflictResolutionRadioButton
-                                            key={projectSkillUrl}
-                                            projectSkill={projectSkillUrl}
-                                            assignments={Array.from(assignments)}
-                                            fieldName={"picked"}
-                                        />
-                                    ))
-                            }
-                        </div>
+                <Form>
+                    <div role="group">
+                        {
+                            // Sort for consistency
+                            Object.entries(projectSkillMapper)
+                                .sort(([projSkillA], [projSkillB]) => projSkillA.localeCompare(projSkillB))
+                                .map(([projectSkillUrl, assignments]) => (
+                                    <ConflictResolutionRadioButton
+                                        key={projectSkillUrl}
+                                        projectSkill={projectSkillUrl}
+                                        assignments={Array.from(assignments)}
+                                        fieldName={"picked"}
+                                    />
+                                ))
+                        }
+                    </div>
 
-                        <button type="submit">Submit</button>
-                    </Form>
-                )}
+                    <button type="submit">{capitalize(t("confirm"))}</button>
+                </Form>
             </Formik>
         </div>
     );

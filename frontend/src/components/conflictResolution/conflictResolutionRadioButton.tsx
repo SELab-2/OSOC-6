@@ -7,6 +7,8 @@ import { emptyProjectSkill, IProjectSkill } from "../../api/entities/ProjectSkil
 import { emptyProject, IProject } from "../../api/entities/ProjectEntity";
 import { Field } from "formik";
 import SkillBadge from "../util/skillBadge";
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 export interface ConflictResolutionRadioButtonProps {
     projectSkill: string;
@@ -14,7 +16,7 @@ export interface ConflictResolutionRadioButtonProps {
     fieldName: string;
 }
 
-function AssignmentReasonMapper({ assignmentUrl }: { assignmentUrl: string }) {
+function AssignmentReasonListItem({ assignmentUrl }: { assignmentUrl: string }) {
     const { data: receivedAssignment, error: assignmentError } = useSWR(assignmentUrl, getAssignmentOnUrl);
 
     if (assignmentError) {
@@ -24,7 +26,7 @@ function AssignmentReasonMapper({ assignmentUrl }: { assignmentUrl: string }) {
 
     const assignment: IAssignment = receivedAssignment || emptyAssignment;
 
-    return <>{assignment.reason}</>;
+    return <li>{assignment.reason}</li>;
 }
 
 export default function ConflictResolutionRadioButton({
@@ -32,6 +34,7 @@ export default function ConflictResolutionRadioButton({
     fieldName,
     assignments,
 }: ConflictResolutionRadioButtonProps) {
+    const { t } = useTranslation("common");
     const { data: receivedSkill, error: skillError } = useSWR(projectSkill, getProjectSkillOnUrl);
     const { data: receivedProject, error: projectError } = useSWR(
         receivedSkill ? receivedSkill._links.project.href : null,
@@ -57,10 +60,14 @@ export default function ConflictResolutionRadioButton({
                 />
                 {project.name} <SkillBadge skill={skill.name} />
                 <div>
-                    Reason(s):
-                    {assignments.map((assignmentUrl) => (
-                        <AssignmentReasonMapper assignmentUrl={assignmentUrl} key={assignmentUrl} />
-                    ))}
+                    {capitalize(t("reason(s)"))}:
+                    <ul>
+                        {assignments
+                            .sort((a, b) => a.localeCompare(b))
+                            .map((assignmentUrl) => (
+                                <AssignmentReasonListItem assignmentUrl={assignmentUrl} key={assignmentUrl} />
+                            ))}
+                    </ul>
                 </div>
             </label>
         </div>
