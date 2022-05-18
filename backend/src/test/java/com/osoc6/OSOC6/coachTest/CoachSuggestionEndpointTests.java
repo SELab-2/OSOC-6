@@ -32,7 +32,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * First sample student that gets loaded before every test.
      */
-    private final Student student = TestEntityProvider.getBaseStudentOther(this);
+    private final Student student = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
 
     /**
      * First sample suggestion that gets loaded before every test.

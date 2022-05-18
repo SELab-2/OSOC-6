@@ -7,7 +7,6 @@ import { Communication, defaultCommunicationMedium } from "../../api/entities/Co
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { createCommunicationSubmitHandler } from "../../handlers/createCommunicationSubmitHandler";
 import { useState } from "react";
-import CommunicationTemplateInfo from "./CommunicationTemplateInfo";
 import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 import { ButtonGroup, Dropdown } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
@@ -15,6 +14,7 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
+import CommunicationTemplateInfo from "./communicationTemplateInfo";
 
 export interface CreateCommunicationFormProps {
     student: IStudent;
