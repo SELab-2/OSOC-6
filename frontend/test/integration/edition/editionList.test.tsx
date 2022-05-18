@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "../Provide";
+import { enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
 import { getBaseActiveEdition, getBaseNoContentResponse } from "../TestEntityProvider";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
@@ -48,10 +48,11 @@ describe("EditionList", () => {
 
     it("edition view", async () => {
         const edition: IEdition = getBaseActiveEdition("3", "edition 1");
-        render(
-            <GlobalStateProvider>
-                <EditionRowComponent key={edition.name} edition={edition} />
-            </GlobalStateProvider>
+        render(makeCacheFree(() =>
+            enableUseEditionComponentWrapper(
+                () => <EditionRowComponent key={edition.name} edition={edition} />,
+                edition
+            ))
         );
 
         await userEvent.click(screen.getByTestId("list-view-edition"));

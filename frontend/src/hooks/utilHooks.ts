@@ -3,8 +3,8 @@ import useEdition from "./useGlobalEdition";
 import useSWR from "swr";
 import { extractIdFromEditionUrl, getEditionByName, getEditionOnUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
-import { NextRouter, useRouter } from 'next/router';
-import { IEdition } from '../api/entities/EditionEntity';
+import { NextRouter, useRouter } from "next/router";
+import { IEdition } from "../api/entities/EditionEntity";
 
 /**
  * useSWR wrapper that fills in the global edition as an edition query.
@@ -40,7 +40,7 @@ export function useEditionAPIUrlTransformer(): (url: string) => string {
  */
 export function useEditionApplicationPathTransformer(): (url: string) => string {
     const [editionUrl] = useEdition();
-    const { data: edition } = useSWR(editionUrl, getEditionOnUrl)
+    const { data: edition } = useSWR(editionUrl, getEditionOnUrl);
     return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
 }
 
@@ -48,16 +48,20 @@ export function useEditionApplicationPathTransformer(): (url: string) => string 
  * Set the global context and change the url so the
  * right edition name is in the url.
  */
-export function useGlobalContextAndUrl(edition: IEdition) {
+export function useGlobalEditionSetter(): (edition: IEdition) => Promise<void> {
     const router = useRouter();
     const [contextEdition, setContextEdition] = useEdition();
 
-    const replace = router.replace;
-    const query = router.query as { edition?: string };
+    async function setGlobalStateAndUrl(edition: IEdition) {
+        const replace = router.replace;
+        const query = router.query as { edition?: string };
 
-    setContextEdition(edition._links.self.href);
+        setContextEdition(edition._links.self.href);
 
-    replace({
-        query: { ...query, edition: edition.name },
-    }).catch(console.log);
+        await replace({
+            query: { ...query, edition: edition.name },
+        });
+    }
+
+    return setGlobalStateAndUrl;
 }

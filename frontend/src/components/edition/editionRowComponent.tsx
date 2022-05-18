@@ -10,7 +10,7 @@ import timers from "../../properties/timers";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import useEdition from "../../hooks/useGlobalEdition";
-import { useEditionApplicationPathTransformer, useGlobalContextAndUrl } from '../../hooks/utilHooks';
+import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 
 export function EditionRowComponent(props: any) {
@@ -19,13 +19,14 @@ export function EditionRowComponent(props: any) {
     const [show, setShow] = useState<boolean>(false);
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
+    const globalEditionSetter = useGlobalEditionSetter();
 
     if (!edition) {
         return null;
     }
 
     async function useRightUrlAndGlobalContext() {
-        useGlobalContextAndUrl(edition);
+        await globalEditionSetter(edition);
     }
 
     async function deleteEdition() {
