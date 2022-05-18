@@ -17,7 +17,7 @@ export function getCommunicationTemplateOnUrl(url: string): Promise<ICommunicati
 
 /**
  * Function getting all [ICommunicationTemplate] entities on an [IPage] url.
- * @param url the [IPage] url hosting the communications.
+ * @param url the [IPage] url hosting the communication templates.
  */
 export function getAllCommunicationTemplatesFromPage(url: string): Promise<ICommunicationTemplate[]> {
     return <Promise<ICommunicationTemplate[]>>(

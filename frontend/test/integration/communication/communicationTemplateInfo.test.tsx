@@ -1,7 +1,7 @@
 import { getBaseCommunicationTemplate } from "../TestEntityProvider";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import CommunicationTemplateInfo from "../../../src/components/communication/CommunicationTemplateInfo";
+import CommunicationTemplateInfo from "../../../src/components/communication/communicationTemplateInfo";
 
 describe("Communication template info", () => {
     const template = getBaseCommunicationTemplate("1");
