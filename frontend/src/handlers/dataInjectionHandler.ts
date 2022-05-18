@@ -370,10 +370,9 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     if (users._embedded.users.length < 2) {
         //console.log(crypto.randomUUID());
         const coachUser1: User = new User("Ben", "ben@mail.com", crypto.randomUUID());
-        const coachUser2: User = new User("Ben", "coach@mail.com", "random");
 
         await Promise.all(
-            [coachUser1, coachUser2].map(
+            [coachUser1].map(
                 async (user) =>
                     (
                         await axios.post(apiPaths.registration, user, {
