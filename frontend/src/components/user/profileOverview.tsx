@@ -56,7 +56,7 @@ export function ProfileOverview() {
         if (user) {
             const response: AxiosResponse = await userDelete(user._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {
-                await router.push(transformer(applicationPaths.login));
+                await router.push(transformer("/" + applicationPaths.login));
             } else {
                 setShow(true);
             }

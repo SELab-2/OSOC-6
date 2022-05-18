@@ -9,7 +9,15 @@ import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../src/properties/applicationPaths";
 import { ScopedMutator } from "swr/dist/types";
-import { getBaseRedirectResponse } from "./TestEntityProvider";
+import {
+    getBaseActiveEdition,
+    getBaseOkResponse,
+    getBasePage,
+    getBaseRedirectResponse,
+    getBaseUser,
+} from "./TestEntityProvider";
+import { UserRole } from "../../src/api/entities/UserEntity";
+import { editionCollectionName } from "../../src/api/entities/EditionEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -60,14 +68,29 @@ describe("Login page", () => {
 
     it("SubmitHandler for loginForm sends post request", async () => {
         const values: LoginValues = { username: "test@mail.com", password: "pass" };
+        const errorSetter = jest.fn();
 
-        loginSubmitHandler(values, mockRouter, (() => {}) as any as ScopedMutator);
-        mockAxios.mockResponseFor({ url: apiPaths.login }, getBaseRedirectResponse("/home"));
+        loginSubmitHandler(values, errorSetter, mockRouter, (() => {}) as any as ScopedMutator);
 
         await waitFor(() => {
-            expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.login, expect.anything(), expect.anything());
+            mockAxios.mockResponseFor(
+                { method: "post", url: apiPaths.login },
+                getBaseRedirectResponse(applicationPaths.home)
+            );
         });
 
+        const edition = getBaseActiveEdition("2", "Edition 1");
+        const user = getBaseUser("3", UserRole.coach, true);
+
+        await waitFor(() => mockAxios.mockResponseFor(apiPaths.ownUser, getBaseOkResponse(user)));
+        await waitFor(() =>
+            mockAxios.mockResponseFor(
+                apiPaths.editions,
+                getBaseOkResponse(getBasePage(apiPaths.editions, editionCollectionName, [edition]))
+            )
+        );
+
+        expect(errorSetter).toHaveBeenCalledWith(false);
         await waitFor(() => {
             expect(mockRouter.pathname).toEqual("/" + applicationPaths.assignStudents);
         });

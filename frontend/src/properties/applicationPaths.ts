@@ -2,6 +2,7 @@
  * Paths used the web-application.
  */
 const applicationPaths = {
+    base: "http://localhost/",
     index: "",
     home: "home",
 
