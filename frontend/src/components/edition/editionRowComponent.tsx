@@ -12,8 +12,13 @@ import applicationPaths from "../../properties/applicationPaths";
 import useEdition from "../../hooks/useGlobalEdition";
 import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
+import { IEdition } from "../../api/entities/EditionEntity";
 
-export function EditionRowComponent(props: any) {
+type EditionProps = {
+    edition: IEdition;
+};
+
+export function EditionRowComponent(props: EditionProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const [show, setShow] = useState<boolean>(false);
@@ -34,7 +39,7 @@ export function EditionRowComponent(props: any) {
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
                 const editionsMutate = mutate(apiPaths.editions);
-                const editionMutate = mutate(edition._links_self.href);
+                const editionMutate = mutate(edition._links.self.href);
             } catch (error) {
                 setShow(true);
             }
