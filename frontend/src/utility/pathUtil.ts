@@ -6,7 +6,12 @@ import applicationPaths from "../properties/applicationPaths";
  */
 export function pathIsAuthException(url: string): boolean {
     // Define the public paths for which authentication is not needed.
-    const publicPaths = ["/" + applicationPaths.login, "/" + applicationPaths.registration];
+    const publicPaths = [
+        "/" + applicationPaths.login,
+        "/" + applicationPaths.registration,
+        "/" + applicationPaths.forgotPassword,
+        "/" + applicationPaths.resetPassword,
+    ];
 
     // Check if the user is logged in. If not this will have no result
 

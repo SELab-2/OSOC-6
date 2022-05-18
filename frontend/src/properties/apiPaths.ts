@@ -10,6 +10,9 @@ const apiPaths = {
     loginError: "loginError",
     logout: "logout",
 
+    forgotPassword: "forgot-password",
+    resetPassword: "reset-password",
+
     editions: "editions",
     editionByName: "editions/search/by-name",
 

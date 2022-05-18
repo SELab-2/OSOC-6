@@ -93,17 +93,6 @@ public class UserEntityService implements UserDetailsService {
     }
 
     /**
-     * Check whether the given token corresponds to a valid reset password token entity.
-     * @param token the token to check
-     * @return whether the corresponding entity exists and is still valid
-     */
-    public boolean isPasswordResetTokenValid(final String token) {
-        Optional<ResetPasswordToken> optionalResetPasswordToken =
-                resetPasswordTokenRepository.internalFindByToken(token);
-        return optionalResetPasswordToken.isPresent() && optionalResetPasswordToken.get().isValid();
-    }
-
-    /**
      * Reset the password of the user linked to the reset password token with the provided token.
      * @param token the token of the reset password token
      * @param newPassword the new password of the user

@@ -9,6 +9,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";
 import { useState } from "react";
+import applicationPaths from "../properties/applicationPaths";
 
 const Login: NextPage = () => {
     const { t } = useTranslation("common");
@@ -41,6 +42,11 @@ const Login: NextPage = () => {
                                     loginSubmitHandler(form, setHadError, router, mutate)
                                 }
                             />
+                            <div className="mt-2">
+                                <a href={"/" + applicationPaths.forgotPassword}>
+                                    {capitalize(t("forgot password link"))}
+                                </a>
+                            </div>
                         </div>
                     </Col>
                 </Row>

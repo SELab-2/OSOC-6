@@ -8,6 +8,15 @@ const common = {
     signin: "sign in",
     "let's get started": "let's get started!",
     login: "login",
+    "forgot password link": "forgot password?",
+
+    "forgot password title": "forgot password",
+    "reset password email": "enter email address of your account",
+    "forgot email": "send reset password request",
+    "forgot email success": "reset password email has been sent",
+
+    "reset password title": "reset password",
+    "password identical": "passwords need to be identical",
 
     callname: "callname",
 
