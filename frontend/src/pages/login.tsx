@@ -30,7 +30,7 @@ const Login: NextPage = () => {
                             <LoginForm submitHandler={(form) => loginSubmitHandler(form, router, mutate)} />
                             <div className="mt-2">
                                 <a href={"/" + applicationPaths.forgotPassword}>
-                                    {capitalize(t("forgot password"))}
+                                    {capitalize(t("forgot password link"))}
                                 </a>
                             </div>
                         </div>
