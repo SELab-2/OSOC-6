@@ -43,7 +43,7 @@ describe("create communication template", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(comTemplate, mockRouter);
+            expect(spy).toHaveBeenCalledWith(null, comTemplate, mockRouter, expect.anything());
         });
 
         await waitFor(() => {
