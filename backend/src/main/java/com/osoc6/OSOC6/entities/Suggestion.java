@@ -30,7 +30,7 @@ public final class Suggestion implements WeakToEdition {
      * Automatically generated id of Suggestion.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 
