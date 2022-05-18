@@ -6,6 +6,9 @@ import ConflictResolutionItem from "./conflictResolutionItem";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 
+/**
+ * List of conflicts. This component will get all conflicting students and list them in a useful way.
+ */
 export default function ConflictResolutionList() {
     const { t } = useTranslation("common");
     const { data: receivedStudents, error: studentsError } = useSwrWithEdition(

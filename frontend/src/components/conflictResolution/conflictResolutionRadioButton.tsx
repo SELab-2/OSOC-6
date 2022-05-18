@@ -10,12 +10,10 @@ import SkillBadge from "../util/skillBadge";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 
-export interface ConflictResolutionRadioButtonProps {
-    projectSkill: string;
-    assignments: string[];
-    fieldName: string;
-}
-
+/**
+ * List item representation of an assignment. Just shows the reason of the assignment.
+ * @param assignmentUrl the url hosting the assignment.
+ */
 function AssignmentReasonListItem({ assignmentUrl }: { assignmentUrl: string }) {
     const { data: receivedAssignment, error: assignmentError } = useSWR(assignmentUrl, getAssignmentOnUrl);
 
@@ -29,6 +27,22 @@ function AssignmentReasonListItem({ assignmentUrl }: { assignmentUrl: string }) 
     return <li>{assignment.reason}</li>;
 }
 
+/**
+ * Properties needed by [ConflictResolutionRadioButton].
+ */
+export interface ConflictResolutionRadioButtonProps {
+    projectSkill: string;
+    assignments: string[];
+    fieldName: string;
+}
+
+/**
+ * Single radio button in the conflict resolution.
+ * Radio button representation of an [IProjectSkill] the conflicting student is assigned to.
+ * @param projectSkill the projectSkill that this button represents
+ * @param fieldName the Formik fieldName.
+ * @param assignments the list of assignments as Urls that assign over this projectSkill.
+ */
 export default function ConflictResolutionRadioButton({
     projectSkill,
     fieldName,

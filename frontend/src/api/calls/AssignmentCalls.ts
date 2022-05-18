@@ -67,6 +67,10 @@ export async function deleteAssignment(
     return oldAssignments.filter((assignment) => assignment._links.self.href !== assignmentURL);
 }
 
+/**
+ * Function setting the assignment on a given url to invalid.
+ * @param assignmentUrl the url of the [IAssignment] that needs to be invalid.
+ */
 export async function invalidateAssignment(assignmentUrl: string): Promise<IAssignment | undefined> {
     const response = await basePatch(assignmentUrl, { isValid: false });
     const assignment = <IAssignment>response.data;
@@ -79,11 +83,19 @@ export async function invalidateAssignment(assignmentUrl: string): Promise<IAssi
     }
 }
 
+/**
+ * Function providing you with the query url to get only the valid assignments surrounding a given [IProjectSkill].
+ * @param projectSkill the projectSkill you want to get the assignments url for.
+ */
 export function getValidAssignmentsUrlForProjectSkill(projectSkill: IProjectSkill): string {
     const projectSkillId = extractIdFromProjectUrl(projectSkill._links.self.href);
     return getQueryUrlFromParams(apiPaths.assignmentsValidityByProjectSkill, { projectSkillId, valid: true });
 }
 
+/**
+ * Function providing you with the query url to get only the valid assignments surrounding a given [IStudent].
+ * @param student the [IStudent] you want to get the assignments url for.
+ */
 export function getValidAssignmentsUrlForStudent(student: IStudent): string {
     const studentId = extractIdFromProjectUrl(student._links.self.href);
     return getQueryUrlFromParams(apiPaths.assignmentsValidityByStudent, { studentId, valid: true });

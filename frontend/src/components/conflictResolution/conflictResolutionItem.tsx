@@ -13,21 +13,21 @@ import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 
-export interface ConflictResolutionItemProps {
-    student: IStudent;
-}
-
-export type ProjectMapper = {
-    // Maps projectSkill to the assignments
-    [projectSkill: string]: Set<string>;
-};
-
+/**
+ * Properties needed by [ProjectSkillRegister].
+ */
 export interface ProjectSkillRegisterProps {
     registerAssignment: (projectSkillUrl: string, assigmentUrl: string) => void;
     removeAssignment: (assignmentUrl: string) => void;
     assignment: IAssignment;
 }
 
+/**
+ * Component registering assignments and the projectsSkill they belong to. Needed as a workaround for rules of hooks.
+ * @param registerAssignment callBack registering so the component can register itself.
+ * @param removeAssignment callback removing the current assignment.
+ * @param assignment the assignment the hook handles.
+ */
 export function ProjectSkillRegister({
     registerAssignment,
     removeAssignment,
@@ -54,6 +54,25 @@ export function ProjectSkillRegister({
 
     return null;
 }
+
+/**
+ * Type that will hold the projectSkills and its assignments.
+ */
+export type ProjectMapper = {
+    // Maps projectSkill to the assignments
+    [projectSkill: string]: Set<string>;
+};
+
+/**
+ * Properties needed by [ConflictResolutionItem].
+ */
+export interface ConflictResolutionItemProps {
+    student: IStudent;
+}
+/**
+ * Component representing one student in the conflict resolution list.
+ * @param student the student that this resolution is all about.
+ */
 
 export default function ConflictResolutionItem({ student }: ConflictResolutionItemProps) {
     const { t } = useTranslation("common");
