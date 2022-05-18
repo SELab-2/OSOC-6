@@ -20,7 +20,6 @@ interface IAssignmentStudentProps {
 
 export default function AssignmentStudentRow({ assignment, removeCallback }: IAssignmentStudentProps) {
     const { t } = useTranslation("common");
-    console.log(assignment._links.student.href);
     const { data: receivedStudent, error: studentError } = useSWR(
         assignment._links.student.href,
         getStudentOnUrl

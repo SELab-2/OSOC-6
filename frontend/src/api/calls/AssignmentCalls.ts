@@ -3,7 +3,6 @@ import {
     basePatch,
     basePost,
     extractIdFromApiEntityUrl,
-    getAllEntitiesFromLinksUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
@@ -19,10 +18,8 @@ import { IStudent } from "../entities/StudentEntity";
  * Gets all [IAssignment] entities on an url hosting [IPage].
  * @param url url hosting the IPage
  */
-export async function getAllAssignmentsFromPage(url: string): Promise<IAssignment[]> {
-    const res = await getAllEntitiesFromPage(url, assignmentCollectionName);
-    console.log(res);
-    return <IAssignment[]>res;
+export function getAllAssignmentsFromPage(url: string): Promise<IAssignment[]> {
+    return <Promise<IAssignment[]>>getAllEntitiesFromPage(url, assignmentCollectionName);
 }
 
 /**
@@ -74,13 +71,8 @@ export async function deleteAssignment(
 export async function invalidateAssignment(assignmentUrl: string): Promise<IAssignment | undefined> {
     const response = await basePatch(assignmentUrl, { isValid: false });
     const assignment = <IAssignment>response.data;
-    try {
-        // Check if response is a valid assignment.
-        assignment._links.self.href;
-        return assignment;
-    } catch (e) {
-        return undefined;
-    }
+
+    return "_links" in assignment ? assignment : undefined;
 }
 
 /**
