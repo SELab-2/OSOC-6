@@ -1,21 +1,21 @@
 import { Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
-import styles from "../styles/editionOverview.module.css";
-import { capitalize } from "../utility/stringUtil";
+import styles from "../../styles/editionOverview.module.css";
+import { capitalize } from "../../utility/stringUtil";
 import Image from "next/image";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import useSWR, { useSWRConfig } from "swr";
-import apiPaths from "../properties/apiPaths";
+import apiPaths from "../../properties/apiPaths";
 import {
     getEditionOnUrl,
     saveEditionActiveState,
     saveEditionName,
     saveEditionYear,
-} from "../api/calls/editionCalls";
+} from "../../api/calls/editionCalls";
 import { AxiosResponse } from "axios";
 import { StatusCodes } from "http-status-codes";
-import timers from "../properties/timers";
-import { emptyEdition } from "../api/entities/EditionEntity";
+import timers from "../../properties/timers";
+import { emptyEdition } from "../../api/entities/EditionEntity";
 export interface EditionOverviewProps {
     editionId: string;
 }

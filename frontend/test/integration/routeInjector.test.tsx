@@ -1,7 +1,8 @@
 import { jest } from "@jest/globals";
+import "@testing-library/jest-dom";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
-import { cleanup, render, waitFor } from "@testing-library/react";
+import { cleanup, render, waitFor, screen } from "@testing-library/react";
 import { enableUseEditionAxiosCall, makeCacheFree } from "./Provide";
 import React from "react";
 import RouteInjector from "../../src/components/util/routeInjector";

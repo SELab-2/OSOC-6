@@ -27,7 +27,7 @@ public final class SkillType {
      * The id of the SkillType.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 
