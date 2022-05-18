@@ -44,7 +44,7 @@ export function ForgotComponent({ handler }: ForgotComponentProps) {
                     type="email"
                     data-testid="email"
                     name="email"
-                    placeholder="Enter email address"
+                    placeholder={capitalize(t("enter email"))}
                     required
                 />
                 <button className="btn btn-primary mt-3" type="submit" data-testid="forgot-submit">

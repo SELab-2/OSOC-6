@@ -48,7 +48,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(transformer("/" + applicationPaths.login));
+                    router.push(transformer("/" + applicationPaths.login)).catch(console.log);
                 }, timers.redirect);
             }
         } else if (user) {
@@ -56,7 +56,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(transformer("/" + applicationPaths.home));
+                    router.push(transformer("/" + applicationPaths.home)).catch(console.log);
                 }, timers.redirect);
             }
         }

@@ -8,6 +8,7 @@ const common = {
     signin: "sign in",
     "let's get started": "let's get started!",
     login: "login",
+    "forgot password link": "forgot password?",
 
     "forgot password title": "forgot password",
     "reset password email": "enter email address of your account",
