@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import applicationPaths from "../../properties/applicationPaths";
-import styles from "../../styles/projectList.module.css";
+import styles from "../../styles/projects/projectList.module.css";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
 export const NewProjectButton = () => {
@@ -20,8 +20,8 @@ export const NewProjectButton = () => {
             {t("new project")}
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
+                width="1.5em"
+                height="1.5em"
                 fill="currentColor"
                 className="bi bi-plus"
                 viewBox="0 0 16 16"

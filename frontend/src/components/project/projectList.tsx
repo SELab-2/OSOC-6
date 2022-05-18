@@ -1,5 +1,5 @@
 import { ListGroup } from "react-bootstrap";
-import styles from "../../styles/projectList.module.css";
+import styles from "../../styles/projects/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
@@ -21,8 +21,8 @@ export function ProjectList() {
     }
 
     return (
-        <div className={styles.project_list} data-testid="project-list">
-            <ListGroup as="ul" className="overflow-auto">
+        <div className={styles.project_list} data-testid="project-list" id={"project-list"}>
+            <ListGroup as="ul" className={"overflow-auto " + styles.project_list_list_group} role={"tablist"}>
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
                     <div className="capitalize">{t("projects")}</div>
                 </ListGroup.Item>
@@ -34,13 +34,18 @@ export function ProjectList() {
                     .map(({ project, projectId }) => (
                         <ListGroup.Item
                             key={projectId}
-                            className={styles.project_list_project}
+                            className={"proj " + styles.project_list_project}
                             action
-                            as={"li"}
+                            as={"a"}
                             onClick={() => {
                                 let projectPath: string = projectId;
-                                router.push(transformer("/" + projectPath)).catch(console.log);
+                                router
+                                    .push(transformer("/" + projectPath) + "#/" + projectId)
+                                    .catch(console.log);
                             }}
+                            href={"#" + projectId}
+                            role="tab"
+                            data-toggle="list"
                         >
                             <div className={styles.project_list_info}>
                                 <h5 className="mb-1">{project.name}</h5>
