@@ -74,6 +74,10 @@ export async function postForgotPasswordEmail(email: string): Promise<AxiosRespo
     return basePost(apiPaths.forgotPassword, email);
 }
 
+export async function postResetPassword(token: string, password: string): Promise<AxiosResponse> {
+    return basePost(apiPaths.resetPassword + "?token=" + token, password);
+}
+
 export function userDelete(url: string) {
     return axios.delete(url, AxiosConf);
 }
