@@ -15,7 +15,7 @@ INSERT INTO communication_template (name, subject, template)
             VALUES ('Yes', 'OSOC application status',
                     'We are pleased to tell you that you have been accepted for OSOC!\n Someone will be in touch with you shortly to work out the details.');
 INSERT INTO communication_template (name, subject, template)
-            VALUES ('No', OSOC application status',
+            VALUES ('No', 'OSOC application status',
                     'Unfortunately we were unable to find a fitting position for you in this edition of OSOC.\n You can always try again next year!');
 INSERT INTO communication_template (name, subject, template)
             VALUES ('Maybe', 'OSOC application status',
