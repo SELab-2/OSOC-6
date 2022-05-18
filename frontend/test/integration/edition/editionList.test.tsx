@@ -48,11 +48,13 @@ describe("EditionList", () => {
 
     it("edition view", async () => {
         const edition: IEdition = getBaseActiveEdition("3", "edition 1");
-        render(makeCacheFree(() =>
-            enableUseEditionComponentWrapper(
-                () => <EditionRowComponent key={edition.name} edition={edition} />,
-                edition
-            ))
+        render(
+            makeCacheFree(() =>
+                enableUseEditionComponentWrapper(
+                    () => <EditionRowComponent key={edition.name} edition={edition} />,
+                    edition
+                )
+            )
         );
 
         await userEvent.click(screen.getByTestId("list-view-edition"));
