@@ -25,34 +25,45 @@ export function pathIsAuthException(url: string): boolean {
  * Function that checks if a path is allowed to be visited by a coach
  * @param url
  */
-export function pathIsAllowedForCoach(url: string): boolean {
+export function pathIsForbiddenForCoach(url: string): boolean {
+
+    // I decided it's best to use regex, because in the future we might get
+    // something/[id]/edit for example, regex makes this easier to match
     const forbiddenRoutes = [
         // Users
-        "users",
+        "users$",
 
         // Projects create only
-        "projects/create",
+        "projects/create$",
 
         // Communication templates
-        "communicationTemplates",
+        "communicationTemplates$",
+        "communicationTemplates/create$",
+        "communicationTemplates/[0-9]*$",
 
         // Communication
-        "communications",
+        "communications$",
+        "communications/[0-9]*$",
 
         // Editions
-        "editions/",
-        "editions/create",
+        "editions/[0-9]*$",
+        "editions/create$",
     ];
 
-    const routerPath = url.substring(1);
+    let routerPath = url.substring(1);
     const indexOfQuestionMark = routerPath.indexOf("?");
-    const indexOfSlash = routerPath.lastIndexOf("/");
 
-    if (forbiddenRoutes.includes(routerPath.substring(0, indexOfQuestionMark))) {
-        return false;
-    } else if (indexOfSlash !== -1 && forbiddenRoutes.includes(routerPath.substring(0, indexOfSlash + 1))) {
-        return false;
+    // String contains ?
+    if (indexOfQuestionMark !== -1) {
+        routerPath = routerPath.substring(0, indexOfQuestionMark);
     }
 
-    return true;
+    for(const route of forbiddenRoutes) {
+        const matches = routerPath.match(route);
+        if (matches !== null){
+            return true;
+        }
+    }
+
+    return false;
 }
