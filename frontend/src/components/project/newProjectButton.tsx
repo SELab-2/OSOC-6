@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import applicationPaths from "../../properties/applicationPaths";
 import styles from "../../styles/projectList.module.css";
@@ -10,15 +10,24 @@ export const NewProjectButton = () => {
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
     return (
-        <ButtonGroup className={"d-flex " + styles.project_list_button} data-testid="new-project-button">
-            <Button
-                className="w-100, capitalize"
-                variant="primary"
-                size="lg"
-                onClick={() => router.push(transformer("/" + applicationPaths.projectCreation))}
+        <Button
+            data-testid="new-project-button"
+            className={"capitalize d-flex justify-content-center " + styles.project_list_button}
+            variant="outline-primary"
+            size="lg"
+            onClick={() => router.push(transformer("/" + applicationPaths.projectCreation))}
+        >
+            {t("new project")}
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                fill="currentColor"
+                className="bi bi-plus"
+                viewBox="0 0 16 16"
             >
-                {t("new project")}
-            </Button>
-        </ButtonGroup>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+        </Button>
     );
 };

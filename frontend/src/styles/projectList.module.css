@@ -23,4 +23,16 @@
 .project_list_project {
     background-color: #0a0839;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.project_list_chevron {
+    margin-left: auto;
+}
+
+.project_list_info {
+    display: flex;
+    flex-direction: column;
 }
