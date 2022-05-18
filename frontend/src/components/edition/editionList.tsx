@@ -5,16 +5,18 @@ import { getAllUsersFromPage } from "../../api/calls/userCalls";
 import styles from "../../styles/usersOverview.module.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { capitalize } from "../../utility/stringUtil";
-import { IUser } from "../../api/entities/UserEntity";
+import { IUser, UserRole } from "../../api/entities/UserEntity";
 import UserComponent from "../user/manageUserComponent";
 import { IEdition } from "../../api/entities/EditionEntity";
 import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 export function EditionList() {
     const { t } = useTranslation("common");
+    const { user: user } = useCurrentUser(true);
     let { data, error } = useSWR(apiPaths.editions, getAllEditionsFromPage);
     const transformer = useEditionApplicationPathTransformer();
 
@@ -29,9 +31,11 @@ export function EditionList() {
         <div data-testid="edition-list">
             <Container style={{ marginTop: "50px" }}>
                 <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
-                <Button href={transformer(applicationPaths.editionCreate)}>
-                    {capitalize(t("create new edition"))}
-                </Button>
+                {user?.userRole === UserRole.admin && (
+                    <Button href={transformer(applicationPaths.editionCreate)}>
+                        {capitalize(t("create new edition"))}
+                    </Button>
+                )}
                 <Row>
                     <Col>
                         <h6>{capitalize(t("name"))}</h6>

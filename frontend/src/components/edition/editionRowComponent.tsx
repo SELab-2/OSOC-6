@@ -12,6 +12,8 @@ import applicationPaths from "../../properties/applicationPaths";
 import useEdition from "../../hooks/useGlobalEdition";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { UserRole } from "../../api/entities/UserEntity";
 
 export function EditionRowComponent(props: any) {
     const { t } = useTranslation("common");
@@ -20,6 +22,7 @@ export function EditionRowComponent(props: any) {
     const [contextEdition, setContextEdition] = useEdition();
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
+    const { user: user } = useCurrentUser(true);
 
     const router = useRouter();
 
@@ -61,24 +64,28 @@ export function EditionRowComponent(props: any) {
                     <a onClick={changeGlobalEdition} data-testid="list-view-edition">
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
-                    <a
-                        href={transformer(
-                            applicationPaths.editionBase +
-                                "/" +
-                                extractIdFromEditionUrl(edition._links.self.href)
-                        )}
-                        data-testid="list-edit-edition"
-                    >
-                        <Image
-                            alt={capitalize(t("edit"))}
-                            src={"/resources/edit.svg"}
-                            width="15"
-                            height="15"
-                        />
-                    </a>
-                    <a onClick={deleteEdition} data-testid="list-delete-edition">
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
+                    {user?.userRole === UserRole.admin && (
+                        <a
+                            href={transformer(
+                                applicationPaths.editionBase +
+                                    "/" +
+                                    extractIdFromEditionUrl(edition._links.self.href)
+                            )}
+                            data-testid="list-edit-edition"
+                        >
+                            <Image
+                                alt={capitalize(t("edit"))}
+                                src={"/resources/edit.svg"}
+                                width="15"
+                                height="15"
+                            />
+                        </a>
+                    )}
+                    {user?.userRole === UserRole.admin && (
+                        <a onClick={deleteEdition} data-testid="list-delete-edition">
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                        </a>
+                    )}
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast

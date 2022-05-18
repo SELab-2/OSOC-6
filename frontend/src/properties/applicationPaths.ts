@@ -31,6 +31,8 @@ const applicationPaths = {
 
     editionBase: "editions",
     editionCreate: "editions/create",
+
+    error: "_error",
 };
 
 export default applicationPaths;
