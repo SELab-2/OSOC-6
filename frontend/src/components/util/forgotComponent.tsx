@@ -26,7 +26,9 @@ export function ForgotComponent({ submitHandler }: ForgotProps) {
             }}
             onSubmit={doSubmit}
         >
-            <Form className="d-flex justify-content-center align-items-center flex-column">
+            <Form className="d-flex justify-content-center align-items-center flex-column"
+                  data-testid="forgot-password-form"
+            >
                 <h6 className="mt-5">{capitalize(t("reset password email"))}</h6>
                 <Field
                     className={"form-control " + styles.max_width}
