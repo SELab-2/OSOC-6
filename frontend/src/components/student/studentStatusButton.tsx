@@ -13,7 +13,7 @@ export function StudentStatusButton(props: { status: Status; colour: string }) {
 
     useEffect(() => {
         setClicked(router.query?.status === props.status);
-    }, [router.query.status]);
+    }, [router.query?.status, props.status]);
 
     async function clickHandler() {
         if (clicked) {
@@ -28,7 +28,7 @@ export function StudentStatusButton(props: { status: Status; colour: string }) {
         setClicked(!clicked);
     }
 
-    let style = clicked
+    const style = clicked
         ? { backgroundColor: props.colour, width: 100 }
         : { color: props.colour, borderColor: props.colour, width: 100 };
     return (

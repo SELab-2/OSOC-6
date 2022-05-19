@@ -64,7 +64,7 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                             }}
                             onClick={async () => {
                                 if (!draggable) {
-                                    let studentId: string = extractIdFromStudentUrl(student._links.self.href);
+                                    const studentId: string = extractIdFromStudentUrl(student._links.self.href);
                                     await router.replace({
                                         pathname: "/" + applicationPaths.students + "/" + studentId,
                                         query: { ...router.query },
