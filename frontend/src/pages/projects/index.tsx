@@ -16,9 +16,7 @@ const ProjectPage: NextPage = () => {
                     <ProjectList />
                 </div>
                 <div className={"d-flex justify-content-center align-items-center " + styles.info_field}>
-                    <p data-testid="projects-select-message">
-                            {capitalize(t("select a project to start"))}
-                        </p>
+                    <p data-testid="projects-select-message">{capitalize(t("select a project to start"))}</p>
                 </div>
             </div>
         </>
