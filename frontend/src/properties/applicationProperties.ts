@@ -1,5 +1,5 @@
 const applicationProperties = {
-    invitationTemplate: "Invite"
-}
+    invitationTemplate: "Invite",
+};
 
 export default applicationProperties;
