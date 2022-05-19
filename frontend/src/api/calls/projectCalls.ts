@@ -1,5 +1,11 @@
 import { IProject, Project, projectCollectionName } from "../entities/ProjectEntity";
-import { baseDelete, basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    baseDelete,
+    basePost,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 
 /**
