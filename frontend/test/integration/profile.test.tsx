@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableActForResponse, enableActForUserEvent, makeCacheFree } from './Provide';
+import { enableActForResponse, enableActForUserEvent, makeCacheFree } from "./Provide";
 import { getBaseNoContentResponse, getBaseOkResponse, getBasePage, getBaseUser } from "./TestEntityProvider";
 import { UserRole } from "../../src/api/entities/UserEntity";
 import { AxiosResponse } from "axios";
