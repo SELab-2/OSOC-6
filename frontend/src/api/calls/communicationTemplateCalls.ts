@@ -9,9 +9,12 @@ import {
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
+    getQueryUrlFromParams,
 } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 import { communicationCollectionName } from "../entities/CommunicationEntity";
+import { IEdition } from "../entities/EditionEntity";
+import { getAllEditionsFromPage } from "./editionCalls";
 
 /**
  * Function getting a communication template on the provided url.

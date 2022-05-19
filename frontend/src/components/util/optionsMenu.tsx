@@ -17,7 +17,7 @@ export const OptionsMenu = () => {
     // All options are defined here
     // This gets shown when the image is clicked.
     const menu = (
-        <Popover id={styles.popover} className={styles.menu}>
+        <Popover id={styles.popover} className={styles.menu} data-testid="navbar-popover">
             <Nav.Link href={transformer("/" + applicationPaths.profile)} className={styles.menu_option}>
                 {capitalize(t("user profile"))}
             </Nav.Link>

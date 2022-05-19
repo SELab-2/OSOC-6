@@ -52,7 +52,7 @@ describe("Registration", () => {
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.base + apiPaths.registration, user, {
                 ...AxiosConf,
-                params: { token: "token=" },
+                params: { token: "token" },
             });
         });
     });

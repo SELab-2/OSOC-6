@@ -1,6 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
 import { Badge, Col, Row } from "react-bootstrap";
-import styles from "../../styles/createProjectForm.module.css";
 import { Field, Form, Formik } from "formik";
 import apiPaths from "../../properties/apiPaths";
 import { getAllUsersFromPage } from "../../api/calls/userCalls";
@@ -20,6 +19,7 @@ import useEdition from "../../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import styles from "../../styles/projects/createProject.module.css";
 
 /**
  * A React component containing a form for project creation
@@ -164,7 +164,11 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     }
 
     return (
-        <div className={styles.create_project_box} data-testid="create-project-form" onLoad={initialize}>
+        <div
+            className={styles.create_project_box}
+            data-testid="create-project-form w-100"
+            onLoad={initialize}
+        >
             <Formik
                 initialValues={{
                     name: "",
