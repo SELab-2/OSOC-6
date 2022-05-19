@@ -5,14 +5,11 @@ import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { act, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
+import AxiosMockRequestCriteria from "jest-mock-axios";
+import HttpResponse from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import { getBaseOkResponse } from "./TestEntityProvider";
 import { IUser } from "../../src/api/entities/UserEntity";
-import { AxiosResponse } from "axios";
-import userEvent from "@testing-library/user-event";
-import AxiosMockRequestCriteria from "jest-mock-axios";
-import HttpResponse from "jest-mock-axios";
-import { act as reactAct } from "react-dom/test-utils";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
