@@ -20,7 +20,7 @@ export default function RouteGuard({ children }: any) {
 
         if (!authException && userErrorMsg) {
             replace({
-                pathname: applicationPaths.login,
+                pathname: "/" + applicationPaths.login,
                 query: { returnUrl: routerPath },
             }).catch(console.log);
         }

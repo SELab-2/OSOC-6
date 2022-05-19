@@ -4,8 +4,10 @@ import useSWR from "swr";
 import { emptySkillType } from "../../api/entities/SkillTypeEntity";
 import { getAllAssignmentsFormLinks } from "../../api/calls/AssignmentCalls";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
-import { getStudentOnUrl } from "../../api/calls/studentCalls";
+import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { emptyStudent } from "../../api/entities/StudentEntity";
+import SkillBadge from "../util/skillBadge";
+import applicationPaths from "../../properties/applicationPaths";
 
 export interface IProjectSkillStudentProps {
     projectSkill: IProjectSkill;
@@ -24,7 +26,19 @@ export function AssignmentStudentListItem({ assignment }: IAssignmentStudentList
     }
 
     student = student || emptyStudent;
-    return <li>{student.callName}</li>;
+    return (
+        <li>
+            <a
+                rel="noreferrer"
+                href={
+                    "/" + applicationPaths.students + "/" + extractIdFromStudentUrl(student._links.self.href)
+                }
+                target="_blank"
+            >
+                {student.callName}
+            </a>
+        </li>
+    );
 }
 
 /**
@@ -47,8 +61,10 @@ export default function ProjectSkillStudent({ projectSkill }: IProjectSkillStude
     assignments = assignments || [];
 
     return (
-        <li style={{ color: skillType.colour }}>
-            {projectSkill.name}
+        <li>
+            <h6>
+                <SkillBadge skill={projectSkill.name} />
+            </h6>
             <ul>
                 {assignments.map((assignment) => (
                     <AssignmentStudentListItem assignment={assignment} key={assignment._links.self.href} />

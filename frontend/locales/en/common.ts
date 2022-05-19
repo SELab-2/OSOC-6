@@ -171,6 +171,10 @@ const common = {
     "to project": "to project ",
     "for role": "for the role ",
 
+    "no coaches for project": "There are no coaches assigned to this project.",
+    "no extra requirements for project": "There are no extra requirements for this project.",
+    "no roles assigned to project": "There are no roles assigned to this project.",
+
     // SkillType strings
     "color representing skill type": "choose the color representing the skill type",
     "edit colour": "edit colour",
