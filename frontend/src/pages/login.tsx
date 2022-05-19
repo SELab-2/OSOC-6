@@ -10,6 +10,7 @@ import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";
 import { useState } from "react";
 import applicationPaths from "../properties/applicationPaths";
+import { Background } from "../components/util/background";
 
 const Login: NextPage = () => {
     const { t } = useTranslation("common");
@@ -18,18 +19,17 @@ const Login: NextPage = () => {
     const [hadError, setHadError] = useState<boolean>(false);
 
     return (
-        <main>
+        <div className={styles.login_page}>
+            <Background />
             <NavBar />
             <div className={styles.login_full_div}>
-                <Row className={styles.login_row}>
-                    <Col>
-                        <h2 style={{ marginTop: "100px", marginLeft: "100px" }}>
-                            {capitalize(t("let's get started"))}
-                        </h2>
-                    </Col>
-                    <Col>
+                <div className={styles.login_row}>
+                    <div className={styles.login_floating_text_col}>
+                        <h1 className={styles.login_floating_text}>{capitalize(t("let's get started"))}</h1>
+                    </div>
+                    <div className={styles.login_col}>
                         <div className={styles.login_div}>
-                            <h3>{capitalize(t("signin"))}</h3>
+                            <h2>{capitalize(t("signin"))}</h2>
                             <Card hidden={!hadError}>
                                 <Card.Body className={styles.login_card}>
                                     <Card.Text>
@@ -48,10 +48,10 @@ const Login: NextPage = () => {
                                 </a>
                             </div>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
-        </main>
+        </div>
     );
 };
 
