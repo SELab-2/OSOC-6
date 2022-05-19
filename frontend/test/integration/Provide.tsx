@@ -3,11 +3,13 @@ import { IEdition } from "../../src/api/entities/EditionEntity";
 import GlobalContext from "../../src/context/globalContext";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
-import { waitFor } from "@testing-library/react";
+import { act, waitFor } from '@testing-library/react';
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import { getBaseOkResponse } from "./TestEntityProvider";
 import { IUser } from "../../src/api/entities/UserEntity";
+import { AxiosResponse } from 'axios';
+import userEvent from '@testing-library/user-event';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -65,4 +67,21 @@ export function enableCurrentUser(user: IUser): Promise<void> {
     return waitFor(() => {
         mockAxios.mockResponseFor({ url: apiPaths.ownUser }, getBaseOkResponse(user));
     });
+}
+
+/**
+ * Function that makes sure the act() message doesn't get thrown when changing states.
+ * @param criteria object which contains the criteria for the response, for example {method: "GET"}.
+ * @param response the response itself.
+ */
+export function enableActForResponse(criteria: object, response: AxiosResponse) {
+    return enableActForUserEvent(mockAxios.mockResponseFor(criteria, response));
+}
+
+/**
+ * Function that makes sure the act() message doesn't get thrown when changing states.
+ * @param input basically any input type that needs to be wrapped for act().
+ */
+export function enableActForUserEvent(input: any){
+    return act(async () => input);
 }

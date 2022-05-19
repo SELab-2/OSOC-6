@@ -14,7 +14,7 @@ export const NavBar = () => {
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand
-                        href={transformer("/" + applicationPaths.students)}
+                        href={transformer("/" + applicationPaths.assignStudents)}
                         data-testid="navbar-brand"
                     >
                         <Image alt="" src={"/resources/osoc-logo.svg"} width="30" height="30" />
@@ -23,7 +23,7 @@ export const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className={"ms-auto"}>
                             <Nav.Item data-testid="navbar-students">
-                                <Nav.Link href={transformer("/" + applicationPaths.assignStudents)}>
+                                <Nav.Link href={transformer("/" + applicationPaths.students)}>
                                     {t("students")}
                                 </Nav.Link>
                             </Nav.Item>
