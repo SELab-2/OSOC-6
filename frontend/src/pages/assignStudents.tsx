@@ -37,15 +37,15 @@ const AssignStudentsPage: NextPage = () => {
     return (
         <>
             <NavBar />
-            <div className={styles.projects} data-testid="assign-students-grid">
-                <Row className="gx-0 h-25 w-100">
+            <div className={styles.filter_grid} data-testid="assign-students-grid">
+                <div className={styles.filter}>
                     <StudentFilterComponent />
-                </Row>
-                <Row xs={1} className={"h-75 w-100 gx-0 gx-sm-4 "}>
-                    <Col sm={3} xxl={2} className="h-100">
+                </div>
+                <div className={styles.info_grid + " " + styles.height_setter}>
+                    <div className={styles.sidebar}>
                         <StudentList isDraggable={true} />
-                    </Col>
-                    <Col sm={9} xxl={10} className={"h-100"}>
+                    </div>
+                    <div className={styles.info_field}>
                         <Row className={"h-100"}>
                             <Col className="h-100 overflow-auto pb-2">
                                 <ProjectAsignmentList dropHandler={handleShow} />
@@ -60,8 +60,8 @@ const AssignStudentsPage: NextPage = () => {
                                 </div>
                             </Col>
                         </Row>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
             {modalInfo !== undefined ? (
                 <AssignmentModal

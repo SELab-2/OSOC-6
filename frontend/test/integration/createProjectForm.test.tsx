@@ -3,10 +3,7 @@ import { act, render, RenderResult, screen, waitFor } from "@testing-library/rea
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import CreateProject from "../../src/pages/projects/create";
-import {
-    ProjectFormSubmitHandler,
-    ProjectCreationValues,
-} from "../../src/handlers/projectFormSubmitHandler";
+import { ProjectFormSubmitHandler, ProjectCreationValues } from "../../src/handlers/projectFormSubmitHandler";
 import {
     getBaseActiveEdition,
     getBaseOkResponse,
@@ -81,10 +78,7 @@ describe("Create project form", () => {
 
         const projectCreate: RenderResult = render(
             makeCacheFree(() =>
-                enableUseEditionComponentWrapper(
-                    () => <ProjectForm submitHandler={submitProject} />,
-                    edition
-                )
+                enableUseEditionComponentWrapper(() => <ProjectForm submitHandler={submitProject} />, edition)
             )
         );
 

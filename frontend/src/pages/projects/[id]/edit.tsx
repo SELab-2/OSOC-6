@@ -17,7 +17,10 @@ const CreateProject: NextPage = () => {
     const query = router.query as { id: string };
     const projectId = query.id;
 
-    const { data: receivedProject, error: projectError } = useSWR(apiPaths.projects + "/" + projectId, getProjectOnUrl);
+    const { data: receivedProject, error: projectError } = useSWR(
+        apiPaths.projects + "/" + projectId,
+        getProjectOnUrl
+    );
 
     if (projectError) {
         console.log(projectError);
@@ -35,7 +38,7 @@ const CreateProject: NextPage = () => {
             <main className={styles.main}>
                 <div className="capitalize  m-4">
                     <h1 className={styles.title}>{"edit project " + project.name}</h1>
-                    <ProjectForm submitHandler={ProjectFormSubmitHandler} project={project}/>
+                    <ProjectForm submitHandler={ProjectFormSubmitHandler} project={project} />
                 </div>
             </main>
         </div>

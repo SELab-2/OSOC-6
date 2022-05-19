@@ -1,23 +1,20 @@
 import { NextPage } from "next";
-import { ProjectInfo } from "../../../components/project/projectInfo";
-import { Col, Row } from "react-bootstrap";
+import styles from "../../../styles/pageGrids.module.css";
 import NavBar from "../../../components/util/navBar";
 import { ProjectList } from "../../../components/project/projectList";
-import styles from "../../../styles/pageGrids.module.css";
+import { ProjectInfo } from "../../../components/project/projectInfo";
 
 const ProjectIDPage: NextPage = () => {
     return (
         <>
             <NavBar />
-            <div className={styles.projects} data-testid="projects-grid">
-                <Row xs={1} className={"h-100 w-100 gx-0 gx-sm-4"}>
-                    <Col sm={3} xxl={2}>
-                        <ProjectList />
-                    </Col>
-                    <Col sm={9} xxl={10}>
-                        <ProjectInfo />
-                    </Col>
-                </Row>
+            <div className={styles.info_grid} data-testid="projects-grid">
+                <div className={styles.sidebar}>
+                    <ProjectList />
+                </div>
+                <div className={styles.info_field}>
+                    <ProjectInfo />
+                </div>
             </div>
         </>
     );

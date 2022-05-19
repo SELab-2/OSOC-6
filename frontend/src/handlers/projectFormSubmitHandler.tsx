@@ -59,7 +59,7 @@ export async function ProjectFormSubmitHandler(
     mutate: ScopedMutator<any>,
     apiURLTransformer: (url: string) => string,
     removedCoaches: string[],
-    removeSkillTypes: string[],
+    removeSkillTypes: string[]
 ) {
     const project: Project = new Project(
         values.name,
@@ -94,8 +94,7 @@ export async function ProjectFormSubmitHandler(
 
     await Promise.all(
         values.coaches.map(
-            async (coach) =>
-                await axios.put(createdProject._links.coaches.href, coach, ManyToManyAxiosConf)
+            async (coach) => await axios.put(createdProject._links.coaches.href, coach, ManyToManyAxiosConf)
         )
     );
 
