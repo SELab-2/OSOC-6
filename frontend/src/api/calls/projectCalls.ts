@@ -1,5 +1,5 @@
 import { IProject, Project, projectCollectionName } from "../entities/ProjectEntity";
-import { basePost, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import { basePatch, basePost, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 
 /**
@@ -13,6 +13,21 @@ export function getProjectOnUrl(url: string): Promise<IProject> {
     return <Promise<IProject>>getEntityOnUrl(url);
 }
 
-export async function createProject(project: Project): Promise<IProject> {
-    return (await basePost(apiPaths.projects, project)).data;
+/**
+ * Creates a new project and returns the new project.
+ * @param project [Project] that needs to be created.
+ */
+export async function createProject(project: Project): Promise<IProject | undefined> {
+    const newProject = (await basePost(apiPaths.projects, project)).data;
+    return newProject?._links ? newProject : undefined;
+}
+
+/**
+ * Edits an existing project and returns the new values.
+ * @param url url the existing project is hosted on.
+ * @param project [Project] that needs to be created.
+ */
+export async function editProject(url: string, project: Project): Promise<IProject | undefined> {
+    const newProject = (await basePatch(url, project)).data;
+    return newProject?._links ? newProject : undefined;
 }

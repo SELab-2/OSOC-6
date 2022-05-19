@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Badge, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import apiPaths from "../../properties/apiPaths";
 import { getAllUsersFromLinks, getAllUsersFromPage } from "../../api/calls/userCalls";
@@ -7,7 +7,7 @@ import { capitalize } from "../../utility/stringUtil";
 import { ProjectCreationValues, ProjectFormSubmitValues } from "../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../api/entities/UserEntity";
 import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
-import { getSkillColorMap, ISkillType } from "../../api/entities/SkillTypeEntity";
+import { ISkillType } from "../../api/entities/SkillTypeEntity";
 import { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useEditionAPIUrlTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
@@ -19,7 +19,6 @@ import styles from "../../styles/projects/createProject.module.css";
 import { ScopedMutator } from "swr/dist/types";
 import { IProject } from "../../api/entities/ProjectEntity";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
-import { IBaseEntity } from "../../api/entities/BaseEntities";
 import { IProjectSkill, ProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import SkillBadge from "../util/skillBadge";
 
@@ -28,15 +27,16 @@ import SkillBadge from "../util/skillBadge";
  */
 export type ProjectCreationProps = {
     submitHandler: (
+        project: IProject | null,
         values: ProjectCreationValues,
-        router: NextRouter,
+        removedCoaches: string[],
+        removeProjectSkills: string[],
         editionUrl: string,
         ownUser: IUser,
+        router: NextRouter,
         mutate: ScopedMutator<any>,
         apiURLTransformer: (url: string) => string,
-        removedCoaches: string[],
-        removeSkillTypes: string[]
-    ) => Promise<void>;
+    ) => Promise<boolean>;
     project?: IProject;
 };
 
@@ -48,9 +48,11 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
     const { t } = useTranslation("common");
     const router = useRouter();
     const [editionUrl] = useEdition();
-    const currentUser = useCurrentUser(true);
+    const { user: currentUser } = useCurrentUser(true);
     const apiTransformer = useEditionAPIUrlTransformer();
     const { mutate } = useSWRConfig();
+
+    console.log(currentUser)
 
     // Receive data
     const { data: receivedUsers, error: usersError } = useSwrWithEdition(
@@ -175,14 +177,15 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
 
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
         await submitHandler(
+            project ? project : null,
             createValues,
-            router,
+            Array.from(removedCoaches),
+            Array.from(removedSkills),
             editionUrl!,
-            currentUser.user!,
+            currentUser!,
+            router,
             mutate,
             apiTransformer,
-            Array.from(removedCoaches),
-            Array.from(removedSkills)
         );
     }
 
@@ -282,7 +285,8 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
                         .filter((coach) => !removedCoaches.has(coach._links.self.href))
                         .map((coach: IUser) => (
                             <Row key={coach._links.self.href}>
-                                {/* Might be prettier to just blur coaches that have been removed so you can add them again */}
+                                {/* Might be prettier to just blur coaches that have been removed.
+                                That way you would be able to add them again */}
                                 <Col>{coach.callName}</Col>
                                 <Col xs={1}>
                                     <a>
@@ -455,7 +459,7 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
                         {capitalize(t("add skill"))}
                     </button>
                     <button className="btn btn-primary" type="submit" data-testid="create-project-button">
-                        {capitalize(t("create project"))}
+                        {project ? "edit project" : capitalize(t("create project"))}
                     </button>
                 </Form>
             </Formik>
