@@ -12,7 +12,9 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import mailTo from "../../utility/mailTo";
 import useSWR from "swr";
-import { getCommunicationTemplateByName } from "../../api/calls/communicationTemplateCalls";
+import {
+    getAllCommunicationTemplatesFromPage,
+} from "../../api/calls/communicationTemplateCalls";
 import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 import useEdition from "../../hooks/useGlobalEdition";
 import { useState } from "react";
@@ -22,11 +24,14 @@ export default function InvitationButton() {
     const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
     const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
-    const { data, error: templateError } = useSWR("Invite", getCommunicationTemplateByName);
+
+    const { data, error: templateError } = useSWR(getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
+        name: "Invite",
+    }), getAllCommunicationTemplatesFromPage);
     const [invitationUrl, setInvitationUrl] = useState<string>("");
     const [visible, setVisible] = useState(false);
 
-    const template = data || emptyCommunicationTemplate;
+    const template = data?.at(0) || emptyCommunicationTemplate;
 
     if (templateError) {
         console.log(templateError);

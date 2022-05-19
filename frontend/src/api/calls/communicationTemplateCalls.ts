@@ -24,17 +24,6 @@ export function getCommunicationTemplateOnUrl(url: string): Promise<ICommunicati
     return <Promise<ICommunicationTemplate>>getEntityOnUrl(url);
 }
 
-export async function getCommunicationTemplateByName(
-    templateName: string
-): Promise<ICommunicationTemplate | undefined> {
-    const templates = await getAllCommunicationTemplatesFromPage(
-        getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
-            name: templateName,
-        })
-    );
-    return templates[0];
-}
-
 /**
  * Function getting all [ICommunicationTemplate] entities on an [IPage] url.
  * @param url the [IPage] url hosting the communication templates.
