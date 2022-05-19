@@ -15,7 +15,7 @@ export interface CommunicationListProps {
 }
 
 /**
- * Component listing all communications of a given student. (In order as provided by the list)
+ * Component listing all communication with a given student. (In order as provided by the list)
  * @param student [IStudent] the communications need to be listed of.
  */
 export default function CommunicationList({ student }: CommunicationListProps) {

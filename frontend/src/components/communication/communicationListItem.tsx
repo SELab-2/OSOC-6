@@ -17,7 +17,7 @@ export interface CommunicationListItemProps {
 /**
  * An item in the [CommunicationList].
  * Renders the details of a single [ICommunication] entity as a list item.
- * @param communication the [ICommunication] item this list item is all about.
+ * @param communication the specified [ICommunication] item.
  */
 export default function CommunicationListItem({ communication }: CommunicationListItemProps) {
     const { t } = useTranslation("common");

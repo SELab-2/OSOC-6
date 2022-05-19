@@ -25,7 +25,7 @@ export interface CreateCommunicationFormProps {
 
 /**
  * Form component to create a new communication item with a given [IStudent].
- * @param student the [IStudent] this communication is handled with.
+ * @param student the [IStudent] to whom this communication was send.
  */
 export default function CreateCommunicationForm({ student }: CreateCommunicationFormProps) {
     const { t } = useTranslation("common");

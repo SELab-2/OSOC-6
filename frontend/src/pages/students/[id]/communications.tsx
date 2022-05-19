@@ -5,7 +5,7 @@ import apiPaths from "../../../properties/apiPaths";
 import { getStudentOnUrl } from "../../../api/calls/studentCalls";
 
 /**
- * Page listing the communications that where performed with a student.
+ * Page listing the communication with a student.
  */
 export default function CommunicationPage() {
     const router = useRouter();

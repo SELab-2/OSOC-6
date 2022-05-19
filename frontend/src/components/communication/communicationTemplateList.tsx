@@ -12,7 +12,7 @@ export interface CommunicationTemplatesListProps {
 
 /**
  * Component listing all communication templates.
- * @param templates list of [ICommunicationTemplate] that needs to be listed.
+ * @param templates list of [ICommunicationTemplate] that needs to be displayed.
  */
 export default function CommunicationTemplatesList({ templates }: CommunicationTemplatesListProps) {
     return (
