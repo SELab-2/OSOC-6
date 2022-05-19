@@ -17,6 +17,7 @@ import { IEdition } from "../../src/api/entities/EditionEntity";
 import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
 import { ICommunication } from "../../src/api/entities/CommunicationEntity";
 import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
+import { IInvitation, Invitation } from "../../src/api/entities/InvitationEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -193,7 +194,7 @@ export function getBaseAssignment(id: string): IAssignment {
     return {
         isValid: true,
         reason: "This assignment was mandatory, we don't have any other",
-        timestamp: "Now",
+        timestamp: "2022-05-05T17:57:49.963+00:00",
 
         _links: {
             assigner: { href: baseAssignmentsPath + "/assigner" },
@@ -229,7 +230,7 @@ export function getBaseSuggestion(id: string): ISuggestion {
     return {
         reason: "Some reason",
         strategy: SuggestionStrategy.yes,
-        timestamp: "",
+        timestamp: "2022-05-05T17:57:49.963+00:00",
         _links: {
             coach: { href: baseSuggestionPath + "/coach" },
             student: { href: baseSuggestionPath + "/student" },
@@ -312,6 +313,22 @@ export function getBaseStudent(id: string): IStudent {
             edition: { href: baseStudentPath + "/edition" },
             student: { href: baseStudentPath },
             self: { href: baseStudentPath },
+        },
+    };
+}
+
+export function getBaseInvitation(token: string, id: string): IInvitation {
+    const baseInvitation = "http://localhost/api/invitations/" + id;
+    return {
+        token: token,
+        creationTimestamp: "2022-05-05T17:57:49.963+00:00",
+        used: false,
+        _links: {
+            edition: { href: baseInvitation + "/edition" },
+            issuer: { href: baseInvitation + "/issuer" },
+            subject: { href: baseInvitation + "/subject" },
+            self: { href: baseInvitation },
+            invitation: { href: baseInvitation },
         },
     };
 }

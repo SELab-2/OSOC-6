@@ -21,6 +21,7 @@ import { projectSkillCollectionName } from "../../src/api/entities/ProjectSkillE
 import { assignmentCollectionName } from "../../src/api/entities/AssignmentEntity";
 import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
+import { getValidAssignmentsUrlForProjectSkill } from "../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -76,12 +77,11 @@ describe("project info", () => {
             )
         );
 
+        const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
         await waitFor(() =>
             mockAxios.mockResponseFor(
-                { url: projectSkill._links.assignments.href },
-                getBaseOkResponse(
-                    getBaseLinks(projectSkill._links.assignments.href, assignmentCollectionName, [assignment])
-                )
+                { url: assignmentsUrl },
+                getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))
             )
         );
 
