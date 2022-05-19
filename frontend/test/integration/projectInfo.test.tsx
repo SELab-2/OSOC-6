@@ -116,7 +116,7 @@ describe("project info", () => {
         act(() => mockAxios.mockResponseFor({ url: project._links.self.href }, response));
     });
 
-    it("should delete", async () => {
+    it("delete should fail", async () => {
         const projectId = "5";
 
         mockRouter.setCurrentUrl("/projects/" + projectId);

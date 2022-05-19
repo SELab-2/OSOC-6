@@ -102,6 +102,8 @@ describe("StudentInfo", () => {
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
         const response: AxiosResponse = getBaseNoContentResponse();
         act(() => mockAxios.mockResponseFor({ url: baseStudent._links.self.href }, response));
+
+        expect(mockRouter.push).toHaveBeenCalled()
     });
 
     it("delete should fail", async () => {
