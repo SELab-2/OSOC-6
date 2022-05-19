@@ -167,6 +167,10 @@ const common = {
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
 
+    // Conflict strings
+    conflict: "conflict",
+    "reason(s)": "reasons(s)",
+
     suggesting: "You are suggesting ",
     "to project": "to project ",
     "for role": "for the role ",

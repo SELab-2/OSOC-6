@@ -40,9 +40,12 @@ const apiPaths = {
     communicationsByStudent: "communications/search/by-student",
 
     assignments: "assignments",
+    assignmentsValidityByStudent: "assignments/search/validity-on-student",
+    assignmentsValidityByProjectSkill: "assignments/search/validity-on-project-skill",
 
     students: "students",
     studentByQuery: "students/search/full-query",
+    studentConflict: "students/search/conflict-query",
 };
 
 export default apiPaths;

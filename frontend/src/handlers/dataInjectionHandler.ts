@@ -120,8 +120,16 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             containedProjects[1]._links!.self.href
         );
 
+        const skill2: ProjectSkill = new ProjectSkill(
+            "Being happy",
+            "We need only good vibes",
+            containedProjects[0]._links!.self.href
+        );
+
         containedProjectSkills = await Promise.all(
-            [skill1].map(async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data)
+            [skill1, skill2].map(
+                async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data
+            )
         );
     } else {
         containedProjectSkills = projectSkills._embedded["project-skills"];
