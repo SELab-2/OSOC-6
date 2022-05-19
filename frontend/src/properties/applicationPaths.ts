@@ -2,7 +2,7 @@
  * Paths used the web-application.
  */
 const applicationPaths = {
-    base: "localhost",
+    base: "http://localhost/",
     index: "",
     home: "home",
 
@@ -22,6 +22,9 @@ const applicationPaths = {
     loginError: "loginError",
     changePassword: "changePassword",
     registration: "registration",
+
+    forgotPassword: "forgotPassword",
+    resetPassword: "resetPassword",
 
     communicationTemplateBase: "communicationTemplates",
     communicationTemplateCreation: "communicationTemplates/create",

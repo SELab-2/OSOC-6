@@ -16,6 +16,9 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 # The base domain of the website, WITHOUT http prefix.
 domain=domain.com
 
+# The frontend route that the reset password page is served on
+reset-password.route=resetPassword
+
 # The current active profile, use 'production' in production and 'development' in development.
 spring.profiles.active=production
 
