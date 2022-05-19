@@ -15,7 +15,7 @@ import useSWR from "swr";
 import { getCommunicationTemplateByName } from "../../api/calls/communicationTemplateCalls";
 import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 import useEdition from "../../hooks/useGlobalEdition";
-import {useState} from "react";
+import { useState } from "react";
 
 export default function InvitationButton() {
     const { t } = useTranslation("common");
@@ -46,7 +46,7 @@ export default function InvitationButton() {
         const registrationUrl = applicationPaths.base + "/" + transformer(url);
 
         setInvitationUrl(registrationUrl);
-        setVisible(true)
+        setVisible(true);
 
         document.location.href = mailTo({
             body: template.template + "\n" + registrationUrl,
@@ -65,7 +65,7 @@ export default function InvitationButton() {
                 data-testid="invitation-url"
                 id="invitation-url"
                 value={invitationUrl}
-                style={{ width: 650, textAlign: "center", visibility: visible ? "visible" : "hidden"}}
+                style={{ width: 650, textAlign: "center", visibility: visible ? "visible" : "hidden" }}
                 readOnly
             />
         </div>
