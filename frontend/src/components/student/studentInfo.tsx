@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import {Col, ListGroup, Row, Toast, ToastContainer} from "react-bootstrap";
+import { Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -10,15 +10,15 @@ import Image from "next/image";
 import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import { IFullSuggestion } from "../../hooks/useFullSuggestion";
-import useSWR, {useSWRConfig} from "swr";
-import {deleteStudent, getStudentOnUrl} from "../../api/calls/studentCalls";
+import useSWR, { useSWRConfig } from "swr";
+import { deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
-import {userDelete} from "../../api/calls/userCalls";
-import {StatusCodes} from "http-status-codes";
+import { userDelete } from "../../api/calls/userCalls";
+import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
-import {useState} from "react";
-import {getParamsFromQueryUrl, getQueryUrlFromParams} from "../../api/calls/baseCalls";
+import { useState } from "react";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
 
 /**
@@ -65,8 +65,8 @@ export function StudentInfo() {
         const response = await deleteStudent(student!._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
-                const params = getParamsFromQueryUrl(router.asPath)
-                await router.push(getQueryUrlFromParams("/" + applicationPaths.students, params))
+                const params = getParamsFromQueryUrl(router.asPath);
+                await router.push(getQueryUrlFromParams("/" + applicationPaths.students, params));
             } catch (error) {
                 setShow(true);
             }

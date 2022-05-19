@@ -11,7 +11,7 @@ import { capitalize } from "../../utility/stringUtil";
 import { UserRole } from "../../api/entities/UserEntity";
 import timers from "../../properties/timers";
 import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import applicationPaths from "../../properties/applicationPaths";
 
 export function UserComponent(props: any) {
@@ -28,7 +28,7 @@ export function UserComponent(props: any) {
     async function deleteUser() {
         const response = await userDelete(user._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
-            router.push(applicationPaths.students)
+            router.push(applicationPaths.students);
         } else {
             setShow(true);
         }
