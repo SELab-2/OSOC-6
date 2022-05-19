@@ -9,7 +9,7 @@ import { StudentStatus } from "./studentStatus";
 import Image from "next/image";
 import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
-import useSWR  from "swr";
+import useSWR from "swr";
 import { deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";

@@ -6,12 +6,12 @@ import useFullProjectInfo from "../../hooks/useFullProjectInfo";
 import { emptyProject } from "../../api/entities/ProjectEntity";
 import ProjectSkillStudent from "./projectSkillStudent";
 import styles from "../../styles/projects/projectInfo.module.css";
-import {useState} from "react";
-import {StatusCodes} from "http-status-codes";
-import {getParamsFromQueryUrl, getQueryUrlFromParams} from "../../api/calls/baseCalls";
+import { useState } from "react";
+import { StatusCodes } from "http-status-codes";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
-import {deleteProject} from "../../api/calls/projectCalls";
-import {Row, Col, Toast, ToastContainer} from "react-bootstrap";
+import { deleteProject } from "../../api/calls/projectCalls";
+import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
 
@@ -47,7 +47,7 @@ export function ProjectInfo() {
 
     return (
         <div className={styles.project_info}>
-            <div style={{display: "flex", justifyContent: "space-between"}}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h1>{info.name}</h1>
                 <a onClick={deleteProjectOnClick} data-testid="overview-delete-user">
                     <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
@@ -93,13 +93,7 @@ export function ProjectInfo() {
             </ul>
 
             <ToastContainer position="bottom-end">
-                <Toast
-                    bg="warning"
-                    onClose={() => setShow(false)}
-                    show={show}
-                    delay={timers.toast}
-                    autohide
-                >
+                <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
                     <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
