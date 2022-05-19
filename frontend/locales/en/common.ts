@@ -94,6 +94,14 @@ const common = {
     // Edition strings
     "no edition": "there are no editions made yet.",
     "no error": "no error",
+    "edition overview": "edition overview",
+    "change edition state":
+        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "invalid edition year": "please provide a valid year",
+    "create new edition": "create new edition",
+    "manage editions": "manage editions",
+    editions: "editions",
+    "not active": "not active",
 
     // Communication strings
     "create communication template": "create communication template",
@@ -146,6 +154,9 @@ const common = {
     "change status title": "change status",
     "change status": "would you like to change the status to",
 
+    filters: "filters",
+    "choose roles": "choose one or more",
+
     // Assignment strings
     "assignment modal title": "Why do you want this student here?",
     "confirm assignment": "confirm assignment",
@@ -155,11 +166,6 @@ const common = {
     "no skills for project": "No skills have been assigned to this project",
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
-
-    "edition overview": "edition overview",
-    "change edition state":
-        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
-    "invalid edition year": "please provide a valid year",
 
     suggesting: "You are suggesting ",
     "to project": "to project ",
@@ -173,12 +179,7 @@ const common = {
     "color representing skill type": "choose the color representing the skill type",
     "edit colour": "edit colour",
     delete: "delete",
-
-    // Edition strings
-    "create new edition": "create new edition",
-    "manage editions": "manage editions",
-    editions: "editions",
-    "not active": "not active",
+    skills: "skills",
 };
 
 export default common;
