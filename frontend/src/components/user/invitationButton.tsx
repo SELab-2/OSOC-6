@@ -1,10 +1,8 @@
 import apiPaths from "../../properties/apiPaths";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import { IEdition } from "../../api/entities/EditionEntity";
 import { Invitation } from "../../api/entities/InvitationEntity";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
-import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { createInvitation } from "../../api/calls/invitationCalls";
@@ -16,6 +14,7 @@ import { getAllCommunicationTemplatesFromPage } from "../../api/calls/communicat
 import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 import useEdition from "../../hooks/useGlobalEdition";
 import { useState } from "react";
+import applicationProperties from "../../properties/applicationProperties";
 
 export default function InvitationButton() {
     const { t } = useTranslation("common");
@@ -25,12 +24,12 @@ export default function InvitationButton() {
 
     const { data, error: templateError } = useSWR(
         getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
-            name: "Invite",
+            name: applicationProperties.invitationTemplate,
         }),
         getAllCommunicationTemplatesFromPage
     );
     const [invitationUrl, setInvitationUrl] = useState<string>("");
-    const [visible, setVisible] = useState(false);
+    const [hidden, setHidden] = useState(true);
 
     const template = data?.at(0) || emptyCommunicationTemplate;
 
@@ -52,7 +51,7 @@ export default function InvitationButton() {
         const registrationUrl = applicationPaths.base + "/" + transformer(url);
 
         setInvitationUrl(registrationUrl);
-        setVisible(true);
+        setHidden(false);
 
         document.location.href = mailTo({
             body: template.template + "\n" + registrationUrl,
@@ -67,11 +66,12 @@ export default function InvitationButton() {
                 {capitalize(t("invite user"))}
             </Button>
             <input
+                hidden={hidden}
                 type="text"
                 data-testid="invitation-url"
                 id="invitation-url"
                 value={invitationUrl}
-                style={{ width: 650, textAlign: "center", visibility: visible ? "visible" : "hidden" }}
+                style={{ width: 650, textAlign: "center" }}
                 readOnly
             />
         </div>
