@@ -54,9 +54,9 @@ export function StudentInfo() {
     }
 
     return (
-        <div>
-            <div>
-                <div className="row">
+        <div className={"h-100"}>
+            <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+                <div className="row w-100">
                     <div className="col-sm-6">
                         <h1>{student.callName}</h1>
                     </div>
