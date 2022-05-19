@@ -12,7 +12,7 @@ import { capitalize_complete } from "../utility/stringUtil";
 function MyApp({ Component, pageProps }: AppProps) {
     const { t } = useTranslation("common");
     return (
-        <>
+        <div className={"app"}>
             <Head>
                 <title>{capitalize_complete(t("tool name"))}</title>
                 <link rel="icon" type="image/x-icon" href="/resources/osoc-logo.svg" />
@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     </RouteGuard>
                 </GlobalStateProvider>
             </SWRConfig>
-        </>
+        </div>
     );
 }
 

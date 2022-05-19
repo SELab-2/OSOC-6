@@ -42,6 +42,7 @@ const RegistrationForm: NextPage = () => {
                 });
                 await loginSubmitHandler(
                     { username: values.email, password: values.password },
+                    () => {},
                     router,
                     mutate
                 );

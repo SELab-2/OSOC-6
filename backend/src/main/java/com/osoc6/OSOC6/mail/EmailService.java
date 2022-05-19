@@ -27,6 +27,12 @@ public class EmailService {
     private String baseDomain;
 
     /**
+     * The frontend route that the reset password page is served on.
+     */
+    @Value("${reset-password.route}")
+    private String resetPasswordRoute;
+
+    /**
      * Send a password reset mail.
      * @param to the email to send the mail to
      * @param token the password reset token
@@ -38,7 +44,7 @@ public class EmailService {
         mailMessage.setSubject(VengerbergMailWizard.RESET_PASSWORD_SUBJECT);
         mailMessage.setText(String.format(VengerbergMailWizard.RESET_PASSWORD_TEXT,
                 RadagastNumberWizard.PASSWORD_TOKEN_EXPIRATION_HOURS,
-                "http://" + baseDomain + "/api/reset-password?token=" + token));
+                "https://" + baseDomain + "/" + resetPasswordRoute + "?token=" + token));
 
         emailSender.send(mailMessage);
     }
