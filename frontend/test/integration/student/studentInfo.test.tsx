@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
-import {act, render, screen, waitFor} from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import {
     getBaseBadRequestResponse,
-    getBaseLinks, getBaseNoContentResponse,
+    getBaseLinks,
+    getBaseNoContentResponse,
     getBaseOkResponse,
     getBasePage,
     getBaseSkillType,
@@ -23,7 +24,7 @@ import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEnti
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -98,10 +99,10 @@ describe("StudentInfo", () => {
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
 
-        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled())
-        const response: AxiosResponse = getBaseNoContentResponse()
+        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
+        const response: AxiosResponse = getBaseNoContentResponse();
         act(() => mockAxios.mockResponseFor({ url: baseStudent._links.self.href }, response));
-    })
+    });
 
     it("delete should fail", async () => {
         const studentId = "10";
@@ -123,9 +124,9 @@ describe("StudentInfo", () => {
         const response: AxiosResponse = getBaseBadRequestResponse();
         act(() => mockAxios.mockResponseFor({ url: baseStudent._links.self.href }, response));
 
-        const warning = await screen.findByTestId("warning")
+        const warning = await screen.findByTestId("warning");
         await waitFor(() => {
-            expect(warning).toBeVisible()
-        })
-    })
+            expect(warning).toBeVisible();
+        });
+    });
 });

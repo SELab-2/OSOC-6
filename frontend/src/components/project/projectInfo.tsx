@@ -93,7 +93,14 @@ export function ProjectInfo() {
             </ul>
 
             <ToastContainer position="bottom-end">
-                <Toast bg="warning" data-testid="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
+                <Toast
+                    bg="warning"
+                    data-testid="warning"
+                    onClose={() => setShow(false)}
+                    show={show}
+                    delay={timers.toast}
+                    autohide
+                >
                     <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
