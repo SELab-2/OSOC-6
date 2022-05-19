@@ -21,7 +21,6 @@ import {
     Status,
     Student,
 } from "../api/entities/StudentEntity";
-import { baseSkillType, ISkillType, ISkillTypePage, SkillType } from "../api/entities/SkillTypeEntity";
 import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
 import {
     ISuggestion,
@@ -259,31 +258,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     const someStudentUri = containedStudents[0]._links.self.href;
     console.log(containedStudents);
-
-    const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
-    let containedSkillTypes: ISkillType[];
-
-    if (skillTypes._embedded.skillTypes.length == 0) {
-        const skillType1 = new SkillType("V10 boulderer", "#427162");
-        const skillTypeOther = new SkillType(baseSkillType, "#929199");
-
-        containedSkillTypes = await Promise.all(
-            [skillType1, skillTypeOther].map(
-                async (skill) => (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
-            )
-        );
-    } else {
-        containedSkillTypes = skillTypes._embedded.skillTypes;
-    }
-    console.log(containedSkillTypes);
-
-    commonSkills.map(async (skill) => {
-        await axios.post(
-            apiPaths.skillTypes,
-            new SkillType(skill, "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)),
-            AxiosConf
-        );
-    });
 
     const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];

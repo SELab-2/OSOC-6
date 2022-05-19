@@ -45,6 +45,7 @@ const common = {
     "user password": "password",
     "user status": "account status",
     "user delete": "delete my profile",
+    "invite user": "invite new user",
     "new password": "new password",
     "repeat new password": "repeat new password",
     "new email": "new email",
