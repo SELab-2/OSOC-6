@@ -1,4 +1,5 @@
 import {
+    baseDelete,
     basePatch,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
@@ -66,4 +67,12 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
  */
 export function extractIdFromStudentUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
+}
+
+/**
+ * Removes a student from the database
+ * @param url hosting the [IStudent]
+ */
+export async function deleteStudent(url: string) {
+    return await baseDelete(url);
 }
