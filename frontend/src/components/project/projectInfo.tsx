@@ -49,7 +49,7 @@ export function ProjectInfo() {
         <div className={styles.project_info}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h1>{info.name}</h1>
-                <a onClick={deleteProjectOnClick} data-testid="overview-delete-user">
+                <a onClick={deleteProjectOnClick} data-testid="delete-project">
                     <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                 </a>
             </div>
@@ -93,7 +93,7 @@ export function ProjectInfo() {
             </ul>
 
             <ToastContainer position="bottom-end">
-                <Toast bg="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
+                <Toast bg="warning" data-testid="warning" onClose={() => setShow(false)} show={show} delay={timers.toast} autohide>
                     <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                 </Toast>
             </ToastContainer>

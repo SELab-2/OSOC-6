@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "@testing-library/react";
+import {act, render, screen, waitFor} from "@testing-library/react";
 import { makeCacheFree } from "./Provide";
 import { ProjectInfo } from "../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import {
-    getBaseAssignment,
-    getBaseLinks,
+    getBaseAssignment, getBaseBadRequestResponse,
+    getBaseLinks, getBaseNoContentResponse,
     getBaseOkResponse,
     getBasePage,
     getBaseProject,
@@ -22,6 +22,8 @@ import { assignmentCollectionName } from "../../src/api/entities/AssignmentEntit
 import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 import { getValidAssignmentsUrlForProjectSkill } from "../../src/api/calls/AssignmentCalls";
+import userEvent from "@testing-library/user-event";
+import {AxiosResponse} from "axios";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -90,5 +92,50 @@ describe("project info", () => {
         );
 
         await waitFor(() => expect(screen.getByText(student.callName)).toBeInTheDocument());
+    });
+
+    it("should delete", async () => {
+        const projectId = "5";
+
+        mockRouter.setCurrentUrl("/projects/" + projectId);
+        mockRouter.query = { id: projectId };
+        render(makeCacheFree(ProjectInfo));
+
+        const project = getBaseProject(projectId);
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
+        );
+
+        const deleteButton = await screen.findByTestId("delete-project");
+        await userEvent.click(deleteButton);
+
+        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled())
+        const response: AxiosResponse = getBaseNoContentResponse()
+        act(() => mockAxios.mockResponseFor({ url: project._links.self.href }, response));
+    });
+
+    it("should delete", async () => {
+        const projectId = "5";
+
+        mockRouter.setCurrentUrl("/projects/" + projectId);
+        mockRouter.query = { id: projectId };
+        render(makeCacheFree(ProjectInfo));
+
+        const project = getBaseProject(projectId);
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
+        );
+
+        const deleteButton = await screen.findByTestId("delete-project");
+        await userEvent.click(deleteButton);
+
+        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled())
+        const response: AxiosResponse = getBaseBadRequestResponse()
+        act(() => mockAxios.mockResponseFor({ url: project._links.self.href }, response));
+
+        const warning = await screen.findByTestId("warning")
+        await waitFor(() => {
+            expect(warning).toBeVisible()
+        })
     });
 });

@@ -89,7 +89,7 @@ export function StudentInfo() {
                                 </ListGroup>
                             </Col>
                             <Col>
-                                <a onClick={deleteStudentOnClick} data-testid="overview-delete-user">
+                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
                                     <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                                 </a>
                             </Col>
@@ -156,6 +156,7 @@ export function StudentInfo() {
                             onClose={() => setShow(false)}
                             show={show}
                             delay={timers.toast}
+                            data-testid="warning"
                             autohide
                         >
                             <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
