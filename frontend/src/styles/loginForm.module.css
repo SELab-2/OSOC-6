@@ -52,6 +52,16 @@
     z-index: 2;
 }
 
+.link {
+    display: flex;
+    align-items: center;
+    color: gray;
+}
+
+.link svg {
+    margin-left: 0.3em;
+}
+
 @media (max-width: 1024px) {
     .login_row {
         flex-direction: column;
