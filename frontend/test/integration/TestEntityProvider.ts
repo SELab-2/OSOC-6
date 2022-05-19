@@ -317,17 +317,18 @@ export function getBaseStudent(id: string): IStudent {
     };
 }
 
-export function getBaseInvitation(token: string): IInvitation {
+export function getBaseInvitation(token: string, id: string): IInvitation {
+    const baseInvitation = "http://localhost/api/invitations/" + id;
     return {
         token: token,
-        creationTimestamp: "",
+        creationTimestamp: "Now",
         used: false,
         _links: {
-            edition: { href: "" },
-            issuer: { href: "" },
-            subject: { href: "" },
-            self: { href: "" },
-            invitation: { href: "" },
+            edition: { href: baseInvitation + "/edition" },
+            issuer: { href: baseInvitation + "/issuer" },
+            subject: { href: baseInvitation + "/subject" },
+            self: { href: baseInvitation },
+            invitation: { href: baseInvitation },
         },
     };
 }

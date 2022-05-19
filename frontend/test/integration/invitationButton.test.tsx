@@ -38,7 +38,7 @@ describe("InvitationButton", () => {
         await enableUseEditionAxiosCall(baseEdition);
 
         const invitationToken = "mockToken";
-        const baseInvitation = getBaseInvitation(invitationToken);
+        const baseInvitation = getBaseInvitation(invitationToken, "2");
         await userEvent.click(screen.getByTestId("invite-button"));
 
         await waitFor(() => {

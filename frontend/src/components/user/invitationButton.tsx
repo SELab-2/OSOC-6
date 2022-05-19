@@ -15,6 +15,7 @@ import useSWR from "swr";
 import { getCommunicationTemplateByName } from "../../api/calls/communicationTemplateCalls";
 import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 import useEdition from "../../hooks/useGlobalEdition";
+import {useState} from "react";
 
 export default function InvitationButton() {
     const { t } = useTranslation("common");
@@ -22,14 +23,15 @@ export default function InvitationButton() {
     const { user, error } = useCurrentUser(true);
     const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
     const { data, error: templateError } = useSWR("Invite", getCommunicationTemplateByName);
+    const [invitationUrl, setInvitationUrl] = useState<string>("");
+    const [visible, setVisible] = useState(false);
 
     const template = data || emptyCommunicationTemplate;
 
     if (templateError) {
+        console.log(templateError);
         return null;
     }
-
-    const invitationField = document.getElementById("invitation-url");
 
     async function onClick() {
         // Create an invitation
@@ -43,10 +45,8 @@ export default function InvitationButton() {
 
         const registrationUrl = applicationPaths.base + "/" + transformer(url);
 
-        if (invitationField !== null) {
-            invitationField.setAttribute("value", registrationUrl);
-            invitationField.style.display = "inline";
-        }
+        setInvitationUrl(registrationUrl);
+        setVisible(true)
 
         document.location.href = mailTo({
             body: template.template + "\n" + registrationUrl,
@@ -64,7 +64,8 @@ export default function InvitationButton() {
                 type="text"
                 data-testid="invitation-url"
                 id="invitation-url"
-                style={{ display: "none", width: 650, textAlign: "center" }}
+                value={invitationUrl}
+                style={{ width: 650, textAlign: "center", visibility: visible ? "visible" : "hidden"}}
                 readOnly
             />
         </div>
