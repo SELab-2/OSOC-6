@@ -32,7 +32,6 @@ export async function addAssignment(
     currentUser: IUser
 ): Promise<void> {
     const assignment: Assignment = new Assignment(
-        false,
         true,
         reason,
         currentUser._links.self.href,

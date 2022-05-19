@@ -3,7 +3,13 @@ import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
 } from "../entities/CommunicationTemplateEntity";
-import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    basePatch,
+    basePost,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 import { communicationCollectionName } from "../entities/CommunicationEntity";
 
@@ -17,7 +23,7 @@ export function getCommunicationTemplateOnUrl(url: string): Promise<ICommunicati
 
 /**
  * Function getting all [ICommunicationTemplate] entities on an [IPage] url.
- * @param url the [IPage] url hosting the communications.
+ * @param url the [IPage] url hosting the communication templates.
  */
 export function getAllCommunicationTemplatesFromPage(url: string): Promise<ICommunicationTemplate[]> {
     return <Promise<ICommunicationTemplate[]>>(
@@ -33,6 +39,17 @@ export async function createNewCommunicationTemplate(
     template: CommunicationTemplateEntity
 ): Promise<ICommunicationTemplate> {
     return <Promise<ICommunicationTemplate>>(await basePost(apiPaths.communicationTemplates, template)).data;
+}
+
+/**
+ * Function posting the creation of a new communication template on the backend.
+ * @param template the communication template that needs to be created.
+ */
+export async function editCommunicationTemplate(
+    url: string,
+    template: CommunicationTemplateEntity
+): Promise<ICommunicationTemplate> {
+    return <Promise<ICommunicationTemplate>>(await basePatch(url, template)).data;
 }
 
 /**

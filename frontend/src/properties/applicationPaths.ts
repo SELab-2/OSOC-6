@@ -2,6 +2,7 @@
  * Paths used the web-application.
  */
 const applicationPaths = {
+    base: "http://localhost/",
     index: "",
     home: "home",
 
@@ -22,12 +23,21 @@ const applicationPaths = {
     changePassword: "changePassword",
     registration: "registration",
 
+    forgotPassword: "forgotPassword",
+    resetPassword: "resetPassword",
+
     communicationTemplateBase: "communicationTemplates",
     communicationTemplateCreation: "communicationTemplates/create",
     communicationTemplateInfo: "communicationTemplates/[id]",
+    communicationTemplateEdit: "communicationTemplates/[id]/edit",
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
+
+    editionBase: "editions",
+    editionCreate: "editions/create",
+
+    skillTypesBase: "skillTypes",
 };
 
 export default applicationPaths;

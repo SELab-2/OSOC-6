@@ -35,16 +35,9 @@ public final class Assignment implements WeakToEdition {
      * The id of the Assignment.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
-
-    /**
-     * whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
-     */
-    @Basic(optional = false)
-    @NotNull @Getter @Setter
-    private Boolean isSuggestion;
 
     /**
      * Whether assignment is still valid.
@@ -98,16 +91,16 @@ public final class Assignment implements WeakToEdition {
 
     /**
      *
-     * @param newIsSuggestion whether or not this assignment is just a suggestion
+     * @param newIsValid whether the assignment is valid. Non-valid assignments can be ignored.
      * @param newReason the reason for this assignment
      * @param newAssigner the assigner related to this assignment
      * @param newStudent the student who is assigned
      * @param newProjectSkill the projectSkill the assignment belongs to
      */
-    public Assignment(final boolean newIsSuggestion, final String newReason,
+    public Assignment(final boolean newIsValid, final String newReason,
                       final UserEntity newAssigner, final Student newStudent, final ProjectSkill newProjectSkill) {
         super();
-        isSuggestion = newIsSuggestion;
+        isValid = newIsValid;
         reason = newReason;
         assigner = newAssigner;
         student = newStudent;

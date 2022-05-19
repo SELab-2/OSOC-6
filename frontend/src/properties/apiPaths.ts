@@ -7,7 +7,11 @@ const apiPaths = {
     loginRedirect: "login",
     login: "login-processing",
     registration: "registration",
+    loginError: "loginError",
     logout: "logout",
+
+    forgotPassword: "forgot-password",
+    resetPassword: "reset-password",
 
     editions: "editions",
     editionByName: "editions/search/by-name",
@@ -33,6 +37,7 @@ const apiPaths = {
     projectSkills: "project-skills",
 
     communications: "communications",
+    communicationsByStudent: "communications/search/by-student",
 
     assignments: "assignments",
 

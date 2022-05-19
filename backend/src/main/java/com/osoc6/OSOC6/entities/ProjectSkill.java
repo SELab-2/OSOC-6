@@ -30,7 +30,7 @@ public final class ProjectSkill implements WeakToEdition {
      * The id of the skill.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 
