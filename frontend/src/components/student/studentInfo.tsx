@@ -9,12 +9,10 @@ import { StudentStatus } from "./studentStatus";
 import Image from "next/image";
 import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
-import { IFullSuggestion } from "../../hooks/useFullSuggestion";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR  from "swr";
 import { deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
-import { userDelete } from "../../api/calls/userCalls";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
@@ -28,7 +26,6 @@ export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
-    const { mutate } = useSWRConfig();
     const [show, setShow] = useState<boolean>(false);
 
     let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
@@ -61,7 +58,7 @@ export function StudentInfo() {
         );
     }
 
-    async function deleteUser() {
+    async function deleteStudentOnClick() {
         const response = await deleteStudent(student!._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
@@ -92,7 +89,7 @@ export function StudentInfo() {
                                 </ListGroup>
                             </Col>
                             <Col>
-                                <a onClick={deleteUser} data-testid="overview-delete-user">
+                                <a onClick={deleteStudentOnClick} data-testid="overview-delete-user">
                                     <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                                 </a>
                             </Col>
