@@ -4,9 +4,9 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import CreateProject from "../../src/pages/projects/create";
 import {
-    createProjectSubmitHandler,
+    ProjectFormSubmitHandler,
     ProjectCreationValues,
-} from "../../src/handlers/createProjectSubmitHandler";
+} from "../../src/handlers/projectFormSubmitHandler";
 import {
     getBaseActiveEdition,
     getBaseOkResponse,
@@ -15,7 +15,7 @@ import {
     getBaseUser,
 } from "./TestEntityProvider";
 import { IUser, User, userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { CreateProjectForm } from "../../src/components/project/createProjectForm";
+import { ProjectForm } from "../../src/components/project/projectForm";
 import userEvent from "@testing-library/user-event";
 import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
@@ -82,7 +82,7 @@ describe("Create project form", () => {
         const projectCreate: RenderResult = render(
             makeCacheFree(() =>
                 enableUseEditionComponentWrapper(
-                    () => <CreateProjectForm submitHandler={submitProject} />,
+                    () => <ProjectForm submitHandler={submitProject} />,
                     edition
                 )
             )
@@ -158,7 +158,7 @@ describe("Create project form", () => {
         );
 
         await waitFor(() => {
-            createProjectSubmitHandler(
+            ProjectFormSubmitHandler(
                 createValues,
                 mockRouter,
                 edition._links.self.href,

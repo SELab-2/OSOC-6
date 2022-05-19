@@ -36,7 +36,12 @@ export function ProjectInfo() {
             <hr />
             {capitalize(t("project about"))}
             <br />
-            {info.info}
+            <div>
+                {info.info}
+            </div>
+            <ul>
+                {info.goals.map(goal => <li key={goal}>{goal}</li>)}
+            </ul>
             <hr />
             {capitalize(t("project expertise"))}
             <ul>

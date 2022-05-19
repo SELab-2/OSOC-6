@@ -1,9 +1,9 @@
 import { NextPage } from "next";
-import { ProjectInfo } from "../../components/project/projectInfo";
+import { ProjectInfo } from "../../../components/project/projectInfo";
 import { Col, Row } from "react-bootstrap";
-import NavBar from "../../components/util/navBar";
-import { ProjectList } from "../../components/project/projectList";
-import styles from "../../styles/pageGrids.module.css";
+import NavBar from "../../../components/util/navBar";
+import { ProjectList } from "../../../components/project/projectList";
+import styles from "../../../styles/pageGrids.module.css";
 
 const ProjectIDPage: NextPage = () => {
     return (

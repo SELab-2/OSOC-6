@@ -3,39 +3,48 @@ import { Badge, Col, Row } from "react-bootstrap";
 import styles from "../../styles/createProjectForm.module.css";
 import { Field, Form, Formik } from "formik";
 import apiPaths from "../../properties/apiPaths";
-import { getAllUsersFromPage } from "../../api/calls/userCalls";
+import { getAllUsersFromLinks, getAllUsersFromPage } from "../../api/calls/userCalls";
 import { capitalize } from "../../utility/stringUtil";
-import {
-    FormSubmitValues,
-    ProjectCreationProps,
-    ProjectCreationValues,
-} from "../../handlers/createProjectSubmitHandler";
+import { ProjectCreationValues, ProjectFormSubmitValues } from "../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../api/entities/UserEntity";
 import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
 import { getSkillColorMap, ISkillType } from "../../api/entities/SkillTypeEntity";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useEditionAPIUrlTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import useEdition from "../../hooks/useGlobalEdition";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { ScopedMutator } from "swr/dist/types";
+import { IProject } from "../../api/entities/ProjectEntity";
+import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
+import { IBaseEntity } from "../../api/entities/BaseEntities";
+import { IProjectSkill, ProjectSkill } from "../../api/entities/ProjectSkillEntity";
+import SkillBadge from "../util/skillBadge";
+
+/**
+ * The props that have to be passed to the component
+ */
+export type ProjectCreationProps = {
+    submitHandler: (
+        values: ProjectCreationValues,
+        router: NextRouter,
+        editionUrl: string,
+        ownUser: IUser,
+        mutate: ScopedMutator<any>,
+        apiURLTransformer: (url: string) => string,
+        removedCoaches: string[],
+        removeSkillTypes: string[],
+    ) => Promise<void>;
+    project?: IProject;
+};
 
 /**
  * A React component containing a form for project creation
  * @param props ProjectCreationProps containing the submitHandler
  */
-export const CreateProjectForm = (props: ProjectCreationProps) => {
-    let userResponse = useSwrWithEdition(apiPaths.userByEdition, getAllUsersFromPage);
-
-    let allUsers: IUser[] = userResponse.data || [];
-    let userError: Error = userResponse.error;
-
-    let skillTypeResponse = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
-
-    let skillTypes: ISkillType[] = skillTypeResponse.data || [];
-    let skillTypeError: Error = skillTypeResponse.error;
-
+export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const [editionUrl] = useEdition();
@@ -43,96 +52,95 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
     const apiTransformer = useEditionAPIUrlTransformer();
     const { mutate } = useSWRConfig();
 
+    // Receive data
+    const { data: receivedUsers, error: usersError } = useSwrWithEdition(apiPaths.userByEdition, getAllUsersFromPage);
+    const { data: receivedSkillTypes, error: skillTypesError } = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
+
+    const allUsers: IUser[] = receivedUsers || [];
+    const skillTypes: ISkillType[] = receivedSkillTypes || [];
+
+    // ===================================== Get the states =====================================
+
+    const [mutated, setMutated] = useState<boolean>(false);
+
+    if (mutated) {
+        setMutated(false);
+    }
+
+    // Fetch items
+    // Skills and coaches
+    const { data: receivedCoaches, error: coachesError } = useSWR(project ? project._links.coaches.href : null, getAllUsersFromLinks);
+    const { data: receivedSkills, error: skillsError } = useSWR(project ? project._links.neededSkills.href : null, getAllProjectSkillsFromLinks);
+    const existingCoaches: IUser[] = receivedCoaches || [];
+    const existingSkills: IProjectSkill[] = receivedSkills || [];
+
+    // removed items
+    const [removedCoaches,] = useState<Set<string>>(new Set());
+    const [removedSkills,] = useState<Set<string>>(new Set());
+
+    // altered items
+    const [alteredSkills, setAlteredSkills] = useState<[string, ProjectSkill][]>([]);
+
+    // list content states
     const [goals, setGoals] = useState<string[]>([]);
+
+    const propsGoals = project?.goals;
+
+    useEffect(() => {
+        if (propsGoals) {
+            setGoals(propsGoals)
+        }
+    }, [propsGoals]);
+
+    // create items
+    const [createdCoaches, setCreatedCoaches] = useState<string[]>([]);
+    const [createdSkillNames, setCreatedSkillNames] = useState<string[]>([]);
+    const [createdSkillInfos, setCreatedSkillInfos] = useState<string[]>([]);
+
+    // State of input fields
     const [goalInput, setGoalInput] = useState<string>("");
-    const [coaches, setCoaches] = useState<string[]>([]);
     const [selectedCoach, setSelectedCoach] = useState<string>("");
-    const [skills, setSkills] = useState<string[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<string>("");
-    const [skillInfos, setSkillInfos] = useState<string[]>([]);
     const [skillInfo, setSkillInfo] = useState<string>("");
 
-    if (userError || skillTypeError || !currentUser || !editionUrl) {
-        console.log(userError || skillTypeError || !currentUser || !editionUrl);
+
+    if (usersError || skillTypesError || !currentUser || !editionUrl) {
+        console.log(usersError || skillTypesError || !currentUser || !editionUrl);
         return null;
     }
 
-    const skillColorMap = getSkillColorMap(skillTypes);
+    // Implement some handlers
 
-    function handleChangeGoalInput(e: ChangeEvent<HTMLInputElement>) {
-        setGoalInput(e.target.value);
-    }
-
-    function handleChangeCoach(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedCoach(e.target.value);
-    }
-
-    function handleChangeSkill(event: ChangeEvent<HTMLInputElement>) {
-        setSelectedSkill(event.target.value);
-    }
-
-    function handleChangeSkillInfo(event: ChangeEvent<HTMLInputElement>) {
-        setSkillInfo(event.target.value);
-    }
-
-    function handleAddGoal() {
-        if (goalInput) {
-            const newGoals: string[] = goals.concat(goalInput);
-
-            setGoals(newGoals);
-            setGoalInput("");
-        }
-    }
-
-    function handleAddSkill() {
+    function handleAddCreatedSkill() {
         if (!selectedSkill) {
             setSelectedSkill(skillTypes[0].name);
         }
 
         const newSkill: string = !selectedSkill ? skillTypes[0].name : selectedSkill;
-        const newSkills: string[] = skills.concat(newSkill);
+        const newSkills: string[] = createdSkillNames.concat(newSkill);
 
         const newSkillInfo: string = !skillInfo ? capitalize(t("skill info")) : skillInfo;
-        const newSkillInfos: string[] = skillInfos.concat(newSkillInfo);
 
-        setSkills(newSkills);
-        setSkillInfos(newSkillInfos);
+        setCreatedSkillNames(newSkills);
+        setCreatedSkillInfos([...createdSkillInfos, newSkillInfo]);
         setSkillInfo("");
     }
 
-    function handleAddCoach() {
+    function handleAddCreatedCoach() {
         const newCoach = selectedCoach ? selectedCoach : allUsers[0].callName;
 
         if (!selectedCoach) {
             setSelectedCoach(newCoach);
         }
 
-        if (!coaches.includes(newCoach)) {
-            const newCoaches: string[] = coaches.concat(newCoach);
-            setCoaches(newCoaches);
+        if (!createdCoaches.includes(newCoach)) {
+            setCreatedCoaches([...createdCoaches, newCoach]);
         }
     }
 
-    function handleDeleteGoal(index: number) {
-        delete goals[index];
-        setCoaches(goals.filter((value) => value !== undefined));
-    }
-
-    function handleDeleteCoach(index: number) {
-        delete coaches[index];
-        setCoaches(coaches.filter((value) => value !== undefined));
-    }
-
-    function handleDeleteSkill(index: number) {
-        delete skills[index];
-        delete skillInfos[index];
-        setSkills(skills.filter((value) => value !== undefined));
-        setSkillInfos(skillInfos.filter((value) => value !== undefined));
-    }
-
-    async function handleSubmit(submitValues: FormSubmitValues) {
+    async function handleSubmit(submitValues: ProjectFormSubmitValues) {
         const coachURLs: string[] = [];
-        for (let coach of coaches) {
+        for (const coach of createdCoaches) {
             coachURLs.push(
                 // We know there will always be a user with this callname,
                 // as every option of the Select contains a value that originates from the users-array
@@ -146,16 +154,16 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
             versionManagement: submitValues.versionManagement,
             partnerName: submitValues.partnerName,
             partnerWebsite: submitValues.partnerWebsite,
-            skills: skills,
+            skills: createdSkillNames,
             creator: "",
             edition: "",
-            skillInfos: skillInfos,
+            skillInfos: createdSkillInfos,
             goals: goals,
             coaches: coachURLs,
         };
 
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
-        props.submitHandler(createValues, router, editionUrl!, currentUser.user!, mutate, apiTransformer);
+        await submitHandler(createValues, router, editionUrl!, currentUser.user!, mutate, apiTransformer, Array.from(removedCoaches), Array.from(removedSkills));
     }
 
     function initialize() {
@@ -163,20 +171,31 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
         setSelectedSkill(skillTypes[0].name);
     }
 
+    const initialValues: ProjectFormSubmitValues = project ?
+    {
+        name: project.name,
+        info: project.info,
+        versionManagement: project.versionManagement,
+        partnerName: project.partnerName,
+        partnerWebsite: project.partnerWebsite,
+    } : {
+        name: "",
+        info: "",
+        versionManagement: "",
+        partnerName: "",
+        partnerWebsite: "",
+    }
+
+    console.log(goals)
+
     return (
         <div className={styles.create_project_box} data-testid="create-project-form" onLoad={initialize}>
             <Formik
-                initialValues={{
-                    name: "",
-                    info: "",
-                    versionManagement: "",
-                    partnerName: "",
-                    partnerWebsite: "",
-                }}
+                initialValues={initialValues}
+                enableReinitialize={true}
                 onSubmit={handleSubmit}
             >
                 <Form>
-                    <h2>{capitalize(t("create project"))}</h2>
                     <Field
                         className="form-control mb-2"
                         label={capitalize(t("project name"))}
@@ -198,7 +217,9 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                             <Col xs={1}>
                                 <a>
                                     <Image
-                                        onClick={() => handleDeleteGoal(index)}
+                                        onClick={() =>
+                                            setGoals(goals.filter((_, valIndex) => valIndex !== index))
+                                        }
                                         alt=""
                                         src={"/resources/delete.svg"}
                                         width="15"
@@ -214,12 +235,17 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         data-testid="goal-input"
                         value={goalInput}
                         placeholder={capitalize(t("project goal"))}
-                        onChange={handleChangeGoalInput}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setGoalInput(e.target.value)}
                     />
                     <button
                         className="btn btn-secondary"
                         type="button"
-                        onClick={handleAddGoal}
+                        onClick={(e) => {
+                            if (goalInput) {
+                                setGoals([...goals, goalInput]);
+                                setGoalInput("");
+                            }
+                        }}
                         data-testid="add-goal-button"
                     >
                         {capitalize(t("add goal"))}
@@ -232,13 +258,33 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         placeholder={capitalize(t("version control URL"))}
                         required
                     />
-                    {coaches.map((coach: string, index: number) => (
+                    {existingCoaches.filter(coach => !removedCoaches.has(coach._links.self.href)).map((coach: IUser) =>
+                        <Row key={coach._links.self.href}>
+                            {/* Might be prettier to just blur coaches that have been removed so you can add them again */}
+                            <Col>{coach.callName}</Col>
+                            <Col xs={1}>
+                                <a>
+                                    <Image
+                                        onClick={() => {
+                                            removedCoaches.add(coach._links.self.href);
+                                            setMutated(true);
+                                        }}
+                                        alt=""
+                                        src={"/resources/delete.svg"}
+                                        width="15"
+                                        height="15"
+                                    />
+                                </a>
+                            </Col>
+                        </Row>
+                    )}
+                    {createdCoaches.map((coach: string, index: number) => (
                         <Row key={index}>
                             <Col>{coach}</Col>
                             <Col xs={1}>
                                 <a>
                                     <Image
-                                        onClick={() => handleDeleteCoach(index)}
+                                        onClick={() => setCreatedCoaches(createdCoaches.filter((_, valIndex) => valIndex !== index))}
                                         alt=""
                                         src={"/resources/delete.svg"}
                                         width="15"
@@ -256,7 +302,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         data-testid="coach-input"
                         placeholder={capitalize(t("coach"))}
                         value={selectedCoach}
-                        onChange={handleChangeCoach}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedCoach(e.target.value)}
                     >
                         {allUsers.map((user) => (
                             <option
@@ -272,7 +318,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                     <button
                         className="btn btn-secondary"
                         type="button"
-                        onClick={handleAddCoach}
+                        onClick={handleAddCreatedCoach}
                         data-testid="add-coach-button"
                     >
                         {capitalize(t("add coach"))}
@@ -293,28 +339,40 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         placeholder={capitalize(t("partner website"))}
                         required
                     />
-                    {skillInfos.length ? <h5>{capitalize(t("project expertise"))}</h5> : <h5 />}
-                    {skillInfos.map((skillInfo: string, index: number) => (
-                        <Row key={index}>
+                    {createdSkillInfos.length + (receivedSkills || []).length ?
+                        <h5>{capitalize(t("project expertise"))}</h5> : <h5 />}
+                    {existingSkills.filter(skill => !removedSkills.has(skill._links.self.href)).map((skill: IProjectSkill) => (
+                        <Row key={skill._links.self.href}>
                             <Col>
-                                <Badge bg="" style={{ backgroundColor: skillColorMap.get(skills[index]) }}>
-                                    {skills[index]}
-                                </Badge>
+                                <SkillBadge skill={skill.name}/>
                             </Col>
                             <Col>{": " + skillInfo}</Col>
-                        </Row>
-                    ))}
-                    <h5>{capitalize(t("roles"))}</h5>
-                    {skills.map((skillType: string, index: number) => (
-                        <Row key={index}>
-                            <Col>
-                                <Badge bg="" style={{ backgroundColor: skillColorMap.get(skillType) }}>
-                                    {skillType}
-                                </Badge>
-                            </Col>
                             <Col xs={6}>
                                 <Image
-                                    onClick={() => handleDeleteSkill(index)}
+                                    onClick={() => {
+                                        setMutated(true);
+                                        removedSkills.add(skill._links.self.href);
+                                    }}
+                                    alt=""
+                                    src={"/resources/delete.svg"}
+                                    width="15"
+                                    height="15"
+                                />
+                            </Col>
+                        </Row>
+                    ))}
+                    {createdSkillInfos.map((skillInfo: string, index: number) => (
+                        <Row key={index}>
+                            <Col>
+                                <SkillBadge skill={createdSkillNames[index]}/>
+                            </Col>
+                            <Col>{": " + skillInfo}</Col>
+                            <Col xs={6}>
+                                <Image
+                                    onClick={() => {
+                                        setCreatedSkillNames(createdSkillNames.filter((_, valIndex) => index !== valIndex));
+                                        setCreatedSkillInfos(createdSkillInfos.filter((_, valIndex) => index !== valIndex));
+                                    }}
                                     alt=""
                                     src={"/resources/delete.svg"}
                                     width="15"
@@ -331,7 +389,7 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         data-testid="skill-input"
                         value={selectedSkill}
                         placeholder={capitalize(t("skill type"))}
-                        onChange={handleChangeSkill}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedSkill(e.target.value)}
                     >
                         {skillTypes.map((skillType) => (
                             <option
@@ -351,12 +409,12 @@ export const CreateProjectForm = (props: ProjectCreationProps) => {
                         data-testid="skillinfo-input"
                         value={skillInfo}
                         placeholder={capitalize(t("extra skill info placeholder"))}
-                        onChange={handleChangeSkillInfo}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSkillInfo(e.target.value)}
                     />
                     <button
                         className="btn btn-secondary"
                         type="button"
-                        onClick={handleAddSkill}
+                        onClick={handleAddCreatedSkill}
                         data-testid="add-skill-button"
                     >
                         {capitalize(t("add skill"))}

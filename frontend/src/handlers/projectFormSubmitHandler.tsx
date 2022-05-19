@@ -30,29 +30,15 @@ export interface ProjectCreationValues {
 }
 
 /**
- * All values contained directly in the Formik form
+ * All values contained directly in the Formik form of project creation/ edit.
  */
-export interface FormSubmitValues {
+export interface ProjectFormSubmitValues {
     name: string;
     info: string;
     versionManagement: string;
     partnerName: string;
     partnerWebsite: string;
 }
-
-/**
- * The props that have to be passed to the component
- */
-export type ProjectCreationProps = {
-    submitHandler: (
-        values: ProjectCreationValues,
-        router: NextRouter,
-        editionUrl: string,
-        ownUser: IUser,
-        mutate: ScopedMutator<any>,
-        apiURLTransformer: (url: string) => string
-    ) => Promise<void>;
-};
 
 /**
  * Takes care of the creation of a new project and the associated ProjectSkills
@@ -62,14 +48,18 @@ export type ProjectCreationProps = {
  * @param ownUser the currently logged in user
  * @param mutate the global mutate function provided by SWR
  * @param apiURLTransformer function that transforms an url to an edition queried url.
+ * @param removedCoaches list of [IUser] urls that are no longer coaches in the project.
+ * @param removeSkillTypes list of projectSkills that are no longer needed.
  */
-export async function createProjectSubmitHandler(
+export async function ProjectFormSubmitHandler(
     values: ProjectCreationValues,
     router: NextRouter,
     editionUrl: string,
     ownUser: IUser,
     mutate: ScopedMutator<any>,
-    apiURLTransformer: (url: string) => string
+    apiURLTransformer: (url: string) => string,
+    removedCoaches: string[],
+    removeSkillTypes: string[],
 ) {
     const project: Project = new Project(
         values.name,
@@ -100,9 +90,12 @@ export async function createProjectSubmitHandler(
 
     await Promise.all(projectSkills.map((projectSkill) => basePost(apiPaths.projectSkills, projectSkill)));
 
+    // await axios.put(createdProject._links.coaches.href, values.coaches, ManyToManyAxiosConf);
+
     await Promise.all(
         values.coaches.map(
-            async (coach) => await axios.put(createdProject._links.coaches.href, coach, ManyToManyAxiosConf)
+            async (coach) =>
+                await axios.put(createdProject._links.coaches.href, coach, ManyToManyAxiosConf)
         )
     );
 
