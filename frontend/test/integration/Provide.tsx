@@ -3,15 +3,32 @@ import { IEdition } from "../../src/api/entities/EditionEntity";
 import GlobalContext from "../../src/context/globalContext";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
-import { act, waitFor } from '@testing-library/react';
+import { act, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import { getBaseOkResponse } from "./TestEntityProvider";
 import { IUser } from "../../src/api/entities/UserEntity";
-import { AxiosResponse } from 'axios';
-import userEvent from '@testing-library/user-event';
+import { AxiosResponse } from "axios";
+import userEvent from "@testing-library/user-event";
+import AxiosMockRequestCriteria from "jest-mock-axios";
+import HttpResponse from "jest-mock-axios";
+import { act as reactAct } from "react-dom/test-utils";
 
 jest.mock("next/router", () => require("next-router-mock"));
+
+interface AxiosMockRequestCriteria {
+    url?: string;
+    method?: string;
+    params?: any;
+}
+
+interface HttpResponse {
+    data: any;
+    status?: number;
+    statusText?: string;
+    headers?: object;
+    config?: object;
+}
 
 /**
  * Function that makes sure the SWR cache is disabled in the provided component.
@@ -71,10 +88,15 @@ export function enableCurrentUser(user: IUser): Promise<void> {
 
 /**
  * Function that makes sure the act() message doesn't get thrown when changing states.
- * @param criteria object which contains the criteria for the response, for example {method: "GET"}.
- * @param response the response itself.
+ * @param criteria criteria as defined by the mockAxios docs.
+ * @param response response as defined by the mockAxios docs.
+ * @param silentMode silentMode as defined by the mockAxios docs.
  */
-export function enableActForResponse(criteria: object, response: AxiosResponse) {
+export function enableActForResponse(
+    criteria: string | AxiosMockRequestCriteria,
+    response?: HttpResponse,
+    silentMode?: boolean
+): Promise<void> {
     return enableActForUserEvent(mockAxios.mockResponseFor(criteria, response));
 }
 
@@ -82,6 +104,6 @@ export function enableActForResponse(criteria: object, response: AxiosResponse) 
  * Function that makes sure the act() message doesn't get thrown when changing states.
  * @param input basically any input type that needs to be wrapped for act().
  */
-export function enableActForUserEvent(input: any){
+export function enableActForUserEvent(input: any): Promise<void> {
     return act(async () => input);
 }
