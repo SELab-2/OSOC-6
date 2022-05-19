@@ -16,7 +16,7 @@ const StudentsIDPage: NextPage = () => {
                 </div>
                 <div className={styles.info_grid + " " + styles.height_setter}>
                     <div className={styles.sidebar}>
-                        <StudentList isDraggable={true} />
+                        <StudentList isDraggable={false} />
                     </div>
                     <div className={styles.info_field}>
                         {/* Replace this div with the correct component */}
