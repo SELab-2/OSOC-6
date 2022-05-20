@@ -108,6 +108,7 @@ const common = {
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",
+    for: "for",
     "communication template": "communication template",
     "open in mail application": "open in mail application",
     "choose template": "choose your template",

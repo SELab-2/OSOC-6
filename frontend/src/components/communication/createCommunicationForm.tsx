@@ -8,7 +8,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { createCommunicationSubmitHandler } from "../../handlers/createCommunicationSubmitHandler";
 import { useState } from "react";
 import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
-import { ButtonGroup, Dropdown } from "react-bootstrap";
+import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import { useRouter } from "next/router";
@@ -54,38 +54,42 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
             >
                 {({ values, setFieldValue }) => (
                     <Form>
-                        <h2>{capitalize(t("choose your template"))}</h2>
-
-                        <Dropdown as={ButtonGroup} drop="down">
-                            <Dropdown.Toggle
-                                style={{
-                                    backgroundColor: "#0a0839",
-                                    borderColor: "white",
-                                    height: 30,
-                                    alignItems: "center",
-                                    display: "flex",
-                                }}
-                                data-testid="template-select-main"
-                            >
-                                {capitalize(t("choose your template"))}
-                            </Dropdown.Toggle>
-                            <DropdownMenu>
-                                {templates.map((template) => (
-                                    <DropdownItem
-                                        key={template._links.self.href}
-                                        data-testid={"template-select-" + template._links.self.href}
-                                        onClick={() => {
-                                            setSelectedTemplate(template);
-                                            setFieldValue("template", template._links.self.href);
-                                            setFieldValue("content", template.template);
+                        <Row style={{paddingBottom: 20}}>
+                            <Col>
+                                <div>{capitalize(t("choose your template"))}:</div>
+                            </Col>
+                            <Col style={{alignItems: "center", display: "flex"}}>
+                                <Dropdown as={ButtonGroup} drop="down">
+                                    <Dropdown.Toggle
+                                        style={{
+                                            backgroundColor: "#1b1a31",
+                                            borderColor: "white",
+                                            height: 30,
+                                            alignItems: "center",
+                                            display: "flex",
                                         }}
+                                        data-testid="template-select-main"
                                     >
-                                        {template.name}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-
+                                        {selectedTemplate ? selectedTemplate.name : capitalize(t("choose your template"))}
+                                    </Dropdown.Toggle>
+                                    <DropdownMenu>
+                                        {templates.map((template) => (
+                                            <DropdownItem
+                                                key={template._links.self.href}
+                                                data-testid={"template-select-" + template._links.self.href}
+                                                onClick={() => {
+                                                    setSelectedTemplate(template);
+                                                    setFieldValue("template", template._links.self.href);
+                                                    setFieldValue("content", template.template);
+                                                }}
+                                            >
+                                                {template.name}
+                                            </DropdownItem>
+                                        ))}
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </Col>
+                        </Row>
                         {selectedTemplate && (
                             <CommunicationTemplateInfo template={selectedTemplate} student={student} />
                         )}
