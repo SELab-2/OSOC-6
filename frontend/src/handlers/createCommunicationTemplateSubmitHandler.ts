@@ -33,8 +33,9 @@ export async function createCommunicationTemplateSubmitHandler(
         mutate(apiPaths.communicationTemplates),
         mutate(result._links.self.href, result),
         router.replace({
-            pathname: "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration,
-            query: {...router.query}
+            pathname:
+                "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration,
+            query: { ...router.query },
         }),
     ]);
 

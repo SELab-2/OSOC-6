@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
-import {Button} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 export interface CreateCommunicationTemplateFormProps {
     template?: ICommunicationTemplate;
@@ -19,7 +19,11 @@ export interface CreateCommunicationTemplateFormProps {
 /**
  * Form allowing the creation of a new communication template.
  */
-export default function CreateCommunicationTemplateForm({ template, setTemplate, setCreate }: CreateCommunicationTemplateFormProps) {
+export default function CreateCommunicationTemplateForm({
+    template,
+    setTemplate,
+    setCreate,
+}: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
     const initialValues: CommunicationTemplateEntity = template
@@ -37,7 +41,7 @@ export default function CreateCommunicationTemplateForm({ template, setTemplate,
                     values,
                     router,
                     mutate
-                )
+                );
                 if (setTemplate) {
                     setTemplate(newTemplate);
                 }
@@ -51,7 +55,7 @@ export default function CreateCommunicationTemplateForm({ template, setTemplate,
                 <Form>
                     <div>
                         <h2>Create new template</h2>
-                        <hr/>
+                        <hr />
                         <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 
                         {template && <label id="communicationTemplateNameField">{values.name}</label>}
@@ -121,7 +125,7 @@ export default function CreateCommunicationTemplateForm({ template, setTemplate,
                         />
                     </div>
 
-                    <div style={{display: "flex", flexDirection: "row-reverse"}}>
+                    <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                         <Button
                             className="capitalize"
                             data-testid="submit"

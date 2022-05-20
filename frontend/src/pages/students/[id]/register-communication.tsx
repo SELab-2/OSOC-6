@@ -6,16 +6,16 @@ import apiPaths from "../../../properties/apiPaths";
 import CreateCommunicationForm from "../../../components/communication/createCommunicationForm";
 import { capitalize } from "../../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
-import {Button, ButtonGroup, Col, Dropdown, Row} from "react-bootstrap";
+import { Button, ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import NavBar from "../../../components/util/navBar";
 import styles from "../../../styles/pageGrids.module.css";
 import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
 import { StudentList } from "../../../components/student/studentList";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import {getAllCommunicationTemplatesFromPage} from "../../../api/calls/communicationTemplateCalls";
-import {useState} from "react";
-import {ICommunicationTemplate} from "../../../api/entities/CommunicationTemplateEntity";
+import { getAllCommunicationTemplatesFromPage } from "../../../api/calls/communicationTemplateCalls";
+import { useState } from "react";
+import { ICommunicationTemplate } from "../../../api/entities/CommunicationTemplateEntity";
 import CreateCommunicationTemplateForm from "../../../components/communication/createCommunicationTemplateForm";
 
 export default function CommunicationInfoPage() {
@@ -91,7 +91,10 @@ export default function CommunicationInfoPage() {
                                                         {templates.map((template) => (
                                                             <DropdownItem
                                                                 key={template._links.self.href}
-                                                                data-testid={"template-select-" + template._links.self.href}
+                                                                data-testid={
+                                                                    "template-select-" +
+                                                                    template._links.self.href
+                                                                }
                                                                 onClick={() => {
                                                                     setSelectedTemplate(template);
                                                                     setCreate(false);
@@ -109,21 +112,32 @@ export default function CommunicationInfoPage() {
                                                 <div>{capitalize(t("create template"))}:</div>
                                             </Col>
                                             <Col style={{ alignItems: "center", display: "flex" }}>
-                                                <Button style={{
-                                                    backgroundColor: "#1b1a31",
-                                                    borderColor: "white",
-                                                    height: 30,
-                                                    alignItems: "center",
-                                                    display: "flex",
-                                                }} onClick={() => setCreate(true)}>
+                                                <Button
+                                                    style={{
+                                                        backgroundColor: "#1b1a31",
+                                                        borderColor: "white",
+                                                        height: 30,
+                                                        alignItems: "center",
+                                                        display: "flex",
+                                                    }}
+                                                    onClick={() => setCreate(true)}
+                                                >
                                                     Create new template
                                                 </Button>
                                             </Col>
                                         </Row>
-                                        {create &&
-                                        <CreateCommunicationTemplateForm setTemplate={setSelectedTemplate} setCreate={setCreate}/> }
-                                        {selectedTemplate &&
-                                            <CreateCommunicationForm student={student} template={selectedTemplate}/>}
+                                        {create && (
+                                            <CreateCommunicationTemplateForm
+                                                setTemplate={setSelectedTemplate}
+                                                setCreate={setCreate}
+                                            />
+                                        )}
+                                        {selectedTemplate && (
+                                            <CreateCommunicationForm
+                                                student={student}
+                                                template={selectedTemplate}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             </div>

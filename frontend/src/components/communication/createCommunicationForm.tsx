@@ -1,30 +1,30 @@
-import {IStudent} from "../../api/entities/StudentEntity";
-import {useSWRConfig} from "swr";
-import {Field, Form, Formik} from "formik";
-import {Communication, defaultCommunicationMedium} from "../../api/entities/CommunicationEntity";
-import {useCurrentUser} from "../../hooks/useCurrentUser";
-import {createCommunicationSubmitHandler} from "../../handlers/createCommunicationSubmitHandler";
-import {ChangeEvent} from "react";
-import {ICommunicationTemplate} from "../../api/entities/CommunicationTemplateEntity";
+import { IStudent } from "../../api/entities/StudentEntity";
+import { useSWRConfig } from "swr";
+import { Field, Form, Formik } from "formik";
+import { Communication, defaultCommunicationMedium } from "../../api/entities/CommunicationEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { createCommunicationSubmitHandler } from "../../handlers/createCommunicationSubmitHandler";
+import { ChangeEvent } from "react";
+import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
 import { Button } from "react-bootstrap";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import mailTo from "../../utility/mailTo";
 import applicationPaths from "../../properties/applicationPaths";
-import {extractIdFromUserUrl} from "../../api/calls/userCalls";
-import {useEditionApplicationPathTransformer} from "../../hooks/utilHooks";
+import { extractIdFromUserUrl } from "../../api/calls/userCalls";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
 export interface CreateCommunicationFormProps {
     student: IStudent;
     template: ICommunicationTemplate;
 }
 
-export default function CreateCommunicationForm({student, template}: CreateCommunicationFormProps) {
-    const {t} = useTranslation("common");
+export default function CreateCommunicationForm({ student, template }: CreateCommunicationFormProps) {
+    const { t } = useTranslation("common");
     const router = useRouter();
-    const {mutate} = useSWRConfig();
-    const {user, error: userError} = useCurrentUser();
+    const { mutate } = useSWRConfig();
+    const { user, error: userError } = useCurrentUser();
     const transformer = useEditionApplicationPathTransformer();
 
     // We don't fill the sender and student because using the hooks this would require a reset of the initial values of the form.
@@ -77,14 +77,12 @@ export default function CreateCommunicationForm({student, template}: CreateCommu
                     await router.push(transformer(url));
                 }}
             >
-                {({values, setFieldValue}) => (
+                {({ values, setFieldValue }) => (
                     <Form>
                         <div>
                             <h2>Communication</h2>
-                            <hr/>
-                            <div className="text-wrap">
-                                {capitalize(t("for")) + ": " + student?.email}
-                            </div>
+                            <hr />
+                            <div className="text-wrap">{capitalize(t("for")) + ": " + student?.email}</div>
                             <div>
                                 <label htmlFor="communicationTemplateSubjectField">
                                     {capitalize(t("subject")) + ":"}
@@ -133,28 +131,28 @@ export default function CreateCommunicationForm({student, template}: CreateCommu
                             </div>
 
                             <div>
-                                    <textarea
-                                        placeholder={capitalize(t("template placeholder"))}
-                                        className="form-control"
-                                        name="content"
-                                        data-testid="content"
-                                        value={values.content}
-                                        style={{
-                                            backgroundColor: "#1b1a31",
-                                            borderColor: "white",
-                                            borderWidth: 1,
-                                            height: "100px",
-                                            color: "white",
-                                            marginLeft: 10,
-                                            marginBottom: 10,
-                                            paddingLeft: 10,
-                                        }}
-                                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-                                            setFieldValue("content", event.target.value);
-                                        }}
-                                    />
+                                <textarea
+                                    placeholder={capitalize(t("template placeholder"))}
+                                    className="form-control"
+                                    name="content"
+                                    data-testid="content"
+                                    value={values.content}
+                                    style={{
+                                        backgroundColor: "#1b1a31",
+                                        borderColor: "white",
+                                        borderWidth: 1,
+                                        height: "100px",
+                                        color: "white",
+                                        marginLeft: 10,
+                                        marginBottom: 10,
+                                        paddingLeft: 10,
+                                    }}
+                                    onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+                                        setFieldValue("content", event.target.value);
+                                    }}
+                                />
                             </div>
-                            <div style={{display: "flex", flexDirection: "row-reverse"}}>
+                            <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                                 <Button
                                     className="capitalize"
                                     data-testid="submit"
