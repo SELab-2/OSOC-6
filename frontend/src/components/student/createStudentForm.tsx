@@ -18,6 +18,9 @@ import { ChangeEvent, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Image from "next/image";
 
+/**
+ * Props needed for the create student form.
+ */
 export interface CreateStudentFormProps {
     student?: IStudent;
     title: string;
@@ -32,15 +35,10 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
     const { mutate } = useSWRConfig();
     const [editionUrl] = useEdition();
 
-    const [selectedGender, setSelectedGender] = useState<Gender>(Gender.not_specified);
-    const [selectedEnglishProficiency, setSelectedEnglishProficiency] = useState<EnglishProficiency>(
-        EnglishProficiency.expressive
-    );
     const [studies, setStudies] = useState<string[]>([]);
     const [studyInput, setStudyInput] = useState<string>("");
     const [skills, setSkills] = useState<string[]>([]);
     const [skillInput, setSkillInput] = useState<string>("");
-    const [selectedOsocExperience, setSelectedOsocExperience] = useState<OsocExperience>(OsocExperience.none);
 
     if (!editionUrl) {
         console.log(!editionUrl);
@@ -48,24 +46,12 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
     }
     const initialValues: Student = studentFromIStudent(editionUrl, student ? student : emptyStudent);
 
-    function handleChangeGender(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedGender(e.target.value as Gender);
-    }
-
-    function handleChangeEnglishProficiency(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedEnglishProficiency(e.target.value as EnglishProficiency);
-    }
-
     function handleChangeStudyInput(e: ChangeEvent<HTMLInputElement>) {
         setStudyInput(e.target.value);
     }
 
     function handleChangeSkillInput(e: ChangeEvent<HTMLInputElement>) {
         setSkillInput(e.target.value);
-    }
-
-    function handleChangeOsocExperience(e: ChangeEvent<HTMLInputElement>) {
-        setSelectedOsocExperience(e.target.value as OsocExperience);
     }
 
     function handleAddStudy() {
@@ -193,8 +179,6 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 as="select"
                                 name="gender"
                                 data-testid="gender"
-                                value={selectedGender}
-                                onChange={handleChangeGender}
                                 className="form-select"
                             >
                                 {Object.keys(Gender).map((gender) => (
@@ -246,8 +230,6 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 as="select"
                                 name="englishProficiency"
                                 data-testid="englishProficiency"
-                                value={selectedEnglishProficiency}
-                                onChange={handleChangeEnglishProficiency}
                                 className="form-select"
                             >
                                 {Object.keys(EnglishProficiency).map((proficiency) => (
@@ -427,11 +409,11 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 id="writtenMotivationField"
                                 data-testid="writtenMotivation"
                                 value={values.writtenMotivation}
-                                onChange={(event) => setFieldValue("template", event.target.value)}
+                                onChange={(event) => setFieldValue("writtenMotivation", event.target.value)}
                                 className="form-control"
                             />
                         </div>
-                        <div className="col-sm-3 mb-4">
+                        <div className="col-sm-4 mb-4">
                             <label htmlFor="osocExperienceField" className="form-label">
                                 {capitalize(t("osoc experience")) + ":"}
                             </label>
@@ -440,8 +422,6 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 as="select"
                                 name="osocExperience"
                                 data-testid="osocExperience"
-                                value={selectedOsocExperience}
-                                onChange={handleChangeOsocExperience}
                                 className="form-select"
                             >
                                 {Object.keys(OsocExperience).map((osocExperience) => (
@@ -451,7 +431,7 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                         label={capitalize(
                                             t(OsocExperience[osocExperience as keyof typeof OsocExperience])
                                         )}
-                                        data-testid={"gender-" + osocExperience}
+                                        data-testid={"experience-" + osocExperience}
                                     >
                                         {capitalize(osocExperience)}
                                     </option>
