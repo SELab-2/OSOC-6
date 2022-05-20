@@ -1,5 +1,4 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { ICommunication } from "./CommunicationEntity";
 
 export interface IEdition extends IBaseEntity {
     name: string;

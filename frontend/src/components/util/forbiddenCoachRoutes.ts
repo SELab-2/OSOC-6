@@ -7,14 +7,16 @@ import { pathIsForbiddenForCoach } from "../../utility/pathUtil";
 export default function ForbiddenCoachRoutes({ children }: any): any {
     const isCurrentUserAdmin = useCurrentAdminUser();
     const router = useRouter();
+    const path = router.asPath;
+    const push = router.push;
 
     useEffect(() => {
         if (isCurrentUserAdmin !== undefined && !isCurrentUserAdmin) {
-            if (pathIsForbiddenForCoach(router.asPath)) {
-                router.push("/" + applicationPaths.error).catch(console.log);
+            if (pathIsForbiddenForCoach(path)) {
+                push("/" + applicationPaths.error).catch(console.log);
             }
         }
-    }, [isCurrentUserAdmin, router]);
+    }, [isCurrentUserAdmin, push, path]);
 
     return children;
 }

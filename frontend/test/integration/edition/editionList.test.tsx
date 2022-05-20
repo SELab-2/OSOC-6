@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
+import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from '../Provide';
 import EditionPage from "../../../src/pages/editions";
 import {
     getBaseActiveEdition,
@@ -48,10 +48,7 @@ describe("EditionList", () => {
 
         await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
 
-        const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
-        await waitFor(() => {
-            act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
-        });
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         await waitFor(() => expect(screen.getByTestId("list-delete-edition")).toBeInTheDocument());
         await userEvent.click(screen.getByTestId("list-delete-edition"));
@@ -73,8 +70,7 @@ describe("EditionList", () => {
         );
 
         await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
-        const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
-        act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         await userEvent.click(screen.getByTestId("list-view-edition"));
     });

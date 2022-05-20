@@ -8,7 +8,7 @@ import applicationPaths from "../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
 import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "./TestEntityProvider";
 import mockRouter from "next-router-mock";
-import { makeCacheFree } from "./Provide";
+import { enableCurrentUser, makeCacheFree } from './Provide';
 import { UserRole } from "../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -23,8 +23,7 @@ describe("Project", () => {
             render(makeCacheFree(ProjectList));
 
             await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
-            const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
-            act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+            await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
             await waitFor(() => expect(screen.getByTestId("new-project-button")).toBeInTheDocument());
         });
