@@ -40,19 +40,12 @@ export default function CommunicationTemplateInfo({ template, student }: ICommun
                 initialValues={initialValues}
                 enableReinitialize={true}
                 onSubmit={async (values) => {
-                    const editedTemplate: ICommunicationTemplate =
-                        await createCommunicationTemplateSubmitHandler(
-                            template ? template._links.self.href : null,
-                            values,
-                            router,
-                            mutate
-                        );
-
-                    // document.location.href = mailTo({
-                    //     body: editedTemplate.template,
-                    //     subject: editedTemplate.subject,
-                    //     recipients: student ? [student.email] : undefined
-                    // });
+                    await createCommunicationTemplateSubmitHandler(
+                        template ? template._links.self.href : null,
+                        values,
+                        router,
+                        mutate
+                    );
                 }}
             >
                 {({ values, setFieldValue }) => (

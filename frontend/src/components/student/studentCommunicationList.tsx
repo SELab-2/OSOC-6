@@ -11,10 +11,17 @@ import { useRouter } from "next/router";
 import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
 
+/**
+ * Properties needed for [StudentCommunicationList].
+ */
 export interface CommunicationListProps {
     studentUrl: string | undefined;
 }
 
+/**
+ * Component listing all communication with a given student.
+ * @param studentUrl the url of the communication that needs to be listed.
+ */
 export default function StudentCommunicationList({ studentUrl }: CommunicationListProps) {
     const router = useRouter();
     const id = studentUrl ? extractIdFromStudentUrl(studentUrl) : "0";
@@ -61,6 +68,7 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                 <div className="row w-100" style={{ paddingBottom: 15 }}>
                     <Button
                         variant="btn-outline"
+                        data-testid="open-studentinfo"
                         style={{ color: "white", borderColor: "white" }}
                         onClick={openStudentInfo}
                     >
