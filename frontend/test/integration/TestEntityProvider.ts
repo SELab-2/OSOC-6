@@ -1,23 +1,17 @@
-import { IProject } from "../../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage } from "../../src/api/entities/BaseEntities";
-import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
-import { IUser, UserRole } from "../../src/api/entities/UserEntity";
-import { baseSkillType, ISkillType } from "../../src/api/entities/SkillTypeEntity";
-import { IAssignment } from "../../src/api/entities/AssignmentEntity";
-import {
-    EnglishProficiency,
-    Gender,
-    IStudent,
-    OsocExpericience,
-    Status,
-} from "../../src/api/entities/StudentEntity";
-import { IEdition } from "../../src/api/entities/EditionEntity";
-import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
-import { ICommunication } from "../../src/api/entities/CommunicationEntity";
-import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
-import { IInvitation, Invitation } from "../../src/api/entities/InvitationEntity";
+import {IProject} from "../../src/api/entities/ProjectEntity";
+import {IBaseEntity, IEntityLinks, IPage} from "../../src/api/entities/BaseEntities";
+import {AxiosResponse} from "axios";
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
+import {IProjectSkill} from "../../src/api/entities/ProjectSkillEntity";
+import {IUser, UserRole} from "../../src/api/entities/UserEntity";
+import {baseSkillType, ISkillType} from "../../src/api/entities/SkillTypeEntity";
+import {IAssignment} from "../../src/api/entities/AssignmentEntity";
+import {EnglishProficiency, Gender, IStudent, OsocExperience, Status,} from "../../src/api/entities/StudentEntity";
+import {IEdition} from "../../src/api/entities/EditionEntity";
+import {ICommunicationTemplate} from "../../src/api/entities/CommunicationTemplateEntity";
+import {ICommunication} from "../../src/api/entities/CommunicationEntity";
+import {ISuggestion, SuggestionStrategy} from "../../src/api/entities/SuggestionEntity";
+import {IInvitation} from "../../src/api/entities/InvitationEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -299,7 +293,7 @@ export function getBaseStudent(id: string): IStudent {
         institutionName: "Ghent University",
         bestSkill: "Finding out the Spring ways",
         funFact: "A fun fact about me",
-        osocExperience: OsocExpericience.yes_noStudentCoach,
+        osocExperience: OsocExperience.yes_noStudentCoach,
         status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],
