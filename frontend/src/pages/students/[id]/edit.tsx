@@ -1,12 +1,12 @@
 import useTranslation from "next-translate/useTranslation";
 import CreateStudentForm from "../../../components/student/createStudentForm";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
-import {getStudentOnUrl} from "../../../api/calls/studentCalls";
-import {emptyStudent, IStudent} from "../../../api/entities/StudentEntity";
+import { getStudentOnUrl } from "../../../api/calls/studentCalls";
+import { emptyStudent, IStudent } from "../../../api/entities/StudentEntity";
 import NavBar from "../../../components/util/navBar";
-import {capitalize} from "../../../utility/stringUtil";
+import { capitalize } from "../../../utility/stringUtil";
 
 /**
  * Component allowing editing of a student.
@@ -30,7 +30,7 @@ export default function StudentCreate() {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <div data-testid="student-create">
                 <CreateStudentForm student={student} title={capitalize(t("edit student"))} />
             </div>

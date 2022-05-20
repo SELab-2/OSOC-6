@@ -6,7 +6,7 @@ import {
     getEntityOnUrl,
     getQueryUrlFromParams,
 } from "./baseCalls";
-import {IStudent, OsocExperience, Status, Student, studentCollectionName} from "../entities/StudentEntity";
+import { IStudent, OsocExperience, Status, Student, studentCollectionName } from "../entities/StudentEntity";
 import apiPaths from "../../properties/apiPaths";
 
 export interface IStudentQueryParams {
@@ -66,9 +66,7 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
  * Function posting creating a new student on the backend.
  * @param student the student that needs to be created.
  */
-export async function createNewStudent(
-    student: Student
-): Promise<IStudent> {
+export async function createNewStudent(student: Student): Promise<IStudent> {
     return <Promise<IStudent>>(await basePost(apiPaths.students, student)).data;
 }
 
@@ -77,10 +75,7 @@ export async function createNewStudent(
  * @param url the url to patch to
  * @param student the student that needs to be updated.
  */
-export async function editStudent(
-    url: string,
-    student: Student
-): Promise<IStudent> {
+export async function editStudent(url: string, student: Student): Promise<IStudent> {
     return <Promise<IStudent>>(await basePatch(url, student)).data;
 }
 

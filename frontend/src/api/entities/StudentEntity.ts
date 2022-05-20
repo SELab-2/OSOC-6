@@ -1,4 +1,4 @@
-import {IBaseEntity, IEntityLinks, IPage, IReferencer} from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export enum EnglishProficiency {
     /**
@@ -173,7 +173,7 @@ export function studentFromIStudent(editionUrl: string, student: IStudent) {
         student.writtenMotivation,
         student.yearInCourse,
         editionUrl
-    )
+    );
 }
 
 export class Student {

@@ -1,9 +1,9 @@
-import {NextRouter} from "next/router";
-import {ScopedMutator} from "swr/dist/types";
+import { NextRouter } from "next/router";
+import { ScopedMutator } from "swr/dist/types";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
-import {IStudent, Student} from "../api/entities/StudentEntity";
-import {createNewStudent, editStudent, extractIdFromStudentUrl} from "../api/calls/studentCalls";
+import { IStudent, Student } from "../api/entities/StudentEntity";
+import { createNewStudent, editStudent, extractIdFromStudentUrl } from "../api/calls/studentCalls";
 
 export async function createStudentSubmitHandler(
     url: string | null,
