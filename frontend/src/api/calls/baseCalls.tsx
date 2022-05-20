@@ -20,6 +20,8 @@ export const AxiosFormConfig: AxiosRequestConfig = {
 export const ManyToManyAxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,
     headers: {
+        // URI-list is needed even when you send only one URI.
+        // You just need to specify the content is a URI and not json.
         "Content-Type": "text/uri-list; charset=UTF-8",
     },
 };

@@ -103,13 +103,9 @@ export async function ProjectFormSubmitHandler(
     await Promise.all(removeProjectSkills.map((skill) => baseDelete(skill)));
 
     // Set the coaches
-    await axios.put(newProject._links.coaches.href, values.coaches, ManyToManyAxiosConf);
 
-    // await Promise.all(
-    //     values.coaches.map(
-    //         async (coach) => await axios.put(newProject._links.coaches.href, coach, ManyToManyAxiosConf)
-    //     )
-    // );
+    const coaches = values.coaches.join("\n");
+    await axios.put(newProject._links.coaches.href, coaches, ManyToManyAxiosConf);
 
     Promise.all([
         mutate(apiPaths.projects),

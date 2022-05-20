@@ -152,14 +152,12 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
     }
 
     async function handleSubmit(submitValues: ProjectFormSubmitValues) {
-        const coachURLs: string[] = [];
-        for (const coach of createdCoaches) {
-            coachURLs.push(
+        const createdCoachesAsUrl: string[] = createdCoaches.map(
+            (coach) =>
                 // We know there will always be a user with this callname,
                 // as every option of the Select contains a value that originates from the users-array
                 allUsers.find((item) => item.callName === coach)!._links.self.href
-            );
-        }
+        );
 
         const createValues: ProjectCreationValues = {
             name: submitValues.name,
@@ -172,7 +170,12 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
             edition: "",
             skillInfos: createdSkillInfos,
             goals: goals,
-            coaches: coachURLs,
+            coaches: [
+                ...createdCoachesAsUrl,
+                ...existingCoaches
+                    .map((coach) => coach._links.self.href)
+                    .filter((coach) => !removedCoaches.has(coach)),
+            ],
         };
 
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
