@@ -1,6 +1,6 @@
-import { basePost, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage } from "./baseCalls";
+import { basePost, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
 import { IProjectSkill, ProjectSkill, projectSkillCollectionName } from "../entities/ProjectSkillEntity";
-import { IProject, Project } from "../entities/ProjectEntity";
+import { IProject } from "../entities/ProjectEntity";
 import apiPaths from "../../properties/apiPaths";
 
 /**
@@ -24,4 +24,12 @@ export function getAllProjectSkillsFromLinks(url: string): Promise<IProjectSkill
 export async function createProjectSkill(projectSkill: ProjectSkill): Promise<IProject | undefined> {
     const newProjectSkill = (await basePost(apiPaths.projectSkills, projectSkill)).data;
     return newProjectSkill?._links ? newProjectSkill : undefined;
+}
+
+/**
+ * Function getting an [IProjectSkill] entity on the provided url.
+ * @param url the url hosting the [IProjectSkill] entity.
+ */
+export function getProjectSkillOnUrl(url: string): Promise<IProjectSkill> {
+    return <Promise<IProjectSkill>>getEntityOnUrl(url);
 }

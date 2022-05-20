@@ -1,24 +1,14 @@
 import "@testing-library/jest-dom";
-import { act, render, RenderResult, waitFor } from "@testing-library/react";
+import { act, findByTestId, render, RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
+import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
-import CreateCommunicationForm from "../../../src/components/communication/createCommunicationForm";
-import { IStudent } from "../../../src/api/entities/StudentEntity";
-import {
-    getBaseCommunicationTemplate,
-    getBaseOkResponse,
-    getBasePage,
-    getBaseStudent,
-    getBaseUser,
-} from "../TestEntityProvider";
-import { Communication } from "../../../src/api/entities/CommunicationEntity";
-import { UserRole } from "../../../src/api/entities/UserEntity";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
-import { communicationTemplateCollectionName } from "../../../src/api/entities/CommunicationTemplateEntity";
-import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";
-import applicationPaths from "../../../src/properties/applicationPaths";
+import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import { AxiosResponse } from "axios";
+import { makeCacheFree } from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -51,7 +41,7 @@ describe("student filter", () => {
             expect(unmatchedElement.checked).toBeFalsy();
 
             expect(freeTextElement.value).toEqual("");
-            expect(rolesElement.value).toEqual("");
+            expect(rolesElement).toBeEmpty();
         });
 
         it("toggles checkbox", async () => {
@@ -101,7 +91,7 @@ describe("student filter", () => {
             expect(unmatchedElement.checked).toBeFalsy();
 
             expect(freeTextElement.value).toEqual(freeText);
-            expect(rolesElement.value).toEqual("");
+            expect(rolesElement).toBeEmpty();
         });
 
         it("can clear search", async () => {
@@ -139,7 +129,7 @@ describe("student filter", () => {
             expect(unmatchedElement.checked).toBeTruthy();
 
             expect(freeTextElement.value).toEqual("");
-            expect(rolesElement.value).toEqual("");
+            expect(rolesElement).toBeEmpty();
         });
 
         it("can clear search", async () => {
@@ -150,6 +140,32 @@ describe("student filter", () => {
             await userEvent.click(submitElement);
 
             expect(mockRouter.query?.unmatched).toEqual("false");
+        });
+    });
+
+    it("with role filter", async () => {
+        const skillType = getBaseSkillType("5");
+        const skillTypeResponse: AxiosResponse = getBaseOkResponse(
+            getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType])
+        );
+        render(makeCacheFree(StudentFilterComponent));
+        await act(async () => {
+            await waitFor(() => {
+                mockAxios.mockResponseFor(apiPaths.skillTypes, skillTypeResponse);
+            });
+        });
+
+        const filterDropdown = await screen.findByTestId("skill-dropdown");
+        const submitElement = await screen.findByTestId("submit");
+
+        await userEvent.click(filterDropdown);
+        const skill = await screen.findByTestId("select-option-" + skillType.name);
+        await userEvent.click(skill);
+
+        await userEvent.click(submitElement);
+
+        await waitFor(() => {
+            expect(mockRouter.query?.skills).toEqual([skillType.name]);
         });
     });
 });

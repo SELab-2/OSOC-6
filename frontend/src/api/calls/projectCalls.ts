@@ -1,5 +1,11 @@
 import { IProject, Project, projectCollectionName } from "../entities/ProjectEntity";
-import { basePatch, basePost, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    basePatch,
+    basePost,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 
 /**
@@ -30,4 +36,12 @@ export async function createProject(project: Project): Promise<IProject | undefi
 export async function editProject(url: string, project: Project): Promise<IProject | undefined> {
     const newProject = (await basePatch(url, project)).data;
     return newProject?._links ? newProject : undefined;
+}
+
+/**
+ * Extracts the id of a [IProject] from a URL hosting a single [IProject].
+ * @param url hosting the [IProject].
+ */
+export function extractIdFromProjectUrl(url: string): string {
+    return extractIdFromApiEntityUrl(url);
 }

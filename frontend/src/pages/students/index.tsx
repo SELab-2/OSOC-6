@@ -15,7 +15,7 @@ const StudentsPage: NextPage = () => {
                 </div>
                 <div className={styles.info_grid + " " + styles.height_setter}>
                     <div className={styles.sidebar}>
-                        <StudentList isDraggable={true} />
+                        <StudentList isDraggable={false} />
                     </div>
                     <div className={"d-flex justify-content-center align-items-center " + styles.info_field}>
                         <p data-testid="student-select-message">select a student to start</p>

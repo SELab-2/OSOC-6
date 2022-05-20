@@ -31,10 +31,6 @@ const RegistrationForm: NextPage = () => {
         if (values.password == values.repeat) {
             const registratingUser: User = new User(values.callname, values.email, values.password);
             let invitationToken = getParamsFromQueryUrl(Router.asPath).get("invitationToken");
-            // Token always ends on "=", but this character is removed in the paramsFromQueryURl method
-            if (invitationToken[-1] !== "=") {
-                invitationToken += "=";
-            }
 
             try {
                 await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
@@ -97,7 +93,7 @@ const RegistrationForm: NextPage = () => {
                             placeholder={capitalize(t("enter password"))}
                             required
                         />
-                        <h6>{capitalize(t("repeat passwordd"))}</h6>
+                        <h6>{capitalize(t("repeat password"))}</h6>
                         <Field
                             className={"form-control " + styles.registration_field}
                             type="password"

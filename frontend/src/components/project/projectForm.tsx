@@ -35,7 +35,7 @@ export type ProjectCreationProps = {
         ownUser: IUser,
         router: NextRouter,
         mutate: ScopedMutator<any>,
-        apiURLTransformer: (url: string) => string,
+        apiURLTransformer: (url: string) => string
     ) => Promise<boolean>;
     project?: IProject;
 };
@@ -52,7 +52,7 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
     const apiTransformer = useEditionAPIUrlTransformer();
     const { mutate } = useSWRConfig();
 
-    console.log(currentUser)
+    console.log(currentUser);
 
     // Receive data
     const { data: receivedUsers, error: usersError } = useSwrWithEdition(
@@ -185,7 +185,7 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
             currentUser!,
             router,
             mutate,
-            apiTransformer,
+            apiTransformer
         );
     }
 

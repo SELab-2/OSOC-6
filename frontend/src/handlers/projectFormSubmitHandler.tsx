@@ -6,7 +6,7 @@ import {
     baseDelete,
     basePost,
     extractIdFromApiEntityUrl,
-    ManyToManyAxiosConf
+    ManyToManyAxiosConf,
 } from "../api/calls/baseCalls";
 import { IProject, Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
@@ -68,7 +68,7 @@ export async function ProjectFormSubmitHandler(
     ownUser: IUser,
     router: NextRouter,
     mutate: ScopedMutator<any>,
-    apiURLTransformer: (url: string) => string,
+    apiURLTransformer: (url: string) => string
 ): Promise<boolean> {
     // Create new project
     const newProjectValues: Project = new Project(
@@ -95,17 +95,12 @@ export async function ProjectFormSubmitHandler(
     // Create new projectSkills linked to the project
     const projectSkills: ProjectSkill[] = [];
     for (let i: number = 0; i < values.skills.length; i++) {
-        projectSkills.push(new ProjectSkill(
-            values.skills[i],
-            values.skillInfos[i],
-            projectURI
-        ));
+        projectSkills.push(new ProjectSkill(values.skills[i], values.skillInfos[i], projectURI));
     }
     await Promise.all(projectSkills.map((projectSkill) => createProjectSkill(projectSkill)));
 
     // Delete the project Skills that need to be removed
-    await Promise.all(removeProjectSkills.map(skill => baseDelete(skill)));
-
+    await Promise.all(removeProjectSkills.map((skill) => baseDelete(skill)));
 
     // Set the coaches
     await axios.put(newProject._links.coaches.href, values.coaches, ManyToManyAxiosConf);
