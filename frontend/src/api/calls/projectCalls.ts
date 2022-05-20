@@ -7,6 +7,7 @@ import {
     getEntityOnUrl,
 } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
+import {AxiosResponse} from "axios";
 
 /**
  * Fetches all projects on a given ProjectLinksUrl
@@ -35,6 +36,6 @@ export function extractIdFromProjectUrl(url: string): string {
  * Removes a project from the database
  * @param url hosting the [IProject]
  */
-export async function deleteProject(url: string) {
+export async function deleteProject(url: string): Promise<AxiosResponse> {
     return await baseDelete(url);
 }

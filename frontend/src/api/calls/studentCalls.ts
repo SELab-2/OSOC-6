@@ -7,6 +7,7 @@ import {
     getQueryUrlFromParams,
 } from "./baseCalls";
 import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
+import {AxiosResponse} from "axios";
 
 export interface IStudentQueryParams {
     freeText: string;
@@ -73,6 +74,6 @@ export function extractIdFromStudentUrl(url: string): string {
  * Removes a student from the database
  * @param url hosting the [IStudent]
  */
-export async function deleteStudent(url: string) {
+export async function deleteStudent(url: string): Promise<AxiosResponse> {
     return await baseDelete(url);
 }
