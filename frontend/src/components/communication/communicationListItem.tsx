@@ -35,9 +35,11 @@ export default function CommunicationListItem({ communication, index }: Communic
             <AccordionHeader className={"bg-secondary"}>
                 <div>
                     <h4>{template.name}</h4>
-                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <h6>{template.subject}</h6>
-                        <p style={{paddingLeft: 5}}>- {date.toLocaleString() + " " + t("by medium") + " " + communication.medium}</p>
+                        <p style={{ paddingLeft: 5 }}>
+                            - {date.toLocaleString() + " " + t("by medium") + " " + communication.medium}
+                        </p>
                     </div>
                 </div>
             </AccordionHeader>
