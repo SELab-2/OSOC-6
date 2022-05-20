@@ -287,7 +287,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             const communication: Communication = new Communication(
                 "email",
                 containedTemplates[0]._links.self.href,
-                faker.random.words(15),
+                faker.lorem.sentences(2),
                 own_user_url,
                 studenturi
             );

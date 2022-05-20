@@ -2,7 +2,7 @@ import { IStudent } from "../../api/entities/StudentEntity";
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import {extractIdFromStudentUrl, getStudentOnUrl} from "../../api/calls/studentCalls";
+import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { ICommunication } from "../../api/entities/CommunicationEntity";
 import { getAllCommunicationFromPage } from "../../api/calls/communicationCalls";
 import CommunicationListItem from "../communication/communicationListItem";
@@ -18,8 +18,8 @@ export interface CommunicationListProps {
 
 export default function StudentCommunicationList({ studentUrl }: CommunicationListProps) {
     const router = useRouter();
-    const { id } = router.query as { id: string };
-    let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
+    const id = studentUrl ? extractIdFromStudentUrl(studentUrl) : "0";
+    let { data: student, error: studentError } = useSWR(studentUrl, getStudentOnUrl);
     const { data: receivedCommunications, error: communicationsError } = useSWR(
         student
             ? getQueryUrlFromParams(apiPaths.communicationsByStudent, {

@@ -13,18 +13,22 @@ import mockAxios from "jest-mock-axios";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import apiPaths from "../../../src/properties/apiPaths";
 import { communicationCollectionName } from "../../../src/api/entities/CommunicationEntity";
-import { string } from "prop-types";
 
 describe("communication list", () => {
     it("renders", () => {
-        const page = render(<StudentCommunicationList student={undefined} />);
+        const page = render(<StudentCommunicationList studentUrl={undefined} />);
         expect(page.getByTestId("communication-list")).toBeInTheDocument();
     });
 
     it("Renders with data ", async () => {
         const studentId = "1";
         const student = getBaseStudent(studentId);
-        const list = render(makeCacheFree(() => <StudentCommunicationList student={student} />));
+        const list = render(
+            makeCacheFree(() => <StudentCommunicationList studentUrl={student._links.self.href} />)
+        );
+        await waitFor(() => {
+            mockAxios.mockResponseFor(student._links.self.href, getBaseOkResponse(student));
+        })
 
         const communication = getBaseCommunication("2");
         await waitFor(() => {

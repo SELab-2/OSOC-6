@@ -39,7 +39,7 @@ const CommunicationPage: NextPage = () => {
                             className={"d-flex justify-content-center align-items-center h-100 w-100"}
                             data-testid="student-communication"
                         >
-                            <StudentCommunicationList student={receivedStudent} />
+                            <StudentCommunicationList studentUrl={receivedStudent?._links.self.href} />
                         </div>
                     </div>
                 </div>
