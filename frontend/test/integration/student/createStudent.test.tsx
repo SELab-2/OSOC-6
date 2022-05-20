@@ -1,13 +1,19 @@
 import "@testing-library/jest-dom";
-import {render, waitFor} from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import CreateStudentForm from "../../../src/components/student/createStudentForm";
-import {EnglishProficiency, Gender, OsocExperience, Status, Student} from "../../../src/api/entities/StudentEntity";
-import {enableUseEditionComponentWrapper, makeCacheFree} from "../Provide";
-import {getBaseActiveEdition} from "../TestEntityProvider";
+import {
+    EnglishProficiency,
+    Gender,
+    OsocExperience,
+    Status,
+    Student,
+} from "../../../src/api/entities/StudentEntity";
+import { enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
+import { getBaseActiveEdition } from "../TestEntityProvider";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -17,10 +23,7 @@ describe("create student", () => {
     it("renders", async () => {
         const page = render(
             makeCacheFree(() =>
-                enableUseEditionComponentWrapper(
-                    () => <CreateStudentForm title="create" />,
-                    edition
-                )
+                enableUseEditionComponentWrapper(() => <CreateStudentForm title="create" />, edition)
             )
         );
         await page.findByTestId("student-create");
@@ -38,10 +41,7 @@ describe("create student", () => {
 
         const form = render(
             makeCacheFree(() =>
-                enableUseEditionComponentWrapper(
-                    () => <CreateStudentForm title="create" />,
-                    edition
-                )
+                enableUseEditionComponentWrapper(() => <CreateStudentForm title="create" />, edition)
             )
         );
         const callNameElement = form.getByTestId("callName");
@@ -114,17 +114,17 @@ describe("create student", () => {
             writtenMotivation,
             yearInCourse,
             edition._links.self.href
-            )
+        );
 
         await userEvent.type(callNameElement, callName);
         await userEvent.type(firstNameElement, firstName);
         await userEvent.type(lastNameElement, lastName);
         await userEvent.type(emailElement, email);
         await userEvent.type(phoneNumberElement, phoneNumber);
-        await userEvent.selectOptions(genderElement, [gender])
+        await userEvent.selectOptions(genderElement, [gender]);
         await userEvent.type(pronounsElement, pronouns);
         await userEvent.type(mostFluentLanguageElement, mostFluentLanguage);
-        await userEvent.selectOptions(englishProficiencyElement, [englishProficiency])
+        await userEvent.selectOptions(englishProficiencyElement, [englishProficiency]);
         await userEvent.type(institutionElement, institution);
         await userEvent.type(currentDiplomaElement, currentDiploma);
         await userEvent.type(yearInCourseElement, yearInCourse);
@@ -133,7 +133,7 @@ describe("create student", () => {
         await userEvent.type(portfolioURIElement, portolfioUri);
         await userEvent.type(motivationURIElement, motivationUri);
         await userEvent.type(writtenMotivationElement, writtenMotivation);
-        await userEvent.selectOptions(osocExperienceElement, [osocExperience])
+        await userEvent.selectOptions(osocExperienceElement, [osocExperience]);
 
         for (const study of studies) {
             await userEvent.type(itemListInputElements[0], study);
@@ -151,11 +151,7 @@ describe("create student", () => {
         });
 
         await waitFor(() => {
-            expect(mockAxios.post).toHaveBeenCalledWith(
-                apiPaths.students,
-                student,
-                expect.anything()
-            );
+            expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.students, student, expect.anything());
         });
     });
 });

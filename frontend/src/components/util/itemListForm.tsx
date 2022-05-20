@@ -1,6 +1,6 @@
-import {Col, Row} from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Image from "next/image";
-import {ChangeEvent, useState} from "react";
+import { ChangeEvent, useState } from "react";
 
 /**
  * Props needed for the ItemListForm component.
@@ -22,7 +22,13 @@ export interface StringListFormFormProps {
  * @param itemAddText the text used for the add button
  * @param itemPlaceHolderText the text used for the input placeholder
  */
-export default function ItemListForm({ items, setItems, itemInputText, itemAddText, itemPlaceHolderText }: StringListFormFormProps) {
+export default function ItemListForm({
+    items,
+    setItems,
+    itemInputText,
+    itemAddText,
+    itemPlaceHolderText,
+}: StringListFormFormProps) {
     const [currentItem, setCurrentItem] = useState<string>("");
 
     function submitHandler() {
@@ -52,7 +58,9 @@ export default function ItemListForm({ items, setItems, itemInputText, itemAddTe
                     </Col>
                 </Row>
             ))}
-            <label htmlFor="item-input" className="form-label">{itemInputText}</label>
+            <label htmlFor="item-input" className="form-label">
+                {itemInputText}
+            </label>
             <input
                 id="item-input"
                 className="form-control mb-2"

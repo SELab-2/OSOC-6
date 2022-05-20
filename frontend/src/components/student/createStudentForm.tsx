@@ -1,8 +1,8 @@
-import {Field, Form, Formik} from "formik";
-import {useRouter} from "next/router";
+import { Field, Form, Formik } from "formik";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../../utility/stringUtil";
-import {useSWRConfig} from "swr";
+import { capitalize } from "../../utility/stringUtil";
+import { useSWRConfig } from "swr";
 import {
     emptyStudent,
     EnglishProficiency,
@@ -13,7 +13,7 @@ import {
     studentFromIStudent,
 } from "../../api/entities/StudentEntity";
 import useEdition from "../../hooks/useGlobalEdition";
-import {createStudentSubmitHandler} from "../../handlers/createStudentSubmitHandler";
+import { createStudentSubmitHandler } from "../../handlers/createStudentSubmitHandler";
 import ItemListForm from "../util/itemListForm";
 
 /**
@@ -204,7 +204,12 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                             </Field>
                         </div>
                         <div className="col-sm-3 mb-2">
-                            <ItemListForm items={values.studies} setItems={(value) => setFieldValue("studies", value)} itemInputText={capitalize(t("studies"))} itemAddText={capitalize(t("add study"))}/>
+                            <ItemListForm
+                                items={values.studies}
+                                setItems={(value) => setFieldValue("studies", value)}
+                                itemInputText={capitalize(t("studies"))}
+                                itemAddText={capitalize(t("add study"))}
+                            />
                         </div>
                         <div className="col-sm-3 mb-2">
                             <label htmlFor="institutionField" className="form-label">
@@ -263,7 +268,13 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                             />
                         </div>
                         <div className="col-sm-3 mb-2">
-                            <ItemListForm items={values.skills} setItems={(value) => setFieldValue("skills", value)} itemInputText={capitalize(t("applied for"))} itemAddText={capitalize(t("add role"))} itemPlaceHolderText={capitalize(t("role"))}/>
+                            <ItemListForm
+                                items={values.skills}
+                                setItems={(value) => setFieldValue("skills", value)}
+                                itemInputText={capitalize(t("applied for"))}
+                                itemAddText={capitalize(t("add role"))}
+                                itemPlaceHolderText={capitalize(t("role"))}
+                            />
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="curriculumVitaeURIField" className="form-label">
