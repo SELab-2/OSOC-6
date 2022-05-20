@@ -37,11 +37,12 @@ export default function EditProjectSkillSubForm({
             <Col>
                 <SkillBadge skill={skill.name} />
             </Col>
-            {!isEditing && <Col>{": " + skill.additionalInfo}</Col>}
+            {!isEditing && <Col>{skill.additionalInfo}</Col>}
             {isEditing && (
                 <>
                     <input
                         value={newInfo}
+                        data-testid={"edit-existing-skill-info-" + skill.name}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setNewInfo(e.target.value)}
                     />
                     <button
@@ -53,29 +54,21 @@ export default function EditProjectSkillSubForm({
                             }
                             setIsEditing(false);
                         }}
-                        data-testid="add-skill-button"
+                        data-testid={"edit-existing-skill-submit-" + skill.name}
                     >
                         {capitalize(t("apply"))}
                     </button>
                 </>
             )}
             <Col xs={6}>
-                <Image
-                    onClick={registerRemoval}
-                    alt=""
-                    src={"/resources/delete.svg"}
-                    width="15"
-                    height="15"
-                />
+                <a data-testid={"remove-existing-skill-" + skill.name} onClick={registerRemoval}>
+                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                </a>
             </Col>
             <Col xs={6}>
-                <Image
-                    onClick={() => setIsEditing(!isEditing)}
-                    alt=""
-                    src={"/resources/edit.svg"}
-                    width="15"
-                    height="15"
-                />
+                <a onClick={() => setIsEditing(!isEditing)} data-testid={"edit-existing-skill-" + skill.name}>
+                    <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                </a>
             </Col>
         </Row>
     );

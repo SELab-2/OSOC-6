@@ -74,3 +74,16 @@ export class Project {
     partnerWebsite: string;
     versionManagement: string;
 }
+
+export function projectFromIProject(project: IProject, editionUrl: string, creatorUrl: string): Project {
+    return new Project(
+        project.name,
+        project.info,
+        project.versionManagement,
+        project.goals,
+        project.partnerName,
+        project.partnerWebsite,
+        editionUrl,
+        creatorUrl
+    );
+}

@@ -20,8 +20,8 @@ export interface ProjectCreationValues {
     partnerName: string;
     partnerWebsite: string;
     goals: string[];
-    skills: string[];
-    skillInfos: string[];
+    addedSkills: string[];
+    addedSkillsInfo: string[];
     coaches: string[];
 }
 
@@ -40,7 +40,6 @@ export interface ProjectFormSubmitValues {
  * Takes care of the creation of a new project and the associated ProjectSkills
  * @param project the already existing project. Null if new project needs to be created.
  * @param values values needed to create a new project
- * @param removedCoaches list of [IUser] urls that are no longer coaches in the project.
  * @param removeProjectSkills list of projectSkills that are no longer needed.
  * @param alteredSkills list of altered projectSkills.
  * @param router the next router object
@@ -52,7 +51,6 @@ export interface ProjectFormSubmitValues {
 export async function projectFormSubmitHandler(
     project: IProject | null,
     values: ProjectCreationValues,
-    removedCoaches: string[],
     removeProjectSkills: string[],
     alteredSkills: [string, ProjectSkill][],
     editionUrl: string,
@@ -85,8 +83,8 @@ export async function projectFormSubmitHandler(
 
     // Create new projectSkills linked to the project
     const projectSkills: ProjectSkill[] = [];
-    for (let i: number = 0; i < values.skills.length; i++) {
-        projectSkills.push(new ProjectSkill(values.skills[i], values.skillInfos[i], projectURI));
+    for (let i: number = 0; i < values.addedSkills.length; i++) {
+        projectSkills.push(new ProjectSkill(values.addedSkills[i], values.addedSkillsInfo[i], projectURI));
     }
     const newCreatedSkills = await Promise.all(
         projectSkills.map((projectSkill) => createProjectSkill(projectSkill))

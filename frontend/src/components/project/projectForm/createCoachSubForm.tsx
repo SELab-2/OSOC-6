@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import Image from "next/image";
 import { capitalize } from "../../../utility/stringUtil";
 import { ChangeEvent, useState } from "react";
@@ -7,6 +7,8 @@ import { useSwrWithEdition } from "../../../hooks/utilHooks";
 import apiPaths from "../../../properties/apiPaths";
 import { getAllUsersFromPage } from "../../../api/calls/userCalls";
 import { IUser } from "../../../api/entities/UserEntity";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownItem from "react-bootstrap/DropdownItem";
 
 export interface CreateCoachSubFormProps {
     setCoachUrls: (urls: string[]) => void;
@@ -64,34 +66,42 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
                 <Row key={index}>
                     <Col>{coach}</Col>
                     <Col xs={1}>
-                        <a>
-                            <Image
-                                onClick={() =>
-                                    setCoaches(coaches.filter((_, valIndex) => valIndex !== index))
-                                }
-                                alt=""
-                                src={"/resources/delete.svg"}
-                                width="15"
-                                height="15"
-                            />
+                        <a
+                            data-testid={"remove-added-coach-" + coach}
+                            onClick={() => setCoaches(coaches.filter((_, valIndex) => valIndex !== index))}
+                        >
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                         </a>
                     </Col>
                 </Row>
             ))}
-            <select
-                className="form-control mb-2"
-                name="coach"
-                data-testid="coach-input"
-                placeholder={capitalize(t("coach"))}
-                value={selectedCoach}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedCoach(e.target.value)}
-            >
-                {allUsers.map((user) => (
-                    <option key={user.callName} value={user.callName} data-testid={"user-" + user.callName}>
-                        {user.callName}
-                    </option>
-                ))}
-            </select>
+
+            <Dropdown as={ButtonGroup} drop="down">
+                <Dropdown.Toggle
+                    style={{
+                        backgroundColor: "#0a0839",
+                        borderColor: "white",
+                        height: 30,
+                        alignItems: "center",
+                        display: "flex",
+                    }}
+                    data-testid="coach-input"
+                >
+                    {selectedCoach ? selectedCoach : "Pick a coach"}
+                </Dropdown.Toggle>
+                <DropdownMenu>
+                    {allUsers.map((user) => (
+                        <DropdownItem
+                            key={user.callName}
+                            value={user.callName}
+                            data-testid={"user-select-" + user.callName}
+                            onClick={() => setSelectedCoach(user.callName)}
+                        >
+                            {user.callName}
+                        </DropdownItem>
+                    ))}
+                </DropdownMenu>
+            </Dropdown>
             <button
                 className="btn btn-secondary"
                 type="button"

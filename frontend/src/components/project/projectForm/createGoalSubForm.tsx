@@ -26,14 +26,11 @@ export default function CreateGoalsSubForm({ goals, setGoals }: CreateGoalsSubFo
                 <Row key={index}>
                     <Col>{goal}</Col>
                     <Col xs={1}>
-                        <a>
-                            <Image
-                                onClick={() => setGoals(goals.filter((_, valIndex) => valIndex !== index))}
-                                alt=""
-                                src={"/resources/delete.svg"}
-                                width="15"
-                                height="15"
-                            />
+                        <a
+                            onClick={() => setGoals(goals.filter((_, valIndex) => valIndex !== index))}
+                            data-testid={"remove-added-goal-" + goal}
+                        >
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                         </a>
                     </Col>
                 </Row>

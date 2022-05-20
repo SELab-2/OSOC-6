@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import SkillBadge from "../../util/skillBadge";
 import Image from "next/image";
 import { Field } from "formik";
@@ -9,6 +9,8 @@ import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
 import { getAllSkillTypesFromPage } from "../../../api/calls/skillTypeCalls";
 import { ISkillType } from "../../../api/entities/SkillTypeEntity";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownItem from "react-bootstrap/DropdownItem";
 
 export interface CreateProjectSkillSubFormProps {
     createdSkillNames: string[];
@@ -62,9 +64,10 @@ export default function CreateProjectSkillSubForm({
                     <Col>
                         <SkillBadge skill={createdSkillNames[index]} />
                     </Col>
-                    <Col>{": " + skillInfo}</Col>
+                    <Col>{skillInfo}</Col>
                     <Col xs={6}>
-                        <Image
+                        <a
+                            data-testid={"remove-added-skill-" + createdSkillNames[index]}
                             onClick={() => {
                                 setCreatedSkillNames(
                                     createdSkillNames.filter((_, valIndex) => index !== valIndex)
@@ -73,33 +76,38 @@ export default function CreateProjectSkillSubForm({
                                     createdSkillInfos.filter((_, valIndex) => index !== valIndex)
                                 );
                             }}
-                            alt=""
-                            src={"/resources/delete.svg"}
-                            width="15"
-                            height="15"
-                        />
+                        >
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                        </a>
                     </Col>
                 </Row>
             ))}
-            <select
-                className="form-control mb-2"
-                name="skillType"
-                data-testid="skill-input"
-                value={selectedSkill}
-                placeholder={capitalize(t("skill type"))}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedSkill(e.target.value)}
-            >
-                {skillTypes.map((skillType) => (
-                    <option
-                        key={skillType.name}
-                        value={skillType.name}
-                        label={skillType.name}
-                        data-testid={"skilltype-" + skillType.name}
-                    >
-                        {skillType.name}
-                    </option>
-                ))}
-            </select>
+            <Dropdown as={ButtonGroup} drop="down">
+                <Dropdown.Toggle
+                    style={{
+                        backgroundColor: "#0a0839",
+                        borderColor: "white",
+                        height: 30,
+                        alignItems: "center",
+                        display: "flex",
+                    }}
+                    data-testid="skill-input"
+                >
+                    {selectedSkill ? selectedSkill : capitalize(t("skill type"))}
+                </Dropdown.Toggle>
+                <DropdownMenu>
+                    {skillTypes.map((skillType) => (
+                        <DropdownItem
+                            key={skillType._links.self.href}
+                            value={skillType._links.self.href}
+                            data-testid={"option-skill-name-" + skillType.name}
+                            onClick={() => setSelectedSkill(skillType.name)}
+                        >
+                            {skillType.name}
+                        </DropdownItem>
+                    ))}
+                </DropdownMenu>
+            </Dropdown>
             <input
                 className="form-control mb-2"
                 data-testid="skillinfo-input"

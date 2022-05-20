@@ -107,8 +107,8 @@ export function ProjectForm({ project }: ProjectCreationProps) {
             versionManagement: submitValues.versionManagement,
             partnerName: submitValues.partnerName,
             partnerWebsite: submitValues.partnerWebsite,
-            skills: createdSkillNames,
-            skillInfos: createdSkillInfos,
+            addedSkills: createdSkillNames,
+            addedSkillsInfo: createdSkillInfos,
             goals: goals,
             coaches: [
                 ...createdCoachesUrls,
@@ -124,7 +124,6 @@ export function ProjectForm({ project }: ProjectCreationProps) {
         await projectFormSubmitHandler(
             project ? project : null,
             createValues,
-            Array.from(removedCoaches),
             Array.from(removedSkills),
             Object.entries(alteredSkills),
             editionUrl!,
@@ -159,7 +158,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         e.which === 13 && e.preventDefault();
                     }}
                 >
-                    <h2>{capitalize(t("create project"))}</h2>
+                    <h2>{project ? "edit project" : capitalize(t("create project"))}</h2>
                     <label htmlFor="project-name">{capitalize(t("project name"))}:</label>
                     <Field
                         className="form-control mb-2"
@@ -199,17 +198,14 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                                 That way you would be able to add them again */}
                                 <Col>{coach.callName}</Col>
                                 <Col xs={1}>
-                                    <a>
-                                        <Image
-                                            onClick={() => {
-                                                removedCoaches.add(coach._links.self.href);
-                                                setMutated(true);
-                                            }}
-                                            alt=""
-                                            src={"/resources/delete.svg"}
-                                            width="15"
-                                            height="15"
-                                        />
+                                    <a
+                                        data-testid={"remove-existing-coach-" + coach.callName}
+                                        onClick={() => {
+                                            removedCoaches.add(coach._links.self.href);
+                                            setMutated(true);
+                                        }}
+                                    >
+                                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                                     </a>
                                 </Col>
                             </Row>
@@ -251,7 +247,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                                 skill={
                                     skill._links.self.href in alteredSkills
                                         ? alteredSkills[skill._links.self.href]
-                                        : projectSkillFromIProjectSkill(skill)
+                                        : projectSkillFromIProjectSkill(skill, project!._links.self.href)
                                 }
                                 registerRemoval={() => {
                                     setMutated(true);
@@ -270,7 +266,11 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         setCreatedSkillInfos={setCreatedSkillInfos}
                     />
 
-                    <button className="btn btn-primary" type="submit" data-testid="create-project-button">
+                    <button
+                        className="btn btn-primary"
+                        type="submit"
+                        data-testid="submit-project-form-button"
+                    >
                         {project ? "edit project" : capitalize(t("create project"))}
                     </button>
                 </Form>

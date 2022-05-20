@@ -58,9 +58,7 @@ export function enableUseEditionComponentWrapper(Component: any, edition: IEditi
  * @param edition the [IEdition] that should be used by useEdition.
  */
 export function enableUseEditionAxiosCall(edition: IEdition): Promise<void> {
-    return waitFor(() => {
-        mockAxios.mockResponseFor({ url: edition._links.self.href }, getBaseOkResponse(edition));
-    });
+    return enableActForResponse({ url: edition._links.self.href }, getBaseOkResponse(edition));
 }
 
 /**
@@ -78,9 +76,7 @@ export function getAxiosCallWithEdition(url: string, edition: IEdition) {
  * @param user the user that should be returned by useCurrentEdition.
  */
 export function enableCurrentUser(user: IUser): Promise<void> {
-    return waitFor(() => {
-        mockAxios.mockResponseFor({ url: apiPaths.ownUser }, getBaseOkResponse(user));
-    });
+    return enableActForResponse({ url: apiPaths.ownUser }, getBaseOkResponse(user));
 }
 
 /**
