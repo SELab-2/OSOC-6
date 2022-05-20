@@ -8,27 +8,25 @@ import CreateCommunicationForm from "../../../src/components/communication/creat
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import {
     getBaseCommunicationTemplate,
-    getBaseOkResponse,
-    getBasePage,
     getBaseStudent,
     getBaseUser,
 } from "../TestEntityProvider";
 import { Communication } from "../../../src/api/entities/CommunicationEntity";
 import { UserRole } from "../../../src/api/entities/UserEntity";
 import { enableCurrentUser, makeCacheFree } from "../Provide";
-import { communicationTemplateCollectionName } from "../../../src/api/entities/CommunicationTemplateEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
 describe("create communication", () => {
     const student: IStudent = getBaseStudent("1");
+    const template = getBaseCommunicationTemplate("2");
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
     it("renders", () => {
-        const page = render(<CreateCommunicationForm student={student} />);
+        const page = render(<CreateCommunicationForm student={student} template={template}/>);
         expect(page.getByTestId("create-communication-form")).toBeInTheDocument();
     });
 
@@ -40,30 +38,8 @@ describe("create communication", () => {
 
         const user = getBaseUser("3", UserRole.admin, true);
 
-        const form = render(makeCacheFree(() => <CreateCommunicationForm student={student} />));
+        const form = render(makeCacheFree(() => <CreateCommunicationForm student={student}  template={template}/>));
         await enableCurrentUser(user);
-
-        const template = getBaseCommunicationTemplate("2");
-        await act(async () => {
-            await waitFor(() => {
-                mockAxios.mockResponseFor(
-                    apiPaths.communicationTemplates,
-                    getBaseOkResponse(
-                        getBasePage(apiPaths.communicationTemplates, communicationTemplateCollectionName, [
-                            template,
-                        ])
-                    )
-                );
-            });
-        });
-
-        // Select the current template
-        await waitFor(async () => {
-            await userEvent.click(form.getByTestId("template-select-main"));
-
-            form.getByTestId("template-select-" + template._links.self.href);
-        });
-        await userEvent.click(form.getByTestId("template-select-" + template._links.self.href));
 
         // Wait until the next part is available
         await waitFor(() => {
