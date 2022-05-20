@@ -1,4 +1,10 @@
-import { basePatch, basePost, getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import {
+    basePatch,
+    basePost,
+    getAllEntitiesFromLinksUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
 import { IProjectSkill, ProjectSkill, projectSkillCollectionName } from "../entities/ProjectSkillEntity";
 import { Project } from "../entities/ProjectEntity";
 import apiPaths from "../../properties/apiPaths";
@@ -26,9 +32,13 @@ export async function createProjectSkill(projectSkill: ProjectSkill): Promise<IP
     return newProjectSkill?._links ? newProjectSkill : undefined;
 }
 
-export async function editProjectSkill(url: string, projectSkill: ProjectSkill): Promise<IProjectSkill | undefined> {
-    const newProjectSkill = (await basePatch(url,
-        { name: projectSkill.name, additionalInfo: projectSkill.additionalInfo })).data;
+export async function editProjectSkill(
+    url: string,
+    projectSkill: ProjectSkill
+): Promise<IProjectSkill | undefined> {
+    const newProjectSkill = (
+        await basePatch(url, { name: projectSkill.name, additionalInfo: projectSkill.additionalInfo })
+    ).data;
     return newProjectSkill?._links ? newProjectSkill : undefined;
 }
 

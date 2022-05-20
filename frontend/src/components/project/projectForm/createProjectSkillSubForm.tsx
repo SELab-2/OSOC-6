@@ -11,14 +11,19 @@ import { getAllSkillTypesFromPage } from "../../../api/calls/skillTypeCalls";
 import { ISkillType } from "../../../api/entities/SkillTypeEntity";
 
 export interface CreateProjectSkillSubFormProps {
-    createdSkillNames: string[]
+    createdSkillNames: string[];
     setCreatedSkillNames: (names: string[]) => void;
 
     createdSkillInfos: string[];
     setCreatedSkillInfos: (infos: string[]) => void;
 }
 
-export default function CreateProjectSkillSubForm({ createdSkillNames, setCreatedSkillNames, createdSkillInfos, setCreatedSkillInfos }: CreateProjectSkillSubFormProps) {
+export default function CreateProjectSkillSubForm({
+    createdSkillNames,
+    setCreatedSkillNames,
+    createdSkillInfos,
+    setCreatedSkillInfos,
+}: CreateProjectSkillSubFormProps) {
     const { t } = useTranslation("common");
 
     const { data: receivedSkillTypes, error: skillTypesError } = useSWR(
@@ -76,15 +81,13 @@ export default function CreateProjectSkillSubForm({ createdSkillNames, setCreate
                     </Col>
                 </Row>
             ))}
-            <Field
+            <select
                 className="form-control mb-2"
-                label={capitalize(t("skill type"))}
-                as="select"
                 name="skillType"
                 data-testid="skill-input"
                 value={selectedSkill}
                 placeholder={capitalize(t("skill type"))}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedSkill(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedSkill(e.target.value)}
             >
                 {skillTypes.map((skillType) => (
                     <option
@@ -96,11 +99,9 @@ export default function CreateProjectSkillSubForm({ createdSkillNames, setCreate
                         {skillType.name}
                     </option>
                 ))}
-            </Field>
-            <Field
+            </select>
+            <input
                 className="form-control mb-2"
-                label={capitalize(t("extra skill info"))}
-                name="skillInfo"
                 data-testid="skillinfo-input"
                 value={skillInfo}
                 placeholder={capitalize(t("extra skill info placeholder"))}
@@ -115,5 +116,5 @@ export default function CreateProjectSkillSubForm({ createdSkillNames, setCreate
                 {capitalize(t("add skill"))}
             </button>
         </div>
-    )
+    );
 }

@@ -4,7 +4,8 @@ import {
     basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
-    getEntityOnUrl, ManyToManyAxiosConf
+    getEntityOnUrl,
+    ManyToManyAxiosConf,
 } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
 import axios, { AxiosResponse } from "axios";

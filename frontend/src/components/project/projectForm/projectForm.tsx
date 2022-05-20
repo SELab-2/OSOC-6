@@ -3,7 +3,11 @@ import { Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import { getAllUsersFromLinks } from "../../../api/calls/userCalls";
 import { capitalize } from "../../../utility/stringUtil";
-import { ProjectCreationValues, ProjectFormSubmitValues } from "../../../handlers/projectFormSubmitHandler";
+import {
+    ProjectCreationValues,
+    projectFormSubmitHandler,
+    ProjectFormSubmitValues,
+} from "../../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../../api/entities/UserEntity";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -16,7 +20,11 @@ import styles from "../../../styles/projects/createProject.module.css";
 import { ScopedMutator } from "swr/dist/types";
 import { IProject, Project } from "../../../api/entities/ProjectEntity";
 import { getAllProjectSkillsFromLinks } from "../../../api/calls/projectSkillCalls";
-import { IProjectSkill, ProjectSkill, projectSkillFromIProjectSkill } from "../../../api/entities/ProjectSkillEntity";
+import {
+    IProjectSkill,
+    ProjectSkill,
+    projectSkillFromIProjectSkill,
+} from "../../../api/entities/ProjectSkillEntity";
 import CreateGoalsSubForm from "./createGoalSubForm";
 import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
@@ -26,18 +34,6 @@ import EditProjectSkillSubForm from "./editProjectSkillSubForm";
  * The props that have to be passed to the component
  */
 export type ProjectCreationProps = {
-    submitHandler: (
-        project: IProject | null,
-        values: ProjectCreationValues,
-        removedCoaches: string[],
-        removeProjectSkills: string[],
-        alteredSkills: [string, ProjectSkill][],
-        editionUrl: string,
-        ownUser: IUser,
-        router: NextRouter,
-        mutate: ScopedMutator<any>,
-        apiURLTransformer: (url: string) => string
-    ) => Promise<boolean>;
     project?: IProject;
 };
 
@@ -47,7 +43,7 @@ type AlteredSkillMapper = { [projectSkillUrl: string]: ProjectSkill };
  * A React component containing a form for project creation
  * @param props ProjectCreationProps containing the submitHandler
  */
-export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) => {
+export function ProjectForm({ project }: ProjectCreationProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
     const [editionUrl] = useEdition();
@@ -112,8 +108,6 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
             partnerName: submitValues.partnerName,
             partnerWebsite: submitValues.partnerWebsite,
             skills: createdSkillNames,
-            creator: "",
-            edition: "",
             skillInfos: createdSkillInfos,
             goals: goals,
             coaches: [
@@ -124,8 +118,10 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
             ],
         };
 
+        console.log(createdCoachesUrls);
+
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
-        await submitHandler(
+        await projectFormSubmitHandler(
             project ? project : null,
             createValues,
             Array.from(removedCoaches),
@@ -138,7 +134,6 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
             apiTransformer
         );
     }
-
 
     const initialValues: ProjectFormSubmitValues = project
         ? {
@@ -157,12 +152,13 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
           };
 
     return (
-        <div
-            className={styles.create_project_box}
-            data-testid="create-project-form w-100"
-        >
+        <div className={styles.create_project_box} data-testid="create-project-form w-100">
             <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
-                <Form onKeyPress={e => { e.which === 13 && e.preventDefault() }}>
+                <Form
+                    onKeyPress={(e) => {
+                        e.which === 13 && e.preventDefault();
+                    }}
+                >
                     <h2>{capitalize(t("create project"))}</h2>
                     <label htmlFor="project-name">{capitalize(t("project name"))}:</label>
                     <Field
@@ -184,7 +180,7 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
                         placeholder={capitalize(t("project info"))}
                     />
                     <label>Goals:</label>
-                    <CreateGoalsSubForm goals={goals} setGoals={setGoals}/>
+                    <CreateGoalsSubForm goals={goals} setGoals={setGoals} />
                     <label htmlFor="version-management">{capitalize(t("version control URL"))}:</label>
                     <Field
                         className="form-control mb-2"
@@ -218,7 +214,12 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
                                 </Col>
                             </Row>
                         ))}
-                    <CreateCoachSubForm setCoachUrls={setCreatedCoachesUrls}/>
+                    <CreateCoachSubForm
+                        setCoachUrls={setCreatedCoachesUrls}
+                        illegalCoaches={existingCoaches
+                            .filter((coach) => !removedCoaches.has(coach._links.self.href))
+                            .map((coach) => coach.callName)}
+                    />
 
                     <label htmlFor="partner-name">{capitalize(t("partner name"))}:</label>
                     <Field
@@ -244,20 +245,24 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
                     <h5>{capitalize(t("project expertise"))}</h5>
                     {existingSkills
                         .filter((skill) => !removedSkills.has(skill._links.self.href))
-                        .map((skill: IProjectSkill) =>
+                        .map((skill: IProjectSkill) => (
                             <EditProjectSkillSubForm
                                 key={skill._links.self.href}
-                                skill={skill._links.self.href in alteredSkills ? alteredSkills[skill._links.self.href] : projectSkillFromIProjectSkill(skill)}
+                                skill={
+                                    skill._links.self.href in alteredSkills
+                                        ? alteredSkills[skill._links.self.href]
+                                        : projectSkillFromIProjectSkill(skill)
+                                }
                                 registerRemoval={() => {
                                     setMutated(true);
                                     removedSkills.add(skill._links.self.href);
                                 }}
-                                registerAlteration={(newSkill => {
+                                registerAlteration={(newSkill) => {
                                     alteredSkills[skill._links.self.href] = newSkill;
                                     setMutated(true);
-                                })}
+                                }}
                             />
-                        )}
+                        ))}
                     <CreateProjectSkillSubForm
                         createdSkillNames={createdSkillNames}
                         setCreatedSkillNames={setCreatedSkillNames}
@@ -272,4 +277,4 @@ export const ProjectForm = ({ submitHandler, project }: ProjectCreationProps) =>
             </Formik>
         </div>
     );
-};
+}

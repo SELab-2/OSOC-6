@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
-import { ProjectInfo } from "../../src/components/project/projectInfo";
+import { makeCacheFree } from "../Provide";
+import { ProjectInfo } from "../../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
-import apiPaths from "../../src/properties/apiPaths";
+import apiPaths from "../../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
 import {
     getBaseAssignment,
@@ -15,13 +15,13 @@ import {
     getBaseSkillType,
     getBaseStudent,
     getBaseUser,
-} from "./TestEntityProvider";
-import { userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { projectSkillCollectionName } from "../../src/api/entities/ProjectSkillEntity";
-import { assignmentCollectionName } from "../../src/api/entities/AssignmentEntity";
-import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import { getValidAssignmentsUrlForProjectSkill } from "../../src/api/calls/AssignmentCalls";
+} from "../TestEntityProvider";
+import { userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
+import { projectSkillCollectionName } from "../../../src/api/entities/ProjectSkillEntity";
+import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import { getValidAssignmentsUrlForProjectSkill } from "../../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

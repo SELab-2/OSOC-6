@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "../../../styles/Home.module.css";
 import NavBar from "../../../components/util/navBar";
 import { ProjectForm } from "../../../components/project/projectForm/projectForm";
-import { ProjectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
+import { projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
@@ -38,7 +38,7 @@ const CreateProject: NextPage = () => {
             <main className={styles.main}>
                 <div className="capitalize  m-4">
                     <h1 className={styles.title}>{"edit project " + project.name}</h1>
-                    <ProjectForm submitHandler={ProjectFormSubmitHandler} project={project} />
+                    <ProjectForm project={project} />
                 </div>
             </main>
         </div>

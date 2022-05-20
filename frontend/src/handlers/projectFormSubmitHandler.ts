@@ -19,8 +19,6 @@ export interface ProjectCreationValues {
     versionManagement: string;
     partnerName: string;
     partnerWebsite: string;
-    creator: string;
-    edition: string;
     goals: string[];
     skills: string[];
     skillInfos: string[];
@@ -51,7 +49,7 @@ export interface ProjectFormSubmitValues {
  * @param mutate the global mutate function provided by SWR
  * @param apiURLTransformer function that transforms an url to an edition queried url.
  */
-export async function ProjectFormSubmitHandler(
+export async function projectFormSubmitHandler(
     project: IProject | null,
     values: ProjectCreationValues,
     removedCoaches: string[],
@@ -90,10 +88,14 @@ export async function ProjectFormSubmitHandler(
     for (let i: number = 0; i < values.skills.length; i++) {
         projectSkills.push(new ProjectSkill(values.skills[i], values.skillInfos[i], projectURI));
     }
-    const newCreatedSkills = await Promise.all(projectSkills.map((projectSkill) => createProjectSkill(projectSkill)));
+    const newCreatedSkills = await Promise.all(
+        projectSkills.map((projectSkill) => createProjectSkill(projectSkill))
+    );
 
     // alter existing project Skills
-    const newAlteredSkills = await Promise.all(alteredSkills.map(([url, projectSkill]) => editProjectSkill(url, projectSkill)));
+    const newAlteredSkills = await Promise.all(
+        alteredSkills.map(([url, projectSkill]) => editProjectSkill(url, projectSkill))
+    );
 
     // Delete the project Skills that need to be removed
     await Promise.all(removeProjectSkills.map((skill) => baseDelete(skill)));

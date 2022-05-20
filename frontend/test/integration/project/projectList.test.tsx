@@ -1,14 +1,14 @@
-import { ProjectList } from "../../src/components/project/projectList";
+import { ProjectList } from "../../../src/components/project/projectList";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import apiPaths from "../../src/properties/apiPaths";
-import applicationPaths from "../../src/properties/applicationPaths";
+import apiPaths from "../../../src/properties/apiPaths";
+import applicationPaths from "../../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
-import { getBaseOkResponse, getBasePage, getBaseProject } from "./TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseProject } from "../TestEntityProvider";
 import mockRouter from "next-router-mock";
-import { makeCacheFree } from "./Provide";
+import { makeCacheFree } from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

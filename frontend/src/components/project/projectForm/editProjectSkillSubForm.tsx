@@ -17,7 +17,11 @@ export interface EditProjectSkillSubFormProps {
     registerAlteration: (newSkill: ProjectSkill) => void;
 }
 
-export default function EditProjectSkillSubForm({ skill, registerRemoval, registerAlteration }: EditProjectSkillSubFormProps) {
+export default function EditProjectSkillSubForm({
+    skill,
+    registerRemoval,
+    registerAlteration,
+}: EditProjectSkillSubFormProps) {
     const { t } = useTranslation("common");
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -26,37 +30,35 @@ export default function EditProjectSkillSubForm({ skill, registerRemoval, regist
 
     useEffect(() => {
         setNewInfo(skill.additionalInfo);
-    }, [skill.name, skill.additionalInfo])
+    }, [skill.name, skill.additionalInfo]);
 
     return (
         <Row>
             <Col>
                 <SkillBadge skill={skill.name} />
             </Col>
-            {!isEditing &&
-                <Col>{": " + skill.additionalInfo}</Col>
-            }
-            {isEditing &&
-              <>
-                <input
-                  value={newInfo}
-                  onChange={(e: ChangeEvent<HTMLInputElement> ) => setNewInfo(e.target.value)}
-                />
-                <button
-                  className="btn btn-secondary"
-                  type="button"
-                  onClick={() => {
-                      if (skill.additionalInfo !== newInfo) {
-                          registerAlteration(new ProjectSkill(skill.name, newInfo, skill.project));
-                      }
-                      setIsEditing(false);
-                  }}
-                  data-testid="add-skill-button"
-                >
-                    {capitalize(t("apply"))}
-                </button>
-              </>
-            }
+            {!isEditing && <Col>{": " + skill.additionalInfo}</Col>}
+            {isEditing && (
+                <>
+                    <input
+                        value={newInfo}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setNewInfo(e.target.value)}
+                    />
+                    <button
+                        className="btn btn-secondary"
+                        type="button"
+                        onClick={() => {
+                            if (skill.additionalInfo !== newInfo) {
+                                registerAlteration(new ProjectSkill(skill.name, newInfo, skill.project));
+                            }
+                            setIsEditing(false);
+                        }}
+                        data-testid="add-skill-button"
+                    >
+                        {capitalize(t("apply"))}
+                    </button>
+                </>
+            )}
             <Col xs={6}>
                 <Image
                     onClick={registerRemoval}
@@ -76,5 +78,5 @@ export default function EditProjectSkillSubForm({ skill, registerRemoval, regist
                 />
             </Col>
         </Row>
-    )
+    );
 }

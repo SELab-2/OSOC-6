@@ -1,6 +1,5 @@
 import { Col, Row } from "react-bootstrap";
 import Image from "next/image";
-import { Field } from "formik";
 import { capitalize } from "../../../utility/stringUtil";
 import { ChangeEvent, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
@@ -11,9 +10,10 @@ import { IUser } from "../../../api/entities/UserEntity";
 
 export interface CreateCoachSubFormProps {
     setCoachUrls: (urls: string[]) => void;
+    illegalCoaches: string[];
 }
 
-export default function CreateCoachSubForm({ setCoachUrls }: CreateCoachSubFormProps) {
+export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: CreateCoachSubFormProps) {
     const { t } = useTranslation("common");
     const { data: receivedUsers, error: usersError } = useSwrWithEdition(
         apiPaths.userByEdition,
@@ -24,18 +24,27 @@ export default function CreateCoachSubForm({ setCoachUrls }: CreateCoachSubFormP
     const [selectedCoach, setSelectedCoach] = useState<string>("");
     const [coaches, setCoaches] = useState<string[]>([]);
 
+    if (usersError) {
+        console.log(usersError);
+        return null;
+    }
+
     function handleAddCreatedCoach() {
         const newCoach = selectedCoach ? selectedCoach : allUsers[0].callName;
+
+        console.log(newCoach);
+        console.log(coaches);
 
         if (!selectedCoach) {
             setSelectedCoach(newCoach);
         }
 
-        if (!coaches.includes(newCoach)) {
-            setCoaches([...coaches, newCoach]);
+        if (!coaches.includes(newCoach) && !illegalCoaches.includes(newCoach)) {
+            const newCoaches = [...coaches, newCoach];
+            setCoaches(newCoaches);
 
             setCoachUrls(
-                coaches.map(
+                newCoaches.map(
                     (coach) =>
                         // We know there will always be a user with this callname,
                         // as every option of the Select contains a value that originates from the users-array
@@ -58,9 +67,7 @@ export default function CreateCoachSubForm({ setCoachUrls }: CreateCoachSubFormP
                         <a>
                             <Image
                                 onClick={() =>
-                                    setCoaches(
-                                        coaches.filter((_, valIndex) => valIndex !== index)
-                                    )
+                                    setCoaches(coaches.filter((_, valIndex) => valIndex !== index))
                                 }
                                 alt=""
                                 src={"/resources/delete.svg"}
@@ -71,27 +78,20 @@ export default function CreateCoachSubForm({ setCoachUrls }: CreateCoachSubFormP
                     </Col>
                 </Row>
             ))}
-            <Field
+            <select
                 className="form-control mb-2"
-                label={capitalize(t("coach"))}
-                as="select"
                 name="coach"
                 data-testid="coach-input"
                 placeholder={capitalize(t("coach"))}
                 value={selectedCoach}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedCoach(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedCoach(e.target.value)}
             >
                 {allUsers.map((user) => (
-                    <option
-                        key={user.callName}
-                        value={user.callName}
-                        label={user.callName}
-                        data-testid={"user-" + user.callName}
-                    >
+                    <option key={user.callName} value={user.callName} data-testid={"user-" + user.callName}>
                         {user.callName}
                     </option>
                 ))}
-            </Field>
+            </select>
             <button
                 className="btn btn-secondary"
                 type="button"
@@ -101,5 +101,5 @@ export default function CreateCoachSubForm({ setCoachUrls }: CreateCoachSubFormP
                 {capitalize(t("add coach"))}
             </button>
         </div>
-    )
+    );
 }
