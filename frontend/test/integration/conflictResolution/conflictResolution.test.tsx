@@ -8,14 +8,16 @@ import {
     getBaseProject,
     getBaseProjectSkill,
     getBaseStudent,
+    getBaseUser,
 } from "../TestEntityProvider";
-import { makeCacheFree } from "../Provide";
+import { enableCurrentUser, makeCacheFree } from "../Provide";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
 import { getValidAssignmentsUrlForStudent } from "../../../src/api/calls/AssignmentCalls";
 import userEvent from "@testing-library/user-event";
 import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
+import { UserRole } from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -108,6 +110,10 @@ describe("conflict resolution", () => {
             const selectRadioElement = await list.findByTestId(
                 "radio-conflict-" + projectSkills[selectedIndex]._links.self.href
             );
+
+            await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
+            await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+
             const submitButtonElement = await list.findByTestId("conflicts-submit");
 
             await userEvent.click(selectRadioElement);
