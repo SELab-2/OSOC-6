@@ -29,7 +29,9 @@ export default function ConflictResolutionList() {
         <div data-testid="conflicts">
             {students.map((student, index) => (
                 <div className={styles.conflict_full_div} key={student._links.self.href}>
-                    <h4>{capitalize(t("conflict"))} #{index + 1}</h4>
+                    <h4>
+                        {capitalize(t("conflict"))} #{index + 1}
+                    </h4>
                     <ConflictResolutionItem student={student} />
                 </div>
             ))}

@@ -4,7 +4,6 @@
 }
 
 .conflict_project_name {
-
 }
 
 .conflict_skillbadge {
@@ -23,7 +22,8 @@
 }
 
 .conflict_reasons {
-    margin-left: 10%;
+    margin-left: 15%;
+    font-size: 14px;
 }
 
 .conflict_full_div {
@@ -32,4 +32,9 @@
 
 .conflict_inner_div {
     margin: 1rem;
+}
+
+.conflict_reasons_list {
+    margin-left: 4rem;
+    list-style-type: circle;
 }

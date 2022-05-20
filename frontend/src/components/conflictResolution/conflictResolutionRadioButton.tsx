@@ -80,7 +80,7 @@ export default function ConflictResolutionRadioButton({
             </div>
             <div className={styles.conflict_reasons}>
                 <p>{capitalize(t("reason(s)"))}:</p>
-                <ul>
+                <ul className={styles.conflict_reasons_list}>
                     {assignments
                         .sort((a, b) => a.localeCompare(b))
                         .map((assignmentUrl) => (
