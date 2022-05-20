@@ -7,7 +7,7 @@ import {
     getEntityOnUrl,
 } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 
 /**
  * Fetches all projects on a given ProjectLinksUrl

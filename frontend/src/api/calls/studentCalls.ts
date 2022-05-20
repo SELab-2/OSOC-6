@@ -7,7 +7,7 @@ import {
     getQueryUrlFromParams,
 } from "./baseCalls";
 import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 
 export interface IStudentQueryParams {
     freeText: string;
