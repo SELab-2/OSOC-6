@@ -16,7 +16,7 @@ import { communicationCollectionName } from "../../../src/api/entities/Communica
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import {useEditionApplicationPathTransformer} from "../../../src/hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../../../src/hooks/utilHooks";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -60,9 +60,10 @@ describe("communication list", () => {
         await waitFor(() => expect(list.getByText(template.name)).toBeInTheDocument());
     });
 
-    it ("button should redirect to studentinfo", async () => {
+    it("button should redirect to studentinfo", async () => {
         const studentId = "1";
-        mockRouter.asPath = "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
+        mockRouter.asPath =
+            "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
         const student = getBaseStudent(studentId);
         const list = render(
             makeCacheFree(() => <StudentCommunicationList studentUrl={student._links.self.href} />)

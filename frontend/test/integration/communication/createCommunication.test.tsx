@@ -11,9 +11,9 @@ import {
     getBaseCommunicationTemplate,
     getBaseOkResponse,
     getBaseStudent,
-    getBaseUser
+    getBaseUser,
 } from "../TestEntityProvider";
-import {Communication, defaultCommunicationMedium} from "../../../src/api/entities/CommunicationEntity";
+import { Communication, defaultCommunicationMedium } from "../../../src/api/entities/CommunicationEntity";
 import { UserRole } from "../../../src/api/entities/UserEntity";
 import { enableCurrentUser, makeCacheFree } from "../Provide";
 import applicationPaths from "../../../src/properties/applicationPaths";
@@ -83,17 +83,19 @@ describe("create communication", () => {
     });
 
     it("Sends the form and opens email", async () => {
-        mockRouter.asPath = "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
-        mockRouter.pathname = "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
+        mockRouter.asPath =
+            "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
+        mockRouter.pathname =
+            "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
         const mock = jest.spyOn(
             require("../../../src/handlers/createCommunicationSubmitHandler"),
             "createCommunicationSubmitHandler"
         );
-        const id = "5"
+        const id = "5";
         mock.mockImplementation(async (submitCom, router, mutate) => {
             await mockRouter.push("/" + applicationPaths.communicationBase + "/" + id);
-            return getBaseOkResponse(getBaseCommunication(id))
-        })
+            return getBaseOkResponse(getBaseCommunication(id));
+        });
 
         const user = getBaseUser("3", UserRole.admin, true);
 
@@ -125,7 +127,5 @@ describe("create communication", () => {
         await waitFor(() => {
             expect(mock).toHaveBeenCalledWith(communication, mockRouter, expect.anything());
         });
-
-
     });
 });
