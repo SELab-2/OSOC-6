@@ -17,15 +17,15 @@ export async function createCommunicationTemplateSubmitHandler(
     values: CommunicationTemplateEntity,
     router: NextRouter,
     mutate: ScopedMutator
-) : Promise<ICommunicationTemplate> {
+): Promise<ICommunicationTemplate> {
     let result: ICommunicationTemplate;
-    console.log(url)
+    console.log(url);
     if (url) {
         result = await editCommunicationTemplate(url, values);
-        console.log(result)
+        console.log(result);
     } else {
         result = await createNewCommunicationTemplate(values);
-        console.log(result)
+        console.log(result);
     }
     // const id = extractIdFromCommunicationTemplateUrl(result._links.self.href);
 
@@ -35,5 +35,5 @@ export async function createCommunicationTemplateSubmitHandler(
     //     router.push("/" + applicationPaths.communicationTemplateBase + "/" + id),
     // ]);
 
-    return result
+    return result;
 }

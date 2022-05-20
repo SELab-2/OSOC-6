@@ -54,11 +54,11 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
             >
                 {({ values, setFieldValue }) => (
                     <Form>
-                        <Row style={{paddingBottom: 20}}>
+                        <Row style={{ paddingBottom: 20 }}>
                             <Col>
                                 <div>{capitalize(t("choose your template"))}:</div>
                             </Col>
-                            <Col style={{alignItems: "center", display: "flex"}}>
+                            <Col style={{ alignItems: "center", display: "flex" }}>
                                 <Dropdown as={ButtonGroup} drop="down">
                                     <Dropdown.Toggle
                                         style={{
@@ -70,7 +70,9 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                                         }}
                                         data-testid="template-select-main"
                                     >
-                                        {selectedTemplate ? selectedTemplate.name : capitalize(t("choose your template"))}
+                                        {selectedTemplate
+                                            ? selectedTemplate.name
+                                            : capitalize(t("choose your template"))}
                                     </Dropdown.Toggle>
                                     <DropdownMenu>
                                         {templates.map((template) => (
