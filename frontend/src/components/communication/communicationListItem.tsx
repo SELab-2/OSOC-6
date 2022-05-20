@@ -38,11 +38,9 @@ export default function CommunicationListItem({ communication, index }: Communic
                     <p>{date.toLocaleString() + " " + t("by medium") + " " + communication.medium}</p>
                 </div>
             </AccordionHeader>
-        <AccordionBody>
-            <div style={{color: "black"}}>
-                {communication.content}
-            </div>
-        </AccordionBody>
+            <AccordionBody>
+                <div style={{ color: "black" }}>{communication.content}</div>
+            </AccordionBody>
         </AccordionItem>
     );
 }

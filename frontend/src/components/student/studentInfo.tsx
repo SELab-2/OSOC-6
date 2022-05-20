@@ -18,7 +18,7 @@ import {
     getParamsFromQueryUrl,
     getQueryUrlFromParams,
 } from "../../api/calls/baseCalls";
-import {getStudentQueryParamsFromQuery} from "./studentFilterComponent";
+import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 
 /**
  * Give an overview of all the studentinfo

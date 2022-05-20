@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
-import {getStudentQueryParamsFromQuery} from "../student/studentFilterComponent";
+import { getStudentQueryParamsFromQuery } from "../student/studentFilterComponent";
 
 export interface CommunicationListProps {
     student: IStudent | undefined;
@@ -68,8 +68,16 @@ export default function StudentCommunicationList({ student }: CommunicationListP
                             <Accordion>
                                 {communications.map((communication, index) => {
                                     return (
-                                        <AccordionItem key={index} eventKey={`${index}`} data-testid="communication">
-                                            <CommunicationListItem communication={communication} key={communication._links.self.href} index={index} />
+                                        <AccordionItem
+                                            key={index}
+                                            eventKey={`${index}`}
+                                            data-testid="communication"
+                                        >
+                                            <CommunicationListItem
+                                                communication={communication}
+                                                key={communication._links.self.href}
+                                                index={index}
+                                            />
                                         </AccordionItem>
                                     );
                                 })}

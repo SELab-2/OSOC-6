@@ -291,14 +291,12 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                 own_user_url,
                 studenturi
             );
-            newCommications.push(communication)
+            newCommications.push(communication);
         }
     }
 
     await Promise.all(
-        newCommications.map(
-            async (com) => (await axios.post(apiPaths.communications, com,AxiosConf)).data
-        )
+        newCommications.map(async (com) => (await axios.post(apiPaths.communications, com, AxiosConf)).data)
     );
 
     const suggestions: ISuggestionPage = (await axios.get(apiPaths.suggestions, AxiosConf)).data;
