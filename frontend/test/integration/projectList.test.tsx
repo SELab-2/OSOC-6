@@ -8,7 +8,7 @@ import applicationPaths from "../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
 import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "./TestEntityProvider";
 import mockRouter from "next-router-mock";
-import { enableCurrentUser, makeCacheFree } from './Provide';
+import { enableCurrentUser, makeCacheFree } from "./Provide";
 import { UserRole } from "../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));

@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from '../Provide';
+import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
 import {
     getBaseActiveEdition,
