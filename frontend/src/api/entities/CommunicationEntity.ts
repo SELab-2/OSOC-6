@@ -61,7 +61,14 @@ export const defaultCommunicationMedium = "email";
  * Constructor that allows us to easily post Communication entities to our backend.
  */
 export class Communication {
-    constructor(medium: string, template: string, subject: string, content: string, sender: string, student: string) {
+    constructor(
+        medium: string,
+        template: string,
+        subject: string,
+        content: string,
+        sender: string,
+        student: string
+    ) {
         this.medium = medium;
         this.template = template;
         this.subject = subject;
