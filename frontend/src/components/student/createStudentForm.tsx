@@ -1,8 +1,8 @@
-import { Field, Form, Formik } from "formik";
-import { useRouter } from "next/router";
+import {Field, Form, Formik} from "formik";
+import {useRouter} from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../utility/stringUtil";
-import { useSWRConfig } from "swr";
+import {capitalize} from "../../utility/stringUtil";
+import {useSWRConfig} from "swr";
 import {
     emptyStudent,
     EnglishProficiency,
@@ -13,10 +13,8 @@ import {
     studentFromIStudent,
 } from "../../api/entities/StudentEntity";
 import useEdition from "../../hooks/useGlobalEdition";
-import { createStudentSubmitHandler } from "../../handlers/createStudentSubmitHandler";
-import { ChangeEvent, useState } from "react";
-import { Col, Row } from "react-bootstrap";
-import Image from "next/image";
+import {createStudentSubmitHandler} from "../../handlers/createStudentSubmitHandler";
+import ItemListForm from "../util/itemListForm";
 
 /**
  * Props needed for the create student form.
@@ -35,55 +33,14 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
     const { mutate } = useSWRConfig();
     const [editionUrl] = useEdition();
 
-    const [studies, setStudies] = useState<string[]>([]);
-    const [studyInput, setStudyInput] = useState<string>("");
-    const [skills, setSkills] = useState<string[]>([]);
-    const [skillInput, setSkillInput] = useState<string>("");
-
     if (!editionUrl) {
         console.log(!editionUrl);
         return null;
     }
     const initialValues: Student = studentFromIStudent(editionUrl, student ? student : emptyStudent);
 
-    function handleChangeStudyInput(e: ChangeEvent<HTMLInputElement>) {
-        setStudyInput(e.target.value);
-    }
-
-    function handleChangeSkillInput(e: ChangeEvent<HTMLInputElement>) {
-        setSkillInput(e.target.value);
-    }
-
-    function handleAddStudy() {
-        if (studyInput) {
-            const newStudies: string[] = studies.concat(studyInput);
-
-            setStudies(newStudies);
-            setStudyInput("");
-        }
-    }
-
-    function handleAddSkill() {
-        if (skillInput) {
-            const newSkills: string[] = skills.concat(skillInput);
-
-            setSkills(newSkills);
-            setSkillInput("");
-        }
-    }
-
-    function handleDeleteStudy(index: number) {
-        delete studies[index];
-        setStudies(studies.filter((value) => value !== undefined));
-    }
-
-    function handleDeleteSkill(index: number) {
-        delete skills[index];
-        setSkills(skills.filter((value) => value !== undefined));
-    }
-
     return (
-        <div className="container mt-3">
+        <div className="container mt-3" data-testid="student-create">
             <h2>{title}</h2>
             <Formik
                 initialValues={initialValues}
@@ -100,7 +57,7 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                 {({ values, setFieldValue }) => (
                     <Form>
                         <div className="col-sm-4 mb-2">
-                            <label htmlFor="studentCallNameField" className="form-label">
+                            <label htmlFor="callNameField" className="form-label">
                                 {capitalize(t("callname")) + ":"}
                             </label>
                             <Field
@@ -109,13 +66,13 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 required
                                 value={values.callName}
                                 placeholder={capitalize(t("callname"))}
-                                id="studentCallNameField"
+                                id="callNameField"
                                 data-testid="callName"
                                 className="form-control"
                             />
                         </div>
                         <div className="col-sm-4 mb-2">
-                            <label htmlFor="studentFirstNameField" className="form-label">
+                            <label htmlFor="firstNameField" className="form-label">
                                 {capitalize(t("first name")) + ":"}
                             </label>
                             <Field
@@ -123,13 +80,13 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 name="firstName"
                                 required
                                 placeholder={capitalize(t("first name"))}
-                                id="studentFirstNameField"
+                                id="firstNameField"
                                 data-testid="firstName"
                                 className="form-control"
                             />
                         </div>
                         <div className="col-sm-4 mb-2">
-                            <label htmlFor="studentLastNameField" className="form-label">
+                            <label htmlFor="lastNameField" className="form-label">
                                 {capitalize(t("last name")) + ":"}
                             </label>
                             <Field
@@ -137,13 +94,13 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 name="lastName"
                                 required
                                 placeholder={capitalize(t("last name"))}
-                                id="studentLastNameField"
+                                id="lastNameField"
                                 data-testid="lastName"
                                 className="form-control"
                             />
                         </div>
                         <div className="col-sm-4 mb-2">
-                            <label htmlFor="studentEmailField" className="form-label">
+                            <label htmlFor="emailField" className="form-label">
                                 {capitalize(t("email")) + ":"}
                             </label>
                             <Field
@@ -151,13 +108,13 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 name="email"
                                 required
                                 placeholder={capitalize(t("email"))}
-                                id="studentEmailField"
+                                id="emailField"
                                 data-testid="email"
                                 className="form-control"
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
-                            <label htmlFor="studentPhoneNumberField" className="form-label">
+                            <label htmlFor="phoneNumberField" className="form-label">
                                 {capitalize(t("phone number")) + ":"}
                             </label>
                             <Field
@@ -165,17 +122,17 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 name="phoneNumber"
                                 required
                                 placeholder={capitalize(t("phone number"))}
-                                id="studentPhoneNumberField"
+                                id="phoneNumberField"
                                 data-testid="phoneNumber"
                                 className="form-control"
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
-                            <label htmlFor="studentGenderField" className="form-label">
+                            <label htmlFor="genderField" className="form-label">
                                 {capitalize(t("gender")) + ":"}
                             </label>
                             <Field
-                                id="studentGenderField"
+                                id="genderField"
                                 as="select"
                                 name="gender"
                                 data-testid="gender"
@@ -194,7 +151,7 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                             </Field>
                         </div>
                         <div className="col-sm-3 mb-2">
-                            <label htmlFor="studentPronounsField" className="form-label">
+                            <label htmlFor="pronounsField" className="form-label">
                                 {capitalize(t("pronouns")) + ":"}
                             </label>
                             <Field
@@ -202,17 +159,17 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 name="pronouns"
                                 required
                                 placeholder={capitalize(t("pronouns"))}
-                                id="studentPronounsField"
+                                id="pronounsField"
                                 data-testid="pronouns"
                                 className="form-control"
                             />
                         </div>
                         <div className="col-sm-3 mb-2">
-                            <label htmlFor="studentMostFluentLanguageField" className="form-label">
+                            <label htmlFor="mostFluentLanguageField" className="form-label">
                                 {capitalize(t("native language")) + ":"}
                             </label>
                             <Field
-                                id="studentMostFluentLanguageField"
+                                id="mostFluentLanguageField"
                                 type="text"
                                 name="mostFluentLanguage"
                                 required
@@ -222,11 +179,11 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
-                            <label htmlFor="studentEnglishProficiencyField" className="form-label">
+                            <label htmlFor="englishProficiencyField" className="form-label">
                                 {capitalize(t("english proficiency")) + ":"}
                             </label>
                             <Field
-                                id="studentEnglishProficiencyField"
+                                id="englishProficiencyField"
                                 as="select"
                                 name="englishProficiency"
                                 data-testid="englishProficiency"
@@ -246,41 +203,15 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 ))}
                             </Field>
                         </div>
-                        <div>
-                            {studies.map((study: string, index: number) => (
-                                <Row key={index}>
-                                    <Col>{study}</Col>
-                                    <Col xs={1}>
-                                        <a>
-                                            <Image
-                                                onClick={() => handleDeleteStudy(index)}
-                                                alt=""
-                                                src={"/resources/delete.svg"}
-                                                width="15"
-                                                height="15"
-                                            />
-                                        </a>
-                                    </Col>
-                                </Row>
-                            ))}
-                            <label htmlFor="studentStudiesField">{capitalize(t("studies")) + ":"}</label>
-                            <Field
-                                id="studentStudiesField"
-                                data-testid="study-input"
-                                value={studyInput}
-                                placeholder={capitalize(t("studies"))}
-                                onChange={handleChangeStudyInput}
-                            />
-                            <button type="button" onClick={handleAddStudy} data-testid="add-study-button">
-                                {capitalize(t("add study"))}
-                            </button>
+                        <div className="col-sm-3 mb-2">
+                            <ItemListForm items={values.studies} setItems={(value) => setFieldValue("studies", value)} itemInputText={capitalize(t("studies"))} itemAddText={capitalize(t("add study"))}/>
                         </div>
                         <div className="col-sm-3 mb-2">
-                            <label htmlFor="studentInstitutionField" className="form-label">
+                            <label htmlFor="institutionField" className="form-label">
                                 {capitalize(t("institution")) + ":"}
                             </label>
                             <Field
-                                id="studentInstitutionField"
+                                id="institutionField"
                                 type="text"
                                 name="institutionName"
                                 required
@@ -331,34 +262,8 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 className="form-control"
                             />
                         </div>
-                        <div>
-                            {skills.map((skill: string, index: number) => (
-                                <Row key={index}>
-                                    <Col>{skill}</Col>
-                                    <Col xs={1}>
-                                        <a>
-                                            <Image
-                                                onClick={() => handleDeleteSkill(index)}
-                                                alt=""
-                                                src={"/resources/delete.svg"}
-                                                width="15"
-                                                height="15"
-                                            />
-                                        </a>
-                                    </Col>
-                                </Row>
-                            ))}
-                            <label htmlFor="studentSkillsField">{capitalize(t("applied for")) + ":"}</label>
-                            <Field
-                                id="studentSkillsField"
-                                data-testid="skill-input"
-                                value={skillInput}
-                                placeholder={capitalize(t("role"))}
-                                onChange={handleChangeSkillInput}
-                            />
-                            <button type="button" onClick={handleAddSkill} data-testid="add-skill-button">
-                                {capitalize(t("add role"))}
-                            </button>
+                        <div className="col-sm-3 mb-2">
+                            <ItemListForm items={values.skills} setItems={(value) => setFieldValue("skills", value)} itemInputText={capitalize(t("applied for"))} itemAddText={capitalize(t("add role"))} itemPlaceHolderText={capitalize(t("role"))}/>
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="curriculumVitaeURIField" className="form-label">
