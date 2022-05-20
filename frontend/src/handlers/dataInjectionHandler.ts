@@ -265,6 +265,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         const communication1: Communication = new Communication(
             "sms",
             containedTemplates[0]._links.self.href,
+            "You got a yes",
             "An apple for the thirst and a yes for you",
             own_user_url,
             someStudentUri
@@ -287,6 +288,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             const communication: Communication = new Communication(
                 "email",
                 containedTemplates[0]._links.self.href,
+                faker.lorem.lines(1),
                 faker.lorem.sentences(2),
                 own_user_url,
                 studenturi

@@ -258,6 +258,7 @@ export function getBaseCommunication(id: string): ICommunication {
     const baseCommunicationPath = "http://localhost/api/communications/" + id;
     return {
         timestamp: "2022-05-05T17:57:49.963+00:00",
+        subject: "You were selected",
         medium: "email",
         content: "Good job Kasper, you have been selected.",
 

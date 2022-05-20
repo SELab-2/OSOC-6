@@ -61,6 +61,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                     const submitCom = new Communication(
                         submitValues.medium,
                         submitValues.template,
+                        submitValues.subject,
                         submitValues.content,
                         submitValues.sender,
                         submitValues.student

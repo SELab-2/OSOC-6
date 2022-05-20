@@ -75,9 +75,10 @@ describe("create communication", () => {
         const medium = "email";
         const templateUrl = template._links.self.href;
         const content = template.template;
+        const subject = template.subject
         const sender = user._links.self.href;
         const studentUrl = student._links.self.href;
-        const communication = new Communication(medium, templateUrl, content, sender, studentUrl);
+        const communication = new Communication(medium, templateUrl, subject, content, sender, studentUrl);
 
         await userEvent.clear(mediumElement);
         await userEvent.type(mediumElement, medium);
