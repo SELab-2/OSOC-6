@@ -94,14 +94,15 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {capitalize(student.gender.replaceAll("_", " ").toLowerCase())} {t("with pronouns")}{" "}
-                    {student.pronouns.toLowerCase()}
+                    {capitalize(t("gender"))}: {capitalize(student.gender.replaceAll("_", " ").toLowerCase())}{" "}
+                    {t("with pronouns")} {student.pronouns.toLowerCase()}
                 </div>
                 <div>
                     {capitalize(t("native language"))}: {student.mostFluentLanguage}
                 </div>
                 <div>
-                    {capitalize(t("english proficiency"))}: {capitalize(student.englishProficiency.replaceAll("_", " ").toLowerCase())}
+                    {capitalize(t("english proficiency"))}:{" "}
+                    {capitalize(student.englishProficiency.replaceAll("_", " ").toLowerCase())}
                 </div>
                 <div>
                     {capitalize(t("phone number"))}: {student.phoneNumber}

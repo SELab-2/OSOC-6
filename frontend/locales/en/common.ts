@@ -166,7 +166,7 @@ const common = {
     "year of degree": "year of degree",
     "degree length": "duration of degree",
     "add role": "add role",
-    "role": "role",
+    role: "role",
     "cv url": "cv url",
     "portfolio url": "portfolio url",
     "motivation url": "motivation url",
