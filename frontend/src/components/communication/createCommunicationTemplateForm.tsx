@@ -10,6 +10,9 @@ import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import { Button } from "react-bootstrap";
 
+/**
+ * Properties of the [CreateCommunicationTemplateForm] component.
+ */
 export interface CreateCommunicationTemplateFormProps {
     template?: ICommunicationTemplate;
     setTemplate?: (template: ICommunicationTemplate) => void;
@@ -17,7 +20,8 @@ export interface CreateCommunicationTemplateFormProps {
 }
 
 /**
- * Form allowing the creation of a new communication template.
+ * Form allowing the creation of a new communication template or editing an existing.
+ * @param template the template that should be edited. [undefined] if the form is in creation mode.
  */
 export default function CreateCommunicationTemplateForm({
     template,

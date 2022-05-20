@@ -9,10 +9,9 @@ import { capitalize } from "../../utility/stringUtil";
 import timers from "../../properties/timers";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
-import useEdition from "../../hooks/useGlobalEdition";
 import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
-import { useRouter } from "next/router";
 import { IEdition } from "../../api/entities/EditionEntity";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 type EditionProps = {
     edition: IEdition;
@@ -25,6 +24,7 @@ export function EditionRowComponent(props: EditionProps) {
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
     const globalEditionSetter = useGlobalEditionSetter();
+    const currentUserIsAdmin = useCurrentAdminUser();
 
     if (!edition) {
         return null;
@@ -55,27 +55,40 @@ export function EditionRowComponent(props: EditionProps) {
                 <Col>{edition.year}</Col>
                 <Col>{edition.active ? capitalize(t("active")) : capitalize(t("not active"))}</Col>
                 <Col xs={1}>
-                    <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
+                    <a
+                        style={{ cursor: "pointer" }}
+                        onClick={useRightUrlAndGlobalContext}
+                        data-testid="list-view-edition"
+                    >
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
-                    <a
-                        href={transformer(
-                            applicationPaths.editionBase +
-                                "/" +
-                                extractIdFromEditionUrl(edition._links.self.href)
-                        )}
-                        data-testid="list-edit-edition"
-                    >
-                        <Image
-                            alt={capitalize(t("edit"))}
-                            src={"/resources/edit.svg"}
-                            width="15"
-                            height="15"
-                        />
-                    </a>
-                    <a onClick={deleteEdition} data-testid="list-delete-edition">
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
+                    {currentUserIsAdmin && (
+                        <a
+                            style={{ padding: "1rem", cursor: "pointer" }}
+                            href={transformer(
+                                applicationPaths.editionBase +
+                                    "/" +
+                                    extractIdFromEditionUrl(edition._links.self.href)
+                            )}
+                            data-testid="list-edit-edition"
+                        >
+                            <Image
+                                alt={capitalize(t("edit"))}
+                                src={"/resources/edit.svg"}
+                                width="15"
+                                height="15"
+                            />
+                        </a>
+                    )}
+                    {currentUserIsAdmin && (
+                        <a
+                            style={{ cursor: "pointer" }}
+                            onClick={deleteEdition}
+                            data-testid="list-delete-edition"
+                        >
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                        </a>
+                    )}
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast

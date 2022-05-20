@@ -9,7 +9,10 @@ import styles from "../../../styles/pageGrids.module.css";
 import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
 import { StudentList } from "../../../components/student/studentList";
 
-const CommunicationPage: NextPage = () => {
+/**
+ * Page listing the communication with a student.
+ */
+export default function CommunicationPage() {
     const router = useRouter();
     const query = router.query as { id: string };
 
@@ -48,4 +51,3 @@ const CommunicationPage: NextPage = () => {
     );
 };
 
-export default CommunicationPage;

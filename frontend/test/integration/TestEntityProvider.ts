@@ -17,7 +17,7 @@ import { IEdition } from "../../src/api/entities/EditionEntity";
 import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
 import { ICommunication } from "../../src/api/entities/CommunicationEntity";
 import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
-import { IInvitation, Invitation } from "../../src/api/entities/InvitationEntity";
+import { IInvitation } from "../../src/api/entities/InvitationEntity";
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {

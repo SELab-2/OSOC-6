@@ -10,11 +10,20 @@ import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionItem from "react-bootstrap/AccordionItem";
 
+/**
+ * Properties of [CommunicationListItem].
+ */
 export interface CommunicationListItemProps {
     communication: ICommunication;
     index: number;
 }
 
+/**
+ * An item in the [CommunicationList].
+ * Renders the details of a single [ICommunication] entity as a list item.
+ * @param communication the specified [ICommunication] item.
+ * @param index the index of the accordionItem
+ */
 export default function CommunicationListItem({ communication, index }: CommunicationListItemProps) {
     const { t } = useTranslation("common");
     const { data: receivedTemplate, error: templateError } = useSWR(

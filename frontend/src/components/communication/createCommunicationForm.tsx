@@ -15,11 +15,19 @@ import applicationPaths from "../../properties/applicationPaths";
 import { extractIdFromUserUrl } from "../../api/calls/userCalls";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
+/**
+ * Properties needed by the [CreateCommunicationForm] component
+ */
 export interface CreateCommunicationFormProps {
     student: IStudent;
     template: ICommunicationTemplate;
 }
 
+/**
+ * Form component to create a new communication item with a given [IStudent].
+ * @param student the [IStudent] to whom this communication was send.
+ * @param template the [ICommunicationTemplate] used for the new communication
+ */
 export default function CreateCommunicationForm({ student, template }: CreateCommunicationFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();

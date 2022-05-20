@@ -10,6 +10,9 @@ import {
 } from "../../../api/entities/CommunicationTemplateEntity";
 import { capitalize } from "../../../utility/stringUtil";
 
+/**
+ * Page that allows you to edit a given communication template.
+ */
 export default function CommunicationTemplateEditPage() {
     const { t } = useTranslation("common");
     const router = useRouter();

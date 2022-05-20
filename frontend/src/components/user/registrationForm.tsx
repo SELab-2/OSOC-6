@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
-import Head from "next/head";
 import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import { useState } from "react";

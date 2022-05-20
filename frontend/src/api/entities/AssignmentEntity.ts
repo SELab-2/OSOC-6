@@ -1,5 +1,4 @@
 import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
-import { IProjectSkill } from "./ProjectSkillEntity";
 
 export interface IAssignment extends IBaseEntity {
     isValid: boolean;

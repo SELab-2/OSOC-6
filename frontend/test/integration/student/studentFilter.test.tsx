@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, findByTestId, render, RenderResult, screen, waitFor } from "@testing-library/react";
+import { act, render, RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";

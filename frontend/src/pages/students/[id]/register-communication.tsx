@@ -18,6 +18,9 @@ import { useState } from "react";
 import { ICommunicationTemplate } from "../../../api/entities/CommunicationTemplateEntity";
 import CreateCommunicationTemplateForm from "../../../components/communication/createCommunicationTemplateForm";
 
+/**
+ * Page that allows you to register a new communication with the given student.
+ */
 export default function CommunicationInfoPage() {
     const { t } = useTranslation("common");
     const router = useRouter();

@@ -5,6 +5,9 @@ import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplate
 import CommunicationTemplatesList from "../../components/communication/communicationTemplateList";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 
+/**
+ * Page listing all [ICommunicationTemplate] entities.
+ */
 export default function CommunicationTemplateIndexPage() {
     const { data: receivedTemplates, error: templatesError } = useSWR(
         getQueryUrlFromParams(apiPaths.communicationTemplates, { sort: "name" }),
