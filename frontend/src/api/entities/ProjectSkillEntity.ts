@@ -42,3 +42,7 @@ export class ProjectSkill {
     name: string;
     project: string;
 }
+
+export function ProjectSkillFromIProjectSkill() {
+
+}

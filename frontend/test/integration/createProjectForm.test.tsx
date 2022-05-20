@@ -1,33 +1,26 @@
 import "@testing-library/jest-dom";
-import { act, render, RenderResult, screen, waitFor } from "@testing-library/react";
+import { render, RenderResult, screen, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import CreateProject from "../../src/pages/projects/create";
-import { ProjectFormSubmitHandler, ProjectCreationValues } from "../../src/handlers/projectFormSubmitHandler";
 import {
     getBaseActiveEdition,
     getBaseOkResponse,
     getBasePage,
     getBaseSkillType,
-    getBaseUser,
+    getBaseUser
 } from "./TestEntityProvider";
-import { IUser, User, userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { ProjectForm } from "../../src/components/project/projectForm";
+import { IUser, userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
+import { ProjectForm } from "../../src/components/project/projectForm/projectForm";
 import userEvent from "@testing-library/user-event";
 import { Project } from "../../src/api/entities/ProjectEntity";
 import { extractIdFromApiEntityUrl } from "../../src/api/calls/baseCalls";
-import { ISkillType, SkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
+import { ISkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
-import {
-    enableCurrentUser,
-    enableUseEditionAxiosCall,
-    enableUseEditionComponentWrapper,
-    getAxiosCallWithEdition,
-    makeCacheFree,
-} from "./Provide";
+import { enableCurrentUser, enableUseEditionComponentWrapper, getAxiosCallWithEdition, makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
-import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
 import { extractIdFromUserUrl } from "../../src/api/calls/userCalls";
+import { ProjectCreationValues, ProjectFormSubmitHandler } from "../../src/handlers/projectFormSubmitHandler";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

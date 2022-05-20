@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import styles from "../../../styles/Home.module.css";
 import NavBar from "../../../components/util/navBar";
-import { ProjectForm } from "../../../components/project/projectForm";
+import { ProjectForm } from "../../../components/project/projectForm/projectForm";
 import { ProjectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { useRouter } from "next/router";
 import useSWR from "swr";

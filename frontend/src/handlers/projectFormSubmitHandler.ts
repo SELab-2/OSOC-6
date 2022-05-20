@@ -1,20 +1,11 @@
 import apiPaths from "../properties/apiPaths";
-import Router, { NextRouter } from "next/router";
+import { NextRouter } from "next/router";
 import axios from "axios";
-import {
-    AxiosConf,
-    baseDelete,
-    basePost,
-    extractIdFromApiEntityUrl,
-    ManyToManyAxiosConf,
-} from "../api/calls/baseCalls";
+import { baseDelete, extractIdFromApiEntityUrl, ManyToManyAxiosConf } from "../api/calls/baseCalls";
 import { IProject, Project } from "../api/entities/ProjectEntity";
 import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
-import { extractIdFromUserUrl } from "../api/calls/userCalls";
 import { IUser } from "../api/entities/UserEntity";
-import { IEdition } from "../api/entities/EditionEntity";
-import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
 import { ScopedMutator } from "swr/dist/types";
 import { createProject, editProject } from "../api/calls/projectCalls";
 import { createProjectSkill } from "../api/calls/projectSkillCalls";
@@ -103,7 +94,6 @@ export async function ProjectFormSubmitHandler(
     await Promise.all(removeProjectSkills.map((skill) => baseDelete(skill)));
 
     // Set the coaches
-
     const coaches = values.coaches.join("\n");
     await axios.put(newProject._links.coaches.href, coaches, ManyToManyAxiosConf);
 
