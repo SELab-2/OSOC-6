@@ -35,7 +35,7 @@ export default function LoginForm(props: LoginProps) {
                         placeholder="Enter password"
                         required
                     />
-                    <button className="btn btn-primary" type="submit" data-testid="login-submit">
+                    <button className="btn btn-outline-primary" type="submit" data-testid="login-submit">
                         {capitalize(t("login"))}
                     </button>
                 </Form>

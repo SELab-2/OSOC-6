@@ -12,6 +12,7 @@ import { IAssignment } from "../../api/entities/AssignmentEntity";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import ProjectSkillRegister from "./projectSkillRegister";
+import styles from "../../styles/conflicts.module.css";
 
 /**
  * Type that will hold the projectSkills and its assignments.
@@ -82,7 +83,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
     );
 
     return (
-        <div key={student._links.self.href}>
+        <div className={styles.conflict_inner_div} key={student._links.self.href}>
             {
                 // Render an empty component that performs a callback to a state.
                 // Later render the children using that state.
@@ -95,7 +96,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                     />
                 ))
             }
-            <div>{student.callName}</div>
+            <h6>{student.callName}</h6>
             <Formik
                 initialValues={{
                     picked: "",
@@ -132,7 +133,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                         }
                     </div>
 
-                    <button data-testid="conflicts-submit" type="submit">
+                    <button className="btn btn-outline-primary" data-testid="conflicts-submit" type="submit">
                         {capitalize(t("confirm"))}
                     </button>
                 </Form>
