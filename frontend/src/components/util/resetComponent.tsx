@@ -70,15 +70,29 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
     }
 
     return (
-        <Container className={styles.reset_component} data-testid="reset-component">
-            {!token && <h4>{capitalize(t("reset " + name))}</h4>}
-            <Form.Label>{capitalize(t("new " + name))}</Form.Label>
-            <FormControl id="" data-testid="reset-input-1" type={name} onChange={onChangeFirstEntry} />
-            <Form.Label className="mt-2">{capitalize(t("repeat new " + name))}</Form.Label>
-            <FormControl id="" data-testid="reset-input-2" type={name} onChange={onChangeSecondEntry} />
-            <Button data-testid="confirm-reset" onClick={onConfirm} className="mt-3">
-                {capitalize(t("confirm"))}
-            </Button>
+        <div className={styles.reset_component} data-testid="reset-component">
+            <div className={styles.reset_box}>
+                {!token && <h2>{capitalize(t("reset " + name))}</h2>}
+                <Form.Label>{capitalize(t("new " + name))}</Form.Label>
+                <FormControl
+                    className={styles.reset_field}
+                    id=""
+                    data-testid="reset-input-1"
+                    type={name}
+                    onChange={onChangeFirstEntry}
+                />
+                <Form.Label className="mt-2">{capitalize(t("repeat new " + name))}</Form.Label>
+                <FormControl
+                    className={styles.reset_field}
+                    id=""
+                    data-testid="reset-input-2"
+                    type={name}
+                    onChange={onChangeSecondEntry}
+                />
+                <Button data-testid="confirm-reset" onClick={onConfirm} className="mt-3">
+                    {capitalize(t("confirm"))}
+                </Button>
+            </div>
             <ToastContainer position="bottom-end">
                 <Toast
                     bg="danger"
@@ -101,6 +115,6 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
                     <Toast.Body>{capitalize(t("changed succesfully"))}</Toast.Body>
                 </Toast>
             </ToastContainer>
-        </Container>
+        </div>
     );
 }
