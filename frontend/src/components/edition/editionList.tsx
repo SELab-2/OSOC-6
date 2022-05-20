@@ -8,10 +8,12 @@ import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import styles from "../../styles/editionList.module.css";
 
 export function EditionList() {
     const { t } = useTranslation("common");
+    const currentUserIsAdmin = useCurrentAdminUser();
     let { data, error } = useSWR(apiPaths.editions, getAllEditionsFromPage);
     const transformer = useEditionApplicationPathTransformer();
 
@@ -27,12 +29,14 @@ export function EditionList() {
             <Container style={{ marginTop: "50px" }}>
                 <div className={styles.edition_header}>
                     <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
-                    <Button
-                        className={styles.edition_new_button}
-                        href={transformer(applicationPaths.editionCreate)}
-                    >
-                        {capitalize(t("create new edition"))}
-                    </Button>
+                    {currentUserIsAdmin && (
+                        <Button
+                            className={styles.edition_new_button}
+                            href={transformer(applicationPaths.editionCreate)}
+                        >
+                            {capitalize(t("create new edition"))}
+                        </Button>
+                    )}
                 </div>
                 <Row>
                     <Col>

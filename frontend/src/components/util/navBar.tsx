@@ -1,13 +1,15 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import OptionsMenu from "./optionsMenu";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
     const transformer = useEditionApplicationPathTransformer();
+    const currentUserIsAdmin = useCurrentAdminUser();
 
     return (
         <div className="capitalize" data-testid="nav-bar">
@@ -27,11 +29,13 @@ export const NavBar = () => {
                                     {t("students")}
                                 </Nav.Link>
                             </Nav.Item>
-                            <Nav.Item data-testid="navbar-users">
-                                <Nav.Link href={transformer("/" + applicationPaths.users)}>
-                                    {t("users")}
-                                </Nav.Link>
-                            </Nav.Item>
+                            {currentUserIsAdmin && (
+                                <Nav.Item data-testid="navbar-users">
+                                    <Nav.Link href={transformer("/" + applicationPaths.users)}>
+                                        {t("users")}
+                                    </Nav.Link>
+                                </Nav.Item>
+                            )}
                             <Nav.Item data-testid="navbar-projects">
                                 <Nav.Link href={transformer("/" + applicationPaths.projects)}>
                                     {t("projects")}

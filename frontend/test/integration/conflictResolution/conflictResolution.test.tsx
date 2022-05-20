@@ -14,7 +14,6 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
 import { getValidAssignmentsUrlForStudent } from "../../../src/api/calls/AssignmentCalls";
-import mock = jest.mock;
 import userEvent from "@testing-library/user-event";
 import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
 

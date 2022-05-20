@@ -11,6 +11,7 @@ import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionC
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { IEdition } from "../../api/entities/EditionEntity";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 type EditionProps = {
     edition: IEdition;
@@ -23,6 +24,7 @@ export function EditionRowComponent(props: EditionProps) {
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
     const globalEditionSetter = useGlobalEditionSetter();
+    const currentUserIsAdmin = useCurrentAdminUser();
 
     if (!edition) {
         return null;
@@ -60,29 +62,33 @@ export function EditionRowComponent(props: EditionProps) {
                     >
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
-                    <a
-                        style={{ padding: "1rem", cursor: "pointer" }}
-                        href={transformer(
-                            applicationPaths.editionBase +
-                                "/" +
-                                extractIdFromEditionUrl(edition._links.self.href)
-                        )}
-                        data-testid="list-edit-edition"
-                    >
-                        <Image
-                            alt={capitalize(t("edit"))}
-                            src={"/resources/edit.svg"}
-                            width="15"
-                            height="15"
-                        />
-                    </a>
-                    <a
-                        style={{ cursor: "pointer" }}
-                        onClick={deleteEdition}
-                        data-testid="list-delete-edition"
-                    >
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
+                    {currentUserIsAdmin && (
+                        <a
+                            style={{ padding: "1rem", cursor: "pointer" }}
+                            href={transformer(
+                                applicationPaths.editionBase +
+                                    "/" +
+                                    extractIdFromEditionUrl(edition._links.self.href)
+                            )}
+                            data-testid="list-edit-edition"
+                        >
+                            <Image
+                                alt={capitalize(t("edit"))}
+                                src={"/resources/edit.svg"}
+                                width="15"
+                                height="15"
+                            />
+                        </a>
+                    )}
+                    {currentUserIsAdmin && (
+                        <a
+                            style={{ cursor: "pointer" }}
+                            onClick={deleteEdition}
+                            data-testid="list-delete-edition"
+                        >
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                        </a>
+                    )}
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast

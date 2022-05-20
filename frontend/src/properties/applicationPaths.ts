@@ -38,6 +38,8 @@ const applicationPaths = {
     editionCreate: "editions/create",
 
     skillTypesBase: "skillTypes",
+
+    error: "_error",
 };
 
 export default applicationPaths;

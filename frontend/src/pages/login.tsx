@@ -5,7 +5,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import NavBar from "../components/util/navBar";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";
 import { useState } from "react";
