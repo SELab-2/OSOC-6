@@ -45,7 +45,6 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
         student: "",
         subject: "",
     };
-    const comm = new Communication(defaultCommunicationMedium, "", "", "", "");
 
     const templates: ICommunicationTemplate[] = receivedTemplates || [];
 
@@ -177,7 +176,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                                         }}
                                         placeholder={capitalize(t("medium"))}
                                         id="communicationTemplateSubjectField"
-                                        data-testid="subject"
+                                        data-testid="medium"
                                     />
                                 </div>
 
@@ -186,7 +185,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                                         placeholder={capitalize(t("template placeholder"))}
                                         className="form-control"
                                         name="content"
-                                        data-testid="template"
+                                        data-testid="content"
                                         value={values.content}
                                         style={{
                                             backgroundColor: "#1b1a31",
