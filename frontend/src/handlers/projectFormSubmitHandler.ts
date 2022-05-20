@@ -7,8 +7,8 @@ import applicationPaths from "../properties/applicationPaths";
 import { ProjectSkill } from "../api/entities/ProjectSkillEntity";
 import { IUser } from "../api/entities/UserEntity";
 import { ScopedMutator } from "swr/dist/types";
-import { createProject, editProject } from "../api/calls/projectCalls";
-import { createProjectSkill } from "../api/calls/projectSkillCalls";
+import { createProject, editProject, setProjectCoaches } from "../api/calls/projectCalls";
+import { createProjectSkill, editProjectSkill } from "../api/calls/projectSkillCalls";
 
 /**
  * All values that a project contains
@@ -42,19 +42,21 @@ export interface ProjectFormSubmitValues {
  * Takes care of the creation of a new project and the associated ProjectSkills
  * @param project the already existing project. Null if new project needs to be created.
  * @param values values needed to create a new project
+ * @param removedCoaches list of [IUser] urls that are no longer coaches in the project.
+ * @param removeProjectSkills list of projectSkills that are no longer needed.
+ * @param alteredSkills list of altered projectSkills.
  * @param router the next router object
  * @param editionUrl the current edition
  * @param ownUser the currently logged in user
  * @param mutate the global mutate function provided by SWR
  * @param apiURLTransformer function that transforms an url to an edition queried url.
- * @param removedCoaches list of [IUser] urls that are no longer coaches in the project.
- * @param removeProjectSkills list of projectSkills that are no longer needed.
  */
 export async function ProjectFormSubmitHandler(
     project: IProject | null,
     values: ProjectCreationValues,
     removedCoaches: string[],
     removeProjectSkills: string[],
+    alteredSkills: [string, ProjectSkill][],
     editionUrl: string,
     ownUser: IUser,
     router: NextRouter,
@@ -88,18 +90,21 @@ export async function ProjectFormSubmitHandler(
     for (let i: number = 0; i < values.skills.length; i++) {
         projectSkills.push(new ProjectSkill(values.skills[i], values.skillInfos[i], projectURI));
     }
-    await Promise.all(projectSkills.map((projectSkill) => createProjectSkill(projectSkill)));
+    const newCreatedSkills = await Promise.all(projectSkills.map((projectSkill) => createProjectSkill(projectSkill)));
+
+    // alter existing project Skills
+    const newAlteredSkills = await Promise.all(alteredSkills.map(([url, projectSkill]) => editProjectSkill(url, projectSkill)));
 
     // Delete the project Skills that need to be removed
     await Promise.all(removeProjectSkills.map((skill) => baseDelete(skill)));
 
     // Set the coaches
-    const coaches = values.coaches.join("\n");
-    await axios.put(newProject._links.coaches.href, coaches, ManyToManyAxiosConf);
+    await setProjectCoaches(newProject, values.coaches);
 
     Promise.all([
         mutate(apiPaths.projects),
         mutate(apiURLTransformer(apiPaths.projectsByEdition)),
+        mutate(newProject._links.self.href, newProject),
         mutate(newProject._links.neededSkills),
         mutate(newProject._links.coaches),
     ]).catch(console.log);

@@ -43,6 +43,6 @@ export class ProjectSkill {
     project: string;
 }
 
-export function ProjectSkillFromIProjectSkill() {
-
+export function projectSkillFromIProjectSkill(projectSkill: IProjectSkill): ProjectSkill {
+    return new ProjectSkill(projectSkill.name, projectSkill.additionalInfo, projectSkill._links.project.href);
 }

@@ -4,9 +4,10 @@ import {
     basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
-    getEntityOnUrl,
+    getEntityOnUrl, ManyToManyAxiosConf
 } from "./baseCalls";
 import apiPaths from "../../properties/apiPaths";
+import axios, { AxiosResponse } from "axios";
 
 /**
  * Fetches all projects on a given ProjectLinksUrl
@@ -36,6 +37,11 @@ export async function createProject(project: Project): Promise<IProject | undefi
 export async function editProject(url: string, project: Project): Promise<IProject | undefined> {
     const newProject = (await basePatch(url, project)).data;
     return newProject?._links ? newProject : undefined;
+}
+
+export function setProjectCoaches(project: IProject, coachUrls: string[]): Promise<AxiosResponse<any, any>> {
+    const coaches = coachUrls.join("\n");
+    return axios.put(project._links.coaches.href, coaches, ManyToManyAxiosConf);
 }
 
 /**
