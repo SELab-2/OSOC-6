@@ -28,7 +28,7 @@ describe("communication list", () => {
         );
         await waitFor(() => {
             mockAxios.mockResponseFor(student._links.self.href, getBaseOkResponse(student));
-        })
+        });
 
         const communication = getBaseCommunication("2");
         await waitFor(() => {

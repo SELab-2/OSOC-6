@@ -1,4 +1,3 @@
-import { IStudent } from "../../api/entities/StudentEntity";
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
