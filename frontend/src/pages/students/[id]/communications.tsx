@@ -1,4 +1,4 @@
-import StudentCommunicationList from "../../../components/communication/studentCommunicationList";
+import StudentCommunicationList from "../../../components/student/studentCommunicationList";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";

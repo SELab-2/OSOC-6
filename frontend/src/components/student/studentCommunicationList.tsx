@@ -2,37 +2,36 @@ import { IStudent } from "../../api/entities/StudentEntity";
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import { extractIdFromStudentUrl } from "../../api/calls/studentCalls";
+import {extractIdFromStudentUrl, getStudentOnUrl} from "../../api/calls/studentCalls";
 import { ICommunication } from "../../api/entities/CommunicationEntity";
 import { getAllCommunicationFromPage } from "../../api/calls/communicationCalls";
-import CommunicationListItem from "./communicationListItem";
+import CommunicationListItem from "../communication/communicationListItem";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
 import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
-import AccordionHeader from "react-bootstrap/AccordionHeader";
-import { getStudentQueryParamsFromQuery } from "../student/studentFilterComponent";
 
 export interface CommunicationListProps {
-    student: IStudent | undefined;
+    studentUrl: string | undefined;
 }
 
-export default function StudentCommunicationList({ student }: CommunicationListProps) {
+export default function StudentCommunicationList({ studentUrl }: CommunicationListProps) {
     const router = useRouter();
-    const studentId = extractIdFromStudentUrl(student!._links.self.href);
+    const { id } = router.query as { id: string };
+    let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
     const { data: receivedCommunications, error: communicationsError } = useSWR(
         student
             ? getQueryUrlFromParams(apiPaths.communicationsByStudent, {
-                  studentId: studentId,
+                  studentId: id,
                   sort: "timestamp",
               })
             : null,
         getAllCommunicationFromPage
     );
 
-    if (communicationsError) {
-        console.log(communicationsError);
+    if (communicationsError || studentError) {
+        console.log(communicationsError || studentError);
         return null;
     }
 
@@ -40,7 +39,7 @@ export default function StudentCommunicationList({ student }: CommunicationListP
 
     async function openStudentInfo() {
         const params = getParamsFromQueryUrl(router.asPath);
-        const studentCommUrl = "/" + applicationPaths.students + "/" + studentId;
+        const studentCommUrl = "/" + applicationPaths.students + "/" + id;
         await router.replace({
             pathname: studentCommUrl,
             query: { ...router.query, ...params },

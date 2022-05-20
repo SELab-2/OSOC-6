@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
-import StudentCommunicationList from "../../../src/components/communication/studentCommunicationList";
+import StudentCommunicationList from "../../../src/components/student/studentCommunicationList";
 import {
     getBaseCommunication,
     getBaseCommunicationTemplate,
