@@ -1,21 +1,20 @@
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { useEffect, useState } from "react";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { UserRole } from "../../api/entities/UserEntity";
 import applicationPaths from "../../properties/applicationPaths";
 import { pathIsForbiddenForCoach } from "../../utility/pathUtil";
 
 export default function ForbiddenCoachRoutes({ children }: any): any {
-    const { user: user } = useCurrentUser(true);
+    const isCurrentUserAdmin = useCurrentAdminUser();
     const router = useRouter();
 
     useEffect(() => {
-        if (user?.userRole !== UserRole.admin) {
+        if (isCurrentUserAdmin !== undefined && !isCurrentUserAdmin) {
             if (pathIsForbiddenForCoach(router.asPath)) {
                 router.push("/" + applicationPaths.error).catch(console.log);
             }
         }
-    }, [user?.userRole, router]);
+    }, [isCurrentUserAdmin, router]);
 
     return children;
 }

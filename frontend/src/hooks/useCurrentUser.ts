@@ -23,7 +23,7 @@ export function useCurrentUser(
 /**
  * Hook returning if the current user is an admin or not.
  */
-export function useCurrentAdminUser(): boolean {
+export function useCurrentAdminUser(): undefined | boolean {
     const { user: user } = useCurrentUser();
-    return user?.userRole === UserRole.admin;
+    return user === undefined ? undefined : user.userRole === UserRole.admin;
 }

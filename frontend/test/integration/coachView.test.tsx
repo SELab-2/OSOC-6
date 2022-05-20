@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
+import { enableCurrentUser, makeCacheFree } from './Provide';
 import EditionRowComponent from "../../src/components/edition/editionRowComponent";
 import EditionList from "../../src/components/edition/editionList";
 import { ProjectList } from "../../src/components/project/projectList";
@@ -44,8 +44,7 @@ describe("Coach View", () => {
         );
 
         await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
-        const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
-        act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+        await enableCurrentUser(getBaseUser("5", UserRole.coach, true));
 
         await waitFor(() => {
             expect(mockRouter.asPath).toEqual("/" + applicationPaths.error);
