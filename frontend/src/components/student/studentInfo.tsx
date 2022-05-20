@@ -6,14 +6,15 @@ import { Col, ListGroup, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import Image from "next/image";
-import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
+import { emptyStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
-import { IFullSuggestion } from "../../hooks/useFullSuggestion";
 import useSWR from "swr";
-import { getStudentOnUrl } from "../../api/calls/studentCalls";
+import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
+import applicationPaths from "../../properties/applicationPaths";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import styles from "../../styles/studentOverview.module.css";
 
 /**
  * Give an overview of all the studentinfo
@@ -21,6 +22,7 @@ import SuggestionListItem from "../suggestion/suggestionListItem";
 export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const transformer = useEditionApplicationPathTransformer();
     const { id } = router.query as { id: string };
 
     let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
@@ -56,17 +58,26 @@ export function StudentInfo() {
     return (
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
-                <div className="row w-100">
-                    <div className="col-sm-6">
-                        <h1>{student.callName}</h1>
-                    </div>
-                    <div className="col-sm-6">
-                        <ListGroup className="list-group-horizontal" as="ul">
-                            {student.skills.map((skill) => (
-                                <SkillBadge skill={skill} key={skill} />
-                            ))}
-                        </ListGroup>
-                    </div>
+                <h1>
+                    {student.callName}
+                    <a
+                        className="ms-2"
+                        data-testid="edit-student"
+                        href={transformer(
+                            "/" +
+                                applicationPaths.students +
+                                "/" +
+                                extractIdFromStudentUrl(student._links.self.href) +
+                                applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
+                        )}
+                    >
+                        <img alt={capitalize(t("edit"))} src="/resources/edit.svg" width="15" height="15" />
+                    </a>
+                </h1>
+                <div className={styles.student_skills}>
+                    {student.skills.map((skill) => (
+                        <SkillBadge skill={skill} key={skill} />
+                    ))}
                 </div>
                 <br />
                 <h2>{capitalize(t("suggestions"))}</h2>
@@ -83,7 +94,7 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {student.gender.toLowerCase()} {t("pronouns")}{" "}
+                    {capitalize(t("gender"))}: {student.gender.toLowerCase()} {t("with pronouns")}{" "}
                     {student.pronouns.toLowerCase()}
                 </div>
                 <div>

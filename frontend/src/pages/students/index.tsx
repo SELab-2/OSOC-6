@@ -1,9 +1,8 @@
-import { NextPage } from "next";
-import { Col, Row } from "react-bootstrap";
+import {NextPage} from "next";
 import NavBar from "../../components/util/navBar";
 import styles from "../../styles/pageGrids.module.css";
-import { StudentList } from "../../components/student/studentList";
-import { StudentFilterComponent } from "../../components/student/studentFilterComponent";
+import {StudentList} from "../../components/student/studentList";
+import {StudentFilterComponent} from "../../components/student/studentFilterComponent";
 
 const StudentsPage: NextPage = () => {
     return (
@@ -15,7 +14,7 @@ const StudentsPage: NextPage = () => {
                 </div>
                 <div className={styles.info_grid + " " + styles.height_setter}>
                     <div className={styles.sidebar}>
-                        <StudentList isDraggable={false} />
+                        <StudentList isDraggable={false} showAdd={true} />
                     </div>
                     <div className={"d-flex justify-content-center align-items-center " + styles.info_field}>
                         <p data-testid="student-select-message">select a student to start</p>
