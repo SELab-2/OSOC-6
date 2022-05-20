@@ -15,8 +15,8 @@ export interface CommunicationListProps {
 }
 
 /**
- * Component listing all communication with a given student. (In order as provided by the list)
- * @param student [IStudent] the communications need to be listed of.
+ * Component listing all communication with a given student. 
+ * @param student [IStudent] the communication that needs to be listed.
  */
 export default function CommunicationList({ student }: CommunicationListProps) {
     const { data: receivedCommunications, error: communicationsError } = useSWR(
