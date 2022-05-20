@@ -55,11 +55,16 @@ export function EditionRowComponent(props: EditionProps) {
                 <Col>{edition.year}</Col>
                 <Col>{edition.active ? capitalize(t("active")) : capitalize(t("not active"))}</Col>
                 <Col xs={1}>
-                    <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
+                    <a
+                        style={{ cursor: "pointer" }}
+                        onClick={useRightUrlAndGlobalContext}
+                        data-testid="list-view-edition"
+                    >
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
                     {currentUserIsAdmin && (
                         <a
+                            style={{ padding: "1rem", cursor: "pointer" }}
                             href={transformer(
                                 applicationPaths.editionBase +
                                     "/" +
@@ -76,7 +81,11 @@ export function EditionRowComponent(props: EditionProps) {
                         </a>
                     )}
                     {currentUserIsAdmin && (
-                        <a onClick={deleteEdition} data-testid="list-delete-edition">
+                        <a
+                            style={{ cursor: "pointer" }}
+                            onClick={deleteEdition}
+                            data-testid="list-delete-edition"
+                        >
                             <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                         </a>
                     )}

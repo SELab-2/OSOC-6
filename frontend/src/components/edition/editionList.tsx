@@ -1,18 +1,15 @@
 import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
-import { getAllUsersFromPage } from "../../api/calls/userCalls";
-import styles from "../../styles/usersOverview.module.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { capitalize } from "../../utility/stringUtil";
-import { IUser, UserRole } from "../../api/entities/UserEntity";
-import UserComponent from "../user/manageUserComponent";
 import { IEdition } from "../../api/entities/EditionEntity";
 import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import { useCurrentAdminUser, useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import styles from "../../styles/editionList.module.css";
 
 export function EditionList() {
     const { t } = useTranslation("common");
@@ -30,12 +27,17 @@ export function EditionList() {
     return (
         <div data-testid="edition-list">
             <Container style={{ marginTop: "50px" }}>
-                <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
-                {currentUserIsAdmin && (
-                    <Button data-testid="new-edition" href={transformer(applicationPaths.editionCreate)}>
+                <div className={styles.edition_header}>
+                    <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
+                    {currentUserIsAdmin && (
+                    <Button
+                        className={styles.edition_new_button}
+                        href={transformer(applicationPaths.editionCreate)}
+                    >
                         {capitalize(t("create new edition"))}
                     </Button>
-                )}
+                    )}
+                </div>
                 <Row>
                     <Col>
                         <h6>{capitalize(t("name"))}</h6>
