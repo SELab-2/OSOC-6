@@ -9,6 +9,7 @@ import { Field } from "formik";
 import SkillBadge from "../util/skillBadge";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
+import styles from "../../styles/conflicts.module.css";
 
 /**
  * List item representation of an assignment. Just shows the reason of the assignment.
@@ -64,27 +65,29 @@ export default function ConflictResolutionRadioButton({
     const project: IProject = receivedProject || emptyProject;
 
     return (
-        <div>
-            <label>
+        <>
+            <div className={styles.conflict_div_button_and_project}>
                 <Field
                     type="radio"
+                    className={styles.conflict_radio_button}
                     name={fieldName}
                     id={skill._links.self.href}
                     value={skill._links.self.href}
                     data-testid={"radio-conflict-" + skill._links.self.href}
                 />
-                {project.name} <SkillBadge skill={skill.name} />
-                <div>
-                    {capitalize(t("reason(s)"))}:
-                    <ul>
-                        {assignments
-                            .sort((a, b) => a.localeCompare(b))
-                            .map((assignmentUrl) => (
-                                <AssignmentReasonListItem assignmentUrl={assignmentUrl} key={assignmentUrl} />
-                            ))}
-                    </ul>
-                </div>
-            </label>
-        </div>
+                <p className={styles.conflict_project_name}>{project.name}</p>
+                <SkillBadge skill={skill.name} />
+            </div>
+            <div className={styles.conflict_reasons}>
+                <p>{capitalize(t("reason(s)"))}:</p>
+                <ul>
+                    {assignments
+                        .sort((a, b) => a.localeCompare(b))
+                        .map((assignmentUrl) => (
+                            <AssignmentReasonListItem assignmentUrl={assignmentUrl} key={assignmentUrl} />
+                        ))}
+                </ul>
+            </div>
+        </>
     );
 }
