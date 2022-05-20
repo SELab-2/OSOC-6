@@ -87,7 +87,7 @@ export function UserComponent(props: any) {
                     </DropdownButton>
                 </Col>
                 <Col xs={1}>
-                    <a style={{cursor: "pointer"}} onClick={deleteUser} data-testid="overview-delete-user">
+                    <a style={{ cursor: "pointer" }} onClick={deleteUser} data-testid="overview-delete-user">
                         <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                     </a>
                 </Col>

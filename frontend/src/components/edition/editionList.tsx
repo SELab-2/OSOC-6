@@ -27,7 +27,10 @@ export function EditionList() {
             <Container style={{ marginTop: "50px" }}>
                 <div className={styles.edition_header}>
                     <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
-                    <Button className={styles.edition_new_button} href={transformer(applicationPaths.editionCreate)}>
+                    <Button
+                        className={styles.edition_new_button}
+                        href={transformer(applicationPaths.editionCreate)}
+                    >
                         {capitalize(t("create new edition"))}
                     </Button>
                 </div>

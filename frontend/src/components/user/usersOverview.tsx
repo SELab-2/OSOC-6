@@ -23,7 +23,7 @@ export function UsersOverview() {
     return (
         <div data-testid="user-overview" className={styles.users_full_div}>
             <Container style={{ marginTop: "50px" }}>
-                <div style={{display: "flex"}}>
+                <div style={{ display: "flex" }}>
                     <h2 style={{ marginBottom: "40px" }}>{capitalize(t("users manage"))}</h2>
                     <InvitationButton />
                 </div>

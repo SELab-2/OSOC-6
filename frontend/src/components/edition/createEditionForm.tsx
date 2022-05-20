@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { Edition } from "../../api/entities/EditionEntity";
 import { editionSubmitHandler } from "../../handlers/editionHandler";
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row } from "react-bootstrap";
 import styles from "../../styles/editionList.module.css";
 
 /**
@@ -26,7 +26,14 @@ export default function CreateEditionForm() {
                             </label>
                         </Col>
                         <Col>
-                            <Field className={styles.edition_create_field} type="text" name="name" required id="editionNameField" data-testid="name" />
+                            <Field
+                                className={styles.edition_create_field}
+                                type="text"
+                                name="name"
+                                required
+                                id="editionNameField"
+                                data-testid="name"
+                            />
                         </Col>
                     </Row>
                     <Row className={styles.edition_create_row}>
@@ -55,10 +62,20 @@ export default function CreateEditionForm() {
                             </label>
                         </Col>
                         <Col>
-                            <Field type="checkbox" name="active" id="editionActiveField" data-testid="active" />
+                            <Field
+                                type="checkbox"
+                                name="active"
+                                id="editionActiveField"
+                                data-testid="active"
+                            />
                         </Col>
                     </Row>
-                    <button style={{marginTop: "2rem"}} className="capitalize btn btn-outline-primary" data-testid="submit" type="submit">
+                    <button
+                        style={{ marginTop: "2rem" }}
+                        className="capitalize btn btn-outline-primary"
+                        data-testid="submit"
+                        type="submit"
+                    >
                         {t("confirm")}
                     </button>
                 </Form>
