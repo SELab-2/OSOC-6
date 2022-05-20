@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
 import { getStudentOnUrl } from "../../../api/calls/studentCalls";
-import {NextPage} from "next";
+import { NextPage } from "next";
 import NavBar from "../../../components/util/navBar";
 import styles from "../../../styles/pageGrids.module.css";
-import {StudentFilterComponent} from "../../../components/student/studentFilterComponent";
-import {StudentList} from "../../../components/student/studentList";
+import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
+import { StudentList } from "../../../components/student/studentList";
 
 const CommunicationPage: NextPage = () => {
     const router = useRouter();
@@ -35,10 +35,11 @@ const CommunicationPage: NextPage = () => {
                         <StudentList isDraggable={false} />
                     </div>
                     <div className={styles.info_field}>
-                        <div className={"d-flex justify-content-center align-items-center h-100 w-100"}
+                        <div
+                            className={"d-flex justify-content-center align-items-center h-100 w-100"}
                             data-testid="student-communication"
                         >
-                            <StudentCommunication student={receivedStudent}/>
+                            <StudentCommunication student={receivedStudent} />
                         </div>
                     </div>
                 </div>

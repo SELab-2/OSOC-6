@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import {Button, Col, Row} from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import NavBar from "../../components/util/navBar";
 import styles from "../../styles/pageGrids.module.css";
 import { StudentList } from "../../components/student/studentList";

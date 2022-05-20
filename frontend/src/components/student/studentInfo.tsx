@@ -13,7 +13,11 @@ import { getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
-import {extractIdFromApiEntityUrl, getParamsFromQueryUrl, getQueryUrlFromParams} from "../../api/calls/baseCalls";
+import {
+    extractIdFromApiEntityUrl,
+    getParamsFromQueryUrl,
+    getQueryUrlFromParams,
+} from "../../api/calls/baseCalls";
 
 /**
  * Give an overview of all the studentinfo
@@ -55,7 +59,8 @@ export function StudentInfo() {
 
     async function openCommunications() {
         const params = getParamsFromQueryUrl(router.asPath);
-        const studentCommUrl = "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
+        const studentCommUrl =
+            "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
         const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
         await router.push(studentCommUrlParams);
     }
@@ -63,9 +68,14 @@ export function StudentInfo() {
     return (
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
-                <div className="row w-100" style={{paddingBottom: 15}}>
-                    <Button variant="btn-outline" style={{color: "white", borderColor: "white"}}
-                    onClick={openCommunications}>Communication</Button>
+                <div className="row w-100" style={{ paddingBottom: 15 }}>
+                    <Button
+                        variant="btn-outline"
+                        style={{ color: "white", borderColor: "white" }}
+                        onClick={openCommunications}
+                    >
+                        Communication
+                    </Button>
                 </div>
                 <div className="row w-100">
                     <div className="col-sm-6">
