@@ -7,6 +7,9 @@ import CreateCommunicationForm from "../../../components/communication/createCom
 import { capitalize } from "../../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 
+/**
+ * Page that allows you to register a new communication with the given student.
+ */
 export default function CommunicationInfoPage() {
     const { t } = useTranslation("common");
     const router = useRouter();
