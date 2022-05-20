@@ -61,7 +61,7 @@ export default function InvitationButton() {
     }
 
     return (
-        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+        <div style={{ marginRight: "0", marginLeft: "auto", maxHeight: "2.6rem" }}>
             <Button data-testid="invite-button" onClick={onClick}>
                 {capitalize(t("invite user"))}
             </Button>
