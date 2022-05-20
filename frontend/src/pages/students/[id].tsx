@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Col, Row } from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import NavBar from "../../components/util/navBar";
 import styles from "../../styles/pageGrids.module.css";
 import { StudentList } from "../../components/student/studentList";
@@ -19,7 +19,6 @@ const StudentsIDPage: NextPage = () => {
                         <StudentList isDraggable={false} />
                     </div>
                     <div className={styles.info_field}>
-                        {/* Replace this div with the correct component */}
                         <div
                             className={"d-flex justify-content-center align-items-center h-100"}
                             data-testid="student-info"
