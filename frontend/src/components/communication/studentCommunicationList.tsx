@@ -9,12 +9,16 @@ import CommunicationListItem from "./communicationListItem";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
+import { Accordion, Container } from "react-bootstrap";
+import AccordionItem from "react-bootstrap/AccordionItem";
+import AccordionHeader from "react-bootstrap/AccordionHeader";
+import {getStudentQueryParamsFromQuery} from "../student/studentFilterComponent";
 
 export interface CommunicationListProps {
     student: IStudent | undefined;
 }
 
-export default function StudentCommunication({ student }: CommunicationListProps) {
+export default function StudentCommunicationList({ student }: CommunicationListProps) {
     const router = useRouter();
     const studentId = extractIdFromStudentUrl(student!._links.self.href);
     const { data: receivedCommunications, error: communicationsError } = useSWR(
@@ -37,8 +41,10 @@ export default function StudentCommunication({ student }: CommunicationListProps
     async function openStudentInfo() {
         const params = getParamsFromQueryUrl(router.asPath);
         const studentCommUrl = "/" + applicationPaths.students + "/" + studentId;
-        const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
-        await router.push(studentCommUrlParams);
+        await router.replace({
+            pathname: studentCommUrl,
+            query: { ...router.query, ...params },
+        });
     }
 
     return (
@@ -58,14 +64,17 @@ export default function StudentCommunication({ student }: CommunicationListProps
                         <h1>{student?.callName}</h1>
                     </div>
                     <div data-testid="communication-list">
-                        <ul>
-                            {communications.map((communication) => (
-                                <CommunicationListItem
-                                    communication={communication}
-                                    key={communication._links.self.href}
-                                />
-                            ))}
-                        </ul>
+                        <Container className="overflow-auto h-100 pt-2">
+                            <Accordion>
+                                {communications.map((communication, index) => {
+                                    return (
+                                        <AccordionItem key={index} eventKey={`${index}`} data-testid="communication">
+                                            <CommunicationListItem communication={communication} key={communication._links.self.href} index={index} />
+                                        </AccordionItem>
+                                    );
+                                })}
+                            </Accordion>
+                        </Container>
                     </div>
                 </div>
             </div>

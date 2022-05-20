@@ -1,4 +1,4 @@
-import StudentCommunication from "../../../components/communication/studentCommunication";
+import StudentCommunicationList from "../../../components/communication/studentCommunicationList";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
@@ -39,7 +39,7 @@ const CommunicationPage: NextPage = () => {
                             className={"d-flex justify-content-center align-items-center h-100 w-100"}
                             data-testid="student-communication"
                         >
-                            <StudentCommunication student={receivedStudent} />
+                            <StudentCommunicationList student={receivedStudent} />
                         </div>
                     </div>
                 </div>

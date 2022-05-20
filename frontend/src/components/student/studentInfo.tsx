@@ -18,6 +18,7 @@ import {
     getParamsFromQueryUrl,
     getQueryUrlFromParams,
 } from "../../api/calls/baseCalls";
+import {getStudentQueryParamsFromQuery} from "./studentFilterComponent";
 
 /**
  * Give an overview of all the studentinfo
@@ -58,10 +59,12 @@ export function StudentInfo() {
     }
 
     async function openCommunications() {
-        const params = getParamsFromQueryUrl(router.asPath);
+        const params = getStudentQueryParamsFromQuery(router.query);
+        console.log(params);
         const studentCommUrl =
             "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
         const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
+        console.log(studentCommUrlParams);
         await router.push(studentCommUrlParams);
     }
 

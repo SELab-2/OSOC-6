@@ -280,6 +280,27 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     }
     console.log(containedCommunications);
 
+    let newCommications: Communication[] = [];
+    for (let student of containedStudents) {
+        const studenturi = student._links.self.href;
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+            const communication: Communication = new Communication(
+                "email",
+                containedTemplates[0]._links.self.href,
+                faker.random.words(15),
+                own_user_url,
+                studenturi
+            );
+            newCommications.push(communication)
+        }
+    }
+
+    await Promise.all(
+        newCommications.map(
+            async (com) => (await axios.post(apiPaths.communications, com,AxiosConf)).data
+        )
+    );
+
     const suggestions: ISuggestionPage = (await axios.get(apiPaths.suggestions, AxiosConf)).data;
     let containedSuggestions: ISuggestion[];
     if (suggestions._embedded.suggestions.length == 0) {

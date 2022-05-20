@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
-import StudentCommunication from "../../../src/components/communication/studentCommunication";
+import StudentCommunicationList from "../../../src/components/communication/studentCommunicationList";
 import {
     getBaseCommunication,
     getBaseCommunicationTemplate,
@@ -17,14 +17,14 @@ import { string } from "prop-types";
 
 describe("communication list", () => {
     it("renders", () => {
-        const page = render(<StudentCommunication student={undefined} />);
+        const page = render(<StudentCommunicationList student={undefined} />);
         expect(page.getByTestId("communication-list")).toBeInTheDocument();
     });
 
     it("Renders with data ", async () => {
         const studentId = "1";
         const student = getBaseStudent(studentId);
-        const list = render(makeCacheFree(() => <StudentCommunication student={student} />));
+        const list = render(makeCacheFree(() => <StudentCommunicationList student={student} />));
 
         const communication = getBaseCommunication("2");
         await waitFor(() => {
