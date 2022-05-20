@@ -105,7 +105,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                                     >
                                         {selectedTemplate
                                             ? selectedTemplate.name
-                                            : capitalize(t("choose your template"))}
+                                            : capitalize(t("choose template"))}
                                     </Dropdown.Toggle>
                                     <DropdownMenu>
                                         {templates.map((template) => (
