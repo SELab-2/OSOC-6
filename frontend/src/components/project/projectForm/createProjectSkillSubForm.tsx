@@ -3,7 +3,7 @@ import SkillBadge from "../../util/skillBadge";
 import Image from "next/image";
 import { Field } from "formik";
 import { capitalize } from "../../../utility/stringUtil";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
@@ -38,6 +38,11 @@ export default function CreateProjectSkillSubForm({
     const [selectedSkill, setSelectedSkill] = useState<string>("");
     const [skillInfo, setSkillInfo] = useState<string>("");
 
+    const baseSkill = skillTypes[0]?.name;
+    useEffect(() => {
+        setSelectedSkill(baseSkill);
+    }, [baseSkill]);
+
     function handleAddCreatedSkill() {
         if (!selectedSkill) {
             setSelectedSkill(skillTypes[0].name);
@@ -53,12 +58,8 @@ export default function CreateProjectSkillSubForm({
         setSkillInfo("");
     }
 
-    function initialize() {
-        setSelectedSkill(skillTypes[0].name);
-    }
-
     return (
-        <div onLoad={initialize}>
+        <div>
             {createdSkillInfos.map((skillInfo: string, index: number) => (
                 <Row key={index}>
                     <Col>
@@ -93,7 +94,7 @@ export default function CreateProjectSkillSubForm({
                     }}
                     data-testid="skill-input"
                 >
-                    {selectedSkill ? selectedSkill : capitalize(t("skill type"))}
+                    {selectedSkill}
                 </Dropdown.Toggle>
                 <DropdownMenu>
                     {skillTypes.map((skillType) => (

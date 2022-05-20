@@ -118,8 +118,6 @@ export function ProjectForm({ project }: ProjectCreationProps) {
             ],
         };
 
-        console.log(createdCoachesUrls);
-
         // We can use ! for edition and currentUser because this function is never called if it is undefined.
         await projectFormSubmitHandler(
             project ? project : null,

@@ -1,7 +1,7 @@
 import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import Image from "next/image";
 import { capitalize } from "../../../utility/stringUtil";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useSwrWithEdition } from "../../../hooks/utilHooks";
 import apiPaths from "../../../properties/apiPaths";
@@ -25,6 +25,11 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
 
     const [selectedCoach, setSelectedCoach] = useState<string>("");
     const [coaches, setCoaches] = useState<string[]>([]);
+
+    const baseUser = allUsers[0]?.callName;
+    useEffect(() => {
+        setSelectedCoach(baseUser);
+    }, [baseUser]);
 
     if (usersError) {
         console.log(usersError);
@@ -56,12 +61,8 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
         }
     }
 
-    function initialize() {
-        setSelectedCoach(allUsers[0].callName);
-    }
-
     return (
-        <div onLoad={initialize}>
+        <div>
             {coaches.map((coach: string, index: number) => (
                 <Row key={index}>
                     <Col>{coach}</Col>
@@ -87,7 +88,7 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
                     }}
                     data-testid="coach-input"
                 >
-                    {selectedCoach ? selectedCoach : "Pick a coach"}
+                    {selectedCoach}
                 </Dropdown.Toggle>
                 <DropdownMenu>
                     {allUsers.map((user) => (
