@@ -27,13 +27,16 @@ export async function createCommunicationTemplateSubmitHandler(
         result = await createNewCommunicationTemplate(values);
         console.log(result);
     }
-    // const id = extractIdFromCommunicationTemplateUrl(result._links.self.href);
+    const id = router.query.id;
 
-    // await Promise.all([
-    //     mutate(apiPaths.communicationTemplates),
-    //     mutate(result._links.self.href, result),
-    //     router.push("/" + applicationPaths.communicationTemplateBase + "/" + id),
-    // ]);
+    await Promise.all([
+        mutate(apiPaths.communicationTemplates),
+        mutate(result._links.self.href, result),
+        router.replace({
+            pathname: "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration,
+            query: {...router.query}
+        }),
+    ]);
 
     return result;
 }
