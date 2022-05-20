@@ -4,13 +4,12 @@ import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import OptionsMenu from "./optionsMenu";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { UserRole } from "../../api/entities/UserEntity";
+import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
     const transformer = useEditionApplicationPathTransformer();
-    const { user: user } = useCurrentUser(true);
+    const currentUserIsAdmin = useCurrentAdminUser();
 
     return (
         <div className="capitalize" data-testid="nav-bar">
@@ -30,7 +29,7 @@ export const NavBar = () => {
                                     {t("students")}
                                 </Nav.Link>
                             </Nav.Item>
-                            {user?.userRole == UserRole.admin && (
+                            {currentUserIsAdmin && (
                                 <Nav.Item data-testid="navbar-users">
                                     <Nav.Link href={transformer("/" + applicationPaths.users)}>
                                         {t("users")}

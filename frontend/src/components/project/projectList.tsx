@@ -6,14 +6,13 @@ import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { UserRole } from "../../api/entities/UserEntity";
+import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
 
 export function ProjectList() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
-    const { user: user } = useCurrentUser(true);
+    const currentUserIsAdmin = useCurrentAdminUser();
 
     let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
     data = data || [];
@@ -50,7 +49,7 @@ export function ProjectList() {
                         </ListGroup.Item>
                     ))}
             </ListGroup>
-            {user?.userRole == UserRole.admin && <NewProjectButton />}
+            {currentUserIsAdmin && <NewProjectButton />}
         </div>
     );
 }

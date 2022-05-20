@@ -12,13 +12,14 @@ import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser, useCurrentUser } from '../../hooks/useCurrentUser';
 
 export function EditionList() {
     const { t } = useTranslation("common");
-    const { user: user } = useCurrentUser(true);
+    const currentUserIsAdmin = useCurrentAdminUser();
     let { data, error } = useSWR(apiPaths.editions, getAllEditionsFromPage);
     const transformer = useEditionApplicationPathTransformer();
+
 
     data = data || [];
 
@@ -31,7 +32,7 @@ export function EditionList() {
         <div data-testid="edition-list">
             <Container style={{ marginTop: "50px" }}>
                 <h2 style={{ marginBottom: "40px" }}>{capitalize(t("manage editions"))}</h2>
-                {user?.userRole === UserRole.admin && (
+                {currentUserIsAdmin && (
                     <Button data-testid="new-edition" href={transformer(applicationPaths.editionCreate)}>
                         {capitalize(t("create new edition"))}
                     </Button>

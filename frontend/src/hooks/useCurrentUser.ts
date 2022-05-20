@@ -1,4 +1,4 @@
-import { IUser } from "../api/entities/UserEntity";
+import { IUser, UserRole } from '../api/entities/UserEntity';
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { CommonSWRConfig } from "./shared";
@@ -18,4 +18,13 @@ export function useCurrentUser(
         return { error: new Error("Not logged in") };
     }
     return { user: data };
+}
+
+/**
+ * Hook returning if the current user is an admin or not.
+ */
+export function useCurrentAdminUser(): boolean {
+    const { user: user } = useCurrentUser();
+    return user?.userRole === UserRole.admin;
+
 }

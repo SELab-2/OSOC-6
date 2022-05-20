@@ -9,12 +9,9 @@ import { capitalize } from "../../utility/stringUtil";
 import timers from "../../properties/timers";
 import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
-import useEdition from "../../hooks/useGlobalEdition";
 import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
-import { useRouter } from "next/router";
 import { IEdition } from "../../api/entities/EditionEntity";
-import { UserRole } from "../../api/entities/UserEntity";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
 
 type EditionProps = {
     edition: IEdition;
@@ -27,7 +24,7 @@ export function EditionRowComponent(props: EditionProps) {
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
     const globalEditionSetter = useGlobalEditionSetter();
-    const { user: user } = useCurrentUser(true);
+    const currentUserIsAdmin = useCurrentAdminUser();
 
     if (!edition) {
         return null;
@@ -61,7 +58,7 @@ export function EditionRowComponent(props: EditionProps) {
                     <a onClick={useRightUrlAndGlobalContext} data-testid="list-view-edition">
                         <Image alt="" src={"/resources/view.svg"} width="15" height="15" />
                     </a>
-                    {user?.userRole === UserRole.admin && (
+                    {currentUserIsAdmin && (
                         <a
                             href={transformer(
                                 applicationPaths.editionBase +
@@ -78,7 +75,7 @@ export function EditionRowComponent(props: EditionProps) {
                             />
                         </a>
                     )}
-                    {user?.userRole === UserRole.admin && (
+                    {currentUserIsAdmin && (
                         <a onClick={deleteEdition} data-testid="list-delete-edition">
                             <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                         </a>
