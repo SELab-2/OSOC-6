@@ -6,7 +6,7 @@ import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
-import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export function ProjectList() {
     const { t } = useTranslation("common");

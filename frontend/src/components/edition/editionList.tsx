@@ -12,14 +12,13 @@ import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import { useCurrentAdminUser, useCurrentUser } from '../../hooks/useCurrentUser';
+import { useCurrentAdminUser, useCurrentUser } from "../../hooks/useCurrentUser";
 
 export function EditionList() {
     const { t } = useTranslation("common");
     const currentUserIsAdmin = useCurrentAdminUser();
     let { data, error } = useSWR(apiPaths.editions, getAllEditionsFromPage);
     const transformer = useEditionApplicationPathTransformer();
-
 
     data = data || [];
 

@@ -1,4 +1,4 @@
-import { IUser, UserRole } from '../api/entities/UserEntity';
+import { IUser, UserRole } from "../api/entities/UserEntity";
 import useSWR from "swr";
 import apiPaths from "../properties/apiPaths";
 import { CommonSWRConfig } from "./shared";
@@ -26,5 +26,4 @@ export function useCurrentUser(
 export function useCurrentAdminUser(): boolean {
     const { user: user } = useCurrentUser();
     return user?.userRole === UserRole.admin;
-
 }

@@ -11,7 +11,7 @@ import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionC
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { IEdition } from "../../api/entities/EditionEntity";
-import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 type EditionProps = {
     edition: IEdition;
