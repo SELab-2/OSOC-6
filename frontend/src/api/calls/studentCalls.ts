@@ -4,8 +4,8 @@ import {
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
-} from './baseCalls';
-import { IStudent, OsocExpericience, Status, studentCollectionName } from '../entities/StudentEntity';
+} from "./baseCalls";
+import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
 
 export interface IStudentQueryParams {
     freeText: string;

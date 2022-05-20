@@ -1,9 +1,9 @@
-import useTranslation from 'next-translate/useTranslation';
-import { Button } from 'react-bootstrap';
-import { useRouter } from 'next/router';
-import applicationPaths from '../../properties/applicationPaths';
-import styles from '../../styles/projects/projectList.module.css';
-import { useEditionApplicationPathTransformer } from '../../hooks/utilHooks';
+import useTranslation from "next-translate/useTranslation";
+import { Button } from "react-bootstrap";
+import { useRouter } from "next/router";
+import applicationPaths from "../../properties/applicationPaths";
+import styles from "../../styles/projects/projectList.module.css";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 
 export const NewProjectButton = () => {
     const { t } = useTranslation("common");

@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom';
-import { render, RenderResult, waitFor } from '@testing-library/react';
-import ConflictResolutionList from '../../../src/components/conflictResolution/conflictResolutionList';
+import "@testing-library/jest-dom";
+import { render, RenderResult, waitFor } from "@testing-library/react";
+import ConflictResolutionList from "../../../src/components/conflictResolution/conflictResolutionList";
 import {
     getBaseAssignment,
     getBaseOkResponse,
@@ -8,14 +8,14 @@ import {
     getBaseProject,
     getBaseProjectSkill,
     getBaseStudent,
-} from '../TestEntityProvider';
-import { makeCacheFree } from '../Provide';
-import mockAxios from 'jest-mock-axios';
-import apiPaths from '../../../src/properties/apiPaths';
-import { studentCollectionName } from '../../../src/api/entities/StudentEntity';
-import { getValidAssignmentsUrlForStudent } from '../../../src/api/calls/AssignmentCalls';
-import userEvent from '@testing-library/user-event';
-import { assignmentCollectionName } from '../../../src/api/entities/AssignmentEntity';
+} from "../TestEntityProvider";
+import { makeCacheFree } from "../Provide";
+import mockAxios from "jest-mock-axios";
+import apiPaths from "../../../src/properties/apiPaths";
+import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
+import { getValidAssignmentsUrlForStudent } from "../../../src/api/calls/AssignmentCalls";
+import userEvent from "@testing-library/user-event";
+import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

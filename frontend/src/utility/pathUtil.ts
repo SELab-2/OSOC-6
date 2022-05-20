@@ -1,4 +1,4 @@
-import applicationPaths from '../properties/applicationPaths';
+import applicationPaths from "../properties/applicationPaths";
 
 /**
  * Function that checks if a path is a path that can be accessed without authentication.

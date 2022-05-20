@@ -1,18 +1,18 @@
-import { useRouter } from 'next/router';
-import { Field, Form, Formik } from 'formik';
-import { ParsedUrlQueryInput } from 'querystring';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
-import { IStudentQueryParams } from '../../api/calls/studentCalls';
-import { ButtonGroup, Col, Dropdown, Row } from 'react-bootstrap';
-import DropdownMenu from 'react-bootstrap/DropdownMenu';
-import DropdownItem from 'react-bootstrap/DropdownItem';
-import Image from 'next/image';
-import useSWR from 'swr';
-import { getAllSkillTypesFromPage } from '../../api/calls/skillTypeCalls';
-import { useState } from 'react';
-import SkillBadge from '../util/skillBadge';
-import apiPaths from '../../properties/apiPaths';
+import { useRouter } from "next/router";
+import { Field, Form, Formik } from "formik";
+import { ParsedUrlQueryInput } from "querystring";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
+import { IStudentQueryParams } from "../../api/calls/studentCalls";
+import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import Image from "next/image";
+import useSWR from "swr";
+import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
+import { useState } from "react";
+import SkillBadge from "../util/skillBadge";
+import apiPaths from "../../properties/apiPaths";
 
 function boolToString(bool: boolean | undefined) {
     return bool ? "true" : "false";

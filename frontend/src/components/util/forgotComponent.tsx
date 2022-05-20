@@ -1,9 +1,9 @@
-import useTranslation from 'next-translate/useTranslation';
-import styles from '../../styles/forgotPassword.module.css';
-import { useState } from 'react';
-import { capitalize } from '../../utility/stringUtil';
-import { Field, Form, Formik } from 'formik';
-import { AxiosResponse } from 'axios';
+import useTranslation from "next-translate/useTranslation";
+import styles from "../../styles/forgotPassword.module.css";
+import { useState } from "react";
+import { capitalize } from "../../utility/stringUtil";
+import { Field, Form, Formik } from "formik";
+import { AxiosResponse } from "axios";
 
 /**
  * The props needed for the ForgotComponent.

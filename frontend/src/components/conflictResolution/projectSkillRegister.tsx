@@ -1,7 +1,7 @@
-import { IAssignment } from '../../api/entities/AssignmentEntity';
-import useSWR from 'swr';
-import { getProjectSkillOnUrl } from '../../api/calls/projectSkillCalls';
-import { useEffect } from 'react';
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import useSWR from "swr";
+import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
+import { useEffect } from "react";
 
 /**
  * Properties needed by [ProjectSkillRegister].

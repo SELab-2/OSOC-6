@@ -1,9 +1,9 @@
-import apiPaths from '../properties/apiPaths';
-import { NextRouter } from 'next/router';
-import { ScopedMutator } from 'swr/dist/types';
-import { getUserOnUrl, postLoginFromForm } from '../api/calls/userCalls';
-import applicationPaths from '../properties/applicationPaths';
-import { getAllEditionsFromPage } from '../api/calls/editionCalls';
+import apiPaths from "../properties/apiPaths";
+import { NextRouter } from "next/router";
+import { ScopedMutator } from "swr/dist/types";
+import { getUserOnUrl, postLoginFromForm } from "../api/calls/userCalls";
+import applicationPaths from "../properties/applicationPaths";
+import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 
 export interface LoginValues {
     username: string;

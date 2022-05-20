@@ -1,16 +1,16 @@
-import { IProjectSkill } from '../../api/entities/ProjectSkillEntity';
-import useSWR, { useSWRConfig } from 'swr';
+import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
+import useSWR, { useSWRConfig } from "swr";
 import {
     deleteAssignment,
     getAllAssignmentsFromPage,
     getValidAssignmentsUrlForProjectSkill,
-} from '../../api/calls/AssignmentCalls';
-import WarningToast from '../util/warningToast';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
-import { IAssignment } from '../../api/entities/AssignmentEntity';
-import AssignmentStudentRow from './assignmentStudentRow';
-import SkillBadge from '../util/skillBadge';
+} from "../../api/calls/AssignmentCalls";
+import WarningToast from "../util/warningToast";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import AssignmentStudentRow from "./assignmentStudentRow";
+import SkillBadge from "../util/skillBadge";
 
 export interface IAssignmentItemProps {
     skill: IProjectSkill;

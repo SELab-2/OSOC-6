@@ -1,14 +1,14 @@
-import { CloseButton, Col, Row } from 'react-bootstrap';
-import applicationPaths from '../../properties/applicationPaths';
-import { extractIdFromStudentUrl, getStudentOnUrl } from '../../api/calls/studentCalls';
-import { capitalize } from '../../utility/stringUtil';
-import { IAssignment } from '../../api/entities/AssignmentEntity';
-import useSWR from 'swr';
-import useTranslation from 'next-translate/useTranslation';
-import { emptyStudent, IStudent } from '../../api/entities/StudentEntity';
-import { emptyUser, IUser } from '../../api/entities/UserEntity';
-import { extractIdFromAssignmentUrl } from '../../api/calls/AssignmentCalls';
-import { getUserOnUrl } from '../../api/calls/userCalls';
+import { CloseButton, Col, Row } from "react-bootstrap";
+import applicationPaths from "../../properties/applicationPaths";
+import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { capitalize } from "../../utility/stringUtil";
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import useSWR from "swr";
+import useTranslation from "next-translate/useTranslation";
+import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
+import { emptyUser, IUser } from "../../api/entities/UserEntity";
+import { extractIdFromAssignmentUrl } from "../../api/calls/AssignmentCalls";
+import { getUserOnUrl } from "../../api/calls/userCalls";
 
 /**
  * Properties used by [AssignmentStudentRow].

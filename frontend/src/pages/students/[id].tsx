@@ -1,9 +1,9 @@
-import { NextPage } from 'next';
-import NavBar from '../../components/util/navBar';
-import styles from '../../styles/pageGrids.module.css';
-import { StudentList } from '../../components/student/studentList';
-import { StudentInfo } from '../../components/student/studentInfo';
-import { StudentFilterComponent } from '../../components/student/studentFilterComponent';
+import { NextPage } from "next";
+import NavBar from "../../components/util/navBar";
+import styles from "../../styles/pageGrids.module.css";
+import { StudentList } from "../../components/student/studentList";
+import { StudentInfo } from "../../components/student/studentInfo";
+import { StudentFilterComponent } from "../../components/student/studentFilterComponent";
 
 const StudentsIDPage: NextPage = () => {
     return (

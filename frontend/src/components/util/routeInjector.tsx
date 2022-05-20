@@ -1,17 +1,17 @@
-import useEdition from '../../hooks/useGlobalEdition';
-import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import { getQueryUrlFromParams } from '../../api/calls/baseCalls';
-import apiPaths from '../../properties/apiPaths';
-import { getAllEditionsFromPage, getEditionByName, getEditionOnUrl } from '../../api/calls/editionCalls';
-import { useEffect } from 'react';
-import applicationPaths from '../../properties/applicationPaths';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
-import { Button } from 'react-bootstrap';
-import NavBar from './navBar';
-import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { pathIsAuthException } from '../../utility/pathUtil';
+import useEdition from "../../hooks/useGlobalEdition";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import apiPaths from "../../properties/apiPaths";
+import { getAllEditionsFromPage, getEditionByName, getEditionOnUrl } from "../../api/calls/editionCalls";
+import { useEffect } from "react";
+import applicationPaths from "../../properties/applicationPaths";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
+import { Button } from "react-bootstrap";
+import NavBar from "./navBar";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { pathIsAuthException } from "../../utility/pathUtil";
 
 export default function RouteInjector({ children }: any) {
     const router = useRouter();

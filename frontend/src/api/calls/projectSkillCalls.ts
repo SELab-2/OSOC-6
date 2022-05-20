@@ -1,5 +1,5 @@
-import { getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from './baseCalls';
-import { IProjectSkill, projectSkillCollectionName } from '../entities/ProjectSkillEntity';
+import { getAllEntitiesFromLinksUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import { IProjectSkill, projectSkillCollectionName } from "../entities/ProjectSkillEntity";
 
 /**
  * Fetches all projects on a given ProjectSkillPageUrl

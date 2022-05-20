@@ -1,4 +1,4 @@
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from './BaseEntities';
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
 
 export interface IAssignment extends IBaseEntity {
     isValid: boolean;

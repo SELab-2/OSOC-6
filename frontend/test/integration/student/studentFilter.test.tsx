@@ -1,14 +1,14 @@
-import '@testing-library/jest-dom';
-import { act, render, RenderResult, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import mockRouter from 'next-router-mock';
-import { StudentFilterComponent } from '../../../src/components/student/studentFilterComponent';
-import mockAxios from 'jest-mock-axios';
-import apiPaths from '../../../src/properties/apiPaths';
-import { getBaseOkResponse, getBasePage, getBaseSkillType } from '../TestEntityProvider';
-import { skillTypeCollectionName } from '../../../src/api/entities/SkillTypeEntity';
-import { AxiosResponse } from 'axios';
-import { makeCacheFree } from '../Provide';
+import "@testing-library/jest-dom";
+import { act, render, RenderResult, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import mockRouter from "next-router-mock";
+import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";
+import mockAxios from "jest-mock-axios";
+import apiPaths from "../../../src/properties/apiPaths";
+import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import { AxiosResponse } from "axios";
+import { makeCacheFree } from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

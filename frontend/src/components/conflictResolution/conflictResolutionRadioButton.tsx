@@ -1,15 +1,15 @@
-import { emptyAssignment, IAssignment } from '../../api/entities/AssignmentEntity';
-import useSWR from 'swr';
-import { getAssignmentOnUrl } from '../../api/calls/AssignmentCalls';
-import { getProjectSkillOnUrl } from '../../api/calls/projectSkillCalls';
-import { getProjectOnUrl } from '../../api/calls/projectCalls';
-import { emptyProjectSkill, IProjectSkill } from '../../api/entities/ProjectSkillEntity';
-import { emptyProject, IProject } from '../../api/entities/ProjectEntity';
-import { Field } from 'formik';
-import SkillBadge from '../util/skillBadge';
-import { capitalize } from '../../utility/stringUtil';
-import useTranslation from 'next-translate/useTranslation';
-import styles from '../../styles/conflicts.module.css';
+import { emptyAssignment, IAssignment } from "../../api/entities/AssignmentEntity";
+import useSWR from "swr";
+import { getAssignmentOnUrl } from "../../api/calls/AssignmentCalls";
+import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
+import { getProjectOnUrl } from "../../api/calls/projectCalls";
+import { emptyProjectSkill, IProjectSkill } from "../../api/entities/ProjectSkillEntity";
+import { emptyProject, IProject } from "../../api/entities/ProjectEntity";
+import { Field } from "formik";
+import SkillBadge from "../util/skillBadge";
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
+import styles from "../../styles/conflicts.module.css";
 
 /**
  * List item representation of an assignment. Just shows the reason of the assignment.

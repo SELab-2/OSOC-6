@@ -1,17 +1,22 @@
-import '@testing-library/jest-dom';
-import InvitationButton from '../../src/components/user/invitationButton';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { getBaseActiveEdition, getBaseInvitation, getBaseOkResponse, getBaseUser } from './TestEntityProvider';
-import mockAxios from 'jest-mock-axios';
-import apiPaths from '../../src/properties/apiPaths';
-import { UserRole } from '../../src/api/entities/UserEntity';
+import "@testing-library/jest-dom";
+import InvitationButton from "../../src/components/user/invitationButton";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import {
+    getBaseActiveEdition,
+    getBaseInvitation,
+    getBaseOkResponse,
+    getBaseUser,
+} from "./TestEntityProvider";
+import mockAxios from "jest-mock-axios";
+import apiPaths from "../../src/properties/apiPaths";
+import { UserRole } from "../../src/api/entities/UserEntity";
 import {
     enableCurrentUser,
     enableUseEditionAxiosCall,
     enableUseEditionComponentWrapper,
     makeCacheFree,
-} from './Provide';
+} from "./Provide";
 
 describe("InvitationButton", () => {
     const currentUser = getBaseUser("10", UserRole.admin, true);

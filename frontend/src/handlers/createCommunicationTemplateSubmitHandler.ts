@@ -2,12 +2,15 @@ import {
     createNewCommunicationTemplate,
     editCommunicationTemplate,
     extractIdFromCommunicationTemplateUrl,
-} from '../api/calls/communicationTemplateCalls';
-import { CommunicationTemplateEntity, ICommunicationTemplate } from '../api/entities/CommunicationTemplateEntity';
-import { NextRouter } from 'next/router';
-import applicationPaths from '../properties/applicationPaths';
-import { ScopedMutator } from 'swr/dist/types';
-import apiPaths from '../properties/apiPaths';
+} from "../api/calls/communicationTemplateCalls";
+import {
+    CommunicationTemplateEntity,
+    ICommunicationTemplate,
+} from "../api/entities/CommunicationTemplateEntity";
+import { NextRouter } from "next/router";
+import applicationPaths from "../properties/applicationPaths";
+import { ScopedMutator } from "swr/dist/types";
+import apiPaths from "../properties/apiPaths";
 
 export async function createCommunicationTemplateSubmitHandler(
     url: string | null,

@@ -1,17 +1,17 @@
-import { MouseEventHandler } from 'react';
-import axios from 'axios';
-import apiPaths from '../properties/apiPaths';
-import { IUser, IUsersPage, User } from '../api/entities/UserEntity';
-import { Edition, IEdition, IEditionsPage } from '../api/entities/EditionEntity';
-import { IInvitation, IInvitationsPage, Invitation } from '../api/entities/InvitationEntity';
-import { IProject, IProjectPage, Project } from '../api/entities/ProjectEntity';
-import { IProjectSkill, IProjectSkillPage, ProjectSkill } from '../api/entities/ProjectSkillEntity';
-import { IUserSkill, IUserSkillPage, UserSkill } from '../api/entities/UserSkillEntity';
+import { MouseEventHandler } from "react";
+import axios from "axios";
+import apiPaths from "../properties/apiPaths";
+import { IUser, IUsersPage, User } from "../api/entities/UserEntity";
+import { Edition, IEdition, IEditionsPage } from "../api/entities/EditionEntity";
+import { IInvitation, IInvitationsPage, Invitation } from "../api/entities/InvitationEntity";
+import { IProject, IProjectPage, Project } from "../api/entities/ProjectEntity";
+import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/entities/ProjectSkillEntity";
+import { IUserSkill, IUserSkillPage, UserSkill } from "../api/entities/UserSkillEntity";
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
     ICommunicationTemplatePage,
-} from '../api/entities/CommunicationTemplateEntity';
+} from "../api/entities/CommunicationTemplateEntity";
 import {
     EnglishProficiency,
     Gender,
@@ -20,12 +20,17 @@ import {
     OsocExpericience,
     Status,
     Student,
-} from '../api/entities/StudentEntity';
-import { Communication, ICommunication, ICommunicationPage } from '../api/entities/CommunicationEntity';
-import { ISuggestion, ISuggestionPage, Suggestion, SuggestionStrategy } from '../api/entities/SuggestionEntity';
-import { Assignment, IAssignment, IAssignmentPage } from '../api/entities/AssignmentEntity';
-import { AxiosConf } from '../api/calls/baseCalls';
-import faker from '@faker-js/faker';
+} from "../api/entities/StudentEntity";
+import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
+import {
+    ISuggestion,
+    ISuggestionPage,
+    Suggestion,
+    SuggestionStrategy,
+} from "../api/entities/SuggestionEntity";
+import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
+import { AxiosConf } from "../api/calls/baseCalls";
+import faker from "@faker-js/faker";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;

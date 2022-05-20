@@ -1,11 +1,11 @@
-import '@testing-library/jest-dom';
-import { render, waitFor } from '@testing-library/react';
-import CommunicationTemplateCreate from '../../../src/pages/communicationTemplates/create';
-import userEvent from '@testing-library/user-event';
-import mockRouter from 'next-router-mock';
-import { CommunicationTemplateEntity } from '../../../src/api/entities/CommunicationTemplateEntity';
-import mockAxios from 'jest-mock-axios';
-import apiPaths from '../../../src/properties/apiPaths';
+import "@testing-library/jest-dom";
+import { render, waitFor } from "@testing-library/react";
+import CommunicationTemplateCreate from "../../../src/pages/communicationTemplates/create";
+import userEvent from "@testing-library/user-event";
+import mockRouter from "next-router-mock";
+import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
+import mockAxios from "jest-mock-axios";
+import apiPaths from "../../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

@@ -1,4 +1,4 @@
-import styles from '../../styles/background.module.css';
+import styles from "../../styles/background.module.css";
 
 export function Background() {
     return (

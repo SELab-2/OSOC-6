@@ -1,23 +1,23 @@
-import Login from '../../src/pages/login';
-import LoginForm from '../../src/components/user/loginForm';
-import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import mockAxios from 'jest-mock-axios';
-import { loginSubmitHandler, LoginValues } from '../../src/handlers/loginSubmitHandler';
-import apiPaths from '../../src/properties/apiPaths';
-import mockRouter from 'next-router-mock';
-import applicationPaths from '../../src/properties/applicationPaths';
-import { ScopedMutator } from 'swr/dist/types';
+import Login from "../../src/pages/login";
+import LoginForm from "../../src/components/user/loginForm";
+import "@testing-library/jest-dom";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import mockAxios from "jest-mock-axios";
+import { loginSubmitHandler, LoginValues } from "../../src/handlers/loginSubmitHandler";
+import apiPaths from "../../src/properties/apiPaths";
+import mockRouter from "next-router-mock";
+import applicationPaths from "../../src/properties/applicationPaths";
+import { ScopedMutator } from "swr/dist/types";
 import {
     getBaseActiveEdition,
     getBaseOkResponse,
     getBasePage,
     getBaseRedirectResponse,
     getBaseUser,
-} from './TestEntityProvider';
-import { UserRole } from '../../src/api/entities/UserEntity';
-import { editionCollectionName } from '../../src/api/entities/EditionEntity';
+} from "./TestEntityProvider";
+import { UserRole } from "../../src/api/entities/UserEntity";
+import { editionCollectionName } from "../../src/api/entities/EditionEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

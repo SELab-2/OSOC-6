@@ -1,13 +1,16 @@
-import { IProjectSkill } from '../../api/entities/ProjectSkillEntity';
-import useSkillTypeByName from '../../hooks/useSkillTypeByName';
-import useSWR from 'swr';
-import { emptySkillType } from '../../api/entities/SkillTypeEntity';
-import { getAllAssignmentsFromPage, getValidAssignmentsUrlForProjectSkill } from '../../api/calls/AssignmentCalls';
-import { IAssignment } from '../../api/entities/AssignmentEntity';
-import { extractIdFromStudentUrl, getStudentOnUrl } from '../../api/calls/studentCalls';
-import { emptyStudent } from '../../api/entities/StudentEntity';
-import SkillBadge from '../util/skillBadge';
-import applicationPaths from '../../properties/applicationPaths';
+import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
+import useSkillTypeByName from "../../hooks/useSkillTypeByName";
+import useSWR from "swr";
+import { emptySkillType } from "../../api/entities/SkillTypeEntity";
+import {
+    getAllAssignmentsFromPage,
+    getValidAssignmentsUrlForProjectSkill,
+} from "../../api/calls/AssignmentCalls";
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { emptyStudent } from "../../api/entities/StudentEntity";
+import SkillBadge from "../util/skillBadge";
+import applicationPaths from "../../properties/applicationPaths";
 
 export interface IProjectSkillStudentProps {
     projectSkill: IProjectSkill;

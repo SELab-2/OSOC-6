@@ -1,10 +1,13 @@
-import { Field, Form, Formik } from 'formik';
-import { CommunicationTemplateEntity, ICommunicationTemplate } from '../../api/entities/CommunicationTemplateEntity';
-import { createCommunicationTemplateSubmitHandler } from '../../handlers/createCommunicationTemplateSubmitHandler';
-import { useRouter } from 'next/router';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
-import { useSWRConfig } from 'swr';
+import { Field, Form, Formik } from "formik";
+import {
+    CommunicationTemplateEntity,
+    ICommunicationTemplate,
+} from "../../api/entities/CommunicationTemplateEntity";
+import { createCommunicationTemplateSubmitHandler } from "../../handlers/createCommunicationTemplateSubmitHandler";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
+import { useSWRConfig } from "swr";
 
 export interface CreateCommunicationTemplateFormProps {
     template?: ICommunicationTemplate;

@@ -1,11 +1,14 @@
-import useTranslation from 'next-translate/useTranslation';
-import CreateCommunicationTemplateForm from '../../../components/communication/createCommunicationTemplateForm';
-import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import apiPaths from '../../../properties/apiPaths';
-import { getCommunicationTemplateOnUrl } from '../../../api/calls/communicationTemplateCalls';
-import { emptyCommunicationTemplate, ICommunicationTemplate } from '../../../api/entities/CommunicationTemplateEntity';
-import { capitalize } from '../../../utility/stringUtil';
+import useTranslation from "next-translate/useTranslation";
+import CreateCommunicationTemplateForm from "../../../components/communication/createCommunicationTemplateForm";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import apiPaths from "../../../properties/apiPaths";
+import { getCommunicationTemplateOnUrl } from "../../../api/calls/communicationTemplateCalls";
+import {
+    emptyCommunicationTemplate,
+    ICommunicationTemplate,
+} from "../../../api/entities/CommunicationTemplateEntity";
+import { capitalize } from "../../../utility/stringUtil";
 
 export default function CommunicationTemplateEditPage() {
     const { t } = useTranslation("common");

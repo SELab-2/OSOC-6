@@ -2,9 +2,15 @@ import {
     communicationTemplateCollectionName,
     CommunicationTemplateEntity,
     ICommunicationTemplate,
-} from '../entities/CommunicationTemplateEntity';
-import { basePatch, basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from './baseCalls';
-import apiPaths from '../../properties/apiPaths';
+} from "../entities/CommunicationTemplateEntity";
+import {
+    basePatch,
+    basePost,
+    extractIdFromApiEntityUrl,
+    getAllEntitiesFromPage,
+    getEntityOnUrl,
+} from "./baseCalls";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * Function getting a communication template on the provided url.

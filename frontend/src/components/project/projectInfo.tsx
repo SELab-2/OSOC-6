@@ -1,11 +1,11 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
-import apiPaths from '../../properties/apiPaths';
-import { capitalize } from '../../utility/stringUtil';
-import useFullProjectInfo from '../../hooks/useFullProjectInfo';
-import { emptyProject } from '../../api/entities/ProjectEntity';
-import ProjectSkillStudent from './projectSkillStudent';
-import styles from '../../styles/projects/projectInfo.module.css';
+import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
+import apiPaths from "../../properties/apiPaths";
+import { capitalize } from "../../utility/stringUtil";
+import useFullProjectInfo from "../../hooks/useFullProjectInfo";
+import { emptyProject } from "../../api/entities/ProjectEntity";
+import ProjectSkillStudent from "./projectSkillStudent";
+import styles from "../../styles/projects/projectInfo.module.css";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");

@@ -1,13 +1,13 @@
-import { NextPage } from 'next';
-import { Col, Row } from 'react-bootstrap';
-import NavBar from '../components/util/navBar';
-import styles from '../styles/pageGrids.module.css';
-import { StudentList } from '../components/student/studentList';
-import ProjectAsignmentList from '../components/projectAssignment/projectAssignmentList';
-import { useState } from 'react';
-import AssignmentModal, { ModalSkillInfo } from '../components/projectAssignment/assignmentModal';
-import { StudentFilterComponent } from '../components/student/studentFilterComponent';
-import ConflictResolutionList from '../components/conflictResolution/conflictResolutionList';
+import { NextPage } from "next";
+import { Col, Row } from "react-bootstrap";
+import NavBar from "../components/util/navBar";
+import styles from "../styles/pageGrids.module.css";
+import { StudentList } from "../components/student/studentList";
+import ProjectAsignmentList from "../components/projectAssignment/projectAssignmentList";
+import { useState } from "react";
+import AssignmentModal, { ModalSkillInfo } from "../components/projectAssignment/assignmentModal";
+import { StudentFilterComponent } from "../components/student/studentFilterComponent";
+import ConflictResolutionList from "../components/conflictResolution/conflictResolutionList";
 
 export type DropHandler = (
     studentName: string,

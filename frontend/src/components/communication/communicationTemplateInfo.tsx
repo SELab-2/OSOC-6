@@ -1,13 +1,13 @@
-import useTranslation from 'next-translate/useTranslation';
-import { Button } from 'react-bootstrap';
-import mailTo from '../../utility/mailTo';
-import { capitalize } from '../../utility/stringUtil';
-import { ICommunicationTemplate } from '../../api/entities/CommunicationTemplateEntity';
-import { IStudent } from '../../api/entities/StudentEntity';
-import Link from 'next/link';
-import { useEditionApplicationPathTransformer } from '../../hooks/utilHooks';
-import applicationPaths from '../../properties/applicationPaths';
-import { extractIdFromCommunicationTemplateUrl } from '../../api/calls/communicationTemplateCalls';
+import useTranslation from "next-translate/useTranslation";
+import { Button } from "react-bootstrap";
+import mailTo from "../../utility/mailTo";
+import { capitalize } from "../../utility/stringUtil";
+import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
+import { IStudent } from "../../api/entities/StudentEntity";
+import Link from "next/link";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import applicationPaths from "../../properties/applicationPaths";
+import { extractIdFromCommunicationTemplateUrl } from "../../api/calls/communicationTemplateCalls";
 
 /**
  * The parameters you can provide to [CommunicationTemplateInfo].

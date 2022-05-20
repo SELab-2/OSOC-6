@@ -1,16 +1,16 @@
-import type { NextPage } from 'next';
-import LoginForm from '../components/user/loginForm';
-import { loginSubmitHandler } from '../handlers/loginSubmitHandler';
-import useTranslation from 'next-translate/useTranslation';
-import { useSWRConfig } from 'swr';
-import { useRouter } from 'next/router';
-import NavBar from '../components/util/navBar';
-import { Card } from 'react-bootstrap';
-import styles from '../styles/loginForm.module.css';
-import { capitalize } from '../utility/stringUtil';
-import { useState } from 'react';
-import applicationPaths from '../properties/applicationPaths';
-import { Background } from '../components/util/background';
+import type { NextPage } from "next";
+import LoginForm from "../components/user/loginForm";
+import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
+import useTranslation from "next-translate/useTranslation";
+import { useSWRConfig } from "swr";
+import { useRouter } from "next/router";
+import NavBar from "../components/util/navBar";
+import { Card } from "react-bootstrap";
+import styles from "../styles/loginForm.module.css";
+import { capitalize } from "../utility/stringUtil";
+import { useState } from "react";
+import applicationPaths from "../properties/applicationPaths";
+import { Background } from "../components/util/background";
 
 const Login: NextPage = () => {
     const { t } = useTranslation("common");

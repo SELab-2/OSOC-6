@@ -1,15 +1,15 @@
-import { SWRConfig } from 'swr';
-import { IEdition } from '../../src/api/entities/EditionEntity';
-import GlobalContext from '../../src/context/globalContext';
-import { getQueryUrlFromParams } from '../../src/api/calls/baseCalls';
-import { extractIdFromEditionUrl } from '../../src/api/calls/editionCalls';
-import { act, waitFor } from '@testing-library/react';
-import mockAxios from 'jest-mock-axios';
-import AxiosMockRequestCriteria from 'jest-mock-axios';
-import HttpResponse from 'jest-mock-axios';
-import apiPaths from '../../src/properties/apiPaths';
-import { getBaseOkResponse } from './TestEntityProvider';
-import { IUser } from '../../src/api/entities/UserEntity';
+import { SWRConfig } from "swr";
+import { IEdition } from "../../src/api/entities/EditionEntity";
+import GlobalContext from "../../src/context/globalContext";
+import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
+import { extractIdFromEditionUrl } from "../../src/api/calls/editionCalls";
+import { act, waitFor } from "@testing-library/react";
+import mockAxios from "jest-mock-axios";
+import AxiosMockRequestCriteria from "jest-mock-axios";
+import HttpResponse from "jest-mock-axios";
+import apiPaths from "../../src/properties/apiPaths";
+import { getBaseOkResponse } from "./TestEntityProvider";
+import { IUser } from "../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

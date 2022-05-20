@@ -1,12 +1,12 @@
-import '@testing-library/jest-dom';
-import { render, RenderResult, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import mockAxios from 'jest-mock-axios';
-import { makeCacheFree } from './Provide';
-import apiPaths from '../../src/properties/apiPaths';
-import ResetPassword from '../../src/pages/resetPassword';
-import mockRouter from 'next-router-mock';
-import { getQueryUrlFromParams } from '../../src/api/calls/baseCalls';
+import "@testing-library/jest-dom";
+import { render, RenderResult, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import mockAxios from "jest-mock-axios";
+import { makeCacheFree } from "./Provide";
+import apiPaths from "../../src/properties/apiPaths";
+import ResetPassword from "../../src/pages/resetPassword";
+import mockRouter from "next-router-mock";
+import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

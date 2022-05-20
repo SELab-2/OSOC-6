@@ -1,18 +1,18 @@
-import { IStudent } from '../../api/entities/StudentEntity';
-import { Form, Formik } from 'formik';
-import useSWR, { useSWRConfig } from 'swr';
+import { IStudent } from "../../api/entities/StudentEntity";
+import { Form, Formik } from "formik";
+import useSWR, { useSWRConfig } from "swr";
 import {
     getAllAssignmentsFromPage,
     getValidAssignmentsUrlForStudent,
     invalidateAssignment,
-} from '../../api/calls/AssignmentCalls';
-import { useState } from 'react';
-import ConflictResolutionRadioButton from './conflictResolutionRadioButton';
-import { IAssignment } from '../../api/entities/AssignmentEntity';
-import { capitalize } from '../../utility/stringUtil';
-import useTranslation from 'next-translate/useTranslation';
-import ProjectSkillRegister from './projectSkillRegister';
-import styles from '../../styles/conflicts.module.css';
+} from "../../api/calls/AssignmentCalls";
+import { useState } from "react";
+import ConflictResolutionRadioButton from "./conflictResolutionRadioButton";
+import { IAssignment } from "../../api/entities/AssignmentEntity";
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
+import ProjectSkillRegister from "./projectSkillRegister";
+import styles from "../../styles/conflicts.module.css";
 
 /**
  * Type that will hold the projectSkills and its assignments.

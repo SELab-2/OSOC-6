@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom';
-import mockRouter from 'next-router-mock';
-import { render, RenderResult } from '@testing-library/react';
-import { StudentStatusButton } from '../../../src/components/student/studentStatusButton';
-import { Status } from '../../../src/api/entities/StudentEntity';
-import userEvent from '@testing-library/user-event';
+import "@testing-library/jest-dom";
+import mockRouter from "next-router-mock";
+import { render, RenderResult } from "@testing-library/react";
+import { StudentStatusButton } from "../../../src/components/student/studentStatusButton";
+import { Status } from "../../../src/api/entities/StudentEntity";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

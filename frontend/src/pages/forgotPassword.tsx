@@ -1,10 +1,10 @@
-import type { NextPage } from 'next';
-import { ForgotComponent } from '../components/util/forgotComponent';
-import NavBar from '../components/util/navBar';
-import styles from '../styles/forgotPassword.module.css';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../utility/stringUtil';
-import { postForgotPasswordEmail } from '../api/calls/userCalls';
+import type { NextPage } from "next";
+import { ForgotComponent } from "../components/util/forgotComponent";
+import NavBar from "../components/util/navBar";
+import styles from "../styles/forgotPassword.module.css";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../utility/stringUtil";
+import { postForgotPasswordEmail } from "../api/calls/userCalls";
 
 /**
  * The forgot password page, where a user can enter their email to request a password reset.

@@ -1,7 +1,7 @@
-import { Button } from 'react-bootstrap';
-import { Status } from '../../api/entities/StudentEntity';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Button } from "react-bootstrap";
+import { Status } from "../../api/entities/StudentEntity";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 /**
  * The StudentStatusButton filters the list of students by the passed student status

@@ -1,12 +1,12 @@
-import { ListGroup } from 'react-bootstrap';
-import styles from '../../styles/projects/projectList.module.css';
-import { NewProjectButton } from './newProjectButton';
-import useTranslation from 'next-translate/useTranslation';
-import apiPaths from '../../properties/apiPaths';
-import { getAllProjectsFromPage } from '../../api/calls/projectCalls';
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from '../../hooks/utilHooks';
-import { useRouter } from 'next/router';
-import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
+import { ListGroup } from "react-bootstrap";
+import styles from "../../styles/projects/projectList.module.css";
+import { NewProjectButton } from "./newProjectButton";
+import useTranslation from "next-translate/useTranslation";
+import apiPaths from "../../properties/apiPaths";
+import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import { useRouter } from "next/router";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export function ProjectList() {
     const { t } = useTranslation("common");

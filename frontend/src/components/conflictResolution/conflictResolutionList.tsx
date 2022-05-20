@@ -1,11 +1,11 @@
-import apiPaths from '../../properties/apiPaths';
-import { useSwrWithEdition } from '../../hooks/utilHooks';
-import { getAllStudentsFromPage } from '../../api/calls/studentCalls';
-import { sortStudentsByName } from '../../api/entities/StudentEntity';
-import ConflictResolutionItem from './conflictResolutionItem';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
-import styles from '../../styles/conflicts.module.css';
+import apiPaths from "../../properties/apiPaths";
+import { useSwrWithEdition } from "../../hooks/utilHooks";
+import { getAllStudentsFromPage } from "../../api/calls/studentCalls";
+import { sortStudentsByName } from "../../api/entities/StudentEntity";
+import ConflictResolutionItem from "./conflictResolutionItem";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
+import styles from "../../styles/conflicts.module.css";
 
 /**
  * List of conflicts. This component will get all conflicting students and list them in a useful way.

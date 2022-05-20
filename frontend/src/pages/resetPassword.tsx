@@ -1,12 +1,12 @@
-import type { NextPage } from 'next';
-import { ResetComponent } from '../components/util/resetComponent';
-import { postResetPassword } from '../api/calls/userCalls';
-import { useRouter } from 'next/router';
-import NavBar from '../components/util/navBar';
-import styles from '../styles/forgotPassword.module.css';
-import { emptyUser } from '../api/entities/UserEntity';
-import { capitalize } from '../utility/stringUtil';
-import useTranslation from 'next-translate/useTranslation';
+import type { NextPage } from "next";
+import { ResetComponent } from "../components/util/resetComponent";
+import { postResetPassword } from "../api/calls/userCalls";
+import { useRouter } from "next/router";
+import NavBar from "../components/util/navBar";
+import styles from "../styles/forgotPassword.module.css";
+import { emptyUser } from "../api/entities/UserEntity";
+import { capitalize } from "../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 /**
  * The reset password page, where a user enters their new password.

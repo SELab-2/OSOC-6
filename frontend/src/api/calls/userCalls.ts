@@ -8,10 +8,10 @@ import {
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
-} from './baseCalls';
-import { IUser, userCollectionName, UserRole } from '../entities/UserEntity';
-import axios, { AxiosResponse } from 'axios';
-import apiPaths from '../../properties/apiPaths';
+} from "./baseCalls";
+import { IUser, userCollectionName, UserRole } from "../entities/UserEntity";
+import axios, { AxiosResponse } from "axios";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * Fetches all users on a given UserPageUrl

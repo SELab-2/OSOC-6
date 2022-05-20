@@ -6,13 +6,13 @@ import {
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
-} from './baseCalls';
-import { Assignment, assignmentCollectionName, IAssignment } from '../entities/AssignmentEntity';
-import { IUser } from '../entities/UserEntity';
-import apiPaths from '../../properties/apiPaths';
-import { extractIdFromProjectUrl } from './projectCalls';
-import { IProjectSkill } from '../entities/ProjectSkillEntity';
-import { IStudent } from '../entities/StudentEntity';
+} from "./baseCalls";
+import { Assignment, assignmentCollectionName, IAssignment } from "../entities/AssignmentEntity";
+import { IUser } from "../entities/UserEntity";
+import apiPaths from "../../properties/apiPaths";
+import { extractIdFromProjectUrl } from "./projectCalls";
+import { IProjectSkill } from "../entities/ProjectSkillEntity";
+import { IStudent } from "../entities/StudentEntity";
 
 /**
  * Gets all [IAssignment] entities on an url hosting [IPage].

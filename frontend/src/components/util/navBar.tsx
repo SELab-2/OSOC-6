@@ -1,10 +1,10 @@
-import { Container, Nav, Navbar } from 'react-bootstrap';
-import Image from 'next/image';
-import useTranslation from 'next-translate/useTranslation';
-import applicationPaths from '../../properties/applicationPaths';
-import { useEditionApplicationPathTransformer } from '../../hooks/utilHooks';
-import OptionsMenu from './optionsMenu';
-import { useCurrentAdminUser } from '../../hooks/useCurrentUser';
+import { Container, Nav, Navbar } from "react-bootstrap";
+import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
+import applicationPaths from "../../properties/applicationPaths";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import OptionsMenu from "./optionsMenu";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");

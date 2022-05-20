@@ -1,6 +1,6 @@
-import apiPaths from '../../properties/apiPaths';
-import { IBaseEntity, IEntityLinks, IPage } from '../entities/BaseEntities';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import apiPaths from "../../properties/apiPaths";
+import { IBaseEntity, IEntityLinks, IPage } from "../entities/BaseEntities";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export const AxiosConf: AxiosRequestConfig = {
     baseURL: apiPaths.base,

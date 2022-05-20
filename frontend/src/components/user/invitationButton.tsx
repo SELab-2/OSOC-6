@@ -1,20 +1,20 @@
-import apiPaths from '../../properties/apiPaths';
-import { getQueryUrlFromParams } from '../../api/calls/baseCalls';
-import { Invitation } from '../../api/entities/InvitationEntity';
-import { Button } from 'react-bootstrap';
-import applicationPaths from '../../properties/applicationPaths';
-import { useEditionApplicationPathTransformer } from '../../hooks/utilHooks';
-import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { createInvitation } from '../../api/calls/invitationCalls';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
-import mailTo from '../../utility/mailTo';
-import useSWR from 'swr';
-import { getAllCommunicationTemplatesFromPage } from '../../api/calls/communicationTemplateCalls';
-import { emptyCommunicationTemplate } from '../../api/entities/CommunicationTemplateEntity';
-import useEdition from '../../hooks/useGlobalEdition';
-import { useState } from 'react';
-import applicationProperties from '../../properties/applicationProperties';
+import apiPaths from "../../properties/apiPaths";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { Invitation } from "../../api/entities/InvitationEntity";
+import { Button } from "react-bootstrap";
+import applicationPaths from "../../properties/applicationPaths";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { createInvitation } from "../../api/calls/invitationCalls";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
+import mailTo from "../../utility/mailTo";
+import useSWR from "swr";
+import { getAllCommunicationTemplatesFromPage } from "../../api/calls/communicationTemplateCalls";
+import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
+import useEdition from "../../hooks/useGlobalEdition";
+import { useState } from "react";
+import applicationProperties from "../../properties/applicationProperties";
 
 export default function InvitationButton() {
     const { t } = useTranslation("common");

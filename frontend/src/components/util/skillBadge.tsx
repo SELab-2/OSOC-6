@@ -1,5 +1,5 @@
-import { Badge } from 'react-bootstrap';
-import useSkillTypeByName from '../../hooks/useSkillTypeByName';
+import { Badge } from "react-bootstrap";
+import useSkillTypeByName from "../../hooks/useSkillTypeByName";
 
 /**
  * Parameters to be added to skillBadge

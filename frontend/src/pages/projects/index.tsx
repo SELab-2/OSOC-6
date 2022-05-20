@@ -1,9 +1,9 @@
-import { NextPage } from 'next';
-import NavBar from '../../components/util/navBar';
-import { ProjectList } from '../../components/project/projectList';
-import styles from '../../styles/pageGrids.module.css';
-import useTranslation from 'next-translate/useTranslation';
-import { capitalize } from '../../utility/stringUtil';
+import { NextPage } from "next";
+import NavBar from "../../components/util/navBar";
+import { ProjectList } from "../../components/project/projectList";
+import styles from "../../styles/pageGrids.module.css";
+import useTranslation from "next-translate/useTranslation";
+import { capitalize } from "../../utility/stringUtil";
 
 const ProjectPage: NextPage = () => {
     const { t } = useTranslation("common");

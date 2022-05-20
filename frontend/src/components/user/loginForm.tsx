@@ -1,9 +1,9 @@
-import { Field, Form, Formik } from 'formik';
-import styles from '../../styles/loginForm.module.css';
+import { Field, Form, Formik } from "formik";
+import styles from "../../styles/loginForm.module.css";
 
-import { LoginProps } from '../../handlers/loginSubmitHandler';
-import { capitalize } from '../../utility/stringUtil';
-import useTranslation from 'next-translate/useTranslation';
+import { LoginProps } from "../../handlers/loginSubmitHandler";
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 export default function LoginForm(props: LoginProps) {
     const { t } = useTranslation("common");

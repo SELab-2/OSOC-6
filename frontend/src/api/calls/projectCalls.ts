@@ -1,6 +1,6 @@
-import { IProject, Project, projectCollectionName } from '../entities/ProjectEntity';
-import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from './baseCalls';
-import apiPaths from '../../properties/apiPaths';
+import { IProject, Project, projectCollectionName } from "../entities/ProjectEntity";
+import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * Fetches all projects on a given ProjectLinksUrl

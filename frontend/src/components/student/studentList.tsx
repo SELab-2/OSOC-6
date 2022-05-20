@@ -1,20 +1,20 @@
-import { ListGroup } from 'react-bootstrap';
-import { useRouter } from 'next/router';
-import styles from '../../styles/studentList.module.css';
-import useTranslation from 'next-translate/useTranslation';
-import apiPaths from '../../properties/apiPaths';
+import { ListGroup } from "react-bootstrap";
+import { useRouter } from "next/router";
+import styles from "../../styles/studentList.module.css";
+import useTranslation from "next-translate/useTranslation";
+import apiPaths from "../../properties/apiPaths";
 import {
     constructStudentQueryUrl,
     extractIdFromStudentUrl,
     getAllStudentsFromPage,
     IStudentQueryParams,
-} from '../../api/calls/studentCalls';
-import { SuggestionCount } from './suggestionCount';
-import { getStudentQueryParamsFromQuery } from './studentFilterComponent';
-import { useSwrWithEdition } from '../../hooks/utilHooks';
-import { StudentStatusButton } from './studentStatusButton';
-import { Status } from '../../api/entities/StudentEntity';
-import applicationPaths from '../../properties/applicationPaths';
+} from "../../api/calls/studentCalls";
+import { SuggestionCount } from "./suggestionCount";
+import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
+import { useSwrWithEdition } from "../../hooks/utilHooks";
+import { StudentStatusButton } from "./studentStatusButton";
+import { Status } from "../../api/entities/StudentEntity";
+import applicationPaths from "../../properties/applicationPaths";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
