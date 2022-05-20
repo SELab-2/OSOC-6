@@ -13,9 +13,7 @@ import { getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
-import {
-    getQueryUrlFromParams,
-} from "../../api/calls/baseCalls";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 
 /**

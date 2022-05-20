@@ -6,13 +6,13 @@ import apiPaths from "../../../properties/apiPaths";
 import CreateCommunicationForm from "../../../components/communication/createCommunicationForm";
 import { capitalize } from "../../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
-import {Accordion, Button, Col, Container, Row} from "react-bootstrap";
+import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import CommunicationListItem from "../../../components/communication/communicationListItem";
 import NavBar from "../../../components/util/navBar";
 import styles from "../../../styles/pageGrids.module.css";
-import {StudentFilterComponent} from "../../../components/student/studentFilterComponent";
-import {StudentList} from "../../../components/student/studentList";
+import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
+import { StudentList } from "../../../components/student/studentList";
 import StudentCommunicationList from "../../../components/student/studentCommunicationList";
 
 export default function CommunicationInfoPage() {
@@ -51,10 +51,12 @@ export default function CommunicationInfoPage() {
                         >
                             <div className={"h-100"}>
                                 <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
-                                    <div className="row w-100" style={{ paddingBottom: 15 }}>
-                                    </div>
-                                    <div className="row w-100" style={{paddingLeft: 25}}>
-                                        <h1>{capitalize(t("register communication for")) + " " + student.callName}</h1>
+                                    <div className="row w-100" style={{ paddingLeft: 25 }}>
+                                        <h1>
+                                            {capitalize(t("register communication for")) +
+                                                " " +
+                                                student.callName}
+                                        </h1>
                                         <CreateCommunicationForm student={student} />
                                     </div>
                                 </div>

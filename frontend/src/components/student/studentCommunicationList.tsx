@@ -47,7 +47,8 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
 
     async function registerNewCommunication() {
         const params = getParamsFromQueryUrl(router.asPath);
-        const studentCommUrl = "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration;
+        const studentCommUrl =
+            "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration;
         await router.replace({
             pathname: studentCommUrl,
             query: { ...router.query, ...params },
@@ -67,13 +68,17 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                     </Button>
                 </div>
                 <div className="row w-100">
-                    <Row style={{display: "flex", justifyContent: "space-between"}}>
+                    <Row style={{ display: "flex", justifyContent: "space-between" }}>
                         <Col>
                             <h1>{student?.callName}</h1>
                         </Col>
                         <Col>
-                            <Button style={{ color: "white", borderColor: "white", backgroundColor: "#1b1a32" }}
-                            onClick={registerNewCommunication}>New communication</Button>
+                            <Button
+                                style={{ color: "white", borderColor: "white", backgroundColor: "#1b1a32" }}
+                                onClick={registerNewCommunication}
+                            >
+                                New communication
+                            </Button>
                         </Col>
                     </Row>
                     <div data-testid="communication-list">
