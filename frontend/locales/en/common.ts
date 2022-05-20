@@ -170,7 +170,7 @@ const common = {
 
     // Conflict strings
     conflict: "conflict",
-    "reason(s)": "reasons(s)",
+    "reason(s)": "reason(s)",
 
     suggesting: "You are suggesting ",
     "to project": "to project ",

@@ -4,7 +4,7 @@ import { ParsedUrlQueryInput } from "querystring";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { IStudentQueryParams } from "../../api/calls/studentCalls";
-import { Row, Col, ButtonGroup, Dropdown } from "react-bootstrap";
+import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import Image from "next/image";
