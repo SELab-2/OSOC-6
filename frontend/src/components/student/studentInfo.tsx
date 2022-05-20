@@ -14,8 +14,6 @@ import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
 import {
-    extractIdFromApiEntityUrl,
-    getParamsFromQueryUrl,
     getQueryUrlFromParams,
 } from "../../api/calls/baseCalls";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";

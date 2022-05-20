@@ -5,7 +5,7 @@ import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studen
 import { ICommunication } from "../../api/entities/CommunicationEntity";
 import { getAllCommunicationFromPage } from "../../api/calls/communicationCalls";
 import CommunicationListItem from "../communication/communicationListItem";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
 import { Accordion, Container } from "react-bootstrap";
@@ -45,6 +45,15 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
         });
     }
 
+    async function registerNewCommunication() {
+        const params = getParamsFromQueryUrl(router.asPath);
+        const studentCommUrl = "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration;
+        await router.replace({
+            pathname: studentCommUrl,
+            query: { ...router.query, ...params },
+        });
+    }
+
     return (
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
@@ -58,9 +67,15 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                     </Button>
                 </div>
                 <div className="row w-100">
-                    <div>
-                        <h1>{student?.callName}</h1>
-                    </div>
+                    <Row style={{display: "flex", justifyContent: "space-between"}}>
+                        <Col>
+                            <h1>{student?.callName}</h1>
+                        </Col>
+                        <Col>
+                            <Button style={{ color: "white", borderColor: "white", backgroundColor: "#1b1a32" }}
+                            onClick={registerNewCommunication}>New communication</Button>
+                        </Col>
+                    </Row>
                     <div data-testid="communication-list">
                         <Container className="overflow-auto h-100 pt-2">
                             <Accordion>

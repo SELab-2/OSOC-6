@@ -33,6 +33,7 @@ const applicationPaths = {
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
+    communicationRegistration: "register-communication",
 
     editionBase: "editions",
     editionCreate: "editions/create",
