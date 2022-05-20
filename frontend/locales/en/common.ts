@@ -18,8 +18,6 @@ const common = {
     "reset password title": "reset password",
     "password identical": "passwords need to be identical",
 
-    callname: "callname",
-
     "empty page": "empty page",
     confirm: "confirm",
     apply: "apply",
@@ -119,6 +117,7 @@ const common = {
     "edit communicationTemplate": "edit communication template",
 
     // Student info strings
+    callname: "callname",
     suggestions: "suggestions",
     suggest: "suggest",
     "reason suggestion": "reason for the suggestion",
@@ -128,13 +127,16 @@ const common = {
     "english proficiency": "english proficiency",
     "phone number": "phone number",
     gender: "gender",
-    pronouns: "with pronouns",
+    pronouns: "pronouns",
+    "with pronouns": "with pronouns",
     about: "about the student",
     "more info": "more info about this student",
     education: "student education and experience",
     cv: "cv",
     portfolio: "portfolio",
     motivation: "motivation",
+    "first name": "first name",
+    "last name": "last name",
 
     "info current": "currently in",
     "info year": "year of",
@@ -157,6 +159,18 @@ const common = {
 
     filters: "filters",
     "choose roles": "choose one or more",
+
+    "create student": "create student",
+    "edit student": "edit student",
+    "add study": "add study",
+    "year of degree": "year of degree",
+    "degree length": "duration of degree",
+    "add role": "add role",
+    "cv url": "cv url",
+    "portolfio url": "portfolio url",
+    "motivation url": "motivation url",
+    "written motivation": "written motivation",
+    "motivation placeholder": "write student motivation here",
 
     // Assignment strings
     "assignment modal title": "Why do you want this student here?",

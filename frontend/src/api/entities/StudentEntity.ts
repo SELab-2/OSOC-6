@@ -1,4 +1,4 @@
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import {IBaseEntity, IEntityLinks, IPage, IReferencer} from "./BaseEntities";
 
 export enum EnglishProficiency {
     /**
@@ -34,7 +34,7 @@ export enum Gender {
     not_specified = "NOT_SPECIFIED",
 }
 
-export enum OsocExpericience {
+export enum OsocExperience {
     none = "NONE",
     yes_noStudentCoach = "YES_NO_STUDENT_COACH",
     yes_studentCoach = "YES_STUDENT_COACH",
@@ -64,7 +64,7 @@ export interface IStudent extends IBaseEntity {
     lastName: string;
     mostFluentLanguage: string;
     motivationURI: string;
-    osocExperience: OsocExpericience;
+    osocExperience: OsocExperience;
     status: Status;
     phoneNumber: string;
     workType: string;
@@ -112,7 +112,7 @@ export const emptyStudent: IStudent = {
     lastName: "",
     mostFluentLanguage: "",
     motivationURI: "",
-    osocExperience: OsocExpericience.none,
+    osocExperience: OsocExperience.none,
     phoneNumber: "",
     portfolioURI: "",
     pronouns: "",
@@ -139,6 +139,43 @@ export function sortStudentsByName(students: IStudent[]) {
     return students.sort((first, second) => first.callName.localeCompare(second.callName));
 }
 
+/**
+ * Create a student for the given edition from the given IStudent
+ * @param editionUrl the url of the edition to create the student for
+ * @param student the values of this IStudent object are used to create the student
+ */
+export function studentFromIStudent(editionUrl: string, student: IStudent) {
+    return new Student(
+        student.email,
+        student.additionalStudentInfo,
+        student.bestSkill,
+        student.callName,
+        student.currentDiploma,
+        student.curriculumVitaeURI,
+        student.durationCurrentDegree,
+        student.englishProficiency,
+        student.firstName,
+        student.gender,
+        student.institutionName,
+        student.lastName,
+        student.mostFluentLanguage,
+        student.motivationURI,
+        student.osocExperience,
+        student.status,
+        student.phoneNumber,
+        student.workType,
+        student.daytimeResponsibilities,
+        student.portfolioURI,
+        student.pronouns,
+        student.funFact,
+        student.skills,
+        student.studies,
+        student.writtenMotivation,
+        student.yearInCourse,
+        editionUrl
+    )
+}
+
 export class Student {
     constructor(
         email: string,
@@ -155,7 +192,7 @@ export class Student {
         lastName: string,
         mostFluentLanguage: string,
         motivationURI: string,
-        osocExperience: OsocExpericience,
+        osocExperience: OsocExperience,
         status: Status,
         phoneNumber: string,
         workType: string,
@@ -212,7 +249,7 @@ export class Student {
     lastName: string;
     mostFluentLanguage: string;
     motivationURI: string;
-    osocExperience: OsocExpericience;
+    osocExperience: OsocExperience;
     status: Status;
     phoneNumber: string;
     workType: string;
