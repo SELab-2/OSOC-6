@@ -1,9 +1,8 @@
-import "@testing-library/jest-dom";
-import mockAxios from "jest-mock-axios";
-import { AxiosResponse } from "axios";
+import '@testing-library/jest-dom';
+import mockAxios from 'jest-mock-axios';
+import { AxiosResponse } from 'axios';
 import {
     getBaseAssignment,
-    getBaseLinks,
     getBaseNoContentResponse,
     getBaseOkResponse,
     getBasePage,
@@ -11,20 +10,23 @@ import {
     getBaseSkillType,
     getBaseStudent,
     getBaseUser,
-} from "./TestEntityProvider";
-import apiPaths from "../../src/properties/apiPaths";
-import { act, render, screen, waitFor } from "@testing-library/react";
-import { ISkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import AssignmentItem from "../../src/components/projectAssignment/assignmentItem";
-import { assignmentCollectionName, IAssignment } from "../../src/api/entities/AssignmentEntity";
-import { IUser, UserRole } from "../../src/api/entities/UserEntity";
-import { IStudent } from "../../src/api/entities/StudentEntity";
-import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
-import { capitalize } from "../../src/utility/stringUtil";
-import userEvent from "@testing-library/user-event";
-import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import { makeCacheFree } from "./Provide";
-import { extractIdFromAssignmentUrl } from "../../src/api/calls/AssignmentCalls";
+} from './TestEntityProvider';
+import apiPaths from '../../src/properties/apiPaths';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { ISkillType, skillTypeCollectionName } from '../../src/api/entities/SkillTypeEntity';
+import AssignmentItem from '../../src/components/projectAssignment/assignmentItem';
+import { assignmentCollectionName, IAssignment } from '../../src/api/entities/AssignmentEntity';
+import { IUser, UserRole } from '../../src/api/entities/UserEntity';
+import { IStudent } from '../../src/api/entities/StudentEntity';
+import { IProjectSkill } from '../../src/api/entities/ProjectSkillEntity';
+import { capitalize } from '../../src/utility/stringUtil';
+import userEvent from '@testing-library/user-event';
+import { getQueryUrlFromParams } from '../../src/api/calls/baseCalls';
+import { makeCacheFree } from './Provide';
+import {
+    extractIdFromAssignmentUrl,
+    getValidAssignmentsUrlForProjectSkill,
+} from '../../src/api/calls/AssignmentCalls';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -68,15 +70,14 @@ async function renderAssignmentItem(
     );
 
     // answer assignments
+    const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
     const assignmentResponse: AxiosResponse = getBaseOkResponse(
-        getBaseLinks(projectSkill._links.assignments.href, assignmentCollectionName, assignments)
+        getBasePage(assignmentsUrl, assignmentCollectionName, assignments)
     );
     await waitFor(() => {
         expect(mockAxios.get).toHaveBeenCalled();
     });
-    await act(() =>
-        mockAxios.mockResponseFor({ url: projectSkill._links.assignments.href }, assignmentResponse)
-    );
+    await act(() => mockAxios.mockResponseFor({ url: assignmentsUrl }, assignmentResponse));
 
     // answer Student on first assignment
     if (student !== undefined) {
@@ -216,7 +217,7 @@ describe("Assignmnent item tests", () => {
         });
     });
 
-    it("Test if assignments are sorted", async () => {
+    it("Test if assignments are sorted on their url", async () => {
         const projectSkill = getBaseProjectSkill("100");
 
         const skillType = getBaseSkillType("1");
@@ -240,19 +241,19 @@ describe("Assignmnent item tests", () => {
             projectSkill
         );
 
-        await createResponse(assignment3, "9", "a", "assigner1");
         await createResponse(assignment4, "10", "c", "assigner1");
-        await createResponse(assignment5, "11", "b", "assigner1");
         await createResponse(assignment6, "12", "b", "assigner3");
+        await createResponse(assignment3, "9", "a", "assigner1");
         await createResponse(assignment7, "13", "b", "assigner2");
+        await createResponse(assignment5, "11", "b", "assigner1");
 
         await waitFor(() => {
             const html = document.body.innerHTML;
             const a1 = html.search(assignment3.reason);
-            const a2 = html.search(assignment5.reason);
-            const a3 = html.search(assignment7.reason);
+            const a2 = html.search(assignment4.reason);
+            const a3 = html.search(assignment5.reason);
             const a4 = html.search(assignment6.reason);
-            const a5 = html.search(assignment4.reason);
+            const a5 = html.search(assignment7.reason);
             expect(screen.getByTestId("assignment-item")).toBeInTheDocument();
             expect(a1).toBeLessThan(a2);
             expect(a2).toBeLessThan(a3);

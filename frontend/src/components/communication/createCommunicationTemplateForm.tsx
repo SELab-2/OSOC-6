@@ -1,58 +1,81 @@
-import { Field, Form, Formik } from "formik";
-import { CommunicationTemplateEntity } from "../../api/entities/CommunicationTemplateEntity";
-import { createCommunicationTemplateSubmitHandler } from "../../handlers/createCommunicationTemplateSubmitHandler";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../utility/stringUtil";
+import { Field, Form, Formik } from 'formik';
+import { CommunicationTemplateEntity, ICommunicationTemplate } from '../../api/entities/CommunicationTemplateEntity';
+import { createCommunicationTemplateSubmitHandler } from '../../handlers/createCommunicationTemplateSubmitHandler';
+import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
+import { capitalize } from '../../utility/stringUtil';
+import { useSWRConfig } from 'swr';
+
+export interface CreateCommunicationTemplateFormProps {
+    template?: ICommunicationTemplate;
+}
 
 /**
  * Form allowing the creation of a new communication template.
  */
-export default function CreateCommunicationTemplateForm() {
+export default function CreateCommunicationTemplateForm({ template }: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const initialValues: CommunicationTemplateEntity = new CommunicationTemplateEntity("", "", "");
+    const initialValues: CommunicationTemplateEntity = template
+        ? new CommunicationTemplateEntity(template.name, template.subject, template.template)
+        : new CommunicationTemplateEntity("", "", "");
+    const { mutate } = useSWRConfig();
 
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={(values) => createCommunicationTemplateSubmitHandler(values, router)}
+            enableReinitialize={true}
+            onSubmit={(values) =>
+                createCommunicationTemplateSubmitHandler(
+                    template ? template._links.self.href : null,
+                    values,
+                    router,
+                    mutate
+                )
+            }
         >
             {({ values, setFieldValue }) => (
                 <Form>
-                    <label className="capitalize" htmlFor="communicationTemplateNameField">
-                        {capitalize(t("name")) + ":"}
-                    </label>
-                    <Field
-                        type="text"
-                        name="name"
-                        required
-                        placeHolder={capitalize(t("name"))}
-                        id="communicationTemplateNameField"
-                        data-testid="name"
-                    />
+                    <div>
+                        <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 
-                    <label className="capitalize" htmlFor="communicationTemplateSubjectField">
-                        {capitalize(t("subject")) + ":"}
-                    </label>
-                    <Field
-                        type="text"
-                        name="subject"
-                        required
-                        placeHolder={capitalize(t("subject"))}
-                        id="communicationTemplateSubjectField"
-                        data-testid="subject"
-                    />
+                        {template && <label id="communicationTemplateNameField">{values.name}</label>}
+                        {!template && (
+                            <Field
+                                type="text"
+                                name="name"
+                                required
+                                placeholder={capitalize(t("name"))}
+                                id="communicationTemplateNameField"
+                                data-testid="name"
+                            />
+                        )}
+                    </div>
+                    <div>
+                        <label htmlFor="communicationTemplateSubjectField">
+                            {capitalize(t("subject")) + ":"}
+                        </label>
+                        <Field
+                            type="text"
+                            name="subject"
+                            required
+                            placeholder={capitalize(t("subject"))}
+                            id="communicationTemplateSubjectField"
+                            data-testid="subject"
+                        />
+                    </div>
 
-                    <textarea
-                        placeholder={capitalize(t("template placeholder"))}
-                        className="form-control"
-                        style={{ height: "100px" }}
-                        id="communicationTemplateTemplateField"
-                        data-testid="template"
-                        value={values.template}
-                        onChange={(event) => setFieldValue("template", event.target.value)}
-                    />
+                    <div>
+                        <textarea
+                            placeholder={capitalize(t("template placeholder"))}
+                            className="form-control"
+                            style={{ height: "100px" }}
+                            id="communicationTemplateTemplateField"
+                            data-testid="template"
+                            value={values.template}
+                            onChange={(event) => setFieldValue("template", event.target.value)}
+                        />
+                    </div>
 
                     <button className="capitalize" data-testid="submit" type="submit">
                         {t("confirm")}

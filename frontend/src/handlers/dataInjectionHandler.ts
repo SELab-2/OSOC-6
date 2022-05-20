@@ -1,17 +1,17 @@
-import { MouseEventHandler } from "react";
-import axios from "axios";
-import apiPaths from "../properties/apiPaths";
-import { IUser, IUsersPage, User } from "../api/entities/UserEntity";
-import { Edition, IEdition, IEditionsPage } from "../api/entities/EditionEntity";
-import { IInvitation, IInvitationsPage, Invitation } from "../api/entities/InvitationEntity";
-import { IProject, IProjectPage, Project } from "../api/entities/ProjectEntity";
-import { IProjectSkill, IProjectSkillPage, ProjectSkill } from "../api/entities/ProjectSkillEntity";
-import { IUserSkill, IUserSkillPage, UserSkill } from "../api/entities/UserSkillEntity";
+import { MouseEventHandler } from 'react';
+import axios from 'axios';
+import apiPaths from '../properties/apiPaths';
+import { IUser, IUsersPage, User } from '../api/entities/UserEntity';
+import { Edition, IEdition, IEditionsPage } from '../api/entities/EditionEntity';
+import { IInvitation, IInvitationsPage, Invitation } from '../api/entities/InvitationEntity';
+import { IProject, IProjectPage, Project } from '../api/entities/ProjectEntity';
+import { IProjectSkill, IProjectSkillPage, ProjectSkill } from '../api/entities/ProjectSkillEntity';
+import { IUserSkill, IUserSkillPage, UserSkill } from '../api/entities/UserSkillEntity';
 import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
     ICommunicationTemplatePage,
-} from "../api/entities/CommunicationTemplateEntity";
+} from '../api/entities/CommunicationTemplateEntity';
 import {
     EnglishProficiency,
     Gender,
@@ -20,18 +20,12 @@ import {
     OsocExpericience,
     Status,
     Student,
-} from "../api/entities/StudentEntity";
-import { baseSkillType, ISkillType, ISkillTypePage, SkillType } from "../api/entities/SkillTypeEntity";
-import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
-import {
-    ISuggestion,
-    ISuggestionPage,
-    Suggestion,
-    SuggestionStrategy,
-} from "../api/entities/SuggestionEntity";
-import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
-import { AxiosConf } from "../api/calls/baseCalls";
-import faker from "@faker-js/faker";
+} from '../api/entities/StudentEntity';
+import { Communication, ICommunication, ICommunicationPage } from '../api/entities/CommunicationEntity';
+import { ISuggestion, ISuggestionPage, Suggestion, SuggestionStrategy } from '../api/entities/SuggestionEntity';
+import { Assignment, IAssignment, IAssignmentPage } from '../api/entities/AssignmentEntity';
+import { AxiosConf } from '../api/calls/baseCalls';
+import faker from '@faker-js/faker';
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
@@ -120,8 +114,16 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             containedProjects[1]._links!.self.href
         );
 
+        const skill2: ProjectSkill = new ProjectSkill(
+            "Being happy",
+            "We need only good vibes",
+            containedProjects[0]._links!.self.href
+        );
+
         containedProjectSkills = await Promise.all(
-            [skill1].map(async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data)
+            [skill1, skill2].map(
+                async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data
+            )
         );
     } else {
         containedProjectSkills = projectSkills._embedded["project-skills"];
@@ -252,23 +254,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const someStudentUri = containedStudents[0]._links.self.href;
     console.log(containedStudents);
 
-    const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
-    let containedSkillTypes: ISkillType[];
-
-    if (skillTypes._embedded.skillTypes.length == 0) {
-        const skillType1 = new SkillType("V10 boulderer", "#427162");
-        const skillTypeOther = new SkillType(baseSkillType, "#929199");
-
-        containedSkillTypes = await Promise.all(
-            [skillType1, skillTypeOther].map(
-                async (skill) => (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
-            )
-        );
-    } else {
-        containedSkillTypes = skillTypes._embedded.skillTypes;
-    }
-    console.log(containedSkillTypes);
-
     const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];
     if (communications._embedded.communications.length == 0) {
@@ -347,7 +332,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     let containedAssignments: IAssignment[];
     if (assignments._embedded.assignments.length == 0) {
         const assignment1: Assignment = new Assignment(
-            true,
             true,
             "You! here! now!",
             own_user_url,

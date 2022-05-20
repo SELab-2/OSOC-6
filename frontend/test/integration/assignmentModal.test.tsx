@@ -1,5 +1,5 @@
-import "@testing-library/jest-dom";
-import mockAxios from "jest-mock-axios";
+import '@testing-library/jest-dom';
+import mockAxios from 'jest-mock-axios';
 import {
     getBaseOkResponse,
     getBaseProject,
@@ -7,15 +7,15 @@ import {
     getBaseSkillType,
     getBaseStudent,
     getBaseUser,
-} from "./TestEntityProvider";
-import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableCurrentUser, makeCacheFree } from "./Provide";
-import AssignmentModal, { ModalInfo } from "../../src/components/projectAssignment/assignmentModal";
-import { Dispatch } from "react";
-import userEvent from "@testing-library/user-event";
-import { AxiosResponse } from "axios";
-import { UserRole } from "../../src/api/entities/UserEntity";
-import { Assignment } from "../../src/api/entities/AssignmentEntity";
+} from './TestEntityProvider';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { enableCurrentUser, makeCacheFree } from './Provide';
+import AssignmentModal, { ModalInfo } from '../../src/components/projectAssignment/assignmentModal';
+import { Dispatch } from 'react';
+import userEvent from '@testing-library/user-event';
+import { AxiosResponse } from 'axios';
+import { UserRole } from '../../src/api/entities/UserEntity';
+import { Assignment } from '../../src/api/entities/AssignmentEntity';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -96,7 +96,6 @@ describe("Assignment modal", () => {
         });
 
         const assignment = new Assignment(
-            false,
             true,
             "",
             user._links.self.href,

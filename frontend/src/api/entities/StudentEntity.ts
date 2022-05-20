@@ -1,4 +1,4 @@
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import { IBaseEntity, IEntityLinks, IPage, IReferencer } from './BaseEntities';
 
 export enum EnglishProficiency {
     /**
@@ -134,6 +134,10 @@ export const emptyStudent: IStudent = {
 export const studentCollectionName: string = "students";
 export type IStudentPage = IPage<{ students: IStudent[] }>;
 export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
+
+export function sortStudentsByName(students: IStudent[]) {
+    return students.sort((first, second) => first.callName.localeCompare(second.callName));
+}
 
 export class Student {
     constructor(

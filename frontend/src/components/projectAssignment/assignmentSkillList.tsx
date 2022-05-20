@@ -1,13 +1,14 @@
-import { Container } from "react-bootstrap";
-import AssignmentItem from "./assignmentItem";
-import useSWR, { useSWRConfig } from "swr";
-import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
-import WarningToast from "../util/warningToast";
-import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../utility/stringUtil";
-import { DropHandler } from "../../pages/assignStudents";
-import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
-import { getProjectOnUrl } from "../../api/calls/projectCalls";
+import { Container } from 'react-bootstrap';
+import AssignmentItem from './assignmentItem';
+import useSWR, { useSWRConfig } from 'swr';
+import { getAllProjectSkillsFromLinks } from '../../api/calls/projectSkillCalls';
+import WarningToast from '../util/warningToast';
+import useTranslation from 'next-translate/useTranslation';
+import { capitalize } from '../../utility/stringUtil';
+import { DropHandler } from '../../pages/assignStudents';
+import { IProjectSkill } from '../../api/entities/ProjectSkillEntity';
+import { getProjectOnUrl } from '../../api/calls/projectCalls';
+import { getValidAssignmentsUrlForProjectSkill } from '../../api/calls/AssignmentCalls';
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
@@ -37,7 +38,7 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
                 { skillUrl: skill._links.self.href, skillName: skill.name },
                 project.name
             );
-            await mutate(skill._links.assignments.href);
+            await mutate(getValidAssignmentsUrlForProjectSkill(skill));
         }
     }
 

@@ -1,10 +1,10 @@
-import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
-import { ProjectInfo } from "../../src/components/project/projectInfo";
-import mockAxios from "jest-mock-axios";
-import apiPaths from "../../src/properties/apiPaths";
-import mockRouter from "next-router-mock";
+import '@testing-library/jest-dom';
+import { render, screen, waitFor } from '@testing-library/react';
+import { makeCacheFree } from './Provide';
+import { ProjectInfo } from '../../src/components/project/projectInfo';
+import mockAxios from 'jest-mock-axios';
+import apiPaths from '../../src/properties/apiPaths';
+import mockRouter from 'next-router-mock';
 import {
     getBaseAssignment,
     getBaseLinks,
@@ -15,12 +15,13 @@ import {
     getBaseSkillType,
     getBaseStudent,
     getBaseUser,
-} from "./TestEntityProvider";
-import { userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { projectSkillCollectionName } from "../../src/api/entities/ProjectSkillEntity";
-import { assignmentCollectionName } from "../../src/api/entities/AssignmentEntity";
-import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
+} from './TestEntityProvider';
+import { userCollectionName, UserRole } from '../../src/api/entities/UserEntity';
+import { projectSkillCollectionName } from '../../src/api/entities/ProjectSkillEntity';
+import { assignmentCollectionName } from '../../src/api/entities/AssignmentEntity';
+import { skillTypeCollectionName } from '../../src/api/entities/SkillTypeEntity';
+import { getQueryUrlFromParams } from '../../src/api/calls/baseCalls';
+import { getValidAssignmentsUrlForProjectSkill } from '../../src/api/calls/AssignmentCalls';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -76,12 +77,11 @@ describe("project info", () => {
             )
         );
 
+        const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
         await waitFor(() =>
             mockAxios.mockResponseFor(
-                { url: projectSkill._links.assignments.href },
-                getBaseOkResponse(
-                    getBaseLinks(projectSkill._links.assignments.href, assignmentCollectionName, [assignment])
-                )
+                { url: assignmentsUrl },
+                getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))
             )
         );
 

@@ -1,22 +1,17 @@
-import { IProject } from "../../src/api/entities/ProjectEntity";
-import { IBaseEntity, IEntityLinks, IPage } from "../../src/api/entities/BaseEntities";
-import { AxiosResponse } from "axios";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { IProjectSkill } from "../../src/api/entities/ProjectSkillEntity";
-import { IUser, UserRole } from "../../src/api/entities/UserEntity";
-import { baseSkillType, ISkillType } from "../../src/api/entities/SkillTypeEntity";
-import { IAssignment } from "../../src/api/entities/AssignmentEntity";
-import {
-    EnglishProficiency,
-    Gender,
-    IStudent,
-    OsocExpericience,
-    Status,
-} from "../../src/api/entities/StudentEntity";
-import { IEdition } from "../../src/api/entities/EditionEntity";
-import { ICommunicationTemplate } from "../../src/api/entities/CommunicationTemplateEntity";
-import { ICommunication } from "../../src/api/entities/CommunicationEntity";
-import { ISuggestion, SuggestionStrategy } from "../../src/api/entities/SuggestionEntity";
+import { IProject } from '../../src/api/entities/ProjectEntity';
+import { IBaseEntity, IEntityLinks, IPage } from '../../src/api/entities/BaseEntities';
+import { AxiosResponse } from 'axios';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { IProjectSkill } from '../../src/api/entities/ProjectSkillEntity';
+import { IUser, UserRole } from '../../src/api/entities/UserEntity';
+import { baseSkillType, ISkillType } from '../../src/api/entities/SkillTypeEntity';
+import { IAssignment } from '../../src/api/entities/AssignmentEntity';
+import { EnglishProficiency, Gender, IStudent, OsocExpericience, Status } from '../../src/api/entities/StudentEntity';
+import { IEdition } from '../../src/api/entities/EditionEntity';
+import { ICommunicationTemplate } from '../../src/api/entities/CommunicationTemplateEntity';
+import { ICommunication } from '../../src/api/entities/CommunicationEntity';
+import { ISuggestion, SuggestionStrategy } from '../../src/api/entities/SuggestionEntity';
+import { IInvitation } from '../../src/api/entities/InvitationEntity';
 
 export function getBaseOkResponse(data: any): AxiosResponse {
     return {
@@ -191,10 +186,9 @@ export function getBaseSkillType(id: string): ISkillType {
 export function getBaseAssignment(id: string): IAssignment {
     const baseAssignmentsPath = "http://localhost/api/assignments/" + id;
     return {
-        isSuggestion: true,
         isValid: true,
         reason: "This assignment was mandatory, we don't have any other",
-        timestamp: "Now",
+        timestamp: "2022-05-05T17:57:49.963+00:00",
 
         _links: {
             assigner: { href: baseAssignmentsPath + "/assigner" },
@@ -230,7 +224,7 @@ export function getBaseSuggestion(id: string): ISuggestion {
     return {
         reason: "Some reason",
         strategy: SuggestionStrategy.yes,
-        timestamp: "",
+        timestamp: "2022-05-05T17:57:49.963+00:00",
         _links: {
             coach: { href: baseSuggestionPath + "/coach" },
             student: { href: baseSuggestionPath + "/student" },
@@ -313,6 +307,22 @@ export function getBaseStudent(id: string): IStudent {
             edition: { href: baseStudentPath + "/edition" },
             student: { href: baseStudentPath },
             self: { href: baseStudentPath },
+        },
+    };
+}
+
+export function getBaseInvitation(token: string, id: string): IInvitation {
+    const baseInvitation = "http://localhost/api/invitations/" + id;
+    return {
+        token: token,
+        creationTimestamp: "2022-05-05T17:57:49.963+00:00",
+        used: false,
+        _links: {
+            edition: { href: baseInvitation + "/edition" },
+            issuer: { href: baseInvitation + "/issuer" },
+            subject: { href: baseInvitation + "/subject" },
+            self: { href: baseInvitation },
+            invitation: { href: baseInvitation },
         },
     };
 }

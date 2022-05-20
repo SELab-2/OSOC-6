@@ -1,15 +1,15 @@
-import mockAxios from "jest-mock-axios";
-import { render, screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import userEvent from "@testing-library/user-event";
-import Registration from "../../src/pages/registration";
-import { makeCacheFree } from "./Provide";
-import { User } from "../../src/api/entities/UserEntity";
-import apiPaths from "../../src/properties/apiPaths";
-import { AxiosConf } from "../../src/api/calls/baseCalls";
-import { getBaseForbiddenResponse } from "./TestEntityProvider";
-import { act } from "react-dom/test-utils";
-import mockRouter from "next-router-mock";
+import mockAxios from 'jest-mock-axios';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import Registration from '../../src/pages/registration';
+import { makeCacheFree } from './Provide';
+import { User } from '../../src/api/entities/UserEntity';
+import apiPaths from '../../src/properties/apiPaths';
+import { AxiosConf } from '../../src/api/calls/baseCalls';
+import { getBaseForbiddenResponse } from './TestEntityProvider';
+import { act } from 'react-dom/test-utils';
+import mockRouter from 'next-router-mock';
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -52,7 +52,7 @@ describe("Registration", () => {
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.base + apiPaths.registration, user, {
                 ...AxiosConf,
-                params: { token: "token=" },
+                params: { token: "token" },
             });
         });
     });

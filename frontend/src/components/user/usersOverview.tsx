@@ -1,12 +1,13 @@
-import useTranslation from "next-translate/useTranslation";
-import { Col, Container, Row } from "react-bootstrap";
-import apiPaths from "../../properties/apiPaths";
-import UserComponent from "./manageUserComponent";
-import { IUser } from "../../api/entities/UserEntity";
-import useSWR from "swr";
-import styles from "../../styles/usersOverview.module.css";
-import { capitalize } from "../../utility/stringUtil";
-import { getAllUsersFromPage } from "../../api/calls/userCalls";
+import useTranslation from 'next-translate/useTranslation';
+import { Col, Container, Row } from 'react-bootstrap';
+import apiPaths from '../../properties/apiPaths';
+import UserComponent from './manageUserComponent';
+import { IUser } from '../../api/entities/UserEntity';
+import useSWR from 'swr';
+import styles from '../../styles/usersOverview.module.css';
+import { capitalize } from '../../utility/stringUtil';
+import { getAllUsersFromPage } from '../../api/calls/userCalls';
+import InvitationButton from './invitationButton';
 
 export function UsersOverview() {
     const { t } = useTranslation("common");
@@ -23,6 +24,7 @@ export function UsersOverview() {
         <div data-testid="user-overview" className={styles.users_full_div}>
             <Container style={{ marginTop: "50px" }}>
                 <h2 style={{ marginBottom: "40px" }}>{capitalize(t("users manage"))}</h2>
+                <InvitationButton />
                 <Row className={styles.users_row}>
                     <Col>
                         <h6>{capitalize(t("search name"))}</h6>

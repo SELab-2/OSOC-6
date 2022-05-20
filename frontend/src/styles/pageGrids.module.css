@@ -1,8 +1,3 @@
-.projects {
-    height: calc(100vh - 4rem);
-    width: 100%;
-}
-
 .students {
     width: 100%;
     bottom: 0;
@@ -22,4 +17,69 @@
 
 .max_h {
     max-height: 100%;
+}
+
+.filter {
+    height: 22%;
+    max-height: 15em;
+    min-height: 11em;
+}
+
+@media (max-width: 1024px) {
+    .filter_grid {
+        min-height: calc(100vh - 4rem);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info_grid {
+        min-height: calc(100vh - 4rem);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        min-width: 15em;
+    }
+
+    .info_field {
+        flex-grow: 1;
+        min-height: 100%;
+    }
+
+    .height_setter {
+        overflow: visible;
+    }
+}
+
+@media (min-width: 1024px) {
+    .filter_grid {
+        min-height: calc(100vh - 4rem);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info_grid {
+        height: calc(100vh - 4rem);
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar {
+        min-width: 15em;
+        width: 20%;
+        max-width: 20em;
+    }
+
+    .info_field {
+        flex-grow: 1;
+    }
+
+    .height_setter {
+        overflow: hidden;
+    }
 }

@@ -1,19 +1,17 @@
-import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/router";
-import apiPaths from "../../properties/apiPaths";
-import { capitalize } from "../../utility/stringUtil";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
-import { SuggestionModal } from "../suggestion/suggestionModal";
-import { StudentStatus } from "./studentStatus";
-import Image from "next/image";
-import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
-import SkillBadge from "../util/skillBadge";
-import { IFullSuggestion } from "../../hooks/useFullSuggestion";
-import useSWR from "swr";
-import { getStudentOnUrl } from "../../api/calls/studentCalls";
-import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
-import SuggestionListItem from "../suggestion/suggestionListItem";
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import apiPaths from '../../properties/apiPaths';
+import { capitalize } from '../../utility/stringUtil';
+import { Col, ListGroup, Row } from 'react-bootstrap';
+import { SuggestionStrategy } from '../../api/entities/SuggestionEntity';
+import { SuggestionModal } from '../suggestion/suggestionModal';
+import { StudentStatus } from './studentStatus';
+import { emptyStudent } from '../../api/entities/StudentEntity';
+import SkillBadge from '../util/skillBadge';
+import useSWR from 'swr';
+import { getStudentOnUrl } from '../../api/calls/studentCalls';
+import { getAllSuggestionsFromLinks } from '../../api/calls/suggestionCalls';
+import SuggestionListItem from '../suggestion/suggestionListItem';
 
 /**
  * Give an overview of all the studentinfo
@@ -54,9 +52,9 @@ export function StudentInfo() {
     }
 
     return (
-        <div>
-            <div>
-                <div className="row">
+        <div className={"h-100"}>
+            <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+                <div className="row w-100">
                     <div className="col-sm-6">
                         <h1>{student.callName}</h1>
                     </div>

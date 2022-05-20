@@ -1,16 +1,14 @@
-import { CloseButton, Col, Row } from "react-bootstrap";
-import applicationPaths from "../../properties/applicationPaths";
-import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
-import { capitalize } from "../../utility/stringUtil";
-import { IAssignment } from "../../api/entities/AssignmentEntity";
-import useSWR from "swr";
-import useTranslation from "next-translate/useTranslation";
-import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
-import { emptyUser, IUser } from "../../api/entities/UserEntity";
-import { extractIdFromAssignmentUrl } from "../../api/calls/AssignmentCalls";
-import { getUserOnUrl } from "../../api/calls/userCalls";
-import { IAssignmentSortKey } from "./assignmentItem";
-import { useEffect } from "react";
+import { CloseButton, Col, Row } from 'react-bootstrap';
+import applicationPaths from '../../properties/applicationPaths';
+import { extractIdFromStudentUrl, getStudentOnUrl } from '../../api/calls/studentCalls';
+import { capitalize } from '../../utility/stringUtil';
+import { IAssignment } from '../../api/entities/AssignmentEntity';
+import useSWR from 'swr';
+import useTranslation from 'next-translate/useTranslation';
+import { emptyStudent, IStudent } from '../../api/entities/StudentEntity';
+import { emptyUser, IUser } from '../../api/entities/UserEntity';
+import { extractIdFromAssignmentUrl } from '../../api/calls/AssignmentCalls';
+import { getUserOnUrl } from '../../api/calls/userCalls';
 
 /**
  * Properties used by [AssignmentStudentRow].
@@ -18,16 +16,9 @@ import { useEffect } from "react";
 interface IAssignmentStudentProps {
     assignment: IAssignment;
     removeCallback: (assignmentUrl: string) => Promise<void>;
-    // This callback registers the data fetched by [AssignmentStudentRow].
-    // This allows the object in need of this data to for example sort the [AssignmentStudentRow] components.
-    registerSortKey: (assignment: IAssignment, sortKey: IAssignmentSortKey) => void;
 }
 
-export default function AssignmentStudentRow({
-    assignment,
-    removeCallback,
-    registerSortKey,
-}: IAssignmentStudentProps) {
+export default function AssignmentStudentRow({ assignment, removeCallback }: IAssignmentStudentProps) {
     const { t } = useTranslation("common");
     const { data: receivedStudent, error: studentError } = useSWR(
         assignment._links.student.href,
@@ -40,13 +31,6 @@ export default function AssignmentStudentRow({
 
     const student: IStudent = receivedStudent || emptyStudent;
     const assigner: IUser = receivedAssigner || emptyUser;
-
-    const studentFirstName = student.firstName;
-    const assignerCallName = assigner.callName;
-    useEffect(() => {
-        registerSortKey(assignment, { studentFirstName, assignerCallName });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [assignment._links.self.href, studentFirstName, assignerCallName]);
 
     if (studentError || assignerError) {
         console.log(studentError || assignerError);

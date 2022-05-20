@@ -252,21 +252,19 @@ public final class TestEntityProvider {
         return new ProjectSkill("V10 Boulder-er", project, "Strong climber unites");
     }
 
-    public static Assignment getBaseSuggestionAssignment(final UserEntity user, final Student student,
-                                                         final ProjectSkill skill) {
-        return new Assignment(true, true, "Seems like handsome boy", user, student, skill);
+    public static Assignment getBaseValidAssignment1(final UserEntity user, final Student student,
+                                                     final ProjectSkill skill) {
+        return new Assignment(true, "Seems like handsome boy", user, student, skill);
     }
 
-    public static Assignment getBaseNonSuggestionAssignment(final UserEntity user, final Student student,
-                                                         final ProjectSkill skill) {
-        return new Assignment(false, true, "Seems like handsome girl", user, student, skill);
-
+    public static Assignment getBaseValidAssignment2(final UserEntity user, final Student student,
+                                                     final ProjectSkill skill) {
+        return new Assignment(true, "Seems like handsome girl", user, student, skill);
     }
 
-    public static Assignment getNonValidAssignment(final UserEntity user, final Student student,
-                                                            final ProjectSkill skill) {
-        return new Assignment(false, false, "A suggestion to be ignored", user, student, skill);
-
+    public static Assignment getBaseNonValidAssignment(final UserEntity user, final Student student,
+                                                       final ProjectSkill skill) {
+        return new Assignment(false, "A suggestion to be ignored", user, student, skill);
     }
 
     public static Suggestion getBaseYesSuggestion(final UserEntity user, final Student student) {

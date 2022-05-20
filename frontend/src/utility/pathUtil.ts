@@ -1,4 +1,4 @@
-import applicationPaths from "../properties/applicationPaths";
+import applicationPaths from '../properties/applicationPaths';
 
 /**
  * Function that checks if a path is a path that can be accessed without authentication.
@@ -7,10 +7,10 @@ import applicationPaths from "../properties/applicationPaths";
 export function pathIsAuthException(url: string): boolean {
     // Define the public paths for which authentication is not needed.
     const publicPaths = [
-        "/" + applicationPaths.index,
         "/" + applicationPaths.login,
-        "/" + applicationPaths.loginError,
         "/" + applicationPaths.registration,
+        "/" + applicationPaths.forgotPassword,
+        "/" + applicationPaths.resetPassword,
     ];
 
     // Check if the user is logged in. If not this will have no result

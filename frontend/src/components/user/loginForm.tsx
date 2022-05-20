@@ -1,9 +1,9 @@
-import { Field, Form, Formik } from "formik";
-import styles from "../../styles/loginForm.module.css";
+import { Field, Form, Formik } from 'formik';
+import styles from '../../styles/loginForm.module.css';
 
-import { LoginProps } from "../../handlers/loginSubmitHandler";
-import { capitalize } from "../../utility/stringUtil";
-import useTranslation from "next-translate/useTranslation";
+import { LoginProps } from '../../handlers/loginSubmitHandler';
+import { capitalize } from '../../utility/stringUtil';
+import useTranslation from 'next-translate/useTranslation';
 
 export default function LoginForm(props: LoginProps) {
     const { t } = useTranslation("common");
@@ -35,7 +35,7 @@ export default function LoginForm(props: LoginProps) {
                         placeholder="Enter password"
                         required
                     />
-                    <button className="btn btn-primary" type="submit" data-testid="login-submit">
+                    <button className="btn btn-outline-primary" type="submit" data-testid="login-submit">
                         {capitalize(t("login"))}
                     </button>
                 </Form>

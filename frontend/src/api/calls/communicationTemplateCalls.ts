@@ -2,10 +2,9 @@ import {
     communicationTemplateCollectionName,
     CommunicationTemplateEntity,
     ICommunicationTemplate,
-} from "../entities/CommunicationTemplateEntity";
-import { basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from "./baseCalls";
-import apiPaths from "../../properties/apiPaths";
-import { communicationCollectionName } from "../entities/CommunicationEntity";
+} from '../entities/CommunicationTemplateEntity';
+import { basePatch, basePost, extractIdFromApiEntityUrl, getAllEntitiesFromPage, getEntityOnUrl } from './baseCalls';
+import apiPaths from '../../properties/apiPaths';
 
 /**
  * Function getting a communication template on the provided url.
@@ -33,6 +32,17 @@ export async function createNewCommunicationTemplate(
     template: CommunicationTemplateEntity
 ): Promise<ICommunicationTemplate> {
     return <Promise<ICommunicationTemplate>>(await basePost(apiPaths.communicationTemplates, template)).data;
+}
+
+/**
+ * Function posting the creation of a new communication template on the backend.
+ * @param template the communication template that needs to be created.
+ */
+export async function editCommunicationTemplate(
+    url: string,
+    template: CommunicationTemplateEntity
+): Promise<ICommunicationTemplate> {
+    return <Promise<ICommunicationTemplate>>(await basePatch(url, template)).data;
 }
 
 /**

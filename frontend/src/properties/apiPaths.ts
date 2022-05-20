@@ -7,7 +7,11 @@ const apiPaths = {
     loginRedirect: "login",
     login: "login-processing",
     registration: "registration",
+    loginError: "loginError",
     logout: "logout",
+
+    forgotPassword: "forgot-password",
+    resetPassword: "reset-password",
 
     editions: "editions",
     editionByName: "editions/search/by-name",
@@ -20,6 +24,7 @@ const apiPaths = {
     userByEdition: "users/search/by-edition",
 
     communicationTemplates: "communicationTemplates",
+    communicationTemplatesByName: "communicationTemplates/search/by-name",
 
     projects: "projects",
     projectsByEdition: "projects/search/by-edition",
@@ -36,9 +41,12 @@ const apiPaths = {
     communicationsByStudent: "communications/search/by-student",
 
     assignments: "assignments",
+    assignmentsValidityByStudent: "assignments/search/validity-on-student",
+    assignmentsValidityByProjectSkill: "assignments/search/validity-on-project-skill",
 
     students: "students",
     studentByQuery: "students/search/full-query",
+    studentConflict: "students/search/conflict-query",
 };
 
 export default apiPaths;

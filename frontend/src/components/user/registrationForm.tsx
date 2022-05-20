@@ -1,19 +1,18 @@
-import { NextPage } from "next";
-import useTranslation from "next-translate/useTranslation";
-import Head from "next/head";
-import { Toast, ToastContainer } from "react-bootstrap";
-import timers from "../../properties/timers";
-import { useState } from "react";
-import { User } from "../../api/entities/UserEntity";
-import Router, { useRouter } from "next/router";
-import apiPaths from "../../properties/apiPaths";
-import { basePost, getParamsFromQueryUrl } from "../../api/calls/baseCalls";
-import { loginSubmitHandler } from "../../handlers/loginSubmitHandler";
-import { capitalize } from "../../utility/stringUtil";
-import { Field, Form, Formik } from "formik";
-import styles from "../../styles/registration.module.css";
-import applicationPaths from "../../properties/applicationPaths";
-import { useSWRConfig } from "swr";
+import { NextPage } from 'next';
+import useTranslation from 'next-translate/useTranslation';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import timers from '../../properties/timers';
+import { useState } from 'react';
+import { User } from '../../api/entities/UserEntity';
+import Router, { useRouter } from 'next/router';
+import apiPaths from '../../properties/apiPaths';
+import { basePost, getParamsFromQueryUrl } from '../../api/calls/baseCalls';
+import { loginSubmitHandler } from '../../handlers/loginSubmitHandler';
+import { capitalize } from '../../utility/stringUtil';
+import { Field, Form, Formik } from 'formik';
+import styles from '../../styles/registration.module.css';
+import applicationPaths from '../../properties/applicationPaths';
+import { useSWRConfig } from 'swr';
 
 const RegistrationForm: NextPage = () => {
     const { t } = useTranslation("common");
@@ -31,10 +30,6 @@ const RegistrationForm: NextPage = () => {
         if (values.password == values.repeat) {
             const registratingUser: User = new User(values.callname, values.email, values.password);
             let invitationToken = getParamsFromQueryUrl(Router.asPath).get("invitationToken");
-            // Token always ends on "=", but this character is removed in the paramsFromQueryURl method
-            if (invitationToken[-1] !== "=") {
-                invitationToken += "=";
-            }
 
             try {
                 await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
@@ -42,6 +37,7 @@ const RegistrationForm: NextPage = () => {
                 });
                 await loginSubmitHandler(
                     { username: values.email, password: values.password },
+                    () => {},
                     router,
                     mutate
                 );
@@ -96,7 +92,7 @@ const RegistrationForm: NextPage = () => {
                             placeholder={capitalize(t("enter password"))}
                             required
                         />
-                        <h6>{capitalize(t("repeat passwordd"))}</h6>
+                        <h6>{capitalize(t("repeat password"))}</h6>
                         <Field
                             className={"form-control " + styles.registration_field}
                             type="password"

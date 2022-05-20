@@ -1,41 +1,79 @@
-import apiPaths from "../../properties/apiPaths";
-import { basePost, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import { IEdition } from "../../api/entities/EditionEntity";
-import { Invitation } from "../../api/entities/InvitationEntity";
-import { useRouter } from "next/router";
-import { Button } from "react-bootstrap";
-import applicationPaths from "../../properties/applicationPaths";
-import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
-import { logoutUser } from "../../api/calls/userCalls";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { createInvitation } from "../../api/calls/invitationCalls";
+import apiPaths from '../../properties/apiPaths';
+import { getQueryUrlFromParams } from '../../api/calls/baseCalls';
+import { Invitation } from '../../api/entities/InvitationEntity';
+import { Button } from 'react-bootstrap';
+import applicationPaths from '../../properties/applicationPaths';
+import { useEditionApplicationPathTransformer } from '../../hooks/utilHooks';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { createInvitation } from '../../api/calls/invitationCalls';
+import useTranslation from 'next-translate/useTranslation';
+import { capitalize } from '../../utility/stringUtil';
+import mailTo from '../../utility/mailTo';
+import useSWR from 'swr';
+import { getAllCommunicationTemplatesFromPage } from '../../api/calls/communicationTemplateCalls';
+import { emptyCommunicationTemplate } from '../../api/entities/CommunicationTemplateEntity';
+import useEdition from '../../hooks/useGlobalEdition';
+import { useState } from 'react';
+import applicationProperties from '../../properties/applicationProperties';
 
 export default function InvitationButton() {
-    const router = useRouter();
+    const { t } = useTranslation("common");
     const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
+    const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
 
-    if (error || !user) {
+    const { data, error: templateError } = useSWR(
+        getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
+            name: applicationProperties.invitationTemplate,
+        }),
+        getAllCommunicationTemplatesFromPage
+    );
+    const [invitationUrl, setInvitationUrl] = useState<string>("");
+    const [hidden, setHidden] = useState(true);
+
+    const template = data?.at(0) || emptyCommunicationTemplate;
+
+    if (templateError) {
+        console.log(templateError);
         return null;
     }
 
     async function onClick() {
-        // Get an edition
-        const editions: IEdition[] = await getAllEditionsFromPage(apiPaths.editions);
-        const edition: IEdition = editions[0];
-
         // Create an invitation
         // We can never call this function if user is undefined.
-        const invitation = new Invitation(user!._links.self.href, edition._links.self.href);
+        const invitation = new Invitation(user!._links.self.href, receivedEditionUrl!);
         const postedInvitation = await createInvitation(invitation);
 
-        const url = getQueryUrlFromParams(applicationPaths.registration, {
+        const url: string = getQueryUrlFromParams(applicationPaths.registration, {
             invitationToken: postedInvitation.token,
         });
 
-        await Promise.all([logoutUser(), router.push(transformer(url))]);
+        const registrationUrl = applicationPaths.base + "/" + transformer(url);
+
+        setInvitationUrl(registrationUrl);
+        setHidden(false);
+
+        document.location.href = mailTo({
+            body: template.template + "\n" + registrationUrl,
+            subject: template.subject,
+            recipients: undefined,
+        });
     }
 
-    return <Button onClick={onClick}>Create invitation for registration</Button>;
+    return (
+        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+            <Button data-testid="invite-button" onClick={onClick}>
+                {capitalize(t("invite user"))}
+            </Button>
+            <input
+                hidden={hidden}
+                type="text"
+                data-testid="invitation-url"
+                id="invitation-url"
+                value={invitationUrl}
+                style={{ width: 650, textAlign: "center" }}
+                readOnly
+            />
+        </div>
+    );
 }

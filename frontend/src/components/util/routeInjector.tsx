@@ -1,44 +1,46 @@
-import useEdition from "../../hooks/useGlobalEdition";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import apiPaths from "../../properties/apiPaths";
-import { getAllEditionsFromPage, getEditionByName, getEditionOnUrl } from "../../api/calls/editionCalls";
-import { useEffect } from "react";
-import applicationPaths from "../../properties/applicationPaths";
-import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../utility/stringUtil";
-import { Button } from "react-bootstrap";
-import NavBar from "./navBar";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import useEdition from '../../hooks/useGlobalEdition';
+import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import { getQueryUrlFromParams } from '../../api/calls/baseCalls';
+import apiPaths from '../../properties/apiPaths';
+import { getAllEditionsFromPage, getEditionByName, getEditionOnUrl } from '../../api/calls/editionCalls';
+import { useEffect } from 'react';
+import applicationPaths from '../../properties/applicationPaths';
+import useTranslation from 'next-translate/useTranslation';
+import { capitalize } from '../../utility/stringUtil';
+import { Button } from 'react-bootstrap';
+import NavBar from './navBar';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { pathIsAuthException } from '../../utility/pathUtil';
 
 export default function RouteInjector({ children }: any) {
+    const router = useRouter();
+    const replace = router.replace;
+
     const { error: userError } = useCurrentUser(true);
-    const userIsLoggedIn: boolean = !userError;
+    const injectorActive: boolean = !userError && !pathIsAuthException(router.asPath);
 
     const { t } = useTranslation("common");
     const [contextEditionUrl, setContextEditionUrl] = useEdition();
     const { data: contextEdition, error: contextEditionError } = useSWR(
-        userIsLoggedIn ? contextEditionUrl : null,
+        injectorActive ? contextEditionUrl : null,
         getEditionOnUrl
     );
 
     const contextEditionName = contextEdition?.name;
     const hadContextError = !!contextEditionError;
 
-    const router = useRouter();
-    const replace = router.replace;
     const query = router.query as { edition?: string };
     const routerEditionName = query.edition;
     const { data: fetchedRouterEdition, error: fetchedEditionError } = useSWR(
-        userIsLoggedIn ? routerEditionName : null,
+        injectorActive ? routerEditionName : null,
         getEditionByName
     );
     const fetchedRouterEditionUrl = fetchedRouterEdition?._links?.self?.href;
     const hadRouterError = !!fetchedEditionError;
 
     const { data: availableEditions, error: availableEditionsError } = useSWR(
-        !contextEditionUrl && !routerEditionName && userIsLoggedIn
+        !contextEditionUrl && !routerEditionName && injectorActive
             ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" })
             : null,
         getAllEditionsFromPage
@@ -74,7 +76,7 @@ export default function RouteInjector({ children }: any) {
             setContextEditionUrl(null);
         }
 
-        // You have no context edition and no path edition. But are able to see editions.
+        // You have no context edition and no path edition, but are able to see editions.
         if (!contextEditionUrl && !routerEditionName && latestEditionName) {
             replace({
                 query: {

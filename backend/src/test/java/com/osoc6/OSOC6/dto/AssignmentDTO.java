@@ -21,11 +21,6 @@ public class AssignmentDTO {
     private Long id;
 
     /**
-     * Whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
-     */
-    private Boolean isSuggestion;
-
-    /**
      * Whether assignment is still valid.
      * An assignment can be invalid after conflict resolution.
      * This means we no longer recognise it.
@@ -61,7 +56,6 @@ public class AssignmentDTO {
 
     public AssignmentDTO(final Assignment assignment, final EntityLinks entityLinks) {
         id = assignment.getId();
-        isSuggestion = assignment.getIsSuggestion();
         isValid = assignment.getIsValid();
         reason = assignment.getReason();
 

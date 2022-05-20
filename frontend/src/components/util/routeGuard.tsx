@@ -1,8 +1,8 @@
-import applicationPaths from "../../properties/applicationPaths";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { pathIsAuthException } from "../../utility/pathUtil";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import applicationPaths from '../../properties/applicationPaths';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { pathIsAuthException } from '../../utility/pathUtil';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 export default function RouteGuard({ children }: any) {
     const router = useRouter();
@@ -20,7 +20,7 @@ export default function RouteGuard({ children }: any) {
 
         if (!authException && userErrorMsg) {
             replace({
-                pathname: applicationPaths.login,
+                pathname: "/" + applicationPaths.login,
                 query: { returnUrl: routerPath },
             }).catch(console.log);
         }

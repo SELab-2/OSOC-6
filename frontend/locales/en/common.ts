@@ -8,6 +8,15 @@ const common = {
     signin: "sign in",
     "let's get started": "let's get started!",
     login: "login",
+    "forgot password link": "forgot password?",
+
+    "forgot password title": "forgot password",
+    "reset password email": "enter email address of your account",
+    "forgot email": "send reset password request",
+    "forgot email success": "reset password email has been sent",
+
+    "reset password title": "reset password",
+    "password identical": "passwords need to be identical",
 
     callname: "callname",
 
@@ -36,6 +45,7 @@ const common = {
     "user password": "password",
     "user status": "account status",
     "user delete": "delete my profile",
+    "invite user": "invite new user",
     "new password": "new password",
     "repeat new password": "repeat new password",
     "new email": "new email",
@@ -85,6 +95,14 @@ const common = {
     // Edition strings
     "no edition": "there are no editions made yet.",
     "no error": "no error",
+    "edition overview": "edition overview",
+    "change edition state":
+        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "invalid edition year": "please provide a valid year",
+    "create new edition": "create new edition",
+    "manage editions": "manage editions",
+    editions: "editions",
+    "not active": "not active",
 
     // Communication strings
     "create communication template": "create communication template",
@@ -98,6 +116,7 @@ const common = {
     medium: "medium",
     "by medium": "by",
     "register communication for": "register communication for",
+    "edit communicationTemplate": "edit communication template",
 
     // Student info strings
     suggestions: "suggestions",
@@ -136,6 +155,9 @@ const common = {
     "change status title": "change status",
     "change status": "would you like to change the status to",
 
+    filters: "filters",
+    "choose roles": "choose one or more",
+
     // Assignment strings
     "assignment modal title": "Why do you want this student here?",
     "confirm assignment": "confirm assignment",
@@ -146,25 +168,23 @@ const common = {
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
 
-    "edition overview": "edition overview",
-    "change edition state":
-        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
-    "invalid edition year": "please provide a valid year",
+    // Conflict strings
+    conflict: "conflict",
+    "reason(s)": "reason(s)",
 
     suggesting: "You are suggesting ",
     "to project": "to project ",
     "for role": "for the role ",
 
+    "no coaches for project": "There are no coaches assigned to this project.",
+    "no extra requirements for project": "There are no extra requirements for this project.",
+    "no roles assigned to project": "There are no roles assigned to this project.",
+
     // SkillType strings
     "color representing skill type": "choose the color representing the skill type",
     "edit colour": "edit colour",
     delete: "delete",
-
-    // Edition strings
-    "create new edition": "create new edition",
-    "manage editions": "manage editions",
-    editions: "editions",
-    "not active": "not active",
+    skills: "skills",
 };
 
 export default common;

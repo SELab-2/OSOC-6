@@ -1,41 +1,41 @@
-import { Button, Container, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
-import useTranslation from "next-translate/useTranslation";
-import styles from "../../styles/resetComponent.module.css";
-import { useState } from "react";
-import applicationPaths from "../../properties/applicationPaths";
-import { useRouter } from "next/router";
-import { capitalize } from "../../utility/stringUtil";
-import { StatusCodes } from "http-status-codes";
-import { AxiosResponse } from "axios";
-import timers from "../../properties/timers";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { emptyUser } from "../../api/entities/UserEntity";
+import { Button, Container, Form, FormControl, Toast, ToastContainer } from 'react-bootstrap';
+import useTranslation from 'next-translate/useTranslation';
+import styles from '../../styles/resetComponent.module.css';
+import { useState } from 'react';
+import applicationPaths from '../../properties/applicationPaths';
+import { useRouter } from 'next/router';
+import { capitalize } from '../../utility/stringUtil';
+import { StatusCodes } from 'http-status-codes';
+import { AxiosResponse } from 'axios';
+import timers from '../../properties/timers';
+import { useEditionApplicationPathTransformer } from '../../hooks/utilHooks';
+import { IUser } from '../../api/entities/UserEntity';
 
+/**
+ * The props needed for the ResetComponent.
+ */
 interface ResetComponentProps {
     name: string;
-    handler: (url: string, email: string) => Promise<AxiosResponse>;
+    handler: (url: string, newValue: string) => Promise<AxiosResponse>;
+    user: IUser;
+    token?: string;
 }
 
 /**
- * Component able to edit field using a handler.
+ * Component used to change a single value with a second input to check whether inputs are equal.
+ * @param handler the handler to submit the value to
+ * @param name the name of the component (used for title)
+ * @param user the user to reset the value of, emptyUser if token is provided
+ * @param token the token used for the query parameter of the reset password request
  */
-export function ResetComponent({ handler, name }: ResetComponentProps) {
+export function ResetComponent({ handler, name, user, token }: ResetComponentProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
-    let { user: userResponse, error } = useCurrentUser();
     const [firstEntry, setFirstEntry] = useState<string>("");
     const [secondEntry, setSecondEntry] = useState<string>("");
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
-
-    const user = userResponse || emptyUser;
-
-    if (error) {
-        console.log(error);
-        return null;
-    }
 
     function onChangeFirstEntry(event: any) {
         event.preventDefault();
@@ -50,12 +50,20 @@ export function ResetComponent({ handler, name }: ResetComponentProps) {
     async function onConfirm() {
         if (firstEntry !== secondEntry) {
             setShowDanger(true);
+        } else if (token) {
+            const response: AxiosResponse = await handler(token, firstEntry);
+            if (response.status == StatusCodes.OK) {
+                setShowSuccess(true);
+                setTimeout(function () {
+                    router.push(transformer("/" + applicationPaths.login)).catch(console.log);
+                }, timers.redirect);
+            }
         } else if (user) {
             const response: AxiosResponse = await handler(user._links.self.href, firstEntry);
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(transformer("/" + applicationPaths.home));
+                    router.push(transformer("/" + applicationPaths.home)).catch(console.log);
                 }, timers.redirect);
             }
         }
@@ -63,13 +71,13 @@ export function ResetComponent({ handler, name }: ResetComponentProps) {
 
     return (
         <Container className={styles.reset_component} data-testid="reset-component">
-            <h4>{capitalize(t("reset " + name))}</h4>
+            {!token && <h4>{capitalize(t("reset " + name))}</h4>}
             <Form.Label>{capitalize(t("new " + name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-1" type={name} onChange={onChangeFirstEntry} />
-            <Form.Label>{capitalize(t("repeat new " + name))}</Form.Label>
+            <Form.Label className="mt-2">{capitalize(t("repeat new " + name))}</Form.Label>
             <FormControl id="" data-testid="reset-input-2" type={name} onChange={onChangeSecondEntry} />
-            <Button data-testid="confirm-reset" onClick={onConfirm}>
-                {capitalize(t("confirm button"))}
+            <Button data-testid="confirm-reset" onClick={onConfirm} className="mt-3">
+                {capitalize(t("confirm"))}
             </Button>
             <ToastContainer position="bottom-end">
                 <Toast
