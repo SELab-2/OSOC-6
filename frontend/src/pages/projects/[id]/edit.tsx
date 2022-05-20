@@ -11,7 +11,7 @@ import apiPaths from "../../../properties/apiPaths";
 import { getProjectOnUrl } from "../../../api/calls/projectCalls";
 import { emptyProject, IProject } from "../../../api/entities/ProjectEntity";
 
-const CreateProject: NextPage = () => {
+const EditProjectPage: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const query = router.query as { id: string };
@@ -30,7 +30,7 @@ const CreateProject: NextPage = () => {
     const project: IProject = receivedProject || emptyProject;
 
     return (
-        <div>
+        <div data-testid="edit-project-page">
             <Head>
                 <title className="capitalize">{t("home page title")}</title>
             </Head>
@@ -45,4 +45,4 @@ const CreateProject: NextPage = () => {
     );
 };
 
-export default CreateProject;
+export default EditProjectPage;
