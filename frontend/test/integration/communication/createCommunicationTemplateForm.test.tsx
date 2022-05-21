@@ -1,18 +1,28 @@
 import "@testing-library/jest-dom";
+import { getBaseCommunicationTemplate, getBaseStudent } from "../TestEntityProvider";
 import { render, waitFor } from "@testing-library/react";
-import CommunicationTemplateCreate from "../../../src/pages/communicationTemplates/create";
+import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
-import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
+import CreateCommunicationTemplateForm from "../../../src/components/communication/createCommunicationTemplateForm";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
 describe("create communication template", () => {
-    it("renders", () => {
-        const page = render(<CommunicationTemplateCreate />);
-        expect(page.getByTestId("communication-template-create")).toBeInTheDocument();
+    const template = getBaseCommunicationTemplate("1");
+    const studentId = "1";
+    const student = getBaseStudent(studentId);
+
+    it("renders create", async () => {
+        const page = render(<CreateCommunicationTemplateForm studentId={studentId} />);
+        await expect(page.getByTestId("template-form")).toBeInTheDocument();
+    });
+
+    it("renders edit", async () => {
+        const page = render(<CreateCommunicationTemplateForm template={template} studentId={studentId} />);
+        await expect(page.getByTestId("template-form")).toBeInTheDocument();
     });
 
     afterEach(() => {
@@ -25,7 +35,7 @@ describe("create communication template", () => {
             "createCommunicationTemplateSubmitHandler"
         );
 
-        const form = render(<CommunicationTemplateCreate />);
+        const form = render(<CreateCommunicationTemplateForm studentId={studentId} />);
 
         const nameElement = form.getByTestId("name");
         const subjectElement = form.getByTestId("subject");
@@ -43,7 +53,7 @@ describe("create communication template", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, comTemplate, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(null, studentId, comTemplate, mockRouter, expect.anything());
         });
 
         await waitFor(() => {

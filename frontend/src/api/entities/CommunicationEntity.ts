@@ -4,6 +4,7 @@ import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
  * Interface that describes the shape of communication as received by the backend.
  */
 export interface ICommunication extends IBaseEntity {
+    subject: string;
     content: string;
     medium: string;
     timestamp: string;
@@ -25,6 +26,7 @@ export interface ICommunication extends IBaseEntity {
 export const emptyCommunication: ICommunication = {
     medium: "",
     timestamp: "",
+    subject: "",
     content: "",
     _links: {
         student: { href: "" },
@@ -59,9 +61,17 @@ export const defaultCommunicationMedium = "email";
  * Constructor that allows us to easily post Communication entities to our backend.
  */
 export class Communication {
-    constructor(medium: string, template: string, content: string, sender: string, student: string) {
+    constructor(
+        medium: string,
+        template: string,
+        subject: string,
+        content: string,
+        sender: string,
+        student: string
+    ) {
         this.medium = medium;
         this.template = template;
+        this.subject = subject;
         this.content = content;
         this.sender = sender;
         this.student = student;
@@ -69,6 +79,7 @@ export class Communication {
 
     medium: string;
     template: string;
+    subject: string;
     content: string;
     sender: string;
     student: string;

@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { Button, Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -26,6 +26,7 @@ import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 
 /**
  * Give an overview of all the studentinfo
@@ -82,9 +83,29 @@ export function StudentInfo() {
         }
     }
 
+    async function openCommunications() {
+        const params = getStudentQueryParamsFromQuery(router.query);
+        const studentCommUrl =
+            "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
+        const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
+        await router.push(studentCommUrlParams);
+    }
+
     return (
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+                {isAdmin && (
+                    <div className="row w-100" style={{ paddingBottom: 15 }}>
+                        <Button
+                            variant="btn-outline"
+                            data-testid="open-communication"
+                            style={{ color: "white", borderColor: "white" }}
+                            onClick={openCommunications}
+                        >
+                            {capitalize(t("communication"))}
+                        </Button>
+                    </div>
+                )}
                 <h1>
                     {student.callName}
                     {isAdmin && (
