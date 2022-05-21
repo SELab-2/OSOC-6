@@ -25,6 +25,7 @@ const common = {
     apply: "apply",
     "search name": "search name",
     "something went wrong": "oops, something went wrong.",
+    "delete not empty edition": "maybe you tried deleting an edition with data in it.",
 
     // Student strings
     students: "students",
