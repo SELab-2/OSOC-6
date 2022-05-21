@@ -2,8 +2,8 @@ import { Col, Row } from "react-bootstrap";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import styles from "../../styles/projects/createProject.module.css";
-import { capitalize } from '../../utility/stringUtil';
-import useTranslation from 'next-translate/useTranslation';
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 /**
  * Props needed for the ItemListForm component.
@@ -57,7 +57,9 @@ export default function ItemListForm({
                             <Col>{item}</Col>
                             <Col xs={1}>
                                 <a
-                                    onClick={() => setItems(items.filter((_, valIndex) => valIndex !== index))}
+                                    onClick={() =>
+                                        setItems(items.filter((_, valIndex) => valIndex !== index))
+                                    }
                                     data-testid={"item-list-delete-button"}
                                 >
                                     <Image
