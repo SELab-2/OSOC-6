@@ -12,15 +12,16 @@ jest.mock("next/router", () => require("next-router-mock"));
 
 describe("create communication template", () => {
     const template = getBaseCommunicationTemplate("1");
-    const student = getBaseStudent("1");
+    const studentId = "1";
+    const student = getBaseStudent(studentId);
 
     it("renders create", async () => {
-        const page = render(<CreateCommunicationTemplateForm />);
+        const page = render(<CreateCommunicationTemplateForm studentId={studentId} />);
         await expect(page.getByTestId("template-form")).toBeInTheDocument();
     });
 
     it("renders edit", async () => {
-        const page = render(<CreateCommunicationTemplateForm template={template} />);
+        const page = render(<CreateCommunicationTemplateForm template={template} studentId={studentId}/>);
         await expect(page.getByTestId("template-form")).toBeInTheDocument();
     });
 
@@ -34,7 +35,7 @@ describe("create communication template", () => {
             "createCommunicationTemplateSubmitHandler"
         );
 
-        const form = render(<CreateCommunicationTemplateForm />);
+        const form = render(<CreateCommunicationTemplateForm  studentId={studentId}/>);
 
         const nameElement = form.getByTestId("name");
         const subjectElement = form.getByTestId("subject");
@@ -52,7 +53,7 @@ describe("create communication template", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, comTemplate, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(null, studentId, comTemplate, mockRouter, expect.anything());
         });
 
         await waitFor(() => {
