@@ -166,7 +166,7 @@ const common = {
     none: "no experience yet",
     "yes, no student coach": "yes, but does not want to be student coach",
     "yes, student coach": "yes, wants to be student coach",
-    "or": "or",
+    or: "or",
 
     "change status title": "change status",
     "change status": "would you like to change the status to",
