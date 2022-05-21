@@ -30,7 +30,12 @@ export async function createCommunicationTemplateSubmitHandler(
         mutate(result._links.self.href, result),
         router.replace({
             pathname:
-                "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationRegistration,
+                "/" +
+                applicationPaths.students +
+                "/" +
+                studentId +
+                "/" +
+                applicationPaths.communicationRegistration,
             query: { ...router.query },
         }),
     ]);

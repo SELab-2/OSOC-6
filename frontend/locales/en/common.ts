@@ -105,7 +105,7 @@ const common = {
     "not active": "not active",
 
     // Communication strings
-    "communication": "communication",
+    communication: "communication",
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",
