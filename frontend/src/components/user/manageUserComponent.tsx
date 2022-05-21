@@ -25,7 +25,7 @@ export function UserComponent(props: any) {
     async function deleteUser() {
         const response = await userDelete(user._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
-            await Promise.all([mutate(apiPaths.users)]);
+            await mutate(apiPaths.users);
         } else {
             setShow(true);
         }
