@@ -50,9 +50,9 @@ export default function AssignmentStudentRow({ assignment, removeCallback }: IAs
                     rel="noreferrer"
                     href={applicationPaths.students + "/" + extractIdFromStudentUrl(student._links.self.href)}
                     target="_blank"
-                    className={loginStyle.default.link}
+                    className={loginStyle.default.link + " " + styles.link_override}
                 >
-                    <h6>
+                    <h5>
                         {student.firstName}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -71,13 +71,13 @@ export default function AssignmentStudentRow({ assignment, removeCallback }: IAs
                                 d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"
                             />
                         </svg>
-                    </h6>
+                    </h5>
                 </a>
 
-                <p>
-                    {capitalize(t("suggested by"))}
-                    {assigner.callName}: <br /> {assignment.reason}
-                </p>
+                <h6>
+                    {capitalize(t("suggested by"))} {assigner.callName}:
+                </h6>
+                <p>{assignment.reason}</p>
             </Col>
             <Col xs={2} md={1}>
                 <CloseButton
