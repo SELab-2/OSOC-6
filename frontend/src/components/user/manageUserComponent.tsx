@@ -101,7 +101,7 @@ export function UserComponent(props: any) {
                         <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>
-                <hr />
+                <hr style={{ marginTop: "1rem" }} />
             </Row>
         </Container>
     );
