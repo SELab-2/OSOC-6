@@ -14,7 +14,7 @@ import {
 import apiPaths from "../../src/properties/apiPaths";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { ISkillType, skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import AssignmentItem from "../../src/components/projectAssignment/assignmentItem";
+import ProjectSkillItem from "../../src/components/projectAssignment/projectSkillItem";
 import { assignmentCollectionName, IAssignment } from "../../src/api/entities/AssignmentEntity";
 import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import { IStudent } from "../../src/api/entities/StudentEntity";
@@ -55,7 +55,7 @@ async function renderAssignmentItem(
         getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, skillType)
     );
     await act(() => {
-        render(makeCacheFree(() => <AssignmentItem skill={projectSkill} />));
+        render(makeCacheFree(() => <ProjectSkillItem skill={projectSkill} />));
     });
 
     // answer skillType

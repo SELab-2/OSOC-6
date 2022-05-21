@@ -11,36 +11,29 @@ import { extractIdFromAssignmentUrl } from "../../api/calls/AssignmentCalls";
 import { getUserOnUrl } from "../../api/calls/userCalls";
 import * as loginStyle from "../../styles/loginForm.module.css";
 import styles from "../../styles/assignments.module.css";
+import AssignmentReasonListItem from "./assignmentReasonListItem";
 
 /**
- * Properties used by [AssignmentStudentRow].
+ * Properties used by [StudentAssignmentsRow].
  */
 interface IAssignmentStudentProps {
-    assignment: IAssignment;
+    studentUrl: string,
+    assignments: string[];
     removeCallback: (assignmentUrl: string) => Promise<void>;
 }
 
-export default function AssignmentStudentRow({ assignment, removeCallback }: IAssignmentStudentProps) {
+export default function StudentAssignmentsRow({ studentUrl, assignments, removeCallback }: IAssignmentStudentProps) {
     const { t } = useTranslation("common");
     const { data: receivedStudent, error: studentError } = useSWR(
-        assignment._links.student.href,
+        studentUrl,
         getStudentOnUrl
-    );
-    const { data: receivedAssigner, error: assignerError } = useSWR(
-        assignment._links.assigner.href,
-        getUserOnUrl
     );
 
     const student: IStudent = receivedStudent || emptyStudent;
-    const assigner: IUser = receivedAssigner || emptyUser;
 
-    if (studentError || assignerError) {
-        console.log(studentError || assignerError);
+    if (studentError) {
+        console.log(studentError);
         return null;
-    }
-
-    async function removeAssignment(event: any) {
-        await removeCallback(event.target.value);
     }
 
     return (
@@ -73,22 +66,11 @@ export default function AssignmentStudentRow({ assignment, removeCallback }: IAs
                         </svg>
                     </h5>
                 </a>
+                { assignments.map(assignment =>
+                    <AssignmentReasonListItem assignmentUrl={assignment} removeCallback={removeCallback} />
+                )
 
-                <h6>
-                    {capitalize(t("suggested by"))} {assigner.callName}:
-                </h6>
-                <p>{assignment.reason}</p>
-            </Col>
-            <Col xs={2} md={1}>
-                <CloseButton
-                    aria-label={"Remove student from project"}
-                    value={assignment._links.self.href}
-                    onClick={(assignment) => removeAssignment(assignment)}
-                    data-testid={
-                        "remove assignment button " + extractIdFromAssignmentUrl(assignment._links.self.href)
-                    }
-                    className={styles.close_button}
-                />
+                }
             </Col>
         </Row>
     );
