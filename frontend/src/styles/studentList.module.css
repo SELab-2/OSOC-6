@@ -53,3 +53,21 @@
     flex-wrap: wrap;
     margin: 0.2rem;
 }
+
+.student_info_header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.student_info_header_title {
+    flex-grow: 1;
+}
+
+.student_info_header_extra {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}

@@ -75,25 +75,19 @@ export function StudentInfo() {
     return (
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
-                <div className="row w-100">
-                    <div className="col-sm-6">
+                <div className={styles.student_info_header}>
+                    <div className={styles.student_info_header_title}>
                         <h1>{student.callName}</h1>
                     </div>
-                    <div className="col-sm-6">
-                        <Row>
-                            <Col>
-                                <ListGroup className="list-group-horizontal" as="ul">
-                                    {student.skills.map((skill) => (
-                                        <SkillBadge skill={skill} key={skill} />
-                                    ))}
-                                </ListGroup>
-                            </Col>
-                            <Col>
-                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
-                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                                </a>
-                            </Col>
-                        </Row>
+                    <div className={styles.student_info_header_extra}>
+                        <ListGroup className="list-group-horizontal" as="ul">
+                            {student.skills.map((skill) => (
+                                <SkillBadge skill={skill} key={skill} />
+                            ))}
+                        </ListGroup>
+                        <a onClick={deleteStudentOnClick} data-testid="delete-student">
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                        </a>
                     </div>
                 </div>
                 <br />
