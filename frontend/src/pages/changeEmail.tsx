@@ -3,6 +3,7 @@ import { ResetComponent } from "../components/util/resetComponent";
 import Navbar from "../components/util/navBar";
 import { saveEmailOfUser } from "../api/calls/userCalls";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import { Background } from "../components/util/background";
 
 const ChangeEmail: NextPage = () => {
     // This is safe since we are behind the route-guard
@@ -10,6 +11,7 @@ const ChangeEmail: NextPage = () => {
 
     return (
         <div>
+            <Background />
             <Navbar />
             <ResetComponent name="email" handler={saveEmailOfUser} user={user!} />
         </div>

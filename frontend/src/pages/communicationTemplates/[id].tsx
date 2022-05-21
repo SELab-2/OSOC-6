@@ -6,7 +6,7 @@ import { emptyCommunicationTemplate } from "../../api/entities/CommunicationTemp
 import CommunicationTemplateInfo from "../../components/communication/communicationTemplateInfo";
 
 /**
- * Component that renders the information of a communication template.
+ * Page that renders the information of a communication template.
  */
 export default function CommunicationTemplatePage() {
     const router = useRouter();

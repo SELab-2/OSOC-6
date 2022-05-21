@@ -123,17 +123,17 @@ export function getBaseProject(id: string): IProject {
         _links: {
             self: { href: baseProjectPath },
             neededSkills: { href: baseProjectPath + "/neededSkills" },
-            coaches: { href: baseProjectPath + "coaches" },
+            coaches: { href: baseProjectPath + "/coaches" },
             edition: { href: baseProjectPath + "/edition" },
             creator: { href: baseProjectPath + "/creator" },
             project: { href: baseProjectPath },
         },
-        name: "project name",
-        info: "project info",
-        goals: [],
-        versionManagement: "",
-        partnerName: "",
-        partnerWebsite: "",
+        name: "Some project name",
+        info: "some project info",
+        goals: ["apples should grow on trees", "children play outside"],
+        versionManagement: "A VMS based on git",
+        partnerName: "a partner that is not git",
+        partnerWebsite: "www.example.com/i-wish-i-was-i-was-git",
     };
 }
 

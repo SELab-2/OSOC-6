@@ -3,7 +3,6 @@ import { NextRouter } from "next/router";
 import { ScopedMutator } from "swr/dist/types";
 import { getUserOnUrl, postLoginFromForm } from "../api/calls/userCalls";
 import applicationPaths from "../properties/applicationPaths";
-import { redirect } from "next/dist/server/api-utils";
 import { getAllEditionsFromPage } from "../api/calls/editionCalls";
 
 export interface LoginValues {

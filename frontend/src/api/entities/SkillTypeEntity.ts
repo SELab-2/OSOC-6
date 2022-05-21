@@ -34,9 +34,9 @@ export const baseSkillType: string = "other";
  * @param skillTypes the list of available SkillTypes
  */
 export function getSkillColorMap(skillTypes: ISkillType[]): Map<string, string> {
-    let skillColorMap = new Map<string, string>();
+    const skillColorMap = new Map<string, string>();
 
-    for (let skillType of skillTypes) {
+    for (const skillType of skillTypes) {
         skillColorMap.set(skillType.name, skillType.colour);
     }
 

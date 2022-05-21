@@ -1,4 +1,5 @@
 import {
+    baseDelete,
     basePatch,
     basePost,
     extractIdFromApiEntityUrl,
@@ -8,6 +9,7 @@ import {
 } from "./baseCalls";
 import { IStudent, OsocExperience, Status, Student, studentCollectionName } from "../entities/StudentEntity";
 import apiPaths from "../../properties/apiPaths";
+import { AxiosResponse } from "axios";
 
 export interface IStudentQueryParams {
     freeText: string;
@@ -85,4 +87,12 @@ export async function editStudent(url: string, student: Student): Promise<IStude
  */
 export function extractIdFromStudentUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
+}
+
+/**
+ * Removes a student from the database
+ * @param url hosting the [IStudent]
+ */
+export async function deleteStudent(url: string): Promise<AxiosResponse> {
+    return await baseDelete(url);
 }

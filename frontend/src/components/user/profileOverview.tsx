@@ -1,6 +1,6 @@
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
-import { Button, Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
+import { Button, Col, Row, Toast, ToastContainer } from "react-bootstrap";
 import { useState } from "react";
 import apiPaths from "../../properties/apiPaths";
 import applicationPaths from "../../properties/applicationPaths";

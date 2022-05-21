@@ -57,6 +57,7 @@
 @media (min-width: 1024px) {
     .filter_grid {
         min-height: calc(100vh - 4rem);
+        max-height: calc(100vh - 4rem);
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -82,4 +83,17 @@
     .height_setter {
         overflow: hidden;
     }
+}
+
+.conflicts_button {
+    display: block;
+    color: red;
+    border-color: red;
+    margin-left: 1.5rem;
+    width: 96%;
+}
+
+.conflicts_button:hover {
+    background: red;
+    color: white;
 }

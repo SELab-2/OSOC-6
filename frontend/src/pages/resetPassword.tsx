@@ -7,6 +7,7 @@ import styles from "../styles/forgotPassword.module.css";
 import { emptyUser } from "../api/entities/UserEntity";
 import { capitalize } from "../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
+import { Background } from "../components/util/background";
 
 /**
  * The reset password page, where a user enters their new password.
@@ -18,20 +19,11 @@ const ResetPassword: NextPage = () => {
     const resetToken = query.token;
 
     return (
-        <main>
+        <div>
+            <Background />
             <NavBar />
-            <div className={styles.forgot_full_div}>
-                <div className="d-flex justify-content-center align-items-center flex-column">
-                    <h2 className="mt-5 mb-5">{capitalize(t("reset password title"))}</h2>
-                    <ResetComponent
-                        name="password"
-                        handler={postResetPassword}
-                        user={emptyUser}
-                        token={resetToken}
-                    />
-                </div>
-            </div>
-        </main>
+            <ResetComponent name="password" handler={postResetPassword} user={emptyUser} token={resetToken} />
+        </div>
     );
 };
 

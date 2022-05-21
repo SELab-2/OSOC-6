@@ -13,6 +13,8 @@ import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import ProjectSkillRegister from "./projectSkillRegister";
 import styles from "../../styles/conflicts.module.css";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 /**
  * Type that will hold the projectSkills and its assignments.
@@ -36,6 +38,7 @@ export interface ConflictResolutionItemProps {
 export default function ConflictResolutionItem({ student }: ConflictResolutionItemProps) {
     const { t } = useTranslation("common");
     const assignmentsUrl = getValidAssignmentsUrlForStudent(student);
+    const currentUserIsAdmin = useCurrentAdminUser();
     const { data: receivedAssignments, error: assignmentsError } = useSWR(
         assignmentsUrl,
         getAllAssignmentsFromPage
@@ -132,10 +135,38 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                                 ))
                         }
                     </div>
-
-                    <button className="btn btn-outline-primary" data-testid="conflicts-submit" type="submit">
-                        {capitalize(t("confirm"))}
-                    </button>
+                    {currentUserIsAdmin && (
+                        <button
+                            className="btn btn-outline-primary"
+                            data-testid="conflicts-submit"
+                            type="submit"
+                        >
+                            {capitalize(t("confirm"))}
+                        </button>
+                    )}
+                    {!currentUserIsAdmin && (
+                        <OverlayTrigger
+                            key="bottom"
+                            placement="bottom"
+                            overlay={
+                                <Tooltip id={"tooltip-conflict-button"}>
+                                    {capitalize(t("only admins can resolve a conflict"))}
+                                </Tooltip>
+                            }
+                        >
+                            <span className="d-inline-block">
+                                <button
+                                    disabled
+                                    style={{ pointerEvents: "none" }}
+                                    className="btn btn-outline-primary"
+                                    data-testid="conflicts-submit-disabled"
+                                    type="submit"
+                                >
+                                    {capitalize(t("confirm"))}
+                                </button>
+                            </span>
+                        </OverlayTrigger>
+                    )}
                 </Form>
             </Formik>
         </div>

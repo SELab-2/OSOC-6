@@ -3,7 +3,6 @@ import mockAxios from "jest-mock-axios";
 import { AxiosResponse } from "axios";
 import {
     getBaseAssignment,
-    getBaseLinks,
     getBaseNoContentResponse,
     getBaseOkResponse,
     getBasePage,
