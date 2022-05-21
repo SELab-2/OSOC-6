@@ -125,12 +125,12 @@ describe("Create project form", () => {
             it("fills in form", async () => {
                 const projectName = component.getByTestId("projectname-input");
                 const projectInfo = component.getByTestId("projectinfo-input");
-                const projectGoal = component.getByTestId("goal-input");
+                const projectGoal = component.getByTestId("item-list-input");
                 const versionManagement = component.getByTestId("versionmanagement-input");
                 const partnerName = component.getByTestId("partnername-input");
                 const partnerWebsite = component.getByTestId("partnerwebsite-input");
                 const skillInfo = component.getByTestId("skillinfo-input");
-                const addGoalButton = component.getByTestId("add-goal-button");
+                const addGoalButton = component.getByTestId("item-list-add-button");
                 const addCoachButton = component.getByTestId("add-coach-button");
                 const addSkillButton = component.getByTestId("add-skill-button");
 
@@ -231,15 +231,15 @@ describe("Create project form", () => {
             });
 
             it("can remove an added goal", async () => {
-                const projectGoal = component.getByTestId("goal-input");
-                const addGoalButton = component.getByTestId("add-goal-button");
+                const projectGoal = component.getByTestId("item-list-input");
+                const addGoalButton = component.getByTestId("item-list-add-button");
 
                 await userEvent.type(projectGoal, testGoal);
                 await userEvent.click(addGoalButton);
 
                 // Expect goal to appear
                 await component.findByText(testGoal);
-                const removeGoalButton = await component.findByTestId("remove-added-goal-" + testGoal);
+                const removeGoalButton = await component.findByTestId("item-list-delete-button");
 
                 await userEvent.click(removeGoalButton);
 
@@ -400,12 +400,12 @@ describe("Create project form", () => {
             it("Completely changes the input fields", async () => {
                 const projectName = component.getByTestId("projectname-input");
                 const projectInfo = component.getByTestId("projectinfo-input");
-                const projectGoal = component.getByTestId("goal-input");
+                const projectGoal = component.getByTestId("item-list-input");
                 const versionManagement = component.getByTestId("versionmanagement-input");
                 const partnerName = component.getByTestId("partnername-input");
                 const partnerWebsite = component.getByTestId("partnerwebsite-input");
                 const skillInfo = component.getByTestId("skillinfo-input");
-                const addGoalButton = component.getByTestId("add-goal-button");
+                const addGoalButton = component.getByTestId("item-list-add-button");
 
                 await userEvent.clear(projectName);
                 await userEvent.clear(projectInfo);
