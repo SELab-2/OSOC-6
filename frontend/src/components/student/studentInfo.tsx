@@ -2,19 +2,22 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Col, ListGroup, Row, Button } from "react-bootstrap";
+import { Button, Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
 import { emptyStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
-import { getStudentOnUrl } from "../../api/calls/studentCalls";
+import { deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
-import applicationPaths from "../../properties/applicationPaths";
-import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
+import { StatusCodes } from "http-status-codes";
+import timers from "../../properties/timers";
+import { useState } from "react";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import applicationPaths from "../../properties/applicationPaths";
 
 /**
  * Give an overview of all the studentinfo
@@ -23,6 +26,7 @@ export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
+    const [show, setShow] = useState<boolean>(false);
 
     let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
     let { data: suggestions, error: suggestionsError } = useSWR(
@@ -54,6 +58,20 @@ export function StudentInfo() {
         );
     }
 
+    async function deleteStudentOnClick() {
+        const response = await deleteStudent(student!._links.self.href);
+        if (response.status == StatusCodes.NO_CONTENT) {
+            try {
+                const params = getParamsFromQueryUrl(router.asPath);
+                await router.push(getQueryUrlFromParams("/" + applicationPaths.students, params));
+            } catch (error) {
+                setShow(true);
+            }
+        } else {
+            setShow(true);
+        }
+    }
+
     async function openCommunications() {
         const params = getStudentQueryParamsFromQuery(router.query);
         console.log(params);
@@ -81,11 +99,20 @@ export function StudentInfo() {
                         <h1>{student.callName}</h1>
                     </div>
                     <div className="col-sm-6">
-                        <ListGroup className="list-group-horizontal" as="ul">
-                            {student.skills.map((skill) => (
-                                <SkillBadge skill={skill} key={skill} />
-                            ))}
-                        </ListGroup>
+                        <Row>
+                            <Col>
+                                <ListGroup className="list-group-horizontal" as="ul">
+                                    {student.skills.map((skill) => (
+                                        <SkillBadge skill={skill} key={skill} />
+                                    ))}
+                                </ListGroup>
+                            </Col>
+                            <Col>
+                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
+                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                                </a>
+                            </Col>
+                        </Row>
                     </div>
                 </div>
                 <br />
@@ -140,7 +167,21 @@ export function StudentInfo() {
                     {capitalize(t("osoc experience"))}: {t(student.osocExperience)}
                 </div>
             </div>
-            <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "white" }}>
+            <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#1b1a31" }}>
+                <Row>
+                    <ToastContainer position="bottom-end">
+                        <Toast
+                            bg="warning"
+                            onClose={() => setShow(false)}
+                            show={show}
+                            delay={timers.toast}
+                            data-testid="warning"
+                            autohide
+                        >
+                            <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
+                        </Toast>
+                    </ToastContainer>
+                </Row>
                 <Row>
                     <Col sm={8}>
                         <Row>
