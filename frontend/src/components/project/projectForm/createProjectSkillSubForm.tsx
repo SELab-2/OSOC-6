@@ -11,6 +11,7 @@ import { getAllSkillTypesFromPage } from "../../../api/calls/skillTypeCalls";
 import { ISkillType } from "../../../api/entities/SkillTypeEntity";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
+import styles from "../../../styles/projects/createProject.module.css";
 
 /**
  * Properties needed by [CreateProjectSkillSubForm].
@@ -76,13 +77,14 @@ export default function CreateProjectSkillSubForm({
     return (
         <div>
             {createdSkillInfos.map((skillInfo: string, index: number) => (
-                <Row key={index}>
-                    <Col>
+                <Row style={{marginTop: "1.5rem"}} key={index}>
+                    <Col className={styles.skillbadge_col}>
                         <SkillBadge skill={createdSkillNames[index]} />
                     </Col>
                     <Col>{skillInfo}</Col>
-                    <Col xs={6}>
+                    <Col xs={2} style={{display: "flex"}}>
                         <a
+                            style={{cursor: "pointer", marginLeft: "auto", marginRight: "2.5rem"}}
                             data-testid={"remove-added-skill-" + createdSkillNames[index]}
                             onClick={() => {
                                 setCreatedSkillNames(
@@ -98,47 +100,58 @@ export default function CreateProjectSkillSubForm({
                     </Col>
                 </Row>
             ))}
-            <Dropdown as={ButtonGroup} drop="down">
-                <Dropdown.Toggle
-                    style={{
-                        backgroundColor: "#0a0839",
-                        borderColor: "white",
-                        height: 30,
-                        alignItems: "center",
-                        display: "flex",
-                    }}
-                    data-testid="skill-input"
-                >
-                    {selectedSkill}
-                </Dropdown.Toggle>
-                <DropdownMenu>
-                    {skillTypes.map((skillType) => (
-                        <DropdownItem
-                            key={skillType._links.self.href}
-                            value={skillType._links.self.href}
-                            data-testid={"option-skill-name-" + skillType.name}
-                            onClick={() => setSelectedSkill(skillType.name)}
+
+            <Row style={{marginTop: "1.5rem"}}>
+                <Col xs={3}>
+                    <Dropdown as={ButtonGroup} drop="down">
+                        <Dropdown.Toggle
+                            style={{
+                                backgroundColor: "#0a0839",
+                                borderColor: "white",
+                                height: 30,
+                                alignItems: "center",
+                                display: "flex",
+                            }}
+                            data-testid="skill-input"
                         >
-                            {skillType.name}
-                        </DropdownItem>
-                    ))}
-                </DropdownMenu>
-            </Dropdown>
-            <input
-                className="form-control mb-2"
-                data-testid="skillinfo-input"
-                value={skillInfo}
-                placeholder={capitalize(t("extra skill info placeholder"))}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setSkillInfo(e.target.value)}
-            />
-            <button
-                className="btn btn-secondary"
-                type="button"
-                onClick={handleAddCreatedSkill}
-                data-testid="add-skill-button"
-            >
-                {capitalize(t("add skill"))}
-            </button>
+                            {selectedSkill}
+                        </Dropdown.Toggle>
+                        <DropdownMenu className={styles.create_project_dropdown}>
+                            {skillTypes.map((skillType) => (
+                                <DropdownItem
+                                    className={styles.create_project_dropdown_item}
+                                    key={skillType._links.self.href}
+                                    value={skillType._links.self.href}
+                                    data-testid={"option-skill-name-" + skillType.name}
+                                    onClick={() => setSelectedSkill(skillType.name)}
+                                >
+                                    {skillType.name}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </Col>
+                <Col>
+                    <input
+                        className={styles.input_field + " form-control mb-2"}
+                        data-testid="skillinfo-input"
+                        value={skillInfo}
+                        placeholder={capitalize(t("extra skill info placeholder"))}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSkillInfo(e.target.value)}
+                    />
+                </Col>
+            </Row>
+            <div style={{display: "flex"}}>
+                <button
+                    style={{marginLeft: "auto", marginRight: "0"}}
+                    className="btn btn-secondary"
+                    type="button"
+                    onClick={handleAddCreatedSkill}
+                    data-testid="add-skill-button"
+                >
+                    {capitalize(t("add skill"))}
+                </button>
+            </div>
         </div>
     );
 }

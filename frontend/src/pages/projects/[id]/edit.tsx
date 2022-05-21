@@ -7,6 +7,7 @@ import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
 import { getProjectOnUrl } from "../../../api/calls/projectCalls";
 import { emptyProject, IProject } from "../../../api/entities/ProjectEntity";
+import { Background } from '../../../components/util/background';
 
 /**
  * Page dedicated to editing a project.
@@ -31,6 +32,7 @@ const EditProjectPage: NextPage = () => {
     return (
         <div data-testid="edit-project-page">
             <NavBar />
+            <Background/>
             <div className={styles.create_form_container}>
                 <ProjectForm project={project} />
             </div>

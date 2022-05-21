@@ -62,6 +62,7 @@ const common = {
     // Project strings
     "create project": "create project",
     "edit project": "edit project",
+    "save project": "save project",
     "project name": "project name",
     "project info": "project info",
     "project goals": "goals",
@@ -77,6 +78,8 @@ const common = {
     "add coach": "add coach",
     "add goal": "add goal",
     "skill info": "no special info",
+    "no goals added yet": "no goals added yet",
+    "no coaches added yet": "no coaches added yet",
 
     // Profile strings
     profile: "profile",
