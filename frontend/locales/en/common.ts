@@ -172,6 +172,7 @@ const common = {
     conflict: "conflict",
     "reason(s)": "reason(s)",
     "only admins can resolve a conflict": "only admins can resolve a conflict",
+    "some students are assigned to multiple projects": "some students are assigned to multiple projects",
 
     suggesting: "You are suggesting ",
     "to project": "to project ",
