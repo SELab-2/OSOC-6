@@ -1,16 +1,13 @@
 import "@testing-library/jest-dom";
-import { render, RenderResult, waitFor } from "@testing-library/react";
-import CommunicationTemplateCreate from "../../../src/pages/communicationTemplates/create";
+import {render, RenderResult, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import mockRouter from "next-router-mock";
-import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import { makeCacheFree } from "../Provide";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
-import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import {makeCacheFree} from "../Provide";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
+import {getBaseOkResponse, getBasePage, getBaseSkillType} from "../TestEntityProvider";
+import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -46,7 +43,9 @@ describe("skillType list", () => {
         });
 
         it("can delete", async () => {
-            const deleteButton = await page.findByTestId("delete");
+            const deleteButton = await page.findByTestId("delete-item");
+
+            window.confirm = jest.fn(() => true);
 
             await userEvent.click(deleteButton);
 
@@ -55,7 +54,7 @@ describe("skillType list", () => {
 
         it("can edit", async () => {
             const openEditButton = await page.findByTestId("start-edit");
-            userEvent.click(openEditButton);
+            await userEvent.click(openEditButton);
 
             const colourPick = (await page.findByTestId("colour")) as HTMLInputElement;
             // Just check if it takes the default colour. Setting it in the test is a pain.

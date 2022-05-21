@@ -217,6 +217,8 @@ const common = {
     "edit colour": "edit colour",
     delete: "delete",
     skills: "skills",
+    "skill types": "skill types",
+    "create skill type": "create skill type",
 };
 
 export default common;
