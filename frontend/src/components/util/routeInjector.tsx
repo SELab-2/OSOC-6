@@ -46,7 +46,11 @@ export default function RouteInjector({ children }: any) {
             : null,
         getAllEditionsFromPage
     );
-    const latestEdition = availableEditions?.at(availableEditions?.length - 1);
+    const activeAvailableEditions = availableEditions
+        ? availableEditions.filter((edition) => edition.active)
+        : undefined;
+    console.log(activeAvailableEditions);
+    const latestEdition = activeAvailableEditions?.at(activeAvailableEditions?.length - 1);
     const latestEditionName = latestEdition?.name;
 
     useEffect(() => {
@@ -109,7 +113,7 @@ export default function RouteInjector({ children }: any) {
         return null;
     }
 
-    if (availableEditions && availableEditions.length === 0) {
+    if (activeAvailableEditions && activeAvailableEditions.length === 0) {
         if (
             router.pathname !== "/" + applicationPaths.home &&
             router.pathname !== "/" + applicationPaths.editionCreate
