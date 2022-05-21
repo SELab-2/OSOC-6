@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom";
-import { act, findByTestId, getByTestId, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import {
     getBaseBadRequestResponse,
-    getBaseForbiddenResponse,
     getBaseLinks,
     getBaseNoContentResponse,
     getBaseOkResponse,
@@ -18,7 +17,7 @@ import { IStudent } from "../../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
 import { ISuggestion, suggestionCollectionName } from "../../../src/api/entities/SuggestionEntity";
 import mockAxios from "jest-mock-axios";
-import { IUser, userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
+import { IUser, UserRole } from "../../../src/api/entities/UserEntity";
 import mockRouter from "next-router-mock";
 import apiPaths from "../../../src/properties/apiPaths";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";

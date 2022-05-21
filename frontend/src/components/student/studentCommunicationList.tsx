@@ -10,6 +10,8 @@ import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
 import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
+import {capitalize} from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 /**
  * Properties needed for [StudentCommunicationList].
@@ -23,6 +25,7 @@ export interface CommunicationListProps {
  * @param studentUrl the url of the communication that needs to be listed.
  */
 export default function StudentCommunicationList({ studentUrl }: CommunicationListProps) {
+    const { t } = useTranslation("common");
     const router = useRouter();
     const id = studentUrl ? extractIdFromStudentUrl(studentUrl) : "0";
     let { data: student, error: studentError } = useSWR(studentUrl, getStudentOnUrl);
@@ -41,7 +44,7 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
         return null;
     }
 
-    const communications: ICommunication[] = receivedCommunications || [];
+    const communications: ICommunication[] = receivedCommunications?.reverse() || [];
 
     async function openStudentInfo() {
         const params = getParamsFromQueryUrl(router.asPath);
@@ -85,7 +88,7 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                                 style={{ color: "white", borderColor: "white", backgroundColor: "#1b1a32" }}
                                 onClick={registerNewCommunication}
                             >
-                                New communication
+                                {capitalize(t("add communication"))}
                             </Button>
                         </Col>
                     </Row>

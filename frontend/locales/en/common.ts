@@ -110,6 +110,7 @@ const common = {
 
     // Communication strings
     communication: "communication",
+    "add communication": "add communication",
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",

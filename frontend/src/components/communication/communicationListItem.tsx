@@ -48,7 +48,7 @@ export default function CommunicationListItem({ communication }: CommunicationLi
                 <div>
                     <h4>{template.name}</h4>
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <h6>{template.subject}</h6>
+                        <h6>{communication.subject}</h6>
                         <p style={{ paddingLeft: 5 }}>
                             - {date.toLocaleString() + " " + t("by medium") + " " + communication.medium}
                         </p>
