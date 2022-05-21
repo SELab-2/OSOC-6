@@ -70,7 +70,7 @@ export default function CommunicationInfoPage() {
                                                 " " +
                                                 student.callName}
                                         </h1>
-                                        <Row style={{ paddingBottom: 20 }}>
+                                        <Row style={{ paddingBottom: 20 }} data-testid="choose-template">
                                             <Col>
                                                 <div>{capitalize(t("choose your template"))}:</div>
                                             </Col>

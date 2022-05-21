@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {act, findByTestId, getByTestId, render, screen, waitFor} from "@testing-library/react";
 import {
-    getBaseBadRequestResponse,
+    getBaseBadRequestResponse, getBaseForbiddenResponse,
     getBaseLinks,
     getBaseNoContentResponse,
     getBaseOkResponse,
@@ -23,8 +23,8 @@ import apiPaths from "../../../src/properties/apiPaths";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
-import applicationPaths from "../../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -33,14 +33,27 @@ afterEach(() => {
 });
 
 describe("StudentInfo", () => {
+    const studentId = "10";
+
     it("should render without data.", () => {
         render(makeCacheFree(StudentInfo));
         expect(mockAxios.get).toHaveBeenCalled();
     });
 
-    it("should render with data.", async () => {
-        const studentId = "10";
+    it("should handle error.", async () => {
+        console.log = jest.fn();
 
+        mockRouter.setCurrentUrl("/students/" + studentId);
+        mockRouter.query = { id: studentId };
+        render(makeCacheFree(StudentInfo));
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseBadRequestResponse())
+        );
+
+        await waitFor(() => expect(console.log).toHaveBeenCalled())
+    });
+
+    it("should render with data.", async () => {
         mockRouter.setCurrentUrl("/students/" + studentId);
         mockRouter.query = { id: studentId };
 
@@ -129,4 +142,22 @@ describe("StudentInfo", () => {
             expect(warning).toBeVisible();
         });
     });
+
+    it("should direct to communication", async () => {
+        const studentId = "10";
+
+        mockRouter.setCurrentUrl("/students/" + studentId);
+        mockRouter.query = { id: studentId };
+
+        render(makeCacheFree(StudentInfo));
+
+        const baseStudent: IStudent = getBaseStudent(studentId);
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
+        );
+
+        await userEvent.click(screen.getByTestId("open-communication"));
+
+        await mockRouter.push("/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase);
+    })
 });

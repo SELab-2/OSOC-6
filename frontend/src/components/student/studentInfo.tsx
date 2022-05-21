@@ -74,11 +74,9 @@ export function StudentInfo() {
 
     async function openCommunications() {
         const params = getStudentQueryParamsFromQuery(router.query);
-        console.log(params);
         const studentCommUrl =
             "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
         const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
-        console.log(studentCommUrlParams);
         await router.push(studentCommUrlParams);
     }
 
@@ -88,6 +86,7 @@ export function StudentInfo() {
                 <div className="row w-100" style={{ paddingBottom: 15 }}>
                     <Button
                         variant="btn-outline"
+                        data-testid="open-communication"
                         style={{ color: "white", borderColor: "white" }}
                         onClick={openCommunications}
                     >

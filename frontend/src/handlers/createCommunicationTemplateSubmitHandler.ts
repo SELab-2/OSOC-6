@@ -19,13 +19,10 @@ export async function createCommunicationTemplateSubmitHandler(
     mutate: ScopedMutator
 ): Promise<ICommunicationTemplate> {
     let result: ICommunicationTemplate;
-    console.log(url);
     if (url) {
         result = await editCommunicationTemplate(url, values);
-        console.log(result);
     } else {
         result = await createNewCommunicationTemplate(values);
-        console.log(result);
     }
     const id = router.query.id;
 
