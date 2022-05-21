@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { ButtonGroup, Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { ButtonGroup, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -73,7 +73,7 @@ export function StudentInfo() {
     }
 
     return (
-        <div className={"h-100"}>
+        <div className={"h-100 w-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
                 <div className={styles.student_info_header}>
                     <div className={styles.student_info_header_title}>
