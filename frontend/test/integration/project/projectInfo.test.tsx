@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import { ProjectInfo } from "../../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
@@ -49,35 +49,30 @@ describe("project info", () => {
         const assignment = getBaseAssignment("9");
         const student = getBaseStudent("10");
 
-        await enableActForResponse(
-            { url: apiPaths.projects + "/" + projectId },
-            getBaseOkResponse(project)
-        )
+        await enableActForResponse({ url: apiPaths.projects + "/" + projectId }, getBaseOkResponse(project));
 
         await enableActForResponse(
             project._links.coaches.href,
             getBaseOkResponse(getBaseLinks(project._links.coaches.href, userCollectionName, [user]))
-        )
+        );
 
         await enableActForResponse(
             project._links.neededSkills.href,
             getBaseOkResponse(
                 getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, [projectSkill])
             )
-        )
+        );
 
         await enableActForResponse(
             getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillType.name }),
-            getBaseOkResponse(
-                getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, [skillType])
-            )
-        )
+            getBaseOkResponse(getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, [skillType]))
+        );
 
         const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
         await enableActForResponse(
             { url: assignmentsUrl },
             getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))
-        )
+        );
 
         await enableActForResponse({ url: assignment._links.student.href }, getBaseOkResponse(student));
 
@@ -93,7 +88,7 @@ describe("project info", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         const project = getBaseProject(projectId);
-        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project));
 
         const deleteButton = await screen.findByTestId("delete-project");
         await userEvent.click(deleteButton);
@@ -112,10 +107,10 @@ describe("project info", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.coach, true));
 
         const project = getBaseProject(projectId);
-        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project));
 
         await waitFor(() => {
             expect(screen.queryByTestId("delete-project")).not.toBeInTheDocument();
-        })
+        });
     });
 });

@@ -14,13 +14,13 @@ import { deleteProject } from "../../api/calls/projectCalls";
 import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
-import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
-    const [show, setShow] = useState<boolean>(true);
+    const [show, setShow] = useState<boolean>(false);
     const isAdmin = useCurrentAdminUser();
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
@@ -51,11 +51,11 @@ export function ProjectInfo() {
         <div className={styles.project_info}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h1>{info.name}</h1>
-                {isAdmin &&
+                {isAdmin && (
                     <a onClick={deleteProjectOnClick} data-testid="delete-project">
                         <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                     </a>
-                }
+                )}
             </div>
             <h5>
                 <a href={info.partnerWebsite || undefined}>{info.partnerName}</a>
