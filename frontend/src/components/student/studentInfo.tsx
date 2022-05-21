@@ -6,7 +6,12 @@ import { Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import { emptyStudent, osocExperienceAsString } from "../../api/entities/StudentEntity";
+import {
+    emptyStudent,
+    englishProficiencyAsString,
+    genderAsString,
+    osocExperienceAsString,
+} from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
 import { extractIdFromStudentUrl, deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
@@ -117,7 +122,7 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {capitalize(student.gender.replace(/_/g, " ").toLowerCase())}{" "}
+                    {capitalize(t("gender"))}: {capitalize(t(genderAsString[student.gender]))}{" "}
                     {t("with pronouns")} {student.pronouns.toLowerCase()}
                 </div>
                 <div>
@@ -125,7 +130,7 @@ export function StudentInfo() {
                 </div>
                 <div>
                     {capitalize(t("english proficiency"))}:{" "}
-                    {capitalize(student.englishProficiency.replace(/_/g, " ").toLowerCase())}
+                    {capitalize(t(englishProficiencyAsString[student.englishProficiency]))}
                 </div>
                 <div>
                     {capitalize(t("phone number"))}: {student.phoneNumber}
@@ -152,7 +157,8 @@ export function StudentInfo() {
                     {capitalize(t("applied for"))}: {student.skills.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("osoc experience"))}: {t(osocExperienceAsString[student.osocExperience])}
+                    {capitalize(t("osoc experience"))}:{" "}
+                    {capitalize(t(osocExperienceAsString[student.osocExperience]))}
                 </div>
             </div>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#1b1a31" }}>

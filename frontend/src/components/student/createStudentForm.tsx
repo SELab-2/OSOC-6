@@ -147,10 +147,10 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                         <option
                                             key={gender}
                                             value={genderEnum}
-                                            label={capitalize(genderAsString[genderEnum])}
+                                            label={capitalize(t(genderAsString[genderEnum]))}
                                             data-testid={"gender-" + gender}
                                         >
-                                            {capitalize(genderAsString[genderEnum])}
+                                            {capitalize(t(genderAsString[genderEnum]))}
                                         </option>
                                     );
                                 })}
@@ -202,10 +202,10 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                         <option
                                             key={proficiency}
                                             value={proficiencyEnum}
-                                            label={capitalize(englishProficiencyAsString[proficiencyEnum])}
+                                            label={capitalize(t(englishProficiencyAsString[proficiencyEnum]))}
                                             data-testid={"proficiency-" + proficiency}
                                         >
-                                            {capitalize(englishProficiencyAsString[proficiencyEnum])}
+                                            {capitalize(t(englishProficiencyAsString[proficiencyEnum]))}
                                         </option>
                                     );
                                 })}
