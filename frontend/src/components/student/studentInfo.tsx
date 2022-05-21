@@ -2,12 +2,11 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import Image from "next/image";
-import { emptyStudent, IStudent } from "../../api/entities/StudentEntity";
+import { emptyStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
 import { deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
@@ -73,9 +72,9 @@ export function StudentInfo() {
     }
 
     return (
-        <div>
-            <div>
-                <div className="row">
+        <div className={"h-100"}>
+            <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+                <div className="row w-100">
                     <div className="col-sm-6">
                         <h1>{student.callName}</h1>
                     </div>

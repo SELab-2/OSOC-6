@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { Col, Row } from "react-bootstrap";
 import NavBar from "../../components/util/navBar";
 import styles from "../../styles/pageGrids.module.css";
 import { StudentList } from "../../components/student/studentList";
@@ -16,7 +15,7 @@ const StudentsIDPage: NextPage = () => {
                 </div>
                 <div className={styles.info_grid + " " + styles.height_setter}>
                     <div className={styles.sidebar}>
-                        <StudentList isDraggable={true} />
+                        <StudentList isDraggable={false} />
                     </div>
                     <div className={styles.info_field}>
                         {/* Replace this div with the correct component */}

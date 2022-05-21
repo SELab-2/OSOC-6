@@ -4,6 +4,9 @@ import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
 import { getStudentOnUrl } from "../../../api/calls/studentCalls";
 
+/**
+ * Page listing the communication with a student.
+ */
 export default function CommunicationPage() {
     const router = useRouter();
     const query = router.query as { id: string };

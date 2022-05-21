@@ -9,12 +9,16 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 
+/**
+ * Properties of the [CreateCommunicationTemplateForm] component.
+ */
 export interface CreateCommunicationTemplateFormProps {
     template?: ICommunicationTemplate;
 }
 
 /**
- * Form allowing the creation of a new communication template.
+ * Form allowing the creation of a new communication template or editing an existing.
+ * @param template the template that should be edited. [undefined] if the form is in creation mode.
  */
 export default function CreateCommunicationTemplateForm({ template }: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");

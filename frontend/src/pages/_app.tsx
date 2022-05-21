@@ -8,6 +8,7 @@ import RouteInjector from "../components/util/routeInjector";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize_complete } from "../utility/stringUtil";
+import ForbiddenCoachRoutes from "../components/util/forbiddenCoachRoutes";
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { t } = useTranslation("common");
@@ -25,7 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <GlobalStateProvider>
                     <RouteGuard>
                         <RouteInjector>
-                            <Component {...pageProps} />
+                            <ForbiddenCoachRoutes>
+                                <Component {...pageProps} />
+                            </ForbiddenCoachRoutes>
                         </RouteInjector>
                     </RouteGuard>
                 </GlobalStateProvider>

@@ -1,14 +1,21 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
+import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
-import { getBaseActiveEdition, getBaseNoContentResponse } from "../TestEntityProvider";
+import {
+    getBaseActiveEdition,
+    getBaseNoContentResponse,
+    getBaseOkResponse,
+    getBaseUser,
+} from "../TestEntityProvider";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
 import EditionRowComponent from "../../../src/components/edition/editionRowComponent";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
 import { GlobalStateProvider } from "../../../src/context/globalContext";
+import apiPaths from "../../../src/properties/apiPaths";
+import { UserRole } from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -37,8 +44,13 @@ describe("EditionList", () => {
 
     it("edition delete", async () => {
         const edition: IEdition = getBaseActiveEdition("3", "edition 1");
-        render(<EditionRowComponent key={edition.name} edition={edition} />);
+        render(makeCacheFree(() => <EditionRowComponent key={edition.name} edition={edition} />));
 
+        await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
+
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+
+        await waitFor(() => expect(screen.getByTestId("list-delete-edition")).toBeInTheDocument());
         await userEvent.click(screen.getByTestId("list-delete-edition"));
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
@@ -56,6 +68,9 @@ describe("EditionList", () => {
                 )
             )
         );
+
+        await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         await userEvent.click(screen.getByTestId("list-view-edition"));
     });
