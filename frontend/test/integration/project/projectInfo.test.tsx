@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { enableActForResponse, makeCacheFree } from "../Provide";
+import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
 import { ProjectInfo } from "../../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
@@ -49,49 +49,37 @@ describe("project info", () => {
         const assignment = getBaseAssignment("9");
         const student = getBaseStudent("10");
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                { url: apiPaths.projects + "/" + projectId },
-                getBaseOkResponse(project)
-            )
-        );
+        await enableActForResponse(
+            { url: apiPaths.projects + "/" + projectId },
+            getBaseOkResponse(project)
+        )
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                project._links.coaches.href,
-                getBaseOkResponse(getBaseLinks(project._links.coaches.href, userCollectionName, [user]))
-            )
-        );
+        await enableActForResponse(
+            project._links.coaches.href,
+            getBaseOkResponse(getBaseLinks(project._links.coaches.href, userCollectionName, [user]))
+        )
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                project._links.neededSkills.href,
-                getBaseOkResponse(
-                    getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, [projectSkill])
-                )
+        await enableActForResponse(
+            project._links.neededSkills.href,
+            getBaseOkResponse(
+                getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, [projectSkill])
             )
-        );
+        )
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillType.name }),
-                getBaseOkResponse(
-                    getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, [skillType])
-                )
+        await enableActForResponse(
+            getQueryUrlFromParams(apiPaths.skillTypesByName, { name: skillType.name }),
+            getBaseOkResponse(
+                getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, [skillType])
             )
-        );
+        )
 
         const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                { url: assignmentsUrl },
-                getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))
-            )
-        );
+        await enableActForResponse(
+            { url: assignmentsUrl },
+            getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))
+        )
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor({ url: assignment._links.student.href }, getBaseOkResponse(student))
-        );
+        await enableActForResponse({ url: assignment._links.student.href }, getBaseOkResponse(student));
 
         await waitFor(() => expect(screen.getByText(student.callName)).toBeInTheDocument());
     });
@@ -102,11 +90,10 @@ describe("project info", () => {
         mockRouter.setCurrentUrl("/projects/" + projectId);
         mockRouter.query = { id: projectId };
         render(makeCacheFree(ProjectInfo));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         const project = getBaseProject(projectId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
-        );
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
 
         const deleteButton = await screen.findByTestId("delete-project");
         await userEvent.click(deleteButton);
@@ -116,28 +103,19 @@ describe("project info", () => {
         await enableActForResponse({ url: project._links.self.href }, response);
     });
 
-    it("delete should fail", async () => {
+    it("delete should not be visible", async () => {
         const projectId = "5";
 
         mockRouter.setCurrentUrl("/projects/" + projectId);
         mockRouter.query = { id: projectId };
         render(makeCacheFree(ProjectInfo));
+        await enableCurrentUser(getBaseUser("5", UserRole.coach, true));
 
         const project = getBaseProject(projectId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
-        );
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
 
-        const deleteButton = await screen.findByTestId("delete-project");
-        await userEvent.click(deleteButton);
-
-        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
-        const response: AxiosResponse = getBaseBadRequestResponse();
-        await enableActForResponse({ url: project._links.self.href }, response);
-
-        const warning = await screen.findByTestId("warning");
         await waitFor(() => {
-            expect(warning).toBeVisible();
-        });
+            expect(screen.queryByTestId("delete-project")).not.toBeInTheDocument();
+        })
     });
 });
