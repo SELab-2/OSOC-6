@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -20,7 +20,6 @@ import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import applicationPaths from "../../properties/applicationPaths";
 
 /**
  * Give an overview of all the studentinfo
@@ -93,6 +92,9 @@ export function StudentInfo() {
                         )}
                     >
                         <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                    </a>
+                    <a className="ms-2 clickable" onClick={deleteStudentOnClick} data-testid="delete-student">
+                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                     </a>
                 </h1>
                 <div className={styles.student_skills}>
