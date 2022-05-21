@@ -1,32 +1,32 @@
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import useSWR from "swr";
-import {emptyStudent, IStudent} from "../../../api/entities/StudentEntity";
-import {getStudentOnUrl} from "../../../api/calls/studentCalls";
+import { emptyStudent, IStudent } from "../../../api/entities/StudentEntity";
+import { getStudentOnUrl } from "../../../api/calls/studentCalls";
 import apiPaths from "../../../properties/apiPaths";
 import CreateCommunicationForm from "../../../components/communication/createCommunicationForm";
-import {capitalize} from "../../../utility/stringUtil";
+import { capitalize } from "../../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
-import {Button, ButtonGroup, Col, Dropdown, Row} from "react-bootstrap";
+import { Button, ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import NavBar from "../../../components/util/navBar";
 import styles from "../../../styles/pageGrids.module.css";
-import {StudentFilterComponent} from "../../../components/student/studentFilterComponent";
-import {StudentList} from "../../../components/student/studentList";
+import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
+import { StudentList } from "../../../components/student/studentList";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import {getAllCommunicationTemplatesFromPage} from "../../../api/calls/communicationTemplateCalls";
-import {useState} from "react";
-import {ICommunicationTemplate} from "../../../api/entities/CommunicationTemplateEntity";
+import { getAllCommunicationTemplatesFromPage } from "../../../api/calls/communicationTemplateCalls";
+import { useState } from "react";
+import { ICommunicationTemplate } from "../../../api/entities/CommunicationTemplateEntity";
 import CreateCommunicationTemplateForm from "../../../components/communication/createCommunicationTemplateForm";
 
 /**
  * Page that allows you to register a new communication with the given student.
  */
 export default function CommunicationInfoPage() {
-    const {t} = useTranslation("common");
+    const { t } = useTranslation("common");
     const router = useRouter();
     const query = router.query as { id: string };
     const studentId = query.id;
-    const {data: receivedTemplates, error: templateError} = useSWR(
+    const { data: receivedTemplates, error: templateError } = useSWR(
         apiPaths.communicationTemplates,
         getAllCommunicationTemplatesFromPage
     );
@@ -35,7 +35,7 @@ export default function CommunicationInfoPage() {
     const [edit, setEdit] = useState(false);
     const templates: ICommunicationTemplate[] = receivedTemplates || [];
 
-    const {data: receivedStudent, error: studentError} = useSWR(
+    const { data: receivedStudent, error: studentError } = useSWR(
         apiPaths.students + "/" + studentId,
         getStudentOnUrl
     );
@@ -49,14 +49,14 @@ export default function CommunicationInfoPage() {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <div className={styles.filter_grid} data-testid="students-grid">
                 <div className={styles.filter}>
-                    <StudentFilterComponent/>
+                    <StudentFilterComponent />
                 </div>
                 <div className={styles.info_grid + " " + styles.height_setter}>
                     <div className={styles.sidebar}>
-                        <StudentList isDraggable={false}/>
+                        <StudentList isDraggable={false} />
                     </div>
                     <div className={styles.info_field}>
                         <div
@@ -64,18 +64,18 @@ export default function CommunicationInfoPage() {
                             data-testid="student-communication"
                         >
                             <div className={"h-100"}>
-                                <div className={"overflow-auto p-3"} style={{height: "calc(100% - 4rem)"}}>
-                                    <div className="row w-100" style={{paddingLeft: 25}}>
+                                <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+                                    <div className="row w-100" style={{ paddingLeft: 25 }}>
                                         <h1>
                                             {capitalize(t("register communication for")) +
                                                 " " +
                                                 student.callName}
                                         </h1>
-                                        <Row style={{paddingBottom: 20}} data-testid="choose-template">
+                                        <Row style={{ paddingBottom: 20 }} data-testid="choose-template">
                                             <Col>
                                                 <div>{capitalize(t("choose your template"))}:</div>
                                             </Col>
-                                            <Col style={{alignItems: "center", display: "flex"}}>
+                                            <Col style={{ alignItems: "center", display: "flex" }}>
                                                 <Dropdown as={ButtonGroup} drop="down">
                                                     <Dropdown.Toggle
                                                         style={{
@@ -109,20 +109,25 @@ export default function CommunicationInfoPage() {
                                                         ))}
                                                     </DropdownMenu>
                                                 </Dropdown>
-                                                <Button style={{
-                                                    backgroundColor: "#1b1a31",
-                                                    borderColor: "white",
-                                                    height: 30,
-                                                    alignItems: "center",
-                                                    display: "flex",
-                                                }} onClick={() => setEdit(true)}>Edit the template</Button>
+                                                <Button
+                                                    style={{
+                                                        backgroundColor: "#1b1a31",
+                                                        borderColor: "white",
+                                                        height: 30,
+                                                        alignItems: "center",
+                                                        display: "flex",
+                                                    }}
+                                                    onClick={() => setEdit(true)}
+                                                >
+                                                    Edit the template
+                                                </Button>
                                             </Col>
                                         </Row>
-                                        <Row style={{paddingBottom: 20}}>
+                                        <Row style={{ paddingBottom: 20 }}>
                                             <Col>
                                                 <div>{capitalize(t("create template"))}:</div>
                                             </Col>
-                                            <Col style={{alignItems: "center", display: "flex"}}>
+                                            <Col style={{ alignItems: "center", display: "flex" }}>
                                                 <Button
                                                     style={{
                                                         backgroundColor: "#1b1a31",

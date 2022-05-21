@@ -59,7 +59,7 @@ export default function CreateCommunicationTemplateForm({
                 }
 
                 if (setEdit) {
-                    console.log("edited")
+                    console.log("edited");
                     setEdit(false);
                 }
             }}
@@ -71,7 +71,11 @@ export default function CreateCommunicationTemplateForm({
                         <hr />
                         <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 
-                        {template && <label style={{paddingLeft: 25}} id="communicationTemplateNameField">{values.name}</label>}
+                        {template && (
+                            <label style={{ paddingLeft: 25 }} id="communicationTemplateNameField">
+                                {values.name}
+                            </label>
+                        )}
                         {!template && (
                             <Field
                                 type="text"
