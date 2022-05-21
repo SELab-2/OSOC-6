@@ -61,7 +61,7 @@ describe("skillType list", () => {
             const colour: string = colourPick.value;
 
             const submitButton = await page.findByTestId("submit-edit");
-            userEvent.click(submitButton);
+            await userEvent.click(submitButton);
 
             await waitFor(() => {
                 expect(mockAxios.patch).toHaveBeenCalledWith(
