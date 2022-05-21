@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import {act, findByTestId, getByTestId, render, screen, waitFor} from "@testing-library/react";
+import { act, findByTestId, getByTestId, render, screen, waitFor } from "@testing-library/react";
 import {
-    getBaseBadRequestResponse, getBaseForbiddenResponse,
+    getBaseBadRequestResponse,
+    getBaseForbiddenResponse,
     getBaseLinks,
     getBaseNoContentResponse,
     getBaseOkResponse,
@@ -50,7 +51,7 @@ describe("StudentInfo", () => {
             mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseBadRequestResponse())
         );
 
-        await waitFor(() => expect(console.log).toHaveBeenCalled())
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 
     it("should render with data.", async () => {
@@ -158,6 +159,8 @@ describe("StudentInfo", () => {
 
         await userEvent.click(screen.getByTestId("open-communication"));
 
-        await mockRouter.push("/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase);
-    })
+        await mockRouter.push(
+            "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase
+        );
+    });
 });
