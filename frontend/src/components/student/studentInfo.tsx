@@ -25,6 +25,7 @@ import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
 
 /**
  * Give an overview of all the studentinfo
@@ -33,6 +34,7 @@ export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
+    const isAdmin = useCurrentAdminUser();
     const { id } = router.query as { id: string };
     const [show, setShow] = useState<boolean>(false);
 
@@ -85,22 +87,27 @@ export function StudentInfo() {
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
                 <h1>
                     {student.callName}
-                    <a
-                        className="ms-2"
-                        data-testid="edit-student"
-                        href={transformer(
-                            "/" +
-                                applicationPaths.students +
-                                "/" +
-                                extractIdFromStudentUrl(student._links.self.href) +
-                                applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
-                        )}
-                    >
-                        <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
-                    </a>
-                    <a className="ms-2 clickable" onClick={deleteStudentOnClick} data-testid="delete-student">
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
+                    {isAdmin && (
+                        <>
+                            <a
+                                className="ms-2"
+                                data-testid="edit-student"
+                                href={transformer(
+                                    "/" +
+                                    applicationPaths.students +
+                                    "/" +
+                                    extractIdFromStudentUrl(student._links.self.href) +
+                                    applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
+                                )}
+                            >
+                                <Image alt="" src={"/resources/edit.svg"} width="15" height="15"/>
+                            </a>
+                            <a className="ms-2 clickable" onClick={deleteStudentOnClick} data-testid="delete-student">
+                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                            </a>
+                        </>
+                        )
+                    }
                 </h1>
                 <div className={styles.student_skills}>
                     {student.skills.map((skill) => (

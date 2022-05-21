@@ -17,6 +17,8 @@ import { enableActForResponse, enableUseEditionComponentWrapper, makeCacheFree }
 import { getBaseActiveEdition, getBaseOkResponse, getBaseStudent } from "../TestEntityProvider";
 import StudentEdit from "../../../src/pages/students/[id]/edit";
 import { capitalize } from "../../../src/utility/stringUtil";
+import applicationPaths from "../../../src/properties/applicationPaths";
+import {extractIdFromApiEntityUrl} from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -163,6 +165,17 @@ describe("edit student", () => {
                 student._links.self.href,
                 updatedStudent,
                 expect.anything()
+            );
+        });
+
+        await enableActForResponse(student._links.self.href, getBaseOkResponse(student));
+
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual(
+                "/" +
+                applicationPaths.students +
+                "/" +
+                extractIdFromApiEntityUrl(student._links.self.href)
             );
         });
     });

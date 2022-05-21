@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {act, render, screen, waitFor} from "@testing-library/react";
 import {
     getBaseBadRequestResponse,
     getBaseLinks,
@@ -11,20 +11,19 @@ import {
     getBaseSuggestion,
     getBaseUser,
 } from "../TestEntityProvider";
-import { makeCacheFree } from "../Provide";
-import { StudentInfo } from "../../../src/components/student/studentInfo";
-import { IStudent } from "../../../src/api/entities/StudentEntity";
-import { jest } from "@jest/globals";
-import { ISuggestion, suggestionCollectionName } from "../../../src/api/entities/SuggestionEntity";
+import {enableCurrentUser, makeCacheFree} from "../Provide";
+import {StudentInfo} from "../../../src/components/student/studentInfo";
+import {IStudent} from "../../../src/api/entities/StudentEntity";
+import {jest} from "@jest/globals";
+import {ISuggestion, suggestionCollectionName} from "../../../src/api/entities/SuggestionEntity";
 import mockAxios from "jest-mock-axios";
-import { IUser, userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
+import {IUser, UserRole} from "../../../src/api/entities/UserEntity";
 import mockRouter from "next-router-mock";
 import apiPaths from "../../../src/properties/apiPaths";
-import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
-import applicationPaths from "../../../src/properties/applicationPaths";
-import { AxiosResponse } from "axios";
+import {AxiosResponse} from "axios";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -91,6 +90,9 @@ describe("StudentInfo", () => {
 
         render(makeCacheFree(StudentInfo));
 
+        const user = getBaseUser("1", UserRole.admin, true);
+        await enableCurrentUser(user);
+
         const baseStudent: IStudent = getBaseStudent(studentId);
         await waitFor(() =>
             mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
@@ -111,6 +113,9 @@ describe("StudentInfo", () => {
         mockRouter.query = { id: studentId };
 
         render(makeCacheFree(StudentInfo));
+
+        const user = getBaseUser("1", UserRole.admin, true);
+        await enableCurrentUser(user);
 
         const baseStudent: IStudent = getBaseStudent(studentId);
         await waitFor(() =>

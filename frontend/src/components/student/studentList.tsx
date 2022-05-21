@@ -15,6 +15,7 @@ import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../h
 import { StudentStatusButton } from "./studentStatusButton";
 import { Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
+import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
 
 export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
@@ -23,11 +24,13 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
     const transformer = useEditionApplicationPathTransformer();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
-    let { data, error } = useSwrWithEdition(
+    const isAdmin = useCurrentAdminUser();
+
+    const { data: receivedStudents, error } = useSwrWithEdition(
         constructStudentQueryUrl(apiPaths.studentByQuery, params),
         getAllStudentsFromPage
     );
-    data = data || [];
+    const students = receivedStudents || [];
 
     if (error) {
         console.log(error);
@@ -46,8 +49,8 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                     className={"container " + styles.student_list_title}
                 >
                     <div className="row align-items-center">
-                        <h2 className="col">{t("common:students")}</h2>
-                        {props.showAdd && (
+                        <h2 className="col">{t("students")}</h2>
+                        {props.showAdd && isAdmin && (
                             <Button
                                 data-testid="new-student-button"
                                 className="col-md-auto"
@@ -71,7 +74,7 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                         )}
                     </div>
                 </ListGroup.Item>
-                {data
+                {students
                     .map((student) => ({
                         student,
                         studentId: student._links.self.href.split(apiPaths.base)[1],

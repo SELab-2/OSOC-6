@@ -1,16 +1,18 @@
-import { StudentList } from "../../../src/components/student/studentList";
+import {StudentList} from "../../../src/components/student/studentList";
 import "@testing-library/jest-dom";
-import { render, RenderResult, screen, waitFor } from "@testing-library/react";
+import {render, RenderResult, screen, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import { AxiosResponse } from "axios";
-import { enableUseEditionComponentWrapper, getAxiosCallWithEdition, makeCacheFree } from "../Provide";
-import { getBaseActiveEdition, getBaseOkResponse, getBasePage, getBaseStudent } from "../TestEntityProvider";
+import {AxiosResponse} from "axios";
+import {enableCurrentUser, enableUseEditionComponentWrapper, getAxiosCallWithEdition, makeCacheFree} from "../Provide";
+import {jest} from "@jest/globals";
+import {getBaseActiveEdition, getBaseOkResponse, getBasePage, getBaseStudent, getBaseUser} from "../TestEntityProvider";
 import apiPaths from "../../../src/properties/apiPaths";
-import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
+import {studentCollectionName} from "../../../src/api/entities/StudentEntity";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
+import {UserRole} from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -67,11 +69,14 @@ describe("student list", () => {
     });
 
     it("add student button works", async () => {
-        const page = render(<StudentList isDraggable={false} showAdd={true} />);
+        const page = render(makeCacheFree(() => <StudentList isDraggable={false} showAdd={true} />));
+
+        const user = getBaseUser("1", UserRole.admin, true);
+        await enableCurrentUser(user);
 
         const addButton = page.getByTestId("new-student-button");
         await userEvent.click(addButton);
 
-        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.studentCreation);
+        await expect(mockRouter.asPath).toEqual("/" + applicationPaths.studentCreation);
     });
 });

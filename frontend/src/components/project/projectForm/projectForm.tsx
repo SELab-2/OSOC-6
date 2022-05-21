@@ -187,8 +187,6 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         data-testid="projectinfo-input"
                         placeholder={capitalize(t("project info"))}
                     />
-                    {/*<label>{capitalize(t("project goals"))}:</label>*/}
-                    {/*<CreateGoalsSubForm goals={goals} setGoals={setGoals} />*/}
                     <ItemListForm
                         items={goals}
                         setItems={setGoals}

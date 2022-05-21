@@ -24,13 +24,12 @@ import ItemListForm from "../util/itemListForm";
  */
 export interface CreateStudentFormProps {
     student?: IStudent;
-    title: string;
 }
 
 /**
  * Form allowing the creation of a new communication template.
  */
-export default function CreateStudentForm({ student, title }: CreateStudentFormProps) {
+export default function CreateStudentForm({ student }: CreateStudentFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { mutate } = useSWRConfig();
@@ -44,7 +43,7 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
 
     return (
         <div className="container mt-3" data-testid="student-create-form">
-            <h2>{title}</h2>
+            <h2>{student ? capitalize(t("edit student")) : capitalize(t("create student"))}</h2>
             <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
