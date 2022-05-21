@@ -49,7 +49,6 @@ export default function RouteInjector({ children }: any) {
     const activeAvailableEditions = availableEditions
         ? availableEditions.filter((edition) => edition.active)
         : undefined;
-    console.log(activeAvailableEditions);
     const latestEdition = activeAvailableEditions?.at(activeAvailableEditions?.length - 1);
     const latestEditionName = latestEdition?.name;
 
