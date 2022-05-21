@@ -1,21 +1,25 @@
 import useTranslation from "next-translate/useTranslation";
-import {Col, Row} from "react-bootstrap";
-import {Field, Form, Formik} from "formik";
-import {getAllUsersFromLinks} from "../../../api/calls/userCalls";
-import {capitalize} from "../../../utility/stringUtil";
-import {ProjectCreationValues, projectFormSubmitHandler} from "../../../handlers/projectFormSubmitHandler";
-import {IUser} from "../../../api/entities/UserEntity";
-import {useEffect, useState} from "react";
+import { Col, Row } from "react-bootstrap";
+import { Field, Form, Formik } from "formik";
+import { getAllUsersFromLinks } from "../../../api/calls/userCalls";
+import { capitalize } from "../../../utility/stringUtil";
+import { ProjectCreationValues, projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
+import { IUser } from "../../../api/entities/UserEntity";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import {useEditionAPIUrlTransformer} from "../../../hooks/utilHooks";
+import { useEditionAPIUrlTransformer } from "../../../hooks/utilHooks";
 import useEdition from "../../../hooks/useGlobalEdition";
-import {useRouter} from "next/router";
-import useSWR, {useSWRConfig} from "swr";
-import {useCurrentUser} from "../../../hooks/useCurrentUser";
+import { useRouter } from "next/router";
+import useSWR, { useSWRConfig } from "swr";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import styles from "../../../styles/projects/createProject.module.css";
-import {IProject} from "../../../api/entities/ProjectEntity";
-import {getAllProjectSkillsFromLinks} from "../../../api/calls/projectSkillCalls";
-import {IProjectSkill, ProjectSkill, projectSkillFromIProjectSkill,} from "../../../api/entities/ProjectSkillEntity";
+import { IProject } from "../../../api/entities/ProjectEntity";
+import { getAllProjectSkillsFromLinks } from "../../../api/calls/projectSkillCalls";
+import {
+    IProjectSkill,
+    ProjectSkill,
+    projectSkillFromIProjectSkill,
+} from "../../../api/entities/ProjectSkillEntity";
 import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";
@@ -185,7 +189,13 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                     />
                     {/*<label>{capitalize(t("project goals"))}:</label>*/}
                     {/*<CreateGoalsSubForm goals={goals} setGoals={setGoals} />*/}
-                    <ItemListForm items={goals} setItems={setGoals} itemInputText={capitalize(t("project goals"))} itemAddText={capitalize(t("add goal"))} itemPlaceHolderText={capitalize(t("project goal"))}/>
+                    <ItemListForm
+                        items={goals}
+                        setItems={setGoals}
+                        itemInputText={capitalize(t("project goals"))}
+                        itemAddText={capitalize(t("add goal"))}
+                        itemPlaceHolderText={capitalize(t("project goal"))}
+                    />
 
                     <label htmlFor="version-management">{capitalize(t("version control URL"))}:</label>
                     <Field
