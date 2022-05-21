@@ -99,8 +99,8 @@ const common = {
     "no edition": "there are no editions made yet.",
     "no error": "no error",
     "edition overview": "edition overview",
-    "change edition state":
-        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "change edition state": "do you really want to change this attribute?",
+    "huge impact": "This change has a huge impact, so proceed with caution...",
     "invalid edition year": "please provide a valid year",
     "create new edition": "create new edition",
     "manage editions": "manage editions",
@@ -224,6 +224,8 @@ const common = {
     "edit colour": "edit colour",
     delete: "delete",
     skills: "skills",
+
+    "input empty": "input field can not be empty",
 };
 
 export default common;
