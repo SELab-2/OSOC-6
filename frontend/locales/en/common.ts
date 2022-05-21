@@ -162,7 +162,7 @@ const common = {
     "degree duration": "year out of",
     "applied for": "applied for",
     "osoc experience": "osoc experience",
-    emale: "female",
+    female: "female",
     male: "male",
     transgender: "transgender",
     "not specified": "not specified",
