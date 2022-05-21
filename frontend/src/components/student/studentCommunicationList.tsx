@@ -10,7 +10,7 @@ import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
 import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 
 /**
