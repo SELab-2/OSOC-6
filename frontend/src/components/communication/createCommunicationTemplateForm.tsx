@@ -17,7 +17,6 @@ export interface CreateCommunicationTemplateFormProps {
     template?: ICommunicationTemplate;
     setTemplate?: (template: ICommunicationTemplate) => void;
     setCreate?: (create: boolean) => void;
-    edit?: boolean;
     setEdit?: (create: boolean) => void;
 }
 
@@ -29,7 +28,6 @@ export default function CreateCommunicationTemplateForm({
     template,
     setTemplate,
     setCreate,
-    edit,
     setEdit,
 }: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
@@ -65,9 +63,9 @@ export default function CreateCommunicationTemplateForm({
             }}
         >
             {({ values, setFieldValue }) => (
-                <Form>
+                <Form data-testid="template-form">
                     <div>
-                        <h2>{edit ? "Edit the template" : "Create new template"}</h2>
+                        <h2>{template ? "Edit the template" : "Create new template"}</h2>
                         <hr />
                         <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 

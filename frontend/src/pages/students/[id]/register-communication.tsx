@@ -136,6 +136,7 @@ export default function CommunicationInfoPage() {
                                                         alignItems: "center",
                                                         display: "flex",
                                                     }}
+                                                    data-testid="new-template"
                                                     onClick={() => setCreate(true)}
                                                 >
                                                     Create new template
@@ -148,7 +149,6 @@ export default function CommunicationInfoPage() {
                                                 setTemplate={setSelectedTemplate}
                                                 setCreate={setCreate}
                                                 setEdit={setEdit}
-                                                edit={edit}
                                             />
                                         )}
                                         {selectedTemplate && !edit && (

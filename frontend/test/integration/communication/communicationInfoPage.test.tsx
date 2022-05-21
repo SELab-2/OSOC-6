@@ -5,6 +5,9 @@ import { makeCacheFree } from "../Provide";
 import mockAxios from "jest-mock-axios";
 import CommunicationTemplatePage from "../../../src/pages/communicationTemplates/[id]";
 import mockRouter from "next-router-mock";
+import userEvent from "@testing-library/user-event";
+import CommunicationInfoPage from "../../../src/pages/students/[id]/register-communication";
+import apiPaths from "../../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

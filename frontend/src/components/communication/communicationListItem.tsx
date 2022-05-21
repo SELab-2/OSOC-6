@@ -15,7 +15,6 @@ import AccordionItem from "react-bootstrap/AccordionItem";
  */
 export interface CommunicationListItemProps {
     communication: ICommunication;
-    index: number;
 }
 
 /**
@@ -24,7 +23,7 @@ export interface CommunicationListItemProps {
  * @param communication the specified [ICommunication] item.
  * @param index the index of the accordionItem
  */
-export default function CommunicationListItem({ communication, index }: CommunicationListItemProps) {
+export default function CommunicationListItem({ communication }: CommunicationListItemProps) {
     const { t } = useTranslation("common");
     const { data: receivedTemplate, error: templateError } = useSWR(
         communication._links.template.href,
@@ -40,7 +39,7 @@ export default function CommunicationListItem({ communication, index }: Communic
     const date = new Date(communication.timestamp);
 
     return (
-        <AccordionItem key={index} eventKey={`${index}`} data-testid="communication">
+        <AccordionItem key={communication._links.self.href} eventKey={`${communication._links.self.href}`} data-testid="communication">
             <AccordionHeader className={"bg-secondary"}>
                 <div>
                     <h4>{template.name}</h4>

@@ -102,7 +102,6 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                                             <CommunicationListItem
                                                 communication={communication}
                                                 key={communication._links.self.href}
-                                                index={index}
                                             />
                                         </AccordionItem>
                                     );
