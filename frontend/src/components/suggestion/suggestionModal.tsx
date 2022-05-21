@@ -11,7 +11,11 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
  * Modal asking the reason for a certain suggestion
  * @param props properties needed to render this component
  */
-export function SuggestionModal(props: { suggestion: SuggestionStrategy; colour: string; studentUrl: string }) {
+export function SuggestionModal(props: {
+    suggestion: SuggestionStrategy;
+    colour: string;
+    studentUrl: string;
+}) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
 

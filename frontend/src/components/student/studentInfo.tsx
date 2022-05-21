@@ -212,11 +212,11 @@ export function StudentInfo() {
                             </div>
                         </Row>
                     </Col>
-                    {isAdmin &&
+                    {isAdmin && (
                         <Col sm={4}>
                             <StudentStatus studentUrl={student._links.self.href} status={student.status} />
                         </Col>
-                    }
+                    )}
                 </Row>
             </footer>
         </div>

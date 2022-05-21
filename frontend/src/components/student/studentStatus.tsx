@@ -17,14 +17,18 @@ export function StudentStatus(props: { studentUrl: string; status: Status }) {
             <Row>
                 <div className="col-sm">
                     <Dropdown as={ButtonGroup} drop="up" title={suggestionValue}>
-                        <Dropdown.Toggle style={{
-                            backgroundColor: "#0a0839",
-                            borderColor: "white",
-                            alignItems: "center",
-                            display: "flex",
-                            width: 150,
-                            justifyContent: "center"
-                        }}>{suggestionValue}</Dropdown.Toggle>
+                        <Dropdown.Toggle
+                            style={{
+                                backgroundColor: "#0a0839",
+                                borderColor: "white",
+                                alignItems: "center",
+                                display: "flex",
+                                width: 150,
+                                justifyContent: "center",
+                            }}
+                        >
+                            {suggestionValue}
+                        </Dropdown.Toggle>
                         <DropdownMenu>
                             {Object.values(Status).map((value) => (
                                 <DropdownItem key={value} onClick={() => setSuggestionValue(value)}>
