@@ -12,7 +12,7 @@ import {
     getBaseSuggestion,
     getBaseUser,
 } from "../TestEntityProvider";
-import { makeCacheFree } from "../Provide";
+import {enableCurrentUser, makeCacheFree} from "../Provide";
 import { StudentInfo } from "../../../src/components/student/studentInfo";
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
@@ -144,13 +144,14 @@ describe("StudentInfo", () => {
         });
     });
 
-    it("should direct to communication", async () => {
+    it("should direct to communication as admin", async () => {
         const studentId = "10";
 
         mockRouter.setCurrentUrl("/students/" + studentId);
         mockRouter.query = { id: studentId };
 
         render(makeCacheFree(StudentInfo));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
         await waitFor(() =>
@@ -162,5 +163,24 @@ describe("StudentInfo", () => {
         await mockRouter.push(
             "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase
         );
+    });
+
+    it("communication button should not exist as coach", async () => {
+        const studentId = "10";
+
+        mockRouter.setCurrentUrl("/students/" + studentId);
+        mockRouter.query = { id: studentId };
+
+        render(makeCacheFree(StudentInfo));
+        await enableCurrentUser(getBaseUser("5", UserRole.coach, true));
+
+        const baseStudent: IStudent = getBaseStudent(studentId);
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
+        );
+
+        await waitFor(() => {
+            expect(screen.queryByTestId("open-communication")).not.toBeInTheDocument();
+        })
     });
 });
