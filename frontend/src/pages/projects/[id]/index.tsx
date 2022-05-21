@@ -4,6 +4,9 @@ import NavBar from "../../../components/util/navBar";
 import { ProjectList } from "../../../components/project/projectList";
 import { ProjectInfo } from "../../../components/project/projectInfo";
 
+/**
+ * Page dedicated to showing info about a project.
+ */
 const ProjectIDPage: NextPage = () => {
     return (
         <>

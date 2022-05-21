@@ -161,6 +161,9 @@ export function ProjectForm({ project }: ProjectCreationProps) {
         <div className={styles.create_project_box} data-testid="create-project-form w-100">
             <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
                 <Form
+                    // This is needed so pressing enter does not submit the form.
+                    // I Personally pressed enter a lot of times to for example to add a goal.
+                    // Resulting in a lot of premature submissions.
                     onKeyPress={(e) => {
                         e.which === 13 && e.preventDefault();
                     }}

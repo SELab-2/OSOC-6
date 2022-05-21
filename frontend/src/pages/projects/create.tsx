@@ -3,6 +3,10 @@ import NavBar from "../../components/util/navBar";
 import styles from "../../styles/projects/createProject.module.css";
 import { ProjectForm } from "../../components/project/projectForm/projectForm";
 
+/**
+ * Page dedicated to creating a project.
+ * @constructor
+ */
 const CreateProject: NextPage = () => {
     return (
         <div>
