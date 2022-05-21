@@ -4,6 +4,7 @@ import styles from "../../styles/Home.module.css";
 import EditionOverview from "../../components/edition/editionOverview";
 import { useRouter } from "next/router";
 import NavBar from "../../components/util/navBar";
+import { Background } from '../../components/util/background';
 
 const EditionInfoPage: NextPage = () => {
     const { t } = useTranslation("common");
@@ -12,6 +13,7 @@ const EditionInfoPage: NextPage = () => {
     return (
         <main className={styles.main}>
             <NavBar />
+            <Background/>
             <EditionOverview editionId={id as string} />
         </main>
     );

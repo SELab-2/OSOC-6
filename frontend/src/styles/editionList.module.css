@@ -22,3 +22,15 @@
     box-shadow: 0 0 0 0.15rem rgb(255 255 255);
     color: white;
 }
+
+.callname_confirm {
+    background: #1a1a32;
+    border-color: white;
+}
+
+.eye {
+    cursor: pointer;
+    margin-top: 11rem;
+    margin-right: 0;
+    margin-left: auto;
+}
