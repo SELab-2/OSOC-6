@@ -1,4 +1,4 @@
-import {getBaseCommunicationTemplate, getBaseStudent} from "../TestEntityProvider";
+import { getBaseCommunicationTemplate, getBaseStudent } from "../TestEntityProvider";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CommunicationTemplateInfo from "../../../src/components/communication/communicationTemplateInfo";
@@ -29,6 +29,5 @@ describe("Communication template info", () => {
         expect(info.getByTestId("communication-template-info")).toBeInTheDocument();
         expect(await info.findByText(template.template));
         expect(await info.findByText("For: " + student.email));
-    })
+    });
 });
-
