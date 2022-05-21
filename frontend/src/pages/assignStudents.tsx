@@ -11,8 +11,8 @@ import ConflictResolutionList from "../components/conflictResolution/conflictRes
 import { useSwrWithEdition } from "../hooks/utilHooks";
 import apiPaths from "../properties/apiPaths";
 import { getAllStudentsFromPage } from "../api/calls/studentCalls";
-import { capitalize } from '../utility/stringUtil';
-import useTranslation from 'next-translate/useTranslation';
+import { capitalize } from "../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 export type DropHandler = (
     studentName: string,
@@ -72,7 +72,10 @@ const AssignStudentsPage: NextPage = () => {
                         <Row className={"h-100"}>
                             <Col className="h-100 overflow-auto pb-2">
                                 {receivedStudents !== undefined && receivedStudents.length > 0 && (
-                                    <button className={styles.conflicts_button + " btn btn-outline-primary"} onClick={changeShowConflicts}>
+                                    <button
+                                        className={styles.conflicts_button + " btn btn-outline-primary"}
+                                        onClick={changeShowConflicts}
+                                    >
                                         {capitalize(t("some students are assigned to multiple projects"))}
                                     </button>
                                 )}
