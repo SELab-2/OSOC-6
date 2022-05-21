@@ -15,6 +15,7 @@ import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import styles from "../../styles/studentOverview.module.css";
+import Image from "next/image";
 
 /**
  * Give an overview of all the studentinfo
@@ -71,7 +72,7 @@ export function StudentInfo() {
                                 applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
                         )}
                     >
-                        <img alt={capitalize(t("edit"))} src="/resources/edit.svg" width="15" height="15" />
+                        <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                     </a>
                 </h1>
                 <div className={styles.student_skills}>
@@ -94,7 +95,7 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {capitalize(student.gender.replaceAll("_", " ").toLowerCase())}{" "}
+                    {capitalize(t("gender"))}: {capitalize(student.gender.replace(/_/g, " ").toLowerCase())}{" "}
                     {t("with pronouns")} {student.pronouns.toLowerCase()}
                 </div>
                 <div>
@@ -102,7 +103,7 @@ export function StudentInfo() {
                 </div>
                 <div>
                     {capitalize(t("english proficiency"))}:{" "}
-                    {capitalize(student.englishProficiency.replaceAll("_", " ").toLowerCase())}
+                    {capitalize(student.englishProficiency.replace(/_/g, " ").toLowerCase())}
                 </div>
                 <div>
                     {capitalize(t("phone number"))}: {student.phoneNumber}

@@ -38,6 +38,9 @@ export default function ItemListForm({
 
     return (
         <div>
+            <label htmlFor="item-input" className="form-label">
+                {itemInputText}
+            </label>
             {items.map((item: string, index: number) => (
                 <Row key={index}>
                     <Col>{item}</Col>
@@ -58,12 +61,9 @@ export default function ItemListForm({
                     </Col>
                 </Row>
             ))}
-            <label htmlFor="item-input" className="form-label">
-                {itemInputText}
-            </label>
             <input
                 id="item-input"
-                className="form-control mb-2"
+                className="form-control mb-2 mt-2"
                 data-testid="item-list-input"
                 value={currentItem}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setCurrentItem(e.target.value)}
