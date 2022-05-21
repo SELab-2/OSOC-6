@@ -10,7 +10,7 @@ import { basePost, getParamsFromQueryUrl } from "../../api/calls/baseCalls";
 import { loginSubmitHandler } from "../../handlers/loginSubmitHandler";
 import { capitalize } from "../../utility/stringUtil";
 import { Field, Form, Formik } from "formik";
-import styles from "../../styles/registration.module.css";
+import styles from "../../styles/loginForm.module.css";
 import applicationPaths from "../../properties/applicationPaths";
 import { useSWRConfig } from "swr";
 
@@ -54,7 +54,7 @@ const RegistrationForm: NextPage = () => {
 
     return (
         <div>
-            <div className={styles.registration_box}>
+            <div className={styles.login_box}>
                 <Formik
                     initialValues={{
                         callname: "",
@@ -67,7 +67,7 @@ const RegistrationForm: NextPage = () => {
                     <Form>
                         <h6>{capitalize(t("callname"))}</h6>
                         <Field
-                            className={"form-control " + styles.registration_field}
+                            className={"form-control " + styles.login_field}
                             type="text"
                             data-testid="callname"
                             name="callname"
@@ -76,7 +76,7 @@ const RegistrationForm: NextPage = () => {
                         />
                         <h6>{capitalize(t("email"))}</h6>
                         <Field
-                            className={"form-control " + styles.registration_field}
+                            className={"form-control " + styles.login_field}
                             type="email"
                             data-testid="email"
                             name="email"
@@ -85,7 +85,7 @@ const RegistrationForm: NextPage = () => {
                         />
                         <h6>{capitalize(t("enter password"))}</h6>
                         <Field
-                            className={"form-control " + styles.registration_field}
+                            className={"form-control " + styles.login_field}
                             type="password"
                             data-testid="password"
                             name="password"
@@ -94,7 +94,7 @@ const RegistrationForm: NextPage = () => {
                         />
                         <h6>{capitalize(t("repeat password"))}</h6>
                         <Field
-                            className={"form-control " + styles.registration_field}
+                            className={"form-control " + styles.login_field}
                             type="password"
                             data-testid="repeat"
                             name="repeat"

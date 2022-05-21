@@ -1,13 +1,23 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import { ProjectInfo } from "../../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
+import userEvent from "@testing-library/user-event";
+import { AxiosResponse } from "axios";
+import { userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
+import { projectSkillCollectionName } from "../../../src/api/entities/ProjectSkillEntity";
+import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import { getValidAssignmentsUrlForProjectSkill } from "../../../src/api/calls/AssignmentCalls";
 import {
     getBaseAssignment,
+    getBaseBadRequestResponse,
     getBaseLinks,
+    getBaseNoContentResponse,
     getBaseOkResponse,
     getBasePage,
     getBaseProject,
@@ -16,12 +26,6 @@ import {
     getBaseStudent,
     getBaseUser,
 } from "../TestEntityProvider";
-import { userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
-import { projectSkillCollectionName } from "../../../src/api/entities/ProjectSkillEntity";
-import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
-import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { getValidAssignmentsUrlForProjectSkill } from "../../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -90,5 +94,50 @@ describe("project info", () => {
         );
 
         await waitFor(() => expect(screen.getByText(student.callName)).toBeInTheDocument());
+    });
+
+    it("should delete", async () => {
+        const projectId = "5";
+
+        mockRouter.setCurrentUrl("/projects/" + projectId);
+        mockRouter.query = { id: projectId };
+        render(makeCacheFree(ProjectInfo));
+
+        const project = getBaseProject(projectId);
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
+        );
+
+        const deleteButton = await screen.findByTestId("delete-project");
+        await userEvent.click(deleteButton);
+
+        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
+        const response: AxiosResponse = getBaseNoContentResponse();
+        await enableActForResponse({ url: project._links.self.href }, response);
+    });
+
+    it("delete should fail", async () => {
+        const projectId = "5";
+
+        mockRouter.setCurrentUrl("/projects/" + projectId);
+        mockRouter.query = { id: projectId };
+        render(makeCacheFree(ProjectInfo));
+
+        const project = getBaseProject(projectId);
+        await waitFor(() =>
+            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
+        );
+
+        const deleteButton = await screen.findByTestId("delete-project");
+        await userEvent.click(deleteButton);
+
+        await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
+        const response: AxiosResponse = getBaseBadRequestResponse();
+        await enableActForResponse({ url: project._links.self.href }, response);
+
+        const warning = await screen.findByTestId("warning");
+        await waitFor(() => {
+            expect(warning).toBeVisible();
+        });
     });
 });

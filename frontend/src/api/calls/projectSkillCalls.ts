@@ -6,7 +6,6 @@ import {
     getEntityOnUrl,
 } from "./baseCalls";
 import { IProjectSkill, ProjectSkill, projectSkillCollectionName } from "../entities/ProjectSkillEntity";
-import { Project } from "../entities/ProjectEntity";
 import apiPaths from "../../properties/apiPaths";
 
 /**

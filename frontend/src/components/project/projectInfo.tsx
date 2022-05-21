@@ -6,11 +6,20 @@ import useFullProjectInfo from "../../hooks/useFullProjectInfo";
 import { emptyProject } from "../../api/entities/ProjectEntity";
 import ProjectSkillStudent from "./projectSkillStudent";
 import styles from "../../styles/projects/projectInfo.module.css";
+import { useState } from "react";
+import { StatusCodes } from "http-status-codes";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import applicationPaths from "../../properties/applicationPaths";
+import { deleteProject } from "../../api/calls/projectCalls";
+import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
+import timers from "../../properties/timers";
+import Image from "next/image";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query as { id: string };
+    const [show, setShow] = useState<boolean>(true);
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
 
@@ -22,9 +31,28 @@ export function ProjectInfo() {
     const projectSkills = data.skills;
     const coaches = data.coaches;
 
+    async function deleteProjectOnClick() {
+        const response = await deleteProject(info._links.self.href);
+        if (response.status == StatusCodes.NO_CONTENT) {
+            try {
+                const params = getParamsFromQueryUrl(router.asPath);
+                await router.push(getQueryUrlFromParams("/" + applicationPaths.projects, params));
+            } catch (error) {
+                setShow(true);
+            }
+        } else {
+            setShow(true);
+        }
+    }
+
     return (
         <div className={styles.project_info}>
-            <h1>{info.name}</h1>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h1>{info.name}</h1>
+                <a onClick={deleteProjectOnClick} data-testid="delete-project">
+                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                </a>
+            </div>
             <h5>
                 <a href={info.partnerWebsite || undefined}>{info.partnerName}</a>
             </h5>
@@ -68,6 +96,19 @@ export function ProjectInfo() {
                     <p>{capitalize(t("no roles assigned to project"))}</p>
                 )}
             </ul>
+
+            <ToastContainer position="bottom-end">
+                <Toast
+                    bg="warning"
+                    data-testid="warning"
+                    onClose={() => setShow(false)}
+                    show={show}
+                    delay={timers.toast}
+                    autohide
+                >
+                    <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
+                </Toast>
+            </ToastContainer>
         </div>
     );
 }

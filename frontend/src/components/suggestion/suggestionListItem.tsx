@@ -32,7 +32,7 @@ export default function SuggestionListItem({ suggestion }: suggestionLIProps) {
     };
 
     return (
-        <ListGroup.Item as={"li"}>
+        <ListGroup.Item as={"li"} style={{ backgroundColor: "#1b1a31", color: "white" }}>
             <Row>
                 <Col sm={1}>
                     <Image

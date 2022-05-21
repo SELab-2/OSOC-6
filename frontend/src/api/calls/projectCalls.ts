@@ -1,5 +1,6 @@
 import { IProject, Project, projectCollectionName } from "../entities/ProjectEntity";
 import {
+    baseDelete,
     basePatch,
     basePost,
     extractIdFromApiEntityUrl,
@@ -56,4 +57,12 @@ export function setProjectCoaches(project: IProject, coachUrls: string[]): Promi
  */
 export function extractIdFromProjectUrl(url: string): string {
     return extractIdFromApiEntityUrl(url);
+}
+
+/**
+ * Removes a project from the database
+ * @param url hosting the [IProject]
+ */
+export async function deleteProject(url: string): Promise<AxiosResponse> {
+    return await baseDelete(url);
 }
