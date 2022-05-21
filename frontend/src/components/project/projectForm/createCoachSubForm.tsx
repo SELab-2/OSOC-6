@@ -11,7 +11,7 @@ import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 
 /**
- * Properties needed by [CreateCoachSubFormProps].
+ * Properties needed by [CreateCoachSubForm].
  */
 export interface CreateCoachSubFormProps {
     setCoachUrls: (urls: string[]) => void;
@@ -21,7 +21,7 @@ export interface CreateCoachSubFormProps {
 /**
  * SubForm allowing you to link new coaches to a project.
  * @param setCoachUrls callBack that sets the selected coaches as a URI.
- * @param illegalCoaches list of coaches thatshould not be added.
+ * @param illegalCoaches list of coaches that should not be added.
  */
 export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: CreateCoachSubFormProps) {
     const { t } = useTranslation("common");
@@ -46,10 +46,6 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
 
     function handleAddCreatedCoach() {
         const newCoach = selectedCoach ? selectedCoach : allUsers[0].callName;
-
-        console.log(newCoach);
-        console.log(coaches);
-
         if (!selectedCoach) {
             setSelectedCoach(newCoach);
         }

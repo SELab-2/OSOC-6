@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 
 /**
- * Properties needed by [CreateGoalsSubFormProps].
+ * Properties needed by [CreateGoalsSubForm].
  */
 export interface CreateGoalsSubFormProps {
     goals: string[];

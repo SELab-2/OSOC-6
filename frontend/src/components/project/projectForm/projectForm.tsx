@@ -51,7 +51,6 @@ type AlteredSkillMapper = { [projectSkillUrl: string]: ProjectSkill };
  * Includes the creation of projectSkills.
  * Allows you to link coaches to the project.
  * @param project the project that needs to be edited. Undefined when in project creation mode.
- * @constructor
  */
 export function ProjectForm({ project }: ProjectCreationProps) {
     const { t } = useTranslation("common");
