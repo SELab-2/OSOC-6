@@ -104,7 +104,7 @@ export function EditionRowComponent(props: EditionProps) {
                         <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>
-                <hr style={{marginTop: "1rem"}} />
+                <hr style={{ marginTop: "1rem" }} />
             </Row>
         </Container>
     );
