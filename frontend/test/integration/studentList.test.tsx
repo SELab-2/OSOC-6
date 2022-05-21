@@ -10,6 +10,7 @@ import apiPaths from "../../src/properties/apiPaths";
 import { studentCollectionName } from "../../src/api/entities/StudentEntity";
 import mockRouter from "next-router-mock";
 import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
+import applicationPaths from "../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -63,5 +64,14 @@ describe("student list", () => {
                 expect.anything()
             );
         });
+    });
+
+    it("add student button works", async () => {
+        const page = render(<StudentList isDraggable={false} showAdd={true} />);
+
+        const addButton = page.getByTestId("new-student-button");
+        await userEvent.click(addButton);
+
+        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.studentCreation);
     });
 });

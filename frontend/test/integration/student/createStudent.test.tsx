@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
-import CreateStudentForm from "../../../src/components/student/createStudentForm";
 import {
     EnglishProficiency,
     Gender,
@@ -14,6 +13,7 @@ import {
 } from "../../../src/api/entities/StudentEntity";
 import { enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import { getBaseActiveEdition } from "../TestEntityProvider";
+import StudentCreate from "../../../src/pages/students/create";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -22,9 +22,7 @@ describe("create student", () => {
 
     it("renders", async () => {
         const page = render(
-            makeCacheFree(() =>
-                enableUseEditionComponentWrapper(() => <CreateStudentForm title="create" />, edition)
-            )
+            makeCacheFree(() => enableUseEditionComponentWrapper(() => <StudentCreate />, edition))
         );
         await page.findByTestId("student-create");
     });
@@ -40,9 +38,7 @@ describe("create student", () => {
         );
 
         const form = render(
-            makeCacheFree(() =>
-                enableUseEditionComponentWrapper(() => <CreateStudentForm title="create" />, edition)
-            )
+            makeCacheFree(() => enableUseEditionComponentWrapper(() => <StudentCreate />, edition))
         );
         const callNameElement = form.getByTestId("callName");
         const firstNameElement = form.getByTestId("firstName");
@@ -153,5 +149,6 @@ describe("create student", () => {
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.students, student, expect.anything());
         });
-    });
+        // This is a long running test because of all the promises that are created
+    }, 20000);
 });

@@ -47,7 +47,7 @@ export default function ItemListForm({
                     <Col xs={1}>
                         <a
                             onClick={() => setItems(items.filter((_, valIndex) => valIndex !== index))}
-                            data-testid={"remove-added-item-" + item}
+                            data-testid={"item-list-delete-button"}
                         >
                             <Image
                                 layout="fixed"
