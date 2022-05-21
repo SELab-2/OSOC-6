@@ -11,6 +11,7 @@ import { IEdition } from "../api/entities/EditionEntity";
 import { extractIdFromEditionUrl } from "../api/calls/editionCalls";
 import { ScopedMutator } from "swr/dist/types";
 import { createProject } from "../api/calls/projectCalls";
+import { RouterAction } from "../hooks/routerHooks";
 
 /**
  * All values that a project contains
@@ -65,7 +66,7 @@ export type ProjectCreationProps = {
  */
 export async function createProjectSubmitHandler(
     values: ProjectCreationValues,
-    router: NextRouter,
+    routerAction: RouterAction,
     editionUrl: string,
     ownUser: IUser,
     mutate: ScopedMutator<any>,
@@ -113,7 +114,7 @@ export async function createProjectSubmitHandler(
         mutate(createdProject._links.coaches),
     ]).catch(console.log);
 
-    await router.push(
+    await routerAction(
         "/" + applicationPaths.projects + "/" + extractIdFromApiEntityUrl(createdProject._links.self.href)
     );
 }

@@ -15,12 +15,12 @@ import timers from "../../properties/timers";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { saveCallNameOfUser, userDelete } from "../../api/calls/userCalls";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 export function ProfileOverview() {
     const { t } = useTranslation("common");
-    const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
-    let { user: userResponse, error } = useCurrentUser();
+    const routerAction = useRouterPush();
+    const { user: userResponse, error } = useCurrentUser();
     const { mutate } = useSWRConfig();
     const [editCallName, setEditCallName] = useState<boolean>(false);
     const [callName, setCallName] = useState<string>("");
@@ -56,7 +56,7 @@ export function ProfileOverview() {
         if (user) {
             const response: AxiosResponse = await userDelete(user._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {
-                await router.push(transformer("/" + applicationPaths.login));
+                await routerAction("/" + applicationPaths.login);
             } else {
                 setShow(true);
             }

@@ -15,11 +15,13 @@ import { useSwrWithEdition } from "../../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
 import { Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
+import { useRouterReplace } from "../../hooks/routerHooks";
 
 export const StudentList = (props: { isDraggable: boolean }) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterReplace();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
     let { data, error } = useSwrWithEdition(
@@ -67,7 +69,7 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                     const studentId: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
-                                    await router.replace({
+                                    await routerAction({
                                         pathname: "/" + applicationPaths.students + "/" + studentId,
                                         query: { ...router.query },
                                     });

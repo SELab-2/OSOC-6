@@ -13,7 +13,7 @@ import { useRouterPush } from "../../hooks/routerHooks";
 export const OptionsMenu = () => {
     const { t } = useTranslation("common");
     const transformer = useEditionApplicationPathTransformer();
-    const routerAction = useRouterPush()
+    const routerAction = useRouterPush();
 
     // All options are defined here
     // This gets shown when the image is clicked.

@@ -42,16 +42,14 @@ export function useEditionApplicationPathTransformer(): (url: string) => string 
     const [editionUrl] = useEdition();
     const { data: edition } = useSWR(editionUrl, getEditionOnUrl);
 
-
     return (url) => {
         // make sure only a single edition is contained in the url
         if (edition) {
-            if (url.includes("?edition=")  || url.includes("&edition=")) {
+            if (url.includes("?edition=") || url.includes("&edition=")) {
                 // Edition already set -> remove
                 return url;
             }
             return getQueryUrlFromParams(url, { edition: edition?.name });
-
         }
         return url;
     };

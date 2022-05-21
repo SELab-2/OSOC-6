@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { Status } from "../../api/entities/StudentEntity";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouterReplace } from "../../hooks/routerHooks";
 
 /**
  * The StudentStatusButton filters the list of students by the passed student status
@@ -10,6 +11,7 @@ import { useEffect, useState } from "react";
 export function StudentStatusButton(props: { status: Status; colour: string }) {
     const [clicked, setClicked] = useState(false);
     const router = useRouter();
+    const routerAction = useRouterReplace();
 
     useEffect(() => {
         setClicked(router.query?.status === props.status);
@@ -17,11 +19,11 @@ export function StudentStatusButton(props: { status: Status; colour: string }) {
 
     async function clickHandler() {
         if (clicked) {
-            await router.replace({
+            await routerAction({
                 query: { ...router.query, status: "" },
             });
         } else {
-            await router.replace({
+            await routerAction({
                 query: { ...router.query, status: props.status },
             });
         }

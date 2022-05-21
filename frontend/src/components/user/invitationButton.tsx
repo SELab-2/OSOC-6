@@ -48,7 +48,7 @@ export default function InvitationButton() {
             invitationToken: postedInvitation.token,
         });
 
-        const registrationUrl = applicationPaths.base + "/" + transformer(url);
+        const registrationUrl = applicationPaths.base + "/" + url;
 
         setInvitationUrl(registrationUrl);
         setHidden(false);

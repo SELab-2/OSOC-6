@@ -42,7 +42,9 @@ const RegistrationForm: NextPage = () => {
                     { username: values.email, password: values.password },
                     () => {},
                     routerPush,
-                    ["string", "undefined"].includes(typeof returnUrl) ? returnUrl as string | undefined : (returnUrl as string[])[0],
+                    ["string", "undefined"].includes(typeof returnUrl)
+                        ? (returnUrl as string | undefined)
+                        : (returnUrl as string[])[0],
                     mutate
                 );
                 await routerPush("/" + applicationPaths.assignStudents);

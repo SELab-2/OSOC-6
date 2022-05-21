@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { pathIsAuthException } from "../../utility/pathUtil";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useRouterReplace } from "../../hooks/routerHooks";
 
 export default function RouteGuard({ children }: any) {
     const router = useRouter();
     const routerPath = router.asPath;
-    const replace = router.replace;
+    const routerAction = useRouterReplace();
 
     const [authorized, setAuthorized] = useState<boolean>(false);
 
@@ -19,14 +20,14 @@ export default function RouteGuard({ children }: any) {
         const authException = pathIsAuthException(routerPath);
 
         if (!authException && userErrorMsg) {
-            replace({
+            routerAction({
                 pathname: "/" + applicationPaths.login,
                 query: { returnUrl: routerPath },
             }).catch(console.log);
         }
 
         setAuthorized(authException || !userErrorMsg);
-    }, [routerPath, userErrorMsg, replace]);
+    }, [routerPath, userErrorMsg, routerAction]);
 
     return authorized && children;
 }

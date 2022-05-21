@@ -21,7 +21,9 @@ const Login: NextPage = () => {
     const [hadError, setHadError] = useState<boolean>(false);
 
     const returnUrl = router.query.returnUrl;
-    const castedReturnUrl = ["string", "undefined"].includes(typeof returnUrl) ? returnUrl as string | undefined : (returnUrl as string[])[0];
+    const castedReturnUrl = ["string", "undefined"].includes(typeof returnUrl)
+        ? (returnUrl as string | undefined)
+        : (returnUrl as string[])[0];
 
     return (
         <div className={styles.login_page}>
