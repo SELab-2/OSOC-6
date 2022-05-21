@@ -11,6 +11,7 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
 import { useSwrWithEdition } from "../../hooks/utilHooks";
+import styles from "../../styles/assignments.module.css";
 
 /**
  * Accordion containing all the information to correctly assign students to projects.
@@ -40,10 +41,19 @@ function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
     return (
         <div data-testid="project-assignment-list">
             <Container className="overflow-auto h-100 pt-2">
-                <Accordion defaultActiveKey={["0"]} alwaysOpen className={"overflow-auto"}>
+                <Accordion
+                    defaultActiveKey={["0"]}
+                    alwaysOpen
+                    className={"overflow-auto " + styles.accordion}
+                >
                     {projectList.map((project, index) => {
                         return (
-                            <AccordionItem key={index} eventKey={`${index}`} data-testid="project">
+                            <AccordionItem
+                                key={index}
+                                eventKey={`${index}`}
+                                data-testid="project"
+                                className={styles.accordion_item}
+                            >
                                 <AccordionHeader className={"bg-secondary"}>
                                     <div>
                                         <h4>{project.name}</h4>

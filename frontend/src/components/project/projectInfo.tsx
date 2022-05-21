@@ -67,7 +67,12 @@ export function ProjectInfo() {
 
             <hr className={styles.space} />
             <h4>{capitalize(t("project about"))}</h4>
-            {info.info}
+            <div>{info.info}</div>
+            <ul>
+                {info.goals.map((goal) => (
+                    <li key={goal}>{goal}</li>
+                ))}
+            </ul>
 
             <hr className={styles.space} />
             <h4>{capitalize(t("project expertise"))}</h4>
