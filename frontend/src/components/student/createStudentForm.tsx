@@ -365,7 +365,7 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                             </Field>
                         </div>
                         <button className="btn btn-primary mb-3" data-testid="submit" type="submit">
-                            {capitalize(t("confirm"))}
+                            {student ? capitalize(t("edit student")) : capitalize(t("create student"))}
                         </button>
                     </Form>
                 )}
