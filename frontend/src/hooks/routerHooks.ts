@@ -43,6 +43,10 @@ export function useRouterPush(): RouterAction {
     const { data: edition } = useSWR(editionUrl, getEditionOnUrl);
 
     return (url, as, options) => {
+
+        console.log(url)
+        console.log(router);
+
         if (edition?.name) {
             if (typeof url === "string") {
                 return router.push({ href: url, query: { edition: edition?.name } }, as, options);

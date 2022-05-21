@@ -3,16 +3,19 @@ import styles from "../../styles/projects/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
-import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
+import { extractIdFromProjectUrl, getAllProjectsFromPage } from "../../api/calls/projectCalls";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { useRouterPush } from "../../hooks/routerHooks";
+import applicationPaths from "../../properties/applicationPaths";
 
 export function ProjectList() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
+    const query = router.query as { id?: string };
+    const selectedProjectId = query.id;
+    const routerAction = useRouterPush();
     const currentUserIsAdmin = useCurrentAdminUser();
 
     let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
@@ -32,21 +35,17 @@ export function ProjectList() {
                 {data
                     .map((project) => ({
                         project,
-                        projectId: project._links.self.href.split(apiPaths.base)[1],
+                        projectId: extractIdFromProjectUrl(project._links.self.href),
                     }))
                     .map(({ project, projectId }) => (
                         <ListGroup.Item
                             key={projectId}
-                            className={"proj " + styles.project_list_project}
+                            className={"proj " + projectId === selectedProjectId ? "active " : "" + styles.project_list_project}
                             action
-                            as={"a"}
-                            onClick={() => {
-                                let projectPath: string = projectId;
-                                router
-                                    .push(transformer("/" + projectPath) + "#/" + projectId)
-                                    .catch(console.log);
+                            as={"div"}
+                            onClick={async () => {
+                                await routerAction({ href: "/" + applicationPaths.projects, query: {id: projectId}});
                             }}
-                            href={"#" + projectId}
                             role="tab"
                             data-toggle="list"
                         >
