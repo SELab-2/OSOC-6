@@ -39,8 +39,7 @@ export function EditionRowComponent(props: EditionProps) {
     }
 
     async function deleteEdition() {
-
-        const response = await editionDelete(edition._links.self.href).catch(request => {
+        const response = await editionDelete(edition._links.self.href).catch((request) => {
             if (request.response.status === StatusCodes.CONFLICT) {
                 setshowEditionDelete(true);
             }
@@ -119,7 +118,11 @@ export function EditionRowComponent(props: EditionProps) {
                         delay={timers.toast}
                         autohide
                     >
-                        <Toast.Body>{capitalize(t("something went wrong")) + " " + capitalize(t("delete not empty edition"))}</Toast.Body>
+                        <Toast.Body>
+                            {capitalize(t("something went wrong")) +
+                                " " +
+                                capitalize(t("delete not empty edition"))}
+                        </Toast.Body>
                     </Toast>
                 </ToastContainer>
                 <hr />
