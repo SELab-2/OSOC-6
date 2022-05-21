@@ -1,9 +1,9 @@
-import {ISkillType} from "../../api/entities/SkillTypeEntity";
+import { ISkillType } from "../../api/entities/SkillTypeEntity";
 import useTranslation from "next-translate/useTranslation";
-import {useState} from "react";
-import {Field, Form, Formik} from "formik";
-import {Badge} from "react-bootstrap";
-import {capitalize} from "../../utility/stringUtil";
+import { useState } from "react";
+import { Field, Form, Formik } from "formik";
+import { Badge } from "react-bootstrap";
+import { capitalize } from "../../utility/stringUtil";
 import styles from "../../styles/skillTypes.module.css";
 import Image from "next/image";
 
@@ -45,15 +45,19 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                         </div>
                         {editing && (
                             <div className="col d-flex">
-                                    <Field
-                                        type="color"
-                                        className="form-control form-control-color"
-                                        id="skillTypeColour"
-                                        data-testid="colour"
-                                        name="colour"
-                                        title={capitalize(t("color representing skill type"))}
-                                    />
-                                <button className="btn btn-primary ms-2" data-testid="submit-edit" type="submit">
+                                <Field
+                                    type="color"
+                                    className="form-control form-control-color"
+                                    id="skillTypeColour"
+                                    data-testid="colour"
+                                    name="colour"
+                                    title={capitalize(t("color representing skill type"))}
+                                />
+                                <button
+                                    className="btn btn-primary ms-2"
+                                    data-testid="submit-edit"
+                                    type="submit"
+                                >
                                     {capitalize(t("confirm"))}
                                 </button>
                             </div>
@@ -75,7 +79,13 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                                 data-testid="delete-item"
                                 title={capitalize(t("delete"))}
                             >
-                                <Image alt="" layout="fixed" src={"/resources/delete.svg"} width="15" height="15" />
+                                <Image
+                                    alt=""
+                                    layout="fixed"
+                                    src={"/resources/delete.svg"}
+                                    width="15"
+                                    height="15"
+                                />
                             </a>
                         </div>
                     </Form>

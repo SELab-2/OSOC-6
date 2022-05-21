@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
-import {render, RenderResult, waitFor} from "@testing-library/react";
+import { render, RenderResult, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import {makeCacheFree} from "../Provide";
-import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
-import {getBaseOkResponse, getBasePage, getBaseSkillType} from "../TestEntityProvider";
-import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
+import { makeCacheFree } from "../Provide";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

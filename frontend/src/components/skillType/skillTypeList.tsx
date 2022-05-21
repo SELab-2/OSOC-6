@@ -1,10 +1,10 @@
-import {ISkillType} from "../../api/entities/SkillTypeEntity";
-import {deleteSkillTypeFromList, editSkillTypeColourOnUrl} from "../../api/calls/skillTypeCalls";
+import { ISkillType } from "../../api/entities/SkillTypeEntity";
+import { deleteSkillTypeFromList, editSkillTypeColourOnUrl } from "../../api/calls/skillTypeCalls";
 import apiPaths from "../../properties/apiPaths";
-import {getQueryUrlFromParams} from "../../api/calls/baseCalls";
-import {useSWRConfig} from "swr";
-import SkillTypeListItem, {EditSkillTypeFields} from "./skillTypeListItem";
-import {capitalize} from "../../utility/stringUtil";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { useSWRConfig } from "swr";
+import SkillTypeListItem, { EditSkillTypeFields } from "./skillTypeListItem";
+import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/skillTypes.module.css";
 
@@ -17,7 +17,7 @@ export default function SkillTypeList({ skillTypes }: SkillTypeListProps) {
     const { mutate } = useSWRConfig();
 
     async function handleDelete(url: string) {
-        const result = confirm(capitalize(t("Are you sure you want to delete this?")))
+        const result = confirm(capitalize(t("Are you sure you want to delete this?")));
         if (result) {
             const newSkillTypes = deleteSkillTypeFromList(url, skillTypes);
             await Promise.all([

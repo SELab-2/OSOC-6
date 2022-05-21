@@ -1,6 +1,6 @@
 import SkillTypeForm from "../../components/skillType/skillTypeForm";
 import NavBar from "../../components/util/navBar";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/skillTypes.module.css";
 

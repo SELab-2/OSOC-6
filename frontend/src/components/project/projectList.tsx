@@ -1,12 +1,12 @@
-import {Button, ListGroup} from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import styles from "../../styles/projects/projectList.module.css";
-import {NewProjectButton} from "./newProjectButton";
+import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
-import {getAllProjectsFromPage} from "../../api/calls/projectCalls";
-import {useEditionApplicationPathTransformer, useSwrWithEdition} from "../../hooks/utilHooks";
-import {useRouter} from "next/router";
-import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
+import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import { useRouter } from "next/router";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import applicationPaths from "../../properties/applicationPaths";
 
 export function ProjectList() {
@@ -72,7 +72,7 @@ export function ProjectList() {
                         </ListGroup.Item>
                     ))}
             </ListGroup>
-            {currentUserIsAdmin &&
+            {currentUserIsAdmin && (
                 <>
                     <div className={"container " + styles.bottom_page}>
                         <div className="row">
@@ -83,14 +83,16 @@ export function ProjectList() {
                                 className={"capitalize justify-content-center " + styles.project_list_button}
                                 variant="outline-primary"
                                 size="sm"
-                                onClick={() => router.push(transformer("/" + applicationPaths.skillTypesBase))}
-                                >
+                                onClick={() =>
+                                    router.push(transformer("/" + applicationPaths.skillTypesBase))
+                                }
+                            >
                                 {t("skill types")}
                             </Button>
                         </div>
                     </div>
                 </>
-            }
+            )}
         </div>
     );
 }

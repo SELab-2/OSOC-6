@@ -1,17 +1,17 @@
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
-import {getAllSkillTypesFromPage} from "../../api/calls/skillTypeCalls";
-import {ISkillType} from "../../api/entities/SkillTypeEntity";
-import {getQueryUrlFromParams} from "../../api/calls/baseCalls";
+import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
+import { ISkillType } from "../../api/entities/SkillTypeEntity";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import SkillTypeList from "../../components/skillType/skillTypeList";
 import NavBar from "../../components/util/navBar";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/skillTypes.module.css";
-import {Button} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
-import {useEditionApplicationPathTransformer} from "../../hooks/utilHooks";
-import {useRouter} from "next/router";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useRouter } from "next/router";
 
 export default function SkillTypeIndexPage() {
     const { t } = useTranslation("common");
@@ -31,7 +31,7 @@ export default function SkillTypeIndexPage() {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <div className="container mt-3">
                 <div className={styles.skill_types}>
                     <h2 className="d-flex">{capitalize(t("skill types"))}</h2>
@@ -39,9 +39,7 @@ export default function SkillTypeIndexPage() {
                         <Button
                             className="mt-2"
                             variant="outline-primary"
-                            onClick={() =>
-                                router.push(transformer("/" + applicationPaths.skillTypesCreate))
-                            }
+                            onClick={() => router.push(transformer("/" + applicationPaths.skillTypesCreate))}
                         >
                             {capitalize(t("create skill type"))}
                             <svg
