@@ -5,7 +5,7 @@ import { ProjectSkill } from "../../../api/entities/ProjectSkillEntity";
 import { ChangeEvent, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../../utility/stringUtil";
-import { inspect } from 'util';
+import { inspect } from "util";
 import styles from "../../../styles/projects/createProject.module.css";
 
 /**
@@ -46,7 +46,7 @@ export default function EditProjectSkillSubForm({
     }
 
     return (
-        <Row style={{marginTop: "1.5rem"}}>
+        <Row style={{ marginTop: "1.5rem" }}>
             <Col className={styles.skillbadge_col}>
                 <SkillBadge skill={skill.name} />
             </Col>
@@ -75,10 +75,18 @@ export default function EditProjectSkillSubForm({
                 </Col>
             )}
             <Col xs={2}>
-                <a style={{margin: "1rem", cursor: "pointer"}} onClick={() => setEditing(!isEditing)} data-testid={"edit-existing-skill-" + skill.name}>
+                <a
+                    style={{ margin: "1rem", cursor: "pointer" }}
+                    onClick={() => setEditing(!isEditing)}
+                    data-testid={"edit-existing-skill-" + skill.name}
+                >
                     <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                 </a>
-                <a style={{cursor: "pointer"}} data-testid={"remove-existing-skill-" + skill.name} onClick={registerRemoval}>
+                <a
+                    style={{ cursor: "pointer" }}
+                    data-testid={"remove-existing-skill-" + skill.name}
+                    onClick={registerRemoval}
+                >
                     <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                 </a>
             </Col>

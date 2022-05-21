@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import { getAllUsersFromLinks } from "../../../api/calls/userCalls";
 import { capitalize } from "../../../utility/stringUtil";
@@ -168,9 +168,13 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         e.which === 13 && e.preventDefault();
                     }}
                 >
-                    <h3 style={{marginTop: "4rem"}}>{project ? capitalize(t("edit project")) : capitalize(t("create project"))}</h3>
-                    <hr/>
-                    <label className={styles.label} htmlFor="project-name">{capitalize(t("project name"))}:</label>
+                    <h3 style={{ marginTop: "4rem" }}>
+                        {project ? capitalize(t("edit project")) : capitalize(t("create project"))}
+                    </h3>
+                    <hr />
+                    <label className={styles.label} htmlFor="project-name">
+                        {capitalize(t("project name"))}:
+                    </label>
                     <Field
                         className={styles.input_field + " form-control mb-2"}
                         id="project-name"
@@ -181,7 +185,9 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         required
                     />
 
-                    <label className={styles.label} htmlFor="project-info">{capitalize(t("project info"))}:</label>
+                    <label className={styles.label} htmlFor="project-info">
+                        {capitalize(t("project info"))}:
+                    </label>
                     <Field
                         className={styles.input_field + " form-control mb-2"}
                         id="project-info"
@@ -194,7 +200,9 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                     <label className={styles.label}>{capitalize(t("project goals"))}:</label>
                     <CreateGoalsSubForm goals={goals} setGoals={setGoals} />
 
-                    <label className={styles.label} htmlFor="version-management">{capitalize(t("version control URL"))}:</label>
+                    <label className={styles.label} htmlFor="version-management">
+                        {capitalize(t("version control URL"))}:
+                    </label>
                     <Field
                         className={styles.input_field + " form-control mb-2"}
                         id="version-management"
@@ -205,29 +213,34 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                     />
 
                     <label className={styles.label}>{capitalize(t("coaches"))}:</label>
-                    <ul style={{listStyleType: "circle"}}>
-                    {existingCoaches
-                        .filter((coach) => !removedCoaches.has(coach._links.self.href))
-                        .map((coach: IUser) => (
-                            <li key={coach._links.self.href} style={{marginLeft: "3rem"}}>
-                                <Row>
-                                    {/* Might be prettier to just blur coaches that have been removed.
+                    <ul style={{ listStyleType: "circle" }}>
+                        {existingCoaches
+                            .filter((coach) => !removedCoaches.has(coach._links.self.href))
+                            .map((coach: IUser) => (
+                                <li key={coach._links.self.href} style={{ marginLeft: "3rem" }}>
+                                    <Row>
+                                        {/* Might be prettier to just blur coaches that have been removed.
                                     That way you would be able to add them again */}
-                                    <Col>{coach.callName}</Col>
-                                    <Col xs={1}>
-                                        <a
-                                            data-testid={"remove-existing-coach-" + coach.callName}
-                                            onClick={() => {
-                                                removedCoaches.add(coach._links.self.href);
-                                                setMutated(true);
-                                            }}
-                                        >
-                                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                                        </a>
-                                    </Col>
-                                </Row>
-                            </li>
-                        ))}
+                                        <Col>{coach.callName}</Col>
+                                        <Col xs={1}>
+                                            <a
+                                                data-testid={"remove-existing-coach-" + coach.callName}
+                                                onClick={() => {
+                                                    removedCoaches.add(coach._links.self.href);
+                                                    setMutated(true);
+                                                }}
+                                            >
+                                                <Image
+                                                    alt=""
+                                                    src={"/resources/delete.svg"}
+                                                    width="15"
+                                                    height="15"
+                                                />
+                                            </a>
+                                        </Col>
+                                    </Row>
+                                </li>
+                            ))}
                     </ul>
                     <CreateCoachSubForm
                         setCoachUrls={setCreatedCoachesUrls}
@@ -236,7 +249,9 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                             .map((coach) => coach.callName)}
                     />
 
-                    <label className={styles.label} htmlFor="partner-name">{capitalize(t("partner name"))}:</label>
+                    <label className={styles.label} htmlFor="partner-name">
+                        {capitalize(t("partner name"))}:
+                    </label>
                     <Field
                         className={styles.input_field + " form-control mb-2"}
                         id="partner-name"
@@ -247,7 +262,9 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         required
                     />
 
-                    <label className={styles.label} htmlFor="partner-website">{capitalize(t("partner website"))}:</label>
+                    <label className={styles.label} htmlFor="partner-website">
+                        {capitalize(t("partner website"))}:
+                    </label>
                     <Field
                         className={styles.input_field + " form-control mb-2"}
                         id="partner-website"
@@ -284,7 +301,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         createdSkillInfos={createdSkillInfos}
                         setCreatedSkillInfos={setCreatedSkillInfos}
                     />
-                    <div style={{display: "flex"}}>
+                    <div style={{ display: "flex" }}>
                         <button
                             className={"btn btn-primary " + styles.create_button}
                             type="submit"

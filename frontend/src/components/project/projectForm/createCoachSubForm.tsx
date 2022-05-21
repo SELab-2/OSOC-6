@@ -9,7 +9,7 @@ import { getAllUsersFromPage } from "../../../api/calls/userCalls";
 import { IUser } from "../../../api/entities/UserEntity";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import styles from '../../../styles/projects/createProject.module.css';
+import styles from "../../../styles/projects/createProject.module.css";
 
 /**
  * Properties needed by [CreateCoachSubForm].
@@ -68,28 +68,30 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
 
     return (
         <div>
-            <ul style={{listStyleType: "circle"}}>
-                {illegalCoaches.length === 0 && coaches.length === 0 &&
-                    <Row style={{justifyContent: "center"}}>{capitalize(t("no coaches added yet"))}</Row>
-                }
-            {coaches.map((coach: string, index: number) => (
-                <li key={index} style={{marginLeft: "3rem"}}>
-                    <Row key={index}>
-                        <Col>{coach}</Col>
-                        <Col xs={1}>
-                            <a
-                                data-testid={"remove-added-coach-" + coach}
-                                onClick={() => setCoaches(coaches.filter((_, valIndex) => valIndex !== index))}
-                            >
-                                <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                            </a>
-                        </Col>
-                    </Row>
-                </li>
-            ))}
+            <ul style={{ listStyleType: "circle" }}>
+                {illegalCoaches.length === 0 && coaches.length === 0 && (
+                    <Row style={{ justifyContent: "center" }}>{capitalize(t("no coaches added yet"))}</Row>
+                )}
+                {coaches.map((coach: string, index: number) => (
+                    <li key={index} style={{ marginLeft: "3rem" }}>
+                        <Row key={index}>
+                            <Col>{coach}</Col>
+                            <Col xs={1}>
+                                <a
+                                    data-testid={"remove-added-coach-" + coach}
+                                    onClick={() =>
+                                        setCoaches(coaches.filter((_, valIndex) => valIndex !== index))
+                                    }
+                                >
+                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                                </a>
+                            </Col>
+                        </Row>
+                    </li>
+                ))}
             </ul>
-            <div style={{display: "flex"}}>
-                <div style={{marginLeft: "auto", marginRight: "0"}}>
+            <div style={{ display: "flex" }}>
+                <div style={{ marginLeft: "auto", marginRight: "0" }}>
                     <Dropdown as={ButtonGroup} drop="down">
                         <Dropdown.Toggle
                             style={{
@@ -118,7 +120,7 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
                         </DropdownMenu>
                     </Dropdown>
                     <button
-                        style={{marginLeft: "1rem"}}
+                        style={{ marginLeft: "1rem" }}
                         className="btn btn-secondary"
                         type="button"
                         onClick={handleAddCreatedCoach}

@@ -77,14 +77,14 @@ export default function CreateProjectSkillSubForm({
     return (
         <div>
             {createdSkillInfos.map((skillInfo: string, index: number) => (
-                <Row style={{marginTop: "1.5rem"}} key={index}>
+                <Row style={{ marginTop: "1.5rem" }} key={index}>
                     <Col className={styles.skillbadge_col}>
                         <SkillBadge skill={createdSkillNames[index]} />
                     </Col>
                     <Col>{skillInfo}</Col>
-                    <Col xs={2} style={{display: "flex"}}>
+                    <Col xs={2} style={{ display: "flex" }}>
                         <a
-                            style={{cursor: "pointer", marginLeft: "auto", marginRight: "2.5rem"}}
+                            style={{ cursor: "pointer", marginLeft: "auto", marginRight: "2.5rem" }}
                             data-testid={"remove-added-skill-" + createdSkillNames[index]}
                             onClick={() => {
                                 setCreatedSkillNames(
@@ -101,7 +101,7 @@ export default function CreateProjectSkillSubForm({
                 </Row>
             ))}
 
-            <Row style={{marginTop: "1.5rem"}}>
+            <Row style={{ marginTop: "1.5rem" }}>
                 <Col xs={3}>
                     <Dropdown as={ButtonGroup} drop="down">
                         <Dropdown.Toggle
@@ -141,9 +141,9 @@ export default function CreateProjectSkillSubForm({
                     />
                 </Col>
             </Row>
-            <div style={{display: "flex"}}>
+            <div style={{ display: "flex" }}>
                 <button
-                    style={{marginLeft: "auto", marginRight: "0"}}
+                    style={{ marginLeft: "auto", marginRight: "0" }}
                     className="btn btn-secondary"
                     type="button"
                     onClick={handleAddCreatedSkill}

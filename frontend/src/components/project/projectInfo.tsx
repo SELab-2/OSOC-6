@@ -46,7 +46,7 @@ export function ProjectInfo() {
     }
 
     async function editProject() {
-        await router.push("/" + applicationPaths.projects + "/" + id + "/edit")
+        await router.push("/" + applicationPaths.projects + "/" + id + "/edit");
     }
 
     return (
@@ -54,10 +54,18 @@ export function ProjectInfo() {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h1>{info.name}</h1>
                 <div>
-                    <a style={{margin: "1rem", cursor: "pointer"}} onClick={editProject} data-testid="edit-project">
+                    <a
+                        style={{ margin: "1rem", cursor: "pointer" }}
+                        onClick={editProject}
+                        data-testid="edit-project"
+                    >
                         <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                     </a>
-                    <a style={{cursor: "pointer"}} onClick={deleteProjectOnClick} data-testid="delete-project">
+                    <a
+                        style={{ cursor: "pointer" }}
+                        onClick={deleteProjectOnClick}
+                        data-testid="delete-project"
+                    >
                         <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                     </a>
                 </div>
