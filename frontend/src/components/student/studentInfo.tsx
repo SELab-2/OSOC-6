@@ -213,29 +213,31 @@ export function StudentInfo() {
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.yes}
-                                    style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                                    colour={"#1DE1AE"}
                                     studentUrl={student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.maybe}
-                                    style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
+                                    colour={"#FCB70F"}
                                     studentUrl={student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.no}
-                                    style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
+                                    colour={"#F14A3B"}
                                     studentUrl={student._links.self.href}
                                 />
                             </div>
                         </Row>
                     </Col>
-                    <Col sm={4}>
-                        <StudentStatus studentUrl={student._links.self.href} status={student.status} />
-                    </Col>
+                    {isAdmin && (
+                        <Col sm={4}>
+                            <StudentStatus studentUrl={student._links.self.href} status={student.status} />
+                        </Col>
+                    )}
                 </Row>
             </footer>
         </div>
