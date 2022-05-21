@@ -11,7 +11,7 @@ import {
     getBaseSuggestion,
     getBaseUser,
 } from "../TestEntityProvider";
-import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import { StudentInfo } from "../../../src/components/student/studentInfo";
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
@@ -25,7 +25,7 @@ import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import {communicationCollectionName} from "../../../src/api/entities/CommunicationEntity";
+import { communicationCollectionName } from "../../../src/api/entities/CommunicationEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -64,18 +64,16 @@ describe("StudentInfo", () => {
         const baseSkillType = getBaseSkillType("13");
         baseSkillType.name = baseStudent.skills[0];
 
-        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         await enableActForResponse(
             baseStudent._links.suggestions.href,
             getBaseOkResponse(
-                getBaseLinks(baseStudent._links.suggestions.href, suggestionCollectionName, [
-                    baseSuggestion,
-                ])
+                getBaseLinks(baseStudent._links.suggestions.href, suggestionCollectionName, [baseSuggestion])
             )
-        )
+        );
 
-        await enableActForResponse(baseSuggestion._links.coach.href, getBaseOkResponse(baseCoach))
+        await enableActForResponse(baseSuggestion._links.coach.href, getBaseOkResponse(baseCoach));
 
         await enableActForResponse(
             getQueryUrlFromParams(apiPaths.skillTypesByName, {
@@ -96,7 +94,7 @@ describe("StudentInfo", () => {
         render(makeCacheFree(StudentInfo));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
@@ -115,7 +113,7 @@ describe("StudentInfo", () => {
         render(makeCacheFree(StudentInfo));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
@@ -140,7 +138,7 @@ describe("StudentInfo", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         await userEvent.click(screen.getByTestId("open-communication"));
 

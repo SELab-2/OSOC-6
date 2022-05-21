@@ -8,7 +8,7 @@ import NavBar from "../../../components/util/navBar";
 import styles from "../../../styles/pageGrids.module.css";
 import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
 import { StudentList } from "../../../components/student/studentList";
-import {emptyStudent} from "../../../api/entities/StudentEntity";
+import { emptyStudent } from "../../../api/entities/StudentEntity";
 
 /**
  * Page listing the communication with a student.

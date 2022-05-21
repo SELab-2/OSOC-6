@@ -8,7 +8,7 @@ import {
     getBasePage,
     getBaseStudent,
 } from "../TestEntityProvider";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import apiPaths from "../../../src/properties/apiPaths";
 import { communicationCollectionName } from "../../../src/api/entities/CommunicationEntity";
@@ -33,17 +33,13 @@ describe("communication list", () => {
     it("Renders with data ", async () => {
         const studentId = "1";
         const student = getBaseStudent(studentId);
-        const list = render(
-            makeCacheFree(() => <StudentCommunicationList student={student} />)
-        );
+        const list = render(makeCacheFree(() => <StudentCommunicationList student={student} />));
 
         const communication = getBaseCommunication("2");
         await enableActForResponse(
             getQueryUrlFromParams(apiPaths.communicationsByStudent, { studentId, sort: "timestamp" }),
             getBaseOkResponse(
-                getBasePage(apiPaths.communicationsByStudent, communicationCollectionName, [
-                    communication,
-                ])
+                getBasePage(apiPaths.communicationsByStudent, communicationCollectionName, [communication])
             )
         );
 
@@ -56,17 +52,13 @@ describe("communication list", () => {
     it("button should redirect to studentinfo", async () => {
         mockRouter.asPath =
             "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase;
-        const list = render(
-            makeCacheFree(() => <StudentCommunicationList student={student} />)
-        );
+        const list = render(makeCacheFree(() => <StudentCommunicationList student={student} />));
 
         const communication = getBaseCommunication("2");
         await enableActForResponse(
             getQueryUrlFromParams(apiPaths.communicationsByStudent, { studentId, sort: "timestamp" }),
             getBaseOkResponse(
-                getBasePage(apiPaths.communicationsByStudent, communicationCollectionName, [
-                    communication,
-                ])
+                getBasePage(apiPaths.communicationsByStudent, communicationCollectionName, [communication])
             )
         );
 

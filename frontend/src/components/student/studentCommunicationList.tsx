@@ -12,7 +12,7 @@ import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
-import {IStudent} from "../../api/entities/StudentEntity";
+import { IStudent } from "../../api/entities/StudentEntity";
 
 /**
  * Properties needed for [StudentCommunicationList].

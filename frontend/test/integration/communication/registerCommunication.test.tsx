@@ -15,7 +15,7 @@ import {
     CommunicationTemplateEntity,
 } from "../../../src/api/entities/CommunicationTemplateEntity";
 import userEvent from "@testing-library/user-event";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -104,15 +104,17 @@ describe("RegisterCommunication", () => {
         await userEvent.type(screen.getByTestId("template"), baseTemplate.template);
 
         await userEvent.click(screen.getByTestId("submit"));
-        await enableActForResponse(apiPaths.communicationTemplates, getBaseOkResponse(baseTemplate))
+        await enableActForResponse(apiPaths.communicationTemplates, getBaseOkResponse(baseTemplate));
         await waitFor(() => {
-            expect(mockRouter.pathname).toEqual("/" +
-                applicationPaths.students +
+            expect(mockRouter.pathname).toEqual(
                 "/" +
-                studentId +
-                "/" +
-                applicationPaths.communicationRegistration);
-        })
+                    applicationPaths.students +
+                    "/" +
+                    studentId +
+                    "/" +
+                    applicationPaths.communicationRegistration
+            );
+        });
     });
 
     it("should edit existing template", async () => {
@@ -135,14 +137,16 @@ describe("RegisterCommunication", () => {
         await waitFor(() => expect(screen.getByTestId("template-form")));
 
         await userEvent.click(screen.getByTestId("submit"));
-        await enableActForResponse(baseTemplate._links.self.href, getBaseOkResponse(baseTemplate))
+        await enableActForResponse(baseTemplate._links.self.href, getBaseOkResponse(baseTemplate));
         await waitFor(() => {
-            expect(mockRouter.pathname).toEqual("/" +
-                applicationPaths.students +
+            expect(mockRouter.pathname).toEqual(
                 "/" +
-                studentId +
-                "/" +
-                applicationPaths.communicationRegistration);
-        })
+                    applicationPaths.students +
+                    "/" +
+                    studentId +
+                    "/" +
+                    applicationPaths.communicationRegistration
+            );
+        });
     });
 });
