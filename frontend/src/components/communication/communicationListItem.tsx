@@ -41,7 +41,7 @@ export default function CommunicationListItem({ communication }: CommunicationLi
     return (
         <AccordionItem
             key={communication._links.self.href}
-            eventKey={`${communication._links.self.href}`}
+            eventKey={communication._links.self.href}
             data-testid="communication"
         >
             <AccordionHeader className={"bg-secondary"}>

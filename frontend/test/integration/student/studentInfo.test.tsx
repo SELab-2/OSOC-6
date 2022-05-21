@@ -11,7 +11,7 @@ import {
     getBaseSuggestion,
     getBaseUser,
 } from "../TestEntityProvider";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
 import { StudentInfo } from "../../../src/components/student/studentInfo";
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
@@ -25,6 +25,7 @@ import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
 import applicationPaths from "../../../src/properties/applicationPaths";
+import {communicationCollectionName} from "../../../src/api/entities/CommunicationEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -46,9 +47,7 @@ describe("StudentInfo", () => {
         mockRouter.setCurrentUrl("/students/" + studentId);
         mockRouter.query = { id: studentId };
         render(makeCacheFree(StudentInfo));
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseBadRequestResponse())
-        );
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseBadRequestResponse());
 
         await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
@@ -65,33 +64,25 @@ describe("StudentInfo", () => {
         const baseSkillType = getBaseSkillType("13");
         baseSkillType.name = baseStudent.skills[0];
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
-        );
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                baseStudent._links.suggestions.href,
-                getBaseOkResponse(
-                    getBaseLinks(baseStudent._links.suggestions.href, suggestionCollectionName, [
-                        baseSuggestion,
-                    ])
-                )
+        await enableActForResponse(
+            baseStudent._links.suggestions.href,
+            getBaseOkResponse(
+                getBaseLinks(baseStudent._links.suggestions.href, suggestionCollectionName, [
+                    baseSuggestion,
+                ])
             )
-        );
+        )
 
-        await waitFor(() =>
-            mockAxios.mockResponseFor(baseSuggestion._links.coach.href, getBaseOkResponse(baseCoach))
-        );
+        await enableActForResponse(baseSuggestion._links.coach.href, getBaseOkResponse(baseCoach))
 
-        await waitFor(() => {
-            mockAxios.mockResponseFor(
-                getQueryUrlFromParams(apiPaths.skillTypesByName, {
-                    name: baseStudent.skills[0],
-                }),
-                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [baseSkillType]))
-            );
-        });
+        await enableActForResponse(
+            getQueryUrlFromParams(apiPaths.skillTypesByName, {
+                name: baseStudent.skills[0],
+            }),
+            getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [baseSkillType]))
+        );
 
         await waitFor(() => expect(screen.getByText(baseStudent.callName)).toBeInTheDocument());
     });
@@ -105,16 +96,14 @@ describe("StudentInfo", () => {
         render(makeCacheFree(StudentInfo));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
-        );
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
 
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
 
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
         const response: AxiosResponse = getBaseNoContentResponse();
-        act(() => mockAxios.mockResponseFor({ url: baseStudent._links.self.href }, response));
+        await enableActForResponse({ url: baseStudent._links.self.href }, response);
     });
 
     it("delete should fail", async () => {
@@ -126,16 +115,14 @@ describe("StudentInfo", () => {
         render(makeCacheFree(StudentInfo));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
-        );
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
 
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
 
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
         const response: AxiosResponse = getBaseBadRequestResponse();
-        act(() => mockAxios.mockResponseFor({ url: baseStudent._links.self.href }, response));
+        await enableActForResponse({ url: baseStudent._links.self.href }, response);
 
         const warning = await screen.findByTestId("warning");
         await waitFor(() => {
@@ -153,9 +140,7 @@ describe("StudentInfo", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
-        );
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
 
         await userEvent.click(screen.getByTestId("open-communication"));
 
@@ -174,9 +159,7 @@ describe("StudentInfo", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.coach, true));
 
         const baseStudent: IStudent = getBaseStudent(studentId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent))
-        );
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         await waitFor(() => {
             expect(screen.queryByTestId("open-communication")).not.toBeInTheDocument();

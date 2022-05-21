@@ -12,23 +12,23 @@ import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
+import {IStudent} from "../../api/entities/StudentEntity";
 
 /**
  * Properties needed for [StudentCommunicationList].
  */
 export interface CommunicationListProps {
-    studentUrl: string | undefined;
+    student: IStudent;
 }
 
 /**
  * Component listing all communication with a given student.
  * @param studentUrl the url of the communication that needs to be listed.
  */
-export default function StudentCommunicationList({ studentUrl }: CommunicationListProps) {
+export default function StudentCommunicationList({ student }: CommunicationListProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const id = studentUrl ? extractIdFromStudentUrl(studentUrl) : "0";
-    let { data: student, error: studentError } = useSWR(studentUrl, getStudentOnUrl);
+    const id = extractIdFromStudentUrl(student._links.self.href);
     const { data: receivedCommunications, error: communicationsError } = useSWR(
         student
             ? getQueryUrlFromParams(apiPaths.communicationsByStudent, {
@@ -39,8 +39,8 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
         getAllCommunicationFromPage
     );
 
-    if (communicationsError || studentError) {
-        console.log(communicationsError || studentError);
+    if (communicationsError) {
+        console.log(communicationsError);
         return null;
     }
 
@@ -75,7 +75,7 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                         style={{ color: "white", borderColor: "white" }}
                         onClick={openStudentInfo}
                     >
-                        Student info
+                        {capitalize(t("student info"))}
                     </Button>
                 </div>
                 <div className="row w-100">
@@ -95,11 +95,11 @@ export default function StudentCommunicationList({ studentUrl }: CommunicationLi
                     <div data-testid="communication-list">
                         <Container className="overflow-auto h-100 pt-2">
                             <Accordion>
-                                {communications.map((communication, index) => {
+                                {communications.map((communication) => {
                                     return (
                                         <AccordionItem
-                                            key={index}
-                                            eventKey={`${index}`}
+                                            key={communication._links.self.href}
+                                            eventKey={communication._links.self.href}
                                             data-testid="communication"
                                         >
                                             <CommunicationListItem

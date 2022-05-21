@@ -129,6 +129,7 @@ const common = {
     "edit communicationTemplate": "edit communication template",
 
     // Student info strings
+    "student info": "student info",
     suggestions: "suggestions",
     suggest: "suggest",
     "reason suggestion": "reason for the suggestion",

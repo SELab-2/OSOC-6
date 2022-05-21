@@ -2,7 +2,6 @@ import "@testing-library/jest-dom";
 import { RegisterCommunication } from "../../../src/components/communication/registerCommunication";
 import { render, screen, waitFor } from "@testing-library/react";
 import mockRouter from "next-router-mock";
-import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import {
     getBaseCommunicationTemplate,
@@ -16,7 +15,8 @@ import {
     CommunicationTemplateEntity,
 } from "../../../src/api/entities/CommunicationTemplateEntity";
 import userEvent from "@testing-library/user-event";
-import { makeCacheFree } from "../Provide";
+import {enableActForResponse, makeCacheFree} from "../Provide";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -38,7 +38,7 @@ describe("RegisterCommunication", () => {
     it("should handle error", async () => {
         console.log = jest.fn();
         render(<RegisterCommunication />);
-        mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseForbiddenResponse());
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseForbiddenResponse());
 
         await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
@@ -46,7 +46,7 @@ describe("RegisterCommunication", () => {
     it("should render with data", async () => {
         render(makeCacheFree(RegisterCommunication));
 
-        mockAxios.mockResponseFor(
+        await enableActForResponse(
             apiPaths.communicationTemplates,
             getBaseOkResponse(
                 getBasePage(apiPaths.communicationTemplates, communicationTemplateCollectionName, [
@@ -54,13 +54,13 @@ describe("RegisterCommunication", () => {
                 ])
             )
         );
-        mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
     });
 
     it("should select template", async () => {
         render(makeCacheFree(RegisterCommunication));
 
-        mockAxios.mockResponseFor(
+        await enableActForResponse(
             apiPaths.communicationTemplates,
             getBaseOkResponse(
                 getBasePage(apiPaths.communicationTemplates, communicationTemplateCollectionName, [
@@ -68,7 +68,7 @@ describe("RegisterCommunication", () => {
                 ])
             )
         );
-        mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         await userEvent.click(screen.getByTestId("template-select"));
         await userEvent.click(screen.getByTestId(baseTemplate._links.self.href));
@@ -86,7 +86,7 @@ describe("RegisterCommunication", () => {
         );
         render(makeCacheFree(RegisterCommunication));
 
-        mockAxios.mockResponseFor(
+        await enableActForResponse(
             apiPaths.communicationTemplates,
             getBaseOkResponse(
                 getBasePage(apiPaths.communicationTemplates, communicationTemplateCollectionName, [
@@ -94,7 +94,7 @@ describe("RegisterCommunication", () => {
                 ])
             )
         );
-        mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         await userEvent.click(screen.getByTestId("new-template"));
         await waitFor(() => expect(screen.getByTestId("template-form")));
@@ -104,19 +104,21 @@ describe("RegisterCommunication", () => {
         await userEvent.type(screen.getByTestId("template"), baseTemplate.template);
 
         await userEvent.click(screen.getByTestId("submit"));
+        await enableActForResponse(apiPaths.communicationTemplates, getBaseOkResponse(baseTemplate))
         await waitFor(() => {
-            expect(mockAxios.post).toHaveBeenCalledWith(
-                apiPaths.communicationTemplates,
-                template,
-                expect.anything()
-            );
-        });
+            expect(mockRouter.pathname).toEqual("/" +
+                applicationPaths.students +
+                "/" +
+                studentId +
+                "/" +
+                applicationPaths.communicationRegistration);
+        })
     });
 
     it("should edit existing template", async () => {
         render(makeCacheFree(RegisterCommunication));
 
-        mockAxios.mockResponseFor(
+        await enableActForResponse(
             apiPaths.communicationTemplates,
             getBaseOkResponse(
                 getBasePage(apiPaths.communicationTemplates, communicationTemplateCollectionName, [
@@ -124,7 +126,7 @@ describe("RegisterCommunication", () => {
                 ])
             )
         );
-        mockAxios.mockResponseFor(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
         await userEvent.click(screen.getByTestId("template-select"));
         await userEvent.click(screen.getByTestId(baseTemplate._links.self.href));
@@ -133,8 +135,14 @@ describe("RegisterCommunication", () => {
         await waitFor(() => expect(screen.getByTestId("template-form")));
 
         await userEvent.click(screen.getByTestId("submit"));
+        await enableActForResponse(baseTemplate._links.self.href, getBaseOkResponse(baseTemplate))
         await waitFor(() => {
-            expect(mockAxios.patch).toHaveBeenCalled();
-        });
+            expect(mockRouter.pathname).toEqual("/" +
+                applicationPaths.students +
+                "/" +
+                studentId +
+                "/" +
+                applicationPaths.communicationRegistration);
+        })
     });
 });

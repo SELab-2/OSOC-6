@@ -8,6 +8,7 @@ import NavBar from "../../../components/util/navBar";
 import styles from "../../../styles/pageGrids.module.css";
 import { StudentFilterComponent } from "../../../components/student/studentFilterComponent";
 import { StudentList } from "../../../components/student/studentList";
+import {emptyStudent} from "../../../api/entities/StudentEntity";
 
 /**
  * Page listing the communication with a student.
@@ -26,6 +27,8 @@ export default function CommunicationPage() {
         return null;
     }
 
+    const student = receivedStudent || emptyStudent;
+
     return (
         <>
             <NavBar />
@@ -42,7 +45,7 @@ export default function CommunicationPage() {
                             className={"d-flex justify-content-center align-items-center h-100 w-100"}
                             data-testid="student-communication"
                         >
-                            <StudentCommunicationList studentUrl={receivedStudent?._links.self.href} />
+                            <StudentCommunicationList student={student} />
                         </div>
                     </div>
                 </div>
