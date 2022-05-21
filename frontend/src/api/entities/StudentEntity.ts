@@ -1,4 +1,4 @@
-import { IBaseEntity, IEntityLinks, IPage, IReferencer } from "./BaseEntities";
+import {IBaseEntity, IEntityLinks, IPage, IReferencer} from "./BaseEntities";
 
 export enum EnglishProficiency {
     /**
@@ -27,6 +27,14 @@ export enum EnglishProficiency {
     fluent = "FLUENT",
 }
 
+export const englishProficiencyAsString: {[proficiency in EnglishProficiency]: string} = {
+    [EnglishProficiency.readNotWrite]: "read not write",
+    [EnglishProficiency.simpleConversation]: "simple conversation",
+    [EnglishProficiency.expressive]: "expressive",
+    [EnglishProficiency.extensive]: "extensive",
+    [EnglishProficiency.fluent]: "fluent",
+}
+
 export enum Gender {
     female = "FEMALE",
     male = "MALE",
@@ -34,10 +42,23 @@ export enum Gender {
     not_specified = "NOT_SPECIFIED",
 }
 
+export const genderAsString: {[gender in Gender]: string} = {
+    [Gender.female]: "female",
+    [Gender.male]: "male",
+    [Gender.transgender]: "transgender",
+    [Gender.not_specified]: "not specified"
+}
+
 export enum OsocExperience {
     none = "NONE",
     yes_noStudentCoach = "YES_NO_STUDENT_COACH",
     yes_studentCoach = "YES_STUDENT_COACH",
+}
+
+export const osocExperienceAsString: {[experience in OsocExperience]: string} = {
+    [OsocExperience.none]: "none",
+    [OsocExperience.yes_noStudentCoach]: "yes, no student coach",
+    [OsocExperience.yes_studentCoach]: "yes, student coach",
 }
 
 export enum Status {

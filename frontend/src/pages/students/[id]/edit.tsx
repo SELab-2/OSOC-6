@@ -11,7 +11,7 @@ import { capitalize } from "../../../utility/stringUtil";
 /**
  * Component allowing editing of a student.
  */
-export default function StudentCreate() {
+export default function StudentEdit() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const query = router.query as { id: string };
@@ -27,11 +27,10 @@ export default function StudentCreate() {
     }
 
     const student: IStudent = receivedStudent || emptyStudent;
-
     return (
         <>
             <NavBar />
-            <div data-testid="student-create">
+            <div data-testid="student-edit">
                 <CreateStudentForm student={student} title={capitalize(t("edit student"))} />
             </div>
         </>

@@ -19,7 +19,6 @@ export async function createStudentSubmitHandler(
     }
     const id = extractIdFromStudentUrl(result._links.self.href);
 
-    // TODO check of dit klopt
     await Promise.all([
         mutate(apiPaths.students),
         mutate(result._links.self.href, result),

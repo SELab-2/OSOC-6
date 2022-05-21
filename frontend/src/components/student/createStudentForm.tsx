@@ -5,10 +5,10 @@ import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import {
     emptyStudent,
-    EnglishProficiency,
-    Gender,
+    EnglishProficiency, englishProficiencyAsString,
+    Gender, genderAsString,
     IStudent,
-    OsocExperience,
+    OsocExperience, osocExperienceAsString,
     Student,
     studentFromIStudent,
 } from "../../api/entities/StudentEntity";
@@ -40,7 +40,7 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
     const initialValues: Student = studentFromIStudent(editionUrl, student ? student : emptyStudent);
 
     return (
-        <div className="container mt-3" data-testid="student-create">
+        <div className="container mt-3" data-testid="student-create-form">
             <h2>{title}</h2>
             <Formik
                 initialValues={initialValues}
@@ -138,16 +138,19 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 data-testid="gender"
                                 className="form-select"
                             >
-                                {Object.keys(Gender).map((gender) => (
-                                    <option
-                                        key={gender}
-                                        value={Gender[gender as keyof typeof Gender]}
-                                        label={capitalize(gender.replace("_", " "))}
-                                        data-testid={"gender-" + gender}
-                                    >
-                                        {capitalize(gender)}
-                                    </option>
-                                ))}
+                                {Object.keys(Gender).map((gender) => {
+                                    const genderEnum = Gender[gender as keyof typeof Gender];
+                                    return (
+                                        <option
+                                            key={gender}
+                                            value={genderEnum}
+                                            label={capitalize(genderAsString[genderEnum])}
+                                            data-testid={"gender-" + gender}
+                                        >
+                                            {capitalize(genderAsString[genderEnum])}
+                                        </option>
+                                    )})
+                                }
                             </Field>
                         </div>
                         <div className="col-sm-3 mb-2">
@@ -189,18 +192,23 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 data-testid="englishProficiency"
                                 className="form-select"
                             >
-                                {Object.keys(EnglishProficiency).map((proficiency) => (
-                                    <option
-                                        key={proficiency}
-                                        value={
-                                            EnglishProficiency[proficiency as keyof typeof EnglishProficiency]
-                                        }
-                                        label={capitalize(
-                                            proficiency.replace(/[A-Z]/g, " $&").trim().toLowerCase()
-                                        )}
-                                        data-testid={"proficiency-" + proficiency}
-                                    ></option>
-                                ))}
+                                {Object.keys(EnglishProficiency).map((proficiency) => {
+                                    const proficiencyEnum = EnglishProficiency[proficiency as keyof typeof EnglishProficiency];
+                                    return (
+                                        <option
+                                            key={proficiency}
+                                            value={
+                                                proficiencyEnum
+                                            }
+                                            label={capitalize(
+                                                englishProficiencyAsString[proficiencyEnum]
+                                            )}
+                                            data-testid={"proficiency-" + proficiency}
+                                        >
+                                            {capitalize(englishProficiencyAsString[proficiencyEnum])}
+                                        </option>
+                                    )})
+                                }
                             </Field>
                         </div>
                         <div className="col-sm-3 mb-2">
@@ -340,18 +348,21 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 data-testid="osocExperience"
                                 className="form-select"
                             >
-                                {Object.keys(OsocExperience).map((osocExperience) => (
-                                    <option
-                                        key={osocExperience}
-                                        value={OsocExperience[osocExperience as keyof typeof OsocExperience]}
-                                        label={capitalize(
-                                            t(OsocExperience[osocExperience as keyof typeof OsocExperience])
-                                        )}
-                                        data-testid={"experience-" + osocExperience}
-                                    >
-                                        {capitalize(osocExperience)}
-                                    </option>
-                                ))}
+                                {Object.keys(OsocExperience).map((osocExperience) => {
+                                    const experienceEnum = OsocExperience[osocExperience as keyof typeof OsocExperience];
+                                    return (
+                                        <option
+                                            key={osocExperience}
+                                            value={experienceEnum}
+                                            label={capitalize(
+                                                t(osocExperienceAsString[experienceEnum])
+                                            )}
+                                            data-testid={"experience-" + osocExperience}
+                                        >
+                                            {capitalize(experienceEnum)}
+                                        </option>
+                                    )})
+                                }
                             </Field>
                         </div>
                         <button className="btn btn-primary mb-3" data-testid="submit" type="submit">
