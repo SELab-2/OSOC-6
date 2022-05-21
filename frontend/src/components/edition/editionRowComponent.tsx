@@ -13,6 +13,7 @@ import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "..
 import { IEdition } from "../../api/entities/EditionEntity";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { useRouter } from "next/router";
+import { AxiosError, AxiosResponse } from 'axios';
 
 type EditionProps = {
     edition: IEdition;
@@ -39,21 +40,24 @@ export function EditionRowComponent(props: EditionProps) {
     }
 
     async function deleteEdition() {
-        const response = await editionDelete(edition._links.self.href).catch((request) => {
-            if (request.response.status === StatusCodes.CONFLICT) {
-                setshowEditionDelete(true);
-            }
-        });
+        try {
+            const response = await editionDelete(edition._links.self.href);
 
-        if (response?.status === StatusCodes.NO_CONTENT) {
-            try {
-                const editionsMutate = mutate(apiPaths.editions);
-                const editionMutate = mutate(edition._links.self.href);
-            } catch (error) {
+            if (response?.status === StatusCodes.NO_CONTENT) {
+                try {
+                    const editionsMutate = mutate(apiPaths.editions);
+                    const editionMutate = mutate(edition._links.self.href);
+                } catch (error) {
+                    setShow(true);
+                }
+            } else {
                 setShow(true);
             }
-        } else {
-            setShow(true);
+
+        } catch (error: any) {
+            if (error.response.status === StatusCodes.CONFLICT) {
+                setshowEditionDelete(true);
+            }
         }
     }
 
@@ -120,12 +124,12 @@ export function EditionRowComponent(props: EditionProps) {
                     >
                         <Toast.Body>
                             {capitalize(t("something went wrong")) +
-                                " " +
-                                capitalize(t("delete not empty edition"))}
+                            " " +
+                            capitalize(t("delete not empty edition"))}
                         </Toast.Body>
                     </Toast>
                 </ToastContainer>
-                <hr />
+                <hr style={{ marginTop: "1rem" }} />
             </Row>
         </Container>
     );

@@ -1,5 +1,5 @@
 import { Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
-import styles from "../../styles/editionOverview.module.css";
+import styles from "../../styles/editionList.module.css";
 import { capitalize } from "../../utility/stringUtil";
 import Image from "next/image";
 import { useState } from "react";
@@ -16,6 +16,9 @@ import { AxiosResponse } from "axios";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { emptyEdition } from "../../api/entities/EditionEntity";
+import applicationPaths from "../../properties/applicationPaths";
+import { useGlobalEditionSetter } from "../../hooks/utilHooks";
+import { useRouter } from "next/router";
 export interface EditionOverviewProps {
     editionId: string;
 }
@@ -41,6 +44,9 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     const [showGeneralError, setShowGeneralError] = useState<boolean>(false);
     const [showYearError, setShowYearError] = useState<boolean>(false);
 
+    const globalEditionSetter = useGlobalEditionSetter();
+    const router = useRouter();
+
     if (editionError) {
         console.log(editionError);
         return null;
@@ -51,6 +57,11 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     }
 
     const edition = receivedEdition || emptyEdition;
+
+    async function useRightUrlAndGlobalContext() {
+        await globalEditionSetter(edition);
+        await router.push("/" + applicationPaths.assignStudents);
+    }
 
     function handleEditName() {
         if (receivedEdition) {
@@ -144,16 +155,26 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     }
 
     return (
-        <Container>
-            <h2>{capitalize(t("edition overview"))}</h2>
+        <Container style={{ maxWidth: "50%" }}>
+            <div className={styles.edition_header}>
+                <h3 style={{ marginTop: "10rem" }}>{capitalize(t("edition overview"))}</h3>
+                <a
+                    className={styles.eye}
+                    onClick={useRightUrlAndGlobalContext}
+                    data-testid="list-view-edition"
+                >
+                    <Image alt="" src={"/resources/view.svg"} width="20" height="20" />
+                </a>
+            </div>
+            <hr />
             <div data-testid="edition-overview">
-                <Row>
-                    <Col className={styles.first_element}>{capitalize(t("name") + ":")}</Col>
+                <Row className={styles.edition_create_row}>
+                    <Col xs={2}>{capitalize(t("name") + ":")}</Col>
                     {/*show edition name if not editing*/}
                     {!editName && <Col data-testid="edition-name">{name ? name : edition.name}</Col>}
                     {!editName && (
-                        <Col>
-                            <a data-testid="edit-name" onClick={handleEditName}>
+                        <Col xs={1}>
+                            <a style={{ cursor: "pointer" }} data-testid="edit-name" onClick={handleEditName}>
                                 <Image
                                     alt={capitalize(t("edit"))}
                                     src={"/resources/edit.svg"}
@@ -167,12 +188,17 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                     {editName && (
                         <Col>
                             <input
+                                className={styles.edition_create_field}
                                 data-testid="input-name"
                                 name="name"
                                 defaultValue={edition.name}
                                 onChange={onChange}
                             />
-                            <button data-testid="save-name" onClick={handleSaveName}>
+                            <button
+                                className={styles.callname_confirm}
+                                data-testid="save-name"
+                                onClick={handleSaveName}
+                            >
                                 <Image
                                     alt={capitalize(t("confirm"))}
                                     src={"/resources/checkmark.svg"}
@@ -183,13 +209,13 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                         </Col>
                     )}
                 </Row>
-                <Row>
-                    <Col className={styles.first_element}>{capitalize(t("year") + ":")}</Col>
+                <Row className={styles.edition_create_row}>
+                    <Col xs={2}>{capitalize(t("year") + ":")}</Col>
                     {/*show edition year if not editing*/}
                     {!editYear && <Col data-testid="edition-year">{year ? year : edition.year}</Col>}
                     {!editYear && (
-                        <Col>
-                            <a data-testid="edit-year" onClick={handleEditYear}>
+                        <Col xs={1}>
+                            <a style={{ cursor: "pointer" }} data-testid="edit-year" onClick={handleEditYear}>
                                 <Image
                                     alt={capitalize(t("edit"))}
                                     src={"/resources/edit.svg"}
@@ -203,13 +229,18 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                     {editYear && (
                         <Col>
                             <input
+                                className={styles.edition_create_field}
                                 data-testid="input-year"
                                 type="number"
                                 name="year"
                                 defaultValue={edition.year}
                                 onChange={onChange}
                             />
-                            <button data-testid="save-year" onClick={handleSaveYear}>
+                            <button
+                                className={styles.callname_confirm}
+                                data-testid="save-year"
+                                onClick={handleSaveYear}
+                            >
                                 <Image
                                     alt={capitalize(t("confirm"))}
                                     src={"/resources/checkmark.svg"}
@@ -220,11 +251,11 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                         </Col>
                     )}
                 </Row>
-                <Row>
-                    <Col className={styles.first_element}>{capitalize(t("active") + ":")}</Col>
+                <Row className={styles.edition_create_row}>
+                    <Col xs={2}>{capitalize(t("active") + ":")}</Col>
                     <Col data-testid="edition-active">{active ? active : edition.active}</Col>
 
-                    <Col>
+                    <Col xs={1}>
                         <input
                             data-testid="input-active"
                             type="checkbox"
