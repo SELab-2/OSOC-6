@@ -9,7 +9,7 @@ import { getBaseActiveEdition, getBaseOkResponse, getBasePage, getBaseStudent } 
 import apiPaths from "../../../src/properties/apiPaths";
 import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
 import mockRouter from "next-router-mock";
-import applicationPaths from "../../src/properties/applicationPaths";
+import applicationPaths from "../../../src/properties/applicationPaths";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
