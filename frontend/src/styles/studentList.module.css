@@ -22,10 +22,13 @@
     height: 100%;
     width: 100%;
     background-color: #0a0839;
+    display: flex;
+    flex-direction: column;
 }
 
 .student_list {
     border-radius: 0;
+    height: 100%;
 }
 
 .student_best_skill {
@@ -35,4 +38,18 @@
 .line {
     height: 5px;
     margin-top: 0.5rem;
+}
+
+.student_list_footer {
+    width: fit-content;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #0a0839;
+    align-items: center;
+}
+
+.student_list_button_group {
+    flex-wrap: wrap;
+    margin: 0.2rem;
 }

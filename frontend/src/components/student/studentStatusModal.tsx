@@ -23,12 +23,7 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
 
     return (
         <>
-            <Button
-                variant="btn-outline"
-                onClick={handleShow}
-                style={{ color: "#0a0839", borderColor: "#0a0839", width: 110 }}
-                data-testid="confirm-button"
-            >
+            <Button variant="outline-primary" onClick={handleShow} data-testid="confirm-button">
                 {capitalize(t("confirm"))}
             </Button>
 

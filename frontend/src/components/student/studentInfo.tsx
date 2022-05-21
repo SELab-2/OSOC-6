@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { ButtonGroup, Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -17,6 +17,7 @@ import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
+import styles from "../../styles/studentList.module.css";
 
 /**
  * Give an overview of all the studentinfo
@@ -147,7 +148,10 @@ export function StudentInfo() {
                     {capitalize(t("osoc experience"))}: {t(student.osocExperience)}
                 </div>
             </div>
-            <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#1b1a31" }}>
+            <footer
+                className={"py-3 position-sticky bottom-0 " + styles.student_list_footer}
+                style={{ backgroundColor: "#1b1a31" }}
+            >
                 <Row>
                     <ToastContainer position="bottom-end">
                         <Toast
@@ -162,36 +166,24 @@ export function StudentInfo() {
                         </Toast>
                     </ToastContainer>
                 </Row>
-                <Row>
-                    <Col sm={8}>
-                        <Row>
-                            <div className="col-sm">
-                                <SuggestionModal
-                                    suggestion={SuggestionStrategy.yes}
-                                    style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
-                                    studentUrl={student._links.self.href}
-                                />
-                            </div>
-                            <div className="col-sm">
-                                <SuggestionModal
-                                    suggestion={SuggestionStrategy.maybe}
-                                    style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
-                                    studentUrl={student._links.self.href}
-                                />
-                            </div>
-                            <div className="col-sm">
-                                <SuggestionModal
-                                    suggestion={SuggestionStrategy.no}
-                                    style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
-                                    studentUrl={student._links.self.href}
-                                />
-                            </div>
-                        </Row>
-                    </Col>
-                    <Col sm={4}>
-                        <StudentStatus studentUrl={student._links.self.href} status={student.status} />
-                    </Col>
-                </Row>
+                <ButtonGroup className={styles.student_list_button_group}>
+                    <SuggestionModal
+                        suggestion={SuggestionStrategy.yes}
+                        style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                        studentUrl={student._links.self.href}
+                    />
+                    <SuggestionModal
+                        suggestion={SuggestionStrategy.maybe}
+                        style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
+                        studentUrl={student._links.self.href}
+                    />
+                    <SuggestionModal
+                        suggestion={SuggestionStrategy.no}
+                        style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
+                        studentUrl={student._links.self.href}
+                    />
+                    <StudentStatus studentUrl={student._links.self.href} status={student.status} />
+                </ButtonGroup>
             </footer>
         </div>
     );

@@ -1,4 +1,4 @@
-import { ListGroup } from "react-bootstrap";
+import { ButtonGroup, ListGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import styles from "../../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
@@ -34,11 +34,8 @@ export const StudentList = (props: { isDraggable: boolean }) => {
     }
 
     return (
-        <div
-            className={"capitalize overflow-auto h-100 " + styles.student_list_component}
-            data-testid="student-list"
-        >
-            <ListGroup as="ul" className={styles.student_list}>
+        <div className={"capitalize h-100 " + styles.student_list_component} data-testid="student-list">
+            <ListGroup as="ul" className={"overflow-auto " + styles.student_list}>
                 <ListGroup.Item
                     key="studentHeader"
                     data-testid="studentlist-header"
@@ -80,11 +77,13 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                         </ListGroup.Item>
                     ))}
             </ListGroup>
-            <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#0a0839" }}>
-                <StudentStatusButton status={Status.approved} colour="#1DE1AE" />
-                <StudentStatusButton status={Status.maybe} colour="#FCB70F" />
-                <StudentStatusButton status={Status.rejected} colour="#F14A3B" />
-                <StudentStatusButton status={Status.undecided} colour="gray" />
+            <footer className={"py-3 " + styles.student_list_footer}>
+                <ButtonGroup className={styles.student_list_button_group}>
+                    <StudentStatusButton status={Status.approved} colour="#1DE1AE" />
+                    <StudentStatusButton status={Status.maybe} colour="#FCB70F" />
+                    <StudentStatusButton status={Status.rejected} colour="#F14A3B" />
+                    <StudentStatusButton status={Status.undecided} colour="gray" />
+                </ButtonGroup>
             </footer>
         </div>
     );
