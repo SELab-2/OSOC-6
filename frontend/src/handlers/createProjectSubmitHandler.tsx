@@ -58,7 +58,7 @@ export type ProjectCreationProps = {
 /**
  * Takes care of the creation of a new project and the associated ProjectSkills
  * @param values values needed to create a new project
- * @param router the next router object
+ * @param routerAction router action that needs to be taken after submission
  * @param editionUrl the current edition
  * @param ownUser the currently logged in user
  * @param mutate the global mutate function provided by SWR

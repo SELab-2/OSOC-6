@@ -5,18 +5,19 @@ import { Edition } from "../../api/entities/EditionEntity";
 import { editionSubmitHandler } from "../../handlers/editionHandler";
 import { Col, Row } from "react-bootstrap";
 import styles from "../../styles/editionList.module.css";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Form allowing the creation of a new edition.
  */
 export default function CreateEditionForm() {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const currentYear = new Date().getFullYear();
     const initialValues: Edition = new Edition("", currentYear, false);
 
     return (
-        <Formik initialValues={initialValues} onSubmit={(values) => editionSubmitHandler(values, router)}>
+        <Formik initialValues={initialValues} onSubmit={(values) => editionSubmitHandler(values, routerAction)}>
             {({ values, setFieldValue }) => (
                 <Form>
                     <Row className={styles.edition_create_row}>

@@ -13,6 +13,8 @@ type ProviderProps = Record<string, unknown>;
 interface GlobalContextProps {
     // Undefined is de default value, it means the url has not been initialised.
     // Null means the edition is know, it is null.
+    // We can not delete this, even-though we always have an edition in our url.
+    // This state makes sure we can reroute to the correct edition even when it changes names.
     editionUrl: string | undefined | null;
     setEditionUrl: (editionUrl: string | undefined | null) => void;
 }

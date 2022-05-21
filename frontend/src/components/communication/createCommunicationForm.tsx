@@ -11,10 +11,10 @@ import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplate
 import { ButtonGroup, Dropdown } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import CommunicationTemplateInfo from "./communicationTemplateInfo";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Properties needed by the [CreateCommunicationForm] component
@@ -29,7 +29,7 @@ export interface CreateCommunicationFormProps {
  */
 export default function CreateCommunicationForm({ student }: CreateCommunicationFormProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const { mutate } = useSWRConfig();
     const { user, error: userError } = useCurrentUser();
     const { data: receivedTemplates, error: templateError } = useSWR(
@@ -56,7 +56,7 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
                 onSubmit={async (submitCom: Communication) => {
                     submitCom.student = student._links.self.href;
                     submitCom.sender = user!._links.self.href;
-                    await createCommunicationSubmitHandler(submitCom, router, mutate);
+                    await createCommunicationSubmitHandler(submitCom, routerAction, mutate);
                 }}
             >
                 {({ values, setFieldValue }) => (

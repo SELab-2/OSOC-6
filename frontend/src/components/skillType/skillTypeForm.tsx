@@ -6,10 +6,11 @@ import { useSWRConfig } from "swr";
 import useTranslation from "next-translate/useTranslation";
 import { Badge } from "react-bootstrap";
 import { createSkillTypeSubmitHandler } from "../../handlers/createSkillTypeSubmitHandler";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 export default function SkillTypeForm() {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const { mutate } = useSWRConfig();
 
     const initialValues = new SkillType("", "#9b685a");
@@ -18,7 +19,7 @@ export default function SkillTypeForm() {
         <div data-testid="skill-type-create-form">
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values: SkillType) => createSkillTypeSubmitHandler(values, router, mutate)}
+                onSubmit={(values: SkillType) => createSkillTypeSubmitHandler(values, routerAction, mutate)}
             >
                 {({ values }) => (
                     <Form>

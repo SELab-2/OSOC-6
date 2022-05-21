@@ -1,6 +1,5 @@
 import { Edition } from "../api/entities/EditionEntity";
 import { createNewEdition, extractIdFromEditionUrl } from "../api/calls/editionCalls";
-import { NextRouter } from "next/router";
 import applicationPaths from "../properties/applicationPaths";
 import { RouterAction } from "../hooks/routerHooks";
 

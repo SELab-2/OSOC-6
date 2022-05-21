@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Properties of the [CreateCommunicationTemplateForm] component.
@@ -22,7 +23,7 @@ export interface CreateCommunicationTemplateFormProps {
  */
 export default function CreateCommunicationTemplateForm({ template }: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const initialValues: CommunicationTemplateEntity = template
         ? new CommunicationTemplateEntity(template.name, template.subject, template.template)
         : new CommunicationTemplateEntity("", "", "");
@@ -36,7 +37,7 @@ export default function CreateCommunicationTemplateForm({ template }: CreateComm
                 createCommunicationTemplateSubmitHandler(
                     template ? template._links.self.href : null,
                     values,
-                    router,
+                    routerAction,
                     mutate
                 )
             }
