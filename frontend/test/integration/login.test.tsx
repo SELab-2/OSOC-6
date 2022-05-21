@@ -69,8 +69,11 @@ describe("Login page", () => {
     it("SubmitHandler for loginForm sends post request", async () => {
         const values: LoginValues = { username: "test@mail.com", password: "pass" };
         const errorSetter = jest.fn();
+        const routerAction = jest.fn();
 
-        loginSubmitHandler(values, errorSetter, mockRouter, (() => {}) as any as ScopedMutator);
+        loginSubmitHandler(values, errorSetter,
+            routerAction,
+            undefined, (() => {}) as any as ScopedMutator);
 
         await waitFor(() => {
             mockAxios.mockResponseFor(
@@ -92,7 +95,7 @@ describe("Login page", () => {
 
         expect(errorSetter).toHaveBeenCalledWith(false);
         await waitFor(() => {
-            expect(mockRouter.pathname).toEqual("/" + applicationPaths.assignStudents);
+            expect(routerAction).toHaveBeenCalledWith("/" + applicationPaths.assignStudents);
         });
     });
 });

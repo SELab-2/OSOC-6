@@ -1,4 +1,4 @@
-import { Button, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
+import { Button, Container, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/resetComponent.module.css";
 import { useState } from "react";
@@ -61,7 +61,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    routerAction("/" + applicationPaths.home).catch(console.log);
+                    routerAction("/" + applicationPaths.assignStudents).catch(console.log);
                 }, timers.redirect);
             }
         }

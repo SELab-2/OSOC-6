@@ -5,6 +5,9 @@ import styles from "../../styles/pageGrids.module.css";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 
+/**
+ * Page dedicated to listing all projects.
+ */
 const ProjectPage: NextPage = () => {
     const { t } = useTranslation("common");
 

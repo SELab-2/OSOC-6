@@ -28,22 +28,26 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
 
-    const [name, setName] = useState<string>("");
-    const [editName, setEditName] = useState<boolean>(false);
-    const [year, setYear] = useState<string>("");
-    const [editYear, setEditYear] = useState<boolean>(false);
-    const [active, setActive] = useState<boolean>(false);
-    const [showGeneralError, setShowGeneralError] = useState<boolean>(false);
-    const [showYearError, setShowYearError] = useState<boolean>(false);
-
     const { data: receivedEdition, error: editionError } = useSWR(
         apiPaths.editions + "/" + editionId,
         getEditionOnUrl
     );
 
+    const [name, setName] = useState<string>("");
+    const [editName, setEditName] = useState<boolean>(false);
+    const [year, setYear] = useState<string>("");
+    const [editYear, setEditYear] = useState<boolean>(false);
+    const [active, setActive] = useState<boolean>();
+    const [showGeneralError, setShowGeneralError] = useState<boolean>(false);
+    const [showYearError, setShowYearError] = useState<boolean>(false);
+
     if (editionError) {
         console.log(editionError);
         return null;
+    }
+
+    if (active === undefined && receivedEdition !== undefined) {
+        setActive(receivedEdition.active);
     }
 
     const edition = receivedEdition || emptyEdition;
@@ -105,26 +109,25 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
         }
     }
 
-    function handleChangeActive() {
+    async function handleChangeActive() {
         // Ask the user if they REALLY want to change this attribute with a popup window, as it is very impactful
-        if (window.confirm(capitalize(t("change edition state")))) {
-            handleSaveActive();
+        if (edition) {
+            if (window.confirm(capitalize(t("change edition state")))) {
+                await handleSaveActive();
+            }
         }
     }
 
     async function handleSaveActive() {
-        setActive(!active);
         if (edition) {
-            const response: AxiosResponse = await saveEditionActiveState(edition._links.self.href, active);
+            const response: AxiosResponse = await saveEditionActiveState(
+                edition._links.self.href,
+                !edition.active
+            );
             if (response.status === StatusCodes.OK) {
-                if (edition) {
-                    await Promise.all([
-                        mutate(apiPaths.editions),
-                        mutate(edition._links.self.href, response.data),
-                    ]);
-                } else {
-                    setShowGeneralError(true);
-                }
+                setActive(!edition.active);
+                edition.active = !edition.active;
+                await Promise.all([mutate(edition._links.self.href), mutate(apiPaths.editions)]);
             } else {
                 setShowGeneralError(true);
             }
@@ -226,9 +229,8 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                             data-testid="input-active"
                             type="checkbox"
                             name="active"
-                            checked={edition.active}
-                            onChange={() => handleChangeActive()}
-                            onClick={() => handleChangeActive()}
+                            checked={active}
+                            onChange={handleChangeActive}
                         />
                     </Col>
                 </Row>

@@ -31,8 +31,13 @@ export interface UrlObject {
     query?: null | ParsedUrlQueryInput | undefined;
 }
 
+/**
+ * Url used by NextRouter.
+ */
+export type Url = string | UrlObject
+
 export type RouterAction = (
-    url: UrlObject | string,
+    url: Url,
     as?: string,
     options?: TransitionOptions
 ) => Promise<boolean>;

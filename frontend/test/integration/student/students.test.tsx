@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { render, screen } from "@testing-library/react";
-import StudentsPage from "../../src/pages/students";
-import StudentsIDPage from "../../src/pages/students/[id]";
+import StudentsPage from "../../../src/pages/students";
+import StudentsIDPage from "../../../src/pages/students/[id]";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
