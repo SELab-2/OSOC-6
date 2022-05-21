@@ -15,6 +15,7 @@ import { Button } from "react-bootstrap";
  */
 export interface CreateCommunicationTemplateFormProps {
     template?: ICommunicationTemplate;
+    studentId: string;
     setTemplate?: (template: ICommunicationTemplate) => void;
     setCreate?: (create: boolean) => void;
     setEdit?: (create: boolean) => void;
@@ -23,9 +24,13 @@ export interface CreateCommunicationTemplateFormProps {
 /**
  * Form allowing the creation of a new communication template or editing an existing.
  * @param template the template that should be edited. [undefined] if the form is in creation mode.
+ * @param setTemplate callback to set the template
+ * @param setCreate callback to change the create boolean
+ * @param setEdit callback to change the edit boolean
  */
 export default function CreateCommunicationTemplateForm({
     template,
+    studentId,
     setTemplate,
     setCreate,
     setEdit,
@@ -44,6 +49,7 @@ export default function CreateCommunicationTemplateForm({
             onSubmit={async (values) => {
                 const newTemplate: ICommunicationTemplate = await createCommunicationTemplateSubmitHandler(
                     template ? template._links.self.href : null,
+                    studentId,
                     values,
                     router,
                     mutate

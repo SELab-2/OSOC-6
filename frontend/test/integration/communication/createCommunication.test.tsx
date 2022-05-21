@@ -52,10 +52,6 @@ describe("create communication", () => {
         await waitFor(() => {
             expect(console.log).toHaveBeenCalled();
         });
-
-        // await waitFor(() => {
-        //     expect(form).toBeNull()
-        // })
     });
 
     it("Sends the form and calls post", async () => {

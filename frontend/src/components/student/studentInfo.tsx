@@ -90,7 +90,7 @@ export function StudentInfo() {
                         style={{ color: "white", borderColor: "white" }}
                         onClick={openCommunications}
                     >
-                        Communication
+                        {capitalize(t("communication"))}
                     </Button>
                 </div>
                 <div className="row w-100">

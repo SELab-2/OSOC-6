@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { createCommunicationTemplateSubmitHandler } from "../../handlers/createCommunicationTemplateSubmitHandler";
 import { Field, Form, Formik } from "formik";
+import {extractIdFromStudentUrl} from "../../api/calls/studentCalls";
 
 /**
  * The parameters you can provide to [CommunicationTemplateInfo].
@@ -40,6 +41,7 @@ export default function CommunicationTemplateInfo({ template, student }: ICommun
                 onSubmit={async (values) => {
                     await createCommunicationTemplateSubmitHandler(
                         template ? template._links.self.href : null,
+                        extractIdFromStudentUrl(student!._links.self.href),
                         values,
                         router,
                         mutate

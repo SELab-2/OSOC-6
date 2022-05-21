@@ -14,6 +14,7 @@ import apiPaths from "../properties/apiPaths";
 
 export async function createCommunicationTemplateSubmitHandler(
     url: string | null,
+    studentId: string,
     values: CommunicationTemplateEntity,
     router: NextRouter,
     mutate: ScopedMutator
@@ -24,14 +25,12 @@ export async function createCommunicationTemplateSubmitHandler(
     } else {
         result = await createNewCommunicationTemplate(values);
     }
-    const id = router.query.id;
-
     await Promise.all([
         mutate(apiPaths.communicationTemplates),
         mutate(result._links.self.href, result),
         router.replace({
             pathname:
-                "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationRegistration,
+                "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationRegistration,
             query: { ...router.query },
         }),
     ]);

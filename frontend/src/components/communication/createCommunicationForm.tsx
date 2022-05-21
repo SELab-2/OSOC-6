@@ -56,15 +56,7 @@ export default function CreateCommunicationForm({ student, template }: CreateCom
             <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
-                onSubmit={async (submitValues) => {
-                    const submitCom = new Communication(
-                        submitValues.medium,
-                        submitValues.template,
-                        submitValues.subject,
-                        submitValues.content,
-                        submitValues.sender,
-                        submitValues.student
-                    );
+                onSubmit={async (submitCom) => {
                     submitCom.student = student._links.self.href;
                     submitCom.sender = user!._links.self.href;
                     await createCommunicationSubmitHandler(submitCom, router, mutate);
@@ -72,8 +64,8 @@ export default function CreateCommunicationForm({ student, template }: CreateCom
                     // If the medium is email : open the mail client
                     if (submitCom.medium === defaultCommunicationMedium) {
                         document.location.href = mailTo({
-                            body: submitValues.content,
-                            subject: submitValues.subject,
+                            body: submitCom.content,
+                            subject: submitCom.subject,
                             recipients: [student.email],
                         });
                     }
@@ -88,7 +80,7 @@ export default function CreateCommunicationForm({ student, template }: CreateCom
                 {({ values, setFieldValue }) => (
                     <Form>
                         <div>
-                            <h2>Communication</h2>
+                            <h2>{capitalize(t("communication"))}</h2>
                             <hr />
                             <div className="text-wrap">{capitalize(t("for")) + ": " + student?.email}</div>
                             <div>
