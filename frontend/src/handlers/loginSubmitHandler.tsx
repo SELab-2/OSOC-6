@@ -4,6 +4,7 @@ import { ScopedMutator } from "swr/dist/types";
 import { getUserOnUrl, postLoginFromForm } from "../api/calls/userCalls";
 import applicationPaths from "../properties/applicationPaths";
 import { getAllEditionsFromPage } from "../api/calls/editionCalls";
+import { RouterAction } from "../hooks/routerHooks";
 
 export interface LoginValues {
     username: string;
@@ -17,7 +18,8 @@ export type LoginProps = {
 export async function loginSubmitHandler(
     values: LoginValues,
     errorSetter: (errorOccurred: boolean) => void,
-    router: NextRouter,
+    routerAction: RouterAction,
+    returnUrl: string | undefined,
     mutate: ScopedMutator<any>
 ) {
     // store the states in the form data
@@ -39,11 +41,8 @@ export async function loginSubmitHandler(
         ]);
         Promise.all([mutate(apiPaths.ownUser, user), mutate(apiPaths.editions, editions)]).catch(console.log);
 
-        const redirectUrl =
-            router.query.returnUrl === undefined
-                ? "/" + applicationPaths.assignStudents
-                : "/" + router.query.returnUrl;
+        const redirectUrl = returnUrl ? "/" + returnUrl : "/" + applicationPaths.assignStudents;
 
-        await router.push(redirectUrl);
+        await routerAction(redirectUrl);
     }
 }

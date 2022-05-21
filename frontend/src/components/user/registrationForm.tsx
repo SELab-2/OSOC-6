@@ -13,10 +13,12 @@ import { Field, Form, Formik } from "formik";
 import styles from "../../styles/loginForm.module.css";
 import applicationPaths from "../../properties/applicationPaths";
 import { useSWRConfig } from "swr";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 const RegistrationForm: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerPush = useRouterPush();
     const { mutate } = useSWRConfig();
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [error, setError] = useState<string>(t("no error"));
@@ -35,13 +37,15 @@ const RegistrationForm: NextPage = () => {
                 await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
                     token: invitationToken,
                 });
+                const returnUrl = router.query.returnUrl;
                 await loginSubmitHandler(
                     { username: values.email, password: values.password },
                     () => {},
-                    router,
+                    routerPush,
+                    ["string", "undefined"].includes(typeof returnUrl) ? returnUrl as string | undefined : (returnUrl as string[])[0],
                     mutate
                 );
-                await router.push("/" + applicationPaths.home);
+                await routerPush("/" + applicationPaths.assignStudents);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);

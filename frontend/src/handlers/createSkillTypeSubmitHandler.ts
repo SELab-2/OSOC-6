@@ -4,10 +4,11 @@ import { ISkillType, SkillType } from "../api/entities/SkillTypeEntity";
 import { createSkillType, extractIdFromSkillTypeUrl } from "../api/calls/skillTypeCalls";
 import apiPaths from "../properties/apiPaths";
 import applicationPaths from "../properties/applicationPaths";
+import { RouterAction } from "../hooks/routerHooks";
 
 export async function createSkillTypeSubmitHandler(
     values: SkillType,
-    router: NextRouter,
+    routerAction: RouterAction,
     mutate: ScopedMutator
 ) {
     const createdSkillType: ISkillType = await createSkillType(values);
@@ -16,6 +17,6 @@ export async function createSkillTypeSubmitHandler(
     await Promise.all([
         mutate(apiPaths.skillTypes),
         mutate(apiPaths.skillTypes + "/" + createdId, createSkillType),
-        router.push("/" + applicationPaths.skillTypesBase + "/" + createdId),
+        routerAction("/" + applicationPaths.skillTypesBase + "/" + createdId),
     ]);
 }

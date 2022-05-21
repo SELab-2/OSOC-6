@@ -11,12 +11,17 @@ import { capitalize } from "../utility/stringUtil";
 import { useState } from "react";
 import applicationPaths from "../properties/applicationPaths";
 import { Background } from "../components/util/background";
+import { useRouterPush } from "../hooks/routerHooks";
 
 const Login: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerPush = useRouterPush();
     const { mutate } = useSWRConfig();
     const [hadError, setHadError] = useState<boolean>(false);
+
+    const returnUrl = router.query.returnUrl;
+    const castedReturnUrl = ["string", "undefined"].includes(typeof returnUrl) ? returnUrl as string | undefined : (returnUrl as string[])[0];
 
     return (
         <div className={styles.login_page}>
@@ -39,7 +44,7 @@ const Login: NextPage = () => {
                             </Card>
                             <LoginForm
                                 submitHandler={(form) =>
-                                    loginSubmitHandler(form, setHadError, router, mutate)
+                                    loginSubmitHandler(form, setHadError, routerPush, castedReturnUrl, mutate)
                                 }
                             />
                             <div className="mt-2">

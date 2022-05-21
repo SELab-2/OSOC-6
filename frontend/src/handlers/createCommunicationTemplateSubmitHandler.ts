@@ -11,11 +11,12 @@ import { NextRouter } from "next/router";
 import applicationPaths from "../properties/applicationPaths";
 import { ScopedMutator } from "swr/dist/types";
 import apiPaths from "../properties/apiPaths";
+import { RouterAction } from "../hooks/routerHooks";
 
 export async function createCommunicationTemplateSubmitHandler(
     url: string | null,
     values: CommunicationTemplateEntity,
-    router: NextRouter,
+    routerAction: RouterAction,
     mutate: ScopedMutator
 ) {
     let result: ICommunicationTemplate;
@@ -29,6 +30,6 @@ export async function createCommunicationTemplateSubmitHandler(
     await Promise.all([
         mutate(apiPaths.communicationTemplates),
         mutate(result._links.self.href, result),
-        router.push("/" + applicationPaths.communicationTemplateBase + "/" + id),
+        routerAction("/" + applicationPaths.communicationTemplateBase + "/" + id),
     ]);
 }
