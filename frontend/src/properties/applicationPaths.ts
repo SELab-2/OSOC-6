@@ -17,6 +17,9 @@ const applicationPaths = {
     assignStudents: "assignStudents",
 
     students: "students",
+    studentCreation: "students/create",
+    studentInfo: "students/[id]",
+    studentEdit: "students/[id]/edit",
 
     login: "login",
     loginError: "loginError",

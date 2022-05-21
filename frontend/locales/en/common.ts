@@ -18,13 +18,12 @@ const common = {
     "reset password title": "reset password",
     "password identical": "passwords need to be identical",
 
-    callname: "callname",
-
     "empty page": "empty page",
     confirm: "confirm",
     apply: "apply",
     "search name": "search name",
     "something went wrong": "oops, something went wrong.",
+    "delete not empty edition": "maybe you tried deleting an edition with data in it.",
 
     // Student strings
     students: "students",
@@ -129,6 +128,7 @@ const common = {
     "edit communicationTemplate": "edit communication template",
 
     // Student info strings
+    callname: "callname",
     "student info": "student info",
     suggestions: "suggestions",
     suggest: "suggest",
@@ -139,13 +139,16 @@ const common = {
     "english proficiency": "english proficiency",
     "phone number": "phone number",
     gender: "gender",
-    pronouns: "with pronouns",
+    pronouns: "pronouns",
+    "with pronouns": "with pronouns",
     about: "about the student",
     "more info": "more info about this student",
     education: "student education and experience",
     cv: "cv",
     portfolio: "portfolio",
     motivation: "motivation",
+    "first name": "first name",
+    "last name": "last name",
 
     "info current": "currently in",
     "info year": "year of",
@@ -159,15 +162,38 @@ const common = {
     "degree duration": "year out of",
     "applied for": "applied for",
     "osoc experience": "osoc experience",
-    NONE: "no experience yet",
-    YES_NO_STUDENT_COACH: "yes, but does not want to be student coach",
-    YES_STUDENT_COACH: "yes, wants to be student coach",
+    emale: "female",
+    male: "male",
+    transgender: "transgender",
+    "not specified": "not specified",
+    "read not write": "read not write",
+    "simple conversation": "simple conversation",
+    expressive: "expressive",
+    extensive: "extensive",
+    fluent: "fluent",
+    none: "no experience yet",
+    "yes, no student coach": "yes, but does not want to be student coach",
+    "yes, student coach": "yes, wants to be student coach",
+    or: "or",
 
     "change status title": "change status",
     "change status": "would you like to change the status to",
 
     filters: "filters",
     "choose roles": "choose one or more",
+
+    "create student": "create student",
+    "edit student": "edit student",
+    "add study": "add study",
+    "year of degree": "year of degree",
+    "degree length": "duration of degree",
+    "add role": "add role",
+    role: "role",
+    "cv url": "cv url",
+    "portfolio url": "portfolio url",
+    "motivation url": "motivation url",
+    "written motivation": "written motivation",
+    "motivation placeholder": "write student motivation here",
 
     // Assignment strings
     "assignment modal title": "Why do you want this student here?",

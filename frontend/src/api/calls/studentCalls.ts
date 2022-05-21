@@ -1,12 +1,14 @@
 import {
     baseDelete,
     basePatch,
+    basePost,
     extractIdFromApiEntityUrl,
     getAllEntitiesFromPage,
     getEntityOnUrl,
     getQueryUrlFromParams,
 } from "./baseCalls";
-import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
+import { IStudent, OsocExperience, Status, Student, studentCollectionName } from "../entities/StudentEntity";
+import apiPaths from "../../properties/apiPaths";
 import { AxiosResponse } from "axios";
 
 export interface IStudentQueryParams {
@@ -36,10 +38,10 @@ export function getStudentOnUrl(url: string): Promise<IStudent> {
 export function constructStudentQueryUrl(url: string, params: IStudentQueryParams): string {
     const experience: string[] = [];
     if (params.studentCoach) {
-        experience.push(OsocExpericience.yes_studentCoach);
+        experience.push(OsocExperience.yes_studentCoach);
     }
     if (params.alumni) {
-        experience.push(OsocExpericience.yes_studentCoach, OsocExpericience.yes_noStudentCoach);
+        experience.push(OsocExperience.yes_studentCoach, OsocExperience.yes_noStudentCoach);
     }
 
     const queryParams: { [k: string]: any } = {};
@@ -60,6 +62,23 @@ export function constructStudentQueryUrl(url: string, params: IStudentQueryParam
     }
 
     return getQueryUrlFromParams(url, queryParams);
+}
+
+/**
+ * Function posting creating a new student on the backend.
+ * @param student the student that needs to be created.
+ */
+export async function createNewStudent(student: Student): Promise<IStudent> {
+    return <Promise<IStudent>>(await basePost(apiPaths.students, student)).data;
+}
+
+/**
+ * Function patching an updated student on the backend.
+ * @param url the url to patch to
+ * @param student the student that needs to be updated.
+ */
+export async function editStudent(url: string, student: Student): Promise<IStudent> {
+    return <Promise<IStudent>>(await basePatch(url, student)).data;
 }
 
 /**

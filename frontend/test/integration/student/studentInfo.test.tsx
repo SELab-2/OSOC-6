@@ -93,6 +93,9 @@ describe("StudentInfo", () => {
 
         render(makeCacheFree(StudentInfo));
 
+        const user = getBaseUser("1", UserRole.admin, true);
+        await enableCurrentUser(user);
+
         const baseStudent: IStudent = getBaseStudent(studentId);
         await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
@@ -111,6 +114,9 @@ describe("StudentInfo", () => {
         mockRouter.query = { id: studentId };
 
         render(makeCacheFree(StudentInfo));
+
+        const user = getBaseUser("1", UserRole.admin, true);
+        await enableCurrentUser(user);
 
         const baseStudent: IStudent = getBaseStudent(studentId);
         await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
