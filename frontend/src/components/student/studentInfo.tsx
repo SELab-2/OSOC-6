@@ -18,7 +18,7 @@ import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
-import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 /**
  * Give an overview of all the studentinfo
@@ -86,15 +86,16 @@ export function StudentInfo() {
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
                 <div className="row w-100" style={{ paddingBottom: 15 }}>
-                    {currentUserIsAdmin &&
+                    {currentUserIsAdmin && (
                         <Button
                             variant="btn-outline"
                             data-testid="open-communication"
                             style={{ color: "white", borderColor: "white" }}
                             onClick={openCommunications}
-                        >{capitalize(t("communication"))}
+                        >
+                            {capitalize(t("communication"))}
                         </Button>
-                    }
+                    )}
                 </div>
                 <div className="row w-100">
                     <div className="col-sm-6">

@@ -12,7 +12,7 @@ import {
     getBaseSuggestion,
     getBaseUser,
 } from "../TestEntityProvider";
-import {enableCurrentUser, makeCacheFree} from "../Provide";
+import { enableCurrentUser, makeCacheFree } from "../Provide";
 import { StudentInfo } from "../../../src/components/student/studentInfo";
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import { jest } from "@jest/globals";
@@ -181,6 +181,6 @@ describe("StudentInfo", () => {
 
         await waitFor(() => {
             expect(screen.queryByTestId("open-communication")).not.toBeInTheDocument();
-        })
+        });
     });
 });
