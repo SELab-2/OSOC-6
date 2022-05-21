@@ -63,7 +63,6 @@ export default function CreateCommunicationTemplateForm({
                 }
 
                 if (setEdit) {
-                    console.log("edited");
                     setEdit(false);
                 }
             }}
@@ -71,7 +70,7 @@ export default function CreateCommunicationTemplateForm({
             {({ values, setFieldValue }) => (
                 <Form data-testid="template-form">
                     <div>
-                        <h2>{template ? "Edit the template" : "Create new template"}</h2>
+                        <h2>{template ? capitalize(t("edit template")) : capitalize(t("create new template"))}</h2>
                         <hr />
                         <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 

@@ -41,7 +41,7 @@ export function RegisterCommunication() {
     const student: IStudent = receivedStudent || emptyStudent;
 
     return (
-        <div>
+        <div data-testid="register-communication">
             <h1>{capitalize(t("register communication for")) + " " + student.callName}</h1>
             <Row style={{ paddingBottom: 20 }} data-testid="choose-template">
                 <Col>
@@ -57,15 +57,16 @@ export function RegisterCommunication() {
                                 alignItems: "center",
                                 display: "flex",
                             }}
-                            data-testid="template-select-main"
+                            data-testid="template-select"
                         >
                             {selectedTemplate ? selectedTemplate.name : capitalize(t("choose template"))}
                         </Dropdown.Toggle>
-                        <DropdownMenu>
+                        <DropdownMenu data-testid="template-select-menu">
                             {templates.map((template) => (
                                 <DropdownItem
                                     key={template._links.self.href}
-                                    data-testid={"template-select-" + template._links.self.href}
+                                    eventKey={template._links.self.href}
+                                    data-testid={template._links.self.href}
                                     onClick={() => {
                                         setSelectedTemplate(template);
                                         setCreate(false);
@@ -86,6 +87,7 @@ export function RegisterCommunication() {
                             justifyContent: "center",
                             width: 175,
                         }}
+                        data-testid="edit-template"
                         onClick={() => setEdit(true)}
                     >
                         {capitalize(t("edit template"))}
@@ -108,7 +110,7 @@ export function RegisterCommunication() {
                         data-testid="new-template"
                         onClick={() => setCreate(true)}
                     >
-                        Create new template
+                        {capitalize(t("create new template"))}
                     </Button>
                 </Col>
             </Row>

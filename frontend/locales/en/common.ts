@@ -114,6 +114,7 @@ const common = {
     "open in mail application": "open in mail application",
     "choose template": "choose your template",
     "create template": "or create your own",
+    "create new template": "create new template",
     "edit template": "edit the template",
     "additional communication info": "additional info",
     "communication content": "content of the communication",

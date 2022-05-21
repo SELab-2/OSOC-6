@@ -79,7 +79,7 @@ export default function CreateCommunicationForm({ student, template }: CreateCom
             >
                 {({ values, setFieldValue }) => (
                     <Form>
-                        <div>
+                        <div data-testid="communication-form">
                             <h2>{capitalize(t("communication"))}</h2>
                             <hr />
                             <div className="text-wrap">{capitalize(t("for")) + ": " + student?.email}</div>
