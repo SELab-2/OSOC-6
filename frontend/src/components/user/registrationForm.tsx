@@ -18,7 +18,6 @@ import { useRouterPush } from "../../hooks/routerHooks";
 const RegistrationForm: NextPage = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const routerPush = useRouterPush();
     const { mutate } = useSWRConfig();
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [error, setError] = useState<string>(t("no error"));
@@ -41,13 +40,10 @@ const RegistrationForm: NextPage = () => {
                 await loginSubmitHandler(
                     { username: values.email, password: values.password },
                     () => {},
-                    routerPush,
-                    ["string", "undefined"].includes(typeof returnUrl)
-                        ? (returnUrl as string | undefined)
-                        : (returnUrl as string[])[0],
+                    router,
                     mutate
                 );
-                await routerPush("/" + applicationPaths.assignStudents);
+                await router.push("/" + applicationPaths.assignStudents);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);

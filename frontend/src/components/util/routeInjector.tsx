@@ -12,11 +12,11 @@ import { Button } from "react-bootstrap";
 import NavBar from "./navBar";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { pathIsAuthException } from "../../utility/pathUtil";
-import { useRouterPush } from "../../hooks/routerHooks";
 
 export default function RouteInjector({ children }: any) {
     const router = useRouter();
-    const routerAction = useRouterPush();
+    // We can not inject here, it will provide problems and race conditions.
+    const routerAction = router.replace;
 
     const { error: userError } = useCurrentUser(true);
     const injectorActive: boolean = !userError && !pathIsAuthException(router.asPath);
@@ -32,9 +32,7 @@ export default function RouteInjector({ children }: any) {
     const hadContextError = !!contextEditionError;
 
     const query = router.query as { edition?: string };
-    console.log(query);
     const routerEditionName = query.edition;
-    console.log(routerEditionName);
     const { data: fetchedRouterEdition, error: fetchedEditionError } = useSWR(
         injectorActive ? routerEditionName : null,
         getEditionByName
@@ -52,9 +50,10 @@ export default function RouteInjector({ children }: any) {
     const latestEditionName = latestEdition?.name;
 
     useEffect(() => {
+        // Some parts of the code are commented out because we think it'll help understand the choices that were made.
+
         // The edition in your path is set, but you don't have the context, or they differ. -> set context
         if (fetchedRouterEditionUrl && contextEditionUrl !== fetchedRouterEditionUrl) {
-            console.log("1");
             setContextEditionUrl(fetchedRouterEditionUrl);
         }
 
@@ -62,32 +61,32 @@ export default function RouteInjector({ children }: any) {
         // -> You probably need to update the edition name because it was altered.
         // -> Should be handled by transformer, but we save guard here.
         // -> Not allowed since this is state controlled and we want hypermedia controlled.
+        /*
         if (hadRouterError && contextEditionName && contextEditionName !== routerEditionName && false) {
-            console.log("2");
             routerAction({
                 query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
+         */
 
         // You do not have a path edition set but your config edition is set and defined -> set path edition
         // -> Not allowed since the query start with and empty object, and you have no way as to know if you changed the edition.
+        /*
         if (contextEditionName && !routerEditionName && false) {
-            console.log("3");
             routerAction({
                 query: { ...query, edition: contextEditionName },
             }).catch(console.log);
         }
+         */
 
         // You can not get the edition that is saved in the context -> Might be because it was removed.
         // -> Clear the context edition. It's not worth holding on to.
         if (hadContextError && contextEditionUrl) {
-            console.log("4");
             setContextEditionUrl(null);
         }
 
         // You have no context edition and no path edition, but are able to see editions.
         if (!contextEditionUrl && !routerEditionName && latestEditionName) {
-            console.log("5");
             routerAction({
                 query: {
                     ...query,
