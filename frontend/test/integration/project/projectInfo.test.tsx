@@ -1,10 +1,18 @@
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
-import { ProjectInfo } from "../../src/components/project/projectInfo";
+import { render, screen, waitFor } from "@testing-library/react";
+import { enableActForResponse, makeCacheFree } from "../Provide";
+import { ProjectInfo } from "../../../src/components/project/projectInfo";
 import mockAxios from "jest-mock-axios";
-import apiPaths from "../../src/properties/apiPaths";
+import apiPaths from "../../../src/properties/apiPaths";
 import mockRouter from "next-router-mock";
+import userEvent from "@testing-library/user-event";
+import { AxiosResponse } from "axios";
+import { userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
+import { projectSkillCollectionName } from "../../../src/api/entities/ProjectSkillEntity";
+import { assignmentCollectionName } from "../../../src/api/entities/AssignmentEntity";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import { getValidAssignmentsUrlForProjectSkill } from "../../../src/api/calls/AssignmentCalls";
 import {
     getBaseAssignment,
     getBaseBadRequestResponse,
@@ -17,15 +25,7 @@ import {
     getBaseSkillType,
     getBaseStudent,
     getBaseUser,
-} from "./TestEntityProvider";
-import { userCollectionName, UserRole } from "../../src/api/entities/UserEntity";
-import { projectSkillCollectionName } from "../../src/api/entities/ProjectSkillEntity";
-import { assignmentCollectionName } from "../../src/api/entities/AssignmentEntity";
-import { skillTypeCollectionName } from "../../src/api/entities/SkillTypeEntity";
-import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import { getValidAssignmentsUrlForProjectSkill } from "../../src/api/calls/AssignmentCalls";
-import userEvent from "@testing-library/user-event";
-import { AxiosResponse } from "axios";
+} from "../TestEntityProvider";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -113,7 +113,7 @@ describe("project info", () => {
 
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
         const response: AxiosResponse = getBaseNoContentResponse();
-        act(() => mockAxios.mockResponseFor({ url: project._links.self.href }, response));
+        await enableActForResponse({ url: project._links.self.href }, response);
     });
 
     it("delete should fail", async () => {
@@ -133,7 +133,7 @@ describe("project info", () => {
 
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
         const response: AxiosResponse = getBaseBadRequestResponse();
-        act(() => mockAxios.mockResponseFor({ url: project._links.self.href }, response));
+        await enableActForResponse({ url: project._links.self.href }, response);
 
         const warning = await screen.findByTestId("warning");
         await waitFor(() => {

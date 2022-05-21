@@ -1,9 +1,12 @@
 import { NextPage } from "next";
-import { ProjectInfo } from "../../components/project/projectInfo";
-import NavBar from "../../components/util/navBar";
-import { ProjectList } from "../../components/project/projectList";
-import styles from "../../styles/pageGrids.module.css";
+import styles from "../../../styles/pageGrids.module.css";
+import NavBar from "../../../components/util/navBar";
+import { ProjectList } from "../../../components/project/projectList";
+import { ProjectInfo } from "../../../components/project/projectInfo";
 
+/**
+ * Page dedicated to showing info about a project.
+ */
 const ProjectIDPage: NextPage = () => {
     return (
         <>

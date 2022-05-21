@@ -1,15 +1,15 @@
-import { ProjectList } from "../../src/components/project/projectList";
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import apiPaths from "../../src/properties/apiPaths";
-import applicationPaths from "../../src/properties/applicationPaths";
+import apiPaths from "../../../src/properties/apiPaths";
+import applicationPaths from "../../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
-import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "./TestEntityProvider";
 import mockRouter from "next-router-mock";
-import { enableCurrentUser, makeCacheFree } from "./Provide";
-import { UserRole } from "../../src/api/entities/UserEntity";
+import { enableCurrentUser, makeCacheFree } from "../Provide";
+import { ProjectList } from "../../../src/components/project/projectList";
+import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "../TestEntityProvider";
+import { UserRole } from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
