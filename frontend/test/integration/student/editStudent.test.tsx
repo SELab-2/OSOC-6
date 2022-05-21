@@ -18,7 +18,7 @@ import { getBaseActiveEdition, getBaseOkResponse, getBaseStudent } from "../Test
 import StudentEdit from "../../../src/pages/students/[id]/edit";
 import { capitalize } from "../../../src/utility/stringUtil";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import {extractIdFromApiEntityUrl} from "../../../src/api/calls/baseCalls";
+import { extractIdFromApiEntityUrl } from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -172,10 +172,7 @@ describe("edit student", () => {
 
         await waitFor(() => {
             expect(mockRouter.asPath).toEqual(
-                "/" +
-                applicationPaths.students +
-                "/" +
-                extractIdFromApiEntityUrl(student._links.self.href)
+                "/" + applicationPaths.students + "/" + extractIdFromApiEntityUrl(student._links.self.href)
             );
         });
     });

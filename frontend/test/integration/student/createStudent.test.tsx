@@ -11,11 +11,11 @@ import {
     Status,
     Student,
 } from "../../../src/api/entities/StudentEntity";
-import {enableActForResponse, enableUseEditionComponentWrapper, makeCacheFree} from "../Provide";
-import {getBaseActiveEdition, getBaseOkResponse, getBaseStudent} from "../TestEntityProvider";
+import { enableActForResponse, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
+import { getBaseActiveEdition, getBaseOkResponse, getBaseStudent } from "../TestEntityProvider";
 import StudentCreate from "../../../src/pages/students/create";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import {extractIdFromApiEntityUrl} from "../../../src/api/calls/baseCalls";
+import { extractIdFromApiEntityUrl } from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -159,9 +159,9 @@ describe("create student", () => {
         await waitFor(() => {
             expect(mockRouter.asPath).toEqual(
                 "/" +
-                applicationPaths.students +
-                "/" +
-                extractIdFromApiEntityUrl(studentResponse._links.self.href)
+                    applicationPaths.students +
+                    "/" +
+                    extractIdFromApiEntityUrl(studentResponse._links.self.href)
             );
         });
         // This is a long running test because of all the promises that are created

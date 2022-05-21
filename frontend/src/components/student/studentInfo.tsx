@@ -25,7 +25,7 @@ import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 /**
  * Give an overview of all the studentinfo
@@ -94,20 +94,23 @@ export function StudentInfo() {
                                 data-testid="edit-student"
                                 href={transformer(
                                     "/" +
-                                    applicationPaths.students +
-                                    "/" +
-                                    extractIdFromStudentUrl(student._links.self.href) +
-                                    applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
+                                        applicationPaths.students +
+                                        "/" +
+                                        extractIdFromStudentUrl(student._links.self.href) +
+                                        applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
                                 )}
                             >
-                                <Image alt="" src={"/resources/edit.svg"} width="15" height="15"/>
+                                <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                             </a>
-                            <a className="ms-2 clickable" onClick={deleteStudentOnClick} data-testid="delete-student">
-                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                            <a
+                                className="ms-2 clickable"
+                                onClick={deleteStudentOnClick}
+                                data-testid="delete-student"
+                            >
+                                <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
                             </a>
                         </>
-                        )
-                    }
+                    )}
                 </h1>
                 <div className={styles.student_skills}>
                     {student.skills.map((skill) => (

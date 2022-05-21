@@ -15,7 +15,7 @@ import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../h
 import { StudentStatusButton } from "./studentStatusButton";
 import { Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
-import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
