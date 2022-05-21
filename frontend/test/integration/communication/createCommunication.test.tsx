@@ -1,21 +1,22 @@
 import "@testing-library/jest-dom";
-import { act, render, waitFor } from "@testing-library/react";
+import {act, render, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import CreateCommunicationForm from "../../../src/components/communication/createCommunicationForm";
-import { IStudent } from "../../../src/api/entities/StudentEntity";
+import {IStudent} from "../../../src/api/entities/StudentEntity";
 import {
+    getBaseBadRequestResponse,
     getBaseCommunication,
-    getBaseCommunicationTemplate,
+    getBaseCommunicationTemplate, getBaseForbiddenResponse,
     getBaseOkResponse,
     getBaseStudent,
     getBaseUser,
 } from "../TestEntityProvider";
-import { Communication, defaultCommunicationMedium } from "../../../src/api/entities/CommunicationEntity";
-import { UserRole } from "../../../src/api/entities/UserEntity";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import {Communication, defaultCommunicationMedium} from "../../../src/api/entities/CommunicationEntity";
+import {UserRole} from "../../../src/api/entities/UserEntity";
+import {enableCurrentUser, makeCacheFree} from "../Provide";
 import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -30,8 +31,30 @@ describe("create communication", () => {
     });
 
     it("renders", () => {
-        const page = render(<CreateCommunicationForm student={student} template={template} />);
+        const page = render(<CreateCommunicationForm student={student} template={template}/>);
         expect(page.getByTestId("create-communication-form")).toBeInTheDocument();
+    });
+
+    it("renders with user error", async () => {
+        console.log = jest.fn();
+
+        const page = render(<CreateCommunicationForm student={student} template={template}/>);
+        expect(page.getByTestId("create-communication-form")).toBeInTheDocument();
+
+        const form = render(
+            makeCacheFree(() => <CreateCommunicationForm student={student} template={template}/>)
+        );
+        await waitFor(() => {
+            mockAxios.mockResponseFor({url: apiPaths.ownUser}, getBaseForbiddenResponse());
+        });
+
+        await waitFor(() => {
+            expect(console.log).toHaveBeenCalled()
+        })
+
+        // await waitFor(() => {
+        //     expect(form).toBeNull()
+        // })
     });
 
     it("Sends the form and calls post", async () => {
@@ -43,7 +66,7 @@ describe("create communication", () => {
         const user = getBaseUser("3", UserRole.admin, true);
 
         const form = render(
-            makeCacheFree(() => <CreateCommunicationForm student={student} template={template} />)
+            makeCacheFree(() => <CreateCommunicationForm student={student} template={template}/>)
         );
         await enableCurrentUser(user);
 
@@ -100,7 +123,7 @@ describe("create communication", () => {
         const user = getBaseUser("3", UserRole.admin, true);
 
         const form = render(
-            makeCacheFree(() => <CreateCommunicationForm student={student} template={template} />)
+            makeCacheFree(() => <CreateCommunicationForm student={student} template={template}/>)
         );
         await enableCurrentUser(user);
 

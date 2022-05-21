@@ -7,7 +7,6 @@ import {
     ICommunicationTemplate,
 } from "../../api/entities/CommunicationTemplateEntity";
 import { IStudent } from "../../api/entities/StudentEntity";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { createCommunicationTemplateSubmitHandler } from "../../handlers/createCommunicationTemplateSubmitHandler";
@@ -26,7 +25,6 @@ export interface ICommunicationTemplateInfoParams {
  */
 export default function CommunicationTemplateInfo({ template, student }: ICommunicationTemplateInfoParams) {
     const { t } = useTranslation("common");
-    const transformer = useEditionApplicationPathTransformer();
     const router = useRouter();
     const initialValues: CommunicationTemplateEntity = template
         ? new CommunicationTemplateEntity(template.name, template.subject, template.template)
