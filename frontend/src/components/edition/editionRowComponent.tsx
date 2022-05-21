@@ -12,6 +12,7 @@ import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { IEdition } from "../../api/entities/EditionEntity";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { useRouter } from "next/router";
 
 type EditionProps = {
     edition: IEdition;
@@ -25,6 +26,7 @@ export function EditionRowComponent(props: EditionProps) {
     const transformer = useEditionApplicationPathTransformer();
     const globalEditionSetter = useGlobalEditionSetter();
     const currentUserIsAdmin = useCurrentAdminUser();
+    const router = useRouter();
 
     if (!edition) {
         return null;
@@ -32,6 +34,7 @@ export function EditionRowComponent(props: EditionProps) {
 
     async function useRightUrlAndGlobalContext() {
         await globalEditionSetter(edition);
+        await router.push("/" + applicationPaths.assignStudents);
     }
 
     async function deleteEdition() {

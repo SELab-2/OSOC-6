@@ -8,6 +8,11 @@ import { useState } from "react";
 import AssignmentModal, { ModalSkillInfo } from "../components/projectAssignment/assignmentModal";
 import { StudentFilterComponent } from "../components/student/studentFilterComponent";
 import ConflictResolutionList from "../components/conflictResolution/conflictResolutionList";
+import { useSwrWithEdition } from "../hooks/utilHooks";
+import apiPaths from "../properties/apiPaths";
+import { getAllStudentsFromPage } from "../api/calls/studentCalls";
+import { capitalize } from "../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 export type DropHandler = (
     studentName: string,
@@ -17,13 +22,26 @@ export type DropHandler = (
 ) => void;
 
 const AssignStudentsPage: NextPage = () => {
+    const { t } = useTranslation("common");
+
     const [showModal, setShowModal] = useState(false);
+    const [showConflicts, setShowConflicts] = useState(false);
     const [modalInfo, setModalInfo] = useState<{
         studentName: string;
         studentUrl: string;
         skillInfo: ModalSkillInfo;
         projectName: string;
     }>();
+
+    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
+        apiPaths.studentConflict,
+        getAllStudentsFromPage,
+        { refreshInterval: 1000 }
+    );
+
+    if (showConflicts && receivedStudents?.length === 0) {
+        setShowConflicts(false);
+    }
 
     function handleShow(
         studentName: string,
@@ -33,6 +51,10 @@ const AssignStudentsPage: NextPage = () => {
     ) {
         setModalInfo({ studentName, studentUrl, skillInfo, projectName });
         setShowModal(true);
+    }
+
+    function changeShowConflicts() {
+        setShowConflicts(!showConflicts);
     }
 
     return (
@@ -49,11 +71,21 @@ const AssignStudentsPage: NextPage = () => {
                     <div className={styles.info_field}>
                         <Row className={"h-100"}>
                             <Col className="h-100 overflow-auto pb-2">
+                                {receivedStudents !== undefined && receivedStudents.length > 0 && (
+                                    <button
+                                        className={styles.conflicts_button + " btn btn-outline-primary"}
+                                        onClick={changeShowConflicts}
+                                    >
+                                        {capitalize(t("some students are assigned to multiple projects"))}
+                                    </button>
+                                )}
                                 <ProjectAsignmentList dropHandler={handleShow} />
                             </Col>
-                            <Col hidden={false}>
-                                <ConflictResolutionList />
-                            </Col>
+                            {showConflicts && (
+                                <Col>
+                                    <ConflictResolutionList />
+                                </Col>
+                            )}
                         </Row>
                     </div>
                 </div>

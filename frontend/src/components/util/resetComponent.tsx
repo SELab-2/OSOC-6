@@ -63,7 +63,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(transformer("/" + applicationPaths.home)).catch(console.log);
+                    router.push(transformer("/" + applicationPaths.assignStudents)).catch(console.log);
                 }, timers.redirect);
             }
         }

@@ -20,6 +20,5 @@ describe("Assign Students page", () => {
         expect(screen.getByTestId("student-list")).toBeInTheDocument();
         expect(screen.getByTestId("project-assignment-list")).toBeInTheDocument();
         expect(screen.getByTestId("student-filter")).toBeInTheDocument();
-        expect(screen.getByTestId("conflicts")).toBeInTheDocument();
     });
 });
