@@ -13,7 +13,7 @@ import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "..
 import { IEdition } from "../../api/entities/EditionEntity";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { useRouter } from "next/router";
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from "axios";
 
 type EditionProps = {
     edition: IEdition;
@@ -53,7 +53,6 @@ export function EditionRowComponent(props: EditionProps) {
             } else {
                 setShow(true);
             }
-
         } catch (error: any) {
             if (error.response.status === StatusCodes.CONFLICT) {
                 setshowEditionDelete(true);
@@ -124,8 +123,8 @@ export function EditionRowComponent(props: EditionProps) {
                     >
                         <Toast.Body>
                             {capitalize(t("something went wrong")) +
-                            " " +
-                            capitalize(t("delete not empty edition"))}
+                                " " +
+                                capitalize(t("delete not empty edition"))}
                         </Toast.Body>
                     </Toast>
                 </ToastContainer>
