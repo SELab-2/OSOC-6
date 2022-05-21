@@ -1,6 +1,5 @@
 import { cleanup, render } from "@testing-library/react";
 import RouteGuard from "../../src/components/util/routeGuard";
-import Home from "../../src/pages/home";
 import { AxiosResponse } from "axios";
 import ApiPaths from "../../src/properties/apiPaths";
 import apiPaths from "../../src/properties/apiPaths";
@@ -11,6 +10,7 @@ import { jest } from "@jest/globals";
 import { getBaseMovedResponse } from "./TestEntityProvider";
 import { makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
+import AssignStudents from "../../src/pages/assignStudents";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -24,16 +24,18 @@ afterEach(() => {
 });
 
 describe("RouteGuard", () => {
-    render(
-        makeCacheFree(() => (
-            <RouteGuard>
-                <Home />
-            </RouteGuard>
-        ))
-    );
+    beforeEach(() => {
+        render(
+            makeCacheFree(() => (
+                <RouteGuard>
+                    <AssignStudents />
+                </RouteGuard>
+            ))
+        );
 
-    const response: AxiosResponse = getBaseMovedResponse(ApiPaths.base + ApiPaths.loginRedirect);
-    mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
+        const response: AxiosResponse = getBaseMovedResponse(ApiPaths.base + ApiPaths.loginRedirect);
+        mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
+    });
 
     it("Should request the logged in user", () => {
         expect(mockAxios.get).toHaveBeenCalledWith(apiPaths.ownUser, AxiosConf);
