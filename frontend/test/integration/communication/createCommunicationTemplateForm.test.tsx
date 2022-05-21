@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
-import {getBaseCommunicationTemplate, getBaseStudent} from "../TestEntityProvider";
-import {render, waitFor} from "@testing-library/react";
-import {CommunicationTemplateEntity} from "../../../src/api/entities/CommunicationTemplateEntity";
+import { getBaseCommunicationTemplate, getBaseStudent } from "../TestEntityProvider";
+import { render, waitFor } from "@testing-library/react";
+import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
@@ -20,7 +20,7 @@ describe("create communication template", () => {
     });
 
     it("renders edit", async () => {
-        const page = render(<CreateCommunicationTemplateForm template={template}/>);
+        const page = render(<CreateCommunicationTemplateForm template={template} />);
         await expect(page.getByTestId("template-form")).toBeInTheDocument();
     });
 

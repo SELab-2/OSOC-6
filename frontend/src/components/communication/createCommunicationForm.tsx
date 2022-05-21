@@ -37,7 +37,14 @@ export default function CreateCommunicationForm({ student, template }: CreateCom
 
     // We don't fill the sender and student because using the hooks this would require a reset of the initial values of the form.
     // Waiting to fill this avoids the reset.
-    const initialValues = new Communication(defaultCommunicationMedium, template._links.self.href, template.subject, template.template, "", "")
+    const initialValues = new Communication(
+        defaultCommunicationMedium,
+        template._links.self.href,
+        template.subject,
+        template.template,
+        "",
+        ""
+    );
 
     if (userError) {
         console.log(userError);

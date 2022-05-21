@@ -39,7 +39,11 @@ export default function CommunicationListItem({ communication }: CommunicationLi
     const date = new Date(communication.timestamp);
 
     return (
-        <AccordionItem key={communication._links.self.href} eventKey={`${communication._links.self.href}`} data-testid="communication">
+        <AccordionItem
+            key={communication._links.self.href}
+            eventKey={`${communication._links.self.href}`}
+            data-testid="communication"
+        >
             <AccordionHeader className={"bg-secondary"}>
                 <div>
                     <h4>{template.name}</h4>
