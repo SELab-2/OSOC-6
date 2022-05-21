@@ -22,6 +22,7 @@ export function EditionRowComponent(props: EditionProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const [show, setShow] = useState<boolean>(false);
+    const [showEditionDelete, setshowEditionDelete] = useState<boolean>(false);
     const edition = props.edition;
     const transformer = useEditionApplicationPathTransformer();
     const globalEditionSetter = useGlobalEditionSetter();
@@ -38,8 +39,14 @@ export function EditionRowComponent(props: EditionProps) {
     }
 
     async function deleteEdition() {
-        const response = await editionDelete(edition._links.self.href);
-        if (response.status == StatusCodes.NO_CONTENT) {
+
+        const response = await editionDelete(edition._links.self.href).catch(request => {
+            if (request.response.status === StatusCodes.CONFLICT) {
+                setshowEditionDelete(true);
+            }
+        });
+
+        if (response?.status === StatusCodes.NO_CONTENT) {
             try {
                 const editionsMutate = mutate(apiPaths.editions);
                 const editionMutate = mutate(edition._links.self.href);
@@ -102,6 +109,17 @@ export function EditionRowComponent(props: EditionProps) {
                         autohide
                     >
                         <Toast.Body>{capitalize(t("something went wrong"))}</Toast.Body>
+                    </Toast>
+                </ToastContainer>
+                <ToastContainer position="bottom-end">
+                    <Toast
+                        bg="warning"
+                        onClose={() => setshowEditionDelete(false)}
+                        show={showEditionDelete}
+                        delay={timers.toast}
+                        autohide
+                    >
+                        <Toast.Body>{capitalize(t("something went wrong")) + " " + capitalize(t("delete not empty edition"))}</Toast.Body>
                     </Toast>
                 </ToastContainer>
                 <hr />
