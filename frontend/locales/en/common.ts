@@ -150,10 +150,7 @@ const common = {
     "degree duration": "year out of",
     "applied for": "applied for",
     "osoc experience": "osoc experience",
-    // NONE: "no experience yet",
-    // YES_NO_STUDENT_COACH: "yes, but does not want to be student coach",
-    // YES_STUDENT_COACH: "yes, wants to be student coach",
-    none: "no experience yet",
+    "none": "no experience yet",
     "yes, no student coach": "yes, wants to be student coach",
     "yes, student coach": "yes, wants to be student coach",
 

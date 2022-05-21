@@ -6,7 +6,7 @@ import { Col, ListGroup, Row } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import {emptyStudent, osocExperienceAsString} from "../../api/entities/StudentEntity";
+import { emptyStudent, osocExperienceAsString } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
 import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";

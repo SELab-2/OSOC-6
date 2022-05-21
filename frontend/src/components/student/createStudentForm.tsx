@@ -5,10 +5,13 @@ import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import {
     emptyStudent,
-    EnglishProficiency, englishProficiencyAsString,
-    Gender, genderAsString,
+    EnglishProficiency,
+    englishProficiencyAsString,
+    Gender,
+    genderAsString,
     IStudent,
-    OsocExperience, osocExperienceAsString,
+    OsocExperience,
+    osocExperienceAsString,
     Student,
     studentFromIStudent,
 } from "../../api/entities/StudentEntity";
@@ -149,8 +152,8 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                         >
                                             {capitalize(genderAsString[genderEnum])}
                                         </option>
-                                    )})
-                                }
+                                    );
+                                })}
                             </Field>
                         </div>
                         <div className="col-sm-3 mb-2">
@@ -193,22 +196,19 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 className="form-select"
                             >
                                 {Object.keys(EnglishProficiency).map((proficiency) => {
-                                    const proficiencyEnum = EnglishProficiency[proficiency as keyof typeof EnglishProficiency];
+                                    const proficiencyEnum =
+                                        EnglishProficiency[proficiency as keyof typeof EnglishProficiency];
                                     return (
                                         <option
                                             key={proficiency}
-                                            value={
-                                                proficiencyEnum
-                                            }
-                                            label={capitalize(
-                                                englishProficiencyAsString[proficiencyEnum]
-                                            )}
+                                            value={proficiencyEnum}
+                                            label={capitalize(englishProficiencyAsString[proficiencyEnum])}
                                             data-testid={"proficiency-" + proficiency}
                                         >
                                             {capitalize(englishProficiencyAsString[proficiencyEnum])}
                                         </option>
-                                    )})
-                                }
+                                    );
+                                })}
                             </Field>
                         </div>
                         <div className="col-sm-3 mb-2">
@@ -349,20 +349,19 @@ export default function CreateStudentForm({ student, title }: CreateStudentFormP
                                 className="form-select"
                             >
                                 {Object.keys(OsocExperience).map((osocExperience) => {
-                                    const experienceEnum = OsocExperience[osocExperience as keyof typeof OsocExperience];
+                                    const experienceEnum =
+                                        OsocExperience[osocExperience as keyof typeof OsocExperience];
                                     return (
                                         <option
                                             key={osocExperience}
                                             value={experienceEnum}
-                                            label={capitalize(
-                                                t(osocExperienceAsString[experienceEnum])
-                                            )}
+                                            label={capitalize(t(osocExperienceAsString[experienceEnum]))}
                                             data-testid={"experience-" + osocExperience}
                                         >
                                             {capitalize(experienceEnum)}
                                         </option>
-                                    )})
-                                }
+                                    );
+                                })}
                             </Field>
                         </div>
                         <button className="btn btn-primary mb-3" data-testid="submit" type="submit">
