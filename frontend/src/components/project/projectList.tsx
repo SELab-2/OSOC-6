@@ -18,11 +18,14 @@ export function ProjectList() {
     const routerAction = useRouterPush();
     const currentUserIsAdmin = useCurrentAdminUser();
 
-    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
-    data = data || [];
+    let { data: receivedProjects, error: projectsError } = useSwrWithEdition(
+        apiPaths.projectsByEdition,
+        getAllProjectsFromPage
+    );
+    const projects = receivedProjects || [];
 
-    if (error) {
-        console.log(error);
+    if (projectsError) {
+        console.log(projectsError);
         return null;
     }
 
@@ -32,7 +35,7 @@ export function ProjectList() {
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
                     <div className="capitalize">{t("projects")}</div>
                 </ListGroup.Item>
-                {data
+                {projects
                     .map((project) => ({
                         project,
                         projectId: extractIdFromProjectUrl(project._links.self.href),
@@ -46,13 +49,13 @@ export function ProjectList() {
                                     : "" + styles.project_list_project
                             }
                             action
-                            as={"div"}
+                            as={"a"}
                             onClick={async () => {
                                 await routerAction({
-                                    href: "/" + applicationPaths.projects,
-                                    query: { id: projectId },
+                                    pathname: "/" + applicationPaths.projects + "/" + projectId,
                                 });
                             }}
+                            href={undefined}
                             role="tab"
                             data-testid={"project-select-" + project.name}
                             data-toggle="list"

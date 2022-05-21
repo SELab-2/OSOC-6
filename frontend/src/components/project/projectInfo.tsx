@@ -11,7 +11,7 @@ import { StatusCodes } from "http-status-codes";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import { deleteProject } from "../../api/calls/projectCalls";
-import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
 
@@ -23,13 +23,14 @@ export function ProjectInfo() {
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
 
-    if (error || !data) {
+    if (error) {
+        console.log(error);
         return null;
     }
 
-    const info = data.info || emptyProject;
-    const projectSkills = data.skills;
-    const coaches = data.coaches;
+    const info = data?.info || emptyProject;
+    const projectSkills = data?.skills || [];
+    const coaches = data?.coaches || [];
 
     async function deleteProjectOnClick() {
         const response = await deleteProject(info._links.self.href);

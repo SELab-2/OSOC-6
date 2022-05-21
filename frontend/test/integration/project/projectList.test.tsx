@@ -62,7 +62,7 @@ describe("Project", () => {
         await userEvent.click(await list.findByTestId("project-select-" + baseProject.name));
 
         await waitFor(() => {
-            expect(mockRouter.query).toEqual({ id: "5" });
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.projects + "/5");
         });
     });
 });
