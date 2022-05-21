@@ -132,15 +132,13 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {capitalize(t(genderAsString[student.gender]))}{" "}
-                    {t("with pronouns")} {student.pronouns.toLowerCase()}
+                    {capitalize(t("gender"))}: {capitalize(t(genderAsString[student.gender]))} {t("with pronouns")} {student.pronouns.toLowerCase()}
                 </div>
                 <div>
                     {capitalize(t("native language"))}: {student.mostFluentLanguage}
                 </div>
                 <div>
-                    {capitalize(t("english proficiency"))}:{" "}
-                    {capitalize(t(englishProficiencyAsString[student.englishProficiency]))}
+                    {capitalize(t("english proficiency"))}: {capitalize(t(englishProficiencyAsString[student.englishProficiency]))}
                 </div>
                 <div>
                     {capitalize(t("phone number"))}: {student.phoneNumber}
@@ -160,15 +158,13 @@ export function StudentInfo() {
                     {capitalize(t("current diploma"))}: {student.currentDiploma}
                 </div>
                 <div>
-                    {capitalize(t("degree year"))}: {student.yearInCourse} {t("degree duration")}{" "}
-                    {student.durationCurrentDegree}
+                    {capitalize(t("degree year"))}: {student.yearInCourse} {t("degree duration")} {student.durationCurrentDegree}
                 </div>
                 <div>
                     {capitalize(t("applied for"))}: {student.skills.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("osoc experience"))}:{" "}
-                    {capitalize(t(osocExperienceAsString[student.osocExperience]))}
+                    {capitalize(t("osoc experience"))}: {capitalize(t(osocExperienceAsString[student.osocExperience]))}
                 </div>
             </div>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#1b1a31" }}>

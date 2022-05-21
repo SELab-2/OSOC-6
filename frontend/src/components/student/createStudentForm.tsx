@@ -35,11 +35,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
     const { mutate } = useSWRConfig();
     const [editionUrl] = useEdition();
 
-    if (!editionUrl) {
-        console.log(!editionUrl);
-        return null;
-    }
-    const initialValues: Student = studentFromIStudent(editionUrl, student ? student : emptyStudent);
+    const initialValues: Student = studentFromIStudent(editionUrl!, student ? student : emptyStudent);
 
     return (
         <div className="container mt-3" data-testid="student-create-form">
@@ -322,7 +318,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 className="form-control"
                             />
                         </div>
-                        Or
+                        {capitalize(t("or"))}
                         <div className="col-sm-5 mb-2">
                             <label htmlFor="writtenMotivationField" className="form-label">
                                 {capitalize(t("written motivation")) + ":"}

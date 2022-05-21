@@ -6,14 +6,14 @@ import { IStudent, Student } from "../api/entities/StudentEntity";
 import { createNewStudent, editStudent, extractIdFromStudentUrl } from "../api/calls/studentCalls";
 
 export async function createStudentSubmitHandler(
-    url: string | null,
+    existingStudentUrl: string | null,
     values: Student,
     router: NextRouter,
     mutate: ScopedMutator
 ) {
     let result: IStudent;
-    if (url) {
-        result = await editStudent(url, values);
+    if (existingStudentUrl) {
+        result = await editStudent(existingStudentUrl, values);
     } else {
         result = await createNewStudent(values);
     }
