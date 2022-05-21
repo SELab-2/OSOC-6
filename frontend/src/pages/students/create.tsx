@@ -2,7 +2,7 @@ import CreateStudentForm from "../../components/student/createStudentForm";
 import NavBar from "../../components/util/navBar";
 
 /**
- * Component allowing the creation of a new student.
+ * Page allowing the creation of a new student.
  */
 export default function StudentCreate() {
     return (

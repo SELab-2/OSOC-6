@@ -7,7 +7,7 @@ import { emptyStudent, IStudent } from "../../../api/entities/StudentEntity";
 import NavBar from "../../../components/util/navBar";
 
 /**
- * Component allowing editing of a student.
+ * Page allowing editing of a student.
  */
 export default function StudentEdit() {
     const router = useRouter();
