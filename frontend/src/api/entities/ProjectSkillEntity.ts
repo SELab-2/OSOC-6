@@ -43,6 +43,11 @@ export class ProjectSkill {
     project: string;
 }
 
+/**
+ * Function transforming an [IProjectSkill] to a [ProjectSkill] data constructor.
+ * @param projectSkill the [IProjectSkill] that should be used.
+ * @param projectUrl the linked project URL. (Can not be extracted from [IProjectSkill])
+ */
 export function projectSkillFromIProjectSkill(projectSkill: IProjectSkill, projectUrl: string): ProjectSkill {
     return new ProjectSkill(projectSkill.name, projectSkill.additionalInfo, projectUrl);
 }

@@ -12,6 +12,9 @@ import { ISkillType } from "../../../api/entities/SkillTypeEntity";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 
+/**
+ * Properties needed by [CreateProjectSkillSubForm].
+ */
 export interface CreateProjectSkillSubFormProps {
     createdSkillNames: string[];
     setCreatedSkillNames: (names: string[]) => void;
@@ -20,6 +23,13 @@ export interface CreateProjectSkillSubFormProps {
     setCreatedSkillInfos: (infos: string[]) => void;
 }
 
+/**
+ * Component that allows you to create new projectSkills for a project. It will ask for all needed data.
+ * @param createdSkillNames list of names of the newly created projectSkills.
+ * @param setCreatedSkillNames callback to set the list of names.
+ * @param createdSkillInfos list of info about the newly created projectSkills.
+ * @param setCreatedSkillInfos callback to set the list of info.
+ */
 export default function CreateProjectSkillSubForm({
     createdSkillNames,
     setCreatedSkillNames,
@@ -42,6 +52,11 @@ export default function CreateProjectSkillSubForm({
     useEffect(() => {
         setSelectedSkill(baseSkill);
     }, [baseSkill]);
+
+    if (skillTypesError) {
+        console.log(skillTypesError);
+        return null;
+    }
 
     function handleAddCreatedSkill() {
         if (!selectedSkill) {

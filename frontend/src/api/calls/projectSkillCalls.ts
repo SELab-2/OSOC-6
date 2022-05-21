@@ -32,6 +32,11 @@ export async function createProjectSkill(projectSkill: ProjectSkill): Promise<IP
     return newProjectSkill?._links ? newProjectSkill : undefined;
 }
 
+/**
+ * Function editing the content of a project skill. Leaves the relationships as is.
+ * @param url the URL on which the [IProjectSkill] is hosted.
+ * @param projectSkill data that should be posted.
+ */
 export async function editProjectSkill(
     url: string,
     projectSkill: ProjectSkill

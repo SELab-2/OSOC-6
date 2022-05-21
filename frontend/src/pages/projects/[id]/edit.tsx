@@ -12,7 +12,6 @@ import { getProjectOnUrl } from "../../../api/calls/projectCalls";
 import { emptyProject, IProject } from "../../../api/entities/ProjectEntity";
 
 const EditProjectPage: NextPage = () => {
-    const { t } = useTranslation("common");
     const router = useRouter();
     const query = router.query as { id: string };
     const projectId = query.id;
@@ -31,16 +30,10 @@ const EditProjectPage: NextPage = () => {
 
     return (
         <div data-testid="edit-project-page">
-            <Head>
-                <title className="capitalize">{t("home page title")}</title>
-            </Head>
             <NavBar />
-            <main className={styles.main}>
-                <div className="capitalize  m-4">
-                    <h1 className={styles.title}>{"edit project " + project.name}</h1>
-                    <ProjectForm project={project} />
-                </div>
-            </main>
+            <div className={styles.create_form_container}>
+                <ProjectForm project={project} />
+            </div>
         </div>
     );
 };

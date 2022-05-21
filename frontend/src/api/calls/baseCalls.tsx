@@ -22,6 +22,7 @@ export const ManyToManyAxiosConf: AxiosRequestConfig = {
     headers: {
         // URI-list is needed even when you send only one URI.
         // You just need to specify the content is a URI and not json.
+        // Data should be a list of newline seperated URIs.
         "Content-Type": "text/uri-list; charset=UTF-8",
     },
 };

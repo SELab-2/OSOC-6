@@ -11,7 +11,7 @@ import { createProject, editProject, setProjectCoaches } from "../api/calls/proj
 import { createProjectSkill, editProjectSkill } from "../api/calls/projectSkillCalls";
 
 /**
- * All values that a project contains
+ * All values that a project need to contain.
  */
 export interface ProjectCreationValues {
     name: string;
@@ -20,20 +20,11 @@ export interface ProjectCreationValues {
     partnerName: string;
     partnerWebsite: string;
     goals: string[];
+    // List of ADDED skills. (excluding existing skills)
     addedSkills: string[];
     addedSkillsInfo: string[];
+    // All coaches, new, and old.
     coaches: string[];
-}
-
-/**
- * All values contained directly in the Formik form of project creation/ edit.
- */
-export interface ProjectFormSubmitValues {
-    name: string;
-    info: string;
-    versionManagement: string;
-    partnerName: string;
-    partnerWebsite: string;
 }
 
 /**

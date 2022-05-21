@@ -5,18 +5,26 @@ import { ProjectSkill } from "../../../api/entities/ProjectSkillEntity";
 import { ChangeEvent, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../../utility/stringUtil";
-import useSWR from "swr";
-import apiPaths from "../../../properties/apiPaths";
-import { getAllSkillTypesFromPage } from "../../../api/calls/skillTypeCalls";
-import { ISkillType } from "../../../api/entities/SkillTypeEntity";
-import { Field } from "formik";
 
+/**
+ * Properties needed for [EditProjectSkillSubForm].
+ */
 export interface EditProjectSkillSubFormProps {
     skill: ProjectSkill;
     registerRemoval: () => void;
     registerAlteration: (newSkill: ProjectSkill) => void;
 }
 
+/**
+ * Component allowing you to edit existing projectSkills.
+ * One should not just remove existing projectskills since this will remove all the assignments.
+ * It is however possible to edit the additional info of a projectSKill.
+ * We chose not to update the name of a projectSkill.
+ * This would change the whole semantic of a projectSkill and make some assignments pointless.
+ * @param skill the [ProjectSkill] this form can edit.
+ * @param registerRemoval a callback to register this projectSkill as removed.
+ * @param registerAlteration a callBack to register an alteration in the projectSKill.
+ */
 export default function EditProjectSkillSubForm({
     skill,
     registerRemoval,
@@ -28,9 +36,12 @@ export default function EditProjectSkillSubForm({
 
     const [newInfo, setNewInfo] = useState<string>("");
 
-    useEffect(() => {
-        setNewInfo(skill.additionalInfo);
-    }, [skill.name, skill.additionalInfo]);
+    function setEditing(isEdit: boolean): void {
+        if (isEdit) {
+            setNewInfo(skill.additionalInfo);
+        }
+        setIsEditing(isEdit);
+    }
 
     return (
         <Row>
@@ -52,7 +63,7 @@ export default function EditProjectSkillSubForm({
                             if (skill.additionalInfo !== newInfo) {
                                 registerAlteration(new ProjectSkill(skill.name, newInfo, skill.project));
                             }
-                            setIsEditing(false);
+                            setEditing(false);
                         }}
                         data-testid={"edit-existing-skill-submit-" + skill.name}
                     >
@@ -66,7 +77,7 @@ export default function EditProjectSkillSubForm({
                 </a>
             </Col>
             <Col xs={6}>
-                <a onClick={() => setIsEditing(!isEditing)} data-testid={"edit-existing-skill-" + skill.name}>
+                <a onClick={() => setEditing(!isEditing)} data-testid={"edit-existing-skill-" + skill.name}>
                     <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                 </a>
             </Col>

@@ -40,6 +40,11 @@ export async function editProject(url: string, project: Project): Promise<IProje
     return newProject?._links ? newProject : undefined;
 }
 
+/**
+ * Function that configures the coaches of a given project.
+ * @param project [IProject] of which the coaches need to be set.
+ * @param coachUrls list of URLs to the coaches.
+ */
 export function setProjectCoaches(project: IProject, coachUrls: string[]): Promise<AxiosResponse<any, any>> {
     const coaches = coachUrls.join("\n");
     return axios.put(project._links.coaches.href, coaches, ManyToManyAxiosConf);

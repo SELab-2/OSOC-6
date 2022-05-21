@@ -1,15 +1,22 @@
-import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row } from "react-bootstrap";
 import { capitalize } from "../../../utility/stringUtil";
 import Image from "next/image";
-import { ChangeEvent, FormEventHandler, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
+/**
+ * Properties needed by [CreateGoalsSubFormProps].
+ */
 export interface CreateGoalsSubFormProps {
     goals: string[];
     setGoals: (goals: string[]) => void;
 }
 
+/**
+ * Component allowing you to add goals to a project.
+ * @param goals list of goals that has been added.
+ * @param setGoals callBack that will set the goals.
+ */
 export default function CreateGoalsSubForm({ goals, setGoals }: CreateGoalsSubFormProps) {
     const { t } = useTranslation("common");
 

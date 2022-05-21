@@ -75,6 +75,12 @@ export class Project {
     versionManagement: string;
 }
 
+/**
+ * Function transforming an [IProject] to a [Project] data constructor.
+ * @param project the [IProject] that should be used.
+ * @param editionUrl the linked editionUrl. (Can not be extracted from [IProject])
+ * @param creatorUrl the linked creator. (Can not be extracted from [IProject])
+ */
 export function projectFromIProject(project: IProject, editionUrl: string, creatorUrl: string): Project {
     return new Project(
         project.name,

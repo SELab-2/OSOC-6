@@ -10,11 +10,19 @@ import { IUser } from "../../../api/entities/UserEntity";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 
+/**
+ * Properties needed by [CreateCoachSubFormProps].
+ */
 export interface CreateCoachSubFormProps {
     setCoachUrls: (urls: string[]) => void;
     illegalCoaches: string[];
 }
 
+/**
+ * SubForm allowing you to link new coaches to a project.
+ * @param setCoachUrls callBack that sets the selected coaches as a URI.
+ * @param illegalCoaches list of coaches thatshould not be added.
+ */
 export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: CreateCoachSubFormProps) {
     const { t } = useTranslation("common");
     const { data: receivedUsers, error: usersError } = useSwrWithEdition(

@@ -3,11 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import { getAllUsersFromLinks } from "../../../api/calls/userCalls";
 import { capitalize } from "../../../utility/stringUtil";
-import {
-    ProjectCreationValues,
-    projectFormSubmitHandler,
-    ProjectFormSubmitValues,
-} from "../../../handlers/projectFormSubmitHandler";
+import { ProjectCreationValues, projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../../api/entities/UserEntity";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -31,17 +27,31 @@ import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";
 
 /**
- * The props that have to be passed to the component
+ * Properties needed by [ProjectForm].
  */
 export type ProjectCreationProps = {
     project?: IProject;
 };
 
+/**
+ * Interface describing the shape of the values used by the formik instance in this form.
+ */
+interface ProjectFormSubmitValues {
+    name: string;
+    info: string;
+    versionManagement: string;
+    partnerName: string;
+    partnerWebsite: string;
+}
+
 type AlteredSkillMapper = { [projectSkillUrl: string]: ProjectSkill };
 
 /**
- * A React component containing a form for project creation
- * @param props ProjectCreationProps containing the submitHandler
+ * A form that allows you to create or edit a project.
+ * Includes the creation of projectSkills.
+ * Allows you to link coaches to the project.
+ * @param project the project that needs to be edited. Undefined when in project creation mode.
+ * @constructor
  */
 export function ProjectForm({ project }: ProjectCreationProps) {
     const { t } = useTranslation("common");
@@ -156,7 +166,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         e.which === 13 && e.preventDefault();
                     }}
                 >
-                    <h2>{project ? "edit project" : capitalize(t("create project"))}</h2>
+                    <h2>{project ? capitalize(t("edit project")) : capitalize(t("create project"))}</h2>
                     <label htmlFor="project-name">{capitalize(t("project name"))}:</label>
                     <Field
                         className="form-control mb-2"
@@ -176,8 +186,9 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         data-testid="projectinfo-input"
                         placeholder={capitalize(t("project info"))}
                     />
-                    <label>Goals:</label>
+                    <label>{capitalize(t("project goals"))}:</label>
                     <CreateGoalsSubForm goals={goals} setGoals={setGoals} />
+
                     <label htmlFor="version-management">{capitalize(t("version control URL"))}:</label>
                     <Field
                         className="form-control mb-2"
@@ -187,7 +198,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         data-testid="versionmanagement-input"
                         placeholder={capitalize(t("version control URL"))}
                     />
-                    <label>Coaches:</label>
+                    <label>{capitalize(t("coaches"))}:</label>
                     {existingCoaches
                         .filter((coach) => !removedCoaches.has(coach._links.self.href))
                         .map((coach: IUser) => (
@@ -269,7 +280,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         type="submit"
                         data-testid="submit-project-form-button"
                     >
-                        {project ? "edit project" : capitalize(t("create project"))}
+                        {project ? capitalize(t("edit project")) : capitalize(t("create project"))}
                     </button>
                 </Form>
             </Formik>
