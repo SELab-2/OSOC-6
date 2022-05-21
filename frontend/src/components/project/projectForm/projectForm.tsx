@@ -9,22 +9,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useEditionAPIUrlTransformer } from "../../../hooks/utilHooks";
 import useEdition from "../../../hooks/useGlobalEdition";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import styles from "../../../styles/projects/createProject.module.css";
-import { ScopedMutator } from "swr/dist/types";
-import { IProject, Project } from "../../../api/entities/ProjectEntity";
+import { IProject } from "../../../api/entities/ProjectEntity";
 import { getAllProjectSkillsFromLinks } from "../../../api/calls/projectSkillCalls";
 import {
     IProjectSkill,
     ProjectSkill,
     projectSkillFromIProjectSkill,
 } from "../../../api/entities/ProjectSkillEntity";
-import CreateGoalsSubForm from "./createGoalSubForm";
 import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";
+import ItemListForm from "../../util/itemListForm";
 
 /**
  * Properties needed by [ProjectForm].
@@ -196,9 +195,13 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                         data-testid="projectinfo-input"
                         placeholder={capitalize(t("project info"))}
                     />
-
-                    <label className={styles.label}>{capitalize(t("project goals"))}:</label>
-                    <CreateGoalsSubForm goals={goals} setGoals={setGoals} />
+                    <ItemListForm
+                        items={goals}
+                        setItems={setGoals}
+                        itemInputText={capitalize(t("project goals"))}
+                        itemAddText={capitalize(t("add goal"))}
+                        itemPlaceHolderText={capitalize(t("project goal"))}
+                    />
 
                     <label className={styles.label} htmlFor="version-management">
                         {capitalize(t("version control URL"))}:
