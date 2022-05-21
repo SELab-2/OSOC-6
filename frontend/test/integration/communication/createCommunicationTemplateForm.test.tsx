@@ -21,7 +21,7 @@ describe("create communication template", () => {
     });
 
     it("renders edit", async () => {
-        const page = render(<CreateCommunicationTemplateForm template={template} studentId={studentId}/>);
+        const page = render(<CreateCommunicationTemplateForm template={template} studentId={studentId} />);
         await expect(page.getByTestId("template-form")).toBeInTheDocument();
     });
 
@@ -35,7 +35,7 @@ describe("create communication template", () => {
             "createCommunicationTemplateSubmitHandler"
         );
 
-        const form = render(<CreateCommunicationTemplateForm  studentId={studentId}/>);
+        const form = render(<CreateCommunicationTemplateForm studentId={studentId} />);
 
         const nameElement = form.getByTestId("name");
         const subjectElement = form.getByTestId("subject");
