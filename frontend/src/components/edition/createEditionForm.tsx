@@ -17,7 +17,10 @@ export default function CreateEditionForm() {
     const initialValues: Edition = new Edition("", currentYear, false);
 
     return (
-        <Formik initialValues={initialValues} onSubmit={(values) => editionSubmitHandler(values, routerAction)}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={(values) => editionSubmitHandler(values, routerAction)}
+        >
             {({ values, setFieldValue }) => (
                 <Form>
                     <Row className={styles.edition_create_row}>

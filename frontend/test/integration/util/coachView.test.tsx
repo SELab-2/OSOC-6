@@ -1,16 +1,16 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { enableCurrentUser, makeCacheFree } from "./Provide";
-import EditionList from "../../src/components/edition/editionList";
-import { ProjectList } from "../../src/components/project/projectList";
-import NavBar from "../../src/components/util/navBar";
+import { enableCurrentUser, makeCacheFree } from "../Provide";
+import EditionList from "../../../src/components/edition/editionList";
+import { ProjectList } from "../../../src/components/project/projectList";
+import NavBar from "../../../src/components/util/navBar";
 import mockRouter from "next-router-mock";
-import applicationPaths from "../../src/properties/applicationPaths";
-import ForbiddenCoachRoutes from "../../src/components/util/forbiddenCoachRoutes";
-import CreateEdition from "../../src/pages/editions/create";
+import applicationPaths from "../../../src/properties/applicationPaths";
+import ForbiddenCoachRoutes from "../../../src/components/util/forbiddenCoachRoutes";
+import CreateEdition from "../../../src/pages/editions/create";
 import mockAxios from "jest-mock-axios";
-import { getBaseUser } from "./TestEntityProvider";
-import { UserRole } from "../../src/api/entities/UserEntity";
+import { getBaseUser } from "../TestEntityProvider";
+import { UserRole } from "../../../src/api/entities/UserEntity";
 
 describe("Coach View", () => {
     it("New edition button not visible", () => {

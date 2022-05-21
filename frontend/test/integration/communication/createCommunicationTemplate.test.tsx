@@ -6,6 +6,9 @@ import mockRouter from "next-router-mock";
 import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
+import { enableActForResponse } from "../Provide";
+import { getBaseCommunicationTemplate, getBaseOkResponse } from "../TestEntityProvider";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -43,7 +46,7 @@ describe("create communication template", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, comTemplate, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(null, comTemplate, expect.anything(), expect.anything());
         });
 
         await waitFor(() => {
@@ -52,6 +55,12 @@ describe("create communication template", () => {
                 comTemplate,
                 expect.anything()
             );
+        });
+        const responseTemplate = getBaseCommunicationTemplate("10");
+        await enableActForResponse(apiPaths.communicationTemplates, getBaseOkResponse(responseTemplate));
+
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.communicationTemplateBase + "/10");
         });
     });
 });

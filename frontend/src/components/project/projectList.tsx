@@ -40,13 +40,21 @@ export function ProjectList() {
                     .map(({ project, projectId }) => (
                         <ListGroup.Item
                             key={projectId}
-                            className={"proj " + projectId === selectedProjectId ? "active " : "" + styles.project_list_project}
+                            className={
+                                "proj " + projectId === selectedProjectId
+                                    ? "active "
+                                    : "" + styles.project_list_project
+                            }
                             action
                             as={"div"}
                             onClick={async () => {
-                                await routerAction({ href: "/" + applicationPaths.projects, query: {id: projectId}});
+                                await routerAction({
+                                    href: "/" + applicationPaths.projects,
+                                    query: { id: projectId },
+                                });
                             }}
                             role="tab"
+                            data-testid={"project-select-" + project.name}
                             data-toggle="list"
                         >
                             <div className={styles.project_list_info}>

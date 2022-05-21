@@ -6,7 +6,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import applicationPaths from "../../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
 import mockRouter from "next-router-mock";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableActForUserEvent, enableCurrentUser, makeCacheFree } from "../Provide";
 import { ProjectList } from "../../../src/components/project/projectList";
 import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "../TestEntityProvider";
 import { UserRole } from "../../../src/api/entities/UserEntity";
@@ -41,9 +41,11 @@ describe("Project", () => {
         });
     });
 
-    it.skip("Should go to projects/create when clicking button", async () => {
-        render(<ProjectList />);
-        await userEvent.click(screen.getByTestId("new-project-button"));
+    it("Should go to projects/create when clicking button", async () => {
+        const user = getBaseUser("10", UserRole.admin, true);
+        const list = render(<ProjectList />);
+        await enableCurrentUser(user);
+        await userEvent.click(await list.findByTestId("new-project-button"));
 
         await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
     });
@@ -54,11 +56,13 @@ describe("Project", () => {
             getBasePage(apiPaths.projects, "projects", [baseProject])
         );
 
-        render(makeCacheFree(ProjectList));
+        const list = render(makeCacheFree(ProjectList));
 
-        mockAxios.mockResponseFor({ method: "GET" }, response);
-        await userEvent.click(await screen.findByText(baseProject.name));
+        await enableActForResponse({ method: "GET" }, response);
+        await userEvent.click(await list.findByTestId("project-select-" + baseProject.name));
 
-        expect(mockRouter.pathname).toEqual("/projects/5");
+        await waitFor(() => {
+            expect(mockRouter.query).toEqual({ id: "5" });
+        });
     });
 });

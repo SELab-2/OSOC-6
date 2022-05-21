@@ -71,9 +71,7 @@ describe("Login page", () => {
         const errorSetter = jest.fn();
         const routerAction = jest.fn();
 
-        loginSubmitHandler(values, errorSetter,
-            routerAction,
-            undefined, (() => {}) as any as ScopedMutator);
+        loginSubmitHandler(values, errorSetter, routerAction, undefined, (() => {}) as any as ScopedMutator);
 
         await waitFor(() => {
             mockAxios.mockResponseFor(

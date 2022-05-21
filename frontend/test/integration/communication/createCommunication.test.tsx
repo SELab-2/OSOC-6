@@ -7,6 +7,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import CreateCommunicationForm from "../../../src/components/communication/createCommunicationForm";
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import {
+    getBaseCommunication,
     getBaseCommunicationTemplate,
     getBaseOkResponse,
     getBasePage,
@@ -15,8 +16,11 @@ import {
 } from "../TestEntityProvider";
 import { Communication } from "../../../src/api/entities/CommunicationEntity";
 import { UserRole } from "../../../src/api/entities/UserEntity";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import { communicationTemplateCollectionName } from "../../../src/api/entities/CommunicationTemplateEntity";
+import applicationPaths from "../../../src/properties/applicationPaths";
+import { extractIdFromApiEntityUrl } from "../../../src/api/calls/baseCalls";
+import { extractIdFromCommunicationUrl } from "../../../src/api/calls/communicationCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -85,7 +89,7 @@ describe("create communication", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(communication, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(communication, expect.anything(), expect.anything());
         });
 
         await waitFor(() => {
@@ -94,6 +98,12 @@ describe("create communication", () => {
                 communication,
                 expect.anything()
             );
+        });
+        const communicationResponse = getBaseCommunication("10");
+        await enableActForResponse(apiPaths.communications, getBaseOkResponse(communicationResponse));
+
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.communicationBase + "/10");
         });
     });
 });
