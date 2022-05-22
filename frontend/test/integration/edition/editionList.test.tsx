@@ -1,14 +1,14 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
-import {act, render, screen, waitFor} from "@testing-library/react";
-import {enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree} from "../Provide";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
-import {getBaseActiveEdition, getBaseNoContentResponse, getBaseUser,} from "../TestEntityProvider";
-import {IEdition} from "../../../src/api/entities/EditionEntity";
+import { getBaseActiveEdition, getBaseNoContentResponse, getBaseUser } from "../TestEntityProvider";
+import { IEdition } from "../../../src/api/entities/EditionEntity";
 import EditionRowComponent from "../../../src/components/edition/editionRowComponent";
 import userEvent from "@testing-library/user-event";
-import {AxiosResponse} from "axios";
-import {UserRole} from "../../../src/api/entities/UserEntity";
+import { AxiosResponse } from "axios";
+import { UserRole } from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

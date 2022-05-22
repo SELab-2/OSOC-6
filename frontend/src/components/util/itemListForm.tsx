@@ -1,9 +1,9 @@
-import {Col, Row} from "react-bootstrap";
-import {ChangeEvent, useState} from "react";
+import { Col, Row } from "react-bootstrap";
+import { ChangeEvent, useState } from "react";
 import styles from "../../styles/projects/createProject.module.css";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
-import {ConfirmDeleteButton} from "./confirmDeleteButton";
+import { ConfirmDeleteButton } from "./confirmDeleteButton";
 
 /**
  * Props needed for the ItemListForm component.
@@ -56,7 +56,12 @@ export default function ItemListForm({
                         <Row>
                             <Col>{item}</Col>
                             <Col xs={2}>
-                                <ConfirmDeleteButton dataTestId="item-list-delete-button" handler={() => setItems(items.filter((_, valIndex) => valIndex !== index))}/>
+                                <ConfirmDeleteButton
+                                    dataTestId="item-list-delete-button"
+                                    handler={() =>
+                                        setItems(items.filter((_, valIndex) => valIndex !== index))
+                                    }
+                                />
                             </Col>
                         </Row>
                     </li>

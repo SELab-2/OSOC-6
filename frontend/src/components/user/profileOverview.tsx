@@ -57,7 +57,7 @@ export function ProfileOverview() {
     }
 
     async function deleteCurrentUser() {
-        const result = confirm(capitalize(t("confirm delete profile")))
+        const result = confirm(capitalize(t("confirm delete profile")));
         if (result && user) {
             const response: AxiosResponse = await userDelete(user._links.self.href);
             if (response.status == StatusCodes.NO_CONTENT) {

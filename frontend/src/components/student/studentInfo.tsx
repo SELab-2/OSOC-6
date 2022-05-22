@@ -1,11 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
-import {capitalize} from "../../utility/stringUtil";
-import {Button, Col, ListGroup, Row, Toast, ToastContainer} from "react-bootstrap";
-import {SuggestionStrategy} from "../../api/entities/SuggestionEntity";
-import {SuggestionModal} from "../suggestion/suggestionModal";
-import {StudentStatus} from "./studentStatus";
+import { capitalize } from "../../utility/stringUtil";
+import { Button, Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
+import { SuggestionModal } from "../suggestion/suggestionModal";
+import { StudentStatus } from "./studentStatus";
 import {
     emptyStudent,
     englishProficiencyAsString,
@@ -14,20 +14,20 @@ import {
 } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
-import {deleteStudent, extractIdFromStudentUrl, getStudentOnUrl} from "../../api/calls/studentCalls";
-import {getAllSuggestionsFromLinks} from "../../api/calls/suggestionCalls";
+import { deleteStudent, extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
-import {useEditionApplicationPathTransformer} from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import styles from "../../styles/studentOverview.module.css";
 import Image from "next/image";
-import {StatusCodes} from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
-import {useState} from "react";
-import {getParamsFromQueryUrl, getQueryUrlFromParams} from "../../api/calls/baseCalls";
-import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
-import {getStudentQueryParamsFromQuery} from "./studentFilterComponent";
-import {ConfirmDeleteButton} from "../util/confirmDeleteButton";
+import { useState } from "react";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 /**
  * Give an overview of all the studentinfo
@@ -124,7 +124,7 @@ export function StudentInfo() {
                             >
                                 <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                             </a>
-                            <ConfirmDeleteButton dataTestId="delete-student" handler={deleteStudentOnClick}/>
+                            <ConfirmDeleteButton dataTestId="delete-student" handler={deleteStudentOnClick} />
                         </>
                     )}
                 </h1>

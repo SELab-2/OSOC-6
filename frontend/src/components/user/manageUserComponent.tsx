@@ -1,16 +1,16 @@
 import useTranslation from "next-translate/useTranslation";
-import {Col, Container, DropdownButton, Row, Toast, ToastContainer} from "react-bootstrap";
+import { Col, Container, DropdownButton, Row, Toast, ToastContainer } from "react-bootstrap";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import {useState} from "react";
-import {useSWRConfig} from "swr";
+import { useState } from "react";
+import { useSWRConfig } from "swr";
 import apiPaths from "../../properties/apiPaths";
-import {StatusCodes} from "http-status-codes";
-import {AxiosResponse} from "axios";
-import {capitalize} from "../../utility/stringUtil";
-import {UserRole} from "../../api/entities/UserEntity";
+import { StatusCodes } from "http-status-codes";
+import { AxiosResponse } from "axios";
+import { capitalize } from "../../utility/stringUtil";
+import { UserRole } from "../../api/entities/UserEntity";
 import timers from "../../properties/timers";
-import {disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete} from "../../api/calls/userCalls";
-import {ConfirmDeleteButton} from "../util/confirmDeleteButton";
+import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -83,7 +83,7 @@ export function UserComponent(props: any) {
                     </DropdownButton>
                 </Col>
                 <Col xs={1}>
-                    <ConfirmDeleteButton dataTestId="overview-delete-user" handler={deleteUser}/>
+                    <ConfirmDeleteButton dataTestId="overview-delete-user" handler={deleteUser} />
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast

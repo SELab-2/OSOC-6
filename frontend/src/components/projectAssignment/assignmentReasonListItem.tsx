@@ -1,11 +1,11 @@
 import useSWR from "swr";
-import {getUserOnUrl} from "../../api/calls/userCalls";
-import {getAssignmentOnUrl} from "../../api/calls/AssignmentCalls";
-import {emptyAssignment} from "../../api/entities/AssignmentEntity";
-import {emptyUser} from "../../api/entities/UserEntity";
-import {capitalize} from "../../utility/stringUtil";
+import { getUserOnUrl } from "../../api/calls/userCalls";
+import { getAssignmentOnUrl } from "../../api/calls/AssignmentCalls";
+import { emptyAssignment } from "../../api/entities/AssignmentEntity";
+import { emptyUser } from "../../api/entities/UserEntity";
+import { capitalize } from "../../utility/stringUtil";
 import styles from "../../styles/assignments.module.css";
-import {CloseButton} from "react-bootstrap";
+import { CloseButton } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 
 export interface AssignmentReasonListItemProps {

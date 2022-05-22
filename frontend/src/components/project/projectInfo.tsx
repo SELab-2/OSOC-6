@@ -1,20 +1,20 @@
 import useTranslation from "next-translate/useTranslation";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import useFullProjectInfo from "../../hooks/useFullProjectInfo";
-import {emptyProject} from "../../api/entities/ProjectEntity";
+import { emptyProject } from "../../api/entities/ProjectEntity";
 import ProjectSkillStudent from "./projectSkillStudent";
 import styles from "../../styles/projects/projectInfo.module.css";
-import {useState} from "react";
-import {StatusCodes} from "http-status-codes";
-import {getParamsFromQueryUrl, getQueryUrlFromParams} from "../../api/calls/baseCalls";
+import { useState } from "react";
+import { StatusCodes } from "http-status-codes";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
-import {deleteProject} from "../../api/calls/projectCalls";
-import {Toast, ToastContainer} from "react-bootstrap";
+import { deleteProject } from "../../api/calls/projectCalls";
+import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
-import {ConfirmDeleteButton} from "../util/confirmDeleteButton";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
@@ -62,7 +62,7 @@ export function ProjectInfo() {
                     >
                         <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                     </a>
-                    <ConfirmDeleteButton dataTestId="delete-project" handler={deleteProjectOnClick}/>
+                    <ConfirmDeleteButton dataTestId="delete-project" handler={deleteProjectOnClick} />
                 </div>
             </div>
             <h5>

@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import {capitalize} from "../../utility/stringUtil";
+import { capitalize } from "../../utility/stringUtil";
 import Image from "next/image";
 
 /**
