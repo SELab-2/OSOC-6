@@ -14,6 +14,7 @@ import SkillBadge from "../util/skillBadge";
 import { useState } from "react";
 import { ProjectMapper } from "../conflictResolution/conflictResolutionItem";
 import StudentAssignmentRegister from "./studentAssignmentRegister";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 /**
  * Type that will hold the projectSkills and its assignments.
@@ -42,7 +43,7 @@ function ProjectSkillItem({ skill }: IAssignmentItemProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(skill);
-    const { data: receivedAssignments, error: assignmentsError } = useSWR(
+    const { data: receivedAssignments, error: assignmentsError } = useSwrForEntityList(
         assignmentsUrl,
         getAllAssignmentsFromPage
     );

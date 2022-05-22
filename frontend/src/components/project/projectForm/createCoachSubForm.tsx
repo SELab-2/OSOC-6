@@ -3,7 +3,11 @@ import Image from "next/image";
 import { capitalize } from "../../../utility/stringUtil";
 import { ChangeEvent, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { useSwrWithEdition } from "../../../hooks/utilHooks";
+import {
+    useSwrForEntityList,
+    useSwrForEntityListWithEdition,
+    useSwrWithEdition,
+} from "../../../hooks/utilHooks";
 import apiPaths from "../../../properties/apiPaths";
 import { getAllUsersFromPage } from "../../../api/calls/userCalls";
 import { IUser } from "../../../api/entities/UserEntity";
@@ -26,7 +30,7 @@ export interface CreateCoachSubFormProps {
  */
 export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: CreateCoachSubFormProps) {
     const { t } = useTranslation("common");
-    const { data: receivedUsers, error: usersError } = useSwrWithEdition(
+    const { data: receivedUsers, error: usersError } = useSwrForEntityListWithEdition(
         apiPaths.userByEdition,
         getAllUsersFromPage
     );

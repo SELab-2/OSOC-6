@@ -15,6 +15,7 @@ import ProjectSkillRegister from "./projectSkillRegister";
 import styles from "../../styles/conflicts.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 /**
  * Type that will hold the projectSkills and its assignments.
@@ -39,7 +40,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
     const { t } = useTranslation("common");
     const assignmentsUrl = getValidAssignmentsUrlForStudent(student);
     const currentUserIsAdmin = useCurrentAdminUser();
-    const { data: receivedAssignments, error: assignmentsError } = useSWR(
+    const { data: receivedAssignments, error: assignmentsError } = useSwrForEntityList(
         assignmentsUrl,
         getAllAssignmentsFromPage
     );

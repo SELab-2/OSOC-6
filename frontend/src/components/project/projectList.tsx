@@ -4,7 +4,12 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import {
+    useEditionApplicationPathTransformer,
+    useSwrForEntityList,
+    useSwrForEntityListWithEdition,
+    useSwrWithEdition,
+} from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
@@ -14,7 +19,7 @@ export function ProjectList() {
     const transformer = useEditionApplicationPathTransformer();
     const currentUserIsAdmin = useCurrentAdminUser();
 
-    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
+    let { data, error } = useSwrForEntityListWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
     data = data || [];
 
     if (error) {

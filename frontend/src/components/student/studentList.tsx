@@ -11,7 +11,12 @@ import {
 } from "../../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import {
+    useEditionApplicationPathTransformer,
+    useSwrForEntityList,
+    useSwrForEntityListWithEdition,
+    useSwrWithEdition,
+} from "../../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
 import { IStudent, Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
@@ -29,11 +34,11 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
 
     const isAdmin = useCurrentAdminUser();
 
-    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
+    const { data: receivedStudents, error: studentsError } = useSwrForEntityListWithEdition(
         constructStudentQueryUrl(apiPaths.studentByQuery, params),
         getAllStudentsFromPage
     );
-    const { data: receivedSkillTypes, error: skillTypesError } = useSWR(
+    const { data: receivedSkillTypes, error: skillTypesError } = useSwrForEntityList(
         apiPaths.skillTypes,
         getAllSkillTypesFromPage
     );

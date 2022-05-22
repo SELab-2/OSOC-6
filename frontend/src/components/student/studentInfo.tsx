@@ -18,7 +18,7 @@ import { extractIdFromStudentUrl, deleteStudent, getStudentOnUrl } from "../../a
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrForEntityList } from "../../hooks/utilHooks";
 import styles from "../../styles/studentOverview.module.css";
 import Image from "next/image";
 import { StatusCodes } from "http-status-codes";
@@ -39,9 +39,12 @@ export function StudentInfo() {
     const { id } = router.query as { id: string };
     const [show, setShow] = useState<boolean>(false);
 
-    let { data: student, error: studentError } = useSWR(apiPaths.students + "/" + id, getStudentOnUrl);
-    let { data: suggestions, error: suggestionsError } = useSWR(
-        student ? student._links.suggestions.href : null,
+    const { data: receivedStudent, error: studentError } = useSWR(
+        apiPaths.students + "/" + id,
+        getStudentOnUrl
+    );
+    const { data: receivedSuggestions, error: suggestionsError } = useSwrForEntityList(
+        receivedStudent ? receivedStudent._links.suggestions.href : null,
         getAllSuggestionsFromLinks
     );
 
@@ -50,8 +53,8 @@ export function StudentInfo() {
         return null;
     }
 
-    student = student || emptyStudent;
-    suggestions = suggestions || [];
+    const student = receivedStudent || emptyStudent;
+    const suggestions = receivedSuggestions || [];
 
     let motivation;
     if (student.motivationURI == "") {

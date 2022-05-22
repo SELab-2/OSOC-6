@@ -1,5 +1,9 @@
 import apiPaths from "../../properties/apiPaths";
-import { useSwrWithEdition } from "../../hooks/utilHooks";
+import {
+    useSwrForEntityList,
+    useSwrForEntityListWithEdition,
+    useSwrWithEdition,
+} from "../../hooks/utilHooks";
 import { getAllStudentsFromPage } from "../../api/calls/studentCalls";
 import { sortStudentsByName } from "../../api/entities/StudentEntity";
 import ConflictResolutionItem from "./conflictResolutionItem";
@@ -12,7 +16,7 @@ import styles from "../../styles/conflicts.module.css";
  */
 export default function ConflictResolutionList() {
     const { t } = useTranslation("common");
-    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
+    const { data: receivedStudents, error: studentsError } = useSwrForEntityListWithEdition(
         apiPaths.studentConflict,
         getAllStudentsFromPage,
         { refreshInterval: 1000 }

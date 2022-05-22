@@ -3,7 +3,7 @@ import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { Invitation } from "../../api/entities/InvitationEntity";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrForEntityList } from "../../hooks/utilHooks";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { createInvitation } from "../../api/calls/invitationCalls";
 import useTranslation from "next-translate/useTranslation";
@@ -22,7 +22,7 @@ export default function InvitationButton() {
     const { user, error } = useCurrentUser(true);
     const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
 
-    const { data, error: templateError } = useSWR(
+    const { data, error: templateError } = useSwrForEntityList(
         getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
             name: applicationProperties.invitationTemplate,
         }),

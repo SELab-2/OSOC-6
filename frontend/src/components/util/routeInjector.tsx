@@ -12,6 +12,7 @@ import { Button } from "react-bootstrap";
 import NavBar from "./navBar";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { pathIsAuthException } from "../../utility/pathUtil";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 export default function RouteInjector({ children }: any) {
     const router = useRouter();
@@ -39,7 +40,7 @@ export default function RouteInjector({ children }: any) {
     const fetchedRouterEditionUrl = fetchedRouterEdition?._links?.self?.href;
     const hadRouterError = !!fetchedEditionError;
 
-    const { data: availableEditions, error: availableEditionsError } = useSWR(
+    const { data: availableEditions, error: availableEditionsError } = useSwrForEntityList(
         !contextEditionUrl && !routerEditionName && injectorActive
             ? getQueryUrlFromParams(apiPaths.editions, { sort: "year" })
             : null,

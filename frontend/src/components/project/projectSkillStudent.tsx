@@ -11,6 +11,7 @@ import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studen
 import { emptyStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import applicationPaths from "../../properties/applicationPaths";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 export interface IProjectSkillStudentProps {
     projectSkill: IProjectSkill;
@@ -49,18 +50,16 @@ export function AssignmentStudentListItem({ assignment }: IAssignmentStudentList
  * @param projectSkill [IProjectSkill] that is represented by this component.
  */
 export default function ProjectSkillStudent({ projectSkill }: IProjectSkillStudentProps) {
-    let { data: skillType, error: skillTypeError } = useSkillTypeByName(projectSkill.name);
-    let { data: assignments, error: assignmentError } = useSWR(
+    let { data: assignments, error: assignmentError } = useSwrForEntityList(
         getValidAssignmentsUrlForProjectSkill(projectSkill),
         getAllAssignmentsFromPage
     );
 
-    if (skillTypeError || assignmentError) {
-        console.log(skillTypeError || assignmentError);
+    if (assignmentError) {
+        console.log(assignmentError);
         return null;
     }
 
-    skillType = skillType || emptySkillType;
     assignments = assignments || [];
 
     return (

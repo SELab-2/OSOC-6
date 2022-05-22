@@ -1,19 +1,23 @@
 import useSWR from "swr";
 import { getStudentOnUrl } from "../../api/calls/studentCalls";
 import styles from "../../styles/studentList.module.css";
+import { emptyStudent } from "../../api/entities/StudentEntity";
 
 export function SuggestionCount(props: { studentUrl: string }) {
-    const { data, error } = useSWR(props.studentUrl, getStudentOnUrl);
+    const { data: receivedStudent, error: studentError } = useSWR(props.studentUrl, getStudentOnUrl);
 
-    if (error || !data) {
+    if (studentError) {
+        console.log(studentError);
         return null;
     }
 
-    const total = data.yesSuggestionCount + data.maybeSuggestionCount + data.noSuggestionCount;
-    const yes = (data.yesSuggestionCount / total) * 100;
-    const maybe = (data.maybeSuggestionCount / total) * 100;
+    const student = receivedStudent || emptyStudent;
 
-    if (data.yesSuggestionCount + data.maybeSuggestionCount + data.noSuggestionCount != 0) {
+    const total = student.yesSuggestionCount + student.maybeSuggestionCount + student.noSuggestionCount;
+    const yes = (student.yesSuggestionCount / total) * 100;
+    const maybe = (student.maybeSuggestionCount / total) * 100;
+
+    if (student.yesSuggestionCount + student.maybeSuggestionCount + student.noSuggestionCount != 0) {
         return (
             <div
                 className={styles.line}

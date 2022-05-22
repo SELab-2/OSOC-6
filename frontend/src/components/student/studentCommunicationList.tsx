@@ -1,18 +1,18 @@
 import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { extractIdFromStudentUrl } from "../../api/calls/studentCalls";
 import { ICommunication } from "../../api/entities/CommunicationEntity";
 import { getAllCommunicationFromPage } from "../../api/calls/communicationCalls";
 import CommunicationListItem from "../communication/communicationListItem";
-import { Button, Col, Row } from "react-bootstrap";
+import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { useRouter } from "next/router";
-import { Accordion, Container } from "react-bootstrap";
 import AccordionItem from "react-bootstrap/AccordionItem";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import { IStudent } from "../../api/entities/StudentEntity";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 /**
  * Properties needed for [StudentCommunicationList].
@@ -29,7 +29,7 @@ export default function StudentCommunicationList({ student }: CommunicationListP
     const { t } = useTranslation("common");
     const router = useRouter();
     const id = extractIdFromStudentUrl(student._links.self.href);
-    const { data: receivedCommunications, error: communicationsError } = useSWR(
+    const { data: receivedCommunications, error: communicationsError } = useSwrForEntityList(
         student
             ? getQueryUrlFromParams(apiPaths.communicationsByStudent, {
                   studentId: id,
