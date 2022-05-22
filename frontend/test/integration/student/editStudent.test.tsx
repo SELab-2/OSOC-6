@@ -45,7 +45,7 @@ describe("edit student", () => {
     });
 
     it("renders", async () => {
-        await page.findByTestId("student-edit");
+        await page.findByTestId("student-create-form");
     });
 
     it("renders with data", async () => {
