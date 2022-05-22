@@ -1,19 +1,19 @@
 import useTranslation from "next-translate/useTranslation";
-import { Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
+import {Col, Container, Row, Toast, ToastContainer} from "react-bootstrap";
 import Image from "next/image";
-import { useState } from "react";
-import { useSWRConfig } from "swr";
+import {useState} from "react";
+import {useSWRConfig} from "swr";
 import apiPaths from "../../properties/apiPaths";
-import { StatusCodes } from "http-status-codes";
-import { capitalize } from "../../utility/stringUtil";
+import {StatusCodes} from "http-status-codes";
+import {capitalize} from "../../utility/stringUtil";
 import timers from "../../properties/timers";
-import { editionDelete, extractIdFromEditionUrl } from "../../api/calls/editionCalls";
+import {editionDelete, extractIdFromEditionUrl} from "../../api/calls/editionCalls";
 import applicationPaths from "../../properties/applicationPaths";
-import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "../../hooks/utilHooks";
-import { IEdition } from "../../api/entities/EditionEntity";
-import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
-import { useRouter } from "next/router";
-import { AxiosError, AxiosResponse } from "axios";
+import {useEditionApplicationPathTransformer, useGlobalEditionSetter} from "../../hooks/utilHooks";
+import {IEdition} from "../../api/entities/EditionEntity";
+import {useCurrentAdminUser} from "../../hooks/useCurrentUser";
+import {useRouter} from "next/router";
+import {ConfirmDeleteButton} from "../util/confirmDeleteButton";
 
 type EditionProps = {
     edition: IEdition;
@@ -41,17 +41,20 @@ export function EditionRowComponent(props: EditionProps) {
 
     async function deleteEdition() {
         try {
-            const response = await editionDelete(edition._links.self.href);
+            const result = confirm(capitalize(t("confirm delete")))
+            if (result) {
+                const response = await editionDelete(edition._links.self.href);
 
-            if (response?.status === StatusCodes.NO_CONTENT) {
-                try {
-                    const editionsMutate = mutate(apiPaths.editions);
-                    const editionMutate = mutate(edition._links.self.href);
-                } catch (error) {
+                if (response?.status === StatusCodes.NO_CONTENT) {
+                    try {
+                        const editionsMutate = mutate(apiPaths.editions);
+                        const editionMutate = mutate(edition._links.self.href);
+                    } catch (error) {
+                        setShow(true);
+                    }
+                } else {
                     setShow(true);
                 }
-            } else {
-                setShow(true);
             }
         } catch (error: any) {
             if (error.response.status === StatusCodes.CONFLICT) {
@@ -93,13 +96,7 @@ export function EditionRowComponent(props: EditionProps) {
                         </a>
                     )}
                     {currentUserIsAdmin && (
-                        <a
-                            style={{ cursor: "pointer" }}
-                            onClick={deleteEdition}
-                            data-testid="list-delete-edition"
-                        >
-                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                        </a>
+                        <ConfirmDeleteButton dataTestId="list-delete-edition" handler={deleteEdition}/>
                     )}
                 </Col>
                 <ToastContainer position="bottom-end">

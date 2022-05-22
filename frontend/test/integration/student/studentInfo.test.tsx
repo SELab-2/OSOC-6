@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import {
     getBaseBadRequestResponse,
     getBaseLinks,
@@ -11,21 +11,20 @@ import {
     getBaseSuggestion,
     getBaseUser,
 } from "../TestEntityProvider";
-import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
-import { StudentInfo } from "../../../src/components/student/studentInfo";
-import { IStudent } from "../../../src/api/entities/StudentEntity";
-import { jest } from "@jest/globals";
-import { ISuggestion, suggestionCollectionName } from "../../../src/api/entities/SuggestionEntity";
+import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
+import {StudentInfo} from "../../../src/components/student/studentInfo";
+import {IStudent} from "../../../src/api/entities/StudentEntity";
+import {jest} from "@jest/globals";
+import {ISuggestion, suggestionCollectionName} from "../../../src/api/entities/SuggestionEntity";
 import mockAxios from "jest-mock-axios";
-import { IUser, UserRole } from "../../../src/api/entities/UserEntity";
+import {IUser, UserRole} from "../../../src/api/entities/UserEntity";
 import mockRouter from "next-router-mock";
 import apiPaths from "../../../src/properties/apiPaths";
-import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
-import { AxiosResponse } from "axios";
+import {AxiosResponse} from "axios";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import { communicationCollectionName } from "../../../src/api/entities/CommunicationEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -99,6 +98,8 @@ describe("StudentInfo", () => {
         const baseStudent: IStudent = getBaseStudent(studentId);
         await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
+        window.confirm = jest.fn(() => true);
+
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
 
@@ -120,6 +121,8 @@ describe("StudentInfo", () => {
 
         const baseStudent: IStudent = getBaseStudent(studentId);
         await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
+
+        window.confirm = jest.fn(() => true);
 
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);

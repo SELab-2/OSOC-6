@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
-import { AxiosResponse } from "axios";
 import {
     getBaseAssignment,
     getBaseNoContentResponse,
@@ -12,21 +11,18 @@ import {
     getBaseUser,
 } from "../TestEntityProvider";
 import apiPaths from "../../../src/properties/apiPaths";
-import { act, render, RenderResult, screen, waitFor } from "@testing-library/react";
-import { ISkillType, skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import {render, RenderResult, waitFor} from "@testing-library/react";
+import {ISkillType, skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
 import ProjectSkillItem from "../../../src/components/projectAssignment/projectSkillItem";
-import { assignmentCollectionName, IAssignment } from "../../../src/api/entities/AssignmentEntity";
-import { IUser, UserRole } from "../../../src/api/entities/UserEntity";
-import { IStudent } from "../../../src/api/entities/StudentEntity";
-import { IProjectSkill } from "../../../src/api/entities/ProjectSkillEntity";
-import { capitalize } from "../../../src/utility/stringUtil";
+import {assignmentCollectionName, IAssignment} from "../../../src/api/entities/AssignmentEntity";
+import {IUser, UserRole} from "../../../src/api/entities/UserEntity";
+import {IStudent} from "../../../src/api/entities/StudentEntity";
+import {IProjectSkill} from "../../../src/api/entities/ProjectSkillEntity";
+import {capitalize} from "../../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { enableActForResponse, makeCacheFree } from "../Provide";
-import {
-    extractIdFromAssignmentUrl,
-    getValidAssignmentsUrlForProjectSkill,
-} from "../../../src/api/calls/AssignmentCalls";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
+import {enableActForResponse, makeCacheFree} from "../Provide";
+import {getValidAssignmentsUrlForProjectSkill,} from "../../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -127,6 +123,8 @@ describe("Assignment item", () => {
         });
 
         async function removeAssignment(assignment: IAssignment) {
+            window.confirm = jest.fn(() => true);
+
             const removeButton = await item.findByTestId("remove-assignment-button-" + assignment.reason);
             await userEvent.click(removeButton);
 

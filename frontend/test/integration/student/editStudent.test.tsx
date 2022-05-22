@@ -93,6 +93,8 @@ describe("edit student", () => {
         const itemListAddElements = page.getAllByTestId("item-list-add-button");
         const itemDeleteElements = page.getAllByTestId("item-list-delete-button");
 
+        window.confirm = jest.fn(() => true);
+
         await userEvent.clear(callNameElement);
         await userEvent.clear(durationCurrentDegreeElement);
         await userEvent.clear(cVURIElement);

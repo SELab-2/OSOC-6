@@ -1,15 +1,15 @@
-import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
-import Image from "next/image";
-import { capitalize } from "../../../utility/stringUtil";
-import { ChangeEvent, useEffect, useState } from "react";
+import {ButtonGroup, Col, Dropdown, Row} from "react-bootstrap";
+import {capitalize} from "../../../utility/stringUtil";
+import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
-import { useSwrWithEdition } from "../../../hooks/utilHooks";
+import {useSwrWithEdition} from "../../../hooks/utilHooks";
 import apiPaths from "../../../properties/apiPaths";
-import { getAllUsersFromPage } from "../../../api/calls/userCalls";
-import { IUser } from "../../../api/entities/UserEntity";
+import {getAllUsersFromPage} from "../../../api/calls/userCalls";
+import {IUser} from "../../../api/entities/UserEntity";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import styles from "../../../styles/projects/createProject.module.css";
+import {ConfirmDeleteButton} from "../../util/confirmDeleteButton";
 
 /**
  * Properties needed by [CreateCoachSubForm].
@@ -77,14 +77,7 @@ export default function CreateCoachSubForm({ setCoachUrls, illegalCoaches }: Cre
                         <Row key={index}>
                             <Col>{coach}</Col>
                             <Col xs={1}>
-                                <a
-                                    data-testid={"remove-added-coach-" + coach}
-                                    onClick={() =>
-                                        setCoaches(coaches.filter((_, valIndex) => valIndex !== index))
-                                    }
-                                >
-                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                                </a>
+                                <ConfirmDeleteButton dataTestId={"remove-added-coach-" + coach} handler={() => setCoaches(coaches.filter((_, valIndex) => valIndex !== index))}/>
                             </Col>
                         </Row>
                     </li>

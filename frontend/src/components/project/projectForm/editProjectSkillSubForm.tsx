@@ -1,12 +1,12 @@
-import { Col, Row } from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import SkillBadge from "../../util/skillBadge";
 import Image from "next/image";
-import { ProjectSkill } from "../../../api/entities/ProjectSkillEntity";
-import { ChangeEvent, useEffect, useState } from "react";
+import {ProjectSkill} from "../../../api/entities/ProjectSkillEntity";
+import {ChangeEvent, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../../utility/stringUtil";
-import { inspect } from "util";
+import {capitalize} from "../../../utility/stringUtil";
 import styles from "../../../styles/projects/createProject.module.css";
+import {ConfirmDeleteButton} from "../../util/confirmDeleteButton";
 
 /**
  * Properties needed for [EditProjectSkillSubForm].
@@ -82,13 +82,7 @@ export default function EditProjectSkillSubForm({
                 >
                     <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                 </a>
-                <a
-                    style={{ cursor: "pointer" }}
-                    data-testid={"remove-existing-skill-" + skill.name}
-                    onClick={registerRemoval}
-                >
-                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                </a>
+                <ConfirmDeleteButton dataTestId={"remove-existing-skill-" + skill.name} handler={registerRemoval}/>
             </Col>
         </Row>
     );

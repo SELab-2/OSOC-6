@@ -1,17 +1,16 @@
-import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
+import {ButtonGroup, Col, Dropdown, Row} from "react-bootstrap";
 import SkillBadge from "../../util/skillBadge";
-import Image from "next/image";
-import { Field } from "formik";
-import { capitalize } from "../../../utility/stringUtil";
-import { ChangeEvent, useEffect, useState } from "react";
+import {capitalize} from "../../../utility/stringUtil";
+import {ChangeEvent, useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
 import apiPaths from "../../../properties/apiPaths";
-import { getAllSkillTypesFromPage } from "../../../api/calls/skillTypeCalls";
-import { ISkillType } from "../../../api/entities/SkillTypeEntity";
+import {getAllSkillTypesFromPage} from "../../../api/calls/skillTypeCalls";
+import {ISkillType} from "../../../api/entities/SkillTypeEntity";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import styles from "../../../styles/projects/createProject.module.css";
+import {ConfirmDeleteButton} from "../../util/confirmDeleteButton";
 
 /**
  * Properties needed by [CreateProjectSkillSubForm].
@@ -83,20 +82,16 @@ export default function CreateProjectSkillSubForm({
                     </Col>
                     <Col>{skillInfo}</Col>
                     <Col xs={2} style={{ display: "flex" }}>
-                        <a
-                            style={{ cursor: "pointer", marginLeft: "auto", marginRight: "2.5rem" }}
-                            data-testid={"remove-added-skill-" + createdSkillNames[index]}
-                            onClick={() => {
+                        <div style={{marginLeft: "auto", marginRight: "2.5rem"}}>
+                            <ConfirmDeleteButton dataTestId={"remove-added-skill-" + createdSkillNames[index]} handler={() => {
                                 setCreatedSkillNames(
                                     createdSkillNames.filter((_, valIndex) => index !== valIndex)
                                 );
                                 setCreatedSkillInfos(
                                     createdSkillInfos.filter((_, valIndex) => index !== valIndex)
                                 );
-                            }}
-                        >
-                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                        </a>
+                            }}/>
+                        </div>
                     </Col>
                 </Row>
             ))}
