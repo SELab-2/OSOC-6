@@ -35,12 +35,14 @@ const RegistrationForm: NextPage = () => {
                 await basePost(apiPaths.base + apiPaths.registration, registratingUser, {
                     token: invitationToken,
                 });
+                const returnUrl = router.query.returnUrl;
                 await loginSubmitHandler(
                     { username: values.email, password: values.password },
                     () => {},
                     router,
                     mutate
                 );
+                // This needs to use the router since edition is not yet defined at this point
                 await router.push("/" + applicationPaths.assignStudents);
             } catch (error: any) {
                 setError(error.response.data);

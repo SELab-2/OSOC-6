@@ -95,6 +95,17 @@ export function getQueryUrlFromParams(url: string, params: { [k: string]: any })
     return urlConstructor;
 }
 
+export function removeParamFormUrl(url: string, param: string): string {
+    if (!(url.includes("?" + param + "=") || url.includes("&" + param + "="))) {
+        return url;
+    }
+    return url
+        .replace(new RegExp(param + "=[^&]*"), "")
+        .replace("?&", "?")
+        .replace("&&", "&")
+        .replace(/[?&]$/, "");
+}
+
 export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
     if (url.includes("?")) {
         const urlQuery = url.split("?")[1];

@@ -4,18 +4,18 @@ import { useRouter } from "next/router";
 import applicationPaths from "../../properties/applicationPaths";
 import styles from "../../styles/projects/projectList.module.css";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 export const NewProjectButton = () => {
     const { t } = useTranslation("common");
-    const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
+    const routerAction = useRouterPush();
     return (
         <Button
             data-testid="new-project-button"
             className={"capitalize d-flex justify-content-center " + styles.project_list_button}
             variant="outline-primary"
             size="lg"
-            onClick={() => router.push(transformer("/" + applicationPaths.projectCreation))}
+            onClick={() => routerAction("/" + applicationPaths.projectCreation)}
         >
             {t("new project")}
             <svg

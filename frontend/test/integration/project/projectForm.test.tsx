@@ -167,7 +167,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -452,7 +452,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -481,7 +481,7 @@ describe("Create project form", () => {
                 await nonEditCoaches();
 
                 await defaultReroute();
-            });
+            }, 7000);
 
             it("removes a coach", async () => {
                 const removeCoachButton = await component.findByTestId(
@@ -502,7 +502,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -544,7 +544,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -584,7 +584,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -607,7 +607,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -641,7 +641,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -701,7 +701,7 @@ describe("Create project form", () => {
                     ],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );

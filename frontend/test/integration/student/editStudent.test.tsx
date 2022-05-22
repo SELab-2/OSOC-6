@@ -157,7 +157,7 @@ describe("edit student", () => {
             expect(spy).toHaveBeenCalledWith(
                 expect.anything(),
                 updatedStudent,
-                mockRouter,
+                expect.anything(),
                 expect.anything()
             );
         });

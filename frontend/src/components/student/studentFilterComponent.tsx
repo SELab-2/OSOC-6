@@ -14,6 +14,7 @@ import { useState } from "react";
 import SkillBadge from "../util/skillBadge";
 import apiPaths from "../../properties/apiPaths";
 import styles from "../../styles/studentFilter.module.css";
+import { useRouterReplace } from "../../hooks/routerHooks";
 
 function boolToString(bool: boolean | undefined) {
     return bool ? "true" : "false";
@@ -65,6 +66,7 @@ export function StudentFilterComponent() {
     const { t } = useTranslation("common");
     const { data: receivedSkills, error: skillError } = useSWR(apiPaths.skillTypes, getAllSkillTypesFromPage);
     const router = useRouter();
+    const routerAction = useRouterReplace();
     const values: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
     const [selectedSkills, setSelectedSkills] = useState<string[]>(values.skills);
     let skills = receivedSkills || [];
@@ -83,7 +85,7 @@ export function StudentFilterComponent() {
                         initialValues={values}
                         onSubmit={async (values) => {
                             values.skills = selectedSkills;
-                            await router.replace({
+                            await routerAction({
                                 query: { ...router.query, ...fromFormStudentQueryParams(values) },
                             });
                         }}

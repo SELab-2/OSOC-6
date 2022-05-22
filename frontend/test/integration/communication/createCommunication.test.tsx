@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
@@ -7,7 +7,6 @@ import apiPaths from "../../../src/properties/apiPaths";
 import CreateCommunicationForm from "../../../src/components/communication/createCommunicationForm";
 import { IStudent } from "../../../src/api/entities/StudentEntity";
 import {
-    getBaseBadRequestResponse,
     getBaseCommunication,
     getBaseCommunicationTemplate,
     getBaseForbiddenResponse,
@@ -17,7 +16,7 @@ import {
 } from "../TestEntityProvider";
 import { Communication, defaultCommunicationMedium } from "../../../src/api/entities/CommunicationEntity";
 import { UserRole } from "../../../src/api/entities/UserEntity";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -90,7 +89,7 @@ describe("create communication", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(communication, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(communication, expect.anything(), expect.anything());
         });
 
         await waitFor(() => {
@@ -98,6 +97,14 @@ describe("create communication", () => {
                 apiPaths.communications,
                 communication,
                 expect.anything()
+            );
+        });
+        const communicationResponse = getBaseCommunication("10");
+        await enableActForResponse(apiPaths.communications, getBaseOkResponse(communicationResponse));
+
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual(
+                "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase
             );
         });
     });
@@ -145,7 +152,7 @@ describe("create communication", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(mock).toHaveBeenCalledWith(communication, mockRouter, expect.anything());
+            expect(mock).toHaveBeenCalledWith(communication, expect.anything(), expect.anything());
         });
     });
 });

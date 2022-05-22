@@ -3,15 +3,15 @@ import "@testing-library/jest-dom";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import { cleanup, render, waitFor, screen } from "@testing-library/react";
-import { enableUseEditionAxiosCall, makeCacheFree } from "./Provide";
+import { enableUseEditionAxiosCall, makeCacheFree } from "../Provide";
 import React from "react";
-import RouteInjector from "../../src/components/util/routeInjector";
-import { getBaseActiveEdition, getBaseOkResponse, getBasePage } from "./TestEntityProvider";
-import GlobalContext from "../../src/context/globalContext";
-import apiPaths from "../../src/properties/apiPaths";
-import { editionCollectionName, IEdition } from "../../src/api/entities/EditionEntity";
-import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
-import { StudentList } from "../../src/components/student/studentList";
+import RouteInjector from "../../../src/components/util/routeInjector";
+import { getBaseActiveEdition, getBaseOkResponse, getBasePage } from "../TestEntityProvider";
+import GlobalContext from "../../../src/context/globalContext";
+import apiPaths from "../../../src/properties/apiPaths";
+import { editionCollectionName, IEdition } from "../../../src/api/entities/EditionEntity";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import { StudentList } from "../../../src/components/student/studentList";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -19,26 +19,6 @@ describe("routeInjector", () => {
     afterEach(() => {
         mockAxios.reset();
         cleanup();
-    });
-
-    it("Should change router to usedEdition", async () => {
-        const edition: IEdition = getBaseActiveEdition("1", "edition 1");
-
-        render(
-            makeCacheFree(() => (
-                <GlobalContext.Provider
-                    value={{ editionUrl: edition._links.self.href, setEditionUrl: () => {} }}
-                >
-                    <RouteInjector />
-                </GlobalContext.Provider>
-            ))
-        );
-
-        await enableUseEditionAxiosCall(edition);
-
-        await waitFor(() => {
-            expect(mockRouter.query.edition).toEqual(edition.name);
-        });
     });
 
     it("Should change context to query path edition", async () => {
