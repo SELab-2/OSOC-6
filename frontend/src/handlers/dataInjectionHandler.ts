@@ -32,6 +32,7 @@ import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/Assign
 import { AxiosConf } from "../api/calls/baseCalls";
 import faker from "@faker-js/faker";
 
+/* istanbul ignore next */
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
     console.log(user);
