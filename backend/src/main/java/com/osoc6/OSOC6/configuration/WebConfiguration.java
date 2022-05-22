@@ -1,13 +1,16 @@
 package com.osoc6.OSOC6.configuration;
 
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.repository.PublicRepository;
+import com.osoc6.OSOC6.webhook.FormProcessor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -23,6 +26,7 @@ import java.util.Properties;
  * This class wil load and set up anything non-default needed to run the application.
  */
 @Configuration
+@PropertySource("classpath:tally-ids.properties")
 public class WebConfiguration {
 
     /**
@@ -48,6 +52,17 @@ public class WebConfiguration {
     }
 
     /**
+     * Makes sure that whenever FormProcessor is injected,
+     * its ids field is injected with the values from tally-ids.properties.
+     * @return the initialised FormProcessor
+     */
+    @Bean
+    @ConfigurationProperties(prefix = "tally")
+    public FormProcessor getFormProcessor() {
+        return new FormProcessor();
+    }
+
+    /**
      * This creates a base admin user when there are no enabled admins left in the database.
      * @param publicRepository the public repository
      * @param passwordEncoder the used password encoder
@@ -57,7 +72,7 @@ public class WebConfiguration {
      */
     @Bean
     @Profile("!test")
-    CommandLineRunner initBaseAdminUser(final PublicRepository publicRepository,
+    public CommandLineRunner initBaseAdminUser(final PublicRepository publicRepository,
                                         final BCryptPasswordEncoder passwordEncoder) {
         return args -> {
             if (publicRepository.countAllByUserRoleEqualsAndEnabled(UserRole.ADMIN, true) == 0) {
@@ -81,7 +96,11 @@ public class WebConfiguration {
                 baseAdminUser.setUserRole(UserRole.ADMIN);
                 baseAdminUser.setEnabled(true);
 
-                publicRepository.internalSave(baseAdminUser);
+                if (optionalUser.isPresent()) {
+                    publicRepository.internalUpdate(baseAdminUser);
+                } else {
+                    publicRepository.internalSave(baseAdminUser);
+                }
             }
         };
     }

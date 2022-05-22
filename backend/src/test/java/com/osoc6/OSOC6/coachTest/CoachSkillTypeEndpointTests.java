@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
-import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.entities.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -26,18 +26,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<SkillType, Long, SkillTypeRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link SkillType} in the database.
      */
     @Autowired
     private SkillTypeRepository repository;
 
     /**
-     * First sample skillTypes that gets loaded before every test.
+     * First sample skillType that gets loaded before every test.
      */
     private final SkillType skillType1 = TestEntityProvider.getBaseSkillType1(this);
 
     /**
-     * The actual path skillPaths are served on, with '/' as prefix.
+     * The actual path skillTypes are served on, with '/' as prefix.
      */
     private static final String SKILLTYPES_PATH = "/" + DumbledorePathWizard.SKILLTYPE_PATH;
 
@@ -91,6 +91,12 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
         removeBasicData();
 
         repository.deleteAll();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_all_skillTypes_works() throws Exception {
+        base_get_all_entities_succeeds().andExpect(string_to_contains_string(skillType1.getName()));
     }
 
     @Test

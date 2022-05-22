@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.Suggestion;
+import com.osoc6.OSOC6.entities.Suggestion;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
@@ -34,7 +34,7 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
     <S extends Suggestion> S save(@Param("entity") @NonNull S entity);
 
     /**
-     * delete a {@link Suggestion}.
+     * Delete a {@link Suggestion}.
      * @apiNote
      * An admin can delete everything about every suggestion.
      * A coach can only delete their own suggestions.

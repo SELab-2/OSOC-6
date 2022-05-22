@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.UserSkill;
+import com.osoc6.OSOC6.entities.UserSkill;
 import com.osoc6.OSOC6.dto.UserSkillDTO;
 import com.osoc6.OSOC6.repository.UserSkillRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -17,13 +17,13 @@ import java.util.Map;
 public final class AdminUserSkillEndpointTests extends AdminEndpointTest<UserSkill, Long, UserSkillRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link UserSkill} in the database.
      */
     @Autowired
     private UserSkillRepository userSkillRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

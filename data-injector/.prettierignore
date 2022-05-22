@@ -1,0 +1,12 @@
+# Ignore artifacts:
+.next
+node_modules
+build
+coverage
+next-env.d.ts
+next.config.js
+package-lock.json
+package.json
+coverage
+
+README.md

@@ -1,9 +1,11 @@
 package com.osoc6.OSOC6.util;
 
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
+import lombok.Getter;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,10 +23,17 @@ public final class SpelUtil {
     private SpelUtil() { }
 
     /**
-     * Get all the id's of all of the given user's editions as an array List.
+     * This field is populated by Spring upon startup with the secret webhook token from the properties file.
+     */
+    @Getter
+    @Value("${webhook.token}")
+    private String webhookToken;
+
+    /**
+     * Get all the id's of all of the given users editions as an array List.
      * This is private since we don't want to export List implementation dependencies.
      * @param userEntity the user to get all edition id's of
-     * @return a list containing all of the user's editions
+     * @return a list containing all of the users editions
      */
     private static ArrayList<Long> userEditionsArrayList(final UserEntity userEntity) {
         ArrayList<Long> result = new ArrayList<>();
@@ -37,9 +46,9 @@ public final class SpelUtil {
     }
 
     /**
-     * Get all the id's of all of the given user's editions.
+     * Get all the id's of all of the given users editions.
      * @param userEntity the user to get all edition id's of
-     * @return a list containing all of the user's editions
+     * @return a list containing all of the users editions
      */
     public static List<Long> userEditions(final UserEntity userEntity) {
         return userEditionsArrayList(userEntity);
@@ -59,15 +68,24 @@ public final class SpelUtil {
     }
 
     /**
-     * Get a formatted string so LIKE will check if the parameter is contained.
-     * @param orig ths String parameter for a query that should be formatted
-     * @return the formatted string so LIKE will check if the parameter is contained
+     * Get a formatted query string substituting spaces with '&'.
+     * @param ownFormat a string that uses space separation for different string
+     * @return a safe text search query string
      */
-    public static String formatContains(final String orig) {
-        if (orig == null) {
-            return "";
+    public static String safeToTSQuery(final String ownFormat) {
+        return safeString(ownFormat).strip().replaceAll(" +", " & ");
+    }
+
+    /**
+     * Get a non-null representation of a string array. Defaults to empty array.
+     * @param strArray string array that should have null safety
+     * @return a non-null array.
+     */
+    public static String[] safeArray(final String[] strArray) {
+        if (strArray == null) {
+            return new String[]{};
         }
-        return "%" + orig + "%";
+        return strArray;
     }
 
     /**
@@ -91,12 +109,13 @@ public final class SpelUtil {
     }
 
     /**
-     * Get the Null safe ordinal representation of provided Enum, defaults to -1.
-     * @param orig Enum that should have NULL safety
-     * @param <T> type of enum (is ignored)
-     * @return null safe ordinal representation of Enum
+     * Get a non-null representation of a Boolean. Defaults to false.
+     * @param orig Boolean that should have NULL safety
+     * @return a non null Boolean
      */
-    public static <T extends Enum<T>> int safeEnum(final Enum<T> orig) {
-        return orig == null ? -1 : orig.ordinal();
+    @NonNull
+    public static Boolean safeBoolean(final Boolean orig) {
+        // return orig == null ? false : orig;
+        return orig != null && orig;
     }
 }

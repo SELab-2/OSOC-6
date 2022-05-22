@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.entities.SkillType;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
@@ -34,6 +34,10 @@ public interface SkillTypeRepository extends JpaRepository<SkillType, Long> {
             rel = DumbledorePathWizard.SKILLTYPE_BY_NAME_PATH)
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     Page<SkillType> findByName(@Param("name") String name, Pageable pageable);
+
+    @Override @NonNull
+    @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
+    Page<SkillType> findAll(@NonNull Pageable pageable);
 
     @Override
     @NonNull

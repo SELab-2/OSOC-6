@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.entities.Invitation;
 import com.osoc6.OSOC6.dto.InvitationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitation, Long, InvitationRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Invitation} in the database.
      */
     @Autowired
     private InvitationRepository invitationRepository;
@@ -38,7 +38,7 @@ public class CoachInvitationEndpointTests extends TestFunctionProvider<Invitatio
     private static final String INVITATION_PATH = "/" + DumbledorePathWizard.INVITATIONS_PATH;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

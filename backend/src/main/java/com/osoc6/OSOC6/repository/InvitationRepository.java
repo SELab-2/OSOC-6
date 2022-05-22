@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.entities.Invitation;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,14 +21,14 @@ import java.util.Optional;
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
     /**
-     * Search by using the following: /{INVITATIONS_PATH}/search/{SUGGESTION_BY_TOKEN_PATH}?token=tokenString.
+     * Search by using the following: /{INVITATIONS_PATH}/search/{INVITATION_BY_TOKEN_PATH}?token=tokenString.
      * @param token the token of the invitation
      * @return found invitation
      * @apiNote We need to add permitAll here because an unauthenticated user needs to be able to register.
      * In order to register they need to have a valid invitation token and thus need to be able to query by it.
      */
-    @RestResource(path = DumbledorePathWizard.SUGGESTION_BY_TOKEN_PATH,
-            rel = DumbledorePathWizard.SUGGESTION_BY_TOKEN_PATH)
+    @RestResource(path = DumbledorePathWizard.INVITATION_BY_TOKEN_PATH,
+            rel = DumbledorePathWizard.INVITATION_BY_TOKEN_PATH)
     @PreAuthorize("permitAll()")
     Optional<Invitation> findByToken(@Param("token") String token);
 }

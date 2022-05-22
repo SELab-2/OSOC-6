@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.entities.Edition;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Abstract class to help with testing the integration of endpoints.
- * Class only test with admin access level.
+ * This class provides some basic tests to test functionality with admin access level.
  *
  * @param <T> the entity of the repository using this class
  * @param <I> the id type of the entity

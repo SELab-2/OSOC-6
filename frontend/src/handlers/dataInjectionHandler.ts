@@ -17,11 +17,10 @@ import {
     Gender,
     IStudent,
     IStudentPage,
-    OsocExpericience,
-    PronounsType,
+    OsocExperience,
+    Status,
     Student,
 } from "../api/entities/StudentEntity";
-import { baseSkillType, ISkillType, ISkillTypePage, SkillType } from "../api/entities/SkillTypeEntity";
 import { Communication, ICommunication, ICommunicationPage } from "../api/entities/CommunicationEntity";
 import {
     ISuggestion,
@@ -30,8 +29,8 @@ import {
     SuggestionStrategy,
 } from "../api/entities/SuggestionEntity";
 import { Assignment, IAssignment, IAssignmentPage } from "../api/entities/AssignmentEntity";
-import { getSkillTypeFromSkill } from "../api/calls/skillTypeCalls";
 import { AxiosConf } from "../api/calls/baseCalls";
+import faker from "@faker-js/faker";
 
 export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async (_) => {
     const user: IUser = (await axios.get(apiPaths.ownUser, AxiosConf)).data;
@@ -52,7 +51,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedUserSkills = userSkills._embedded["user-skills"];
     }
     console.log(containedUserSkills);
-    const simpleUserSkill: IUserSkill = containedUserSkills[0];
 
     const editions: IEditionsPage = (await axios.get(apiPaths.editions, AxiosConf)).data;
     console.log(editions);
@@ -120,8 +118,16 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             containedProjects[1]._links!.self.href
         );
 
+        const skill2: ProjectSkill = new ProjectSkill(
+            "Being happy",
+            "We need only good vibes",
+            containedProjects[0]._links!.self.href
+        );
+
         containedProjectSkills = await Promise.all(
-            [skill1].map(async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data)
+            [skill1, skill2].map(
+                async (skill) => (await axios.post(apiPaths.projectSkills, skill, AxiosConf)).data
+            )
         );
     } else {
         containedProjectSkills = projectSkills._embedded["project-skills"];
@@ -134,8 +140,16 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     ).data;
     let containedTemplates: ICommunicationTemplate[];
     if (templates._embedded.communicationTemplates.length == 0) {
-        const template1 = new CommunicationTemplateEntity("yes", "I say yes {reason}");
-        const template2 = new CommunicationTemplateEntity("no", "I say no {reason}");
+        const template1 = new CommunicationTemplateEntity(
+            "yes",
+            "You have been selected",
+            "I say yes {reason}"
+        );
+        const template2 = new CommunicationTemplateEntity(
+            "no",
+            "You where not good enough",
+            "I say no {reason}"
+        );
         containedTemplates = await Promise.all(
             [template1, template2].map(
                 async (template) =>
@@ -151,6 +165,19 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
 
     const students: IStudentPage = (await axios.get(apiPaths.students, AxiosConf)).data;
     let containedStudents: IStudent[];
+    const commonSkills = [
+        "Front-end developer",
+        "Back-end developer",
+        "UX / UI designer",
+        "Graphic designer",
+        "Business Modeller",
+        "Storyteller",
+        "Marketer",
+        "Copywriter",
+        "Video editor",
+        "Photographer",
+        "Other",
+    ];
     if (students._embedded.students.length == 0) {
         const student1: Student = new Student(
             "kasper@mail.com",
@@ -160,7 +187,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "Master",
             "",
             5,
-            "higher level",
             EnglishProficiency.fluent,
             "Kasper",
             Gender.male,
@@ -168,22 +194,63 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
             "Demeyere",
             "Dutch",
             "",
-            OsocExpericience.yes_noStudentCoach,
+            OsocExperience.yes_noStudentCoach,
+            Status.maybe,
             "+3257697568",
+            "Yes, I can work with a student employment agreement in Belgium",
+            "Eating and drinking",
             "",
-            "",
-            "",
-            "",
-            PronounsType.he,
+            "he/him/his",
+            "A fun fact about me",
             ["Gaming on a nice chair", "programming whilst thinking about sleeping"],
             ["I love to Spring Spring in java Spring!"],
-            "",
+            faker.lorem.paragraph(5),
             "3th",
             editionUrl
         );
 
+        let students = [student1];
+        for (let i = 0; i < 10; i++) {
+            const bestSkill = commonSkills[(Math.random() * commonSkills.length) | 0];
+            const skill = commonSkills[(Math.random() * commonSkills.length) | 0];
+            const skillList = bestSkill == skill ? [bestSkill] : [bestSkill, skill];
+
+            const firstname = faker.name.firstName();
+            const lastname = faker.name.lastName();
+            const newStudent: Student = new Student(
+                faker.internet.email(),
+                faker.lorem.sentence(10),
+                faker.lorem.sentence(5),
+                firstname + " " + lastname,
+                "Master",
+                "",
+                5,
+                EnglishProficiency.fluent,
+                firstname,
+                Gender.male,
+                "Ghent University",
+                lastname,
+                "Dutch",
+                "",
+                OsocExperience.yes_noStudentCoach,
+                Status.approved,
+                "+3257697568",
+                "No – but I would like to join this experience for free",
+                "",
+                "",
+                "they",
+                "",
+                skillList,
+                ["I love to Spring Spring in java Spring!"],
+                "",
+                "3th",
+                editionUrl
+            );
+            students.push(newStudent);
+        }
+
         containedStudents = await Promise.all(
-            [student1].map(async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data)
+            students.map(async (student) => (await axios.post(apiPaths.students, student, AxiosConf)).data)
         );
     } else {
         containedStudents = students._embedded.students;
@@ -191,32 +258,13 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     const someStudentUri = containedStudents[0]._links.self.href;
     console.log(containedStudents);
 
-    const skillTypes: ISkillTypePage = (await axios.get(apiPaths.skillTypes, AxiosConf)).data;
-    let containedSkillTypes: ISkillType[];
-    if (skillTypes._embedded.skillTypes.length == 0) {
-        const skillType1 = new SkillType("V10 boulderer", "#427162");
-        const skillTypeOther = new SkillType(baseSkillType, "#929199");
-
-        containedSkillTypes = await Promise.all(
-            [skillType1, skillTypeOther].map(
-                async (skill) => (await axios.post(apiPaths.skillTypes, skill, AxiosConf)).data
-            )
-        );
-    } else {
-        containedSkillTypes = skillTypes._embedded.skillTypes;
-    }
-    console.log(containedSkillTypes);
-
-    console.log("Test getSkillTypeFromSkill:");
-    console.log(await getSkillTypeFromSkill(projectBoulderSkill));
-    console.log(await getSkillTypeFromSkill(simpleUserSkill));
-
     const communications: ICommunicationPage = (await axios.get(apiPaths.communications, AxiosConf)).data;
     let containedCommunications: ICommunication[];
     if (communications._embedded.communications.length == 0) {
         const communication1: Communication = new Communication(
             "sms",
             containedTemplates[0]._links.self.href,
+            "You got a yes",
             "An apple for the thirst and a yes for you",
             own_user_url,
             someStudentUri
@@ -231,6 +279,26 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedCommunications = communications._embedded.communications;
     }
     console.log(containedCommunications);
+
+    let newCommications: Communication[] = [];
+    for (let student of containedStudents) {
+        const studenturi = student._links.self.href;
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+            const communication: Communication = new Communication(
+                "email",
+                containedTemplates[0]._links.self.href,
+                faker.lorem.lines(1),
+                faker.lorem.sentences(2),
+                own_user_url,
+                studenturi
+            );
+            newCommications.push(communication);
+        }
+    }
+
+    await Promise.all(
+        newCommications.map(async (com) => (await axios.post(apiPaths.communications, com, AxiosConf)).data)
+    );
 
     const suggestions: ISuggestionPage = (await axios.get(apiPaths.suggestions, AxiosConf)).data;
     let containedSuggestions: ISuggestion[];
@@ -248,13 +316,47 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
     } else {
         containedSuggestions = suggestions._embedded.suggestions;
     }
+
+    for (let student of containedStudents) {
+        let studenturi = student._links.self.href;
+        let newSuggestions: Suggestion[] = [];
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+            const chance = Math.random();
+            let suggestion: Suggestion;
+            if (chance < 1 / 3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.yes,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else if (chance < 2 / 3) {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.maybe,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            } else {
+                suggestion = new Suggestion(
+                    SuggestionStrategy.no,
+                    faker.lorem.lines(1),
+                    own_user_url,
+                    studenturi
+                );
+            }
+            newSuggestions.push(suggestion);
+        }
+        containedSuggestions = await Promise.all(
+            newSuggestions.map(async (sugg) => (await axios.post(apiPaths.suggestions, sugg, AxiosConf)).data)
+        );
+    }
     console.log(containedSuggestions);
 
     const assignments: IAssignmentPage = (await axios.get(apiPaths.assignments, AxiosConf)).data;
     let containedAssignments: IAssignment[];
     if (assignments._embedded.assignments.length == 0) {
         const assignment1: Assignment = new Assignment(
-            true,
             true,
             "You! here! now!",
             own_user_url,
@@ -290,10 +392,6 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
                         })
                     ).data
             )
-        );
-        console.log(
-            "You registered a new user. You are now logged out. " +
-                "This happens due to a bug in the backend. It will be fixed eventually."
         );
     } else {
         let containedUsers = (<IUsersPage>(await axios.get(apiPaths.users, AxiosConf)).data)._embedded.users;

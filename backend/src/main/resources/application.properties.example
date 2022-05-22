@@ -5,6 +5,30 @@ spring.datasource.driverClassName = org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/osoc-test
 server.servlet.contextPath=/api/
 
+# Settings needed for mailing to work.
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your_mail_here
+spring.mail.password=application_password_here
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# The base domain of the website, WITHOUT http prefix.
+domain=domain.com
+
+# The frontend route that the reset password page is served on
+reset-password.route=resetPassword
+
+# The current active profile, use 'production' in production and 'development' in development.
+spring.profiles.active=production
+
+# Tally webhook secret token
+webhook.token=your_secret_token_here
+
+# Make sure that the database is created from the entity mappings first, and then the data from data.sql is loaded
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.mode=always
+
 #drop n create table again, good for testing, comment this in production
 #spring.jpa.hibernate.ddl-auto=create
 

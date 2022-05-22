@@ -1,10 +1,12 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +20,7 @@ import java.util.Optional;
 /**
  * This is a simple class that defines a repository for {@link UserEntity}.
  * It exposes basic CRUD operations on the {@link UserEntity}.
- * It accepts requests and sends answers in a REST-full way.
+ * It accepts requests and sends answers in a RESTful way.
  */
 @RepositoryRestResource(collectionResourceRel = DumbledorePathWizard.USERS_PATH,
         path = DumbledorePathWizard.USERS_PATH)
@@ -46,7 +48,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findById(@NonNull Long id);
 
     /**
-     * Count how manny enabled user with the specified role there are.
+     * Count how many enabled user with the specified role there are.
      * This is needed for role patch safety.
      * @param userRole the role of the users to look for
      * @param enabled whether the user is enabled or not
@@ -62,7 +64,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      */
     @Override
     @PreAuthorize("( " + MerlinSpELWizard.ADMIN_AUTH + " and "
-    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.database.models.UserRole).ADMIN, true) > 1"
+    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.entities.UserRole).ADMIN, true) > 1"
         + " or #userEntity.id == null" // new user check
         + " or authentication.principal.id != #userEntity.id " // updating a different user than yourself
         + " or authentication.principal.userRole == #userEntity.userRole))" // don't update your own role
@@ -81,4 +83,19 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @PreAuthorize(MerlinSpELWizard.COACH_AUTH)
     @Query("select u from UserEntity u where u.id = :#{authentication.principal.id}")
     UserEntity findSelf();
+
+    /**
+     * Find all users linked to the given edition through their received invitations.
+     * @param edition the edition the user search is restricted to
+     * @param pageable argument needed to return a page
+     * @return page of matching users
+     */
+    @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+            rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
+    @Query(value =
+        "SELECT DISTINCT ON (u.id) u.* FROM users u LEFT JOIN invitation i ON u.id = i.subject_id "
+            + "WHERE :edition IS NOT NULL and (u.user_role = 'ADMIN' or "
+            + "i.edition_id = :#{@spelUtil.safeLong(#edition)})", nativeQuery = true)
+    Page<UserEntity> findByEdition(@Param("edition") Long edition, Pageable pageable);
 }

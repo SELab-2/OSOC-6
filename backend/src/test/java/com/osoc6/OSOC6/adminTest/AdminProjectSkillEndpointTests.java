@@ -2,8 +2,8 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.ProjectSkill;
 import com.osoc6.OSOC6.dto.ProjectSkillDTO;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.ProjectSkillRepository;
@@ -26,13 +26,13 @@ import java.util.Map;
 public class AdminProjectSkillEndpointTests extends AdminEndpointTest<ProjectSkill, Long, ProjectSkillRepository> {
 
     /**
-     * The repository which saves, searches, ... Projects in the database
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database.
      */
     @Autowired
     private ProjectSkillRepository projectSkillRepository;
 
     /**
-     * The repository which saves, searches, ... Projects in the database
+     * The repository which saves, searches, ... {@link Project} in the database.
      */
     @Autowired
     private ProjectRepository projectRepository;

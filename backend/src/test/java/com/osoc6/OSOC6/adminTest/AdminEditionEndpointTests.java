@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Edition;
+import com.osoc6.OSOC6.entities.Edition;
 import com.osoc6.OSOC6.repository.EditionRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminEditionEndpointTests extends AdminEndpointTest<Edition, Long, EditionRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Edition} in the database.
      */
     @Autowired
     private EditionRepository repository;

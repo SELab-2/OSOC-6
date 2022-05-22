@@ -1,9 +1,13 @@
 package com.osoc6.OSOC6.service;
 
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.ResetPasswordToken;
+import com.osoc6.OSOC6.entities.UserEntity;
 import com.osoc6.OSOC6.exception.AccountTakenException;
+import com.osoc6.OSOC6.exception.InvalidResetPasswordTokenException;
+import com.osoc6.OSOC6.mail.EmailService;
 import com.osoc6.OSOC6.repository.PublicRepository;
+import com.osoc6.OSOC6.repository.ResetPasswordTokenRepository;
 import com.osoc6.OSOC6.winterhold.MeguminExceptionWizard;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * This service handles user functionalities such as finding and registering a user.
@@ -25,9 +31,19 @@ public class UserEntityService implements UserDetailsService {
     private final PublicRepository publicRepository;
 
     /**
+     * The repository used to access reset password tokens in the database.
+     */
+    private final ResetPasswordTokenRepository resetPasswordTokenRepository;
+
+    /**
      * The encoder used to encode the passwords.
      */
     private final BCryptPasswordEncoder passwordEncoder;
+
+    /**
+     * The email service, used to send mails.
+     */
+    private final EmailService emailService;
 
     /**
      *
@@ -61,5 +77,40 @@ public class UserEntityService implements UserDetailsService {
         publicRepository.internalSave(userEntity);
         invitation.setSubject(userEntity);
         publicRepository.internalSave(invitation);
+    }
+
+    /**
+     * Create a reset password token for the user with the given email address.
+     * @param email the email of the user requesting a password reset
+     */
+    public void createPasswordResetToken(final String email) {
+        Optional<UserEntity> optionalUserEntity = publicRepository.internalFindByEmail(email);
+        if (optionalUserEntity.isPresent()) {
+            ResetPasswordToken resetPasswordToken = new ResetPasswordToken(optionalUserEntity.get());
+            resetPasswordTokenRepository.save(resetPasswordToken);
+            emailService.sendResetPasswordMessage(email, resetPasswordToken.getToken());
+        }
+    }
+
+    /**
+     * Reset the password of the user linked to the reset password token with the provided token.
+     * @param token the token of the reset password token
+     * @param newPassword the new password of the user
+     */
+    public void resetUserPassword(final String token, final String newPassword) {
+        Optional<ResetPasswordToken> optionalResetPasswordToken =
+                resetPasswordTokenRepository.internalFindByToken(token);
+        if (optionalResetPasswordToken.isPresent() && optionalResetPasswordToken.get().isValid()) {
+            UserEntity userEntity = optionalResetPasswordToken.get().getSubject();
+
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            userEntity.setPassword(encodedPassword);
+
+            publicRepository.internalUpdate(userEntity);
+
+            resetPasswordTokenRepository.delete(optionalResetPasswordToken.get());
+        } else {
+            throw new InvalidResetPasswordTokenException();
+        }
     }
 }

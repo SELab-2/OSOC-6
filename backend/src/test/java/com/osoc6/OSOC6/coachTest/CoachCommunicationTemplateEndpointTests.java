@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -26,18 +26,18 @@ public final class CoachCommunicationTemplateEndpointTests
         extends TestFunctionProvider<CommunicationTemplate, Long, CommunicationTemplateRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database.
      */
     @Autowired
     private CommunicationTemplateRepository repository;
 
     /**
-     * First sample edition that gets loaded before every test.
+     * First sample communication template that gets loaded before every test.
      */
     private final CommunicationTemplate communicationTemplate = TestEntityProvider.getBaseCommunicationTemplate1(this);
 
     /**
-     * The actual path editions are served on, with '/' as prefix.
+     * The actual path communication templates are served on, with '/' as prefix.
      */
     private static final String COMMUNICATION_TEMPLATE_PATH = "/" + DumbledorePathWizard.COMMUNICATION_TEMPLATE_PATH;
 

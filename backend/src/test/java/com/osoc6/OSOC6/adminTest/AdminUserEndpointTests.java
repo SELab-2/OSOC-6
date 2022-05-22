@@ -2,8 +2,8 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.dto.UserDTO;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -15,6 +15,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -23,13 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, UserRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link UserEntity} in the database.
      */
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -227,6 +229,24 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_update_password_updates_and_encrypts_new_password() throws Exception {
+        String oldPassword = getAdminUser().getPassword();
+        String newPassword = "mynewpw123";
+        Map<String, String> map = Map.of(
+                "password", newPassword
+        );
+        perform_patch(USERS_PATH + "/" + getAdminUser().getId(), map)
+                .andExpect(status().is2xxSuccessful());
+
+        // We check that the password no longer equals the previous one, and that the new one has been encrypted
+        UserEntity updatedUserEntity = get_repository_entity_by_id(getAdminUser().getId());
+        assertNotEquals(oldPassword, updatedUserEntity.getPassword());
+        assertNotEquals(newPassword, updatedUserEntity.getPassword());
+        assertTrue(updatedUserEntity.getPassword().length() > 0);
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void admin_update_profile_of_other_user_succeeds() throws Exception {
         String newEmail = "newemail.test@gmail.com";
         String newCallName = "newCallName";
@@ -378,5 +398,31 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
         perform_get(getEntityPath() + "/" + getOutsiderCoach().getId())
                 .andExpect(status().isOk())
                 .andExpect(string_to_contains_string(getOutsiderCoach().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_is_found_by_edition_id() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_is_found_by_edition_illegal_id() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_is_not_found_when_not_providing_edition() throws Exception {
+        perform_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(getAdminUser().getCallName()));
     }
 }

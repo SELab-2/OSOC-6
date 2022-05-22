@@ -2,9 +2,9 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Communication;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.CommunicationDTO;
 import com.osoc6.OSOC6.repository.CommunicationRepository;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
@@ -27,25 +27,25 @@ public final class AdminCommunicationEndpointTests extends
         AdminEndpointTest<Communication, Long, CommunicationRepository> {
 
     /**
-     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database
+     * The repository which saves, searches, ... {@link CommunicationTemplate} in the database.
      */
     @Autowired
     private CommunicationTemplateRepository communicationTemplateRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Communication} in the database
+     * The repository which saves, searches, ... {@link Communication} in the database.
      */
     @Autowired
     private CommunicationRepository communicationRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Student} in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -58,12 +58,12 @@ public final class AdminCommunicationEndpointTests extends
     /**
      * Test student that is loaded before every test.
      */
-    private final Student testStudent = TestEntityProvider.getBaseStudentOther(this);
+    private final Student testStudent = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
 
     /**
      * Sample {@link Communication} that gets loaded before every test.
      */
-    private final Communication testCommunication = new Communication("email",
+    private final Communication testCommunication = new Communication("email", "You look cool",
             "I say yes to you because you look so cool.", testTemplate, getAdminUser(), testStudent);
 
     /**
@@ -115,7 +115,7 @@ public final class AdminCommunicationEndpointTests extends
 
     @Override
     public Communication create_entity() {
-        return new Communication("sms", TEST_STRING, testTemplate, getAdminUser(), testStudent);
+        return new Communication("sms", "I love you", TEST_STRING, testTemplate, getAdminUser(), testStudent);
     }
 
     @Override

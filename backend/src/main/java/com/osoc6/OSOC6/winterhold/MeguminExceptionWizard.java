@@ -33,4 +33,10 @@ public final class MeguminExceptionWizard {
      * Exception string used for a {@link org.springframework.security.core.userdetails.UsernameNotFoundException}.
      */
     public static final String USERNAME_NOT_FOUND_EXCEPTION = "User with email %s not found";
+
+    /**
+     * Exception string used for an {@link com.osoc6.OSOC6.exception.InvalidResetPasswordTokenException}.
+     */
+    public static final String INVALID_RESET_PASSWORD_TOKEN_EXCEPTION =
+            "The provided reset password token does not exist or is invalid.";
 }
