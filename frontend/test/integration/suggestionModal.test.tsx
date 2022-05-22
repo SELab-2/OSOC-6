@@ -21,7 +21,7 @@ describe("SuggestionModal", () => {
     it("should render", async () => {
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} style={{}} studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
             ))
         );
 
@@ -35,7 +35,7 @@ describe("SuggestionModal", () => {
     it("should render modal on click", async () => {
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} style={{}} studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
             ))
         );
         await enableCurrentUser(currentUser);
@@ -54,7 +54,7 @@ describe("SuggestionModal", () => {
     it("confirming modal should post suggestion", async () => {
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} style={{}} studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
             ))
         );
         await enableCurrentUser(currentUser);

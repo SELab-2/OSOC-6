@@ -69,7 +69,7 @@ public final class CoachCommunicationEndpointTests
     /**
      * Sample {@link Communication} that gets loaded before every test.
      */
-    private final Communication testCommunication = new Communication("email",
+    private final Communication testCommunication = new Communication("email", "You look cool",
             "I say yes to you because you look so cool.", testTemplate, getAdminUser(), testStudent);
 
     /**
@@ -121,7 +121,7 @@ public final class CoachCommunicationEndpointTests
 
     @Override
     public Communication create_entity() {
-        return new Communication("sms", TEST_STRING, testTemplate, getAdminUser(), testStudent);
+        return new Communication("sms", "I love you", TEST_STRING, testTemplate, getAdminUser(), testStudent);
     }
 
     @Override

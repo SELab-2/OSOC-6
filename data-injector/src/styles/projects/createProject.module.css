@@ -1,0 +1,13 @@
+.create_form_container {
+    height: calc(100vh - 4rem);
+    overflow: auto;
+}
+
+.create_project_box {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}

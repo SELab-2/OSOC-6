@@ -18,7 +18,6 @@ const StudentsIDPage: NextPage = () => {
                         <StudentList isDraggable={false} showAdd={true} />
                     </div>
                     <div className={styles.info_field}>
-                        {/* Replace this div with the correct component */}
                         <div
                             className={"d-flex justify-content-center align-items-center h-100"}
                             data-testid="student-info"

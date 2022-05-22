@@ -31,6 +31,11 @@ public final class CommunicationDTO {
     private String medium;
 
     /**
+     * The subject of the communication.
+     */
+    private String subject = "";
+
+    /**
      * The content of the communication.
      */
     private String content;
@@ -54,6 +59,7 @@ public final class CommunicationDTO {
         id = communication.getId();
         timestamp = communication.getTimestamp();
         medium = communication.getMedium();
+        subject = communication.getSubject();
         content = communication.getContent();
 
         template = entityLinks.linkToItemResource(CommunicationTemplate.class,

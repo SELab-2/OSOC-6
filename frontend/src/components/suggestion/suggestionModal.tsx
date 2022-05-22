@@ -11,7 +11,11 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
  * Modal asking the reason for a certain suggestion
  * @param props properties needed to render this component
  */
-export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
+export function SuggestionModal(props: {
+    suggestion: SuggestionStrategy;
+    colour: string;
+    studentUrl: string;
+}) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
 
@@ -45,7 +49,7 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
             <Button
                 variant="btn-outline"
                 onClick={handleShow}
-                style={props.style}
+                style={{ color: props.colour, borderColor: props.colour, width: 150 }}
                 data-testid="suggest-button"
             >
                 {capitalize(t("suggest"))} {props.suggestion.toLowerCase()}

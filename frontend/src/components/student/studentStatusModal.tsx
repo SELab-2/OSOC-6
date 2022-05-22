@@ -26,7 +26,7 @@ export function StudentStatusModal(props: { status: Status; studentUrl: string }
             <Button
                 variant="btn-outline"
                 onClick={handleShow}
-                style={{ color: "#0a0839", borderColor: "#0a0839", width: 110 }}
+                style={{ color: "white", borderColor: "white", width: 110 }}
                 data-testid="confirm-button"
             >
                 {capitalize(t("confirm"))}

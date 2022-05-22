@@ -60,6 +60,7 @@ const common = {
     // Project strings
     "create project": "create project",
     "edit project": "edit project",
+    "save project": "save project",
     "project name": "project name",
     "project info": "project info",
     "project goals": "goals",
@@ -75,6 +76,8 @@ const common = {
     "add coach": "add coach",
     "add goal": "add goal",
     "skill info": "no special info",
+    "no items added yet": "no items added yet",
+    "no coaches added yet": "no coaches added yet",
 
     // Profile strings
     profile: "profile",
@@ -99,8 +102,8 @@ const common = {
     "no edition": "there are no editions made yet.",
     "no error": "no error",
     "edition overview": "edition overview",
-    "change edition state":
-        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "change edition state": "do you really want to change this attribute?",
+    "huge impact": "This change has a huge impact, so proceed with caution...",
     "invalid edition year": "please provide a valid year",
     "create new edition": "create new edition",
     "manage editions": "manage editions",
@@ -108,13 +111,19 @@ const common = {
     "not active": "not active",
 
     // Communication strings
+    communication: "communication",
+    "add communication": "add communication",
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",
+    for: "for",
     "communication template": "communication template",
     "open in mail application": "open in mail application",
     "choose template": "choose your template",
-    "additional communication info": "additional communication info",
+    "create template": "or create your own",
+    "create new template": "create new template",
+    "edit template": "edit the template",
+    "additional communication info": "additional info",
     "communication content": "content of the communication",
     medium: "medium",
     "by medium": "by",
@@ -123,6 +132,7 @@ const common = {
 
     // Student info strings
     callname: "callname",
+    "student info": "student info",
     suggestions: "suggestions",
     suggest: "suggest",
     "reason suggestion": "reason for the suggestion",
@@ -219,6 +229,8 @@ const common = {
     skills: "skills",
     "skill types": "skill types",
     "create skill type": "create skill type",
+
+    "input empty": "input field can not be empty",
 };
 
 export default common;

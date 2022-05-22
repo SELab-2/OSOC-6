@@ -83,7 +83,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             + ") @@ to_tsquery(:#{@spelUtil.safeToTSQuery(#skills)})) "
             + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeArray(#experience)}) "
             + "and (:status is null or stud.status in :#{@spelUtil.safeArray(#status)}) "
-            + "and (:#{@spelUtil.safeBoolean(#unmatched)} = false or NOT EXISTS (select assign from assignment assign where assign.student_id = stud.id))",
+            + "and (:#{@spelUtil.safeBoolean(#unmatched)} = false or NOT EXISTS "
+                + "(select assign from assignment assign where assign.student_id = stud.id and assign.is_valid = true))",
             nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition, @Param("freeText") String freeText,
                               @Param("skills") String skills, @Param("experience") String[] experience,

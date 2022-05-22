@@ -71,20 +71,24 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     }
 
     async function handleSaveName() {
-        setEditName(false);
-        if (edition) {
-            const response: AxiosResponse = await saveEditionName(edition._links.self.href, name);
-            if (response.status === StatusCodes.OK) {
-                if (response.data) {
-                    await Promise.all([
-                        mutate(apiPaths.editions),
-                        mutate(edition._links.self.href, response.data),
-                    ]);
+        if (name === "") {
+            alert(capitalize(t("input empty")));
+        } else {
+            setEditName(false);
+            if (edition) {
+                const response: AxiosResponse = await saveEditionName(edition._links.self.href, name);
+                if (response.status === StatusCodes.OK) {
+                    if (response.data) {
+                        await Promise.all([
+                            mutate(apiPaths.editions),
+                            mutate(edition._links.self.href, response.data),
+                        ]);
+                    } else {
+                        setShowGeneralError(true);
+                    }
                 } else {
                     setShowGeneralError(true);
                 }
-            } else {
-                setShowGeneralError(true);
             }
         }
     }
@@ -123,7 +127,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     async function handleChangeActive() {
         // Ask the user if they REALLY want to change this attribute with a popup window, as it is very impactful
         if (edition) {
-            if (window.confirm(capitalize(t("change edition state")))) {
+            if (window.confirm(capitalize(t("change edition state")) + " " + capitalize(t("huge impact")))) {
                 await handleSaveActive();
             }
         }
@@ -193,6 +197,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                                 name="name"
                                 defaultValue={edition.name}
                                 onChange={onChange}
+                                required
                             />
                             <button
                                 className={styles.callname_confirm}
@@ -235,6 +240,7 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
                                 name="year"
                                 defaultValue={edition.year}
                                 onChange={onChange}
+                                required
                             />
                             <button
                                 className={styles.callname_confirm}
