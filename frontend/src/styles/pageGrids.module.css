@@ -19,12 +19,6 @@
     max-height: 100%;
 }
 
-.filter {
-    height: 22%;
-    max-height: 15em;
-    min-height: 11em;
-}
-
 @media (max-width: 1024px) {
     .filter_grid {
         min-height: calc(100vh - 4rem);
@@ -51,6 +45,12 @@
 
     .height_setter {
         overflow: visible;
+    }
+
+    .filter {
+        max-height: none;
+        height: 22%;
+        min-height: 11em;
     }
 }
 
@@ -82,6 +82,12 @@
 
     .height_setter {
         overflow: hidden;
+    }
+
+    .filter {
+        height: 22%;
+        max-height: 15em;
+        min-height: 11em;
     }
 }
 

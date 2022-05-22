@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Button, Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { ButtonGroup, Button, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
@@ -19,12 +19,12 @@ import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import styles from "../../styles/studentOverview.module.css";
 import Image from "next/image";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import styles from "../../styles/studentList.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
@@ -93,7 +93,7 @@ export function StudentInfo() {
     }
 
     return (
-        <div className={"h-100"}>
+        <div className={"h-100 w-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
                 {isAdmin && (
                     <div className="row w-100" style={{ paddingBottom: 15 }}>
@@ -107,31 +107,38 @@ export function StudentInfo() {
                         </Button>
                     </div>
                 )}
-                <h1>
-                    {student.callName}
-                    {isAdmin && (
-                        <>
-                            <a
-                                className="ms-2 me-2"
-                                data-testid="edit-student"
-                                href={transformer(
-                                    "/" +
-                                        applicationPaths.students +
+                <div className={styles.student_info_header}>
+                    <div className={styles.student_info_header_title}>
+                        <h1>{student.callName}</h1>
+                    </div>
+                    <div className={styles.student_info_header_extra}>
+                        <ListGroup className="list-group-horizontal" as="ul">
+                            {student.skills.map((skill) => (
+                                <SkillBadge skill={skill} key={skill} />
+                            ))}
+                        </ListGroup>
+                        {isAdmin && (
+                            <>
+                                <a
+                                    data-testid="edit-student"
+                                    href={transformer(
                                         "/" +
-                                        extractIdFromStudentUrl(student._links.self.href) +
-                                        applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
-                                )}
-                            >
-                                <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
-                            </a>
-                            <ConfirmDeleteButton dataTestId="delete-student" handler={deleteStudentOnClick} />
-                        </>
-                    )}
-                </h1>
-                <div className={styles.student_skills}>
-                    {student.skills.map((skill) => (
-                        <SkillBadge skill={skill} key={skill} />
-                    ))}
+                                            applicationPaths.students +
+                                            "/" +
+                                            extractIdFromStudentUrl(student._links.self.href) +
+                                            applicationPaths.studentEdit.split(
+                                                applicationPaths.studentInfo
+                                            )[1]
+                                    )}
+                                >
+                                    <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                                </a>
+                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
+                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                                </a>
+                            </>
+                        )}
+                    </div>
                 </div>
                 <br />
                 <h2>{capitalize(t("suggestions"))}</h2>
@@ -187,7 +194,10 @@ export function StudentInfo() {
                     {capitalize(t(osocExperienceAsString[student.osocExperience]))}
                 </div>
             </div>
-            <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#1b1a31" }}>
+            <footer
+                className={"py-3 position-sticky bottom-0 " + styles.student_list_footer}
+                style={{ backgroundColor: "#1b1a31" }}
+            >
                 <Row>
                     <ToastContainer position="bottom-end">
                         <Toast
@@ -202,38 +212,26 @@ export function StudentInfo() {
                         </Toast>
                     </ToastContainer>
                 </Row>
-                <Row>
-                    <Col sm={8}>
-                        <Row>
-                            <div className="col-sm">
-                                <SuggestionModal
-                                    suggestion={SuggestionStrategy.yes}
-                                    colour={"#1DE1AE"}
-                                    studentUrl={student._links.self.href}
-                                />
-                            </div>
-                            <div className="col-sm">
-                                <SuggestionModal
-                                    suggestion={SuggestionStrategy.maybe}
-                                    colour={"#FCB70F"}
-                                    studentUrl={student._links.self.href}
-                                />
-                            </div>
-                            <div className="col-sm">
-                                <SuggestionModal
-                                    suggestion={SuggestionStrategy.no}
-                                    colour={"#F14A3B"}
-                                    studentUrl={student._links.self.href}
-                                />
-                            </div>
-                        </Row>
-                    </Col>
+                <ButtonGroup className={styles.student_list_button_group}>
+                    <SuggestionModal
+                        suggestion={SuggestionStrategy.yes}
+                        colour={"#1DE1AE"}
+                        studentUrl={student._links.self.href}
+                    />
+                    <SuggestionModal
+                        suggestion={SuggestionStrategy.maybe}
+                        colour={"#FCB70F"}
+                        studentUrl={student._links.self.href}
+                    />
+                    <SuggestionModal
+                        suggestion={SuggestionStrategy.no}
+                        colour={"#F14A3B"}
+                        studentUrl={student._links.self.href}
+                    />
                     {isAdmin && (
-                        <Col sm={4}>
-                            <StudentStatus studentUrl={student._links.self.href} status={student.status} />
-                        </Col>
+                        <StudentStatus studentUrl={student._links.self.href} status={student.status} />
                     )}
-                </Row>
+                </ButtonGroup>
             </footer>
         </div>
     );
