@@ -1,4 +1,4 @@
-import { Button, Container, Form, FormControl, Toast, ToastContainer } from "react-bootstrap";
+import { Button, Container, FormControl, Toast, ToastContainer } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/resetComponent.module.css";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { AxiosResponse } from "axios";
 import timers from "../../properties/timers";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { IUser } from "../../api/entities/UserEntity";
+import { Field, Form, Formik } from "formik";
 
 /**
  * The props needed for the ResetComponent.
@@ -32,26 +33,14 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
     const { t } = useTranslation("common");
     const router = useRouter();
     const transformer = useEditionApplicationPathTransformer();
-    const [firstEntry, setFirstEntry] = useState<string>("");
-    const [secondEntry, setSecondEntry] = useState<string>("");
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-    function onChangeFirstEntry(event: any) {
-        event.preventDefault();
-        setFirstEntry(event.target.value);
-    }
-
-    function onChangeSecondEntry(event: any) {
-        event.preventDefault();
-        setSecondEntry(event.target.value);
-    }
-
-    async function onConfirm() {
-        if (firstEntry !== secondEntry) {
+    async function onConfirm(values: { value: string; valueRepeat: string }) {
+        if (values.value !== values.valueRepeat) {
             setShowDanger(true);
         } else if (token) {
-            const response: AxiosResponse = await handler(token, firstEntry);
+            const response: AxiosResponse = await handler(token, values.value);
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
@@ -59,7 +48,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
                 }, timers.redirect);
             }
         } else if (user) {
-            const response: AxiosResponse = await handler(user._links.self.href, firstEntry);
+            const response: AxiosResponse = await handler(user._links.self.href, values.value);
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
@@ -73,25 +62,33 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
         <div className={styles.reset_component} data-testid="reset-component">
             <div className={styles.reset_box}>
                 {!token && <h2>{capitalize(t("reset " + name))}</h2>}
-                <Form.Label>{capitalize(t("new " + name))}</Form.Label>
-                <FormControl
-                    className={styles.reset_field}
-                    id=""
-                    data-testid="reset-input-1"
-                    type={name}
-                    onChange={onChangeFirstEntry}
-                />
-                <Form.Label className="mt-2">{capitalize(t("repeat new " + name))}</Form.Label>
-                <FormControl
-                    className={styles.reset_field}
-                    id=""
-                    data-testid="reset-input-2"
-                    type={name}
-                    onChange={onChangeSecondEntry}
-                />
-                <Button data-testid="confirm-reset" onClick={onConfirm} className="mt-3">
-                    {capitalize(t("confirm"))}
-                </Button>
+                <Formik
+                    initialValues={{
+                        value: "",
+                        valueRepeat: "",
+                    }}
+                    onSubmit={onConfirm}
+                >
+                    <Form>
+                        <h5>{capitalize(t("new " + name))}</h5>
+                        <Field
+                            className={styles.reset_field}
+                            data-testid="reset-input-1"
+                            type={name}
+                            name="value"
+                        />
+                        <h5>{capitalize(t("repeat new " + name))}</h5>
+                        <Field
+                            className={styles.reset_field}
+                            data-testid="reset-input-2"
+                            type={name}
+                            name="valueRepeat"
+                        />
+                        <Button type="submit" data-testid="confirm-reset" className="mt-3">
+                            {capitalize(t("confirm"))}
+                        </Button>
+                    </Form>
+                </Formik>
             </div>
             <ToastContainer position="bottom-end">
                 <Toast

@@ -8,6 +8,8 @@ import { makeCacheFree } from "../Provide";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import mockRouter from "next-router-mock";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -20,6 +22,15 @@ describe("skillType list", () => {
         it("renders", () => {
             const page = render(<SkillTypeIndexPage />);
             expect(page.getByTestId("skill-type-list")).toBeInTheDocument();
+        });
+
+        it("create skill type button works", async () => {
+            const page = render(<SkillTypeIndexPage />);
+
+            const addButton = page.getByTestId("new-skill-type-button");
+            await userEvent.click(addButton);
+
+            await expect(mockRouter.asPath).toEqual("/" + applicationPaths.skillTypesCreate);
         });
     });
 
@@ -43,7 +54,9 @@ describe("skillType list", () => {
         });
 
         it("can delete", async () => {
-            const deleteButton = await page.findByTestId("delete");
+            const deleteButton = await page.findByTestId("delete-item");
+
+            window.confirm = jest.fn(() => true);
 
             await userEvent.click(deleteButton);
 
@@ -52,14 +65,14 @@ describe("skillType list", () => {
 
         it("can edit", async () => {
             const openEditButton = await page.findByTestId("start-edit");
-            userEvent.click(openEditButton);
+            await userEvent.click(openEditButton);
 
             const colourPick = (await page.findByTestId("colour")) as HTMLInputElement;
             // Just check if it takes the default colour. Setting it in the test is a pain.
             const colour: string = colourPick.value;
 
             const submitButton = await page.findByTestId("submit-edit");
-            userEvent.click(submitButton);
+            await userEvent.click(submitButton);
 
             await waitFor(() => {
                 expect(mockAxios.patch).toHaveBeenCalledWith(

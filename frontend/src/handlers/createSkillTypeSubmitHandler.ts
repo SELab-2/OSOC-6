@@ -16,6 +16,6 @@ export async function createSkillTypeSubmitHandler(
     await Promise.all([
         mutate(apiPaths.skillTypes),
         mutate(apiPaths.skillTypes + "/" + createdId, createSkillType),
-        router.push("/" + applicationPaths.skillTypesBase + "/" + createdId),
+        router.push("/" + applicationPaths.skillTypesBase),
     ]);
 }
