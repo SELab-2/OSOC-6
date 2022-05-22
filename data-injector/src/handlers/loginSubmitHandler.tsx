@@ -41,7 +41,7 @@ export async function loginSubmitHandler(
 
         const redirectUrl =
             router.query.returnUrl === undefined
-                ? "/" + applicationPaths.assignStudents
+                ? "/" + applicationPaths.home
                 : "/" + router.query.returnUrl;
 
         await router.push(redirectUrl);
