@@ -1,0 +1,24 @@
+.student_communcation_list_outer_div {
+}
+
+.student_info_button {
+    padding-bottom: 1rem;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+}
+
+.student_row_add_communication {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    padding: 2rem;
+}
+
+.student_add_communication_button {
+    color: white;
+    border-color: white;
+    background-color: #1b1a32;
+    margin-left: auto;
+    margin-right: 3rem;
+}

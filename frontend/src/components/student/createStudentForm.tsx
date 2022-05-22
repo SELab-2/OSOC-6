@@ -1,7 +1,7 @@
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../utility/stringUtil";
+import { capitalize, isValidURIOrEmpty } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import {
     emptyStudent,
@@ -19,6 +19,7 @@ import useEdition from "../../hooks/useGlobalEdition";
 import { createStudentSubmitHandler } from "../../handlers/createStudentSubmitHandler";
 import ItemListForm from "../util/itemListForm";
 import styles from "../../styles/students/studentCreate.module.css";
+import { useState } from "react";
 import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
@@ -52,16 +53,22 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
             <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
-                onSubmit={(values) =>
-                    createStudentSubmitHandler(
-                        student ? student._links.self.href : null,
-                        values,
-                        routerAction,
-                        mutate
-                    )
-                }
+                onSubmit={(values) => {
+                    if (
+                        isValidURIOrEmpty(values.curriculumVitaeURI) &&
+                        isValidURIOrEmpty(values.motivationURI) &&
+                        isValidURIOrEmpty(values.portfolioURI)
+                    ) {
+                        createStudentSubmitHandler(
+                            student ? student._links.self.href : null,
+                            values,
+                            routerAction,
+                            mutate
+                        );
+                    }
+                }}
             >
-                {({ values, setFieldValue }) => (
+                {({ values, setFieldValue, touched }) => (
                     <Form>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="callNameField" className="form-label">
@@ -111,7 +118,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 {capitalize(t("email")) + ":"}
                             </label>
                             <Field
-                                type="text"
+                                type="email"
                                 name="email"
                                 required
                                 placeholder={capitalize(t("email"))}
@@ -300,6 +307,9 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="curriculumVitaeURI"
                                 className={styles.input_field + " form-control"}
                             />
+                            {!isValidURIOrEmpty(values.curriculumVitaeURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="portfolioURIField" className="form-label">
@@ -313,6 +323,9 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="portfolioURI"
                                 className={styles.input_field + " form-control"}
                             />
+                            {!isValidURIOrEmpty(values.portfolioURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="motivationURIField" className="form-label">
@@ -326,6 +339,9 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="motivationURI"
                                 className={styles.input_field + " form-control"}
                             />
+                            {!isValidURIOrEmpty(values.motivationURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         {capitalize(t("or"))}
                         <div className="col-sm-5 mb-2">
