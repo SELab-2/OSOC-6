@@ -81,7 +81,7 @@ describe("project info", () => {
             )
         );
 
-        const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
+        const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill._links.self.href);
         await waitFor(() =>
             mockAxios.mockResponseFor(
                 { url: assignmentsUrl },

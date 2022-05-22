@@ -14,6 +14,7 @@ import { deleteProject } from "../../api/calls/projectCalls";
 import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
+import useProjectsByEdition from "../../hooks/useProjectsByEdition";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
@@ -22,6 +23,8 @@ export function ProjectInfo() {
     const [show, setShow] = useState<boolean>(true);
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
+
+    const { data: receivedProjects, mutate } = useProjectsByEdition();
 
     if (error || !data) {
         return null;
@@ -37,6 +40,13 @@ export function ProjectInfo() {
             try {
                 const params = getParamsFromQueryUrl(router.asPath);
                 await router.push(getQueryUrlFromParams("/" + applicationPaths.projects, params));
+                if (receivedProjects) {
+                    mutate(
+                        receivedProjects.filter(
+                            (filterProj) => filterProj._links.self.href !== info._links.self.href
+                        )
+                    ).catch(console.log);
+                }
             } catch (error) {
                 setShow(true);
             }

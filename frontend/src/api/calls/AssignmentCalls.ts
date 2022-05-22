@@ -42,7 +42,7 @@ export async function addAssignment(
     skillUrl: string,
     reason: string,
     currentUser: IUser
-): Promise<void> {
+): Promise<IAssignment | undefined> {
     const assignment: Assignment = new Assignment(
         true,
         reason,
@@ -50,7 +50,8 @@ export async function addAssignment(
         studentUrl,
         skillUrl
     );
-    await basePost(apiPaths.assignments, assignment);
+    const newAssignment: IAssignment | undefined = (await basePost(apiPaths.assignments, assignment)).data;
+    return newAssignment?._links ? newAssignment : undefined;
 }
 
 /**
@@ -77,19 +78,19 @@ export async function invalidateAssignment(assignmentUrl: string): Promise<IAssi
 
 /**
  * Function providing you with the query url to get only the valid assignments surrounding a given [IProjectSkill].
- * @param projectSkill the projectSkill you want to get the assignments url for.
+ * @param projectSkillUrl the projectSkill url you want to get the assignments url for.
  */
-export function getValidAssignmentsUrlForProjectSkill(projectSkill: IProjectSkill): string {
-    const projectSkillId = extractIdFromProjectUrl(projectSkill._links.self.href);
+export function getValidAssignmentsUrlForProjectSkill(projectSkillUrl: string): string {
+    const projectSkillId = extractIdFromProjectUrl(projectSkillUrl);
     return getQueryUrlFromParams(apiPaths.assignmentsValidityByProjectSkill, { projectSkillId, valid: true });
 }
 
 /**
  * Function providing you with the query url to get only the valid assignments surrounding a given [IStudent].
- * @param student the [IStudent] you want to get the assignments url for.
+ * @param studentUrl the url where the [IStudent] you want to get the assignments url for is hosted on.
  */
-export function getValidAssignmentsUrlForStudent(student: IStudent): string {
-    const studentId = extractIdFromProjectUrl(student._links.self.href);
+export function getValidAssignmentsUrlForStudent(studentUrl: string): string {
+    const studentId = extractIdFromProjectUrl(studentUrl);
     return getQueryUrlFromParams(apiPaths.assignmentsValidityByStudent, { studentId, valid: true });
 }
 

@@ -13,7 +13,7 @@ import {
     osocExperienceAsString,
 } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { extractIdFromStudentUrl, deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
@@ -27,6 +27,7 @@ import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
+import useQueriedStudents from "../../hooks/useQueriedStudents";
 
 /**
  * Give an overview of all the studentinfo
@@ -43,10 +44,14 @@ export function StudentInfo() {
         apiPaths.students + "/" + id,
         getStudentOnUrl
     );
+
     const { data: receivedSuggestions, error: suggestionsError } = useSwrForEntityList(
         receivedStudent ? receivedStudent._links.suggestions.href : null,
         getAllSuggestionsFromLinks
     );
+
+    // Fetch all students, so we can edit them when you remove a student
+    const { data: receivedStudents, mutate } = useQueriedStudents();
 
     if (studentError || suggestionsError) {
         console.log(studentError || suggestionsError);
@@ -78,6 +83,13 @@ export function StudentInfo() {
             try {
                 const params = getParamsFromQueryUrl(router.asPath);
                 await router.push(getQueryUrlFromParams("/" + applicationPaths.students, params));
+                if (receivedStudents) {
+                    mutate(
+                        receivedStudents.filter(
+                            (filterStud) => filterStud._links.self.href !== student!._links.self.href
+                        )
+                    ).catch(console.log);
+                }
             } catch (error) {
                 setShow(true);
             }

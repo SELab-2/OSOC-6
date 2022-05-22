@@ -3,15 +3,10 @@ import styles from "../../styles/projects/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
-import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
-import {
-    useEditionApplicationPathTransformer,
-    useSwrForEntityList,
-    useSwrForEntityListWithEdition,
-    useSwrWithEdition,
-} from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import useProjectsByEdition from "../../hooks/useProjectsByEdition";
 
 export function ProjectList() {
     const { t } = useTranslation("common");
@@ -19,11 +14,11 @@ export function ProjectList() {
     const transformer = useEditionApplicationPathTransformer();
     const currentUserIsAdmin = useCurrentAdminUser();
 
-    let { data, error } = useSwrForEntityListWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
-    data = data || [];
+    const { data: receivedProjects, error: projectsError } = useProjectsByEdition();
+    const projects = receivedProjects || [];
 
-    if (error) {
-        console.log(error);
+    if (projectsError) {
+        console.log(projectsError);
         return null;
     }
 
@@ -33,7 +28,7 @@ export function ProjectList() {
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
                     <div className="capitalize">{t("projects")}</div>
                 </ListGroup.Item>
-                {data
+                {projects
                     .map((project) => ({
                         project,
                         projectId: project._links.self.href.split(apiPaths.base)[1],

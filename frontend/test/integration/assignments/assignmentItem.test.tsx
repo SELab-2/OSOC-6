@@ -89,7 +89,7 @@ describe("Assignment item", () => {
             );
 
             // Answer assignments
-            const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
+            const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill._links.self.href);
             await enableActForResponse(
                 assignmentsUrl,
                 getBaseOkResponse(

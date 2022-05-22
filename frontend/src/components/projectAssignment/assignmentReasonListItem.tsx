@@ -11,11 +11,13 @@ import useTranslation from "next-translate/useTranslation";
 export interface AssignmentReasonListItemProps {
     assignmentUrl: string;
     removeCallback: (assignmentUrl: string) => Promise<void>;
+    registerInvalidCallback: (assignmentUrl: string) => Promise<void>;
 }
 
 export default function AssignmentReasonListItem({
     assignmentUrl,
     removeCallback,
+    registerInvalidCallback,
 }: AssignmentReasonListItemProps) {
     const { t } = useTranslation("common");
 
@@ -29,6 +31,10 @@ export default function AssignmentReasonListItem({
     if (assignmentError || assignerError) {
         console.log(assignmentError || assignerError);
         return null;
+    }
+
+    if (receivedAssignment && !receivedAssignment.isValid) {
+        registerInvalidCallback(assignmentUrl);
     }
 
     const assignment = receivedAssignment || emptyAssignment;

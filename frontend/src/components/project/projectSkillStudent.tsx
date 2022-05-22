@@ -1,17 +1,11 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
-import useSkillTypeByName from "../../hooks/useSkillTypeByName";
 import useSWR from "swr";
-import { emptySkillType } from "../../api/entities/SkillTypeEntity";
-import {
-    getAllAssignmentsFromPage,
-    getValidAssignmentsUrlForProjectSkill,
-} from "../../api/calls/AssignmentCalls";
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import { extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { emptyStudent } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import applicationPaths from "../../properties/applicationPaths";
-import { useSwrForEntityList } from "../../hooks/utilHooks";
+import useValidAssignmentsFromProjectSkillList from "../../hooks/useValidAssignmentsFromProjectSkillList";
 
 export interface IProjectSkillStudentProps {
     projectSkill: IProjectSkill;
@@ -50,9 +44,8 @@ export function AssignmentStudentListItem({ assignment }: IAssignmentStudentList
  * @param projectSkill [IProjectSkill] that is represented by this component.
  */
 export default function ProjectSkillStudent({ projectSkill }: IProjectSkillStudentProps) {
-    let { data: assignments, error: assignmentError } = useSwrForEntityList(
-        getValidAssignmentsUrlForProjectSkill(projectSkill),
-        getAllAssignmentsFromPage
+    let { data: assignments, error: assignmentError } = useValidAssignmentsFromProjectSkillList(
+        projectSkill._links.self.href
     );
 
     if (assignmentError) {

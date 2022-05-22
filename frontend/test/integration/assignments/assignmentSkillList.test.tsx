@@ -17,9 +17,7 @@ afterEach(() => {
 });
 
 async function renderSkillList(project: IProject, projectSkills: IProjectSkill[]) {
-    const drop: DropHandler = () => {
-        console.log("dropped");
-    };
+    const drop: DropHandler = jest.fn();
 
     await act(() => {
         render(

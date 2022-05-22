@@ -16,6 +16,8 @@ import styles from "../../styles/conflicts.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useSwrForEntityList } from "../../hooks/utilHooks";
+import { useValidAssignmentsFromStudentList } from "../../hooks/useValidAssignmentsFromStudentList";
+import useConflictStudents from "../../hooks/useConflictStudents";
 
 /**
  * Type that will hold the projectSkills and its assignments.
@@ -38,17 +40,19 @@ export interface ConflictResolutionItemProps {
 
 export default function ConflictResolutionItem({ student }: ConflictResolutionItemProps) {
     const { t } = useTranslation("common");
-    const assignmentsUrl = getValidAssignmentsUrlForStudent(student);
     const currentUserIsAdmin = useCurrentAdminUser();
-    const { data: receivedAssignments, error: assignmentsError } = useSwrForEntityList(
-        assignmentsUrl,
-        getAllAssignmentsFromPage
-    );
+    const {
+        data: receivedAssignments,
+        error: assignmentsError,
+        mutate: studentsAssignmentMutate,
+    } = useValidAssignmentsFromStudentList(student._links.self.href);
+    const { data: conflictStudents, mutate: mutateConflictStudents } = useConflictStudents();
 
     // Mutation boolean is needed because we are changing the projectSkillMapper in place.
     // Changing projectSkillMapper in place is needed because of closures.
     const [mutated, setMutated] = useState<boolean>(false);
     const [projectSkillMapper, setProjectSkillMapper] = useState<ProjectMapper>({});
+    const [lastPicked, setLastPicked] = useState("");
     const { mutate } = useSWRConfig();
 
     if (assignmentsError) {
@@ -80,10 +84,35 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
 
     const assignments: IAssignment[] = receivedAssignments || [];
 
-    // we can mutate on the assignments, so they are known to swr. (This might result in mutation overload?)
-    Promise.all(assignments.map((assignment) => mutate(assignment._links.self.href, assignment))).catch(
-        console.log
-    );
+    async function submitHandler(picked: string) {
+        if (picked) {
+            setLastPicked(picked);
+            const assignmentsToInvalidate = Object.entries(projectSkillMapper)
+                .filter(([skillUrl]) => skillUrl !== picked)
+                .flatMap(([, assignments]) => Array.from(assignments));
+
+            if (conflictStudents) {
+                mutateConflictStudents(
+                    conflictStudents.filter(
+                        (filterStud) => filterStud._links.self.href !== student._links.self.href
+                    )
+                ).catch(console.log);
+            }
+            if (receivedAssignments) {
+                studentsAssignmentMutate(
+                    receivedAssignments.filter(
+                        (assign) => !assignmentsToInvalidate.includes(assign._links.self.href)
+                    )
+                ).catch(console.log);
+            }
+            await Promise.all([
+                ...assignmentsToInvalidate.map((assignment) => invalidateAssignment(assignment)),
+            ]);
+        } else {
+            // Will be refactored so keeping the hard coded string.
+            alert("pick a skill to keep the student on");
+        }
+    }
 
     return (
         <div className={styles.conflict_inner_div} key={student._links.self.href}>
@@ -95,6 +124,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                         registerAssignment={registerAssignment}
                         removeAssignment={removeAssignment}
                         assignment={assignment}
+                        picked={lastPicked}
                         key={assignment._links.self.href}
                     />
                 ))
@@ -104,20 +134,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                 initialValues={{
                     picked: "",
                 }}
-                onSubmit={async ({ picked }) => {
-                    if (picked) {
-                        await Promise.all([
-                            ...Object.entries(projectSkillMapper)
-                                .filter(([skillUrl]) => skillUrl !== picked)
-                                .flatMap(([, assignments]) => Array.from(assignments))
-                                .map((assignment) => invalidateAssignment(assignment)),
-                            mutate(assignmentsUrl),
-                        ]);
-                    } else {
-                        // Will be refactored so keeping the hard coded string.
-                        alert("pick a skill to keep the student on");
-                    }
-                }}
+                onSubmit={async ({ picked }) => submitHandler(picked)}
             >
                 <Form>
                     <div role="group">

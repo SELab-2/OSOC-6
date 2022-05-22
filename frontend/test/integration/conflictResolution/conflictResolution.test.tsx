@@ -55,7 +55,7 @@ describe("conflict resolution", () => {
                 );
             });
 
-            const assignmentsUrl = getValidAssignmentsUrlForStudent(student);
+            const assignmentsUrl = getValidAssignmentsUrlForStudent(student._links.self.href);
             await waitFor(() =>
                 mockAxios.mockResponseFor(
                     assignmentsUrl,

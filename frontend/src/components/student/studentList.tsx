@@ -24,6 +24,7 @@ import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { baseSkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
 import useSWR from "swr";
 import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
+import useQueriedStudents from "../../hooks/useQueriedStudents";
 
 export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
@@ -34,10 +35,8 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
 
     const isAdmin = useCurrentAdminUser();
 
-    const { data: receivedStudents, error: studentsError } = useSwrForEntityListWithEdition(
-        constructStudentQueryUrl(apiPaths.studentByQuery, params),
-        getAllStudentsFromPage
-    );
+    const { data: receivedStudents, error: studentsError } = useQueriedStudents();
+
     const { data: receivedSkillTypes, error: skillTypesError } = useSwrForEntityList(
         apiPaths.skillTypes,
         getAllSkillTypesFromPage
