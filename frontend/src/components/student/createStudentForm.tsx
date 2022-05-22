@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
@@ -19,6 +19,7 @@ import useEdition from "../../hooks/useGlobalEdition";
 import { createStudentSubmitHandler } from "../../handlers/createStudentSubmitHandler";
 import ItemListForm from "../util/itemListForm";
 import styles from "../../styles/students/studentCreate.module.css";
+import { useState } from "react";
 
 /**
  * Props needed for the create student form.
@@ -35,8 +36,16 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
     const router = useRouter();
     const { mutate } = useSWRConfig();
     const [editionUrl] = useEdition();
+    const [URIErrors, setURIErrors] = useState<boolean[]>([false, false, false]);
 
     const initialValues: Student = studentFromIStudent(editionUrl!, student ? student : emptyStudent);
+
+    // Function checking whether or not a string is a valid URI
+    function isValidURI(uri: string): boolean {
+        const URIRegExp: RegExp =
+            /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+        return URIRegExp.test(uri) || uri === "";
+    }
 
     return (
         <div
@@ -51,16 +60,22 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
             <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
-                onSubmit={(values) =>
-                    createStudentSubmitHandler(
-                        student ? student._links.self.href : null,
-                        values,
-                        router,
-                        mutate
-                    )
-                }
+                onSubmit={(values) => {
+                    if (
+                        isValidURI(values.curriculumVitaeURI) &&
+                        isValidURI(values.motivationURI) &&
+                        isValidURI(values.portfolioURI)
+                    ) {
+                        createStudentSubmitHandler(
+                            student ? student._links.self.href : null,
+                            values,
+                            router,
+                            mutate
+                        );
+                    }
+                }}
             >
-                {({ values, setFieldValue }) => (
+                {({ values, setFieldValue, touched }) => (
                     <Form>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="callNameField" className="form-label">
@@ -110,7 +125,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 {capitalize(t("email")) + ":"}
                             </label>
                             <Field
-                                type="text"
+                                type="email"
                                 name="email"
                                 required
                                 placeholder={capitalize(t("email"))}
@@ -299,6 +314,9 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="curriculumVitaeURI"
                                 className={styles.input_field + " form-control"}
                             />
+                            {!isValidURI(values.curriculumVitaeURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="portfolioURIField" className="form-label">
@@ -312,6 +330,9 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="portfolioURI"
                                 className={styles.input_field + " form-control"}
                             />
+                            {!isValidURI(values.portfolioURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="motivationURIField" className="form-label">
@@ -325,6 +346,9 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="motivationURI"
                                 className={styles.input_field + " form-control"}
                             />
+                            {!isValidURI(values.motivationURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         {capitalize(t("or"))}
                         <div className="col-sm-5 mb-2">
