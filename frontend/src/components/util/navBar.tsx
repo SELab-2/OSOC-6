@@ -4,7 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import OptionsMenu from "./optionsMenu";
-import {useCurrentAdminUser, useCurrentUser} from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser, useCurrentUser } from "../../hooks/useCurrentUser";
 
 export const NavBar = () => {
     const { t } = useTranslation("common");
@@ -12,21 +12,23 @@ export const NavBar = () => {
     const currentUserIsAdmin = useCurrentAdminUser();
     const { user } = useCurrentUser();
 
-
-
     return (
         <div className="capitalize" data-testid="nav-bar">
             <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand
-                        href={user ? transformer("/" + applicationPaths.assignStudents) : transformer("/" + applicationPaths.login)}
+                        href={
+                            user
+                                ? transformer("/" + applicationPaths.assignStudents)
+                                : transformer("/" + applicationPaths.login)
+                        }
                         data-testid="navbar-brand"
                     >
                         <Image alt="" src={"/resources/osoc-logo.svg"} width="30" height="30" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
-                        {user &&
+                        {user && (
                             <Nav className={"ms-auto"}>
                                 <Nav.Item data-testid="navbar-students">
                                     <Nav.Link href={transformer("/" + applicationPaths.students)}>
@@ -54,7 +56,7 @@ export const NavBar = () => {
                                     <OptionsMenu />
                                 </Nav.Item>
                             </Nav>
-                        }
+                        )}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
