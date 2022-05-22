@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import { Col, Container, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import { getAllUsersFromLinks } from "../../../api/calls/userCalls";
-import { capitalize } from "../../../utility/stringUtil";
+import { capitalize, isValidURIOrEmpty } from "../../../utility/stringUtil";
 import { ProjectCreationValues, projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../../api/entities/UserEntity";
 import { useEffect, useState } from "react";
@@ -109,35 +109,40 @@ export function ProjectForm({ project }: ProjectCreationProps) {
 
     // Create some handlers
     async function handleSubmit(submitValues: ProjectFormSubmitValues) {
-        const createValues: ProjectCreationValues = {
-            name: submitValues.name,
-            info: submitValues.info,
-            versionManagement: submitValues.versionManagement,
-            partnerName: submitValues.partnerName,
-            partnerWebsite: submitValues.partnerWebsite,
-            addedSkills: createdSkillNames,
-            addedSkillsInfo: createdSkillInfos,
-            goals: goals,
-            coaches: [
-                ...createdCoachesUrls,
-                ...existingCoaches
-                    .map((coach) => coach._links.self.href)
-                    .filter((coach) => !removedCoaches.has(coach)),
-            ],
-        };
+        if (
+            isValidURIOrEmpty(submitValues.versionManagement) &&
+            isValidURIOrEmpty(submitValues.partnerWebsite)
+        ) {
+            const createValues: ProjectCreationValues = {
+                name: submitValues.name,
+                info: submitValues.info,
+                versionManagement: submitValues.versionManagement,
+                partnerName: submitValues.partnerName,
+                partnerWebsite: submitValues.partnerWebsite,
+                addedSkills: createdSkillNames,
+                addedSkillsInfo: createdSkillInfos,
+                goals: goals,
+                coaches: [
+                    ...createdCoachesUrls,
+                    ...existingCoaches
+                        .map((coach) => coach._links.self.href)
+                        .filter((coach) => !removedCoaches.has(coach)),
+                ],
+            };
 
-        // We can use ! for edition and currentUser because this function is never called if it is undefined.
-        await projectFormSubmitHandler(
-            project ? project : null,
-            createValues,
-            Array.from(removedSkills),
-            Object.entries(alteredSkills),
-            editionUrl!,
-            currentUser!,
-            router,
-            mutate,
-            apiTransformer
-        );
+            // We can use ! for edition and currentUser because this function is never called if it is undefined.
+            await projectFormSubmitHandler(
+                project ? project : null,
+                createValues,
+                Array.from(removedSkills),
+                Object.entries(alteredSkills),
+                editionUrl!,
+                currentUser!,
+                router,
+                mutate,
+                apiTransformer
+            );
+        }
     }
 
     const initialValues: ProjectFormSubmitValues = project
@@ -159,161 +164,169 @@ export function ProjectForm({ project }: ProjectCreationProps) {
     return (
         <Container className={styles.create_project_box} data-testid="create-project-form w-100">
             <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
-                <Form
-                    // This is needed so pressing enter does not submit the form.
-                    // I Personally pressed enter a lot of times to for example to add a goal.
-                    // Resulting in a lot of premature submissions.
-                    onKeyPress={(e) => {
-                        e.which === 13 && e.preventDefault();
-                    }}
-                >
-                    <h3 style={{ marginTop: "4rem" }}>
-                        {project ? capitalize(t("edit project")) : capitalize(t("create project"))}
-                    </h3>
-                    <hr />
-                    <label className={styles.label} htmlFor="project-name">
-                        {capitalize(t("project name"))}:
-                    </label>
-                    <Field
-                        className={styles.input_field + " form-control mb-2"}
-                        id="project-name"
-                        label={capitalize(t("project name"))}
-                        name="name"
-                        data-testid="projectname-input"
-                        placeholder={capitalize(t("project name"))}
-                        required
-                    />
+                {({ values, touched }) => (
+                    <Form
+                        // This is needed so pressing enter does not submit the form.
+                        // I Personally pressed enter a lot of times to for example to add a goal.
+                        // Resulting in a lot of premature submissions.
+                        onKeyPress={(e) => {
+                            e.which === 13 && e.preventDefault();
+                        }}
+                    >
+                        <h3 style={{ marginTop: "4rem" }}>
+                            {project ? capitalize(t("edit project")) : capitalize(t("create project"))}
+                        </h3>
+                        <hr />
+                        <label className={styles.label} htmlFor="project-name">
+                            {capitalize(t("project name"))}:
+                        </label>
+                        <Field
+                            className={styles.input_field + " form-control mb-2"}
+                            id="project-name"
+                            label={capitalize(t("project name"))}
+                            name="name"
+                            data-testid="projectname-input"
+                            placeholder={capitalize(t("project name"))}
+                            required
+                        />
 
-                    <label className={styles.label} htmlFor="project-info">
-                        {capitalize(t("project info"))}:
-                    </label>
-                    <Field
-                        className={styles.input_field + " form-control mb-2"}
-                        id="project-info"
-                        label={capitalize(t("project info"))}
-                        name="info"
-                        data-testid="projectinfo-input"
-                        placeholder={capitalize(t("project info"))}
-                    />
-                    <ItemListForm
-                        items={goals}
-                        setItems={setGoals}
-                        itemInputText={capitalize(t("project goals"))}
-                        itemAddText={capitalize(t("add goal"))}
-                        itemPlaceHolderText={capitalize(t("project goal"))}
-                    />
+                        <label className={styles.label} htmlFor="project-info">
+                            {capitalize(t("project info"))}:
+                        </label>
+                        <Field
+                            className={styles.input_field + " form-control mb-2"}
+                            id="project-info"
+                            label={capitalize(t("project info"))}
+                            name="info"
+                            data-testid="projectinfo-input"
+                            placeholder={capitalize(t("project info"))}
+                        />
+                        <ItemListForm
+                            items={goals}
+                            setItems={setGoals}
+                            itemInputText={capitalize(t("project goals"))}
+                            itemAddText={capitalize(t("add goal"))}
+                            itemPlaceHolderText={capitalize(t("project goal"))}
+                        />
 
-                    <label className={styles.label} htmlFor="version-management">
-                        {capitalize(t("version control URL"))}:
-                    </label>
-                    <Field
-                        className={styles.input_field + " form-control mb-2"}
-                        id="version-management"
-                        label={capitalize(t("version control URL"))}
-                        name="versionManagement"
-                        data-testid="versionmanagement-input"
-                        placeholder={capitalize(t("version control URL"))}
-                    />
+                        <label className={styles.label} htmlFor="version-management">
+                            {capitalize(t("version control URL"))}:
+                        </label>
+                        <Field
+                            className={styles.input_field + " form-control mb-2"}
+                            id="version-management"
+                            label={capitalize(t("version control URL"))}
+                            name="versionManagement"
+                            data-testid="versionmanagement-input"
+                            placeholder={capitalize(t("version control URL"))}
+                        />
+                        {!isValidURIOrEmpty(values.versionManagement) && touched.versionManagement ? (
+                            <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                        ) : null}
 
-                    <label className={styles.label}>{capitalize(t("coaches"))}:</label>
-                    <ul style={{ listStyleType: "circle" }}>
-                        {existingCoaches
-                            .filter((coach) => !removedCoaches.has(coach._links.self.href))
-                            .map((coach: IUser) => (
-                                <li key={coach._links.self.href} style={{ marginLeft: "3rem" }}>
-                                    <Row>
-                                        {/* Might be prettier to just blur coaches that have been removed.
-                                    That way you would be able to add them again */}
-                                        <Col>{coach.callName}</Col>
-                                        <Col xs={1}>
-                                            <a
-                                                data-testid={"remove-existing-coach-" + coach.callName}
-                                                onClick={() => {
-                                                    removedCoaches.add(coach._links.self.href);
-                                                    setMutated(true);
-                                                }}
-                                            >
-                                                <Image
-                                                    alt=""
-                                                    src={"/resources/delete.svg"}
-                                                    width="15"
-                                                    height="15"
-                                                />
-                                            </a>
-                                        </Col>
-                                    </Row>
-                                </li>
+                        <label className={styles.label}>{capitalize(t("coaches"))}:</label>
+                        <ul style={{ listStyleType: "circle" }}>
+                            {existingCoaches
+                                .filter((coach) => !removedCoaches.has(coach._links.self.href))
+                                .map((coach: IUser) => (
+                                    <li key={coach._links.self.href} style={{ marginLeft: "3rem" }}>
+                                        <Row>
+                                            {/* Might be prettier to just blur coaches that have been removed.
+                                        That way you would be able to add them again */}
+                                            <Col>{coach.callName}</Col>
+                                            <Col xs={1}>
+                                                <a
+                                                    data-testid={"remove-existing-coach-" + coach.callName}
+                                                    onClick={() => {
+                                                        removedCoaches.add(coach._links.self.href);
+                                                        setMutated(true);
+                                                    }}
+                                                >
+                                                    <Image
+                                                        alt=""
+                                                        src={"/resources/delete.svg"}
+                                                        width="15"
+                                                        height="15"
+                                                    />
+                                                </a>
+                                            </Col>
+                                        </Row>
+                                    </li>
+                                ))}
+                        </ul>
+                        <CreateCoachSubForm
+                            setCoachUrls={setCreatedCoachesUrls}
+                            illegalCoaches={existingCoaches
+                                .filter((coach) => !removedCoaches.has(coach._links.self.href))
+                                .map((coach) => coach.callName)}
+                        />
+
+                        <label className={styles.label} htmlFor="partner-name">
+                            {capitalize(t("partner name"))}:
+                        </label>
+                        <Field
+                            className={styles.input_field + " form-control mb-2"}
+                            id="partner-name"
+                            label={capitalize(t("partner name"))}
+                            name="partnerName"
+                            data-testid="partnername-input"
+                            placeholder={capitalize(t("partner name"))}
+                            required
+                        />
+
+                        <label className={styles.label} htmlFor="partner-website">
+                            {capitalize(t("partner website"))}:
+                        </label>
+                        <Field
+                            className={styles.input_field + " form-control mb-2"}
+                            id="partner-website"
+                            label={capitalize(t("partner website"))}
+                            name="partnerWebsite"
+                            data-testid="partnerwebsite-input"
+                            placeholder={capitalize(t("partner website"))}
+                        />
+                        {!isValidURIOrEmpty(values.partnerWebsite) && touched.partnerWebsite ? (
+                            <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                        ) : null}
+
+                        <label className={styles.label}>{capitalize(t("project expertise"))}</label>
+                        {existingSkills
+                            .filter((skill) => !removedSkills.has(skill._links.self.href))
+                            .map((skill: IProjectSkill) => (
+                                <EditProjectSkillSubForm
+                                    key={skill._links.self.href}
+                                    skill={
+                                        skill._links.self.href in alteredSkills
+                                            ? alteredSkills[skill._links.self.href]
+                                            : projectSkillFromIProjectSkill(skill, project!._links.self.href)
+                                    }
+                                    registerRemoval={() => {
+                                        setMutated(true);
+                                        removedSkills.add(skill._links.self.href);
+                                    }}
+                                    registerAlteration={(newSkill) => {
+                                        alteredSkills[skill._links.self.href] = newSkill;
+                                        setMutated(true);
+                                    }}
+                                />
                             ))}
-                    </ul>
-                    <CreateCoachSubForm
-                        setCoachUrls={setCreatedCoachesUrls}
-                        illegalCoaches={existingCoaches
-                            .filter((coach) => !removedCoaches.has(coach._links.self.href))
-                            .map((coach) => coach.callName)}
-                    />
-
-                    <label className={styles.label} htmlFor="partner-name">
-                        {capitalize(t("partner name"))}:
-                    </label>
-                    <Field
-                        className={styles.input_field + " form-control mb-2"}
-                        id="partner-name"
-                        label={capitalize(t("partner name"))}
-                        name="partnerName"
-                        data-testid="partnername-input"
-                        placeholder={capitalize(t("partner name"))}
-                        required
-                    />
-
-                    <label className={styles.label} htmlFor="partner-website">
-                        {capitalize(t("partner website"))}:
-                    </label>
-                    <Field
-                        className={styles.input_field + " form-control mb-2"}
-                        id="partner-website"
-                        label={capitalize(t("partner website"))}
-                        name="partnerWebsite"
-                        data-testid="partnerwebsite-input"
-                        placeholder={capitalize(t("partner website"))}
-                    />
-
-                    <label className={styles.label}>{capitalize(t("project expertise"))}</label>
-                    {existingSkills
-                        .filter((skill) => !removedSkills.has(skill._links.self.href))
-                        .map((skill: IProjectSkill) => (
-                            <EditProjectSkillSubForm
-                                key={skill._links.self.href}
-                                skill={
-                                    skill._links.self.href in alteredSkills
-                                        ? alteredSkills[skill._links.self.href]
-                                        : projectSkillFromIProjectSkill(skill, project!._links.self.href)
-                                }
-                                registerRemoval={() => {
-                                    setMutated(true);
-                                    removedSkills.add(skill._links.self.href);
-                                }}
-                                registerAlteration={(newSkill) => {
-                                    alteredSkills[skill._links.self.href] = newSkill;
-                                    setMutated(true);
-                                }}
-                            />
-                        ))}
-                    <CreateProjectSkillSubForm
-                        createdSkillNames={createdSkillNames}
-                        setCreatedSkillNames={setCreatedSkillNames}
-                        createdSkillInfos={createdSkillInfos}
-                        setCreatedSkillInfos={setCreatedSkillInfos}
-                    />
-                    <div style={{ display: "flex" }}>
-                        <button
-                            className={"btn btn-primary " + styles.create_button}
-                            type="submit"
-                            data-testid="submit-project-form-button"
-                        >
-                            {project ? capitalize(t("save project")) : capitalize(t("create project"))}
-                        </button>
-                    </div>
-                </Form>
+                        <CreateProjectSkillSubForm
+                            createdSkillNames={createdSkillNames}
+                            setCreatedSkillNames={setCreatedSkillNames}
+                            createdSkillInfos={createdSkillInfos}
+                            setCreatedSkillInfos={setCreatedSkillInfos}
+                        />
+                        <div style={{ display: "flex" }}>
+                            <button
+                                className={"btn btn-primary " + styles.create_button}
+                                type="submit"
+                                data-testid="submit-project-form-button"
+                            >
+                                {project ? capitalize(t("save project")) : capitalize(t("create project"))}
+                            </button>
+                        </div>
+                    </Form>
+                )}
             </Formik>
         </Container>
     );
