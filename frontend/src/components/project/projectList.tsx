@@ -94,9 +94,7 @@ export function ProjectList() {
                                 className={"capitalize justify-content-center " + styles.project_list_button}
                                 variant="outline-primary"
                                 size="sm"
-                                onClick={() =>
-                                    routerAction("/" + applicationPaths.skillTypesBase)
-                                }
+                                onClick={() => routerAction("/" + applicationPaths.skillTypesBase)}
                             >
                                 {t("skill types")}
                             </Button>
