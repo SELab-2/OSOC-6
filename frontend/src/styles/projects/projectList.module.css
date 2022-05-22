@@ -9,9 +9,12 @@
 
 .project_list_button {
     width: 95%;
+    margin: 0.5rem;
+}
+
+.bottom_page {
     position: absolute;
     bottom: 0;
-    margin: 0.5rem;
 }
 
 .project_list_header {
