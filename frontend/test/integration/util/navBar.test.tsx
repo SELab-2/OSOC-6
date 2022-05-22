@@ -1,24 +1,25 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import NavBar from "../../../src/components/util/navBar";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import applicationPaths from "../../../src/properties/applicationPaths";
 import mockRouter from "next-router-mock";
-import mockAxios from "jest-mock-axios";
-import { AxiosResponse } from "axios";
-import { getBaseOkResponse, getBaseUser } from "../TestEntityProvider";
-import { UserRole } from "../../../src/api/entities/UserEntity";
-import apiPaths from "../../../src/properties/apiPaths";
-import { enableActForResponse } from "../Provide";
+import {getBaseUser} from "../TestEntityProvider";
+import {UserRole} from "../../../src/api/entities/UserEntity";
+import {enableCurrentUser, makeCacheFree} from "../Provide";
 
-it("Should be able to render.", async () => {
-    render(<NavBar />);
+describe("Navbar Tests", () => {
 
-    await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
-    const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
-    await enableActForResponse({ url: apiPaths.ownUser }, responseUser);
+    async function setUser() {
+        const user = getBaseUser("1", UserRole.admin, true);
+        await enableCurrentUser(user);
+    }
 
-    await waitFor(() => {
+    it("Should be able to render.", async () => {
+        render(<NavBar/>);
+
+        await setUser();
+
         expect(screen.getByTestId("navbar-brand")).toBeInTheDocument();
         expect(screen.getByTestId("navbar-students")).toBeInTheDocument();
         expect(screen.getByTestId("navbar-users")).toBeInTheDocument();
@@ -26,56 +27,67 @@ it("Should be able to render.", async () => {
         expect(screen.getByTestId("navbar-assignstudents")).toBeInTheDocument();
         expect(screen.getByTestId("navbar-profile")).toBeInTheDocument();
     });
-});
 
-it.skip("Click brand", async () => {
-    render(<NavBar />);
+    it("Click brand", async () => {
+        render(makeCacheFree(() => <NavBar />));
 
-    await userEvent.click(screen.getByTestId("navbar-brand"));
-    await waitFor(() => {
-        expect(mockRouter.pathname).toEqual("/" + applicationPaths.students);
+        await setUser();
+
+        expect(screen.getByTestId("navbar-brand")).toHaveAttribute(
+            "href",
+            "/" + applicationPaths.assignStudents
+        );
     });
-});
 
-it.skip("Click users", async () => {
-    render(<NavBar />);
+    it("Click users", async () => {
+        render(makeCacheFree(() => <NavBar />));
 
-    await userEvent.click(screen.getByTestId("navbar-users"));
-    await waitFor(() => {
-        expect(mockRouter.pathname).toEqual("/" + applicationPaths.users);
+        await setUser();
+
+        expect(screen.getByTestId("navbar-users")).toHaveAttribute("href", "/" + applicationPaths.users);
     });
-});
 
-it.skip("Click students", async () => {
-    render(<NavBar />);
+    it("Click students", async () => {
+        render(makeCacheFree(() => <NavBar />));
 
-    await userEvent.click(screen.getByTestId("navbar-students"));
-    expect(mockRouter.pathname).toEqual("/" + applicationPaths.students);
-});
+        await setUser();
 
-it.skip("Click assign students", async () => {
-    render(<NavBar />);
-
-    await userEvent.click(screen.getByTestId("navbar-assignstudents"));
-    await waitFor(() => {
-        expect(mockRouter.pathname).toEqual("/" + applicationPaths.assignStudents);
+        expect(screen.getByTestId("navbar-students")).toHaveAttribute(
+            "href",
+            "/" + applicationPaths.students
+        );
     });
-});
 
-it.skip("Click projects", async () => {
-    render(<NavBar />);
+    it("Click assign students", async () => {
+        render(makeCacheFree(() => <NavBar />));
 
-    await userEvent.click(screen.getByTestId("navbar-projects"));
-    await waitFor(() => {
-        expect(mockRouter.pathname).toEqual("/" + applicationPaths.projects);
+        await setUser();
+
+        expect(screen.getByTestId("navbar-assignstudents")).toHaveAttribute(
+            "href",
+            "/" + applicationPaths.assignStudents
+        );
     });
-});
 
-it.skip("Click profile", async () => {
-    render(<NavBar />);
+    it("Click projects", async () => {
+        render(makeCacheFree(() => <NavBar />));
 
-    await userEvent.click(screen.getByTestId("navbar-profile"));
-    await waitFor(() => {
-        expect(mockRouter.pathname).toEqual("/" + applicationPaths.profile);
+        await setUser();
+
+        expect(screen.getByTestId("navbar-projects")).toHaveAttribute(
+            "href",
+            "/" + applicationPaths.projects
+        );
+    });
+
+    it.skip("Click profile", async () => {
+        render(<NavBar/>);
+
+        await setUser();
+
+        await userEvent.click(screen.getByTestId("navbar-profile"));
+        await waitFor(() => {
+            expect(mockRouter.pathname).toEqual("/" + applicationPaths.profile);
+        });
     });
 });

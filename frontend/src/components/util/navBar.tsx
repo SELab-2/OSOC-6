@@ -30,25 +30,25 @@ export const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         {user && (
                             <Nav className={"ms-auto"}>
-                                <Nav.Item data-testid="navbar-students">
-                                    <Nav.Link href={transformer("/" + applicationPaths.students)}>
+                                <Nav.Item>
+                                    <Nav.Link data-testid="navbar-students" href={transformer("/" + applicationPaths.students)}>
                                         {t("students")}
                                     </Nav.Link>
                                 </Nav.Item>
                                 {currentUserIsAdmin && (
-                                    <Nav.Item data-testid="navbar-users">
-                                        <Nav.Link href={transformer("/" + applicationPaths.users)}>
+                                    <Nav.Item>
+                                        <Nav.Link data-testid="navbar-users" href={transformer("/" + applicationPaths.users)}>
                                             {t("users")}
                                         </Nav.Link>
                                     </Nav.Item>
                                 )}
-                                <Nav.Item data-testid="navbar-projects">
-                                    <Nav.Link href={transformer("/" + applicationPaths.projects)}>
+                                <Nav.Item>
+                                    <Nav.Link data-testid="navbar-projects" href={transformer("/" + applicationPaths.projects)}>
                                         {t("projects")}
                                     </Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item data-testid="navbar-assignstudents">
-                                    <Nav.Link href={transformer("/" + applicationPaths.assignStudents)}>
+                                <Nav.Item>
+                                    <Nav.Link data-testid="navbar-assignstudents" href={transformer("/" + applicationPaths.assignStudents)}>
                                         {t("assign students")}
                                     </Nav.Link>
                                 </Nav.Item>
