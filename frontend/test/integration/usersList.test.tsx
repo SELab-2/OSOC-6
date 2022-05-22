@@ -9,10 +9,11 @@ import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import {
     getBaseBadRequestResponse,
     getBaseNoContentResponse,
-    getBaseOkResponse,
+    getBaseOkResponse, getBaseTeapot,
     getBaseUser,
 } from "./TestEntityProvider";
 import { AxiosResponse } from "axios";
+import apiPaths from "../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -26,6 +27,15 @@ describe("Users", () => {
             render(makeCacheFree(UsersOverview));
             expect(screen.getByTestId("user-overview")).toBeInTheDocument();
         });
+
+        it("should handle error", async () => {
+            console.log = jest.fn();
+
+            render(makeCacheFree(UsersOverview));
+            await enableActForResponse(apiPaths.users, getBaseTeapot());
+
+            await waitFor(() => expect(console.log).toHaveBeenCalled());
+        })
 
         it("Should have rows for the users", () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);

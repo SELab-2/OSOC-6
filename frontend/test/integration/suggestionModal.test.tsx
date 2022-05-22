@@ -6,9 +6,11 @@ import apiPaths from "../../src/properties/apiPaths";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { UserRole } from "../../src/api/entities/UserEntity";
-import { getBaseUser } from "./TestEntityProvider";
+import {getBaseTeapot, getBaseUser} from "./TestEntityProvider";
 import { capitalize } from "../../src/utility/stringUtil";
-import { enableCurrentUser, makeCacheFree } from "./Provide";
+import {enableActForResponse, enableCurrentUser, makeCacheFree} from "./Provide";
+import {SuggestionCount} from "../../src/components/student/suggestionCount";
+import applicationPaths from "../../src/properties/applicationPaths";
 
 afterEach(() => {
     mockAxios.reset();
@@ -70,5 +72,18 @@ describe("SuggestionModal", () => {
         await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
 
         await waitFor(() => expect(mockAxios.post).toHaveBeenCalled());
+    });
+
+    it("should handle error", async () => {
+        console.log = jest.fn()
+
+        render(
+            makeCacheFree(() => (
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
+            ))
+        );
+        await enableActForResponse({url: apiPaths.ownUser}, getBaseTeapot())
+
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });
