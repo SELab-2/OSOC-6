@@ -6,6 +6,7 @@ import { Badge } from "react-bootstrap";
 import { capitalize } from "../../utility/stringUtil";
 import styles from "../../styles/skillTypes.module.css";
 import Image from "next/image";
+import {ConfirmDeleteButton} from "../util/confirmDeleteButton";
 
 export interface SkillTypeListItemProps {
     skillType: ISkillType;
@@ -73,20 +74,7 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                             </a>
                         </div>
                         <div className="col-auto">
-                            <a
-                                className="clickable"
-                                onClick={() => deleteHandler(selfUrl)}
-                                data-testid="delete-item"
-                                title={capitalize(t("delete"))}
-                            >
-                                <Image
-                                    alt=""
-                                    layout="fixed"
-                                    src={"/resources/delete.svg"}
-                                    width="15"
-                                    height="15"
-                                />
-                            </a>
+                            <ConfirmDeleteButton dataTestId="delete-item" handler={() => deleteHandler(selfUrl)}/>
                         </div>
                     </Form>
                 )}
