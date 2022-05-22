@@ -13,6 +13,7 @@ import AccordionItem from "react-bootstrap/AccordionItem";
 import { capitalize } from "../../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
 import { IStudent } from "../../api/entities/StudentEntity";
+import styles from "../../styles/students/communication/communications.module.css";
 
 /**
  * Properties needed for [StudentCommunicationList].
@@ -66,9 +67,12 @@ export default function StudentCommunicationList({ student }: CommunicationListP
     }
 
     return (
-        <div className={"h-100"}>
-            <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
-                <div className="row w-100" style={{ paddingBottom: 15 }}>
+        <div
+            data-testid="student-communication"
+            className={styles.student_communcation_list_outer_div + " h-100"}
+        >
+            <div className={"overflow-auto p-3"} style={{ height: "100%" }}>
+                <div className={styles.student_info_button + " row"}>
                     <Button
                         variant="btn-outline"
                         data-testid="open-studentinfo"
@@ -79,34 +83,29 @@ export default function StudentCommunicationList({ student }: CommunicationListP
                     </Button>
                 </div>
                 <div className="row w-100">
-                    <Row style={{ display: "flex", justifyContent: "space-between" }}>
+                    <Row className={styles.student_row_add_communication}>
                         <Col>
                             <h1>{student?.callName}</h1>
                         </Col>
-                        <Col>
+                        <Col style={{ display: "flex" }}>
                             <Button
-                                style={{ color: "white", borderColor: "white", backgroundColor: "#1b1a32" }}
+                                className={styles.student_add_communication_button}
                                 onClick={registerNewCommunication}
                             >
                                 {capitalize(t("add communication"))}
                             </Button>
                         </Col>
                     </Row>
+                    <h6 style={{ marginLeft: "2rem" }}>{capitalize(t("recent communication"))}:</h6>
                     <div data-testid="communication-list">
                         <Container className="overflow-auto h-100 pt-2">
                             <Accordion>
                                 {communications.map((communication) => {
                                     return (
-                                        <AccordionItem
+                                        <CommunicationListItem
+                                            communication={communication}
                                             key={communication._links.self.href}
-                                            eventKey={communication._links.self.href}
-                                            data-testid="communication"
-                                        >
-                                            <CommunicationListItem
-                                                communication={communication}
-                                                key={communication._links.self.href}
-                                            />
-                                        </AccordionItem>
+                                        />
                                     );
                                 })}
                             </Accordion>

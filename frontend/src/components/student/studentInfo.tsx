@@ -19,6 +19,7 @@ import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import styles from "../../styles/students/studentOverview.module.css";
 import Image from "next/image";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
