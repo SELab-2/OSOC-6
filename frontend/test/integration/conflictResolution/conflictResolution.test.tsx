@@ -89,6 +89,14 @@ describe("conflict resolution", () => {
             );
         });
 
+        waitFor(() =>
+            mockAxios.mockResponseFor(assignments[0]._links.self.href, getBaseOkResponse(assignments[0]))
+        )
+
+        waitFor(() =>
+            mockAxios.mockResponseFor(assignments[1]._links.self.href, getBaseOkResponse(assignments[1]))
+        )
+
         it("renders correct data", async () => {
             await list.findByText(student.callName);
 
