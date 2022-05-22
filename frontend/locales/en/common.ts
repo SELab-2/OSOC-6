@@ -60,6 +60,7 @@ const common = {
     // Project strings
     "create project": "create project",
     "edit project": "edit project",
+    "save project": "save project",
     "project name": "project name",
     "project info": "project info",
     "project goals": "goals",
@@ -75,6 +76,8 @@ const common = {
     "add coach": "add coach",
     "add goal": "add goal",
     "skill info": "no special info",
+    "no items added yet": "no items added yet",
+    "no coaches added yet": "no coaches added yet",
 
     // Profile strings
     profile: "profile",
@@ -99,8 +102,8 @@ const common = {
     "no edition": "there are no editions made yet.",
     "no error": "no error",
     "edition overview": "edition overview",
-    "change edition state":
-        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "change edition state": "do you really want to change this attribute?",
+    "huge impact": "This change has a huge impact, so proceed with caution...",
     "invalid edition year": "please provide a valid year",
     "create new edition": "create new edition",
     "manage editions": "manage editions",
@@ -224,6 +227,8 @@ const common = {
     "edit colour": "edit colour",
     delete: "delete",
     skills: "skills",
+
+    "input empty": "input field can not be empty",
 };
 
 export default common;

@@ -13,7 +13,6 @@ import { Field, Form, Formik } from "formik";
 import styles from "../../styles/loginForm.module.css";
 import applicationPaths from "../../properties/applicationPaths";
 import { useSWRConfig } from "swr";
-import { useRouterPush } from "../../hooks/routerHooks";
 
 const RegistrationForm: NextPage = () => {
     const { t } = useTranslation("common");
