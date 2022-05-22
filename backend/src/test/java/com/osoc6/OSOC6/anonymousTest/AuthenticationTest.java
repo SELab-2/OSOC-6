@@ -28,8 +28,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -144,14 +142,7 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 .password(loginTestUser.getPassword())
                 .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH);
         getMockMvc().perform(login)
-                .andExpect(authenticated())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/" + DumbledorePathWizard.AUTH_PATH
-                        + "/" + DumbledorePathWizard.AUTH_HOME_PATH))
-                .andDo(result -> perform_get(result.getResponse().getRedirectedUrl())
-                        .andExpect(status().is3xxRedirection())
-                        .andExpect(redirectedUrl("/home"))
-                );
+                .andExpect(authenticated());
     }
 
     @Test
@@ -162,17 +153,13 @@ public class AuthenticationTest extends TestFunctionProvider<Invitation, Long, I
                 .loginProcessingUrl("/" + DumbledorePathWizard.LOGIN_PROCESSING_PATH);
         getMockMvc().perform(login)
                 .andExpect(unauthenticated())
-                .andExpect(status().isOk())
-                // A forward is a server side handled redirect. The redirect code is tested in another test.
-                .andExpect(forwardedUrl("/" + DumbledorePathWizard.AUTH_PATH
-                        + "/" + DumbledorePathWizard.AUTH_FAIL_PATH));
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
     public void login_fail_handled_correctly() throws Exception {
         perform_post("/" + DumbledorePathWizard.AUTH_PATH + "/" + DumbledorePathWizard.AUTH_FAIL_PATH, null)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/loginError"));
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
