@@ -85,6 +85,9 @@ describe("conflict resolution", () => {
             );
         });
 
+        await enableActForResponse(assignments[0]._links.self.href, getBaseOkResponse(assignments[0]))
+        await enableActForResponse(assignments[1]._links.self.href, getBaseOkResponse(assignments[1]))
+
         it("renders correct data", async () => {
             await list.findByText(student.callName);
 

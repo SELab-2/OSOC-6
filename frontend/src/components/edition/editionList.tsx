@@ -7,14 +7,14 @@ import { IEdition } from "../../api/entities/EditionEntity";
 import { getAllEditionsFromPage } from "../../api/calls/editionCalls";
 import { EditionRowComponent } from "./editionRowComponent";
 import applicationPaths from "../../properties/applicationPaths";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrForEntityList } from "../../hooks/utilHooks";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import styles from "../../styles/editionList.module.css";
 
 export function EditionList() {
     const { t } = useTranslation("common");
     const currentUserIsAdmin = useCurrentAdminUser();
-    let { data, error } = useSWR(apiPaths.editions, getAllEditionsFromPage);
+    let { data, error } = useSwrForEntityList(apiPaths.editions, getAllEditionsFromPage);
     const transformer = useEditionApplicationPathTransformer();
 
     data = data || [];

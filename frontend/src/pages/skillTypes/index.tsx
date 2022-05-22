@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import apiPaths from "../../properties/apiPaths";
 import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
 import { ISkillType } from "../../api/entities/SkillTypeEntity";
@@ -10,15 +9,14 @@ import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/skillTypes.module.css";
 import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import { useRouter } from "next/router";
+import { useRouterPush } from "../../hooks/routerHooks";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 import { Background } from "../../components/util/background";
 
 export default function SkillTypeIndexPage() {
     const { t } = useTranslation("common");
-    const transformer = useEditionApplicationPathTransformer();
-    const router = useRouter();
-    const { data: receiveSkillTypes, error: skillTypesError } = useSWR(
+    const routerAction = useRouterPush();
+    const { data: receiveSkillTypes, error: skillTypesError } = useSwrForEntityList(
         getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
         getAllSkillTypesFromPage
     );
@@ -43,9 +41,7 @@ export default function SkillTypeIndexPage() {
                                 data-testid="new-skill-type-button"
                                 className="mt-2"
                                 variant="outline-primary"
-                                onClick={() =>
-                                    router.push(transformer("/" + applicationPaths.skillTypesCreate))
-                                }
+                                onClick={() => routerAction("/" + applicationPaths.skillTypesCreate)}
                             >
                                 {capitalize(t("create skill type"))}
                                 <svg

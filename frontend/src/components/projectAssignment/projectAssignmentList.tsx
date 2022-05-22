@@ -5,12 +5,11 @@ import AccordionItem from "react-bootstrap/AccordionItem";
 import apiPaths from "../../properties/apiPaths";
 import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
 import AssignmentSkillList from "./assignmentSkillList";
-import useSWR from "swr";
 import WarningToast from "../util/warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { DropHandler } from "../../pages/assignStudents";
-import { useSwrWithEdition } from "../../hooks/utilHooks";
+import { useSwrForEntityListWithEdition } from "../../hooks/utilHooks";
 import styles from "../../styles/assignments.module.css";
 
 /**
@@ -19,7 +18,7 @@ import styles from "../../styles/assignments.module.css";
  */
 function ProjectAsignmentList(props: { dropHandler: DropHandler }) {
     const { t } = useTranslation("common");
-    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
+    let { data, error } = useSwrForEntityListWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
     data = data || [];
     if (error) {
         return <WarningToast message={capitalize(t("error reload page"))} />;

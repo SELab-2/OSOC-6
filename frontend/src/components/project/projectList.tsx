@@ -4,9 +4,10 @@ import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
 import { extractIdFromProjectUrl, getAllProjectsFromPage } from "../../api/calls/projectCalls";
-import { useSwrWithEdition } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import useProjectsByEdition from "../../hooks/useProjectsByEdition";
 import { useRouterPush } from "../../hooks/routerHooks";
 import applicationPaths from "../../properties/applicationPaths";
 
@@ -18,10 +19,7 @@ export function ProjectList() {
     const routerAction = useRouterPush();
     const currentUserIsAdmin = useCurrentAdminUser();
 
-    const { data: receivedProjects, error: projectsError } = useSwrWithEdition(
-        apiPaths.projectsByEdition,
-        getAllProjectsFromPage
-    );
+    const { data: receivedProjects, error: projectsError } = useProjectsByEdition();
     const projects = receivedProjects || [];
 
     if (projectsError) {

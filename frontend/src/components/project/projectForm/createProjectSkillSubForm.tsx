@@ -11,6 +11,7 @@ import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import styles from "../../../styles/projects/createProject.module.css";
 import { ConfirmDeleteButton } from "../../util/confirmDeleteButton";
+import { useSwrForEntityList } from "../../../hooks/utilHooks";
 
 /**
  * Properties needed by [CreateProjectSkillSubForm].
@@ -38,7 +39,7 @@ export default function CreateProjectSkillSubForm({
 }: CreateProjectSkillSubFormProps) {
     const { t } = useTranslation("common");
 
-    const { data: receivedSkillTypes, error: skillTypesError } = useSWR(
+    const { data: receivedSkillTypes, error: skillTypesError } = useSwrForEntityList(
         apiPaths.skillTypes,
         getAllSkillTypesFromPage
     );

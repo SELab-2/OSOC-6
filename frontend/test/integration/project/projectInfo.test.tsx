@@ -68,7 +68,7 @@ describe("project info", () => {
             getBaseOkResponse(getBasePage(apiPaths.skillTypesByName, skillTypeCollectionName, [skillType]))
         );
 
-        const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill);
+        const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill._links.self.href);
         await enableActForResponse(
             { url: assignmentsUrl },
             getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))

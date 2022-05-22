@@ -11,7 +11,12 @@ import {
 } from "../../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import {
+    useEditionApplicationPathTransformer,
+    useSwrForEntityList,
+    useSwrForEntityListWithEdition,
+    useSwrWithEdition,
+} from "../../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
 import { IStudent, Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
@@ -20,6 +25,7 @@ import { baseSkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
 import useSWR from "swr";
 import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
 import { useRouterPush, useRouterReplace } from "../../hooks/routerHooks";
+import useQueriedStudents from "../../hooks/useQueriedStudents";
 
 export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
@@ -31,11 +37,9 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
 
     const isAdmin = useCurrentAdminUser();
 
-    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
-        constructStudentQueryUrl(apiPaths.studentByQuery, params),
-        getAllStudentsFromPage
-    );
-    const { data: receivedSkillTypes, error: skillTypesError } = useSWR(
+    const { data: receivedStudents, error: studentsError } = useQueriedStudents();
+
+    const { data: receivedSkillTypes, error: skillTypesError } = useSwrForEntityList(
         apiPaths.skillTypes,
         getAllSkillTypesFromPage
     );

@@ -1,22 +1,19 @@
 import apiPaths from "../../properties/apiPaths";
-import { useSwrWithEdition } from "../../hooks/utilHooks";
+import { useSwrForEntityListWithEdition } from "../../hooks/utilHooks";
 import { getAllStudentsFromPage } from "../../api/calls/studentCalls";
 import { sortStudentsByName } from "../../api/entities/StudentEntity";
 import ConflictResolutionItem from "./conflictResolutionItem";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import styles from "../../styles/conflicts.module.css";
+import useConflictStudents from "../../hooks/useConflictStudents";
 
 /**
  * List of conflicts. This component will get all conflicting students and list them in a useful way.
  */
 export default function ConflictResolutionList() {
     const { t } = useTranslation("common");
-    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
-        apiPaths.studentConflict,
-        getAllStudentsFromPage,
-        { refreshInterval: 1000 }
-    );
+    const { data: receivedStudents, error: studentsError } = useConflictStudents();
 
     if (studentsError) {
         console.log(studentsError);

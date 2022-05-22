@@ -8,10 +8,11 @@ import styles from "../../styles/usersOverview.module.css";
 import { capitalize } from "../../utility/stringUtil";
 import { getAllUsersFromPage } from "../../api/calls/userCalls";
 import InvitationButton from "./invitationButton";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 export function UsersOverview() {
     const { t } = useTranslation("common");
-    let { data, error } = useSWR(apiPaths.users, getAllUsersFromPage);
+    let { data, error } = useSwrForEntityList(apiPaths.users, getAllUsersFromPage);
 
     data = data || [];
 

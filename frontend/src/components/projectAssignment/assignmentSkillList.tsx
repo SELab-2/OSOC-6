@@ -9,6 +9,8 @@ import { DropHandler } from "../../pages/assignStudents";
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
 import { getProjectOnUrl } from "../../api/calls/projectCalls";
 import { getValidAssignmentsUrlForProjectSkill } from "../../api/calls/AssignmentCalls";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
+import useValidAssignmentsFromProjectSkillList from "../../hooks/useValidAssignmentsFromProjectSkillList";
 
 /**
  * This class returns a sorted list of all the skills appointed to a project.
@@ -21,7 +23,7 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
 
     const { mutate } = useSWRConfig();
     let { data: project, error: projectError } = useSWR(props.projectURL, getProjectOnUrl);
-    let { data, error } = useSWR(
+    let { data, error } = useSwrForEntityList(
         project ? project._links.neededSkills.href : null,
         getAllProjectSkillsFromLinks
     );
@@ -38,7 +40,6 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
                 { skillUrl: skill._links.self.href, skillName: skill.name },
                 project.name
             );
-            await mutate(getValidAssignmentsUrlForProjectSkill(skill));
         }
     }
 

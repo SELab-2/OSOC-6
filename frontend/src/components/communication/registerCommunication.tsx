@@ -13,13 +13,14 @@ import apiPaths from "../../properties/apiPaths";
 import { getAllCommunicationTemplatesFromPage } from "../../api/calls/communicationTemplateCalls";
 import { useState } from "react";
 import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 export function RegisterCommunication() {
     const { t } = useTranslation("common");
     const router = useRouter();
     const query = router.query as { id: string };
     const studentId = query.id;
-    const { data: receivedTemplates, error: templateError } = useSWR(
+    const { data: receivedTemplates, error: templateError } = useSwrForEntityList(
         apiPaths.communicationTemplates,
         getAllCommunicationTemplatesFromPage
     );

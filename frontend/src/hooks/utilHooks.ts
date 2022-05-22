@@ -1,10 +1,33 @@
 import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
 import useEdition from "./useGlobalEdition";
-import useSWR from "swr";
-import { extractIdFromEditionUrl, getEditionByName, getEditionOnUrl } from "../api/calls/editionCalls";
+import useSWR, { useSWRConfig } from "swr";
+import { extractIdFromEditionUrl, getEditionOnUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { IEdition } from "../api/entities/EditionEntity";
+import { IBaseEntity } from "../api/entities/BaseEntities";
+
+export function useSwrForEntityList<T extends IBaseEntity[]>(
+    url: string | null,
+    fetcher: ((args_0: string) => FetcherResponse<T>) | null,
+    config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
+) {
+    const { mutate } = useSWRConfig();
+    const swrResponse = useSWR(url, fetcher, config);
+    if (swrResponse.data) {
+        Promise.all(swrResponse.data.map((entity) => mutate(entity._links.self.href))).catch(console.log);
+    }
+    return swrResponse;
+}
+
+export function useSwrForEntityListWithEdition<T extends IBaseEntity[]>(
+    url: string | null,
+    fetcher: ((args_0: string) => FetcherResponse<T>) | null,
+    config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
+) {
+    const apiTransformer = useEditionAPIUrlTransformer();
+    return useSWR(url ? apiTransformer(url) : null, fetcher, config);
+}
 
 /**
  * useSWR wrapper that fills in the global edition as an edition query.
