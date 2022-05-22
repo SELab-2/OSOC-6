@@ -34,7 +34,7 @@ export default function SkillTypeIndexPage() {
         <>
             <NavBar />
             <Background />
-            <div className="container" style={{ marginTop: "3rem" }}>
+            <div className="container" style={{ marginTop: "2rem" }}>
                 <div className={styles.skill_types}>
                     <div style={{ display: "flex" }}>
                         <h2 className="d-flex">{capitalize(t("skill types"))}</h2>

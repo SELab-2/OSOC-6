@@ -48,7 +48,7 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                             <div className="col d-flex">
                                 <Field
                                     type="color"
-                                    className="form-control form-control-color"
+                                    className={"form-control form-control-color " +  styles.input_field}
                                     id="skillTypeColour"
                                     data-testid="colour"
                                     name="colour"
