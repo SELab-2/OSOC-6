@@ -24,7 +24,7 @@ import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import styles from "../../styles/studentList.module.css";
+import styles from "../../styles/students/studentList.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 
