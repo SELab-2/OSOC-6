@@ -53,7 +53,7 @@ describe("create skillType", () => {
         await enableActForResponse(apiPaths.skillTypes, getBaseOkResponse(responseSkillType));
 
         await waitFor(() => {
-            expect(mockRouter.asPath).toEqual("/" + applicationPaths.skillTypesBase + "/10");
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.skillTypesBase);
         });
     });
 });
