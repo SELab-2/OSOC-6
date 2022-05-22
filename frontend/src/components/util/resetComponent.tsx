@@ -12,7 +12,6 @@ import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { IUser } from "../../api/entities/UserEntity";
 import { Field, Form, Formik } from "formik";
 
-
 /**
  * The props needed for the ResetComponent.
  */
@@ -37,11 +36,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-    async function onConfirm(values: {
-        value: string,
-        valueRepeat: string,
-
-    }) {
+    async function onConfirm(values: { value: string; valueRepeat: string }) {
         if (values.value !== values.valueRepeat) {
             setShowDanger(true);
         } else if (token) {
@@ -71,9 +66,9 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
                     initialValues={{
                         value: "",
                         valueRepeat: "",
-
                     }}
-                    onSubmit={onConfirm}>
+                    onSubmit={onConfirm}
+                >
                     <Form>
                         <h5>{capitalize(t("new " + name))}</h5>
                         <Field
