@@ -17,17 +17,17 @@ import AssignmentReasonListItem from "./assignmentReasonListItem";
  * Properties used by [StudentAssignmentsRow].
  */
 interface IAssignmentStudentProps {
-    studentUrl: string,
+    studentUrl: string;
     assignments: string[];
     removeCallback: (assignmentUrl: string) => Promise<void>;
 }
 
-export default function StudentAssignmentsRow({ studentUrl, assignments, removeCallback }: IAssignmentStudentProps) {
-    const { t } = useTranslation("common");
-    const { data: receivedStudent, error: studentError } = useSWR(
-        studentUrl,
-        getStudentOnUrl
-    );
+export default function StudentAssignmentsRow({
+    studentUrl,
+    assignments,
+    removeCallback,
+}: IAssignmentStudentProps) {
+    const { data: receivedStudent, error: studentError } = useSWR(studentUrl, getStudentOnUrl);
 
     const student: IStudent = receivedStudent || emptyStudent;
 
@@ -66,11 +66,15 @@ export default function StudentAssignmentsRow({ studentUrl, assignments, removeC
                         </svg>
                     </h5>
                 </a>
-                { assignments.map(assignment =>
-                    <AssignmentReasonListItem assignmentUrl={assignment} removeCallback={removeCallback} />
-                )
-
-                }
+                {assignments
+                    .sort((a, b) => a.localeCompare(b))
+                    .map((assignment) => (
+                        <AssignmentReasonListItem
+                            key={assignment}
+                            assignmentUrl={assignment}
+                            removeCallback={removeCallback}
+                        />
+                    ))}
             </Col>
         </Row>
     );

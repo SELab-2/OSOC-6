@@ -10,7 +10,11 @@ export interface StudentAssignmentRegisterProps {
     assignment: IAssignment;
 }
 
-export default function StudentAssignmentRegister({ assignment, registerAssignment, removeAssignment }: StudentAssignmentRegisterProps) {
+export default function StudentAssignmentRegister({
+    assignment,
+    registerAssignment,
+    removeAssignment,
+}: StudentAssignmentRegisterProps) {
     const { data: receivedStudent, error: studentError } = useSWR(
         assignment._links.student.href,
         getStudentOnUrl

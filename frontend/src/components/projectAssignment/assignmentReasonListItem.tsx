@@ -13,13 +13,13 @@ export interface AssignmentReasonListItemProps {
     removeCallback: (assignmentUrl: string) => Promise<void>;
 }
 
-export default function AssignmentReasonListItem({ assignmentUrl, removeCallback }: AssignmentReasonListItemProps) {
+export default function AssignmentReasonListItem({
+    assignmentUrl,
+    removeCallback,
+}: AssignmentReasonListItemProps) {
     const { t } = useTranslation("common");
 
-    const { data: receivedAssignment, error: assignmentError } = useSWR(
-        assignmentUrl,
-        getAssignmentOnUrl
-    );
+    const { data: receivedAssignment, error: assignmentError } = useSWR(assignmentUrl, getAssignmentOnUrl);
 
     const { data: receivedAssigner, error: assignerError } = useSWR(
         receivedAssignment ? receivedAssignment._links.assigner.href : null,
@@ -44,12 +44,9 @@ export default function AssignmentReasonListItem({ assignmentUrl, removeCallback
                 aria-label={"Remove student from project"}
                 value={assignment._links.self.href}
                 onClick={(assignment: any) => removeCallback(assignment.target.value)}
-                data-testid={
-                    "remove assignment button " + extractIdFromAssignmentUrl(assignment._links.self.href)
-                }
+                data-testid={"remove-assignment-button-" + assignment.reason}
                 className={styles.close_button}
             />
         </>
-    )
-
+    );
 }

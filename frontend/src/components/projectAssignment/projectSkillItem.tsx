@@ -65,14 +65,18 @@ function ProjectSkillItem({ skill }: IAssignmentItemProps) {
 
     function removeAssignment(assignmentUrl: string): void {
         // The values need to be get here because it needs to be the values at this moment and not in closure creation.
-        for (const assignments of Object.values(studentSkillMapper)) {
-            assignments.delete(assignmentUrl);
+        for (const [key, assignmentsSet] of Object.entries(studentSkillMapper)) {
+            assignmentsSet.delete(assignmentUrl);
+            if (assignmentsSet.size === 0) {
+                delete studentSkillMapper[key];
+            }
         }
         setStudentSkillMapper(studentSkillMapper);
         setMutated(true);
     }
 
     async function deleteAssignmentCallback(assignmentUrl: string) {
+        removeAssignment(assignmentUrl);
         const newAssignments = await deleteAssignment(assignmentUrl, assignments);
         await mutate(assignmentsUrl, newAssignments);
     }
@@ -96,19 +100,20 @@ function ProjectSkillItem({ skill }: IAssignmentItemProps) {
 
     return (
         <div data-testid="assignment-item">
-            {   // Render an empty component that performs a callback to a state.
+            {
+                // Render an empty component that performs a callback to a state.
                 // Later render the children using that state.
-                assignments.map(assignment =>
+                assignments.map((assignment) => (
                     <StudentAssignmentRegister
                         registerAssignment={registerAssignment}
                         removeAssignment={removeAssignment}
                         assignment={assignment}
                         key={assignment._links.self.href}
                     />
-                )
+                ))
             }
             <SkillBadge skill={skill.name} />
-            { Object.entries(studentSkillMapper)
+            {Object.entries(studentSkillMapper)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([studentUrl, assignments]) => (
                     <div key={studentUrl}>
