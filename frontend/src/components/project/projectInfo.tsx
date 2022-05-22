@@ -8,16 +8,17 @@ import ProjectSkillStudent from "./projectSkillStudent";
 import styles from "../../styles/projects/projectInfo.module.css";
 import { useState } from "react";
 import { StatusCodes } from "http-status-codes";
-import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import { deleteProject } from "../../api/calls/projectCalls";
 import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterPush();
     const { id } = router.query as { id: string };
     const [show, setShow] = useState<boolean>(true);
 
@@ -34,10 +35,9 @@ export function ProjectInfo() {
 
     async function deleteProjectOnClick() {
         const response = await deleteProject(info._links.self.href);
-        if (response.status == StatusCodes.NO_CONTENT) {
+        if (response.status === StatusCodes.NO_CONTENT) {
             try {
-                const params = getParamsFromQueryUrl(router.asPath);
-                await router.push(getQueryUrlFromParams("/" + applicationPaths.projects, params));
+                await routerAction("/" + applicationPaths.projects);
             } catch (error) {
                 setShow(true);
             }

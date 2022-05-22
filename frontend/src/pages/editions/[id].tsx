@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/Home.module.css";
-import EditionOverview from "../../components/edition/editionOverview";
+import EditionInfo from "../../components/edition/editionInfo";
 import { useRouter } from "next/router";
 import NavBar from "../../components/util/navBar";
+import { Background } from "../../components/util/background";
 
 const EditionInfoPage: NextPage = () => {
     const { t } = useTranslation("common");
@@ -12,7 +13,8 @@ const EditionInfoPage: NextPage = () => {
     return (
         <main className={styles.main}>
             <NavBar />
-            <EditionOverview editionId={id as string} />
+            <Background />
+            <EditionInfo editionId={id as string} />
         </main>
     );
 };

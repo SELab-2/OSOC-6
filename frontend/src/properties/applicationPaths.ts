@@ -17,6 +17,9 @@ const applicationPaths = {
     assignStudents: "assignStudents",
 
     students: "students",
+    studentCreation: "students/create",
+    studentInfo: "students/[id]",
+    studentEdit: "students/[id]/edit",
 
     login: "login",
     loginError: "loginError",
@@ -33,6 +36,7 @@ const applicationPaths = {
 
     communicationBase: "communications",
     communicationInfo: "communications/[id]",
+    communicationRegistration: "register-communication",
 
     editionBase: "editions",
     editionCreate: "editions/create",

@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import AssignmentItem from "./assignmentItem";
+import ProjectSkillItem from "./projectSkillItem";
 import useSWR, { useSWRConfig } from "swr";
 import { getAllProjectSkillsFromLinks } from "../../api/calls/projectSkillCalls";
 import WarningToast from "../util/warningToast";
@@ -67,7 +67,7 @@ export default function AssignmentSkillList(props: { projectURL: string; dropHan
                         }}
                         data-testid="dropzone"
                     >
-                        <AssignmentItem skill={skill} />
+                        <ProjectSkillItem skill={skill} />
                     </Container>
                 );
             })}

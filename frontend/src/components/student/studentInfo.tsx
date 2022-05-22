@@ -2,21 +2,31 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import apiPaths from "../../properties/apiPaths";
 import { capitalize } from "../../utility/stringUtil";
-import { Col, Image, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
+import { Button, Col, ListGroup, Row, Toast, ToastContainer } from "react-bootstrap";
 import { SuggestionStrategy } from "../../api/entities/SuggestionEntity";
 import { SuggestionModal } from "../suggestion/suggestionModal";
 import { StudentStatus } from "./studentStatus";
-import { emptyStudent } from "../../api/entities/StudentEntity";
+import {
+    emptyStudent,
+    englishProficiencyAsString,
+    genderAsString,
+    osocExperienceAsString,
+} from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
-import { deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { extractIdFromStudentUrl, deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
+import applicationPaths from "../../properties/applicationPaths";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import styles from "../../styles/studentOverview.module.css";
+import Image from "next/image";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
-import applicationPaths from "../../properties/applicationPaths";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 
 /**
  * Give an overview of all the studentinfo
@@ -24,6 +34,8 @@ import applicationPaths from "../../properties/applicationPaths";
 export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const transformer = useEditionApplicationPathTransformer();
+    const isAdmin = useCurrentAdminUser();
     const { id } = router.query as { id: string };
     const [show, setShow] = useState<boolean>(false);
 
@@ -71,29 +83,60 @@ export function StudentInfo() {
         }
     }
 
+    async function openCommunications() {
+        const params = getStudentQueryParamsFromQuery(router.query);
+        const studentCommUrl =
+            "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
+        const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
+        await router.push(studentCommUrlParams);
+    }
+
     return (
         <div className={"h-100"}>
             <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
-                <div className="row w-100">
-                    <div className="col-sm-6">
-                        <h1>{student.callName}</h1>
+                {isAdmin && (
+                    <div className="row w-100" style={{ paddingBottom: 15 }}>
+                        <Button
+                            variant="btn-outline"
+                            data-testid="open-communication"
+                            style={{ color: "white", borderColor: "white" }}
+                            onClick={openCommunications}
+                        >
+                            {capitalize(t("communication"))}
+                        </Button>
                     </div>
-                    <div className="col-sm-6">
-                        <Row>
-                            <Col>
-                                <ListGroup className="list-group-horizontal" as="ul">
-                                    {student.skills.map((skill) => (
-                                        <SkillBadge skill={skill} key={skill} />
-                                    ))}
-                                </ListGroup>
-                            </Col>
-                            <Col>
-                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
-                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                                </a>
-                            </Col>
-                        </Row>
-                    </div>
+                )}
+                <h1>
+                    {student.callName}
+                    {isAdmin && (
+                        <>
+                            <a
+                                className="ms-2"
+                                data-testid="edit-student"
+                                href={transformer(
+                                    "/" +
+                                        applicationPaths.students +
+                                        "/" +
+                                        extractIdFromStudentUrl(student._links.self.href) +
+                                        applicationPaths.studentEdit.split(applicationPaths.studentInfo)[1]
+                                )}
+                            >
+                                <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                            </a>
+                            <a
+                                className="ms-2 clickable"
+                                onClick={deleteStudentOnClick}
+                                data-testid="delete-student"
+                            >
+                                <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
+                            </a>
+                        </>
+                    )}
+                </h1>
+                <div className={styles.student_skills}>
+                    {student.skills.map((skill) => (
+                        <SkillBadge skill={skill} key={skill} />
+                    ))}
                 </div>
                 <br />
                 <h2>{capitalize(t("suggestions"))}</h2>
@@ -110,14 +153,15 @@ export function StudentInfo() {
                 <br />
                 <h2>{capitalize(t("personal details"))}</h2>
                 <div>
-                    {capitalize(t("gender"))}: {student.gender.toLowerCase()} {t("pronouns")}{" "}
-                    {student.pronouns.toLowerCase()}
+                    {capitalize(t("gender"))}: {capitalize(t(genderAsString[student.gender]))}{" "}
+                    {t("with pronouns")} {student.pronouns.toLowerCase()}
                 </div>
                 <div>
                     {capitalize(t("native language"))}: {student.mostFluentLanguage}
                 </div>
                 <div>
-                    {capitalize(t("english proficiency"))}: {student.englishProficiency.toLowerCase()}
+                    {capitalize(t("english proficiency"))}:{" "}
+                    {capitalize(t(englishProficiencyAsString[student.englishProficiency]))}
                 </div>
                 <div>
                     {capitalize(t("phone number"))}: {student.phoneNumber}
@@ -144,7 +188,8 @@ export function StudentInfo() {
                     {capitalize(t("applied for"))}: {student.skills.join(", ")}
                 </div>
                 <div>
-                    {capitalize(t("osoc experience"))}: {t(student.osocExperience)}
+                    {capitalize(t("osoc experience"))}:{" "}
+                    {capitalize(t(osocExperienceAsString[student.osocExperience]))}
                 </div>
             </div>
             <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#1b1a31" }}>
@@ -168,29 +213,31 @@ export function StudentInfo() {
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.yes}
-                                    style={{ color: "#1DE1AE", borderColor: "#1DE1AE", width: 150 }}
+                                    colour={"#1DE1AE"}
                                     studentUrl={student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.maybe}
-                                    style={{ color: "#FCB70F", borderColor: "#FCB70F", width: 150 }}
+                                    colour={"#FCB70F"}
                                     studentUrl={student._links.self.href}
                                 />
                             </div>
                             <div className="col-sm">
                                 <SuggestionModal
                                     suggestion={SuggestionStrategy.no}
-                                    style={{ color: "#F14A3B", borderColor: "#F14A3B", width: 150 }}
+                                    colour={"#F14A3B"}
                                     studentUrl={student._links.self.href}
                                 />
                             </div>
                         </Row>
                     </Col>
-                    <Col sm={4}>
-                        <StudentStatus studentUrl={student._links.self.href} status={student.status} />
-                    </Col>
+                    {isAdmin && (
+                        <Col sm={4}>
+                            <StudentStatus studentUrl={student._links.self.href} status={student.status} />
+                        </Col>
+                    )}
                 </Row>
             </footer>
         </div>

@@ -1,9 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, RenderResult, waitFor } from "@testing-library/react";
-import CommunicationTemplateCreate from "../../../src/pages/communicationTemplates/create";
 import userEvent from "@testing-library/user-event";
-import mockRouter from "next-router-mock";
-import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";

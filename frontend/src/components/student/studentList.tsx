@@ -1,4 +1,4 @@
-import { ListGroup } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import styles from "../../styles/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
@@ -11,27 +11,43 @@ import {
 } from "../../api/calls/studentCalls";
 import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { useSwrWithEdition } from "../../hooks/utilHooks";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
-import { Status } from "../../api/entities/StudentEntity";
+import { IStudent, Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
-import { useRouterReplace } from "../../hooks/routerHooks";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { baseSkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
+import useSWR from "swr";
+import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
 
-export const StudentList = (props: { isDraggable: boolean }) => {
+export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
-    const routerAction = useRouterReplace();
+    const transformer = useEditionApplicationPathTransformer();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
-    let { data, error } = useSwrWithEdition(
+    const isAdmin = useCurrentAdminUser();
+
+    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
         constructStudentQueryUrl(apiPaths.studentByQuery, params),
         getAllStudentsFromPage
     );
-    data = data || [];
+    const { data: receivedSkillTypes, error: skillTypesError } = useSWR(
+        apiPaths.skillTypes,
+        getAllSkillTypesFromPage
+    );
+    const skillTypes: ISkillType[] = receivedSkillTypes || [];
+    const skillTypeNames = skillTypes.map((skill) => skill.name);
 
-    if (error) {
-        console.log(error);
+    const students = params.skills.some((skill) => skill.toUpperCase() === baseSkillType.toUpperCase())
+        ? (receivedStudents || []).filter((student: IStudent) => {
+              return student.skills.some((skill) => !skillTypeNames.includes(skill));
+          })
+        : receivedStudents || [];
+
+    if (studentsError || skillTypesError) {
+        console.log(studentsError || skillTypesError);
         return null;
     }
 
@@ -44,11 +60,35 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                 <ListGroup.Item
                     key="studentHeader"
                     data-testid="studentlist-header"
-                    className={styles.student_list_title}
+                    className={"container " + styles.student_list_title}
                 >
-                    <h2>{t("common:students")}</h2>
+                    <div className="row align-items-center">
+                        <h2 className="col">{t("students")}</h2>
+                        {props.showAdd && isAdmin && (
+                            <Button
+                                data-testid="new-student-button"
+                                className="col-md-auto"
+                                variant="outline-primary"
+                                size="sm"
+                                onClick={() =>
+                                    router.push(transformer("/" + applicationPaths.studentCreation))
+                                }
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="1.5em"
+                                    height="1.5em"
+                                    fill="currentColor"
+                                    className="bi bi-plus"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </Button>
+                        )}
+                    </div>
                 </ListGroup.Item>
-                {data
+                {students
                     .map((student) => ({
                         student,
                         studentId: student._links.self.href.split(apiPaths.base)[1],
@@ -69,7 +109,7 @@ export const StudentList = (props: { isDraggable: boolean }) => {
                                     const studentId: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
-                                    await routerAction({
+                                    await router.replace({
                                         pathname: "/" + applicationPaths.students + "/" + studentId,
                                         query: { ...router.query },
                                     });

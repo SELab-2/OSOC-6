@@ -31,7 +31,7 @@ export function getStudentQueryParamsFromQuery(query: ParsedUrlQueryInput): IStu
     values.freeText = (query.freeText || "") as string;
     if (query.skills) {
         // If skills has only 1 element it will be interpreted as a string instead of a list
-        if (typeof query.skills == "string") {
+        if (typeof query.skills === "string") {
             values.skills = [query.skills];
         } else {
             values.skills = query.skills as string[];

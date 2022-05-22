@@ -1,19 +1,19 @@
 import { IStudent } from "../../api/entities/StudentEntity";
-import useSWR, { useSWRConfig } from "swr";
-import apiPaths from "../../properties/apiPaths";
-import { getAllCommunicationTemplatesFromPage } from "../../api/calls/communicationTemplateCalls";
+import { useSWRConfig } from "swr";
 import { Field, Form, Formik } from "formik";
 import { Communication, defaultCommunicationMedium } from "../../api/entities/CommunicationEntity";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { createCommunicationSubmitHandler } from "../../handlers/createCommunicationSubmitHandler";
-import { useState } from "react";
+import { ChangeEvent } from "react";
 import { ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
-import { ButtonGroup, Dropdown } from "react-bootstrap";
-import DropdownMenu from "react-bootstrap/DropdownMenu";
-import DropdownItem from "react-bootstrap/DropdownItem";
+import { Button } from "react-bootstrap";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
-import CommunicationTemplateInfo from "./communicationTemplateInfo";
+import mailTo from "../../utility/mailTo";
+import applicationPaths from "../../properties/applicationPaths";
+import { extractIdFromUserUrl } from "../../api/calls/userCalls";
+import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
@@ -21,31 +21,34 @@ import { useRouterPush } from "../../hooks/routerHooks";
  */
 export interface CreateCommunicationFormProps {
     student: IStudent;
+    template: ICommunicationTemplate;
 }
 
 /**
  * Form component to create a new communication item with a given [IStudent].
  * @param student the [IStudent] to whom this communication was send.
+ * @param template the [ICommunicationTemplate] used for the new communication
  */
-export default function CreateCommunicationForm({ student }: CreateCommunicationFormProps) {
+export default function CreateCommunicationForm({ student, template }: CreateCommunicationFormProps) {
     const { t } = useTranslation("common");
     const routerAction = useRouterPush();
     const { mutate } = useSWRConfig();
     const { user, error: userError } = useCurrentUser();
-    const { data: receivedTemplates, error: templateError } = useSWR(
-        apiPaths.communicationTemplates,
-        getAllCommunicationTemplatesFromPage
-    );
-    const [selectedTemplate, setSelectedTemplate] = useState<ICommunicationTemplate | undefined>(undefined);
+    const transformer = useEditionApplicationPathTransformer();
 
     // We don't fill the sender and student because using the hooks this would require a reset of the initial values of the form.
     // Waiting to fill this avoids the reset.
-    const initialValues: Communication = new Communication(defaultCommunicationMedium, "", "", "", "");
+    const initialValues = new Communication(
+        defaultCommunicationMedium,
+        template._links.self.href,
+        template.subject,
+        template.template,
+        "",
+        ""
+    );
 
-    const templates: ICommunicationTemplate[] = receivedTemplates || [];
-
-    if (userError || templateError) {
-        console.log(userError || templateError);
+    if (userError) {
+        console.log(userError);
         return null;
     }
 
@@ -53,80 +56,120 @@ export default function CreateCommunicationForm({ student }: CreateCommunication
         <div data-testid="create-communication-form">
             <Formik
                 initialValues={initialValues}
-                onSubmit={async (submitCom: Communication) => {
+                enableReinitialize={true}
+                onSubmit={async (submitCom) => {
                     submitCom.student = student._links.self.href;
                     submitCom.sender = user!._links.self.href;
                     await createCommunicationSubmitHandler(submitCom, routerAction, mutate);
+
+                    // If the medium is email : open the mail client
+                    if (submitCom.medium === defaultCommunicationMedium) {
+                        document.location.href = mailTo({
+                            body: submitCom.content,
+                            subject: submitCom.subject,
+                            recipients: [student.email],
+                        });
+                    }
+
+                    const id = extractIdFromUserUrl(student._links.self.href);
+                    const url =
+                        "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
+
+                    await routerAction(url);
                 }}
             >
                 {({ values, setFieldValue }) => (
                     <Form>
-                        <h2>{capitalize(t("choose your template"))}</h2>
-
-                        <Dropdown as={ButtonGroup} drop="down">
-                            <Dropdown.Toggle
-                                style={{
-                                    backgroundColor: "#0a0839",
-                                    borderColor: "white",
-                                    height: 30,
-                                    alignItems: "center",
-                                    display: "flex",
-                                }}
-                                data-testid="template-select-main"
-                            >
-                                {capitalize(t("choose your template"))}
-                            </Dropdown.Toggle>
-                            <DropdownMenu>
-                                {templates.map((template) => (
-                                    <DropdownItem
-                                        key={template._links.self.href}
-                                        data-testid={"template-select-" + template._links.self.href}
-                                        onClick={() => {
-                                            setSelectedTemplate(template);
-                                            setFieldValue("template", template._links.self.href);
-                                            setFieldValue("content", template.template);
-                                        }}
-                                    >
-                                        {template.name}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-
-                        {selectedTemplate && (
-                            <CommunicationTemplateInfo template={selectedTemplate} student={student} />
-                        )}
-
-                        {values.template && (
+                        <div data-testid="communication-form">
+                            <h2>{capitalize(t("communication"))}</h2>
+                            <hr />
+                            <div className="text-wrap">{capitalize(t("for")) + ": " + student?.email}</div>
                             <div>
-                                <hr />
-
-                                <h2>{capitalize(t("additional communication info"))}:</h2>
-
+                                <label htmlFor="communicationTemplateSubjectField">
+                                    {capitalize(t("subject")) + ":"}
+                                </label>
                                 <Field
                                     type="text"
-                                    placeholder={capitalize(t("medium"))}
+                                    name="subject"
+                                    required
+                                    style={{
+                                        backgroundColor: "#1b1a31",
+                                        borderColor: "white",
+                                        borderWidth: 1,
+                                        color: "white",
+                                        marginLeft: 10,
+                                        marginBottom: 10,
+                                        marginTop: 5,
+                                        paddingLeft: 10,
+                                    }}
+                                    placeholder={capitalize(t("subject"))}
+                                    id="communicationTemplateSubjectField"
+                                    data-testid="subject"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="communicationTemplateSubjectField">
+                                    {capitalize(t("medium")) + ":"}
+                                </label>
+                                <Field
+                                    type="text"
                                     name="medium"
                                     required
+                                    style={{
+                                        backgroundColor: "#1b1a31",
+                                        borderColor: "white",
+                                        borderWidth: 1,
+                                        color: "white",
+                                        marginLeft: 10,
+                                        marginBottom: 20,
+                                        marginTop: 5,
+                                        paddingLeft: 10,
+                                    }}
+                                    placeholder={capitalize(t("medium"))}
+                                    id="communicationTemplateSubjectField"
                                     data-testid="medium"
                                 />
+                            </div>
 
+                            <div>
                                 <textarea
-                                    placeholder={capitalize(t("communication content"))}
+                                    placeholder={capitalize(t("template placeholder"))}
                                     className="form-control"
-                                    style={{ height: "100px" }}
+                                    name="content"
                                     data-testid="content"
                                     value={values.content}
-                                    onChange={(event) => {
+                                    style={{
+                                        backgroundColor: "#1b1a31",
+                                        borderColor: "white",
+                                        borderWidth: 1,
+                                        height: "100px",
+                                        color: "white",
+                                        marginLeft: 10,
+                                        marginBottom: 10,
+                                        paddingLeft: 10,
+                                    }}
+                                    onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
                                         setFieldValue("content", event.target.value);
                                     }}
                                 />
-
-                                <button className="capitalize" data-testid="submit" type="submit">
-                                    {t("confirm")}
-                                </button>
                             </div>
-                        )}
+                            <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                                <Button
+                                    className="capitalize"
+                                    data-testid="submit"
+                                    type="submit"
+                                    style={{
+                                        backgroundColor: "#1b1a31",
+                                        borderColor: "white",
+                                        height: 30,
+                                        alignItems: "center",
+                                        display: "flex",
+                                    }}
+                                >
+                                    {capitalize(t("confirm"))}
+                                </Button>
+                            </div>
+                        </div>
                     </Form>
                 )}
             </Formik>

@@ -14,17 +14,34 @@ export function StudentStatus(props: { studentUrl: string; status: Status }) {
 
     return (
         <>
-            <Dropdown as={ButtonGroup} drop="up" title={suggestionValue}>
-                <Dropdown.Toggle>{suggestionValue}</Dropdown.Toggle>
-                <DropdownMenu>
-                    {Object.values(Status).map((value) => (
-                        <DropdownItem key={value} onClick={() => setSuggestionValue(value)}>
-                            {value}
-                        </DropdownItem>
-                    ))}
-                </DropdownMenu>
-            </Dropdown>
-            <StudentStatusModal status={suggestionValue} studentUrl={props.studentUrl} />
+            <Row>
+                <div className="col-sm">
+                    <Dropdown as={ButtonGroup} drop="up" title={suggestionValue}>
+                        <Dropdown.Toggle
+                            style={{
+                                backgroundColor: "#0a0839",
+                                borderColor: "white",
+                                alignItems: "center",
+                                display: "flex",
+                                width: 150,
+                                justifyContent: "center",
+                            }}
+                        >
+                            {suggestionValue}
+                        </Dropdown.Toggle>
+                        <DropdownMenu>
+                            {Object.values(Status).map((value) => (
+                                <DropdownItem key={value} onClick={() => setSuggestionValue(value)}>
+                                    {value}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <div className="col-sm">
+                    <StudentStatusModal status={suggestionValue} studentUrl={props.studentUrl} />
+                </div>
+            </Row>
         </>
     );
 }
