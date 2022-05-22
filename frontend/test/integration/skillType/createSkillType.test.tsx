@@ -6,6 +6,9 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import { SkillType } from "../../../src/api/entities/SkillTypeEntity";
 import CreateSkillTypePage from "../../../src/pages/skillTypes/create";
+import { enableActForResponse } from "../Provide";
+import { getBaseOkResponse, getBaseSkillType } from "../TestEntityProvider";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -40,11 +43,17 @@ describe("create skillType", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(skillType, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(skillType, expect.anything(), expect.anything());
         });
 
         await waitFor(() => {
             expect(mockAxios.post).toHaveBeenCalledWith(apiPaths.skillTypes, skillType, expect.anything());
+        });
+        const responseSkillType = getBaseSkillType("10");
+        await enableActForResponse(apiPaths.skillTypes, getBaseOkResponse(responseSkillType));
+
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.skillTypesBase);
         });
     });
 });

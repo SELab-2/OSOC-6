@@ -9,6 +9,7 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import { Button } from "react-bootstrap";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Properties of the [CreateCommunicationTemplateForm] component.
@@ -24,6 +25,7 @@ export interface CreateCommunicationTemplateFormProps {
 /**
  * Form allowing the creation of a new communication template or editing an existing.
  * @param template the template that should be edited. [undefined] if the form is in creation mode.
+ * @param studentId studentId needed for correct route redirects.
  * @param setTemplate callback to set the template
  * @param setCreate callback to change the create boolean
  * @param setEdit callback to change the edit boolean
@@ -37,6 +39,7 @@ export default function CreateCommunicationTemplateForm({
 }: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterPush();
     const initialValues: CommunicationTemplateEntity = template
         ? new CommunicationTemplateEntity(template.name, template.subject, template.template)
         : new CommunicationTemplateEntity("", "", "");
@@ -51,7 +54,8 @@ export default function CreateCommunicationTemplateForm({
                     template ? template._links.self.href : null,
                     studentId,
                     values,
-                    router,
+                    routerAction,
+                    router.query,
                     mutate
                 );
                 if (setTemplate) {

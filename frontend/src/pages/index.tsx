@@ -2,11 +2,11 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
 import applicationPaths from "../properties/applicationPaths";
+import { useRouterReplace } from "../hooks/routerHooks";
 
 const BeginPage: NextPage = () => {
-    const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
-    router.replace(transformer("/" + applicationPaths.assignStudents)).catch(console.log);
+    const routerAction = useRouterReplace();
+    routerAction("/" + applicationPaths.assignStudents).catch(console.log);
 
     return null;
 };

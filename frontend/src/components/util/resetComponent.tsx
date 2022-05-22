@@ -3,13 +3,12 @@ import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/resetComponent.module.css";
 import { useState } from "react";
 import applicationPaths from "../../properties/applicationPaths";
-import { useRouter } from "next/router";
 import { capitalize } from "../../utility/stringUtil";
 import { StatusCodes } from "http-status-codes";
 import { AxiosResponse } from "axios";
 import timers from "../../properties/timers";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { IUser } from "../../api/entities/UserEntity";
+import { useRouterPush } from "../../hooks/routerHooks";
 import { Field, Form, Formik } from "formik";
 
 /**
@@ -31,8 +30,7 @@ interface ResetComponentProps {
  */
 export function ResetComponent({ handler, name, user, token }: ResetComponentProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
+    const routerAction = useRouterPush();
     const [showDanger, setShowDanger] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
@@ -44,7 +42,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(transformer("/" + applicationPaths.login)).catch(console.log);
+                    routerAction("/" + applicationPaths.login).catch(console.log);
                 }, timers.redirect);
             }
         } else if (user) {
@@ -52,7 +50,7 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
             if (response.status == StatusCodes.OK) {
                 setShowSuccess(true);
                 setTimeout(function () {
-                    router.push(transformer("/" + applicationPaths.assignStudents)).catch(console.log);
+                    routerAction("/" + applicationPaths.assignStudents).catch(console.log);
                 }, timers.redirect);
             }
         }

@@ -6,7 +6,7 @@ import { getBaseActiveEdition, getBaseOkResponse } from "./TestEntityProvider";
 import userEvent from "@testing-library/user-event";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { makeCacheFree } from "./Provide";
-import EditionOverview from "../../src/components/edition/editionOverview";
+import EditionInfo from "../../src/components/edition/editionInfo";
 jest.mock("next/router", () => require("next-router-mock"));
 
 afterEach(() => {
@@ -24,7 +24,7 @@ describe("Edition overview", () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);
         await act(() => {
-            render(makeCacheFree(() => <EditionOverview editionId={"1"} />));
+            render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
         await waitFor(() => mockAxios.mockResponseFor({ method: "GET" }, editionResponse));
@@ -43,7 +43,7 @@ describe("Edition overview", () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);
         await act(() => {
-            render(makeCacheFree(() => <EditionOverview editionId={"1"} />));
+            render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
         await waitFor(() => mockAxios.mockResponseFor({ method: "GET" }, editionResponse));
@@ -72,7 +72,7 @@ describe("Edition overview", () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);
         await act(() => {
-            render(makeCacheFree(() => <EditionOverview editionId={"1"} />));
+            render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
         await waitFor(() => mockAxios.mockResponseFor({ method: "GET" }, editionResponse));
@@ -101,7 +101,7 @@ describe("Edition overview", () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);
         await act(() => {
-            render(makeCacheFree(() => <EditionOverview editionId={"1"} />));
+            render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
         await waitFor(() => mockAxios.mockResponseFor({ method: "GET" }, editionResponse));
@@ -130,7 +130,7 @@ describe("Edition overview", () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);
         await act(() => {
-            render(makeCacheFree(() => <EditionOverview editionId={"1"} />));
+            render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
         await waitFor(() => mockAxios.mockResponseFor({ method: "GET" }, editionResponse));
@@ -156,7 +156,7 @@ describe("Edition overview", () => {
         const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
         const editionResponse = getBaseOkResponse(edition);
         await act(() => {
-            render(makeCacheFree(() => <EditionOverview editionId={"1"} />));
+            render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
         await waitFor(() => mockAxios.mockResponseFor({ method: "GET" }, editionResponse));

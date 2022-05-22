@@ -3,23 +3,29 @@ import styles from "../../styles/projects/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
-import { getAllProjectsFromPage } from "../../api/calls/projectCalls";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import { extractIdFromProjectUrl, getAllProjectsFromPage } from "../../api/calls/projectCalls";
+import { useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { useRouterPush } from "../../hooks/routerHooks";
 import applicationPaths from "../../properties/applicationPaths";
 
 export function ProjectList() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
+    const query = router.query as { id?: string };
+    const selectedProjectId = query.id;
+    const routerAction = useRouterPush();
     const currentUserIsAdmin = useCurrentAdminUser();
 
-    let { data, error } = useSwrWithEdition(apiPaths.projectsByEdition, getAllProjectsFromPage);
-    data = data || [];
+    const { data: receivedProjects, error: projectsError } = useSwrWithEdition(
+        apiPaths.projectsByEdition,
+        getAllProjectsFromPage
+    );
+    const projects = receivedProjects || [];
 
-    if (error) {
-        console.log(error);
+    if (projectsError) {
+        console.log(projectsError);
         return null;
     }
 
@@ -29,25 +35,29 @@ export function ProjectList() {
                 <ListGroup.Item data-testid="projectlist-header" className={styles.project_list_header}>
                     <div className="capitalize">{t("projects")}</div>
                 </ListGroup.Item>
-                {data
+                {projects
                     .map((project) => ({
                         project,
-                        projectId: project._links.self.href.split(apiPaths.base)[1],
+                        projectId: extractIdFromProjectUrl(project._links.self.href),
                     }))
                     .map(({ project, projectId }) => (
                         <ListGroup.Item
                             key={projectId}
-                            className={"proj " + styles.project_list_project}
+                            className={
+                                "proj " + projectId === selectedProjectId
+                                    ? "active "
+                                    : "" + styles.project_list_project
+                            }
                             action
                             as={"a"}
-                            onClick={() => {
-                                let projectPath: string = projectId;
-                                router
-                                    .push(transformer("/" + projectPath) + "#/" + projectId)
-                                    .catch(console.log);
+                            onClick={async () => {
+                                await routerAction({
+                                    pathname: "/" + applicationPaths.projects + "/" + projectId,
+                                });
                             }}
-                            href={"#" + projectId}
+                            href={undefined}
                             role="tab"
+                            data-testid={"project-select-" + project.name}
                             data-toggle="list"
                         >
                             <div className={styles.project_list_info}>
@@ -84,9 +94,7 @@ export function ProjectList() {
                                 className={"capitalize justify-content-center " + styles.project_list_button}
                                 variant="outline-primary"
                                 size="sm"
-                                onClick={() =>
-                                    router.push(transformer("/" + applicationPaths.skillTypesBase))
-                                }
+                                onClick={() => routerAction("/" + applicationPaths.skillTypesBase)}
                             >
                                 {t("skill types")}
                             </Button>

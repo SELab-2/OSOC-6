@@ -6,10 +6,8 @@ import { capitalize, isValidURIOrEmpty } from "../../../utility/stringUtil";
 import { ProjectCreationValues, projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../../api/entities/UserEntity";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useEditionAPIUrlTransformer } from "../../../hooks/utilHooks";
 import useEdition from "../../../hooks/useGlobalEdition";
-import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import styles from "../../../styles/projects/createProject.module.css";
@@ -24,6 +22,8 @@ import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";
 import ItemListForm from "../../util/itemListForm";
+import { ConfirmDeleteButton } from "../../util/confirmDeleteButton";
+import { useRouterPush } from "../../../hooks/routerHooks";
 
 /**
  * Properties needed by [ProjectForm].
@@ -53,7 +53,7 @@ type AlteredSkillMapper = { [projectSkillUrl: string]: ProjectSkill };
  */
 export function ProjectForm({ project }: ProjectCreationProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const [editionUrl] = useEdition();
     const { user: currentUser } = useCurrentUser(true);
     const apiTransformer = useEditionAPIUrlTransformer();
@@ -130,19 +130,19 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                 ],
             };
 
-            // We can use ! for edition and currentUser because this function is never called if it is undefined.
-            await projectFormSubmitHandler(
-                project ? project : null,
-                createValues,
-                Array.from(removedSkills),
-                Object.entries(alteredSkills),
-                editionUrl!,
-                currentUser!,
-                router,
-                mutate,
-                apiTransformer
-            );
-        }
+
+        // We can use ! for edition and currentUser because this function is never called if it is undefined.
+        await projectFormSubmitHandler(
+            project ? project : null,
+            createValues,
+            Array.from(removedSkills),
+            Object.entries(alteredSkills),
+            editionUrl!,
+            currentUser!,
+            routerAction,
+            mutate,
+            apiTransformer
+        );
     }
 
     const initialValues: ProjectFormSubmitValues = project
@@ -224,42 +224,36 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                             <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
                         ) : null}
 
-                        <label className={styles.label}>{capitalize(t("coaches"))}:</label>
-                        <ul style={{ listStyleType: "circle" }}>
-                            {existingCoaches
-                                .filter((coach) => !removedCoaches.has(coach._links.self.href))
-                                .map((coach: IUser) => (
-                                    <li key={coach._links.self.href} style={{ marginLeft: "3rem" }}>
-                                        <Row>
-                                            {/* Might be prettier to just blur coaches that have been removed.
-                                        That way you would be able to add them again */}
-                                            <Col>{coach.callName}</Col>
-                                            <Col xs={1}>
-                                                <a
-                                                    data-testid={"remove-existing-coach-" + coach.callName}
-                                                    onClick={() => {
-                                                        removedCoaches.add(coach._links.self.href);
-                                                        setMutated(true);
-                                                    }}
-                                                >
-                                                    <Image
-                                                        alt=""
-                                                        src={"/resources/delete.svg"}
-                                                        width="15"
-                                                        height="15"
-                                                    />
-                                                </a>
-                                            </Col>
-                                        </Row>
-                                    </li>
-                                ))}
-                        </ul>
-                        <CreateCoachSubForm
-                            setCoachUrls={setCreatedCoachesUrls}
-                            illegalCoaches={existingCoaches
-                                .filter((coach) => !removedCoaches.has(coach._links.self.href))
-                                .map((coach) => coach.callName)}
-                        />
+
+                    <label className={styles.label}>{capitalize(t("coaches"))}:</label>
+                    <ul style={{ listStyleType: "circle" }}>
+                        {existingCoaches
+                            .filter((coach) => !removedCoaches.has(coach._links.self.href))
+                            .map((coach: IUser) => (
+                                <li key={coach._links.self.href} style={{ marginLeft: "3rem" }}>
+                                    <Row>
+                                        {/* Might be prettier to just blur coaches that have been removed.
+                                    That way you would be able to add them again */}
+                                        <Col>{coach.callName}</Col>
+                                        <Col xs={1}>
+                                            <ConfirmDeleteButton
+                                                dataTestId={"remove-existing-coach-" + coach.callName}
+                                                handler={() => {
+                                                    removedCoaches.add(coach._links.self.href);
+                                                    setMutated(true);
+                                                }}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </li>
+                            ))}
+                    </ul>
+                    <CreateCoachSubForm
+                        setCoachUrls={setCreatedCoachesUrls}
+                        illegalCoaches={existingCoaches
+                            .filter((coach) => !removedCoaches.has(coach._links.self.href))
+                            .map((coach) => coach.callName)}
+                    />
 
                         <label className={styles.label} htmlFor="partner-name">
                             {capitalize(t("partner name"))}:

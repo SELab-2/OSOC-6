@@ -14,19 +14,21 @@ import {
 } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
-import { extractIdFromStudentUrl, deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { deleteStudent, extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import styles from "../../styles/students/studentOverview.module.css";
 import Image from "next/image";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import styles from "../../styles/students/studentList.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
+import { useRouterPush, useRouterReplace } from "../../hooks/routerHooks";
 
 /**
  * Give an overview of all the studentinfo
@@ -34,6 +36,7 @@ import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/ba
 export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterReplace();
     const transformer = useEditionApplicationPathTransformer();
     const isAdmin = useCurrentAdminUser();
     const { id } = router.query as { id: string };
@@ -73,8 +76,7 @@ export function StudentInfo() {
         const response = await deleteStudent(student!._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
-                const params = getParamsFromQueryUrl(router.asPath);
-                await router.push(getQueryUrlFromParams("/" + applicationPaths.students, params));
+                await routerAction({ pathname: "/" + applicationPaths.students, query: { ...router.query } });
             } catch (error) {
                 setShow(true);
             }
@@ -84,11 +86,9 @@ export function StudentInfo() {
     }
 
     async function openCommunications() {
-        const params = getStudentQueryParamsFromQuery(router.query);
         const studentCommUrl =
             "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
-        const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
-        await router.push(studentCommUrlParams);
+        await routerAction({ pathname: studentCommUrl, query: { ...router.query } });
     }
 
     return (
@@ -132,9 +132,10 @@ export function StudentInfo() {
                                 >
                                     <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                                 </a>
-                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
-                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                                </a>
+                                <ConfirmDeleteButton
+                                    dataTestId="delete-student"
+                                    handler={deleteStudentOnClick}
+                                />
                             </>
                         )}
                     </div>

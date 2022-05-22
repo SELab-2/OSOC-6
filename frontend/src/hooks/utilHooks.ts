@@ -41,12 +41,18 @@ export function useEditionAPIUrlTransformer(): (url: string) => string {
 export function useEditionApplicationPathTransformer(): (url: string) => string {
     const [editionUrl] = useEdition();
     const { data: edition } = useSWR(editionUrl, getEditionOnUrl);
-    return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
+
+    return (url) => {
+        // make sure only a single edition is contained in the url
+        if (edition) {
+            return getQueryUrlFromParams(url, { edition: edition?.name });
+        }
+        return url;
+    };
 }
 
 /**
- * Set the global context and change the url so the
- * right edition name is in the url.
+ * Set the global context and change the url so the correct edition name is in the url.
  */
 export function useGlobalEditionSetter(): (edition: IEdition) => Promise<void> {
     const router = useRouter();

@@ -1,16 +1,16 @@
 import { cleanup, render } from "@testing-library/react";
-import RouteGuard from "../../src/components/util/routeGuard";
 import { AxiosResponse } from "axios";
-import ApiPaths from "../../src/properties/apiPaths";
-import apiPaths from "../../src/properties/apiPaths";
-import mockAxios from "jest-mock-axios";
-import { AxiosConf } from "../../src/api/calls/baseCalls";
 import React from "react";
 import { jest } from "@jest/globals";
-import { getBaseMovedResponse } from "./TestEntityProvider";
-import { makeCacheFree } from "./Provide";
 import mockRouter from "next-router-mock";
-import AssignStudents from "../../src/pages/assignStudents";
+import mockAxios from "jest-mock-axios";
+import { makeCacheFree } from "../Provide";
+import RouteGuard from "../../../src/components/util/routeGuard";
+import AssignStudents from "../../../src/pages/assignStudents";
+import { getBaseMovedResponse } from "../TestEntityProvider";
+import ApiPaths from "../../../src/properties/apiPaths";
+import apiPaths from "../../../src/properties/apiPaths";
+import { AxiosConf } from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

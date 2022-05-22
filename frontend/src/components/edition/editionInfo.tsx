@@ -19,6 +19,8 @@ import { emptyEdition } from "../../api/entities/EditionEntity";
 import applicationPaths from "../../properties/applicationPaths";
 import { useGlobalEditionSetter } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
+import { useRouterPush } from "../../hooks/routerHooks";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 export interface EditionOverviewProps {
     editionId: string;
 }
@@ -27,7 +29,7 @@ export interface EditionOverviewProps {
  * Component showing the attributes of an edition and allowing the user to change them.
  * @param editionId the id of the edition that is to be displayed and maybe changed.
  */
-export function EditionOverview({ editionId }: EditionOverviewProps) {
+export function EditionInfo({ editionId }: EditionOverviewProps) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
 
@@ -60,7 +62,10 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
 
     async function useRightUrlAndGlobalContext() {
         await globalEditionSetter(edition);
-        await router.push("/" + applicationPaths.assignStudents);
+        // Normal push is needed here because edition is changed.
+        await router.push(
+            getQueryUrlFromParams("/" + applicationPaths.assignStudents, { edition: edition.name })
+        );
     }
 
     function handleEditName() {
@@ -299,4 +304,4 @@ export function EditionOverview({ editionId }: EditionOverviewProps) {
     );
 }
 
-export default EditionOverview;
+export default EditionInfo;

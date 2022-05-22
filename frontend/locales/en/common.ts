@@ -87,6 +87,7 @@ const common = {
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
     "select a project to start": "select a project to start",
+    "confirm delete profile": "are you sure you want to delete your profile?",
 
     // People strings
     email: "e-mail",
@@ -209,6 +210,7 @@ const common = {
     "no skills for project": "No skills have been assigned to this project",
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
+    "confirm delete assignment": "are you sure you want to remove this assignment?",
 
     // Conflict strings
     conflict: "conflict",
@@ -233,6 +235,7 @@ const common = {
     "create skill type": "create skill type",
 
     "input empty": "input field can not be empty",
+    "confirm delete": "are you sure you want to delete this?",
 };
 
 export default common;
