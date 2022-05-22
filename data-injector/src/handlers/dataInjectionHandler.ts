@@ -265,6 +265,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         const communication1: Communication = new Communication(
             "sms",
             containedTemplates[0]._links.self.href,
+            "You got a yes",
             "An apple for the thirst and a yes for you",
             own_user_url,
             someStudentUri
@@ -279,6 +280,26 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedCommunications = communications._embedded.communications;
     }
     console.log(containedCommunications);
+
+    let newCommications: Communication[] = [];
+    for (let student of containedStudents) {
+        const studenturi = student._links.self.href;
+        for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
+            const communication: Communication = new Communication(
+                "email",
+                containedTemplates[0]._links.self.href,
+                faker.lorem.lines(1),
+                faker.lorem.sentences(2),
+                own_user_url,
+                studenturi
+            );
+            newCommications.push(communication);
+        }
+    }
+
+    await Promise.all(
+        newCommications.map(async (com) => (await axios.post(apiPaths.communications, com, AxiosConf)).data)
+    );
 
     const suggestions: ISuggestionPage = (await axios.get(apiPaths.suggestions, AxiosConf)).data;
     let containedSuggestions: ISuggestion[];

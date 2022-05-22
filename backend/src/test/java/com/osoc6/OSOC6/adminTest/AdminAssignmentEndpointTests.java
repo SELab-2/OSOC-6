@@ -215,13 +215,25 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void filtering_on_unmatched_works_results_when_true() throws Exception {
+    public void filtering_on_unmatched_works_no_results_when_true() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
                         + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
                 new String[]{"edition", "unmatched"},
                 new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(true)})
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_true_and_invalid() throws Exception {
+        perform_patch(getEntityPath() + "/" + get_id(testAssignment), Map.of("isValid", Boolean.toString(false)));
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
+                        + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
     }
 
     @Test

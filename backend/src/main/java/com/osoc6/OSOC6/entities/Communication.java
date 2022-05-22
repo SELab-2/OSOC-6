@@ -53,6 +53,14 @@ public final class Communication {
     private String medium;
 
     /**
+     * The subject of the communication.
+     */
+    @Basic(optional = false)
+    @Column(columnDefinition = "text")
+    @Getter @Setter
+    private String subject = "";
+
+    /**
      * The content of the communication.
      */
     @Basic(optional = false)
@@ -85,17 +93,19 @@ public final class Communication {
     /**
      *
      * @param newMedium the medium of the communication, such as SMS or email
+     * @param newSubject the subject of the communication
      * @param newContent the text content of the communication-instance
      * @param newCommunicationTemplate the template for this communication
      * @param newUserEntity the user who communicated with the student
      * @param newStudent the student with whom the communication took place
      */
-    public Communication(final String newMedium, final String newContent,
+    public Communication(final String newMedium, final String newSubject, final String newContent,
                          final CommunicationTemplate newCommunicationTemplate, final UserEntity newUserEntity,
                          final Student newStudent) {
         super();
         timestamp = new Timestamp(System.currentTimeMillis());
         medium = newMedium;
+        subject = newSubject;
         content = newContent;
         template = newCommunicationTemplate;
         sender = newUserEntity;

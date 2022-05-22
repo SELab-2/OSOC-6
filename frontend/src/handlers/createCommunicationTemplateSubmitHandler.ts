@@ -14,21 +14,31 @@ import apiPaths from "../properties/apiPaths";
 
 export async function createCommunicationTemplateSubmitHandler(
     url: string | null,
+    studentId: string,
     values: CommunicationTemplateEntity,
     router: NextRouter,
     mutate: ScopedMutator
-) {
+): Promise<ICommunicationTemplate> {
     let result: ICommunicationTemplate;
     if (url) {
         result = await editCommunicationTemplate(url, values);
     } else {
         result = await createNewCommunicationTemplate(values);
     }
-    const id = extractIdFromCommunicationTemplateUrl(result._links.self.href);
-
     await Promise.all([
         mutate(apiPaths.communicationTemplates),
         mutate(result._links.self.href, result),
-        router.push("/" + applicationPaths.communicationTemplateBase + "/" + id),
+        router.replace({
+            pathname:
+                "/" +
+                applicationPaths.students +
+                "/" +
+                studentId +
+                "/" +
+                applicationPaths.communicationRegistration,
+            query: { ...router.query },
+        }),
     ]);
+
+    return result;
 }
