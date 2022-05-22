@@ -15,6 +15,7 @@ import timers from "../../properties/timers";
 import Image from "next/image";
 import { useRouterPush } from "../../hooks/routerHooks";
 import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
+import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import useProjectsByEdition from "../../hooks/useProjectsByEdition";
 
 export function ProjectInfo() {
@@ -22,7 +23,8 @@ export function ProjectInfo() {
     const routerAction = useRouterPush();
     const router = useRouter();
     const { id } = router.query as { id: string };
-    const [show, setShow] = useState<boolean>(true);
+    const [show, setShow] = useState<boolean>(false);
+    const isAdmin = useCurrentAdminUser();
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
 
@@ -65,16 +67,18 @@ export function ProjectInfo() {
         <div className={styles.project_info}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h1>{info.name}</h1>
-                <div>
-                    <a
-                        style={{ margin: "1rem", cursor: "pointer" }}
-                        onClick={editProject}
-                        data-testid="edit-project"
-                    >
-                        <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
-                    </a>
-                    <ConfirmDeleteButton dataTestId="delete-project" handler={deleteProjectOnClick} />
-                </div>
+                {isAdmin && (
+                    <div>
+                        <a
+                            style={{ margin: "1rem", cursor: "pointer" }}
+                            onClick={editProject}
+                            data-testid="edit-project"
+                        >
+                            <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                        </a>
+                        <ConfirmDeleteButton dataTestId="delete-project" handler={deleteProjectOnClick} />
+                    </div>
+                )}
             </div>
             <h5>
                 <a href={info.partnerWebsite || undefined}>{info.partnerName}</a>
