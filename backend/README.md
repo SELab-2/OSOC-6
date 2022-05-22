@@ -266,6 +266,13 @@ tally. Here the request body can be copied and placed in your .json test file.
 server. You will need to install a command line tool to get this working. Their website provides a tutorial on the 
 complete setup. The only downside is that you are limited to 150 requests per month.
 
+### Initial data
+
+All data in the `./src/main/resources/data.sql` file will be saved to the database when the application is started.
+It is very easy to add new data or to remove existing data. Simply add the data using regular SQL INSERT statements.
+Don't forget to add `ON CONFLICT DO NOTHING` at the end of the statements. 
+This makes sure that when some of the data is already present, no conflicts occur.
+
 ## Tests
 
 To run the tests we use gradle.
