@@ -8,5 +8,6 @@ next.config.js
 package-lock.json
 package.json
 coverage
+docs
 
 README.md
