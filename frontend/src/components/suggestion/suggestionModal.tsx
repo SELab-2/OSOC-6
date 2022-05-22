@@ -11,7 +11,11 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
  * Modal asking the reason for a certain suggestion
  * @param props properties needed to render this component
  */
-export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
+export function SuggestionModal(props: {
+    suggestion: SuggestionStrategy;
+    colour: string;
+    studentUrl: string;
+}) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
     const [hover, setHover] = useState(false);
@@ -49,11 +53,13 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
         setHover(false);
     }
 
-    let style = props.style;
+    let style: {};
 
     if (hover) {
-        style = { ...style, backgroundColor: style.borderColor, color: "black" };
+        style = { borderColor: props.colour, width: 150, backgroundColor: props.colour, color: "black" };
         console.log(style);
+    } else {
+        style = { color: props.colour, borderColor: props.colour, width: 150 };
     }
 
     return (

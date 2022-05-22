@@ -10,7 +10,7 @@ import {
     EnglishProficiency,
     Gender,
     IStudent,
-    OsocExpericience,
+    OsocExperience,
     Status,
 } from "../../src/api/entities/StudentEntity";
 import { IEdition } from "../../src/api/entities/EditionEntity";
@@ -258,6 +258,7 @@ export function getBaseCommunication(id: string): ICommunication {
     const baseCommunicationPath = "http://localhost/api/communications/" + id;
     return {
         timestamp: "2022-05-05T17:57:49.963+00:00",
+        subject: "You were selected",
         medium: "email",
         content: "Good job Kasper, you have been selected.",
 
@@ -289,17 +290,17 @@ export function getBaseStudent(id: string): IStudent {
         phoneNumber: "+3257697568",
         workType: "Yes, I can work with a student employment agreement in Belgium",
         daytimeResponsibilities: "Eating and drinking",
-        curriculumVitaeURI: "",
-        portfolioURI: "",
-        motivationURI: "",
-        writtenMotivation: "",
+        curriculumVitaeURI: "https://my.cv.com",
+        portfolioURI: "https://my.portfolio.com",
+        motivationURI: "https://my.motivation.com",
+        writtenMotivation: "This is my written motivation",
         currentDiploma: "Master",
         durationCurrentDegree: 5,
         yearInCourse: "3th",
         institutionName: "Ghent University",
         bestSkill: "Finding out the Spring ways",
         funFact: "A fun fact about me",
-        osocExperience: OsocExpericience.yes_noStudentCoach,
+        osocExperience: OsocExperience.yes_noStudentCoach,
         status: Status.maybe,
         additionalStudentInfo: "He likes it like that",
         studies: ["I love to Spring Spring in java Spring!"],

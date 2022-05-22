@@ -96,13 +96,16 @@ export function getQueryUrlFromParams(url: string, params: { [k: string]: any })
 }
 
 export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
-    const urlQuery = url.split("?")[1];
-    let params = new Map();
-    for (const param of urlQuery.split("&")) {
-        const parameter: string[] = param.split("=");
-        params.set(parameter[0], parameter[1]);
+    if (url.includes("?")) {
+        const urlQuery = url.split("?")[1];
+        let params = new Map();
+        for (const param of urlQuery.split("&")) {
+            const parameter: string[] = param.split("=");
+            params.set(parameter[0], parameter[1]);
+        }
+        return params;
     }
-    return params;
+    return {};
 }
 
 /**

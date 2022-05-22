@@ -77,7 +77,6 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
         setMutated(false);
     }
 
-    // Sort for consistency
     const assignments: IAssignment[] = receivedAssignments || [];
 
     // we can mutate on the assignments, so they are known to swr. (This might result in mutation overload?)

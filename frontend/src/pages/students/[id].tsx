@@ -16,7 +16,7 @@ const StudentsIDPage: NextPage = () => {
                 </div>
                 <div className={styles.info_grid + " " + styles.height_setter}>
                     <div className={styles.sidebar}>
-                        <StudentList isDraggable={false} />
+                        <StudentList isDraggable={false} showAdd={true} />
                     </div>
                     <div
                         className={styles.info_field + " " + studentStyle.default.students_info}

@@ -1,0 +1,96 @@
+.login_div {
+    background: #0c083a;
+    color: white;
+    padding: 40px;
+    margin-right: 40%;
+    border-radius: 1rem;
+    box-shadow: 1em 1em 1em rgb(0 0 0 / 25%);
+}
+
+.login_field {
+    background: #0c083a;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.login_field:focus {
+    background: #0c083a;
+    box-shadow: 0 0 0 0.15rem rgb(255 255 255);
+    color: white;
+}
+
+.login_full_div {
+    width: 100%;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    align-items: center;
+}
+
+.login_card {
+    background: #0d083a;
+    color: red;
+}
+
+.login_floating_text_col {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.login_floating_text {
+    margin-left: 25%;
+}
+
+.login_col {
+    width: 50%;
+}
+
+.login_row {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 2;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    color: gray;
+}
+
+.link svg {
+    margin-left: 0.3em;
+}
+
+@media (max-width: 1024px) {
+    .login_row {
+        flex-direction: column;
+    }
+
+    .login_floating_text_col {
+        align-self: center;
+        flex-grow: 0;
+        height: 50%;
+    }
+
+    .login_floating_text {
+        margin-left: 0;
+    }
+
+    .login_div {
+        margin-right: 0;
+    }
+
+    .login_col {
+        height: 50%;
+        width: 75%;
+        align-self: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login_row {
+        flex-direction: row;
+        align-items: center;
+    }
+}
