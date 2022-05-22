@@ -71,7 +71,8 @@ describe("project info", () => {
         const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(projectSkill._links.self.href);
         await enableActForResponse(
             { url: assignmentsUrl },
-            getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment])));
+            getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, [assignment]))
+        );
 
         await enableActForResponse({ url: assignment._links.student.href }, getBaseOkResponse(student));
 

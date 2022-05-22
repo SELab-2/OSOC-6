@@ -41,9 +41,7 @@ export default function SkillTypeIndexPage() {
                                 data-testid="new-skill-type-button"
                                 className="mt-2"
                                 variant="outline-primary"
-                                onClick={() =>
-                                    routerAction("/" + applicationPaths.skillTypesCreate)
-                                }
+                                onClick={() => routerAction("/" + applicationPaths.skillTypesCreate)}
                             >
                                 {capitalize(t("create skill type"))}
                                 <svg
