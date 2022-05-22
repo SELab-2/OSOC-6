@@ -4,8 +4,10 @@ import { Suggestion, SuggestionStrategy } from "../../api/entities/SuggestionEnt
 import { Field, Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
-import { createNewSuggestion } from "../../api/calls/suggestionCalls";
+import { createNewSuggestion, getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { IStudent } from "../../api/entities/StudentEntity";
+import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 /**
  * Modal asking the reason for a certain suggestion
@@ -14,13 +16,18 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 export function SuggestionModal(props: {
     suggestion: SuggestionStrategy;
     colour: string;
-    studentUrl: string;
+    student: IStudent;
 }) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
     const [hover, setHover] = useState(false);
 
     const { user, error: userError } = useCurrentUser(true);
+
+    const { data: receivedSuggestions, mutate } = useSwrForEntityList(
+        props.student ? props.student._links.suggestions.href : null,
+        getAllSuggestionsFromLinks
+    );
 
     if (userError || !user) {
         if (userError) {
@@ -38,10 +45,14 @@ export function SuggestionModal(props: {
             values.reason,
             // function will never be executed if user is undefined
             user!._links.self.href,
-            props.studentUrl
+            // Assume the student info is rendered when you press a button
+            props.student._links.self.href
         );
 
-        await createNewSuggestion(suggestion);
+        const newSuggestion = await createNewSuggestion(suggestion);
+        if (receivedSuggestions) {
+            mutate([newSuggestion, ...receivedSuggestions]).catch(console.log);
+        }
         handleClose();
     }
 
