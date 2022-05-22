@@ -87,6 +87,8 @@ describe("Users", () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);
             render(<UserComponent key={user.email} user={user} />);
 
+            window.confirm = jest.fn(() => true);
+
             await userEvent.click(screen.getByTestId("overview-delete-user"));
             await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
@@ -122,6 +124,8 @@ describe("Users", () => {
         it("delete fail", async () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);
             render(<UserComponent key={user.email} user={user} />);
+
+            window.confirm = jest.fn(() => true);
 
             await userEvent.click(screen.getByTestId("overview-delete-user"));
             await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());

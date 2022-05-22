@@ -18,7 +18,6 @@ import applicationProperties from "../../properties/applicationProperties";
 
 export default function InvitationButton() {
     const { t } = useTranslation("common");
-    const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
     const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
 
@@ -48,7 +47,7 @@ export default function InvitationButton() {
             invitationToken: postedInvitation.token,
         });
 
-        const registrationUrl = applicationPaths.base + "/" + transformer(url);
+        const registrationUrl = applicationPaths.base + "/" + url;
 
         setInvitationUrl(registrationUrl);
         setHidden(false);

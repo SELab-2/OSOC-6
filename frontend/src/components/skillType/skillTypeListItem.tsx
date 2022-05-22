@@ -4,6 +4,9 @@ import { useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { Badge } from "react-bootstrap";
 import { capitalize } from "../../utility/stringUtil";
+import styles from "../../styles/skillTypes.module.css";
+import Image from "next/image";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 export interface SkillTypeListItemProps {
     skillType: ISkillType;
@@ -25,7 +28,7 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
     };
 
     return (
-        <li>
+        <li className={"list-group-item " + styles.bg_color}>
             <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
@@ -35,48 +38,50 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                 }}
             >
                 {({ values }) => (
-                    <Form>
-                        <div>
+                    <Form className="row">
+                        <div className="col">
                             <Badge bg="" style={{ background: values.colour }}>
                                 {skillType.name}
                             </Badge>
                         </div>
-                        <div>
-                            <button
-                                data-testid="start-edit"
-                                type="button"
-                                onClick={() => setEditing(!editing)}
-                            >
-                                {capitalize(t("edit colour"))}
-                            </button>
-                        </div>
-
                         {editing && (
-                            <div>
-                                <div>
-                                    <label htmlFor="colour" className="form-label">
-                                        {capitalize(t("color representing skill type"))}
-                                    </label>
-                                    <Field
-                                        type="color"
-                                        className="form-control form-control-color"
-                                        id="skillTypeColour"
-                                        data-testid="colour"
-                                        name="colour"
-                                        title={capitalize(t("color representing skill type"))}
-                                    />
-                                </div>
-                                <button className="capitalize" data-testid="submit-edit" type="submit">
-                                    {t("confirm")}
+                            <div className="col d-flex">
+                                <Field
+                                    type="color"
+                                    className="form-control form-control-color"
+                                    id="skillTypeColour"
+                                    data-testid="colour"
+                                    name="colour"
+                                    title={capitalize(t("color representing skill type"))}
+                                />
+                                <button
+                                    className="btn btn-primary ms-2"
+                                    data-testid="submit-edit"
+                                    type="submit"
+                                >
+                                    {capitalize(t("confirm"))}
                                 </button>
                             </div>
                         )}
+                        <div className="col-auto">
+                            <a
+                                className="clickable col"
+                                onClick={() => setEditing(!editing)}
+                                data-testid="start-edit"
+                                title={capitalize(t("edit colour"))}
+                            >
+                                <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
+                            </a>
+                        </div>
+                        <div className="col-auto">
+                            <ConfirmDeleteButton
+                                dataTestId="delete-item"
+                                handler={() => deleteHandler(selfUrl)}
+                            />
+                        </div>
                     </Form>
                 )}
             </Formik>
-            <button data-testid="delete" onClick={() => deleteHandler(selfUrl)}>
-                {capitalize(t("delete"))}
-            </button>
         </li>
     );
 }

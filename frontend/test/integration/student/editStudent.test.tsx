@@ -45,7 +45,7 @@ describe("edit student", () => {
     });
 
     it("renders", async () => {
-        await page.findByTestId("student-edit");
+        await page.findByTestId("student-create-form");
     });
 
     it("renders with data", async () => {
@@ -92,6 +92,8 @@ describe("edit student", () => {
         const itemListInputElements = page.getAllByTestId("item-list-input");
         const itemListAddElements = page.getAllByTestId("item-list-add-button");
         const itemDeleteElements = page.getAllByTestId("item-list-delete-button");
+
+        window.confirm = jest.fn(() => true);
 
         await userEvent.clear(callNameElement);
         await userEvent.clear(durationCurrentDegreeElement);
@@ -155,7 +157,7 @@ describe("edit student", () => {
             expect(spy).toHaveBeenCalledWith(
                 expect.anything(),
                 updatedStudent,
-                mockRouter,
+                expect.anything(),
                 expect.anything()
             );
         });

@@ -43,8 +43,12 @@ export function RegisterCommunication() {
 
     return (
         <div data-testid="register-communication">
-            <h1>{capitalize(t("register communication for")) + " " + student.callName}</h1>
-            <Row style={{ paddingBottom: 20 }} data-testid="choose-template">
+            <h4>{capitalize(t("register communication for")) + " " + student.callName}</h4>
+            <hr />
+            <Row
+                style={{ paddingBottom: 20, margin: "1rem", marginTop: "2rem" }}
+                data-testid="choose-template"
+            >
                 <Col>
                     <div>{capitalize(t("choose your template"))}:</div>
                 </Col>
@@ -80,6 +84,7 @@ export function RegisterCommunication() {
                     </Dropdown>
                     <Button
                         style={{
+                            marginLeft: "1rem",
                             backgroundColor: "#1b1a31",
                             borderColor: "white",
                             height: 30,
@@ -95,7 +100,7 @@ export function RegisterCommunication() {
                     </Button>
                 </Col>
             </Row>
-            <Row style={{ paddingBottom: 20 }}>
+            <Row style={{ paddingBottom: 20, margin: "1rem" }}>
                 <Col>
                     <div>{capitalize(t("create template"))}:</div>
                 </Col>
@@ -109,7 +114,10 @@ export function RegisterCommunication() {
                             display: "flex",
                         }}
                         data-testid="new-template"
-                        onClick={() => setCreate(true)}
+                        onClick={() => {
+                            setCreate(true);
+                            setSelectedTemplate(undefined);
+                        }}
                     >
                         {capitalize(t("create new template"))}
                     </Button>
@@ -124,7 +132,7 @@ export function RegisterCommunication() {
                     setEdit={setEdit}
                 />
             )}
-            {selectedTemplate && !edit && (
+            {selectedTemplate && !(edit || create) && (
                 <CreateCommunicationForm student={student} template={selectedTemplate} />
             )}
         </div>

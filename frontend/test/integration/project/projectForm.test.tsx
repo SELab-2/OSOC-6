@@ -167,7 +167,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -234,6 +234,8 @@ describe("Create project form", () => {
                 const projectGoal = component.getByTestId("item-list-input");
                 const addGoalButton = component.getByTestId("item-list-add-button");
 
+                window.confirm = jest.fn(() => true);
+
                 await userEvent.type(projectGoal, testGoal);
                 await userEvent.click(addGoalButton);
 
@@ -255,6 +257,8 @@ describe("Create project form", () => {
                 expect(await component.findAllByText(user.callName)).toHaveLength(2);
                 const removeCoachButton = await component.findByTestId("remove-added-coach-" + user.callName);
 
+                window.confirm = jest.fn(() => true);
+
                 await userEvent.click(removeCoachButton);
 
                 expect(await component.findAllByText(user.callName)).toHaveLength(1);
@@ -273,6 +277,8 @@ describe("Create project form", () => {
                 const removeSkillButton = await component.findByTestId(
                     "remove-added-skill-" + skillType.name
                 );
+
+                window.confirm = jest.fn(() => true);
 
                 await userEvent.click(removeSkillButton);
 
@@ -446,7 +452,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -482,6 +488,8 @@ describe("Create project form", () => {
                     "remove-existing-coach-" + additionalUser.callName
                 );
 
+                window.confirm = jest.fn(() => true);
+
                 await userEvent.click(removeCoachButton);
                 await userEvent.click(submitButton);
 
@@ -494,7 +502,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -536,7 +544,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -576,7 +584,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -586,6 +594,8 @@ describe("Create project form", () => {
                 const removeButton = await component.findByTestId(
                     "remove-existing-skill-" + projectSkill.name
                 );
+
+                window.confirm = jest.fn(() => true);
 
                 await userEvent.click(removeButton);
                 await userEvent.click(submitButton);
@@ -597,7 +607,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -631,7 +641,7 @@ describe("Create project form", () => {
                     [],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );
@@ -691,7 +701,7 @@ describe("Create project form", () => {
                     ],
                     edition._links.self.href,
                     user,
-                    mockRouter,
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );

@@ -52,6 +52,9 @@ describe("User Profile", () => {
 
     it("Check delete", async () => {
         await renderNormalUser();
+
+        window.confirm = jest.fn(() => true);
+
         await userEvent.click(screen.getByTestId("delete-userprofile"));
 
         await waitFor(() => {
@@ -64,6 +67,9 @@ describe("User Profile", () => {
 
     it("Check delete fail", async () => {
         await renderNormalUser();
+
+        window.confirm = jest.fn(() => true);
+
         await userEvent.click(screen.getByTestId("delete-userprofile"));
 
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());

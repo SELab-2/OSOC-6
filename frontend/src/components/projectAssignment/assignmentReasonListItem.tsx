@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { getUserOnUrl } from "../../api/calls/userCalls";
-import { extractIdFromAssignmentUrl, getAssignmentOnUrl } from "../../api/calls/AssignmentCalls";
+import { getAssignmentOnUrl } from "../../api/calls/AssignmentCalls";
 import { emptyAssignment } from "../../api/entities/AssignmentEntity";
 import { emptyUser } from "../../api/entities/UserEntity";
 import { capitalize } from "../../utility/stringUtil";
@@ -41,18 +41,25 @@ export default function AssignmentReasonListItem({
     const assigner = receivedAssigner || emptyUser;
 
     return (
-        <>
-            <h6>
-                {capitalize(t("suggested by"))} {assigner.callName}:
-            </h6>
-            <p>{assignment.reason}</p>
+        <div className={styles.assignment_item_div}>
+            <div className={styles.assignment_reason_div}>
+                <h6>
+                    {capitalize(t("suggested by"))} {assigner.callName}:
+                </h6>
+                <p>{assignment.reason}</p>
+            </div>
             <CloseButton
                 aria-label={"Remove student from project"}
                 value={assignment._links.self.href}
-                onClick={(assignment: any) => removeCallback(assignment.target.value)}
+                onClick={(assignment: any) => {
+                    const result = confirm(capitalize(t("confirm delete assignment")));
+                    if (result) {
+                        removeCallback(assignment.target.value).then(console.log);
+                    }
+                }}
                 data-testid={"remove-assignment-button-" + assignment.reason}
                 className={styles.close_button}
             />
-        </>
+        </div>
     );
 }

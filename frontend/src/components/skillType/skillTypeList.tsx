@@ -1,9 +1,10 @@
-import { ISkillType, SkillType } from "../../api/entities/SkillTypeEntity";
+import { ISkillType } from "../../api/entities/SkillTypeEntity";
 import { deleteSkillTypeFromList, editSkillTypeColourOnUrl } from "../../api/calls/skillTypeCalls";
 import apiPaths from "../../properties/apiPaths";
 import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { useSWRConfig } from "swr";
 import SkillTypeListItem, { EditSkillTypeFields } from "./skillTypeListItem";
+import styles from "../../styles/skillTypes.module.css";
 
 export interface SkillTypeListProps {
     skillTypes: ISkillType[];
@@ -37,7 +38,7 @@ export default function SkillTypeList({ skillTypes }: SkillTypeListProps) {
 
     return (
         <div data-testid="skill-type-list">
-            <ul>
+            <ul className={"list-group " + styles.skill_type_list}>
                 {skillTypes.map((skillType) => (
                     <SkillTypeListItem
                         skillType={skillType}

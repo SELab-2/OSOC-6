@@ -26,7 +26,7 @@ describe("create student", () => {
         const page = render(
             makeCacheFree(() => enableUseEditionComponentWrapper(() => <StudentCreate />, edition))
         );
-        await page.findByTestId("student-create");
+        await page.findByTestId("student-create-form");
     });
 
     afterEach(() => {
@@ -145,7 +145,7 @@ describe("create student", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, student, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(null, student, expect.anything(), expect.anything());
         });
 
         await waitFor(() => {

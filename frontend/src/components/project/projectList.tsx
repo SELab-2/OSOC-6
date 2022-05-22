@@ -1,17 +1,22 @@
-import { ListGroup } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import styles from "../../styles/projects/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
-import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
+import { extractIdFromProjectUrl, getAllProjectsFromPage } from "../../api/calls/projectCalls";
+import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import useProjectsByEdition from "../../hooks/useProjectsByEdition";
+import { useRouterPush } from "../../hooks/routerHooks";
+import applicationPaths from "../../properties/applicationPaths";
 
 export function ProjectList() {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
+    const query = router.query as { id?: string };
+    const selectedProjectId = query.id;
+    const routerAction = useRouterPush();
     const currentUserIsAdmin = useCurrentAdminUser();
 
     const { data: receivedProjects, error: projectsError } = useProjectsByEdition();
@@ -31,22 +36,26 @@ export function ProjectList() {
                 {projects
                     .map((project) => ({
                         project,
-                        projectId: project._links.self.href.split(apiPaths.base)[1],
+                        projectId: extractIdFromProjectUrl(project._links.self.href),
                     }))
                     .map(({ project, projectId }) => (
                         <ListGroup.Item
                             key={projectId}
-                            className={"proj " + styles.project_list_project}
+                            className={
+                                "proj " + projectId === selectedProjectId
+                                    ? "active "
+                                    : "" + styles.project_list_project
+                            }
                             action
                             as={"a"}
-                            onClick={() => {
-                                let projectPath: string = projectId;
-                                router
-                                    .push(transformer("/" + projectPath) + "#/" + projectId)
-                                    .catch(console.log);
+                            onClick={async () => {
+                                await routerAction({
+                                    pathname: "/" + applicationPaths.projects + "/" + projectId,
+                                });
                             }}
-                            href={"#" + projectId}
+                            href={undefined}
                             role="tab"
+                            data-testid={"project-select-" + project.name}
                             data-toggle="list"
                         >
                             <div className={styles.project_list_info}>
@@ -71,7 +80,26 @@ export function ProjectList() {
                         </ListGroup.Item>
                     ))}
             </ListGroup>
-            {currentUserIsAdmin && <NewProjectButton />}
+            {currentUserIsAdmin && (
+                <>
+                    <div className={"container " + styles.bottom_page}>
+                        <div className="row">
+                            <NewProjectButton />
+                        </div>
+                        <div className="row">
+                            <Button
+                                data-testid="skill-types-button"
+                                className={"capitalize justify-content-center " + styles.project_list_button}
+                                variant="outline-primary"
+                                size="sm"
+                                onClick={() => routerAction("/" + applicationPaths.skillTypesBase)}
+                            >
+                                {t("skill types")}
+                            </Button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

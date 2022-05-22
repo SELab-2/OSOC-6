@@ -40,6 +40,7 @@ export default function CommunicationListItem({ communication }: CommunicationLi
 
     return (
         <AccordionItem
+            style={{ marginTop: "1rem" }}
             key={communication._links.self.href}
             eventKey={communication._links.self.href}
             data-testid="communication"
@@ -55,8 +56,8 @@ export default function CommunicationListItem({ communication }: CommunicationLi
                     </div>
                 </div>
             </AccordionHeader>
-            <AccordionBody>
-                <div style={{ color: "black" }}>{communication.content}</div>
+            <AccordionBody style={{ backgroundColor: "#1b1a32" }}>
+                <div style={{ color: "white" }}>{communication.content}</div>
             </AccordionBody>
         </AccordionItem>
     );

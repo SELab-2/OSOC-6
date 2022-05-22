@@ -6,7 +6,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import applicationPaths from "../../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
 import mockRouter from "next-router-mock";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableActForUserEvent, enableCurrentUser, makeCacheFree } from "../Provide";
 import { ProjectList } from "../../../src/components/project/projectList";
 import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "../TestEntityProvider";
 import { UserRole } from "../../../src/api/entities/UserEntity";
@@ -41,11 +41,20 @@ describe("Project", () => {
         });
     });
 
-    it.skip("Should go to projects/create when clicking button", async () => {
-        render(<ProjectList />);
+    it("Should go to projects/create when clicking button", async () => {
+        render(makeCacheFree(() => <ProjectList />));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
         await userEvent.click(screen.getByTestId("new-project-button"));
 
         await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
+    });
+
+    it("Should go to skilltypes when clicking skilltypes button", async () => {
+        render(makeCacheFree(() => <ProjectList />));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+        await userEvent.click(screen.getByTestId("skill-types-button"));
+
+        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.skillTypesBase);
     });
 
     it("Should go to project page when clicking item in list", async () => {
@@ -56,9 +65,11 @@ describe("Project", () => {
 
         render(makeCacheFree(ProjectList));
 
-        mockAxios.mockResponseFor({ method: "GET" }, response);
+        await enableActForResponse({ method: "GET" }, response);
         await userEvent.click(await screen.findByText(baseProject.name));
 
-        expect(mockRouter.pathname).toEqual("/projects/5");
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.projects + "/5");
+        });
     });
 });

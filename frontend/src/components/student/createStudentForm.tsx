@@ -1,7 +1,7 @@
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { capitalize } from "../../utility/stringUtil";
+import { capitalize, isValidURIOrEmpty } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import {
     emptyStudent,
@@ -18,6 +18,9 @@ import {
 import useEdition from "../../hooks/useGlobalEdition";
 import { createStudentSubmitHandler } from "../../handlers/createStudentSubmitHandler";
 import ItemListForm from "../util/itemListForm";
+import styles from "../../styles/students/studentCreate.module.css";
+import { useState } from "react";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Props needed for the create student form.
@@ -31,28 +34,41 @@ export interface CreateStudentFormProps {
  */
 export default function CreateStudentForm({ student }: CreateStudentFormProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const { mutate } = useSWRConfig();
     const [editionUrl] = useEdition();
 
     const initialValues: Student = studentFromIStudent(editionUrl!, student ? student : emptyStudent);
 
     return (
-        <div className="container mt-3" data-testid="student-create-form">
-            <h2>{student ? capitalize(t("edit student")) : capitalize(t("create student"))}</h2>
+        <div
+            className={styles.student_outer_div + " container"}
+            data-testid="student-create-form"
+            style={{ marginLeft: "30rem", marginTop: "1rem" }}
+        >
+            <div className={styles.student_inner_div}>
+                <h2>{student ? capitalize(t("edit student")) : capitalize(t("create student"))}</h2>
+                <hr />
+            </div>
             <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
-                onSubmit={(values) =>
-                    createStudentSubmitHandler(
-                        student ? student._links.self.href : null,
-                        values,
-                        router,
-                        mutate
-                    )
-                }
+                onSubmit={(values) => {
+                    if (
+                        isValidURIOrEmpty(values.curriculumVitaeURI) &&
+                        isValidURIOrEmpty(values.motivationURI) &&
+                        isValidURIOrEmpty(values.portfolioURI)
+                    ) {
+                        createStudentSubmitHandler(
+                            student ? student._links.self.href : null,
+                            values,
+                            routerAction,
+                            mutate
+                        );
+                    }
+                }}
             >
-                {({ values, setFieldValue }) => (
+                {({ values, setFieldValue, touched }) => (
                     <Form>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="callNameField" className="form-label">
@@ -66,7 +82,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 placeholder={capitalize(t("callname"))}
                                 id="callNameField"
                                 data-testid="callName"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-4 mb-2">
@@ -80,7 +96,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 placeholder={capitalize(t("first name"))}
                                 id="firstNameField"
                                 data-testid="firstName"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-4 mb-2">
@@ -94,7 +110,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 placeholder={capitalize(t("last name"))}
                                 id="lastNameField"
                                 data-testid="lastName"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-4 mb-2">
@@ -102,13 +118,13 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 {capitalize(t("email")) + ":"}
                             </label>
                             <Field
-                                type="text"
+                                type="email"
                                 name="email"
                                 required
                                 placeholder={capitalize(t("email"))}
                                 id="emailField"
                                 data-testid="email"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
@@ -122,7 +138,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 placeholder={capitalize(t("phone number"))}
                                 id="phoneNumberField"
                                 data-testid="phoneNumber"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
@@ -134,7 +150,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 as="select"
                                 name="gender"
                                 data-testid="gender"
-                                className="form-select"
+                                className={styles.input_field + " " + styles.dropdown_field + " form-select"}
                             >
                                 {Object.keys(Gender).map((gender) => {
                                     const genderEnum = Gender[gender as keyof typeof Gender];
@@ -162,7 +178,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 placeholder={capitalize(t("pronouns"))}
                                 id="pronounsField"
                                 data-testid="pronouns"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-3 mb-2">
@@ -176,7 +192,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 required
                                 placeholder={capitalize(t("native language"))}
                                 data-testid="mostFluentLanguage"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
@@ -188,7 +204,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 as="select"
                                 name="englishProficiency"
                                 data-testid="englishProficiency"
-                                className="form-select"
+                                className={styles.input_field + " " + styles.dropdown_field + " form-select"}
                             >
                                 {Object.keys(EnglishProficiency).map((proficiency) => {
                                     const proficiencyEnum =
@@ -206,7 +222,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 })}
                             </Field>
                         </div>
-                        <div className="col-sm-3 mb-2">
+                        <div className="col-sm-4 mb-2">
                             <ItemListForm
                                 items={values.studies}
                                 setItems={(value) => setFieldValue("studies", value)}
@@ -225,7 +241,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 required
                                 placeholder={capitalize(t("institution"))}
                                 data-testid="institution"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-3 mb-2">
@@ -239,7 +255,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 required
                                 placeholder={capitalize(t("current diploma"))}
                                 data-testid="currentDiploma"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
@@ -253,7 +269,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 required
                                 placeholder={capitalize(t("year of degree"))}
                                 data-testid="yearInCourse"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-2 mb-2">
@@ -267,10 +283,10 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 required
                                 placeholder={capitalize(t("degree length"))}
                                 data-testid="durationCurrentDegree"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
-                        <div className="col-sm-3 mb-2">
+                        <div className="col-sm-4 mb-2">
                             <ItemListForm
                                 items={values.skills}
                                 setItems={(value) => setFieldValue("skills", value)}
@@ -289,8 +305,11 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 name="curriculumVitaeURI"
                                 placeholder={capitalize(t("cv url"))}
                                 data-testid="curriculumVitaeURI"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
+                            {!isValidURIOrEmpty(values.curriculumVitaeURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="portfolioURIField" className="form-label">
@@ -302,8 +321,11 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 name="portfolioURI"
                                 placeholder={capitalize(t("portfolio url"))}
                                 data-testid="portfolioURI"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
+                            {!isValidURIOrEmpty(values.portfolioURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         <div className="col-sm-4 mb-2">
                             <label htmlFor="motivationURIField" className="form-label">
@@ -315,8 +337,11 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 name="motivationURI"
                                 placeholder={capitalize(t("motivation url"))}
                                 data-testid="motivationURI"
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
+                            {!isValidURIOrEmpty(values.motivationURI) && touched.curriculumVitaeURI ? (
+                                <div className={styles.error_message}>{capitalize(t("invalid uri"))}</div>
+                            ) : null}
                         </div>
                         {capitalize(t("or"))}
                         <div className="col-sm-5 mb-2">
@@ -329,7 +354,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 data-testid="writtenMotivation"
                                 value={values.writtenMotivation}
                                 onChange={(event) => setFieldValue("writtenMotivation", event.target.value)}
-                                className="form-control"
+                                className={styles.input_field + " form-control"}
                             />
                         </div>
                         <div className="col-sm-4 mb-4">
@@ -341,7 +366,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                                 as="select"
                                 name="osocExperience"
                                 data-testid="osocExperience"
-                                className="form-select"
+                                className={styles.input_field + " " + styles.dropdown_field + " form-select"}
                             >
                                 {Object.keys(OsocExperience).map((osocExperience) => {
                                     const experienceEnum =
