@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import {
     getBaseBadRequestResponse,
     getBaseLinks,
@@ -25,7 +25,6 @@ import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import { communicationCollectionName } from "../../../src/api/entities/CommunicationEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -99,6 +98,8 @@ describe("StudentInfo", () => {
         const baseStudent: IStudent = getBaseStudent(studentId);
         await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
 
+        window.confirm = jest.fn(() => true);
+
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);
 
@@ -120,6 +121,8 @@ describe("StudentInfo", () => {
 
         const baseStudent: IStudent = getBaseStudent(studentId);
         await enableActForResponse(apiPaths.students + "/" + studentId, getBaseOkResponse(baseStudent));
+
+        window.confirm = jest.fn(() => true);
 
         const deleteButton = await screen.findByTestId("delete-student");
         await userEvent.click(deleteButton);

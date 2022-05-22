@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { getUserOnUrl } from "../../api/calls/userCalls";
-import { extractIdFromAssignmentUrl, getAssignmentOnUrl } from "../../api/calls/AssignmentCalls";
+import { getAssignmentOnUrl } from "../../api/calls/AssignmentCalls";
 import { emptyAssignment } from "../../api/entities/AssignmentEntity";
 import { emptyUser } from "../../api/entities/UserEntity";
 import { capitalize } from "../../utility/stringUtil";
@@ -45,7 +45,12 @@ export default function AssignmentReasonListItem({
             <CloseButton
                 aria-label={"Remove student from project"}
                 value={assignment._links.self.href}
-                onClick={(assignment: any) => removeCallback(assignment.target.value)}
+                onClick={(assignment: any) => {
+                    const result = confirm(capitalize(t("confirm delete assignment")));
+                    if (result) {
+                        removeCallback(assignment.target.value).then(console.log);
+                    }
+                }}
                 data-testid={"remove-assignment-button-" + assignment.reason}
                 className={styles.close_button}
             />

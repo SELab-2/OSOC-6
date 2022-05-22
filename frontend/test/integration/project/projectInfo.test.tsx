@@ -108,6 +108,8 @@ describe("project info", () => {
             mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
         );
 
+        window.confirm = jest.fn(() => true);
+
         const deleteButton = await screen.findByTestId("delete-project");
         await userEvent.click(deleteButton);
 
@@ -127,6 +129,8 @@ describe("project info", () => {
         await waitFor(() =>
             mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
         );
+
+        window.confirm = jest.fn(() => true);
 
         const deleteButton = await screen.findByTestId("delete-project");
         await userEvent.click(deleteButton);

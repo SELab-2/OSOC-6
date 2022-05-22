@@ -11,9 +11,10 @@ import { StatusCodes } from "http-status-codes";
 import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import { deleteProject } from "../../api/calls/projectCalls";
-import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
@@ -61,13 +62,7 @@ export function ProjectInfo() {
                     >
                         <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                     </a>
-                    <a
-                        style={{ cursor: "pointer" }}
-                        onClick={deleteProjectOnClick}
-                        data-testid="delete-project"
-                    >
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
+                    <ConfirmDeleteButton dataTestId="delete-project" handler={deleteProjectOnClick} />
                 </div>
             </div>
             <h5>

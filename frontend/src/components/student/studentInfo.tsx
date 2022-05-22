@@ -14,19 +14,20 @@ import {
 } from "../../api/entities/StudentEntity";
 import SkillBadge from "../util/skillBadge";
 import useSWR from "swr";
-import { extractIdFromStudentUrl, deleteStudent, getStudentOnUrl } from "../../api/calls/studentCalls";
+import { deleteStudent, extractIdFromStudentUrl, getStudentOnUrl } from "../../api/calls/studentCalls";
 import { getAllSuggestionsFromLinks } from "../../api/calls/suggestionCalls";
 import SuggestionListItem from "../suggestion/suggestionListItem";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
-import styles from "../../styles/students/studentOverview.module.css";
 import Image from "next/image";
 import { StatusCodes } from "http-status-codes";
 import timers from "../../properties/timers";
 import { useState } from "react";
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import styles from "../../styles/students/studentList.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 /**
  * Give an overview of all the studentinfo
@@ -132,9 +133,10 @@ export function StudentInfo() {
                                 >
                                     <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                                 </a>
-                                <a onClick={deleteStudentOnClick} data-testid="delete-student">
-                                    <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                                </a>
+                                <ConfirmDeleteButton
+                                    dataTestId="delete-student"
+                                    handler={deleteStudentOnClick}
+                                />
                             </>
                         )}
                     </div>

@@ -6,7 +6,6 @@ import { capitalize } from "../../../utility/stringUtil";
 import { ProjectCreationValues, projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../../api/entities/UserEntity";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useEditionAPIUrlTransformer } from "../../../hooks/utilHooks";
 import useEdition from "../../../hooks/useGlobalEdition";
 import { useRouter } from "next/router";
@@ -24,6 +23,7 @@ import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";
 import ItemListForm from "../../util/itemListForm";
+import { ConfirmDeleteButton } from "../../util/confirmDeleteButton";
 
 /**
  * Properties needed by [ProjectForm].
@@ -226,20 +226,13 @@ export function ProjectForm({ project }: ProjectCreationProps) {
                                     That way you would be able to add them again */}
                                         <Col>{coach.callName}</Col>
                                         <Col xs={1}>
-                                            <a
-                                                data-testid={"remove-existing-coach-" + coach.callName}
-                                                onClick={() => {
+                                            <ConfirmDeleteButton
+                                                dataTestId={"remove-existing-coach-" + coach.callName}
+                                                handler={() => {
                                                     removedCoaches.add(coach._links.self.href);
                                                     setMutated(true);
                                                 }}
-                                            >
-                                                <Image
-                                                    alt=""
-                                                    src={"/resources/delete.svg"}
-                                                    width="15"
-                                                    height="15"
-                                                />
-                                            </a>
+                                            />
                                         </Col>
                                     </Row>
                                 </li>

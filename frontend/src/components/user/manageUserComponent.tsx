@@ -1,6 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
 import { Col, Container, DropdownButton, Row, Toast, ToastContainer } from "react-bootstrap";
-import Image from "next/image";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
@@ -11,6 +10,7 @@ import { capitalize } from "../../utility/stringUtil";
 import { UserRole } from "../../api/entities/UserEntity";
 import timers from "../../properties/timers";
 import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
@@ -83,9 +83,7 @@ export function UserComponent(props: any) {
                     </DropdownButton>
                 </Col>
                 <Col xs={1}>
-                    <a style={{ cursor: "pointer" }} onClick={deleteUser} data-testid="overview-delete-user">
-                        <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                    </a>
+                    <ConfirmDeleteButton dataTestId="overview-delete-user" handler={deleteUser} />
                 </Col>
                 <ToastContainer position="bottom-end">
                     <Toast
