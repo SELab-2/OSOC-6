@@ -53,7 +53,7 @@ describe("conflict resolution", () => {
                 getBaseOkResponse(getBasePage(apiPaths.studentConflict, studentCollectionName, [student]))
             );
 
-            const assignmentsUrl = getValidAssignmentsUrlForStudent(student);
+            const assignmentsUrl = getValidAssignmentsUrlForStudent(student._links.self.href);
             await enableActForResponse(
                 assignmentsUrl,
                 getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, assignments))
@@ -85,10 +85,10 @@ describe("conflict resolution", () => {
             );
         });
 
-        await enableActForResponse(assignments[0]._links.self.href, getBaseOkResponse(assignments[0]))
-        await enableActForResponse(assignments[1]._links.self.href, getBaseOkResponse(assignments[1]))
-
         it("renders correct data", async () => {
+            await enableActForResponse(assignments[0]._links.self.href, getBaseOkResponse(assignments[0]));
+            await enableActForResponse(assignments[1]._links.self.href, getBaseOkResponse(assignments[1]));
+
             await list.findByText(student.callName);
 
             for (const assignment of assignments) {
