@@ -4,7 +4,7 @@ import { ParsedUrlQueryInput } from "querystring";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { IStudentQueryParams } from "../../api/calls/studentCalls";
-import { ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Dropdown, Row } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import Image from "next/image";
@@ -13,6 +13,7 @@ import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
 import { useState } from "react";
 import SkillBadge from "../util/skillBadge";
 import apiPaths from "../../properties/apiPaths";
+import styles from "../../styles/studentFilter.module.css";
 
 function boolToString(bool: boolean | undefined) {
     return bool ? "true" : "false";
@@ -73,13 +74,10 @@ export function StudentFilterComponent() {
         return null;
     }
     return (
-        <div data-testid="student-filter" style={{ backgroundColor: "#0a0839" }}>
-            <div style={{ color: "white", padding: 20 }}>
-                <Row>
-                    <h1>{capitalize(t("filters"))}</h1>
-                </Row>
-
-                <Row style={{ paddingLeft: 20 }}>
+        <div data-testid="student-filter" className={styles.student_filter_div}>
+            <div className={styles.filter_data_holder}>
+                <h1>{capitalize(t("filters"))}</h1>
+                <div>
                     <Formik
                         enableReinitialize={true}
                         initialValues={values}
@@ -92,65 +90,68 @@ export function StudentFilterComponent() {
                     >
                         {({ isSubmitting }) => (
                             <Form>
-                                <Row>
-                                    <Col sm={3}>
+                                <div className={styles.filter_filters_div}>
+                                    <div className={styles.filter_checkboxes_div}>
                                         <div className="form-check">
                                             <Field
                                                 type="checkbox"
-                                                className="form-check-input"
+                                                className={"form-check-input"}
                                                 name="studentCoach"
                                                 data-testid="coachCheck"
                                                 id="coachCheck"
                                             />
-                                            <label className="form-check-label" htmlFor="coachCheck">
+                                            <label
+                                                className={"form-check-label " + styles.filter_fields}
+                                                htmlFor="coachCheck"
+                                            >
                                                 {capitalize(t("student coach"))}
                                             </label>
                                         </div>
                                         <div className="form-check">
                                             <Field
                                                 type="checkbox"
-                                                className="form-check-input"
+                                                className={"form-check-input"}
                                                 name="alumni"
                                                 data-testid="alumniCheck"
                                                 id="alumniCheck"
                                             />
-                                            <label className="form-check-label" htmlFor="alumniCheck">
+                                            <label
+                                                className={"form-check-label " + styles.filter_fields}
+                                                htmlFor="coachCheck"
+                                            >
                                                 {capitalize(t("alumni"))}
                                             </label>
                                         </div>
                                         <div className="form-check">
                                             <Field
                                                 type="checkbox"
-                                                className="form-check-input"
+                                                className={"form-check-input"}
                                                 name="unmatched"
                                                 data-testid="unmatchedCheck"
                                                 id="unmatchedCheck"
                                             />
-                                            <label className="form-check-label" htmlFor="unmatchedCheck">
+                                            <label
+                                                className={"form-check-label " + styles.filter_fields}
+                                                htmlFor="coachCheck"
+                                            >
                                                 {capitalize(t("unmatched"))}
                                             </label>
                                         </div>
-                                    </Col>
-                                    <Col sm={9}>
-                                        <Row>
-                                            <Col
-                                                sm={4}
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <div>{capitalize(t("skills"))}</div>
-                                                <Dropdown as={ButtonGroup} drop="down">
+                                    </div>
+                                    <div className={styles.filter_skills_div}>
+                                        <div className={styles.filter_top_half}>
+                                            <div className={styles.skill_selector}>
+                                                <div className={styles.filter_skill_name}>
+                                                    {capitalize(t("skills"))}
+                                                </div>
+                                                <Dropdown
+                                                    className={styles.filter_dropdown}
+                                                    as={ButtonGroup}
+                                                    drop="down"
+                                                >
                                                     <Dropdown.Toggle
-                                                        style={{
-                                                            backgroundColor: "#0a0839",
-                                                            borderColor: "white",
-                                                            height: 30,
-                                                            alignItems: "center",
-                                                            display: "flex",
-                                                        }}
+                                                        variant={"outline-primary"}
+                                                        className={styles.filter_button}
                                                         data-testid="skill-dropdown"
                                                     >
                                                         {capitalize(t("choose roles"))}
@@ -176,80 +177,58 @@ export function StudentFilterComponent() {
                                                         ))}
                                                     </DropdownMenu>
                                                 </Dropdown>
-                                            </Col>
-                                            <Col sm={8}>
-                                                <Field
-                                                    type="text"
-                                                    name="freeText"
-                                                    className="textfield"
-                                                    style={{
-                                                        backgroundColor: "#0a0839",
-                                                        borderColor: "white",
-                                                        borderWidth: 1,
-                                                        color: "white",
-                                                        width: 400,
-                                                        paddingLeft: 10,
-                                                    }}
-                                                    data-testid="freeText"
-                                                    placeholder="Search students with keywords"
-                                                    initprops={{
-                                                        startAdornment: (
-                                                            <Image
-                                                                alt={capitalize(t("edit"))}
-                                                                src={"/resources/edit.svg"}
-                                                                width="15"
-                                                                height="15"
-                                                            />
-                                                        ),
-                                                    }}
-                                                />
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col sm={8}>
-                                                <div data-testid="roles">
-                                                    {selectedSkills.map((skill) => (
-                                                        <SkillBadge
-                                                            data-testid={"skillbadge-" + skill}
-                                                            key={skill}
-                                                            skill={skill}
-                                                            onClick={() =>
-                                                                setSelectedSkills(
-                                                                    selectedSkills.filter(
-                                                                        (selected) => selected !== skill
-                                                                    )
-                                                                )
-                                                            }
+                                            </div>
+                                            <Field
+                                                type="text"
+                                                name="freeText"
+                                                className={styles.filter_search_key}
+                                                data-testid="freeText"
+                                                placeholder="Search students with keywords"
+                                                initprops={{
+                                                    startAdornment: (
+                                                        <Image
+                                                            alt={capitalize(t("edit"))}
+                                                            src={"/resources/edit.svg"}
+                                                            width="15"
+                                                            height="15"
                                                         />
-                                                    ))}
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <Row style={{ flexDirection: "row-reverse", paddingRight: 10 }}>
-                                            <button
-                                                type="submit"
-                                                disabled={isSubmitting}
-                                                style={{
-                                                    width: 100,
-                                                    color: "white",
-                                                    height: 25,
-                                                    alignItems: "center",
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                    borderColor: "white",
-                                                    backgroundColor: "#0a0839",
+                                                    ),
                                                 }}
-                                                data-testid="submit"
-                                            >
-                                                {capitalize(t("apply"))}
-                                            </button>
-                                        </Row>
-                                    </Col>
-                                </Row>
+                                            />
+                                        </div>
+                                        <div className={styles.filter_bottom_half}>
+                                            <div data-testid="roles" className={styles.skill_badges}>
+                                                {selectedSkills.map((skill) => (
+                                                    <SkillBadge
+                                                        data-testid={"skillbadge-" + skill}
+                                                        key={skill}
+                                                        skill={skill}
+                                                        onClick={() =>
+                                                            setSelectedSkills(
+                                                                selectedSkills.filter(
+                                                                    (selected) => selected !== skill
+                                                                )
+                                                            )
+                                                        }
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <Button
+                                            variant={"outline-primary"}
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className={styles.filter_apply_btn}
+                                            data-testid="submit"
+                                        >
+                                            {capitalize(t("apply"))}
+                                        </Button>
+                                    </div>
+                                </div>
                             </Form>
                         )}
                     </Formik>
-                </Row>
+                </div>
             </div>
         </div>
     );

@@ -14,6 +14,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: any; studentUrl: string }) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
+    const [hover, setHover] = useState(false);
 
     const { user, error: userError } = useCurrentUser(true);
 
@@ -40,13 +41,30 @@ export function SuggestionModal(props: { suggestion: SuggestionStrategy; style: 
         handleClose();
     }
 
+    async function hoverHandler() {
+        setHover(true);
+    }
+
+    async function endHoverHandler() {
+        setHover(false);
+    }
+
+    let style = props.style;
+
+    if (hover) {
+        style = { ...style, backgroundColor: style.borderColor, color: "black" };
+        console.log(style);
+    }
+
     return (
         <>
             <Button
                 variant="btn-outline"
                 onClick={handleShow}
-                style={props.style}
+                style={style}
                 data-testid="suggest-button"
+                onMouseEnter={hoverHandler}
+                onMouseLeave={endHoverHandler}
             >
                 {capitalize(t("suggest"))} {props.suggestion.toLowerCase()}
             </Button>
