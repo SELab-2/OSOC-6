@@ -26,7 +26,7 @@ import timers from "../../properties/timers";
 import { useState } from "react";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
-import { getParamsFromQueryUrl, getQueryUrlFromParams } from '../../api/calls/baseCalls';
+import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 
 /**
  * Give an overview of all the studentinfo
