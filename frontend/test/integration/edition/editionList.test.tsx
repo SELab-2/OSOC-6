@@ -8,7 +8,12 @@ import {
     makeCacheFree,
 } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
-import {getBaseActiveEdition, getBaseNoContentResponse, getBaseTeapot, getBaseUser} from "../TestEntityProvider";
+import {
+    getBaseActiveEdition,
+    getBaseNoContentResponse,
+    getBaseTeapot,
+    getBaseUser,
+} from "../TestEntityProvider";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
 import EditionRowComponent from "../../../src/components/edition/editionRowComponent";
 import userEvent from "@testing-library/user-event";
@@ -80,8 +85,8 @@ describe("EditionList", () => {
         console.log = jest.fn();
 
         render(makeCacheFree(EditionPage));
-        await enableActForResponse(apiPaths.editions, getBaseTeapot())
+        await enableActForResponse(apiPaths.editions, getBaseTeapot());
 
-        await waitFor(() => expect(console.log).toHaveBeenCalled())
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });

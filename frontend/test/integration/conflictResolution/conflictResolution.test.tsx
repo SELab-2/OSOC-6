@@ -7,7 +7,8 @@ import {
     getBasePage,
     getBaseProject,
     getBaseProjectSkill,
-    getBaseStudent, getBaseTeapot,
+    getBaseStudent,
+    getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
@@ -132,7 +133,7 @@ describe("conflict resolution", () => {
             render(makeCacheFree(ConflictResolutionList));
 
             await enableActForResponse(apiPaths.studentConflict, getBaseTeapot());
-            await waitFor(() => expect(console.log).toHaveBeenCalled())
+            await waitFor(() => expect(console.log).toHaveBeenCalled());
         });
     });
 });

@@ -11,7 +11,8 @@ import {
     getBaseCommunicationTemplate,
     getBaseForbiddenResponse,
     getBaseOkResponse,
-    getBaseStudent, getBaseTeapot,
+    getBaseStudent,
+    getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import { Communication, defaultCommunicationMedium } from "../../../src/api/entities/CommunicationEntity";
@@ -156,12 +157,9 @@ describe("create communication", () => {
     it("Should handle error", async () => {
         console.log = jest.fn();
 
-        render(
-            makeCacheFree(() => <CreateCommunicationForm student={student} template={template} />)
-        );
-        await enableActForResponse({ url: apiPaths.ownUser }, getBaseTeapot())
+        render(makeCacheFree(() => <CreateCommunicationForm student={student} template={template} />));
+        await enableActForResponse({ url: apiPaths.ownUser }, getBaseTeapot());
 
-        await waitFor(() => expect(console.log).toHaveBeenCalled())
-
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });

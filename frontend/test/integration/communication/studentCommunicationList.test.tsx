@@ -6,7 +6,8 @@ import {
     getBaseCommunicationTemplate,
     getBaseOkResponse,
     getBasePage,
-    getBaseStudent, getBaseTeapot,
+    getBaseStudent,
+    getBaseTeapot,
 } from "../TestEntityProvider";
 import { enableActForResponse, makeCacheFree } from "../Provide";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
@@ -15,7 +16,7 @@ import { communicationCollectionName } from "../../../src/api/entities/Communica
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
-import {RegisterCommunication} from "../../../src/components/communication/registerCommunication";
+import { RegisterCommunication } from "../../../src/components/communication/registerCommunication";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -80,6 +81,6 @@ describe("communication list", () => {
             getBaseTeapot()
         );
 
-        await waitFor(() => expect(console.log).toHaveBeenCalled())
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });

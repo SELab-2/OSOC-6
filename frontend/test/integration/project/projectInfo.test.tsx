@@ -23,7 +23,8 @@ import {
     getBaseProject,
     getBaseProjectSkill,
     getBaseSkillType,
-    getBaseStudent, getBaseTeapot,
+    getBaseStudent,
+    getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 

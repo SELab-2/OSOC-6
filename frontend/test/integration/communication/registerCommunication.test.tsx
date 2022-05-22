@@ -8,7 +8,8 @@ import {
     getBaseForbiddenResponse,
     getBaseOkResponse,
     getBasePage,
-    getBaseStudent, getBaseTeapot,
+    getBaseStudent,
+    getBaseTeapot,
 } from "../TestEntityProvider";
 import {
     communicationTemplateCollectionName,

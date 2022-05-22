@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
-import {render, waitFor} from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import EditProjectPage from "../../../src/pages/projects/[id]/edit";
-import {getBaseOkResponse, getBaseProject, getBaseTeapot} from "../TestEntityProvider";
+import { getBaseOkResponse, getBaseProject, getBaseTeapot } from "../TestEntityProvider";
 import { enableActForResponse, makeCacheFree } from "../Provide";
 import mockRouter from "next-router-mock";
 import apiPaths from "../../../src/properties/apiPaths";
@@ -44,8 +44,8 @@ describe("Edit project Page", () => {
         console.log = jest.fn();
 
         render(makeCacheFree(EditProjectPage));
-        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseTeapot())
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseTeapot());
 
-        await waitFor(() => expect(console.log).toHaveBeenCalled())
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });
