@@ -1,8 +1,8 @@
 package com.osoc6.OSOC6.service;
 
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import lombok.AllArgsConstructor;

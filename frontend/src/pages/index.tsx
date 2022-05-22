@@ -1,21 +1,14 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import useTranslation from "next-translate/useTranslation";
-import NavBar from "../components/navBar";
+import { useRouter } from "next/router";
+import { useEditionApplicationPathTransformer } from "../hooks/utilHooks";
+import applicationPaths from "../properties/applicationPaths";
+import { useRouterReplace } from "../hooks/routerHooks";
 
 const BeginPage: NextPage = () => {
-    const { t } = useTranslation("common");
-    return (
-        <div>
-            <Head>
-                <title className="capitalize">{t("tool name")}</title>
-            </Head>
-            <NavBar />
-            <main className="m-4">
-                <h1 className="capitalize">{t("empty page")}</h1>
-            </main>
-        </div>
-    );
+    const routerAction = useRouterReplace();
+    routerAction("/" + applicationPaths.assignStudents).catch(console.log);
+
+    return null;
 };
 
 export default BeginPage;

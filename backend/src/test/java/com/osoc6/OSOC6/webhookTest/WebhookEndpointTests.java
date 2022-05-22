@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.webhookTest;
 
 import com.osoc6.OSOC6.BaseTestPerformer;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.BeforeEach;

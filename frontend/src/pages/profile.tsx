@@ -1,23 +1,16 @@
 import type { NextPage } from "next";
-import useTranslation from "next-translate/useTranslation";
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import ProfileOverview from "../components/profileOverview";
-import NavBar from "../components/navBar";
-import { capitalize } from "../utility/stringUtil";
+import ProfileOverview from "../components/user/profileOverview";
+import NavBar from "../components/util/navBar";
+import { Background } from "../components/util/background";
 
 const Profile: NextPage = () => {
-    const { t } = useTranslation("common");
     return (
-        <div>
-            <Head>
-                <title>{capitalize(t("user profile"))}</title>
-            </Head>
-            <main className={styles.main}>
-                <NavBar />
-                <ProfileOverview />
-            </main>
-        </div>
+        <main className={styles.main}>
+            <NavBar />
+            <Background />
+            <ProfileOverview />
+        </main>
     );
 };
 

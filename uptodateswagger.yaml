@@ -1,0 +1,2194 @@
+swagger: '2.0'
+
+  
+info:
+  description: |-
+    This is the API of the user platform written for Open Summer Of Code by team 6 of Software Engineering Lab 2, a computer science course at UGent.  You can find 
+    out more about Swagger at 
+    [http://swagger.io](http://swagger.io) or on 
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: 1.0.0
+  title: OSOC-6
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+tags:
+- name: Accounts
+  description: Operations related to user accounts
+- name: Assignments
+  description: Operations related to assignments
+- name: Communications
+  description: Operations related to communications
+- name: CommunicationTemplates
+  description: Operations related to communication templates
+- name: Editions
+  description: Operations related to editions
+- name: Invitations
+  description: Operations related to invitations
+- name: Projects
+  description: Operations related to projects
+- name: ProjectSkills
+  description: Operations related to project skills
+- name: SkillTypes
+  description: Operations related to skill types
+- name: Students
+  description: Operations related to students
+- name: Suggestions
+  description: Operations related to suggestions
+- name: Users
+  description: Operations related to users (coaches and admins)
+- name: UserSkills
+  description: Operations related to user skills
+
+paths:
+  /register:
+    post:
+      tags:
+      - Accounts
+      summary: Register a new user
+      
+      parameters:
+      - in: query
+        name: token
+        required: true
+        type: string
+      - in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200: 
+          description: Registration was succesful
+        403: 
+          description: Invalid token
+        409: 
+          description: Email is already in use
+        
+  /assignments:
+    get:
+      tags:
+      - Assignments
+      summary: Get a page of the list of all assignments
+      description: Admin permissions are required
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Assignments found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Assignment'
+        404:
+          description: Assignments not found
+    post:
+      tags:
+      - Assignments
+      summary: Create a new assignment
+      description: Both coaches and admins can create assignments on any project.
+      parameters:
+      - in: body
+        name: body
+        description: Assignment that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Assignment'
+      responses:
+        200:
+          description: Assignment created succesfully
+        405:
+          description: Invalid input
+  
+  /assignments/{assignmentId}:
+    get:
+      tags:
+      - Assignments
+      parameters:
+      - name: assignmentId
+        in: path
+        description: the ID of the requested assignment
+        required: true
+        type: integer
+        
+      summary: Get an assignment by its id
+      description: Admin permissions are required to patch all assignments, coaches can always get their own assignments.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Assignment found succesfully
+          schema:
+              $ref: '#/definitions/Assignment'
+        400:
+          description: Invalid assignment ID supplied
+        404:
+          description: Assignment not found
+    patch:
+      tags:
+      - Assignments
+      summary: Update an existing assignment
+      description: Admin permissions are required to patch all assignments, coaches can always patch their own assignments.
+      parameters:
+      - name: assignmentId
+        in: path
+        description: The ID of the assignment that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of assignment-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Assignment'
+      responses:
+        200:
+          description: Assignment updated succesfully
+        400:
+          description: Invalid assignment ID supplied
+        404:
+          description: Assignment not found
+        405:
+          description: Invalid input
+      
+    delete:
+      tags:
+      - Assignments
+      summary: Delete an assignment
+      description: Admins permissions are required to delete all assignments, coaches can always delete their own assignments.
+      parameters:
+      - name: assignmentId
+        in: path
+        description: the id of the assignment that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Assignment deleted succesfully
+        400:
+          description: Invalid assignment ID supplied
+        404:
+          description: Assignment not found
+          
+  /communications:
+    get:
+      tags:
+      - Communications
+      summary: Get a page of the list of all communications
+      description: Admin permissions are required
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Communications found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Communication'
+        404:
+          description: Communication not found
+    post:
+      tags:
+      - Communications
+      summary: Create a new communication
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Communication that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Communication'
+      responses:
+        200:
+          description: Communication created succesfully
+        405:
+          description: Invalid input
+  /communications/search/by-student:
+    get:
+      tags:
+      - Communications
+      summary: Get all communication of a student
+      description: Admin permissions are required
+      parameters:
+      - name: studentId
+        in: query
+        description: the ID of the student from whom we want the communication
+        required: true
+        type: integer
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Communications found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Communication'
+        400:
+          description: Bad request
+  /communications/{communicationId}:
+    get:
+      tags:
+      - Communications
+      parameters:
+      - name: communicationId
+        in: path
+        description: the ID of the requested communication
+        required: true
+        type: integer
+        
+      summary: Get a communication by its id
+      description: Admin permissions are required
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Communication found succesfully
+          schema:
+              $ref: '#/definitions/Communication'
+        400:
+          description: Invalid communication ID supplied
+        404:
+          description: Communication not found
+    patch:
+      tags:
+      - Communications
+      summary: Update an existing communication
+      description: Admin permissions are required
+      parameters:
+      - name: communicationId
+        in: path
+        description: The ID of the communication that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of communication-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Communication'
+      responses:
+        200:
+          description: Communication updated succesfully
+        400:
+          description: Invalid communication ID supplied
+        404:
+          description: Communication not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Communications
+      summary: Delete a communication
+      description: Admin permissions are required
+      parameters:
+      - name: communicationId
+        in: path
+        description: the ID of the communication that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Communication deleted succesfully
+        400:
+          description: Invalid communication ID supplied
+        404:
+          description: communication not found
+  /communicationTemplates:
+    get:
+      tags:
+      - CommunicationTemplates
+      summary: Get a page of the list of all communication templates
+      description: Admin permissions are required
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Communication templates found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CommunicationTemplate'
+        404:
+          description: Communication templates not found
+    post:
+      tags:
+      - CommunicationTemplates
+      summary: Create a new communication template
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Communication template that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/CommunicationTemplate'
+      responses:
+        200:
+          description: Communication template created succesfully
+        405:
+          description: Invalid input
+  /communicationTemplates/search/by-name:
+    get:
+      tags:
+      - CommunicationTemplates
+      summary: Find a communication template by its name
+      description: Admin permissions are required
+      parameters:
+      - name: name
+        in: query
+        description: the name of the wanted communication template
+        required: true
+        type: string
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: CommunicationTemplate found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CommunicationTemplate'
+  /communicationTemplates/{communicationTemplateId}:
+    get:
+      tags:
+      - CommunicationTemplates
+      parameters:
+      - name: communicationTemplateId
+        in: path
+        description: the ID of the requested communication template
+        required: true
+        type: integer
+        
+      summary: Get a communication template by its id
+      description: Admin permissions are required
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Communication template found succesfully
+          schema:
+              $ref: '#/definitions/CommunicationTemplate'
+        400:
+          description: Invalid communication template ID supplied
+        404:
+          description: Communication template not found
+    patch:
+      tags:
+      - CommunicationTemplates
+      summary: Update an existing communication template
+      description: Admin permissions are required
+      parameters:
+      - name: communicationTemplateId
+        in: path
+        description: The ID of the communication template that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of communication template fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/CommunicationTemplate'
+      responses:
+        200:
+          description: Communication template updated succesfully
+        400:
+          description: Invalid communication template ID supplied
+        404:
+          description: Communication template not found
+        405:
+          description: Invalid input
+      
+    delete:
+      tags:
+      - CommunicationTemplates
+      summary: Delete a communication template
+      description: Admin permissions are required
+      parameters:
+      - name: communicationTemplateId
+        in: path
+        description: The ID of the communication template that needs to be updated
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Communication template deleted succesfully
+        400:
+          description: Invalid communication template ID supplied
+        404:
+          description: Communication template not found
+  /editions:
+    get:
+      tags:
+      - Editions
+      summary: Get a page of the list of all editions
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Editions found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Edition'
+        404:
+          description: Edition not found
+    post:
+      tags:
+      - Editions
+      summary: Create a new edition
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Edition that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Edition'
+      responses:
+        200:
+          description: Edition created succesfully
+        405:
+          description: Invalid input
+  /editions/search/by-name:
+    get:
+      tags:
+      - Editions
+      parameters:
+      - name: name
+        in: query
+        description: the name of the searched edition
+        required: true
+        type: string
+        
+      summary: Get an edition by its name
+      description: Coach permissions are enough
+      responses:
+        200:
+          description: Edition found succesfully
+          schema:
+              $ref: '#/definitions/Edition'
+  /editions/{editionId}:
+    get:
+      tags:
+      - Editions
+      parameters:
+      - name: editionId
+        in: path
+        description: the ID of the requested edition
+        required: true
+        type: integer
+        
+      summary: Get an edition by its id
+      description: Coaches can only get editions that they were a part of. Admins can get any edition.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Edition found succesfully
+          schema:
+              $ref: '#/definitions/Edition'
+        400:
+          description: Invalid edition ID supplied
+        404:
+          description: Edition not found
+    patch:
+      tags:
+      - Editions
+      summary: Update an existing edition
+      description: Admin permissions are required
+      parameters:
+      - name: editionId
+        in: path
+        description: The ID of the edition that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of edition-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Edition'
+      responses:
+        200:
+          description: Edition updated succesfully
+        400:
+          description: Invalid edition ID supplied
+        404:
+          description: Edition not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Editions
+      summary: Delete an edition
+      description: Admin permissions are required
+      parameters:
+      - name: editionId
+        in: path
+        description: the ID of the edition that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Edition deleted succesfully
+        400:
+          description: Invalid edition ID supplied
+        404:
+          description: Edition not found
+          
+  /invitations:
+    get:
+      tags:
+      - Invitations
+      summary: Get a page of the list of all invitations
+      description: Admin permissions are required
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Invitations found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Invitation'
+        404:
+          description: Invitation not found
+    post:
+      tags:
+      - Invitations
+      summary: Create a new invitation
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Invitation that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Invitation'
+      responses:
+        200:
+          description: Invitation created succesfully
+        405:
+          description: Invalid input
+  
+  /invitations/{invitationId}:
+    get:
+      tags:
+      - Invitations
+      parameters:
+      - name: invitationId
+        in: path
+        description: the ID of the requested invitation
+        required: true
+        type: integer
+        
+      summary: Get an invitation by its id
+      description: Admin permissions are required
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Invitation found succesfully
+          schema:
+              $ref: '#/definitions/Invitation'
+        400:
+          description: Invalid invitation ID supplied
+        404:
+          description: Invitation not found
+    patch:
+      tags:
+      - Invitations
+      summary: Update an existing invitation
+      description: Admin permissions are required
+      parameters:
+      - name: invitationId
+        in: path
+        description: The ID of the invitation that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of invitation-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Invitation'
+      responses:
+        200:
+          description: Invitation updated succesfully
+        400:
+          description: Invalid invitation ID supplied
+        404:
+          description: Invitation not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Invitations
+      summary: Delete an invitation
+      description: Admin permissions are required
+      parameters:
+      - name: invitationId
+        in: path
+        description: the ID of the invitation that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Invitation deleted succesfully
+        400:
+          description: Invalid invitation ID supplied
+        404:
+          description: Invitation not found
+  /projects:
+    get:
+      tags:
+      - Projects
+      summary: Get a page of the list of all projects
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Projects found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+        404:
+          description: Project not found
+    post:
+      tags:
+      - Projects
+      summary: Create a new project
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Project that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Project'
+      responses:
+        200:
+          description: Project created succesfully
+        405:
+          description: Invalid input
+  /projects/search/by-edition:
+    get:
+      tags:
+      - Projects
+      produces:
+      - application/json
+      summary: Get all projects of an edition
+      description: Coaches can do this for editions that they are a part of
+      parameters:
+      - name: edition
+        in: query
+        description: ID of the edition of which we want the projects
+        required: true
+        type: integer
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      responses:
+        200:
+          description: Projects found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+  /projects/{projectId}:
+    get:
+      tags:
+      - Projects
+      parameters:
+      - name: projectId
+        in: path
+        description: the ID of the requested project
+        required: true
+        type: integer
+        
+      summary: Get a project by its id
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Project found succesfully
+          schema:
+              $ref: '#/definitions/Project'
+        400:
+          description: Invalid project ID supplied
+    patch:
+      tags:
+      - Projects
+      summary: Update an existing project
+      description: Admin permissions are required
+      parameters:
+      - name: projectId
+        in: path
+        description: The ID of the project that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of project-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Project'
+      responses:
+        200:
+          description: Project updated succesfully
+        400:
+          description: Invalid project ID supplied
+        404:
+          description: Project not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Projects
+      summary: Delete a project
+      description: Admin permissions are required
+      parameters:
+      - name: projectId
+        in: path
+        description: the ID of the project that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Project deleted succesfully
+        400:
+          description: Invalid project ID supplied
+        404:
+          description: Project not found
+
+  /project-skills:
+    get:
+      tags:
+      - ProjectSkills
+      summary: Get a page of the list of all project skills
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Project skills found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProjectSkill'
+        404:
+          description: Project skills not found
+    post:
+      tags:
+      - ProjectSkills
+      summary: Create a new project skill
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Project skill that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/ProjectSkill'
+      responses:
+        200:
+          description: Project skill created succesfully
+        405:
+          description: Invalid input
+  
+  /project-skills/{projectSkillId}:
+    get:
+      tags:
+      - ProjectSkills
+      parameters:
+      - name: projectSkillId
+        in: path
+        description: the ID of the requested project skill
+        required: true
+        type: integer
+        
+      summary: Get a project skill by its id
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Project skill found succesfully
+          schema:
+              $ref: '#/definitions/ProjectSkill'
+        400:
+          description: Invalid project skill ID supplied
+        404:
+          description: Project skill not found
+    patch:
+      tags:
+      - ProjectSkills
+      summary: Update an existing project skill
+      description: Admin permissions are required
+      parameters:
+      - name: projectSkillId
+        in: path
+        description: The ID of the project skill that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of project skill fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/ProjectSkill'
+      responses:
+        200:
+          description: Project skill updated succesfully
+        400:
+          description: Invalid project skill ID supplied
+        404:
+          description: Project skill not found
+        405:
+          description: Invalid input
+      
+    delete:
+      tags:
+      - ProjectSkills
+      summary: Delete a project skill
+      description: Admin permissions are required
+      parameters:
+      - name: projectSkillId
+        in: path
+        description: The ID of the project skill that needs to be updated
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Project skill deleted succesfully
+        400:
+          description: Invalid project skill ID supplied
+        404:
+          description: Project skill not found
+  /skillTypes:
+    get:
+      tags:
+      - SkillTypes
+      summary: Get a page of the list of all skill types
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Skill types found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SkillType'
+        404:
+          description: SkillType not found
+    post:
+      tags:
+      - SkillTypes
+      summary: Create a new skill type
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: User that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/SkillType'
+      responses:
+        200:
+          description: SkillType created succesfully
+        405:
+          description: Invalid input
+          
+  /skillTypes/search/by-name:
+    get:
+      tags:
+      - SkillTypes
+      summary: Find a skill type by its name
+      description: Coach permissions are enough
+      parameters:
+      - name: name
+        in: query
+        description: the name of the wanted skill type
+        required: true
+        type: string
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: SkillTypes found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SkillType'
+  
+  /skillTypes/{skillTypeId}:
+    get:
+      tags:
+      - SkillTypes
+      parameters:
+      - name: skillTypeId
+        in: path
+        description: the ID of the requested skill type
+        required: true
+        type: integer
+        
+      summary: Get a skill type by its id
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Skill type found succesfully
+          schema:
+              $ref: '#/definitions/SkillType'
+        400:
+          description: Invalid skill type ID supplied
+        404:
+          description: SkillType not found
+    patch:
+      tags:
+      - SkillTypes
+      summary: Update an existing skill type
+      description: Admin permissions are required
+      parameters:
+      - name: skillTypeId
+        in: path
+        description: The ID of the skill type that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of skill type-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/SkillType'
+      responses:
+        200:
+          description: SkillType updated succesfully
+        400:
+          description: Invalid skill type ID supplied
+        404:
+          description: SkillType not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - SkillTypes
+      summary: Delete a skill type
+      description: Admin permissions are required
+      parameters:
+      - name: skillTypeId
+        in: path
+        description: the ID of the skill type that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: SkillType deleted succesfully
+        400:
+          description: Invalid skill type ID supplied
+        404:
+          description: SkillType not found
+  /students:
+    get:
+      tags:
+      - Students
+      summary: Get a page of the list of all students
+      description: Coaches can get students of editions that they are a part of, admins can get all students.
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Students found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Student'
+        404:
+          description: Student not found
+    post:
+      tags:
+      - Students
+      summary: Create a new student
+      description: Admin permissions are required
+      parameters:
+      - in: body
+        name: body
+        description: Student that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Student'
+      responses:
+        200:
+          description: Student created succesfully
+        405:
+          description: Invalid input
+  /students/search/conflict-query:
+    get:
+      tags:
+      - Students
+      produces:
+      - application/json
+      summary: Return a page of students who are assigned to multiple projects through valid assignments
+      description: Coaches can query over edition that they are a part of, admins can query over any edition.
+      parameters:
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      - in: query
+        name: edition
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Students found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Student'
+        404:
+          description: Students not found
+  /students/search/by-edition:
+    get:
+      tags:
+      - Students
+      produces:
+      - application/json
+      summary: Get all students of an edition
+      description: Coaches can query over edition that they are a part of, admins can query over any edition.
+      parameters:
+      - name: edition
+        in: query
+        description: ID of the edition of which we want the students
+        required: true
+        type: integer
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      responses:
+        200:
+          description: Students found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Student'
+        404:
+          description: Students not found
+  /students/search/by-query:
+    get:
+      tags:
+      - Students
+      summary: Get a page of students by a combination of parameters, including free text search
+      description: Coaches can query over edition that they are a part of, admins can query over any edition.
+      parameters:
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      - name: edition
+        in: query
+        description: ID of the edition of which we want the students
+        required: true
+        type: integer
+      - in: query
+        name: freeText
+        required: false
+        description: Free text search over the student, and the assignment or suggestion reason.
+        type: string
+      - in: query
+        name: skills
+        required: false
+        description: Free text search parameter restricted to the skills of a user
+        type: string
+      - in: query
+        name: experience
+        required: false
+        description: List of experiences that the user should have one of
+        type: array
+        items:
+          type: string
+      - in: query
+        name: unmatched
+        required: false
+        description: If true, returns students that don't match te parameters
+        type: boolean
+      
+      responses:
+        200:
+          description: Students found succesfully
+          schema:
+              $ref: '#/definitions/Student'
+  /students/{studentId}:
+    get:
+      tags:
+      - Students
+      parameters:
+      - name: studentId
+        in: path
+        description: the ID of the requested student
+        required: true
+        type: integer
+        
+      summary: Get a student by its id
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Student found succesfully
+          schema:
+              $ref: '#/definitions/Student'
+        400:
+          description: Invalid student ID supplied
+        404:
+          description: Student not found
+    patch:
+      tags:
+      - Students
+      summary: Update an existing student
+      description: Admin permissions are required
+      parameters:
+      - name: studentId
+        in: path
+        description: The ID of the student that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of student-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Student'
+      responses:
+        200:
+          description: Student updated succesfully
+        400:
+          description: Invalid student ID supplied
+        404:
+          description: Student not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Students
+      summary: Delete a student
+      description: Admin permissions are required
+      parameters:
+      - name: studentId
+        in: path
+        description: the ID of the student that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Student deleted succesfully
+        400:
+          description: Invalid student ID supplied
+        404:
+          description: student not found
+  /suggestions:
+    get:
+      tags:
+      - Suggestions
+      summary: Get a page of the list of all suggestions
+      description: Admin permissions are required
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Suggestions found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Suggestion'
+        404:
+          description: Suggestion not found
+    post:
+      tags:
+      - Suggestions
+      summary: Create a new suggestion
+      description: Coach permissions are enough
+      parameters:
+      - in: body
+        name: body
+        description: Suggestion that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/Suggestion'
+      responses:
+        200:
+          description: Suggestion created succesfully
+        405:
+          description: Invalid input
+  /suggestions/{suggestionId}:
+    get:
+      tags:
+      - Suggestions
+      parameters:
+      - name: suggestionId
+        in: path
+        description: the ID of the requested suggestion
+        required: true
+        type: integer
+        
+      summary: Get a suggestion by its id
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Suggestion found succesfully
+          schema:
+              $ref: '#/definitions/Suggestion'
+        400:
+          description: Invalid suggestion ID supplied
+        404:
+          description: Suggestion not found
+    patch:
+      tags:
+      - Suggestions
+      summary: Update an existing suggestion
+      description: Admins can update any suggestion, coaches can only delete their own.
+      parameters:
+      - name: suggestionId
+        in: path
+        description: The ID of the suggestion that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of suggestion-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/Suggestion'
+      responses:
+        200:
+          description: Suggestion updated succesfully
+        400:
+          description: Invalid suggestion ID supplied
+        404:
+          description: Suggestion not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Suggestions
+      summary: Delete a suggestion
+      description: Admins can delete any suggestion, coaches can only delete their own.
+      parameters:
+      - name: suggestionId
+        in: path
+        description: the ID of the suggestion that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Suggestion deleted succesfully
+        400:
+          description: Invalid suggestion ID supplied
+        404:
+          description: suggestion not found
+  /users:
+    get:
+      tags:
+      - Users
+      summary: Get a page of the list of all users
+      description: Admin permissions are required
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: Users found succesfully
+          schema:
+            type: array
+            items:
+              type: string
+              example: /users/123
+        404:
+          description: User not found
+    post:
+      tags:
+      - Users
+      summary: Create a new user
+      parameters:
+      - in: body
+        name: body
+        description: User that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: User created succesfully
+        405:
+          description: Invalid input
+  /users/search/by-email:
+    get:
+      tags:
+      - Users
+      summary: Find a user by their email
+      description: Coach permissions are enough, but a coach can only find users with at least one common edition.
+      parameters:
+      - name: email
+        in: query
+        description: the email of the wanted user
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: User found succesfully
+          schema:
+              $ref: '#/definitions/User'
+  /users/search/by-edition:
+    get:
+      tags:
+      - Users
+      summary: Find users by the edition they took part in
+      description: Coach permissions are enough, but only for finding by an edition that the user was a part of.
+      parameters:
+      - name: edition
+        in: query
+        description: the id of the edition
+        required: true
+        type: integer
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Users found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /users/search/own-user:
+    get:
+      tags:
+      - Users
+      - Accounts
+      summary: Get the currently logged in user
+      description: Coach permissions are enough
+      produces:
+      - application/json
+      responses:
+        200:
+          description: User found succesfully
+          schema:
+              $ref: '#/definitions/User'
+  /users/{userId}:
+    get:
+      tags:
+      - Users
+      parameters:
+      - name: userId
+        in: path
+        description: the ID of the requested user
+        required: true
+        type: integer
+        
+      summary: Get a user by its id
+      description: Coach permissions are enough, but a coach can only find users with at least one common edition.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: User found succesfully
+          schema:
+              $ref: '#/definitions/User'
+        400:
+          description: Invalid user ID supplied
+        404:
+          description: User not found
+    patch:
+      tags:
+      - Users
+      summary: Update an existing user
+      description: An admin can update everything about every user, except for their own role when they are the last admin. A coach can only update themselves and cannot change their role.
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of user-fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: User updated succesfully
+        400:
+          description: Invalid user ID supplied
+        404:
+          description: User not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Users
+      summary: Delete a user
+      description: Admin permissions are required for all users, but coaches can delete themselves.
+      parameters:
+      - name: userId
+        in: path
+        description: the ID of the user that needs to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: User deleted succesfully
+        400:
+          description: Invalid user ID supplied
+        404:
+          description: User not found
+      
+  /user-skills:
+    get:
+      tags:
+      - UserSkills
+      summary: Get a page of the list of all user skills
+      description: Admin permissions are required.
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          required: true
+          type: integer
+        - in: query
+          name: size
+          required: false
+          type: integer
+        - in: query
+          name: sort
+          required: false
+          type: string
+      responses:
+        200:
+          description: User skills found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserSkill'
+        404:
+          description: User skills not found
+    post:
+      tags:
+      - UserSkills
+      summary: Create a new user skill
+      description: A coach can create a UserSkill with themself als the userEntity. If this is not the case, admin permissions are needed
+      parameters:
+      - in: body
+        name: body
+        description: User skill that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/UserSkill'
+      responses:
+        200:
+          description: User skill created succesfully
+        405:
+          description: Invalid input
+  
+  /user-skills/{userSkillId}:
+    get:
+      tags:
+      - UserSkills
+      parameters:
+      - name: userSkillId
+        in: path
+        description: the ID of the requested user skill
+        required: true
+        type: integer
+        
+      summary: Get a user skill by its id
+      description: Coaches can perform this actions for UserSkills where if the UserSkill's userEntity has at least one common edition with the coach. Admins can find all UserSkills without restrictions.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: User skill found succesfully
+          schema:
+              $ref: '#/definitions/UserSkill'
+        400:
+          description: Invalid user skill ID supplied
+        404:
+          description: User skill not found
+    patch:
+      tags:
+      - UserSkills
+      summary: Update an existing user skill
+      description: Coaches can update their own UserSkills, admins can update all of them.
+      parameters:
+      - name: userSkillId
+        in: path
+        description: The ID of the user skill that needs to be updated
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: A JSON of user skill fields and their new values
+        required: true
+        schema:
+          $ref: '#/definitions/UserSkill'
+      responses:
+        200:
+          description: User skill updated succesfully
+        400:
+          description: Invalid user skill ID supplied
+        404:
+          description: User skill not found
+        405:
+          description: Invalid input
+      
+    delete:
+      tags:
+      - UserSkills
+      summary: Delete a user skill
+      description: Coaches can delete their own UserSkills, admins can delete all of them.
+      parameters:
+      - name: userSkillId
+        in: path
+        description: The ID of the user skill that needs to be updated
+        required: true
+        type: integer
+      responses:
+        200:
+          description: User skill deleted succesfully
+        400:
+          description: Invalid user skill ID supplied
+        404:
+          description: User skill not found
+        
+definitions:
+  Assignment:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      isValid:
+        type: boolean
+        description: Whether assignment is still valid. An assignment can be invalid after conflict resolution. This means we no longer recognise it.
+      timestamp:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      reason:
+        type: string
+        description: The reason the student got assigned.
+      assigner:
+        type: string
+        description: The admin that executed the assignment.
+        example: /users/123
+      student:
+        type: string
+        description: Student that gets assigned.
+        example: /students/123
+      project:
+        type: string
+        description: ProjectSkill that the student is assigned to.
+        example: /project-skills/123
+    
+  Communication:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      timestamp:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      medium:
+        type: string
+        description: The medium of the communication.
+      content:
+        type: string
+        description: The content of the communication.
+      template:
+        type: string
+        description: Template used in this communication.
+      sender:
+        type: string
+        description: User that communicated with the student.
+        example: /users/123
+      student:
+        type: string
+        description: Student with whom the communication took place.
+        example: /students/123
+    
+  CommunicationTemplate:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        description: The name of the CommunicationTemplate.
+      template:
+        type: string
+        description: The template for the CommunicationTemplate.
+  Edition:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        description: The name of the edition.
+      year:
+        type: integer
+        format: int32
+        description: The year of the edition.
+      active:
+        type: boolean
+        description: Whether the edition is active.
+  Invitation:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      token:
+        type: string
+        description: The unique token of the invitation
+      timestamp:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      edition:
+        type: string
+        description: The edition which this invitation belongs to
+        example: /editions/234
+      issuer:
+        type: string
+        description: The user who issued the invitation
+        example: /users/123
+      subject:
+        type: string
+        description: The user who accepted the invitation
+        example: /users/123
+    
+  Project:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      goals:
+        type: array
+        description: The goals of the project.
+        items:
+          type: string
+      name:
+        type: string
+        description: The name of the project.
+      info:
+        type: string
+        description: Info about the project.
+      versionManagement:
+        type: string
+        description: A URI pointing to the version management of the project.
+      edition:
+        type: string
+        description: Edition within which this project was created.
+        example: /editions/2022
+      partnerName:
+        type: string
+        description: The name of the partner behind the project.
+      partnerWebsite:
+        type: string
+        description: A URI pointing to the website of the partner.
+      creator:
+        type: string
+        description: The admin that created the project.
+        example: /users/123
+      coaches:
+        type: array
+        description: The users that will coach this project.
+        items:
+          type: string
+          example: /users/123
+  
+  ProjectSkill:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        description: The name of the skill.
+      additionalInfo:
+        type: string
+        description: The description of the skill.
+      project:
+        type: string
+        description: The Project that looks for this skill.
+        example: /projects/123
+      assignments:
+        type: array
+        description: Assigned students to this skill.
+        items:
+          type: string
+          example: /assignments/123
+      
+
+  SkillType:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The type of skill.
+      colour:
+        type: string
+        description: The colour associated with this SkillType.
+  Suggestion:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      strategy:
+        description: Strategy this suggestion takes.
+        $ref: '#/definitions/SuggestionStrategy'
+      reason:
+        type: string
+        description: Reason provided by the user for giving this suggestion.
+      timestamp:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      coach:
+        type: string
+        description: Coach that did the suggestion.
+        example: /users/123
+      student:
+        type: string
+        description: Student that was suggested
+        example: /students/123
+  SuggestionStrategy:
+    type: string
+    enum: [YES, MAYBE, NO]
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      email:
+        type: string
+        description: The email of the user.
+      password:
+        type: string
+        description: The password of the user.
+      callname:
+        type: string
+        description: The call name of the user.
+      userRole:
+        description: Role/power this user has.
+        $ref: '#/definitions/UserRole'
+      accountNonLocked:
+        type: boolean
+        description: Indicates whether the account is locked. Needed because of how Spring security works.
+      enabled:
+        type: boolean
+        description: Indicates whether the account is enabled. Needed because of how Spring security works.
+      sendInvitations:
+        type: array
+        description: List of invitations that were sent out by the user.
+        items:
+          type: string
+          example: /invitations/123
+      receivedInvitations:
+        type: array
+        description: The invitations that allowed the user to participate in an edition.
+        items:
+          type: string
+          example: /invitations/123
+      communications:
+        type: array
+        description: List of communications this user initiated ordered on the timestamp of the.
+        items:
+          type: string
+          example: /communications/123
+      skills:
+        type: array
+        description: Set of skills a user has.
+        items:
+          type: string
+          example: /user-skills/123
+      projects:
+        type: array
+        description: The projects this user coaches.
+        items:
+          type: string
+          example: /projects/123
+  UserSkill:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      additionalInfo:
+        type: string
+      userEntity:
+        type: string
+  UserRole:
+    type: string
+    enum: [COACH, ADMIN, DISABLED]
+  EnglishProficiency:
+    type: string
+    enum: [READ_NOT_WRITE, SIMPLE_CONVERSATION, EXPRESSIVE, EXTENSIVE, FLUENT]
+  Gender:
+    type: string
+    enum: [FEMALE, MALE, TRANSGENDER, NOT_SPECIFIED]
+  OsocExperience:
+    type: string
+    enum: [NONE, YES_NO_STUDENT_COACH, YES_STUDENT_COACH]
+  PronounsType:
+    type: string
+    enum: [SHE, HE, THEY, ZE, FIRSTNAME, CALLNAME, OTHER, NONE]
+  Student:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      gender:
+        $ref: '#/definitions/Gender'
+      pronounsType:
+        $ref: '#/definitions/PronounsType'
+      callName:
+        type: string
+      possessivePronoun:
+        type: string
+      subjectivePronoun:
+        type: string
+      objectivePronoun:
+        type: string
+      mostFluentLanguage:
+        type: string
+      englishProficiency:
+        $ref: '#/definitions/EnglishProficiency'
+      phoneNumber:
+        type: string
+      curriculumVitaeURI:
+        type: string
+      portfolioURI:
+        type: string
+      motivationURI:
+        type: string
+      writtenMotivation:
+        type: string
+      educationLevel:
+        type: string
+      currentDiploma:
+        type: string
+      durationCurrentDegree:
+        type: integer
+      yearInCourse:
+        type: string
+      institutionName:
+        type: string
+      bestSkill:
+        type: string
+      osocExperience:
+        $ref: '#/definitions/OsocExperience'
+      additionalStudentInfo:
+        type: string
+      edition:
+        type: string
+        example: /editions/123
+      studies:
+        type: array
+        items:
+          type: string
+          example: /studies/123
+      skills:
+        type: array
+        items:
+          type: string
+      suggestions:
+        type: array
+        items:
+          type: string
+          example: /suggestions/123
+      assignments:
+        type: array
+        items:
+          type: string
+          example: /assignments/123
+      communications:
+        type: array
+        items:
+          type: string
+          example: /communications/123
+
+
+  
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /OSOC-6/OSOC-6/1.0.0
+schemes:
+ - https
+ - http

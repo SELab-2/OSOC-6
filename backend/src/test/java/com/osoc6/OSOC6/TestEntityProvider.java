@@ -1,22 +1,22 @@
 package com.osoc6.OSOC6;
 
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.Edition;
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
-import com.osoc6.OSOC6.database.models.SkillType;
-import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
-import com.osoc6.OSOC6.database.models.UserSkill;
-import com.osoc6.OSOC6.database.models.student.EnglishProficiency;
-import com.osoc6.OSOC6.database.models.student.Gender;
-import com.osoc6.OSOC6.database.models.student.OsocExperience;
-import com.osoc6.OSOC6.database.models.student.Status;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.Edition;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.ProjectSkill;
+import com.osoc6.OSOC6.entities.SkillType;
+import com.osoc6.OSOC6.entities.Suggestion;
+import com.osoc6.OSOC6.entities.SuggestionStrategy;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
+import com.osoc6.OSOC6.entities.UserSkill;
+import com.osoc6.OSOC6.entities.student.EnglishProficiency;
+import com.osoc6.OSOC6.entities.student.Gender;
+import com.osoc6.OSOC6.entities.student.OsocExperience;
+import com.osoc6.OSOC6.entities.student.Status;
+import com.osoc6.OSOC6.entities.student.Student;
 
 import java.util.List;
 
@@ -65,12 +65,12 @@ public final class TestEntityProvider {
     }
 
     /**
-     * Creates a student with pronouns Other.
+     * Creates a student with non formatted pronouns.
      *
      * @param performer the {@link BaseTestPerformer} this entity is created for
      * @return the requested entity
      */
-    public static Student getBaseStudentOther(final BaseTestPerformer<?, ?, ?> performer) {
+    public static Student getBaseStudentNonFormattedPronouns(final BaseTestPerformer<?, ?, ?> performer) {
         return Student.builder()
                 .email("jitse@mail.com")
                 .additionalStudentInfo("I like boulders")
@@ -127,7 +127,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static CommunicationTemplate getBaseCommunicationTemplate1(final BaseTestPerformer<?, ?, ?> performer) {
-        return new CommunicationTemplate("A well deserved yes",
+        return new CommunicationTemplate("A well deserved yes", "Selected for OSOC",
                 "We would like to inform you... You are the best candidate we ever had! We want you! Need you!");
     }
 
@@ -138,7 +138,7 @@ public final class TestEntityProvider {
      * @return the requested entity
      */
     public static CommunicationTemplate getBaseCommunicationTemplate2(final BaseTestPerformer<?, ?, ?> performer) {
-        return new CommunicationTemplate("Love Letter",
+        return new CommunicationTemplate("Love Letter", "A little note",
                 "Romeo Oh romeo thou make my hearth melt.");
     }
 
@@ -252,15 +252,19 @@ public final class TestEntityProvider {
         return new ProjectSkill("V10 Boulder-er", project, "Strong climber unites");
     }
 
-    public static Assignment getBaseSuggestionAssignment(final UserEntity user, final Student student,
-                                                         final ProjectSkill skill) {
+    public static Assignment getBaseValidAssignment1(final UserEntity user, final Student student,
+                                                     final ProjectSkill skill) {
         return new Assignment(true, "Seems like handsome boy", user, student, skill);
     }
 
-    public static Assignment getBaseNonSuggestionAssignment(final UserEntity user, final Student student,
-                                                         final ProjectSkill skill) {
-        return new Assignment(false, "Seems like handsome girl", user, student, skill);
+    public static Assignment getBaseValidAssignment2(final UserEntity user, final Student student,
+                                                     final ProjectSkill skill) {
+        return new Assignment(true, "Seems like handsome girl", user, student, skill);
+    }
 
+    public static Assignment getBaseNonValidAssignment(final UserEntity user, final Student student,
+                                                       final ProjectSkill skill) {
+        return new Assignment(false, "A suggestion to be ignored", user, student, skill);
     }
 
     public static Suggestion getBaseYesSuggestion(final UserEntity user, final Student student) {

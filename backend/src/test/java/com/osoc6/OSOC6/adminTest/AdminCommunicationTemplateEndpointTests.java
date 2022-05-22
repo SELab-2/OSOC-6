@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -88,6 +90,22 @@ public final class AdminCommunicationTemplateEndpointTests extends
         base_test_all_queried_assertions(
                 COMMUNICATION_TEMPLATE_PATH + "/search/" + DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH,
                 "name", template.getName());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_by_name_works_case_insensitive() throws Exception {
+        CommunicationTemplate template = get_random_repository_entity();
+        String path =
+                COMMUNICATION_TEMPLATE_PATH + "/search/" + DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH;
+        perform_queried_get(path, new String[]{"name"}, new String[]{template.getName().toUpperCase()})
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(template.getName())));
+
+        perform_queried_get(path, new String[]{"name"},
+                new String[]{"Banana" + template.getName().toUpperCase() + "Apple"})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(template.getName()));
     }
 
     @Test

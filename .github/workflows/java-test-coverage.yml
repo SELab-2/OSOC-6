@@ -24,10 +24,27 @@ jobs:
           echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
           echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
           echo "webhook.token = 123" >> application.properties
+          echo "domain=localhost:8080" >> application.properties
+          echo "reset-password.route=resetPassword" >> application.properties
           echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
           echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
           echo "baseuser.email =baseUser@mail.com" > initial-user.properties
           echo "baseuser.password =abcVanJe123SpringOpEnNeer" >> initial-user.properties
+          cd ../../test/resources/
+          echo "spring.datasource.username = ${{ secrets.DB_USERNAME }}" > application.properties
+          echo "spring.datasource.password = ${{ secrets.DB_PWD }}" >> application.properties
+          echo "spring.datasource.driverClassName = org.postgresql.Driver" >> application.properties
+          echo "webhook.token = 123" >> application.properties
+          echo "domain=localhost:8080" >> application.properties
+          echo "reset-password.route=resetPassword" >> application.properties
+          echo "spring.datasource.url = ${{ secrets.DB_URL }}" >> application.properties
+          echo "spring.jpa.hibernate.ddl-auto = create-drop"  >> application.properties
+          echo "spring.mail.host=localhost" >> application.properties
+          echo "spring.mail.port=2525" >> application.properties
+          echo "spring.mail.username=username" >> application.properties
+          echo "spring.mail.password=secret" >> application.properties
+          echo "spring.mail.properties.mail.smtp.auth=true" >> application.properties
+          echo "spring.mail.properties.mail.smtp.starttls.enable=true" >> application.properties
       - name: Run test coverage
         run: |
           cd backend/
@@ -38,3 +55,5 @@ jobs:
         with:
           paths: ${{ github.workspace }}/backend/build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 100
+          min-coverage-changed-files: 100

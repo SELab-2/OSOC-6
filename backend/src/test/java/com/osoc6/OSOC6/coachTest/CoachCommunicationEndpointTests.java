@@ -3,9 +3,9 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Communication;
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Communication;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.CommunicationDTO;
 import com.osoc6.OSOC6.repository.CommunicationRepository;
 import com.osoc6.OSOC6.repository.CommunicationTemplateRepository;
@@ -59,18 +59,17 @@ public final class CoachCommunicationEndpointTests
     /**
      * Sample {@link CommunicationTemplate} that gets loaded before every test.
      */
-    private final CommunicationTemplate testTemplate = new CommunicationTemplate("informative",
-            "I have to tell you...");
+    private final CommunicationTemplate testTemplate = TestEntityProvider.getBaseCommunicationTemplate1(this);
 
     /**
      * Test student that is loaded before every test.
      */
-    private final Student testStudent = TestEntityProvider.getBaseStudentOther(this);
+    private final Student testStudent = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
 
     /**
      * Sample {@link Communication} that gets loaded before every test.
      */
-    private final Communication testCommunication = new Communication("email",
+    private final Communication testCommunication = new Communication("email", "You look cool",
             "I say yes to you because you look so cool.", testTemplate, getAdminUser(), testStudent);
 
     /**
@@ -122,7 +121,7 @@ public final class CoachCommunicationEndpointTests
 
     @Override
     public Communication create_entity() {
-        return new Communication("sms", TEST_STRING, testTemplate, getAdminUser(), testStudent);
+        return new Communication("sms", "I love you", TEST_STRING, testTemplate, getAdminUser(), testStudent);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import lombok.NonNull;
@@ -40,15 +40,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findById(@NonNull Long aLong);
 
     /**
-     * Get all projects within an edition.
+     * Get all students within an edition.
      * @param editionId the id of the edition you want to see the projects of
      * @param pageable argument needed to return a page
      * @return page of matching students
      */
     @RestResource(path = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
             rel = DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query("select s from Student s where s.edition.id = :edition")
     Page<Student> findByEdition(@Param("edition") Long editionId, @NonNull Pageable pageable);
 
@@ -57,6 +56,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      *
      * @param edition the id of the edition this search is restricted to (required argument).
      * @param experience list of experiences that the user should have one of
+     * @param status list of statuses that the user should have one of
      * @param skills free text search parameter restricted to the skills of a user
      * @param freeText free text search over the student, and the assignment or suggestion reason.
      *                 This field is formatted in a way that a space means a search for a separate,
@@ -67,8 +67,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
     @RestResource(path = DumbledorePathWizard.STUDENT_QUERY_PATH,
             rel = DumbledorePathWizard.STUDENT_QUERY_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query(value = // We need to use cast keyword instead of native :: because ':' means something to Spring.
             "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
                 + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "
@@ -83,22 +82,23 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                 + "(select COALESCE(string_agg(CAST(studskill as text), ''), '') from student_skills studskill where studskill.student_id = stud.id) "
             + ") @@ to_tsquery(:#{@spelUtil.safeToTSQuery(#skills)})) "
             + "and (:experience is null or stud.osoc_experience in :#{@spelUtil.safeArray(#experience)}) "
-            + "and (:#{@spelUtil.safeBoolean(#unmatched)} = false or NOT EXISTS (select assign from assignment assign where assign.student_id = stud.id))",
+            + "and (:status is null or stud.status in :#{@spelUtil.safeArray(#status)}) "
+            + "and (:#{@spelUtil.safeBoolean(#unmatched)} = false or NOT EXISTS "
+                + "(select assign from assignment assign where assign.student_id = stud.id and assign.is_valid = true))",
             nativeQuery = true)
     Page<Student> findByQuery(@Param("edition") Long edition, @Param("freeText") String freeText,
                               @Param("skills") String skills, @Param("experience") String[] experience,
-                              @Param("unmatched") Boolean unmatched, Pageable pageable);
+                              @Param("unmatched") Boolean unmatched, @Param("status") String[] status, Pageable pageable);
 
     /**
      * Return the students that are assigned to multiple projects through valid assignments.
      * @param edition the edition in which this query operates.
-     * @param pageable field in student that is looked for
+     * @param pageable argument needed to return a page
      * @return Page of matching students
      */
     @RestResource(path = DumbledorePathWizard.STUDENT_CONFLICT_PATH,
             rel = DumbledorePathWizard.STUDENT_CONFLICT_PATH)
-    @PreAuthorize(MerlinSpELWizard.ADMIN_AUTH
-            + " or @spelUtil.userEditions(authentication.principal).contains(#edition)")
+    @PreAuthorize(MerlinSpELWizard.USER_CAN_QUERY_EDITION)
     @Query(value =
         "SELECT DISTINCT ON (stud.id) stud.* FROM student stud "
             + "INNER JOIN (SELECT inner_ed.* FROM edition inner_ed WHERE :edition is not null and "

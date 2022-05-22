@@ -1,20 +1,19 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import useTranslation from "next-translate/useTranslation";
-import { ResetComponent } from "../components/resetComponent";
-import Navbar from "../components/navBar";
-import { saveEmailHandler } from "../handlers/confirmResetHandler";
-import { capitalize } from "../utility/stringUtil";
+import { ResetComponent } from "../components/util/resetComponent";
+import Navbar from "../components/util/navBar";
+import { saveEmailOfUser } from "../api/calls/userCalls";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { Background } from "../components/util/background";
 
 const ChangeEmail: NextPage = () => {
-    const { t } = useTranslation("common");
+    // This is safe since we are behind the route-guard
+    const { user } = useCurrentUser();
+
     return (
         <div>
-            <Head>
-                <title>{capitalize(t("reset email"))}</title>
-            </Head>
+            <Background />
             <Navbar />
-            <ResetComponent name="email" handler={saveEmailHandler} />
+            <ResetComponent name="email" handler={saveEmailOfUser} user={user!} />
         </div>
     );
 };

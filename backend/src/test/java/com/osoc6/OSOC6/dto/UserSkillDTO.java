@@ -1,7 +1,7 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserSkill;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserSkill;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 

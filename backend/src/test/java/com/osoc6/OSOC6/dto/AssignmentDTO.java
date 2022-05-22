@@ -1,9 +1,9 @@
 package com.osoc6.OSOC6.dto;
 
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.ProjectSkill;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.student.Student;
 import lombok.Data;
 import org.springframework.hateoas.server.EntityLinks;
 
@@ -19,11 +19,6 @@ public class AssignmentDTO {
      * The id of the Assignment.
      */
     private Long id;
-
-    /**
-     * Whether assignment is a suggestion (if false this is a definitive assignment made by an admin).
-     */
-    private Boolean isSuggestion;
 
     /**
      * Whether assignment is still valid.
@@ -61,7 +56,6 @@ public class AssignmentDTO {
 
     public AssignmentDTO(final Assignment assignment, final EntityLinks entityLinks) {
         id = assignment.getId();
-        isSuggestion = assignment.getIsSuggestion();
         isValid = assignment.getIsValid();
         reason = assignment.getReason();
 

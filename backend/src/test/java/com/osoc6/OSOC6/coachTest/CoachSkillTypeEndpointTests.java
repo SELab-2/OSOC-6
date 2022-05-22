@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.coachTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
-import com.osoc6.OSOC6.database.models.SkillType;
+import com.osoc6.OSOC6.entities.SkillType;
 import com.osoc6.OSOC6.repository.SkillTypeRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
@@ -91,6 +91,12 @@ public final class CoachSkillTypeEndpointTests extends TestFunctionProvider<Skil
         removeBasicData();
 
         repository.deleteAll();
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_all_skillTypes_works() throws Exception {
+        base_get_all_entities_succeeds().andExpect(string_to_contains_string(skillType1.getName()));
     }
 
     @Test

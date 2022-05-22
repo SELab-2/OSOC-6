@@ -1,11 +1,12 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.CommunicationTemplate;
+import com.osoc6.OSOC6.entities.CommunicationTemplate;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -31,5 +32,6 @@ public interface CommunicationTemplateRepository extends JpaRepository<Communica
      */
     @RestResource(path = DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH,
             rel = DumbledorePathWizard.COMMUNICATION_TEMPLATE_BY_NAME_PATH)
+    @Query("select c from CommunicationTemplate c where UPPER(c.name) = UPPER(:#{@spelUtil.safeString(#name)})")
     Page<CommunicationTemplate> findByName(@Param("name") String name, Pageable pageable);
 }

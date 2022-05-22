@@ -1,6 +1,6 @@
 package com.osoc6.OSOC6.repository;
 
-import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.entities.Invitation;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import com.osoc6.OSOC6.winterhold.MerlinSpELWizard;
 import org.springframework.data.jpa.repository.JpaRepository;

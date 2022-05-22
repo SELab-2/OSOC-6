@@ -3,9 +3,9 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Suggestion;
+import com.osoc6.OSOC6.entities.SuggestionStrategy;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
@@ -32,7 +32,7 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * First sample student that gets loaded before every test.
      */
-    private final Student student = TestEntityProvider.getBaseStudentOther(this);
+    private final Student student = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
 
     /**
      * First sample suggestion that gets loaded before every test.
