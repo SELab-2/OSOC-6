@@ -9,6 +9,7 @@ import { IUser } from "../api/entities/UserEntity";
 import { ScopedMutator } from "swr/dist/types";
 import { createProject, editProject, setProjectCoaches } from "../api/calls/projectCalls";
 import { createProjectSkill, editProjectSkill } from "../api/calls/projectSkillCalls";
+import { RouterAction } from "../hooks/routerHooks";
 
 /**
  * All values that a project need to contain.
@@ -33,7 +34,7 @@ export interface ProjectCreationValues {
  * @param values values needed to create a new project
  * @param removeProjectSkills list of projectSkills that are no longer needed.
  * @param alteredSkills list of altered projectSkills.
- * @param router the next router object
+ * @param routerAction the reroute action that needs to be taken after submission
  * @param editionUrl the current edition
  * @param ownUser the currently logged in user
  * @param mutate the global mutate function provided by SWR
@@ -46,7 +47,7 @@ export async function projectFormSubmitHandler(
     alteredSkills: [string, ProjectSkill][],
     editionUrl: string,
     ownUser: IUser,
-    router: NextRouter,
+    routerAction: RouterAction,
     mutate: ScopedMutator<any>,
     apiURLTransformer: (url: string) => string
 ): Promise<boolean> {
@@ -100,7 +101,7 @@ export async function projectFormSubmitHandler(
         mutate(newProject._links.coaches),
     ]).catch(console.log);
 
-    await router.push(
+    await routerAction(
         "/" + applicationPaths.projects + "/" + extractIdFromApiEntityUrl(newProject._links.self.href)
     );
 

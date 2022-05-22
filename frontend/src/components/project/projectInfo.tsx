@@ -8,37 +8,39 @@ import ProjectSkillStudent from "./projectSkillStudent";
 import styles from "../../styles/projects/projectInfo.module.css";
 import { useState } from "react";
 import { StatusCodes } from "http-status-codes";
-import { getParamsFromQueryUrl, getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import applicationPaths from "../../properties/applicationPaths";
 import { deleteProject } from "../../api/calls/projectCalls";
-import { Row, Col, Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import timers from "../../properties/timers";
 import Image from "next/image";
+import { useRouterPush } from "../../hooks/routerHooks";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterPush();
     const { id } = router.query as { id: string };
     const [show, setShow] = useState<boolean>(false);
     const isAdmin = useCurrentAdminUser();
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
 
-    if (error || !data) {
+    if (error) {
+        console.log(error);
         return null;
     }
 
-    const info = data.info || emptyProject;
-    const projectSkills = data.skills;
-    const coaches = data.coaches;
+    const info = data?.info || emptyProject;
+    const projectSkills = data?.skills || [];
+    const coaches = data?.coaches || [];
 
     async function deleteProjectOnClick() {
         const response = await deleteProject(info._links.self.href);
-        if (response.status == StatusCodes.NO_CONTENT) {
+        if (response.status === StatusCodes.NO_CONTENT) {
             try {
-                const params = getParamsFromQueryUrl(router.asPath);
-                await router.push(getQueryUrlFromParams("/" + applicationPaths.projects, params));
+                await routerAction("/" + applicationPaths.projects);
             } catch (error) {
                 setShow(true);
             }
@@ -64,13 +66,7 @@ export function ProjectInfo() {
                         >
                             <Image alt="" src={"/resources/edit.svg"} width="15" height="15" />
                         </a>
-                        <a
-                            style={{ cursor: "pointer" }}
-                            onClick={deleteProjectOnClick}
-                            data-testid="delete-project"
-                        >
-                            <Image alt="" src={"/resources/delete.svg"} width="15" height="15" />
-                        </a>
+                        <ConfirmDeleteButton dataTestId="delete-project" handler={deleteProjectOnClick} />
                     </div>
                 )}
             </div>

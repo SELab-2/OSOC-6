@@ -87,6 +87,7 @@ const common = {
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
     "select a project to start": "select a project to start",
+    "confirm delete profile": "are you sure you want to delete your profile?",
 
     // People strings
     email: "e-mail",
@@ -129,6 +130,7 @@ const common = {
     "by medium": "by",
     "register communication for": "register communication for",
     "edit communicationTemplate": "edit communication template",
+    "recent communication": "recent communication",
 
     // Student info strings
     callname: "callname",
@@ -178,6 +180,7 @@ const common = {
     "yes, no student coach": "yes, but does not want to be student coach",
     "yes, student coach": "yes, wants to be student coach",
     or: "or",
+    "invalid uri": "please enter a valid URI",
 
     "change status title": "change status",
     "change status": "would you like to change the status to",
@@ -207,6 +210,7 @@ const common = {
     "no skills for project": "No skills have been assigned to this project",
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
+    "confirm delete assignment": "are you sure you want to remove this assignment?",
 
     // Conflict strings
     conflict: "conflict",
@@ -231,6 +235,7 @@ const common = {
     "create skill type": "create skill type",
 
     "input empty": "input field can not be empty",
+    "confirm delete": "are you sure you want to delete this?",
 };
 
 export default common;

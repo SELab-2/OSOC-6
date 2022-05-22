@@ -3,18 +3,11 @@ import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
-import {
-    getBaseActiveEdition,
-    getBaseNoContentResponse,
-    getBaseOkResponse,
-    getBaseUser,
-} from "../TestEntityProvider";
+import { getBaseActiveEdition, getBaseNoContentResponse, getBaseUser } from "../TestEntityProvider";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
 import EditionRowComponent from "../../../src/components/edition/editionRowComponent";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
-import { GlobalStateProvider } from "../../../src/context/globalContext";
-import apiPaths from "../../../src/properties/apiPaths";
 import { UserRole } from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -49,6 +42,8 @@ describe("EditionList", () => {
         await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
 
         await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+
+        window.confirm = jest.fn(() => true);
 
         await waitFor(() => expect(screen.getByTestId("list-delete-edition")).toBeInTheDocument());
         await userEvent.click(screen.getByTestId("list-delete-edition"));

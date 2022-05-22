@@ -4,10 +4,11 @@ import applicationPaths from "../properties/applicationPaths";
 import { createNewCommunication, extractIdFromCommunicationUrl } from "../api/calls/communicationCalls";
 import { ScopedMutator } from "swr/dist/types";
 import apiPaths from "../properties/apiPaths";
+import { RouterAction } from "../hooks/routerHooks";
 
 export async function createCommunicationSubmitHandler(
     values: Communication,
-    router: NextRouter,
+    routerAction: RouterAction,
     mutate: ScopedMutator
 ) {
     const communication: ICommunication = await createNewCommunication(values);
@@ -15,6 +16,6 @@ export async function createCommunicationSubmitHandler(
 
     await Promise.all([
         mutate(apiPaths.communications),
-        router.push("/" + applicationPaths.communicationBase + "/" + id),
+        routerAction("/" + applicationPaths.communicationBase + "/" + id),
     ]);
 }

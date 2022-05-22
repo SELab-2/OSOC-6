@@ -1,5 +1,5 @@
 import mockAxios from "jest-mock-axios";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { makeCacheFree } from "../Provide";
 import CreateEdition from "../../../src/pages/editions/create";
 import "@testing-library/jest-dom";
@@ -7,8 +7,7 @@ import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
-import { getBaseActiveEdition, getBaseOkResponse, getBaseRedirectResponse } from "../TestEntityProvider";
-import apiPaths from "../../../src/properties/apiPaths";
+import { getBaseActiveEdition, getBaseOkResponse } from "../TestEntityProvider";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

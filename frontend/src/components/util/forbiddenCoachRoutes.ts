@@ -3,20 +3,21 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import applicationPaths from "../../properties/applicationPaths";
 import { pathIsForbiddenForCoach } from "../../utility/pathUtil";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 export default function ForbiddenCoachRoutes({ children }: any): any {
     const isCurrentUserAdmin = useCurrentAdminUser();
     const router = useRouter();
     const path = router.asPath;
-    const push = router.push;
+    const routerAction = useRouterPush();
 
     useEffect(() => {
         if (isCurrentUserAdmin !== undefined && !isCurrentUserAdmin) {
             if (pathIsForbiddenForCoach(path)) {
-                push("/" + applicationPaths.error).catch(console.log);
+                routerAction("/" + applicationPaths.error).catch(console.log);
             }
         }
-    }, [isCurrentUserAdmin, push, path]);
+    }, [isCurrentUserAdmin, routerAction, path]);
 
     return children;
 }

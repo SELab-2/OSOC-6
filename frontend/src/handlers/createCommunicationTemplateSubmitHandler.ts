@@ -7,16 +7,20 @@ import {
     CommunicationTemplateEntity,
     ICommunicationTemplate,
 } from "../api/entities/CommunicationTemplateEntity";
-import { NextRouter } from "next/router";
+import Router, { NextRouter } from "next/router";
 import applicationPaths from "../properties/applicationPaths";
 import { ScopedMutator } from "swr/dist/types";
 import apiPaths from "../properties/apiPaths";
+import { RouterAction } from "../hooks/routerHooks";
+import { ParsedUrlQuery } from "querystring";
 
 export async function createCommunicationTemplateSubmitHandler(
     url: string | null,
     studentId: string,
     values: CommunicationTemplateEntity,
-    router: NextRouter,
+    routerAction: RouterAction,
+    //Query needs to be kept because you are in the student
+    query: ParsedUrlQuery,
     mutate: ScopedMutator
 ): Promise<ICommunicationTemplate> {
     let result: ICommunicationTemplate;
@@ -28,7 +32,7 @@ export async function createCommunicationTemplateSubmitHandler(
     await Promise.all([
         mutate(apiPaths.communicationTemplates),
         mutate(result._links.self.href, result),
-        router.replace({
+        routerAction({
             pathname:
                 "/" +
                 applicationPaths.students +
@@ -36,7 +40,7 @@ export async function createCommunicationTemplateSubmitHandler(
                 studentId +
                 "/" +
                 applicationPaths.communicationRegistration,
-            query: { ...router.query },
+            query: { ...query },
         }),
     ]);
 

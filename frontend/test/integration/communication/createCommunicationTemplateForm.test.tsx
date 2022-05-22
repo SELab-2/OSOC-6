@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { getBaseCommunicationTemplate, getBaseStudent } from "../TestEntityProvider";
+import { getBaseCommunicationTemplate, getBaseOkResponse, getBaseStudent } from "../TestEntityProvider";
 import { render, waitFor } from "@testing-library/react";
 import { CommunicationTemplateEntity } from "../../../src/api/entities/CommunicationTemplateEntity";
 import userEvent from "@testing-library/user-event";
@@ -7,6 +7,8 @@ import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import CreateCommunicationTemplateForm from "../../../src/components/communication/createCommunicationTemplateForm";
+import { enableActForResponse } from "../Provide";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -53,7 +55,14 @@ describe("create communication template", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, studentId, comTemplate, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(
+                null,
+                studentId,
+                comTemplate,
+                expect.anything(),
+                expect.anything(),
+                expect.anything()
+            );
         });
 
         await waitFor(() => {
@@ -61,6 +70,19 @@ describe("create communication template", () => {
                 apiPaths.communicationTemplates,
                 comTemplate,
                 expect.anything()
+            );
+        });
+        const responseTemplate = getBaseCommunicationTemplate("10");
+        await enableActForResponse(apiPaths.communicationTemplates, getBaseOkResponse(responseTemplate));
+
+        await waitFor(() => {
+            expect(mockRouter.asPath).toEqual(
+                "/" +
+                    applicationPaths.students +
+                    "/" +
+                    studentId +
+                    "/" +
+                    applicationPaths.communicationRegistration
             );
         });
     });

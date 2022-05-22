@@ -9,6 +9,7 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { useSWRConfig } from "swr";
 import { Button } from "react-bootstrap";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Properties of the [CreateCommunicationTemplateForm] component.
@@ -24,6 +25,7 @@ export interface CreateCommunicationTemplateFormProps {
 /**
  * Form allowing the creation of a new communication template or editing an existing.
  * @param template the template that should be edited. [undefined] if the form is in creation mode.
+ * @param studentId studentId needed for correct route redirects.
  * @param setTemplate callback to set the template
  * @param setCreate callback to change the create boolean
  * @param setEdit callback to change the edit boolean
@@ -37,6 +39,7 @@ export default function CreateCommunicationTemplateForm({
 }: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterPush();
     const initialValues: CommunicationTemplateEntity = template
         ? new CommunicationTemplateEntity(template.name, template.subject, template.template)
         : new CommunicationTemplateEntity("", "", "");
@@ -51,7 +54,8 @@ export default function CreateCommunicationTemplateForm({
                     template ? template._links.self.href : null,
                     studentId,
                     values,
-                    router,
+                    routerAction,
+                    router.query,
                     mutate
                 );
                 if (setTemplate) {
@@ -70,60 +74,66 @@ export default function CreateCommunicationTemplateForm({
             {({ values, setFieldValue }) => (
                 <Form data-testid="template-form">
                     <div>
-                        <h2>
+                        <h5>
                             {template ? capitalize(t("edit template")) : capitalize(t("create new template"))}
-                        </h2>
+                        </h5>
                         <hr />
-                        <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
+                        <div style={{ marginLeft: "1rem" }}>
+                            <div>
+                                <label htmlFor="communicationTemplateNameField">
+                                    {capitalize(t("name")) + ":"}
+                                </label>
 
-                        {template && (
-                            <label style={{ paddingLeft: 25 }} id="communicationTemplateNameField">
-                                {values.name}
-                            </label>
-                        )}
-                        {!template && (
-                            <Field
-                                type="text"
-                                name="name"
-                                required
-                                style={{
-                                    backgroundColor: "#1b1a31",
-                                    borderColor: "white",
-                                    borderWidth: 1,
-                                    color: "white",
-                                    marginLeft: 24,
-                                    marginBottom: 10,
-                                    marginTop: 5,
-                                    paddingLeft: 10,
-                                }}
-                                placeholder={capitalize(t("name"))}
-                                id="communicationTemplateNameField"
-                                data-testid="name"
-                            />
-                        )}
-                    </div>
-                    <div>
-                        <label htmlFor="communicationTemplateSubjectField">
-                            {capitalize(t("subject")) + ":"}
-                        </label>
-                        <Field
-                            type="text"
-                            name="subject"
-                            required
-                            style={{
-                                backgroundColor: "#1b1a31",
-                                borderColor: "white",
-                                borderWidth: 1,
-                                color: "white",
-                                marginLeft: 10,
-                                marginBottom: 10,
-                                marginTop: 5,
-                                paddingLeft: 10,
-                            }}
-                            placeholder={capitalize(t("subject"))}
-                            id="communicationTemplateSubjectField"
-                            data-testid="subject"
-                        />
+                                {template && (
+                                    <label style={{ paddingLeft: 25 }} id="communicationTemplateNameField">
+                                        {values.name}
+                                    </label>
+                                )}
+                                {!template && (
+                                    <Field
+                                        type="text"
+                                        name="name"
+                                        required
+                                        style={{
+                                            backgroundColor: "#1b1a31",
+                                            borderColor: "white",
+                                            borderWidth: 1,
+                                            color: "white",
+                                            marginLeft: 24,
+                                            marginBottom: 10,
+                                            marginTop: 5,
+                                            paddingLeft: 10,
+                                        }}
+                                        placeholder={capitalize(t("name"))}
+                                        id="communicationTemplateNameField"
+                                        data-testid="name"
+                                    />
+                                )}
+                            </div>
+                            <div>
+                                <label htmlFor="communicationTemplateSubjectField">
+                                    {capitalize(t("subject")) + ":"}
+                                </label>
+                                <Field
+                                    type="text"
+                                    name="subject"
+                                    required
+                                    style={{
+                                        backgroundColor: "#1b1a31",
+                                        borderColor: "white",
+                                        borderWidth: 1,
+                                        color: "white",
+                                        marginLeft: 13,
+                                        marginBottom: 10,
+                                        marginTop: 5,
+                                        paddingLeft: 10,
+                                    }}
+                                    placeholder={capitalize(t("subject"))}
+                                    id="communicationTemplateSubjectField"
+                                    data-testid="subject"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <div>

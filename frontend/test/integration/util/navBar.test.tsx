@@ -1,14 +1,14 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
-import NavBar from "../../src/components/util/navBar";
+import NavBar from "../../../src/components/util/navBar";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import applicationPaths from "../../src/properties/applicationPaths";
+import applicationPaths from "../../../src/properties/applicationPaths";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import { AxiosResponse } from "axios";
-import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
-import { UserRole } from "../../src/api/entities/UserEntity";
-import apiPaths from "../../src/properties/apiPaths";
+import { getBaseOkResponse, getBaseUser } from "../TestEntityProvider";
+import { UserRole } from "../../../src/api/entities/UserEntity";
+import apiPaths from "../../../src/properties/apiPaths";
 
 it("Should be able to render.", async () => {
     render(<NavBar />);

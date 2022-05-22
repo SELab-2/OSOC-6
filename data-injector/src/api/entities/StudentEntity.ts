@@ -34,7 +34,7 @@ export enum Gender {
     not_specified = "NOT_SPECIFIED",
 }
 
-export enum OsocExpericience {
+export enum OsocExperience {
     none = "NONE",
     yes_noStudentCoach = "YES_NO_STUDENT_COACH",
     yes_studentCoach = "YES_STUDENT_COACH",
@@ -64,7 +64,7 @@ export interface IStudent extends IBaseEntity {
     lastName: string;
     mostFluentLanguage: string;
     motivationURI: string;
-    osocExperience: OsocExpericience;
+    osocExperience: OsocExperience;
     status: Status;
     phoneNumber: string;
     workType: string;
@@ -112,7 +112,7 @@ export const emptyStudent: IStudent = {
     lastName: "",
     mostFluentLanguage: "",
     motivationURI: "",
-    osocExperience: OsocExpericience.none,
+    osocExperience: OsocExperience.none,
     phoneNumber: "",
     portfolioURI: "",
     pronouns: "",
@@ -155,7 +155,7 @@ export class Student {
         lastName: string,
         mostFluentLanguage: string,
         motivationURI: string,
-        osocExperience: OsocExpericience,
+        osocExperience: OsocExperience,
         status: Status,
         phoneNumber: string,
         workType: string,
@@ -212,7 +212,7 @@ export class Student {
     lastName: string;
     mostFluentLanguage: string;
     motivationURI: string;
-    osocExperience: OsocExpericience;
+    osocExperience: OsocExperience;
     status: Status;
     phoneNumber: string;
     workType: string;
