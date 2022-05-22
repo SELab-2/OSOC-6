@@ -129,6 +129,7 @@ const common = {
     "by medium": "by",
     "register communication for": "register communication for",
     "edit communicationTemplate": "edit communication template",
+    "recent communication": "recent communication",
 
     // Student info strings
     callname: "callname",
