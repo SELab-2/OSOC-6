@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
+import {enableActForResponse, enableCurrentUser, enableUseEditionComponentWrapper, makeCacheFree} from "../Provide";
 import EditionPage from "../../../src/pages/editions";
 import { getBaseActiveEdition, getBaseNoContentResponse, getBaseUser } from "../TestEntityProvider";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
@@ -50,7 +50,7 @@ describe("EditionList", () => {
         await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
         const response: AxiosResponse = getBaseNoContentResponse();
-        act(() => mockAxios.mockResponseFor({ url: edition._links.self.href }, response));
+        await enableActForResponse({ url: edition._links.self.href }, response);
     });
 
     it("edition view", async () => {

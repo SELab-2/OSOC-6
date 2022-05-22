@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import { makeCacheFree } from "../Provide";
+import {enableActForResponse, makeCacheFree} from "../Provide";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
@@ -41,12 +41,10 @@ describe("skillType list", () => {
         beforeEach(async () => {
             page = render(makeCacheFree(SkillTypeIndexPage));
 
-            await waitFor(() => {
-                mockAxios.mockResponseFor(
-                    getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
-                    getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType]))
-                );
-            });
+            await enableActForResponse(
+                getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
+                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType]))
+            );
         });
 
         it("renders the name", async () => {

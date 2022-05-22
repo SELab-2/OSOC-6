@@ -8,7 +8,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import { AxiosResponse } from "axios";
-import { makeCacheFree } from "../Provide";
+import {enableActForResponse, makeCacheFree} from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -149,11 +149,7 @@ describe("student filter", () => {
             getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType])
         );
         render(makeCacheFree(StudentFilterComponent));
-        await act(async () => {
-            await waitFor(() => {
-                mockAxios.mockResponseFor(apiPaths.skillTypes, skillTypeResponse);
-            });
-        });
+        await enableActForResponse(apiPaths.skillTypes, skillTypeResponse);
 
         const filterDropdown = await screen.findByTestId("skill-dropdown");
         const submitElement = await screen.findByTestId("submit");

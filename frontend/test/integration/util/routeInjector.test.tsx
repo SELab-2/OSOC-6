@@ -2,14 +2,14 @@ import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
-import { cleanup, render, waitFor, screen } from "@testing-library/react";
-import { enableUseEditionAxiosCall, makeCacheFree } from "../Provide";
+import { cleanup, render, waitFor } from "@testing-library/react";
+import {enableActForResponse, makeCacheFree} from "../Provide";
 import React from "react";
 import RouteInjector from "../../../src/components/util/routeInjector";
 import { getBaseActiveEdition, getBaseOkResponse, getBasePage } from "../TestEntityProvider";
 import GlobalContext from "../../../src/context/globalContext";
 import apiPaths from "../../../src/properties/apiPaths";
-import { editionCollectionName, IEdition } from "../../../src/api/entities/EditionEntity";
+import { editionCollectionName } from "../../../src/api/entities/EditionEntity";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import { StudentList } from "../../../src/components/student/studentList";
 
@@ -34,16 +34,14 @@ describe("routeInjector", () => {
             ))
         );
 
-        await waitFor(() => {
-            mockAxios.mockResponseFor(
-                getQueryUrlFromParams(apiPaths.editionByName, { name: editionName }),
-                getBaseOkResponse(
-                    getBasePage(apiPaths.editionByName, editionCollectionName, [
-                        getBaseActiveEdition("10", editionName),
-                    ])
-                )
-            );
-        });
+        await enableActForResponse(
+            getQueryUrlFromParams(apiPaths.editionByName, { name: editionName }),
+            getBaseOkResponse(
+                getBasePage(apiPaths.editionByName, editionCollectionName, [
+                    getBaseActiveEdition("10", editionName),
+                ])
+            )
+        );
 
         await waitFor(() => {
             expect(setEditionUrl).toHaveBeenCalled();

@@ -8,13 +8,11 @@ import {
     getBaseOkResponse,
     getBaseUser,
 } from "./TestEntityProvider";
-import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import { UserRole } from "../../src/api/entities/UserEntity";
 import {
     enableActForResponse,
     enableCurrentUser,
-    enableUseEditionAxiosCall,
     enableUseEditionComponentWrapper,
     makeCacheFree,
 } from "./Provide";

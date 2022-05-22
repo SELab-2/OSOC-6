@@ -9,7 +9,7 @@ import {
     getBaseUser,
 } from "../TestEntityProvider";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
 import AssignmentModal, { ModalInfo } from "../../../src/components/projectAssignment/assignmentModal";
 import { Dispatch } from "react";
 import userEvent from "@testing-library/user-event";
@@ -108,7 +108,7 @@ describe("Assignment modal", () => {
             expect(mockAxios.post).toHaveBeenCalled();
         });
 
-        await act(() => mockAxios.mockResponseFor({ method: "POST" }, assignmentResponse));
+        await enableActForResponse({ method: "POST" }, assignmentResponse)
 
         // Setter needs to set value back to 'false' to hide the modal
         await waitFor(() => {
