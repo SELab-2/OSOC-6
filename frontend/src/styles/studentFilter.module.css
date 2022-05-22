@@ -1,0 +1,129 @@
+.student_filter_div {
+    background-color: #0a0839;
+    height: 22%;
+    min-height: 11em;
+    max-height: 15em;
+    display: flex;
+    align-items: center;
+}
+
+.filter_data_holder {
+    width: 100%;
+    padding: 0 2rem;
+}
+
+.filter_filters_div {
+    display: flex;
+    flex-direction: row;
+}
+
+.filter_button {
+    height: 2rem;
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.filter_search_key {
+    flex-grow: 1;
+    background-color: #0a0839;
+    border: 1px solid white;
+    color: white;
+    margin-left: 2rem;
+    height: fit-content;
+}
+
+.filter_top_half {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.skill_badges {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.filter_apply_btn {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+}
+
+.filter_bottom_half {
+    display: flex;
+    flex-direction: row;
+}
+
+.filter_filters_div {
+    display: flex;
+    flex-direction: row;
+}
+
+.filter_skills_div {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter_checkboxes_div {
+    min-width: 16em;
+    width: 20%;
+    max-width: 21em;
+}
+
+.skill_selector {
+    display: flex;
+    flex-direction: row;
+}
+
+@media (max-width: 1024px) {
+    .filter_checkboxes_div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: none;
+        width: 100%;
+    }
+
+    .filter_fields {
+        width: max-content;
+        margin-right: 2rem;
+    }
+
+    .student_filter_div {
+        height: fit-content;
+        max-height: none;
+    }
+
+    .filter_data_holder {
+        margin: 2rem 0;
+    }
+
+    .filter_filters_div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .filter_top_half {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .filter_search_key {
+        order: 1;
+    }
+
+    .skill_selector {
+        order: 2;
+        display: flex;
+        flex-direction: column;
+    }
+}

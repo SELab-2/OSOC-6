@@ -41,11 +41,24 @@ describe("Project", () => {
         });
     });
 
-    it.skip("Should go to projects/create when clicking button", async () => {
-        render(<ProjectList />);
+    it("Should go to projects/create when clicking button", async () => {
+        render(makeCacheFree(() => <ProjectList />));
+
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+
         await userEvent.click(screen.getByTestId("new-project-button"));
 
         await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
+    });
+
+    it("Should go to skilltypes when clicking skilltypes button", async () => {
+        render(makeCacheFree(() => <ProjectList />));
+
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+
+        await userEvent.click(screen.getByTestId("skill-types-button"));
+
+        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.skillTypesBase);
     });
 
     it("Should go to project page when clicking item in list", async () => {
