@@ -5,6 +5,7 @@ const applicationPaths = {
     base: "http://localhost/",
     index: "",
     home: "home",
+    inject: "inject",
 
     projects: "projects",
     projectCreation: "projects/create",

@@ -231,17 +231,17 @@ export function StudentInfo() {
                     <SuggestionModal
                         suggestion={SuggestionStrategy.yes}
                         colour={"#1DE1AE"}
-                        studentUrl={student._links.self.href}
+                        student={student}
                     />
                     <SuggestionModal
                         suggestion={SuggestionStrategy.maybe}
                         colour={"#FCB70F"}
-                        studentUrl={student._links.self.href}
+                        student={student}
                     />
                     <SuggestionModal
                         suggestion={SuggestionStrategy.no}
                         colour={"#F14A3B"}
-                        studentUrl={student._links.self.href}
+                        student={student}
                     />
                     {isAdmin && (
                         <StudentStatus studentUrl={student._links.self.href} status={student.status} />

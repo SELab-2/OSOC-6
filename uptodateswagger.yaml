@@ -74,8 +74,7 @@ paths:
     get:
       tags:
       - Assignments
-      summary: Get a page of the list of all assignments
-      description: Admin permissions are required
+      summary: Get a page of the list of all assignments. Admin permissions are required.
       produces:
       - application/json
       parameters:
@@ -103,8 +102,7 @@ paths:
     post:
       tags:
       - Assignments
-      summary: Create a new assignment
-      description: Both coaches and admins can create assignments on any project.
+      summary: Create a new assignment. Both coaches and admins can create assignments on any project. Coaches can only create assignments with themself as the assigner.
       parameters:
       - in: body
         name: body
@@ -117,7 +115,48 @@ paths:
           description: Assignment created succesfully
         405:
           description: Invalid input
-  
+  /assignments/validity-on-student:
+    get:
+      tags:
+      - Assignments
+      parameters:
+      - name: studentId
+        in: query
+        description: the ID of the student we want to filter on
+        required: true
+        type: integer
+      summary: Search assignments by their student; Admin permissions are required to get all assignments, coaches can do it as long as they have access to the edition.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Assignments found succesfully
+          schema:
+              $ref: '#/definitions/Assignment'
+        400:
+          description: Bad request
+          
+  /assignments/validity-on-project-skill:
+    get:
+      tags:
+      - Assignments
+      parameters:
+      - name: projectSkillId
+        in: query
+        description: the ID of the project skill we want to filter on
+        required: true
+        type: integer
+      summary: Search assignments by their project skill; Admin permissions are required to get all assignments, coaches can do it as long as they have access to the edition.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Assignments found succesfully
+          schema:
+              $ref: '#/definitions/Assignment'
+        400:
+          description: Bad request
+        
   /assignments/{assignmentId}:
     get:
       tags:
@@ -128,9 +167,7 @@ paths:
         description: the ID of the requested assignment
         required: true
         type: integer
-        
-      summary: Get an assignment by its id
-      description: Admin permissions are required to patch all assignments, coaches can always get their own assignments.
+      summary: Get an assignment by its id; Admin permissions are required to get all assignments, coaches can always get their own assignments.
       produces:
       - application/json
       responses:
@@ -145,8 +182,8 @@ paths:
     patch:
       tags:
       - Assignments
-      summary: Update an existing assignment
-      description: Admin permissions are required to patch all assignments, coaches can always patch their own assignments.
+      summary: Update an existing assignment. Admin permissions are required to patch all assignments, coaches can always patch their own assignments.
+    
       parameters:
       - name: assignmentId
         in: path
@@ -172,8 +209,7 @@ paths:
     delete:
       tags:
       - Assignments
-      summary: Delete an assignment
-      description: Admins permissions are required to delete all assignments, coaches can always delete their own assignments.
+      summary: Delete an assignment. Admins permissions are required to delete all assignments, coaches can always delete their own assignments.
       parameters:
       - name: assignmentId
         in: path
@@ -192,8 +228,7 @@ paths:
     get:
       tags:
       - Communications
-      summary: Get a page of the list of all communications
-      description: Admin permissions are required
+      summary: Get a page of the list of all communications. Admin permissions are required.
       produces:
       - application/json
       parameters:
@@ -221,8 +256,7 @@ paths:
     post:
       tags:
       - Communications
-      summary: Create a new communication
-      description: Admin permissions are required
+      summary: Create a new communication. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -239,8 +273,7 @@ paths:
     get:
       tags:
       - Communications
-      summary: Get all communication of a student
-      description: Admin permissions are required
+      summary: Get all communication of a student. Admin permissions are required.
       parameters:
       - name: studentId
         in: query
@@ -281,8 +314,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a communication by its id
-      description: Admin permissions are required
+      summary: Get a communication by its id. Admin permissions are required.
       produces:
       - application/json
       responses:
@@ -297,8 +329,7 @@ paths:
     patch:
       tags:
       - Communications
-      summary: Update an existing communication
-      description: Admin permissions are required
+      summary: Update an existing communication. Admin permissions are required.
       parameters:
       - name: communicationId
         in: path
@@ -323,8 +354,7 @@ paths:
     delete:
       tags:
       - Communications
-      summary: Delete a communication
-      description: Admin permissions are required
+      summary: Delete a communication. Admin permissions are required
       parameters:
       - name: communicationId
         in: path
@@ -342,8 +372,7 @@ paths:
     get:
       tags:
       - CommunicationTemplates
-      summary: Get a page of the list of all communication templates
-      description: Admin permissions are required
+      summary: Get a page of the list of all communication templates. Admin permissions are required.
       produces:
       - application/json
       parameters:
@@ -371,8 +400,7 @@ paths:
     post:
       tags:
       - CommunicationTemplates
-      summary: Create a new communication template
-      description: Admin permissions are required
+      summary: Create a new communication template. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -389,8 +417,7 @@ paths:
     get:
       tags:
       - CommunicationTemplates
-      summary: Find a communication template by its name
-      description: Admin permissions are required
+      summary: Find a communication template by its name. Admin permissions are required.
       parameters:
       - name: name
         in: query
@@ -429,8 +456,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a communication template by its id
-      description: Admin permissions are required
+      summary: Get a communication template by its id. Admin permissions are required.
       produces:
       - application/json
       responses:
@@ -445,8 +471,7 @@ paths:
     patch:
       tags:
       - CommunicationTemplates
-      summary: Update an existing communication template
-      description: Admin permissions are required
+      summary: Update an existing communication template. Admin permissions are required.
       parameters:
       - name: communicationTemplateId
         in: path
@@ -472,8 +497,7 @@ paths:
     delete:
       tags:
       - CommunicationTemplates
-      summary: Delete a communication template
-      description: Admin permissions are required
+      summary: Delete a communication template. Admin permissions are required.
       parameters:
       - name: communicationTemplateId
         in: path
@@ -491,8 +515,7 @@ paths:
     get:
       tags:
       - Editions
-      summary: Get a page of the list of all editions
-      description: Coach permissions are enough
+      summary: Get a page of the list of all editions. Coaches ony have access to editions that they were a part of.
       produces:
       - application/json
       parameters:
@@ -520,8 +543,7 @@ paths:
     post:
       tags:
       - Editions
-      summary: Create a new edition
-      description: Admin permissions are required
+      summary: Create a new edition. Admin permissions are required. 
       parameters:
       - in: body
         name: body
@@ -545,8 +567,7 @@ paths:
         required: true
         type: string
         
-      summary: Get an edition by its name
-      description: Coach permissions are enough
+      summary: Get an edition by its name. Coaches ony have access to editions that they were a part of.
       responses:
         200:
           description: Edition found succesfully
@@ -563,8 +584,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get an edition by its id
-      description: Coaches can only get editions that they were a part of. Admins can get any edition.
+      summary: Get an edition by its id. Coaches can only get editions that they were a part of. Admins can get any edition.
       produces:
       - application/json
       responses:
@@ -579,8 +599,7 @@ paths:
     patch:
       tags:
       - Editions
-      summary: Update an existing edition
-      description: Admin permissions are required
+      summary: Update an existing edition. Admin permissions are required.
       parameters:
       - name: editionId
         in: path
@@ -605,8 +624,7 @@ paths:
     delete:
       tags:
       - Editions
-      summary: Delete an edition
-      description: Admin permissions are required
+      summary: Delete an edition. Admin permissions are required.
       parameters:
       - name: editionId
         in: path
@@ -625,8 +643,7 @@ paths:
     get:
       tags:
       - Invitations
-      summary: Get a page of the list of all invitations
-      description: Admin permissions are required
+      summary: Get a page of the list of all invitations. Admin permissions are required.
       produces:
       - application/json
       parameters:
@@ -654,8 +671,7 @@ paths:
     post:
       tags:
       - Invitations
-      summary: Create a new invitation
-      description: Admin permissions are required
+      summary: Create a new invitation. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -680,8 +696,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get an invitation by its id
-      description: Admin permissions are required
+      summary: Get an invitation by its id. Admin permissions are required.
       produces:
       - application/json
       responses:
@@ -696,8 +711,7 @@ paths:
     patch:
       tags:
       - Invitations
-      summary: Update an existing invitation
-      description: Admin permissions are required
+      summary: Update an existing invitation. Admin permissions are required.
       parameters:
       - name: invitationId
         in: path
@@ -722,8 +736,7 @@ paths:
     delete:
       tags:
       - Invitations
-      summary: Delete an invitation
-      description: Admin permissions are required
+      summary: Delete an invitation. Admin permissions are required.
       parameters:
       - name: invitationId
         in: path
@@ -737,12 +750,46 @@ paths:
           description: Invalid invitation ID supplied
         404:
           description: Invitation not found
+          
+  /invitations/search/by-token:
+    get:
+      tags:
+      - Invitations
+      summary: Search invitations by a token. Anyone can do this for any invitation.
+      parameters:
+      - name: token
+        in: query
+        description: the token we want to filter on
+        required: true
+        type: string
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: size
+        required: false
+        type: integer
+      - in: query
+        name: sort
+        required: false
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Invitations found succesfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Invitation'
+        400:
+          description: Bad request
   /projects:
     get:
       tags:
       - Projects
-      summary: Get a page of the list of all projects
-      description: Coach permissions are enough
+      summary: Get a page of the list of all projects. Coach permissions are enough.
       produces:
       - application/json
       parameters:
@@ -770,8 +817,7 @@ paths:
     post:
       tags:
       - Projects
-      summary: Create a new project
-      description: Admin permissions are required
+      summary: Create a new project. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -790,8 +836,7 @@ paths:
       - Projects
       produces:
       - application/json
-      summary: Get all projects of an edition
-      description: Coaches can do this for editions that they are a part of
+      summary: Get all projects of an edition. Coaches can do this for editions that they are a part of.
       parameters:
       - name: edition
         in: query
@@ -828,8 +873,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a project by its id
-      description: Coach permissions are enough
+      summary: Get a project by its id. Coach permissions are enough.
       produces:
       - application/json
       responses:
@@ -842,8 +886,7 @@ paths:
     patch:
       tags:
       - Projects
-      summary: Update an existing project
-      description: Admin permissions are required
+      summary: Update an existing project. Admin permissions are required.
       parameters:
       - name: projectId
         in: path
@@ -868,8 +911,7 @@ paths:
     delete:
       tags:
       - Projects
-      summary: Delete a project
-      description: Admin permissions are required
+      summary: Delete a project. Admin permissions are required.
       parameters:
       - name: projectId
         in: path
@@ -888,8 +930,7 @@ paths:
     get:
       tags:
       - ProjectSkills
-      summary: Get a page of the list of all project skills
-      description: Coach permissions are enough
+      summary: Get a page of the list of all project skills. Coach permissions are enough.
       produces:
       - application/json
       parameters:
@@ -917,8 +958,7 @@ paths:
     post:
       tags:
       - ProjectSkills
-      summary: Create a new project skill
-      description: Admin permissions are required
+      summary: Create a new project skill. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -943,8 +983,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a project skill by its id
-      description: Coach permissions are enough
+      summary: Get a project skill by its id. Coach permissions are enough.
       produces:
       - application/json
       responses:
@@ -959,8 +998,7 @@ paths:
     patch:
       tags:
       - ProjectSkills
-      summary: Update an existing project skill
-      description: Admin permissions are required
+      summary: Update an existing project skill. Admin permissions are required.
       parameters:
       - name: projectSkillId
         in: path
@@ -986,8 +1024,7 @@ paths:
     delete:
       tags:
       - ProjectSkills
-      summary: Delete a project skill
-      description: Admin permissions are required
+      summary: Delete a project skill. Admin permissions are required.
       parameters:
       - name: projectSkillId
         in: path
@@ -1005,8 +1042,7 @@ paths:
     get:
       tags:
       - SkillTypes
-      summary: Get a page of the list of all skill types
-      description: Coach permissions are enough
+      summary: Get a page of the list of all skill types. Coach permissions are enough.
       produces:
       - application/json
       parameters:
@@ -1034,8 +1070,7 @@ paths:
     post:
       tags:
       - SkillTypes
-      summary: Create a new skill type
-      description: Admin permissions are required
+      summary: Create a new skill type. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -1053,8 +1088,7 @@ paths:
     get:
       tags:
       - SkillTypes
-      summary: Find a skill type by its name
-      description: Coach permissions are enough
+      summary: Find a skill type by its name. Coach permissions are enough.
       parameters:
       - name: name
         in: query
@@ -1094,8 +1128,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a skill type by its id
-      description: Coach permissions are enough
+      summary: Get a skill type by its id. Coach permissions are enough.
       produces:
       - application/json
       responses:
@@ -1110,8 +1143,7 @@ paths:
     patch:
       tags:
       - SkillTypes
-      summary: Update an existing skill type
-      description: Admin permissions are required
+      summary: Update an existing skill type. Admin permissions are required.
       parameters:
       - name: skillTypeId
         in: path
@@ -1136,8 +1168,7 @@ paths:
     delete:
       tags:
       - SkillTypes
-      summary: Delete a skill type
-      description: Admin permissions are required
+      summary: Delete a skill type. Admin permissions are required.
       parameters:
       - name: skillTypeId
         in: path
@@ -1155,8 +1186,7 @@ paths:
     get:
       tags:
       - Students
-      summary: Get a page of the list of all students
-      description: Coaches can get students of editions that they are a part of, admins can get all students.
+      summary: Get a page of the list of all students. Coaches can get students of editions that they are a part of, admins can get all students.
       produces:
       - application/json
       parameters:
@@ -1184,8 +1214,7 @@ paths:
     post:
       tags:
       - Students
-      summary: Create a new student
-      description: Admin permissions are required
+      summary: Create a new student. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -1204,8 +1233,7 @@ paths:
       - Students
       produces:
       - application/json
-      summary: Return a page of students who are assigned to multiple projects through valid assignments
-      description: Coaches can query over edition that they are a part of, admins can query over any edition.
+      summary: Return a page of students who are assigned to multiple projects through valid assignments. Coaches can query over edition that they are a part of, admins can query over any edition.
       parameters:
       - in: query
         name: page
@@ -1238,8 +1266,7 @@ paths:
       - Students
       produces:
       - application/json
-      summary: Get all students of an edition
-      description: Coaches can query over edition that they are a part of, admins can query over any edition.
+      summary: Get all students of an edition. Coaches can query over edition that they are a part of, admins can query over any edition.
       parameters:
       - name: edition
         in: query
@@ -1271,8 +1298,7 @@ paths:
     get:
       tags:
       - Students
-      summary: Get a page of students by a combination of parameters, including free text search
-      description: Coaches can query over edition that they are a part of, admins can query over any edition.
+      summary: Get a page of students by a combination of parameters, including free text search. Coaches can query over edition that they are a part of, admins can query over any edition.
       parameters:
       - in: query
         name: page
@@ -1330,7 +1356,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a student by its id
+      summary: Get a student by its id. Admin permissions are required.
       produces:
       - application/json
       responses:
@@ -1345,8 +1371,7 @@ paths:
     patch:
       tags:
       - Students
-      summary: Update an existing student
-      description: Admin permissions are required
+      summary: Update an existing student. Admin permissions are required.
       parameters:
       - name: studentId
         in: path
@@ -1371,8 +1396,7 @@ paths:
     delete:
       tags:
       - Students
-      summary: Delete a student
-      description: Admin permissions are required
+      summary: Delete a student. Admin permissions are required.
       parameters:
       - name: studentId
         in: path
@@ -1390,8 +1414,7 @@ paths:
     get:
       tags:
       - Suggestions
-      summary: Get a page of the list of all suggestions
-      description: Admin permissions are required
+      summary: Get a page of the list of all suggestions. Admin permissions are required.
       produces:
       - application/json
       parameters:
@@ -1419,8 +1442,7 @@ paths:
     post:
       tags:
       - Suggestions
-      summary: Create a new suggestion
-      description: Coach permissions are enough
+      summary: Create a new suggestion. Coach permissions are enough.
       parameters:
       - in: body
         name: body
@@ -1444,8 +1466,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a suggestion by its id
-      description: Coach permissions are enough
+      summary: Get a suggestion by its id. Coach permissions are enough.
       produces:
       - application/json
       responses:
@@ -1460,8 +1481,7 @@ paths:
     patch:
       tags:
       - Suggestions
-      summary: Update an existing suggestion
-      description: Admins can update any suggestion, coaches can only delete their own.
+      summary: Update an existing suggestion. Admins can update any suggestion, coaches can only delete their own.
       parameters:
       - name: suggestionId
         in: path
@@ -1486,8 +1506,7 @@ paths:
     delete:
       tags:
       - Suggestions
-      summary: Delete a suggestion
-      description: Admins can delete any suggestion, coaches can only delete their own.
+      summary: Delete a suggestion. Admins can delete any suggestion, coaches can only delete their own.
       parameters:
       - name: suggestionId
         in: path
@@ -1505,8 +1524,7 @@ paths:
     get:
       tags:
       - Users
-      summary: Get a page of the list of all users
-      description: Admin permissions are required
+      summary: Get a page of the list of all users.
       produces:
       - application/json
       parameters:
@@ -1535,7 +1553,7 @@ paths:
     post:
       tags:
       - Users
-      summary: Create a new user
+      summary: Create a new user. Admin permissions are required.
       parameters:
       - in: body
         name: body
@@ -1552,8 +1570,7 @@ paths:
     get:
       tags:
       - Users
-      summary: Find a user by their email
-      description: Coach permissions are enough, but a coach can only find users with at least one common edition.
+      summary: Find a user by their email. Coach permissions are enough, but a coach can only find users with at least one common edition.
       parameters:
       - name: email
         in: query
@@ -1571,8 +1588,7 @@ paths:
     get:
       tags:
       - Users
-      summary: Find users by the edition they took part in
-      description: Coach permissions are enough, but only for finding by an edition that the user was a part of.
+      summary: Find users by the edition they took part in. Coach permissions are enough, but only for finding by an edition that the user was a part of.
       parameters:
       - name: edition
         in: query
@@ -1605,8 +1621,7 @@ paths:
       tags:
       - Users
       - Accounts
-      summary: Get the currently logged in user
-      description: Coach permissions are enough
+      summary: Get the currently logged in user. Coach permissions are enough.
       produces:
       - application/json
       responses:
@@ -1625,8 +1640,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a user by its id
-      description: Coach permissions are enough, but a coach can only find users with at least one common edition.
+      summary: Get a user by its id. Coach permissions are enough, but a coach can only find users with at least one common edition.
       produces:
       - application/json
       responses:
@@ -1641,8 +1655,7 @@ paths:
     patch:
       tags:
       - Users
-      summary: Update an existing user
-      description: An admin can update everything about every user, except for their own role when they are the last admin. A coach can only update themselves and cannot change their role.
+      summary: Update an existing user. An admin can update everything about every user, except for their own role when they are the last admin. A coach can only update themselves and cannot change their role.
       parameters:
       - name: userId
         in: path
@@ -1667,8 +1680,7 @@ paths:
     delete:
       tags:
       - Users
-      summary: Delete a user
-      description: Admin permissions are required for all users, but coaches can delete themselves.
+      summary: Delete a user. Admin permissions are required for all users, but coaches can delete themselves.
       parameters:
       - name: userId
         in: path
@@ -1687,8 +1699,7 @@ paths:
     get:
       tags:
       - UserSkills
-      summary: Get a page of the list of all user skills
-      description: Admin permissions are required.
+      summary: Get a page of the list of all user skills. Admin permissions are required.
       produces:
       - application/json
       parameters:
@@ -1716,8 +1727,7 @@ paths:
     post:
       tags:
       - UserSkills
-      summary: Create a new user skill
-      description: A coach can create a UserSkill with themself als the userEntity. If this is not the case, admin permissions are needed
+      summary: Create a new user skill. A coach can create a UserSkill with themself als the userEntity. If this is not the case, admin permissions are needed.
       parameters:
       - in: body
         name: body
@@ -1742,8 +1752,7 @@ paths:
         required: true
         type: integer
         
-      summary: Get a user skill by its id
-      description: Coaches can perform this actions for UserSkills where if the UserSkill's userEntity has at least one common edition with the coach. Admins can find all UserSkills without restrictions.
+      summary: Get a user skill by its id. Coaches can perform this actions for UserSkills where if the UserSkill's userEntity has at least one common edition with the coach. Admins can find all UserSkills without restrictions.
       produces:
       - application/json
       responses:
@@ -1758,8 +1767,7 @@ paths:
     patch:
       tags:
       - UserSkills
-      summary: Update an existing user skill
-      description: Coaches can update their own UserSkills, admins can update all of them.
+      summary: Update an existing user skill. Coaches can update their own UserSkills, admins can update all of them.
       parameters:
       - name: userSkillId
         in: path
@@ -1785,8 +1793,7 @@ paths:
     delete:
       tags:
       - UserSkills
-      summary: Delete a user skill
-      description: Coaches can delete their own UserSkills, admins can delete all of them.
+      summary: Delete a user skill. Coaches can delete their own UserSkills, admins can delete all of them.
       parameters:
       - name: userSkillId
         in: path
