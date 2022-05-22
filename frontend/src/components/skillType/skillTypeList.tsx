@@ -1,9 +1,9 @@
-import {ISkillType} from "../../api/entities/SkillTypeEntity";
-import {deleteSkillTypeFromList, editSkillTypeColourOnUrl} from "../../api/calls/skillTypeCalls";
+import { ISkillType } from "../../api/entities/SkillTypeEntity";
+import { deleteSkillTypeFromList, editSkillTypeColourOnUrl } from "../../api/calls/skillTypeCalls";
 import apiPaths from "../../properties/apiPaths";
-import {getQueryUrlFromParams} from "../../api/calls/baseCalls";
-import {useSWRConfig} from "swr";
-import SkillTypeListItem, {EditSkillTypeFields} from "./skillTypeListItem";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
+import { useSWRConfig } from "swr";
+import SkillTypeListItem, { EditSkillTypeFields } from "./skillTypeListItem";
 import styles from "../../styles/skillTypes.module.css";
 
 export interface SkillTypeListProps {

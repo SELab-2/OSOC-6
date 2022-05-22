@@ -6,7 +6,7 @@ import { Badge } from "react-bootstrap";
 import { capitalize } from "../../utility/stringUtil";
 import styles from "../../styles/skillTypes.module.css";
 import Image from "next/image";
-import {ConfirmDeleteButton} from "../util/confirmDeleteButton";
+import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 export interface SkillTypeListItemProps {
     skillType: ISkillType;
@@ -74,7 +74,10 @@ export default function SkillTypeListItem({ skillType, deleteHandler, editHandle
                             </a>
                         </div>
                         <div className="col-auto">
-                            <ConfirmDeleteButton dataTestId="delete-item" handler={() => deleteHandler(selfUrl)}/>
+                            <ConfirmDeleteButton
+                                dataTestId="delete-item"
+                                handler={() => deleteHandler(selfUrl)}
+                            />
                         </div>
                     </Form>
                 )}
