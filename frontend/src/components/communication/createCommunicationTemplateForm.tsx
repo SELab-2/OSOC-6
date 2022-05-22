@@ -29,12 +29,12 @@ export interface CreateCommunicationTemplateFormProps {
  * @param setEdit callback to change the edit boolean
  */
 export default function CreateCommunicationTemplateForm({
-                                                            template,
-                                                            studentId,
-                                                            setTemplate,
-                                                            setCreate,
-                                                            setEdit,
-                                                        }: CreateCommunicationTemplateFormProps) {
+    template,
+    studentId,
+    setTemplate,
+    setCreate,
+    setEdit,
+}: CreateCommunicationTemplateFormProps) {
     const { t } = useTranslation("common");
     const router = useRouter();
     const initialValues: CommunicationTemplateEntity = template
@@ -74,9 +74,11 @@ export default function CreateCommunicationTemplateForm({
                             {template ? capitalize(t("edit template")) : capitalize(t("create new template"))}
                         </h5>
                         <hr />
-                        <div style={{marginLeft: "1rem"}}>
+                        <div style={{ marginLeft: "1rem" }}>
                             <div>
-                                <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
+                                <label htmlFor="communicationTemplateNameField">
+                                    {capitalize(t("name")) + ":"}
+                                </label>
 
                                 {template && (
                                     <label style={{ paddingLeft: 25 }} id="communicationTemplateNameField">
