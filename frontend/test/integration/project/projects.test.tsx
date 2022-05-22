@@ -33,8 +33,5 @@ describe("Projects Page Tests", () => {
         expect(screen.getByTestId("projects-grid")).toBeInTheDocument();
 
         expect(screen.getByTestId("project-list")).toBeInTheDocument();
-        /*
-        expect(screen.getByTestId("project-info")).toBeInTheDocument();
-        */
     });
 });

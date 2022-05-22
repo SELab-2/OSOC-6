@@ -61,6 +61,17 @@ export function getBaseForbiddenResponse(): AxiosResponse {
     };
 }
 
+export function getBaseTeapot(): AxiosResponse {
+    return {
+        data: {},
+        status: StatusCodes.IM_A_TEAPOT,
+        statusText: ReasonPhrases.IM_A_TEAPOT,
+        headers: {},
+        config: {},
+        request: {},
+    };
+}
+
 export function getBaseMovedResponse(url: string): AxiosResponse {
     return {
         data: {},

@@ -10,7 +10,7 @@ import {
     getBasePage,
     getBaseProject,
     getBaseProjectSkill,
-    getBaseSkillType,
+    getBaseSkillType, getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import { IUser, userCollectionName, UserRole } from "../../../src/api/entities/UserEntity";
@@ -726,6 +726,23 @@ describe("Create project form", () => {
 
                 await defaultReroute();
             });
+        });
+    });
+
+    describe("with error", () => {
+        it("should handle error", async () => {
+            console.log = jest.fn()
+
+            const project: IProject = getBaseProject("5");
+            const edition: IEdition = getBaseActiveEdition("1", "OSOC-2022");
+            render(
+                makeCacheFree(() =>
+                    enableUseEditionComponentWrapper(() => <ProjectForm project={project} />, edition)
+                )
+            );
+            await enableActForResponse({ url: project._links.coaches.href }, getBaseTeapot());
+
+            await waitFor(() => expect(console.log).toHaveBeenCalled())
         });
     });
 });

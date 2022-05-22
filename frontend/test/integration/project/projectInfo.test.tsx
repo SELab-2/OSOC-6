@@ -23,7 +23,7 @@ import {
     getBaseProject,
     getBaseProjectSkill,
     getBaseSkillType,
-    getBaseStudent,
+    getBaseStudent, getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 
@@ -139,6 +139,23 @@ describe("project info", () => {
 
         await waitFor(() => {
             expect(screen.queryByTestId("delete-project")).not.toBeInTheDocument();
+        });
+    });
+
+    it("should handle error", async () => {
+        const projectId = "5";
+        console.log = jest.fn();
+
+        mockRouter.setCurrentUrl("/projects/" + projectId);
+        mockRouter.query = { id: projectId };
+
+        render(makeCacheFree(ProjectInfo));
+        await enableCurrentUser(getBaseUser("5", UserRole.coach, true));
+
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseTeapot());
+
+        await waitFor(() => {
+            expect(console.log).toHaveBeenCalled();
         });
     });
 });

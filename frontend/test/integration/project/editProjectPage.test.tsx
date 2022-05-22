@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
-import { render } from "@testing-library/react";
+import {render, waitFor} from "@testing-library/react";
 import EditProjectPage from "../../../src/pages/projects/[id]/edit";
-import { getBaseOkResponse, getBaseProject } from "../TestEntityProvider";
+import {getBaseOkResponse, getBaseProject, getBaseTeapot} from "../TestEntityProvider";
 import { enableActForResponse, makeCacheFree } from "../Provide";
 import mockRouter from "next-router-mock";
 import apiPaths from "../../../src/properties/apiPaths";
+import EditionPage from "../../../src/pages/editions";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -37,5 +38,14 @@ describe("Edit project Page", () => {
             await page.findByTestId("edit-project-page");
             await page.findByDisplayValue(project.name);
         });
+    });
+
+    it("Should handle error", async () => {
+        console.log = jest.fn();
+
+        render(makeCacheFree(EditProjectPage));
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseTeapot())
+
+        await waitFor(() => expect(console.log).toHaveBeenCalled())
     });
 });
