@@ -1,15 +1,15 @@
-import { Button, Container, FormControl, Toast, ToastContainer } from "react-bootstrap";
+import {Button, Toast, ToastContainer} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/resetComponent.module.css";
-import { useState } from "react";
+import {useState} from "react";
 import applicationPaths from "../../properties/applicationPaths";
-import { capitalize } from "../../utility/stringUtil";
-import { StatusCodes } from "http-status-codes";
-import { AxiosResponse } from "axios";
+import {capitalize} from "../../utility/stringUtil";
+import {StatusCodes} from "http-status-codes";
+import {AxiosResponse} from "axios";
 import timers from "../../properties/timers";
-import { IUser } from "../../api/entities/UserEntity";
-import { useRouterPush } from "../../hooks/routerHooks";
-import { Field, Form, Formik } from "formik";
+import {IUser} from "../../api/entities/UserEntity";
+import {useRouterPush} from "../../hooks/routerHooks";
+import {Field, Form, Formik} from "formik";
 
 /**
  * The props needed for the ResetComponent.
@@ -82,9 +82,11 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
                             type={name}
                             name="valueRepeat"
                         />
-                        <Button type="submit" data-testid="confirm-reset" className="mt-3">
-                            {capitalize(t("confirm"))}
-                        </Button>
+                        <div>
+                            <Button type="submit" data-testid="confirm-reset" className="mt-3">
+                                {capitalize(t("confirm"))}
+                            </Button>
+                        </div>
                     </Form>
                 </Formik>
             </div>
