@@ -16,3 +16,12 @@
     color: white;
     padding-top: 1rem;
 }
+
+.assignment_reason_div {
+    flex-grow: 1;
+}
+
+.assignment_item_div {
+    display: flex;
+    flex-direction: row;
+}

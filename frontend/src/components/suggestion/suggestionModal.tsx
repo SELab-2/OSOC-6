@@ -18,6 +18,7 @@ export function SuggestionModal(props: {
 }) {
     const { t } = useTranslation("common");
     const [showModal, setShowModal] = useState(false);
+    const [hover, setHover] = useState(false);
 
     const { user, error: userError } = useCurrentUser(true);
 
@@ -44,13 +45,31 @@ export function SuggestionModal(props: {
         handleClose();
     }
 
+    async function hoverHandler() {
+        setHover(true);
+    }
+
+    async function endHoverHandler() {
+        setHover(false);
+    }
+
+    let style: {};
+
+    if (hover) {
+        style = { borderColor: props.colour, width: 150, backgroundColor: props.colour, color: "black" };
+    } else {
+        style = { color: props.colour, borderColor: props.colour, width: 150 };
+    }
+
     return (
         <>
             <Button
                 variant="btn-outline"
                 onClick={handleShow}
-                style={{ color: props.colour, borderColor: props.colour, width: 150 }}
+                style={style}
                 data-testid="suggest-button"
+                onMouseEnter={hoverHandler}
+                onMouseLeave={endHoverHandler}
             >
                 {capitalize(t("suggest"))} {props.suggestion.toLowerCase()}
             </Button>

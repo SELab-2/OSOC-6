@@ -1,6 +1,6 @@
-import { Button, ListGroup } from "react-bootstrap";
+import { ButtonGroup, Button, ListGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
-import styles from "../../styles/studentList.module.css";
+import styles from "../../styles/students/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
 import {
@@ -54,39 +54,34 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
     }
 
     return (
-        <div
-            className={"capitalize overflow-auto h-100 " + styles.student_list_component}
-            data-testid="student-list"
-        >
-            <ListGroup as="ul" className={styles.student_list}>
+        <div className={"capitalize h-100 " + styles.student_list_component} data-testid="student-list">
+            <ListGroup as="ul" className={"overflow-auto " + styles.student_list}>
                 <ListGroup.Item
                     key="studentHeader"
                     data-testid="studentlist-header"
                     className={"container " + styles.student_list_title}
                 >
-                    <div className="row align-items-center">
-                        <h2 className="col">{t("students")}</h2>
-                        {props.showAdd && isAdmin && (
-                            <Button
-                                data-testid="new-student-button"
-                                className="col-md-auto"
-                                variant="outline-primary"
-                                size="sm"
-                                onClick={() => routerPush("/" + applicationPaths.studentCreation)}
+                    <h2 className={styles.student_list_title_text}>{t("students")}</h2>
+                    {props.showAdd && isAdmin && (
+                        <Button
+                            data-testid="new-student-button"
+                            variant="outline-primary"
+                            className={styles.student_list_new_button}
+                            size="sm"
+                            onClick={() => routerPush("/" + applicationPaths.studentCreation)}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1.5em"
+                                height="1.5em"
+                                fill="currentColor"
+                                className="bi bi-plus"
+                                viewBox="0 0 16 16"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="1.5em"
-                                    height="1.5em"
-                                    fill="currentColor"
-                                    className="bi bi-plus"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                </svg>
-                            </Button>
-                        )}
-                    </div>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                        </Button>
+                    )}
                 </ListGroup.Item>
                 {students
                     .map((student) => ({
@@ -122,11 +117,13 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                         </ListGroup.Item>
                     ))}
             </ListGroup>
-            <footer className={"py-3 position-sticky bottom-0"} style={{ backgroundColor: "#0a0839" }}>
-                <StudentStatusButton status={Status.approved} colour="#1DE1AE" />
-                <StudentStatusButton status={Status.maybe} colour="#FCB70F" />
-                <StudentStatusButton status={Status.rejected} colour="#F14A3B" />
-                <StudentStatusButton status={Status.undecided} colour="gray" />
+            <footer className={"py-3 " + styles.student_list_footer}>
+                <ButtonGroup className={styles.student_list_button_group}>
+                    <StudentStatusButton status={Status.approved} colour="#1DE1AE" />
+                    <StudentStatusButton status={Status.maybe} colour="#FCB70F" />
+                    <StudentStatusButton status={Status.rejected} colour="#F14A3B" />
+                    <StudentStatusButton status={Status.undecided} colour="gray" />
+                </ButtonGroup>
             </footer>
         </div>
     );

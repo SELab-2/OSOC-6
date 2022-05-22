@@ -5,6 +5,7 @@ import apiPaths from "../../../properties/apiPaths";
 import { getStudentOnUrl } from "../../../api/calls/studentCalls";
 import { emptyStudent, IStudent } from "../../../api/entities/StudentEntity";
 import NavBar from "../../../components/util/navBar";
+import { Background } from "../../../components/util/background";
 
 /**
  * Page allowing editing of a student.
@@ -27,9 +28,8 @@ export default function StudentEdit() {
     return (
         <>
             <NavBar />
-            <div data-testid="student-edit">
-                <CreateStudentForm student={student} />
-            </div>
+            <Background />
+            <CreateStudentForm student={student} />
         </>
     );
 }

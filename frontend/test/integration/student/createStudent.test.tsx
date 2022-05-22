@@ -26,7 +26,7 @@ describe("create student", () => {
         const page = render(
             makeCacheFree(() => enableUseEditionComponentWrapper(() => <StudentCreate />, edition))
         );
-        await page.findByTestId("student-create");
+        await page.findByTestId("student-create-form");
     });
 
     afterEach(() => {
