@@ -145,7 +145,7 @@ describe("create student", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, student, mockRouter, expect.anything());
+            expect(spy).toHaveBeenCalledWith(null, student, expect.anything(), expect.anything());
         });
 
         await waitFor(() => {

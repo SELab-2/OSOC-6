@@ -103,7 +103,7 @@ describe("create communication", () => {
         await enableActForResponse(apiPaths.communications, getBaseOkResponse(communicationResponse));
 
         await waitFor(() => {
-            expect(mockRouter.asPath).toEqual("/" + applicationPaths.communicationBase + "/10");
+            expect(mockRouter.asPath).toEqual("/" + applicationPaths.students+ "/" + studentId + "/" + applicationPaths.communicationBase);
         });
     });
 
@@ -150,7 +150,7 @@ describe("create communication", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(mock).toHaveBeenCalledWith(communication, mockRouter, expect.anything());
+            expect(mock).toHaveBeenCalledWith(communication, expect.anything(), expect.anything());
         });
     });
 });
