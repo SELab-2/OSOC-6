@@ -119,7 +119,7 @@ export default function CreateCommunicationTemplateForm({
                                         borderColor: "white",
                                         borderWidth: 1,
                                         color: "white",
-                                        marginLeft: 10,
+                                        marginLeft: 13,
                                         marginBottom: 10,
                                         marginTop: 5,
                                         paddingLeft: 10,
