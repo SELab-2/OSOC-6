@@ -37,6 +37,12 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     private EntityLinks entityLinks;
 
     /**
+     * An admin test user.
+     */
+    private final UserEntity otherAdminUser =
+            new UserEntity("otheradmin@test.com", "other admin", UserRole.ADMIN, "123456");
+
+    /**
      * The actual path users are served on, with '/' as prefix.
      */
     private static final String USERS_PATH = "/" + DumbledorePathWizard.USERS_PATH;
@@ -65,6 +71,7 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     @Override
     public void removeSetUpRepository() {
         removeBasicData();
+        userRepository.deleteAll();
     }
 
     @Override
@@ -93,6 +100,13 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
     @Override
     public final Long get_id(final UserEntity entity) {
         return entity.getId();
+    }
+
+    /**
+     * Add the other admin user to the database.
+     */
+    private void addOtherAdmin() {
+        performAsAdmin(() -> userRepository.save(otherAdminUser));
     }
 
     @Test
@@ -370,9 +384,34 @@ public class AdminUserEndpointTests extends AdminEndpointTest<UserEntity, Long, 
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void admin_delete_user_succeeds() throws Exception {
+    public void admin_delete_coach_user_succeeds() throws Exception {
         perform_delete_with_id(USERS_PATH, getCoachUser().getId())
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_delete_other_admin_user_succeeds() throws Exception {
+        addOtherAdmin();
+
+        perform_delete_with_id(USERS_PATH, otherAdminUser.getId())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_delete_self_non_final_admin_succeeds() throws Exception {
+        addOtherAdmin();
+
+        perform_delete_with_id(USERS_PATH, getAdminUser().getId())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void admin_delete_self_final_admin_fails() throws Exception {
+        perform_delete_with_id(USERS_PATH, getAdminUser().getId())
+                .andExpect(status().isForbidden());
     }
 
     @Test

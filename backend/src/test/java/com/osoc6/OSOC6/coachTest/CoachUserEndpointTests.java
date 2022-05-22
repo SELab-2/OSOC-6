@@ -52,6 +52,13 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      */
     private static final String TEST_STRING = "Test Callname";
 
+    /**
+     * A coach test user.
+     */
+    private final UserEntity otherCoachUser =
+            new UserEntity("othercoach@test.com", "other coach", UserRole.COACH, "123456");
+
+
     @Override
     public UserEntity create_entity() {
         UserEntity userEntity = TestEntityProvider.getBaseCoachUserEntity(this);
@@ -92,12 +99,20 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     @Override
     public void removeSetUpRepository() {
         removeBasicData();
+        userRepository.deleteAll();
     }
 
     @Override
     public String transform_to_json(final UserEntity entity) {
         UserDTO helper = new UserDTO(entity, entityLinks);
         return Util.asJsonString(helper);
+    }
+
+    /**
+     * Add the other coach user to the database.
+     */
+    private void addOtherCoach() {
+        performAsAdmin(() -> userRepository.save(otherCoachUser));
     }
 
     @Test
@@ -217,9 +232,25 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void coach_delete_user_is_forbidden() throws Exception {
-        perform_delete_with_id(USERS_PATH, getCoachUser().getId())
+    public void coach_delete_admin_user_is_forbidden() throws Exception {
+        perform_delete_with_id(USERS_PATH, getAdminUser().getId())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_delete_other_coach_user_is_forbidden() throws Exception {
+        addOtherCoach();
+
+        perform_delete_with_id(USERS_PATH, otherCoachUser.getId())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_delete_self_succeeds() throws Exception {
+        perform_delete_with_id(USERS_PATH, getCoachUser().getId())
+                .andExpect(status().isNoContent());
     }
 
     @Test

@@ -98,4 +98,18 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             + "WHERE :edition IS NOT NULL and (u.user_role = 'ADMIN' or "
             + "i.edition_id = :#{@spelUtil.safeLong(#edition)})", nativeQuery = true)
     Page<UserEntity> findByEdition(@Param("edition") Long edition, Pageable pageable);
+
+    /**
+     * Delete a {@link UserEntity}.
+     * @apiNote
+     * An admin can delete every user, except for themselves when they are the last admin.
+     * A coach can only delete themselves.
+     */
+    @Override
+    @PreAuthorize("( " + MerlinSpELWizard.ADMIN_AUTH + " and "
+    + "(@userRepository.countAllByUserRoleEqualsAndEnabled(T(com.osoc6.OSOC6.entities.UserRole).ADMIN, true) > 1"
+        + " or authentication.principal.id != #id))" // admin deleting a different user than themselves
+        + " or (not " + MerlinSpELWizard.ADMIN_AUTH
+            + " and authentication.principal.id == #id)") // coach is deleting themselves
+    void deleteById(@NonNull Long id);
 }
