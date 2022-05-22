@@ -12,6 +12,7 @@ import { Button } from "react-bootstrap";
 import applicationPaths from "../../properties/applicationPaths";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
+import { Background } from "../../components/util/background";
 
 export default function SkillTypeIndexPage() {
     const { t } = useTranslation("common");
@@ -32,29 +33,35 @@ export default function SkillTypeIndexPage() {
     return (
         <>
             <NavBar />
-            <div className="container mt-3">
+            <Background />
+            <div className="container" style={{ marginTop: "3rem" }}>
                 <div className={styles.skill_types}>
-                    <h2 className="d-flex">{capitalize(t("skill types"))}</h2>
-                    <div>
-                        <Button
-                            data-testid="new-skill-type-button"
-                            className="mt-2"
-                            variant="outline-primary"
-                            onClick={() => router.push(transformer("/" + applicationPaths.skillTypesCreate))}
-                        >
-                            {capitalize(t("create skill type"))}
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="1.5em"
-                                height="1.5em"
-                                fill="currentColor"
-                                className="bi bi-plus"
-                                viewBox="0 0 16 16"
+                    <div style={{ display: "flex" }}>
+                        <h2 className="d-flex">{capitalize(t("skill types"))}</h2>
+                        <div style={{ marginLeft: "auto", marginRight: "0" }}>
+                            <Button
+                                data-testid="new-skill-type-button"
+                                className="mt-2"
+                                variant="outline-primary"
+                                onClick={() =>
+                                    router.push(transformer("/" + applicationPaths.skillTypesCreate))
+                                }
                             >
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                            </svg>
-                        </Button>
+                                {capitalize(t("create skill type"))}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="1.5em"
+                                    height="1.5em"
+                                    fill="currentColor"
+                                    className="bi bi-plus"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </Button>
+                        </div>
                     </div>
+                    <hr />
                     <div className="mt-2">
                         <SkillTypeList skillTypes={skillTypes} />
                     </div>
