@@ -57,7 +57,6 @@ export function SuggestionModal(props: {
 
     if (hover) {
         style = { borderColor: props.colour, width: 150, backgroundColor: props.colour, color: "black" };
-        console.log(style);
     } else {
         style = { color: props.colour, borderColor: props.colour, width: 150 };
     }
