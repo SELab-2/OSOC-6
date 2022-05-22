@@ -1,4 +1,4 @@
-import { Button, Container, FormControl, Toast, ToastContainer } from "react-bootstrap";
+import { Button, Toast, ToastContainer } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../styles/resetComponent.module.css";
 import { useState } from "react";
@@ -82,9 +82,11 @@ export function ResetComponent({ handler, name, user, token }: ResetComponentPro
                             type={name}
                             name="valueRepeat"
                         />
-                        <Button type="submit" data-testid="confirm-reset" className="mt-3">
-                            {capitalize(t("confirm"))}
-                        </Button>
+                        <div>
+                            <Button type="submit" data-testid="confirm-reset" className="mt-3">
+                                {capitalize(t("confirm"))}
+                            </Button>
+                        </div>
                     </Form>
                 </Formik>
             </div>
