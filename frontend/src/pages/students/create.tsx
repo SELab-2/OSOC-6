@@ -9,8 +9,8 @@ export default function StudentCreate() {
     return (
         <>
             <NavBar />
-            <CreateStudentForm />
             <Background />
+            <CreateStudentForm />
         </>
     );
 }
