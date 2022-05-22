@@ -110,7 +110,7 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
             ]);
         } else {
             // Will be refactored so keeping the hard coded string.
-            alert("pick a skill to keep the student on");
+            alert(capitalize(t("conflict decision")));
         }
     }
 

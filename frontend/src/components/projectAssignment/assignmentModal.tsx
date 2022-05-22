@@ -40,7 +40,7 @@ function AssignmentModal({
 
     async function dropStudent(values: { studentUrl: string; skillUrl: string; reason: string }) {
         const newAssignment = await addAssignment(values.studentUrl, values.skillUrl, values.reason, user!);
-        // We don't know how to change the value here since it depents on the skillUrl and we don
+        // We don't know how to change the value here since it depents on the skillUrl
         if (newAssignment && assignments) {
             await Promise.all([
                 mutate([...assignments, newAssignment]),
