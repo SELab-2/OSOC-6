@@ -12,7 +12,7 @@ import {
     getBaseForbiddenResponse,
     getBaseOkResponse,
     getBaseStudent,
-    getBaseUser
+    getBaseUser,
 } from "../TestEntityProvider";
 import { Communication, defaultCommunicationMedium } from "../../../src/api/entities/CommunicationEntity";
 import { UserRole } from "../../../src/api/entities/UserEntity";
@@ -103,7 +103,9 @@ describe("create communication", () => {
         await enableActForResponse(apiPaths.communications, getBaseOkResponse(communicationResponse));
 
         await waitFor(() => {
-            expect(mockRouter.asPath).toEqual("/" + applicationPaths.students+ "/" + studentId + "/" + applicationPaths.communicationBase);
+            expect(mockRouter.asPath).toEqual(
+                "/" + applicationPaths.students + "/" + studentId + "/" + applicationPaths.communicationBase
+            );
         });
     });
 

@@ -75,7 +75,7 @@ export function StudentInfo() {
         const response = await deleteStudent(student!._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
-                await routerAction({ pathname: "/" + applicationPaths.students, query: { ...router.query }});
+                await routerAction({ pathname: "/" + applicationPaths.students, query: { ...router.query } });
             } catch (error) {
                 setShow(true);
             }

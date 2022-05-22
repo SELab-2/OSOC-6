@@ -1,5 +1,8 @@
 import { Field, Form, Formik } from "formik";
-import { CommunicationTemplateEntity, ICommunicationTemplate } from "../../api/entities/CommunicationTemplateEntity";
+import {
+    CommunicationTemplateEntity,
+    ICommunicationTemplate,
+} from "../../api/entities/CommunicationTemplateEntity";
 import { createCommunicationTemplateSubmitHandler } from "../../handlers/createCommunicationTemplateSubmitHandler";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";

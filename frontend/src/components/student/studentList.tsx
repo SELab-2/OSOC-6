@@ -72,9 +72,7 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                                 className="col-md-auto"
                                 variant="outline-primary"
                                 size="sm"
-                                onClick={() =>
-                                    routerPush("/" + applicationPaths.studentCreation)
-                                }
+                                onClick={() => routerPush("/" + applicationPaths.studentCreation)}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

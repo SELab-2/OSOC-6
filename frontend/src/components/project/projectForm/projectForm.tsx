@@ -14,7 +14,11 @@ import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import styles from "../../../styles/projects/createProject.module.css";
 import { IProject } from "../../../api/entities/ProjectEntity";
 import { getAllProjectSkillsFromLinks } from "../../../api/calls/projectSkillCalls";
-import { IProjectSkill, ProjectSkill, projectSkillFromIProjectSkill } from "../../../api/entities/ProjectSkillEntity";
+import {
+    IProjectSkill,
+    ProjectSkill,
+    projectSkillFromIProjectSkill,
+} from "../../../api/entities/ProjectSkillEntity";
 import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";

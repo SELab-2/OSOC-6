@@ -63,7 +63,9 @@ export function EditionInfo({ editionId }: EditionOverviewProps) {
     async function useRightUrlAndGlobalContext() {
         await globalEditionSetter(edition);
         // Normal push is needed here because edition is changed.
-        await router.push(getQueryUrlFromParams("/" + applicationPaths.assignStudents, { edition: edition.name }));
+        await router.push(
+            getQueryUrlFromParams("/" + applicationPaths.assignStudents, { edition: edition.name })
+        );
     }
 
     function handleEditName() {

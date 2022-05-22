@@ -38,7 +38,9 @@ export function EditionRowComponent(props: EditionProps) {
     async function useRightUrlAndGlobalContext() {
         await globalEditionSetter(edition);
         // Normal push is needed here because edition is changed.
-        await router.push(getQueryUrlFromParams("/" + applicationPaths.assignStudents, { edition: edition.name }));
+        await router.push(
+            getQueryUrlFromParams("/" + applicationPaths.assignStudents, { edition: edition.name })
+        );
     }
 
     async function deleteEdition() {

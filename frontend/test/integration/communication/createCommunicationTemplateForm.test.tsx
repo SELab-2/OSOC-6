@@ -55,7 +55,14 @@ describe("create communication template", () => {
         await userEvent.click(form.getByTestId("submit"));
 
         await waitFor(() => {
-            expect(spy).toHaveBeenCalledWith(null, studentId, comTemplate, expect.anything(), expect.anything(), expect.anything());
+            expect(spy).toHaveBeenCalledWith(
+                null,
+                studentId,
+                comTemplate,
+                expect.anything(),
+                expect.anything(),
+                expect.anything()
+            );
         });
 
         await waitFor(() => {
@@ -69,11 +76,14 @@ describe("create communication template", () => {
         await enableActForResponse(apiPaths.communicationTemplates, getBaseOkResponse(responseTemplate));
 
         await waitFor(() => {
-            expect(mockRouter.asPath).toEqual("/" + applicationPaths.students +
+            expect(mockRouter.asPath).toEqual(
                 "/" +
-                studentId +
-                "/" +
-                applicationPaths.communicationRegistration );
+                    applicationPaths.students +
+                    "/" +
+                    studentId +
+                    "/" +
+                    applicationPaths.communicationRegistration
+            );
         });
     });
 });
