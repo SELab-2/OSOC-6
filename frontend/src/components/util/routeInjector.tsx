@@ -116,7 +116,7 @@ export default function RouteInjector({ children }: any) {
 
     if (activeAvailableEditions && activeAvailableEditions.length === 0) {
         if (
-            router.pathname !== "/" + applicationPaths.home &&
+            router.pathname !== "/" + applicationPaths.inject &&
             router.pathname !== "/" + applicationPaths.editionCreate
         ) {
             return (

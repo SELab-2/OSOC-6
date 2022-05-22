@@ -32,6 +32,9 @@ export function pathIsForbiddenForCoach(url: string): boolean {
         // Users
         "users$",
 
+        // data injection
+        "inject",
+
         // Projects create only
         "projects/create$",
 
@@ -47,6 +50,10 @@ export function pathIsForbiddenForCoach(url: string): boolean {
         // Editions
         "editions/[0-9]*$",
         "editions/create$",
+
+        // skilltypes
+        "skillTypes/",
+        "skillTypes/.*",
     ];
 
     let routerPath = url.substring(1);
