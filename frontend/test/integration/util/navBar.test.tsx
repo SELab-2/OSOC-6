@@ -1,22 +1,21 @@
-import {render, screen, waitFor} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import NavBar from "../../../src/components/util/navBar";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import applicationPaths from "../../../src/properties/applicationPaths";
 import mockRouter from "next-router-mock";
-import {getBaseUser} from "../TestEntityProvider";
-import {UserRole} from "../../../src/api/entities/UserEntity";
-import {enableCurrentUser, makeCacheFree} from "../Provide";
+import { getBaseUser } from "../TestEntityProvider";
+import { UserRole } from "../../../src/api/entities/UserEntity";
+import { enableCurrentUser, makeCacheFree } from "../Provide";
 
 describe("Navbar Tests", () => {
-
     async function setUser() {
         const user = getBaseUser("1", UserRole.admin, true);
         await enableCurrentUser(user);
     }
 
     it("Should be able to render.", async () => {
-        render(<NavBar/>);
+        render(<NavBar />);
 
         await setUser();
 
@@ -81,7 +80,7 @@ describe("Navbar Tests", () => {
     });
 
     it.skip("Click profile", async () => {
-        render(<NavBar/>);
+        render(<NavBar />);
 
         await setUser();
 
