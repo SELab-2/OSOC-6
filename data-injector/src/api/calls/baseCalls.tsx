@@ -95,14 +95,28 @@ export function getQueryUrlFromParams(url: string, params: { [k: string]: any })
     return urlConstructor;
 }
 
-export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
-    const urlQuery = url.split("?")[1];
-    let params = new Map();
-    for (const param of urlQuery.split("&")) {
-        const parameter: string[] = param.split("=");
-        params.set(parameter[0], parameter[1]);
+export function removeParamFormUrl(url: string, param: string): string {
+    if (!(url.includes("?" + param + "=") || url.includes("&" + param + "="))) {
+        return url;
     }
-    return params;
+    return url
+        .replace(new RegExp(param + "=[^&]*"), "")
+        .replace("?&", "?")
+        .replace("&&", "&")
+        .replace(/[?&]$/, "");
+}
+
+export function getParamsFromQueryUrl(url: string): { [k: string]: any } {
+    if (url.includes("?")) {
+        const urlQuery = url.split("?")[1];
+        let params = new Map();
+        for (const param of urlQuery.split("&")) {
+            const parameter: string[] = param.split("=");
+            params.set(parameter[0], parameter[1]);
+        }
+        return params;
+    }
+    return {};
 }
 
 /**

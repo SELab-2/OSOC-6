@@ -4,10 +4,12 @@ import { loginSubmitHandler } from "../handlers/loginSubmitHandler";
 import useTranslation from "next-translate/useTranslation";
 import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
+import NavBar from "../components/util/navBar";
 import { Card } from "react-bootstrap";
 import styles from "../styles/loginForm.module.css";
 import { capitalize } from "../utility/stringUtil";
 import { useState } from "react";
+import applicationPaths from "../properties/applicationPaths";
 import { Background } from "../components/util/background";
 
 const Login: NextPage = () => {
@@ -19,6 +21,7 @@ const Login: NextPage = () => {
     return (
         <div className={styles.login_page}>
             <Background />
+            <NavBar />
             <div className={styles.login_full_div}>
                 <div className={styles.login_row}>
                     <div className={styles.login_floating_text_col}>
@@ -39,6 +42,11 @@ const Login: NextPage = () => {
                                     loginSubmitHandler(form, setHadError, router, mutate)
                                 }
                             />
+                            <div className="mt-2">
+                                <a href={"/" + applicationPaths.forgotPassword} className={styles.link}>
+                                    {capitalize(t("forgot password link"))}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ const common = {
     "let's get started": "let's get started!",
     login: "login",
     "forgot password link": "forgot password?",
+    "back to login": "back to login",
 
     "forgot password title": "forgot password",
     "reset password email": "enter email address of your account",
@@ -17,8 +18,6 @@ const common = {
 
     "reset password title": "reset password",
     "password identical": "passwords need to be identical",
-
-    callname: "callname",
 
     "empty page": "empty page",
     confirm: "confirm",
@@ -62,6 +61,7 @@ const common = {
     // Project strings
     "create project": "create project",
     "edit project": "edit project",
+    "save project": "save project",
     "project name": "project name",
     "project info": "project info",
     "project goals": "goals",
@@ -77,6 +77,8 @@ const common = {
     "add coach": "add coach",
     "add goal": "add goal",
     "skill info": "no special info",
+    "no items added yet": "no items added yet",
+    "no coaches added yet": "no coaches added yet",
 
     // Profile strings
     profile: "profile",
@@ -86,6 +88,7 @@ const common = {
     "project expertise": "expertise needed for this project",
     "project roles": "roles needed for this project",
     "select a project to start": "select a project to start",
+    "confirm delete profile": "are you sure you want to delete your profile?",
 
     // People strings
     email: "e-mail",
@@ -101,8 +104,8 @@ const common = {
     "no edition": "there are no editions made yet.",
     "no error": "no error",
     "edition overview": "edition overview",
-    "change edition state":
-        "are you want to change this attribute? this change has a huge impact, so proceed with caution...",
+    "change edition state": "do you really want to change this attribute?",
+    "huge impact": "This change has a huge impact, so proceed with caution...",
     "invalid edition year": "please provide a valid year",
     "create new edition": "create new edition",
     "manage editions": "manage editions",
@@ -110,20 +113,29 @@ const common = {
     "not active": "not active",
 
     // Communication strings
+    communication: "communication",
+    "add communication": "add communication",
     "create communication template": "create communication template",
     "template placeholder": "Write your template here",
     subject: "subject",
+    for: "for",
     "communication template": "communication template",
     "open in mail application": "open in mail application",
     "choose template": "choose your template",
-    "additional communication info": "additional communication info",
+    "create template": "or create your own",
+    "create new template": "create new template",
+    "edit template": "edit the template",
+    "additional communication info": "additional info",
     "communication content": "content of the communication",
     medium: "medium",
     "by medium": "by",
     "register communication for": "register communication for",
     "edit communicationTemplate": "edit communication template",
+    "recent communication": "recent communication",
 
     // Student info strings
+    callname: "callname",
+    "student info": "student info",
     suggestions: "suggestions",
     suggest: "suggest",
     "reason suggestion": "reason for the suggestion",
@@ -133,13 +145,16 @@ const common = {
     "english proficiency": "english proficiency",
     "phone number": "phone number",
     gender: "gender",
-    pronouns: "with pronouns",
+    pronouns: "pronouns",
+    "with pronouns": "with pronouns",
     about: "about the student",
     "more info": "more info about this student",
     education: "student education and experience",
     cv: "cv",
     portfolio: "portfolio",
     motivation: "motivation",
+    "first name": "first name",
+    "last name": "last name",
 
     "info current": "currently in",
     "info year": "year of",
@@ -153,15 +168,39 @@ const common = {
     "degree duration": "year out of",
     "applied for": "applied for",
     "osoc experience": "osoc experience",
-    NONE: "no experience yet",
-    YES_NO_STUDENT_COACH: "yes, but does not want to be student coach",
-    YES_STUDENT_COACH: "yes, wants to be student coach",
+    female: "female",
+    male: "male",
+    transgender: "transgender",
+    "not specified": "not specified",
+    "read not write": "read not write",
+    "simple conversation": "simple conversation",
+    expressive: "expressive",
+    extensive: "extensive",
+    fluent: "fluent",
+    none: "no experience yet",
+    "yes, no student coach": "yes, but does not want to be student coach",
+    "yes, student coach": "yes, wants to be student coach",
+    or: "or",
+    "invalid uri": "please enter a valid URI",
 
     "change status title": "change status",
     "change status": "would you like to change the status to",
 
     filters: "filters",
     "choose roles": "choose one or more",
+
+    "create student": "create student",
+    "edit student": "edit student",
+    "add study": "add study",
+    "year of degree": "year of degree",
+    "degree length": "duration of degree",
+    "add role": "add role",
+    role: "role",
+    "cv url": "cv url",
+    "portfolio url": "portfolio url",
+    "motivation url": "motivation url",
+    "written motivation": "written motivation",
+    "motivation placeholder": "write student motivation here",
 
     // Assignment strings
     "assignment modal title": "Why do you want this student here?",
@@ -172,9 +211,11 @@ const common = {
     "no skills for project": "No skills have been assigned to this project",
     loading: "Loading...",
     "no projects": "This edition has no projects :(.",
+    "confirm delete assignment": "are you sure you want to remove this assignment?",
 
     // Conflict strings
     conflict: "conflict",
+    "conflict decision": "choose a project for the student",
     "reason(s)": "reason(s)",
     "only admins can resolve a conflict": "only admins can resolve a conflict",
     "some students are assigned to multiple projects": "some students are assigned to multiple projects",
@@ -192,6 +233,11 @@ const common = {
     "edit colour": "edit colour",
     delete: "delete",
     skills: "skills",
+    "skill types": "skill types",
+    "create skill type": "create skill type",
+
+    "input empty": "input field can not be empty",
+    "confirm delete": "are you sure you want to delete this?",
 };
 
 export default common;

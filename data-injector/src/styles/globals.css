@@ -44,6 +44,10 @@ ul {
     border-right: 0;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .accordion-button {
     background-color: #1b1a31 !important;
     color: white !important;

@@ -1,10 +1,33 @@
 import { FetcherResponse, PublicConfiguration } from "swr/dist/types";
 import useEdition from "./useGlobalEdition";
-import useSWR from "swr";
-import { extractIdFromEditionUrl, getEditionByName, getEditionOnUrl } from "../api/calls/editionCalls";
+import useSWR, { useSWRConfig } from "swr";
+import { extractIdFromEditionUrl, getEditionOnUrl } from "../api/calls/editionCalls";
 import { getQueryUrlFromParams } from "../api/calls/baseCalls";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { IEdition } from "../api/entities/EditionEntity";
+import { IBaseEntity } from "../api/entities/BaseEntities";
+
+export function useSwrForEntityList<T extends IBaseEntity[]>(
+    url: string | null,
+    fetcher: ((args_0: string) => FetcherResponse<T>) | null,
+    config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
+) {
+    const { mutate } = useSWRConfig();
+    const swrResponse = useSWR(url, fetcher, config);
+    if (swrResponse.data) {
+        Promise.all(swrResponse.data.map((entity) => mutate(entity._links.self.href))).catch(console.log);
+    }
+    return swrResponse;
+}
+
+export function useSwrForEntityListWithEdition<T extends IBaseEntity[]>(
+    url: string | null,
+    fetcher: ((args_0: string) => FetcherResponse<T>) | null,
+    config?: Partial<PublicConfiguration<T, any, (args_0: string) => FetcherResponse<T>>>
+) {
+    const apiTransformer = useEditionAPIUrlTransformer();
+    return useSWR(url ? apiTransformer(url) : null, fetcher, config);
+}
 
 /**
  * useSWR wrapper that fills in the global edition as an edition query.
@@ -41,12 +64,18 @@ export function useEditionAPIUrlTransformer(): (url: string) => string {
 export function useEditionApplicationPathTransformer(): (url: string) => string {
     const [editionUrl] = useEdition();
     const { data: edition } = useSWR(editionUrl, getEditionOnUrl);
-    return (url) => getQueryUrlFromParams(url, { edition: edition?.name });
+
+    return (url) => {
+        // make sure only a single edition is contained in the url
+        if (edition) {
+            return getQueryUrlFromParams(url, { edition: edition?.name });
+        }
+        return url;
+    };
 }
 
 /**
- * Set the global context and change the url so the
- * right edition name is in the url.
+ * Set the global context and change the url so the correct edition name is in the url.
  */
 export function useGlobalEditionSetter(): (edition: IEdition) => Promise<void> {
     const router = useRouter();
