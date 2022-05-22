@@ -7,15 +7,15 @@ import {
     getBaseSkillType,
     getBaseStudent,
     getBaseUser,
-} from "./TestEntityProvider";
+} from "../TestEntityProvider";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { enableCurrentUser, makeCacheFree } from "./Provide";
-import AssignmentModal, { ModalInfo } from "../../src/components/projectAssignment/assignmentModal";
+import { enableCurrentUser, makeCacheFree } from "../Provide";
+import AssignmentModal, { ModalInfo } from "../../../src/components/projectAssignment/assignmentModal";
 import { Dispatch } from "react";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
-import { UserRole } from "../../src/api/entities/UserEntity";
-import { Assignment } from "../../src/api/entities/AssignmentEntity";
+import { UserRole } from "../../../src/api/entities/UserEntity";
+import { Assignment } from "../../../src/api/entities/AssignmentEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
