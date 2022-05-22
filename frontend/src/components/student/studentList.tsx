@@ -59,31 +59,27 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                     data-testid="studentlist-header"
                     className={"container " + styles.student_list_title}
                 >
-                    <div className="row align-items-center">
-                        <h2 className="col">{t("students")}</h2>
-                        {props.showAdd && isAdmin && (
-                            <Button
-                                data-testid="new-student-button"
-                                className="col-md-auto"
-                                variant="outline-primary"
-                                size="sm"
-                                onClick={() =>
-                                    router.push(transformer("/" + applicationPaths.studentCreation))
-                                }
+                    <h2 className={styles.student_list_title_text}>{t("students")}</h2>
+                    {props.showAdd && isAdmin && (
+                        <Button
+                            data-testid="new-student-button"
+                            variant="outline-primary"
+                            className={styles.student_list_new_button}
+                            size="sm"
+                            onClick={() => router.push(transformer("/" + applicationPaths.studentCreation))}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1.5em"
+                                height="1.5em"
+                                fill="currentColor"
+                                className="bi bi-plus"
+                                viewBox="0 0 16 16"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="1.5em"
-                                    height="1.5em"
-                                    fill="currentColor"
-                                    className="bi bi-plus"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                </svg>
-                            </Button>
-                        )}
-                    </div>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                        </Button>
+                    )}
                 </ListGroup.Item>
                 {students
                     .map((student) => ({

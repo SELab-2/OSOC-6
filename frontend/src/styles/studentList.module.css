@@ -1,6 +1,17 @@
 .student_list_title {
     background-color: #0a0839;
     color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.student_list_title_text {
+    flex-grow: 1;
+}
+
+.student_list_new_button {
+    height: fit-content;
 }
 
 .student_list_element {
