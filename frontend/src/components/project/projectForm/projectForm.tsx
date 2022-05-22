@@ -6,9 +6,9 @@ import { capitalize } from "../../../utility/stringUtil";
 import { ProjectCreationValues, projectFormSubmitHandler } from "../../../handlers/projectFormSubmitHandler";
 import { IUser } from "../../../api/entities/UserEntity";
 import { useEffect, useState } from "react";
-import { useEditionAPIUrlTransformer } from "../../../hooks/utilHooks";
+import { useEditionAPIUrlTransformer, useSwrForEntityList } from "../../../hooks/utilHooks";
 import useEdition from "../../../hooks/useGlobalEdition";
-import useSWR, { useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import styles from "../../../styles/projects/createProject.module.css";
 import { IProject } from "../../../api/entities/ProjectEntity";
@@ -69,11 +69,11 @@ export function ProjectForm({ project }: ProjectCreationProps) {
 
     // Fetch items
     // Skills and coaches
-    const { data: receivedCoaches, error: coachesError } = useSWR(
+    const { data: receivedCoaches, error: coachesError } = useSwrForEntityList(
         project ? project._links.coaches.href : null,
         getAllUsersFromLinks
     );
-    const { data: receivedSkills, error: skillsError } = useSWR(
+    const { data: receivedSkills, error: skillsError } = useSwrForEntityList(
         project ? project._links.neededSkills.href : null,
         getAllProjectSkillsFromLinks
     );

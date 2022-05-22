@@ -13,6 +13,7 @@ import apiPaths from "../properties/apiPaths";
 import { getAllStudentsFromPage } from "../api/calls/studentCalls";
 import { capitalize } from "../utility/stringUtil";
 import useTranslation from "next-translate/useTranslation";
+import useConflictStudents from "../hooks/useConflictStudents";
 
 export type DropHandler = (
     studentName: string,
@@ -33,11 +34,7 @@ const AssignStudentsPage: NextPage = () => {
         projectName: string;
     }>();
 
-    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
-        apiPaths.studentConflict,
-        getAllStudentsFromPage,
-        { refreshInterval: 1000 }
-    );
+    const { data: receivedStudents, error: studentsError } = useConflictStudents();
 
     if (showConflicts && receivedStudents?.length === 0) {
         setShowConflicts(false);

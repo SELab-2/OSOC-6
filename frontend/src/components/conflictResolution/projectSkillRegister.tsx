@@ -1,7 +1,8 @@
 import { IAssignment } from "../../api/entities/AssignmentEntity";
-import useSWR from "swr";
+import useSWR, { mutate, useSWRConfig } from "swr";
 import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
 import { useEffect } from "react";
+import useValidAssignmentsFromProjectSkillList from "../../hooks/useValidAssignmentsFromProjectSkillList";
 
 /**
  * Properties needed by [ProjectSkillRegister].
@@ -10,6 +11,7 @@ export interface ProjectSkillRegisterProps {
     registerAssignment: (projectSkillUrl: string, assigmentUrl: string) => void;
     removeAssignment: (assignmentUrl: string) => void;
     assignment: IAssignment;
+    picked: string;
 }
 
 /**
@@ -22,15 +24,23 @@ export default function ProjectSkillRegister({
     registerAssignment,
     removeAssignment,
     assignment,
+    picked,
 }: ProjectSkillRegisterProps) {
     const { data: receivedSkill, error: skillError } = useSWR(
         assignment._links.projectSkill.href,
         getProjectSkillOnUrl
     );
+    const { mutate } = useSWRConfig();
 
     const receivedProjectSkillUrl = receivedSkill?._links.self.href;
     const assignmentUrl = assignment._links.self.href;
     const hasErrored = !!skillError;
+
+    useEffect(() => {
+        if (picked && receivedSkill?._links?.assignments?.href) {
+            mutate(receivedSkill?._links?.assignments?.href).catch(console.log);
+        }
+    }, [picked, receivedSkill?._links?.assignments?.href]);
 
     useEffect(() => {
         if (receivedProjectSkillUrl) {

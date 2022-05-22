@@ -1,10 +1,6 @@
 import { IProjectSkill } from "../../api/entities/ProjectSkillEntity";
-import useSWR, { useSWRConfig } from "swr";
-import {
-    deleteAssignment,
-    getAllAssignmentsFromPage,
-    getValidAssignmentsUrlForProjectSkill,
-} from "../../api/calls/AssignmentCalls";
+import { useSWRConfig } from "swr";
+import { deleteAssignment } from "../../api/calls/AssignmentCalls";
 import WarningToast from "../util/warningToast";
 import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
@@ -12,8 +8,9 @@ import { IAssignment } from "../../api/entities/AssignmentEntity";
 import StudentAssignmentsRow from "./studentAssignmentsRow";
 import SkillBadge from "../util/skillBadge";
 import { useState } from "react";
-import { ProjectMapper } from "../conflictResolution/conflictResolutionItem";
 import StudentAssignmentRegister from "./studentAssignmentRegister";
+import useValidAssignmentsFromProjectSkillList from "../../hooks/useValidAssignmentsFromProjectSkillList";
+import apiPaths from "../../properties/apiPaths";
 
 /**
  * Type that will hold the projectSkills and its assignments.
@@ -40,12 +37,12 @@ export interface IAssignmentItemProps {
  */
 function ProjectSkillItem({ skill }: IAssignmentItemProps) {
     const { t } = useTranslation("common");
-    const { mutate } = useSWRConfig();
-    const assignmentsUrl = getValidAssignmentsUrlForProjectSkill(skill);
-    const { data: receivedAssignments, error: assignmentsError } = useSWR(
-        assignmentsUrl,
-        getAllAssignmentsFromPage
-    );
+    const {
+        data: receivedAssignments,
+        error: assignmentsError,
+        mutate,
+    } = useValidAssignmentsFromProjectSkillList(skill._links.self.href);
+    const { mutate: globalMutate } = useSWRConfig();
 
     // Mutation boolean is needed because we are changing the projectSkillMapper in place.
     // Changing studentSkillMapper in place is needed because of closures.
@@ -78,7 +75,11 @@ function ProjectSkillItem({ skill }: IAssignmentItemProps) {
     async function deleteAssignmentCallback(assignmentUrl: string) {
         removeAssignment(assignmentUrl);
         const newAssignments = await deleteAssignment(assignmentUrl, assignments);
-        await mutate(assignmentsUrl, newAssignments);
+        await Promise.all([mutate(newAssignments), globalMutate(apiPaths.studentConflict)]);
+    }
+
+    async function registerInvalidCallback(assignmentUrl: string) {
+        removeAssignment(assignmentUrl);
     }
 
     if (mutated) {
@@ -121,6 +122,7 @@ function ProjectSkillItem({ skill }: IAssignmentItemProps) {
                             studentUrl={studentUrl}
                             assignments={Array.from(assignments)}
                             removeCallback={deleteAssignmentCallback}
+                            registerInvalidCallback={registerInvalidCallback}
                         />
                         <hr />
                     </div>

@@ -1,6 +1,5 @@
 import { IAssignment } from "../../api/entities/AssignmentEntity";
 import useSWR from "swr";
-import { getProjectSkillOnUrl } from "../../api/calls/projectSkillCalls";
 import { useEffect } from "react";
 import { getStudentOnUrl } from "../../api/calls/studentCalls";
 

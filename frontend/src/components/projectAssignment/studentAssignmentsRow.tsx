@@ -20,12 +20,14 @@ interface IAssignmentStudentProps {
     studentUrl: string;
     assignments: string[];
     removeCallback: (assignmentUrl: string) => Promise<void>;
+    registerInvalidCallback: (assignmentUrl: string) => Promise<void>;
 }
 
 export default function StudentAssignmentsRow({
     studentUrl,
     assignments,
     removeCallback,
+    registerInvalidCallback,
 }: IAssignmentStudentProps) {
     const { data: receivedStudent, error: studentError } = useSWR(studentUrl, getStudentOnUrl);
 
@@ -73,6 +75,7 @@ export default function StudentAssignmentsRow({
                             key={assignment}
                             assignmentUrl={assignment}
                             removeCallback={removeCallback}
+                            registerInvalidCallback={registerInvalidCallback}
                         />
                     ))}
             </Col>

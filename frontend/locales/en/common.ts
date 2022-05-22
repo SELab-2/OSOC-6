@@ -214,6 +214,7 @@ const common = {
 
     // Conflict strings
     conflict: "conflict",
+    "conflict decision": "choose a project for the student",
     "reason(s)": "reason(s)",
     "only admins can resolve a conflict": "only admins can resolve a conflict",
     "some students are assigned to multiple projects": "some students are assigned to multiple projects",

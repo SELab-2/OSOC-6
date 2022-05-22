@@ -16,16 +16,19 @@ import Image from "next/image";
 import { useRouterPush } from "../../hooks/routerHooks";
 import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import useProjectsByEdition from "../../hooks/useProjectsByEdition";
 
 export function ProjectInfo() {
     const { t } = useTranslation("common");
-    const router = useRouter();
     const routerAction = useRouterPush();
+    const router = useRouter();
     const { id } = router.query as { id: string };
     const [show, setShow] = useState<boolean>(false);
     const isAdmin = useCurrentAdminUser();
 
     const { data, error } = useFullProjectInfo(apiPaths.projects + "/" + id);
+
+    const { data: receivedProjects, mutate } = useProjectsByEdition();
 
     if (error) {
         console.log(error);
@@ -41,6 +44,13 @@ export function ProjectInfo() {
         if (response.status === StatusCodes.NO_CONTENT) {
             try {
                 await routerAction("/" + applicationPaths.projects);
+                if (receivedProjects) {
+                    mutate(
+                        receivedProjects.filter(
+                            (filterProj) => filterProj._links.self.href !== info._links.self.href
+                        )
+                    ).catch(console.log);
+                }
             } catch (error) {
                 setShow(true);
             }
@@ -50,7 +60,7 @@ export function ProjectInfo() {
     }
 
     async function editProject() {
-        await router.push("/" + applicationPaths.projects + "/" + id + "/edit");
+        await routerAction("/" + applicationPaths.projects + "/" + id + "/edit");
     }
 
     return (
