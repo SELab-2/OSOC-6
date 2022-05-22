@@ -11,15 +11,12 @@ import { capitalize } from "../../utility/stringUtil";
 import { UserRole } from "../../api/entities/UserEntity";
 import timers from "../../properties/timers";
 import { disabledUser, setRoleAdminOfUser, setRoleCoachOfUser, userDelete } from "../../api/calls/userCalls";
-import { useRouter } from "next/router";
-import applicationPaths from "../../properties/applicationPaths";
 
 export function UserComponent(props: any) {
     const { t } = useTranslation("common");
     const { mutate } = useSWRConfig();
     const [user, setUser] = useState<any>(props.user);
     const [show, setShow] = useState<boolean>(false);
-    const router = useRouter();
 
     if (!user) {
         return null;
@@ -28,7 +25,7 @@ export function UserComponent(props: any) {
     async function deleteUser() {
         const response = await userDelete(user._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
-            router.push(applicationPaths.students);
+            await mutate(apiPaths.users);
         } else {
             setShow(true);
         }

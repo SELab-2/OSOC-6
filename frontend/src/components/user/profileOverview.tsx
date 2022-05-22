@@ -41,13 +41,17 @@ export function ProfileOverview() {
     }
 
     async function handleSaveCallName() {
-        setEditCallName(false);
-        if (user) {
-            const response: AxiosResponse = await saveCallNameOfUser(user._links.self.href, callName);
-            if (response.status == StatusCodes.OK) {
-                await mutate(apiPaths.ownUser, response.data);
-            } else {
-                setShow(true);
+        if (callName === "") {
+            alert(capitalize(t("input empty")));
+        } else {
+            setEditCallName(false);
+            if (user) {
+                const response: AxiosResponse = await saveCallNameOfUser(user._links.self.href, callName);
+                if (response.status == StatusCodes.OK) {
+                    await mutate(apiPaths.ownUser, response.data);
+                } else {
+                    setShow(true);
+                }
             }
         }
     }
@@ -103,6 +107,7 @@ export function ProfileOverview() {
                                 name="callname"
                                 defaultValue={user.callName}
                                 onChange={onChange}
+                                required
                             />
                             <button
                                 data-testid="save-callname"

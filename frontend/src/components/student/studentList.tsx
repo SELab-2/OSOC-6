@@ -13,9 +13,12 @@ import { SuggestionCount } from "./suggestionCount";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
 import { StudentStatusButton } from "./studentStatusButton";
-import { Status } from "../../api/entities/StudentEntity";
+import { IStudent, Status } from "../../api/entities/StudentEntity";
 import applicationPaths from "../../properties/applicationPaths";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
+import { baseSkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
+import useSWR from "swr";
+import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
 
 export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
@@ -26,14 +29,25 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
 
     const isAdmin = useCurrentAdminUser();
 
-    const { data: receivedStudents, error } = useSwrWithEdition(
+    const { data: receivedStudents, error: studentsError } = useSwrWithEdition(
         constructStudentQueryUrl(apiPaths.studentByQuery, params),
         getAllStudentsFromPage
     );
-    const students = receivedStudents || [];
+    const { data: receivedSkillTypes, error: skillTypesError } = useSWR(
+        apiPaths.skillTypes,
+        getAllSkillTypesFromPage
+    );
+    const skillTypes: ISkillType[] = receivedSkillTypes || [];
+    const skillTypeNames = skillTypes.map((skill) => skill.name);
 
-    if (error) {
-        console.log(error);
+    const students = params.skills.some((skill) => skill.toUpperCase() === baseSkillType.toUpperCase())
+        ? (receivedStudents || []).filter((student: IStudent) => {
+              return student.skills.some((skill) => !skillTypeNames.includes(skill));
+          })
+        : receivedStudents || [];
+
+    if (studentsError || skillTypesError) {
+        console.log(studentsError || skillTypesError);
         return null;
     }
 

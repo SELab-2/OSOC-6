@@ -1,0 +1,11 @@
+.menu {
+    background: #171b22;
+}
+
+.menu div::after {
+    border-bottom-color: transparent !important;
+}
+
+.menu_option {
+    color: #f5f8fe;
+}
