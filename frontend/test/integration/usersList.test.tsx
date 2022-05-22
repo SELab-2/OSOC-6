@@ -9,7 +9,8 @@ import { IUser, UserRole } from "../../src/api/entities/UserEntity";
 import {
     getBaseBadRequestResponse,
     getBaseNoContentResponse,
-    getBaseOkResponse, getBaseTeapot,
+    getBaseOkResponse,
+    getBaseTeapot,
     getBaseUser,
 } from "./TestEntityProvider";
 import { AxiosResponse } from "axios";
@@ -35,7 +36,7 @@ describe("Users", () => {
             await enableActForResponse(apiPaths.users, getBaseTeapot());
 
             await waitFor(() => expect(console.log).toHaveBeenCalled());
-        })
+        });
 
         it("Should have rows for the users", () => {
             const user: IUser = getBaseUser("2", UserRole.admin, true);

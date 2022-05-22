@@ -3,7 +3,7 @@ import { enableActForResponse, makeCacheFree } from "./Provide";
 import { SuggestionCount } from "../../src/components/student/suggestionCount";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
-import {getBaseOkResponse, getBaseStudent, getBaseTeapot} from "./TestEntityProvider";
+import { getBaseOkResponse, getBaseStudent, getBaseTeapot } from "./TestEntityProvider";
 import "@testing-library/jest-dom/extend-expect";
 
 describe("suggestion count", () => {
@@ -35,10 +35,10 @@ describe("suggestion count", () => {
     });
 
     it("should handle error", async () => {
-        console.log = jest.fn()
+        console.log = jest.fn();
 
         render(makeCacheFree(() => SuggestionCount({ studentUrl })));
-        await enableActForResponse({url: studentUrl}, getBaseTeapot())
+        await enableActForResponse({ url: studentUrl }, getBaseTeapot());
 
         await waitFor(() => expect(console.log).toHaveBeenCalled());
     });

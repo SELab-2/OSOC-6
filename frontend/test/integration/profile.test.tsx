@@ -1,7 +1,12 @@
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import { enableActForResponse, enableActForUserEvent, makeCacheFree } from "./Provide";
-import {getBaseNoContentResponse, getBaseOkResponse, getBaseTeapot, getBaseUser} from "./TestEntityProvider";
+import {
+    getBaseNoContentResponse,
+    getBaseOkResponse,
+    getBaseTeapot,
+    getBaseUser,
+} from "./TestEntityProvider";
 import { UserRole } from "../../src/api/entities/UserEntity";
 import { AxiosResponse } from "axios";
 import apiPaths from "../../src/properties/apiPaths";
@@ -99,7 +104,7 @@ describe("User Profile", () => {
         await enableActForResponse({ method: "PATCH" }, response);
     });
 
-    it("Should handle error", async() => {
+    it("Should handle error", async () => {
         console.log = jest.fn();
 
         render(makeCacheFree(Profile));
