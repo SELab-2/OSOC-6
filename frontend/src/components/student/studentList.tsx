@@ -19,12 +19,14 @@ import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { baseSkillType, ISkillType } from "../../api/entities/SkillTypeEntity";
 import useSWR from "swr";
 import { getAllSkillTypesFromPage } from "../../api/calls/skillTypeCalls";
+import { useRouterPush, useRouterReplace } from "../../hooks/routerHooks";
 
 export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) => {
     const draggable = props.isDraggable;
     const { t } = useTranslation("common");
     const router = useRouter();
-    const transformer = useEditionApplicationPathTransformer();
+    const routerPush = useRouterPush();
+    const routerReplace = useRouterReplace();
     const params: IStudentQueryParams = getStudentQueryParamsFromQuery(router.query);
 
     const isAdmin = useCurrentAdminUser();
@@ -71,7 +73,7 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                                 variant="outline-primary"
                                 size="sm"
                                 onClick={() =>
-                                    router.push(transformer("/" + applicationPaths.studentCreation))
+                                    routerPush("/" + applicationPaths.studentCreation)
                                 }
                             >
                                 <svg
@@ -109,7 +111,7 @@ export const StudentList = (props: { isDraggable: boolean; showAdd?: boolean }) 
                                     const studentId: string = extractIdFromStudentUrl(
                                         student._links.self.href
                                     );
-                                    await router.replace({
+                                    await routerReplace({
                                         pathname: "/" + applicationPaths.students + "/" + studentId,
                                         query: { ...router.query },
                                     });

@@ -28,7 +28,7 @@ export function UserComponent(props: any) {
     async function deleteUser() {
         const response = await userDelete(user._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
-            router.push(applicationPaths.students);
+            // Do nothing;
         } else {
             setShow(true);
         }

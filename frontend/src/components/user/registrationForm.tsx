@@ -43,6 +43,7 @@ const RegistrationForm: NextPage = () => {
                     router,
                     mutate
                 );
+                // This needs to use the router since edition is not yet defined at this point
                 await router.push("/" + applicationPaths.assignStudents);
             } catch (error: any) {
                 setError(error.response.data);

@@ -9,21 +9,17 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useEditionAPIUrlTransformer } from "../../../hooks/utilHooks";
 import useEdition from "../../../hooks/useGlobalEdition";
-import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import styles from "../../../styles/projects/createProject.module.css";
 import { IProject } from "../../../api/entities/ProjectEntity";
 import { getAllProjectSkillsFromLinks } from "../../../api/calls/projectSkillCalls";
-import {
-    IProjectSkill,
-    ProjectSkill,
-    projectSkillFromIProjectSkill,
-} from "../../../api/entities/ProjectSkillEntity";
+import { IProjectSkill, ProjectSkill, projectSkillFromIProjectSkill } from "../../../api/entities/ProjectSkillEntity";
 import CreateCoachSubForm from "./createCoachSubForm";
 import CreateProjectSkillSubForm from "./createProjectSkillSubForm";
 import EditProjectSkillSubForm from "./editProjectSkillSubForm";
 import ItemListForm from "../../util/itemListForm";
+import { useRouterPush } from "../../../hooks/routerHooks";
 
 /**
  * Properties needed by [ProjectForm].
@@ -53,7 +49,7 @@ type AlteredSkillMapper = { [projectSkillUrl: string]: ProjectSkill };
  */
 export function ProjectForm({ project }: ProjectCreationProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const [editionUrl] = useEdition();
     const { user: currentUser } = useCurrentUser(true);
     const apiTransformer = useEditionAPIUrlTransformer();
@@ -134,7 +130,7 @@ export function ProjectForm({ project }: ProjectCreationProps) {
             Object.entries(alteredSkills),
             editionUrl!,
             currentUser!,
-            router,
+            routerAction,
             mutate,
             apiTransformer
         );

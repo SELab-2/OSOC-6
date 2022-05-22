@@ -46,7 +46,7 @@ export function useRouterPush(): RouterAction {
     return (url, as, options) => {
         if (edition?.name) {
             if (typeof url === "string") {
-                return router.push({ href: url, query: { edition: edition?.name } }, as, options);
+                return router.push({ pathname: url, query: { edition: edition?.name } }, as, options);
             } else {
                 const newUrl = { ...url };
                 newUrl.query = { ...(url.query || {}), edition: edition?.name };
@@ -66,7 +66,7 @@ export function useRouterReplace(): RouterAction {
     return (url, as, options) => {
         if (edition?.name) {
             if (typeof url === "string") {
-                return router.replace({ href: url, query: { edition: edition?.name } }, as, options);
+                return router.replace({ pathname: url, query: { edition: edition?.name } }, as, options);
             } else {
                 const newUrl = { ...url };
                 newUrl.query = { ...(url.query || {}), edition: edition?.name };

@@ -18,6 +18,7 @@ import {
 import useEdition from "../../hooks/useGlobalEdition";
 import { createStudentSubmitHandler } from "../../handlers/createStudentSubmitHandler";
 import ItemListForm from "../util/itemListForm";
+import { useRouterPush } from "../../hooks/routerHooks";
 
 /**
  * Props needed for the create student form.
@@ -31,7 +32,7 @@ export interface CreateStudentFormProps {
  */
 export default function CreateStudentForm({ student }: CreateStudentFormProps) {
     const { t } = useTranslation("common");
-    const router = useRouter();
+    const routerAction = useRouterPush();
     const { mutate } = useSWRConfig();
     const [editionUrl] = useEdition();
 
@@ -47,7 +48,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
                     createStudentSubmitHandler(
                         student ? student._links.self.href : null,
                         values,
-                        router,
+                        routerAction,
                         mutate
                     )
                 }

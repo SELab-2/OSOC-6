@@ -6,7 +6,7 @@ import {
     getEntityOnUrl,
     getQueryUrlFromParams,
 } from "./baseCalls";
-import { IStudent, OsocExpericience, Status, studentCollectionName } from "../entities/StudentEntity";
+import { IStudent, OscExperience, Status, studentCollectionName } from "../entities/StudentEntity";
 import { AxiosResponse } from "axios";
 
 export interface IStudentQueryParams {
@@ -36,10 +36,10 @@ export function getStudentOnUrl(url: string): Promise<IStudent> {
 export function constructStudentQueryUrl(url: string, params: IStudentQueryParams): string {
     const experience: string[] = [];
     if (params.studentCoach) {
-        experience.push(OsocExpericience.yes_studentCoach);
+        experience.push(OscExperience.yes_studentCoach);
     }
     if (params.alumni) {
-        experience.push(OsocExpericience.yes_studentCoach, OsocExpericience.yes_noStudentCoach);
+        experience.push(OscExperience.yes_studentCoach, OscExperience.yes_noStudentCoach);
     }
 
     const queryParams: { [k: string]: any } = {};

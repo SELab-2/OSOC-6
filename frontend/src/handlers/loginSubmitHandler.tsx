@@ -52,6 +52,7 @@ export async function loginSubmitHandler(
                 ? "/" + applicationPaths.assignStudents
                 : "/" + router.query.returnUrl;
 
+        // This needs to be a router push since editions is not defined yet!
         await router.push(redirectUrl);
     }
 }
