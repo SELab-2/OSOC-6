@@ -79,7 +79,7 @@ describe("SuggestionModal", () => {
 
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" student={student} />
             ))
         );
         await enableActForResponse({ url: apiPaths.ownUser }, getBaseTeapot());

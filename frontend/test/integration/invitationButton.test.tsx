@@ -50,9 +50,7 @@ describe("InvitationButton", () => {
 
         makeCacheFree(render(<InvitationButton />));
         await enableActForResponse(
-            getQueryUrlFromParams(apiPaths.communicationTemplatesByName, {
-                name: applicationProperties.invitationTemplate,
-            }),
+            {method: "GET"},
             getBaseTeapot()
         );
 
