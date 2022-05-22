@@ -15,7 +15,7 @@ import { pathIsAuthException } from "../../utility/pathUtil";
 
 export default function RouteInjector({ children }: any) {
     const router = useRouter();
-    // We can not inject here, it will provide problems and race conditions.
+    // We cannot inject here, it will provide problems and race conditions.
     const routerAction = router.replace;
 
     const { error: userError } = useCurrentUser(true);
@@ -53,7 +53,7 @@ export default function RouteInjector({ children }: any) {
     const latestEditionName = latestEdition?.name;
 
     useEffect(() => {
-        // Some parts of the code are commented out because we think it'll help understand the choices that were made.
+        // Some parts of the code are commented out because we think it'll help to understand the choices that were made.
 
         // The edition in your path is set, but you don't have the context, or they differ. -> set context
         if (fetchedRouterEditionUrl && contextEditionUrl !== fetchedRouterEditionUrl) {
@@ -73,7 +73,7 @@ export default function RouteInjector({ children }: any) {
          */
 
         // You do not have a path edition set but your config edition is set and defined -> set path edition
-        // -> Not allowed since the query start with and empty object, and you have no way as to know if you changed the edition.
+        // -> Not allowed since the query starts with an empty object and you have no way of knowing whether you changed the edition.
         /*
         if (contextEditionName && !routerEditionName && false) {
             routerAction({
@@ -82,7 +82,7 @@ export default function RouteInjector({ children }: any) {
         }
          */
 
-        // You can not get the edition that is saved in the context -> Might be because it was removed.
+        // You cannot get the edition that is saved in the context -> Might be because it was removed.
         // -> Clear the context edition. It's not worth holding on to.
         if (hadContextError && contextEditionUrl) {
             setContextEditionUrl(null);
