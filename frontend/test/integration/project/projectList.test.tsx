@@ -8,7 +8,13 @@ import { AxiosResponse } from "axios";
 import mockRouter from "next-router-mock";
 import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import { ProjectList } from "../../../src/components/project/projectList";
-import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "../TestEntityProvider";
+import {
+    getBaseOkResponse,
+    getBasePage,
+    getBaseProject,
+    getBaseTeapot,
+    getBaseUser,
+} from "../TestEntityProvider";
 import { UserRole } from "../../../src/api/entities/UserEntity";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -70,6 +76,17 @@ describe("Project", () => {
 
         await waitFor(() => {
             expect(mockRouter.asPath).toEqual("/" + applicationPaths.projects + "/5");
+        });
+    });
+
+    it("Should handle error", async () => {
+        console.log = jest.fn();
+
+        render(makeCacheFree(() => <ProjectList />));
+        await enableActForResponse({ url: apiPaths.projectsByEdition }, getBaseTeapot());
+
+        await waitFor(() => {
+            expect(console.log).toHaveBeenCalled();
         });
     });
 });

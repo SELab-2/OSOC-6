@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { act, render, RenderResult, screen, waitFor } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
-import { getBaseActiveEdition, getBaseOkResponse } from "./TestEntityProvider";
+import { getBaseActiveEdition, getBaseOkResponse, getBaseTeapot } from "./TestEntityProvider";
 import userEvent from "@testing-library/user-event";
 import { IEdition } from "../../src/api/entities/EditionEntity";
 import { enableActForResponse, makeCacheFree } from "./Provide";
@@ -169,5 +169,15 @@ describe("Edition overview", () => {
         await waitFor(() => {
             expect(window.confirm).toBeCalled();
         });
+    });
+
+    it("Should handle error", async () => {
+        console.log = jest.fn();
+
+        const editionId = "1";
+        render(makeCacheFree(() => <EditionInfo editionId={editionId} />));
+        await enableActForResponse(apiPaths.editions + "/" + editionId, getBaseTeapot());
+
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });

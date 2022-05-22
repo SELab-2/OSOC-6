@@ -10,9 +10,11 @@ import {
     getBaseBadRequestResponse,
     getBaseNoContentResponse,
     getBaseOkResponse,
+    getBaseTeapot,
     getBaseUser,
 } from "./TestEntityProvider";
 import { AxiosResponse } from "axios";
+import apiPaths from "../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -25,6 +27,15 @@ describe("Users", () => {
         it("Should have overview component", () => {
             render(makeCacheFree(UsersOverview));
             expect(screen.getByTestId("user-overview")).toBeInTheDocument();
+        });
+
+        it("should handle error", async () => {
+            console.log = jest.fn();
+
+            render(makeCacheFree(UsersOverview));
+            await enableActForResponse(apiPaths.users, getBaseTeapot());
+
+            await waitFor(() => expect(console.log).toHaveBeenCalled());
         });
 
         it("Should have rows for the users", () => {

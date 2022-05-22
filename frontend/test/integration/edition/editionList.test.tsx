@@ -8,12 +8,18 @@ import {
     makeCacheFree,
 } from "../Provide";
 import EditionPage from "../../../src/pages/editions";
-import { getBaseActiveEdition, getBaseNoContentResponse, getBaseUser } from "../TestEntityProvider";
+import {
+    getBaseActiveEdition,
+    getBaseNoContentResponse,
+    getBaseTeapot,
+    getBaseUser,
+} from "../TestEntityProvider";
 import { IEdition } from "../../../src/api/entities/EditionEntity";
 import EditionRowComponent from "../../../src/components/edition/editionRowComponent";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
 import { UserRole } from "../../../src/api/entities/UserEntity";
+import apiPaths from "../../../src/properties/apiPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -73,5 +79,14 @@ describe("EditionList", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         await userEvent.click(screen.getByTestId("list-view-edition"));
+    });
+
+    it("Should handle error", async () => {
+        console.log = jest.fn();
+
+        render(makeCacheFree(EditionPage));
+        await enableActForResponse(apiPaths.editions, getBaseTeapot());
+
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });

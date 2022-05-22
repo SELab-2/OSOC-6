@@ -8,6 +8,7 @@ import {
     getBaseProject,
     getBaseProjectSkill,
     getBaseStudent,
+    getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
@@ -123,6 +124,16 @@ describe("conflict resolution", () => {
                 { isValid: false },
                 expect.anything()
             );
+        });
+    });
+
+    describe("trigger error", () => {
+        it("should handle error", async () => {
+            console.log = jest.fn();
+            render(makeCacheFree(ConflictResolutionList));
+
+            await enableActForResponse(apiPaths.studentConflict, getBaseTeapot());
+            await waitFor(() => expect(console.log).toHaveBeenCalled());
         });
     });
 });

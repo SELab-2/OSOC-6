@@ -6,6 +6,7 @@ import {
     getBaseActiveEdition,
     getBaseInvitation,
     getBaseOkResponse,
+    getBaseTeapot,
     getBaseUser,
 } from "./TestEntityProvider";
 import apiPaths from "../../src/properties/apiPaths";
@@ -16,6 +17,8 @@ import {
     enableUseEditionComponentWrapper,
     makeCacheFree,
 } from "./Provide";
+import { getQueryUrlFromParams } from "../../src/api/calls/baseCalls";
+import applicationProperties from "../../src/properties/applicationProperties";
 
 describe("InvitationButton", () => {
     const currentUser = getBaseUser("10", UserRole.admin, true);

@@ -6,7 +6,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
 import { enableActForResponse, makeCacheFree } from "../Provide";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseSkillType, getBaseTeapot } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
@@ -84,6 +84,22 @@ describe("skillType list", () => {
                     { colour },
                     expect.anything()
                 );
+            });
+        });
+    });
+
+    describe("with error", () => {
+        it("handles error", async () => {
+            console.log = jest.fn();
+            render(makeCacheFree(SkillTypeIndexPage));
+
+            await enableActForResponse(
+                getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
+                getBaseTeapot()
+            );
+
+            await waitFor(() => {
+                expect(console.log).toHaveBeenCalled();
             });
         });
     });

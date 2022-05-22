@@ -5,10 +5,12 @@ import mockRouter from "next-router-mock";
 import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
-import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseSkillType, getBaseTeapot } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import { AxiosResponse } from "axios";
 import { enableActForResponse, makeCacheFree } from "../Provide";
+import SkillTypeIndexPage from "../../../src/pages/skillTypes";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -162,6 +164,19 @@ describe("student filter", () => {
 
         await waitFor(() => {
             expect(mockRouter.query?.skills).toEqual([skillType.name]);
+        });
+    });
+
+    describe("with error", () => {
+        it("handles error", async () => {
+            console.log = jest.fn();
+
+            render(makeCacheFree(StudentFilterComponent));
+            await enableActForResponse(apiPaths.skillTypes, getBaseTeapot());
+
+            await waitFor(() => {
+                expect(console.log).toHaveBeenCalled();
+            });
         });
     });
 });

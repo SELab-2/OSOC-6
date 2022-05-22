@@ -9,6 +9,7 @@ import {
     getBaseOkResponse,
     getBasePage,
     getBaseStudent,
+    getBaseTeapot,
 } from "../TestEntityProvider";
 import {
     communicationTemplateCollectionName,
@@ -38,7 +39,7 @@ describe("RegisterCommunication", () => {
     it("should handle error", async () => {
         console.log = jest.fn();
         render(<RegisterCommunication />);
-        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseForbiddenResponse());
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseTeapot());
 
         await waitFor(() => expect(console.log).toHaveBeenCalled());
     });

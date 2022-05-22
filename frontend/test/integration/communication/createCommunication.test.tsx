@@ -12,6 +12,7 @@ import {
     getBaseForbiddenResponse,
     getBaseOkResponse,
     getBaseStudent,
+    getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import { Communication, defaultCommunicationMedium } from "../../../src/api/entities/CommunicationEntity";
@@ -134,7 +135,6 @@ describe("create communication", () => {
             form.getByTestId("medium");
         });
         const mediumElement = form.getByTestId("medium");
-        const contentElement = form.getByTestId("content");
 
         const medium = defaultCommunicationMedium;
         const templateUrl = template._links.self.href;
@@ -152,5 +152,14 @@ describe("create communication", () => {
         await waitFor(() => {
             expect(mock).toHaveBeenCalledWith(communication, expect.anything(), expect.anything());
         });
+    });
+
+    it("Should handle error", async () => {
+        console.log = jest.fn();
+
+        render(makeCacheFree(() => <CreateCommunicationForm student={student} template={template} />));
+        await enableActForResponse({ url: apiPaths.ownUser }, getBaseTeapot());
+
+        await waitFor(() => expect(console.log).toHaveBeenCalled());
     });
 });

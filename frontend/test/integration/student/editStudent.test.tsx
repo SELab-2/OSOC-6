@@ -14,7 +14,12 @@ import {
     Student,
 } from "../../../src/api/entities/StudentEntity";
 import { enableActForResponse, enableUseEditionComponentWrapper, makeCacheFree } from "../Provide";
-import { getBaseActiveEdition, getBaseOkResponse, getBaseStudent } from "../TestEntityProvider";
+import {
+    getBaseActiveEdition,
+    getBaseOkResponse,
+    getBaseStudent,
+    getBaseTeapot,
+} from "../TestEntityProvider";
 import StudentEdit from "../../../src/pages/students/[id]/edit";
 import { capitalize } from "../../../src/utility/stringUtil";
 import applicationPaths from "../../../src/properties/applicationPaths";
@@ -178,4 +183,18 @@ describe("edit student", () => {
             );
         });
     }, 7000);
+
+    it("should handle error", async () => {
+        console.log = jest.fn();
+        mockRouter.query = {
+            id: studentId,
+        };
+
+        render(makeCacheFree(() => enableUseEditionComponentWrapper(() => <StudentEdit />, edition)));
+        await enableActForResponse(apiPaths.students + "/" + studentId, getBaseTeapot());
+
+        await waitFor(() => {
+            expect(console.log).toHaveBeenCalled();
+        });
+    });
 });
