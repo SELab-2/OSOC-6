@@ -177,5 +177,5 @@ describe("edit student", () => {
                 "/" + applicationPaths.students + "/" + extractIdFromApiEntityUrl(student._links.self.href)
             );
         });
-    });
+    }, 7000);
 });

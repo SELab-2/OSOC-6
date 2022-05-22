@@ -481,7 +481,7 @@ describe("Create project form", () => {
                 await nonEditCoaches();
 
                 await defaultReroute();
-            });
+            }, 7000);
 
             it("removes a coach", async () => {
                 const removeCoachButton = await component.findByTestId(

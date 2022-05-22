@@ -1,7 +1,7 @@
 .skill_types,
 .skill_types_box {
     width: 50%;
-    margin: auto;
+    margin: 10rem auto auto;
 }
 .skill_type_label .badge {
     margin-left: 10px;
@@ -17,4 +17,15 @@
 
 .bg_color {
     background-color: #1b1a31;
+}
+
+.input_field {
+    border-color: white;
+    background: #1a1a32;
+    color: white;
+}
+
+.input_field:focus {
+    background: #1a1a32;
+    color: white;
 }
