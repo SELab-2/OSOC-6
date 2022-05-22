@@ -18,7 +18,7 @@ export function ProjectList() {
     const routerAction = useRouterPush();
     const currentUserIsAdmin = useCurrentAdminUser();
 
-    let { data: receivedProjects, error: projectsError } = useSwrWithEdition(
+    const { data: receivedProjects, error: projectsError } = useSwrWithEdition(
         apiPaths.projectsByEdition,
         getAllProjectsFromPage
     );

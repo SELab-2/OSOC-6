@@ -38,6 +38,9 @@ export type Url = string | UrlObject;
 
 export type RouterAction = (url: Url, as?: string, options?: TransitionOptions) => Promise<boolean>;
 
+/**
+ * This hook pushes the path to the router while adding the edition
+ */
 export function useRouterPush(): RouterAction {
     const router = useRouter();
     const [editionUrl] = useEdition();
@@ -58,6 +61,9 @@ export function useRouterPush(): RouterAction {
     };
 }
 
+/**
+ * This hook replaces the path in the router while adding the edition
+ */
 export function useRouterReplace(): RouterAction {
     const router = useRouter();
     const [editionUrl] = useEdition();

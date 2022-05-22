@@ -18,7 +18,6 @@ import applicationProperties from "../../properties/applicationProperties";
 
 export default function InvitationButton() {
     const { t } = useTranslation("common");
-    const transformer = useEditionApplicationPathTransformer();
     const { user, error } = useCurrentUser(true);
     const [receivedEditionUrl, setCurrentEditionUrl] = useEdition();
 
