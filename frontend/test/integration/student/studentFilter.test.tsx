@@ -5,12 +5,12 @@ import mockRouter from "next-router-mock";
 import { StudentFilterComponent } from "../../../src/components/student/studentFilterComponent";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
-import {getBaseOkResponse, getBasePage, getBaseSkillType, getBaseTeapot} from "../TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseSkillType, getBaseTeapot } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import { AxiosResponse } from "axios";
 import { enableActForResponse, makeCacheFree } from "../Provide";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

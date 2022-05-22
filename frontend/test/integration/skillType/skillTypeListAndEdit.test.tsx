@@ -6,7 +6,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
 import { enableActForResponse, makeCacheFree } from "../Provide";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import {getBaseOkResponse, getBasePage, getBaseSkillType, getBaseTeapot} from "../TestEntityProvider";
+import { getBaseOkResponse, getBasePage, getBaseSkillType, getBaseTeapot } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";

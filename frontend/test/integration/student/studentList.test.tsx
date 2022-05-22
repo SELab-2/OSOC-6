@@ -17,7 +17,8 @@ import {
     getBaseOkResponse,
     getBasePage,
     getBaseSkillType,
-    getBaseStudent, getBaseTeapot,
+    getBaseStudent,
+    getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import apiPaths from "../../../src/properties/apiPaths";
@@ -206,6 +207,6 @@ describe("student list", () => {
             await waitFor(() => {
                 expect(console.log).toHaveBeenCalled();
             });
-        })
+        });
     });
 });
