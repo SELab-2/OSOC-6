@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import { cleanup, render, waitFor } from "@testing-library/react";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import React from "react";
 import RouteInjector from "../../../src/components/util/routeInjector";
 import { getBaseActiveEdition, getBaseOkResponse, getBasePage } from "../TestEntityProvider";

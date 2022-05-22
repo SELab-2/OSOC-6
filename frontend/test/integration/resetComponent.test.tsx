@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import {enableActForResponse, makeCacheFree} from "./Provide";
+import { enableActForResponse, makeCacheFree } from "./Provide";
 import ChangeEmail from "../../src/pages/changeEmail";
 import ChangePassword from "../../src/pages/changePassword";
 import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
@@ -93,7 +93,7 @@ describe("Reset Component Tests", () => {
 
         // May be empty, we don't process the returned values
         const response: AxiosResponse = getBaseOkResponse({});
-        await enableActForResponse({ method: "PATCH" }, response)
+        await enableActForResponse({ method: "PATCH" }, response);
     });
 
     it("changePassword patch fail", async () => {

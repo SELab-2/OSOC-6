@@ -4,7 +4,7 @@ import React from "react";
 import { jest } from "@jest/globals";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import RouteGuard from "../../../src/components/util/routeGuard";
 import AssignStudents from "../../../src/pages/assignStudents";
 import { getBaseMovedResponse } from "../TestEntityProvider";

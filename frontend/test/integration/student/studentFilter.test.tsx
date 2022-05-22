@@ -8,7 +8,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
 import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import { AxiosResponse } from "axios";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

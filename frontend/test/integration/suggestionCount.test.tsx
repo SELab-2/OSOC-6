@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import {enableActForResponse, makeCacheFree} from "./Provide";
+import { enableActForResponse, makeCacheFree } from "./Provide";
 import { SuggestionCount } from "../../src/components/student/suggestionCount";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
@@ -29,7 +29,7 @@ describe("suggestion count", () => {
         student.yesSuggestionCount = 5;
         student.maybeSuggestionCount = 3;
         student.noSuggestionCount = 1;
-        await enableActForResponse({ url: studentUrl }, getBaseOkResponse(student))
+        await enableActForResponse({ url: studentUrl }, getBaseOkResponse(student));
 
         await waitFor(() => expect(screen.getByTestId("suggestioncount")).toBeInTheDocument());
     });

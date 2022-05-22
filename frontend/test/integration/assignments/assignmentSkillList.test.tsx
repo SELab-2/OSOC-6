@@ -8,7 +8,7 @@ import { AxiosResponse } from "axios";
 import { getBaseLinks, getBaseOkResponse, getBaseProject, getBaseProjectSkill } from "../TestEntityProvider";
 import { IProjectSkill, projectSkillCollectionName } from "../../../src/api/entities/ProjectSkillEntity";
 import { capitalize } from "../../../src/utility/stringUtil";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -35,7 +35,7 @@ async function renderSkillList(project: IProject, projectSkills: IProjectSkill[]
         expect(mockAxios.get).toHaveBeenCalled();
     });
 
-    await enableActForResponse({ url: project._links.self.href }, projectResponse)
+    await enableActForResponse({ url: project._links.self.href }, projectResponse);
 
     const projectSkillsResponse: AxiosResponse = getBaseOkResponse(
         getBaseLinks(project._links.neededSkills.href, projectSkillCollectionName, projectSkills)
@@ -45,7 +45,7 @@ async function renderSkillList(project: IProject, projectSkills: IProjectSkill[]
         expect(mockAxios.get).toHaveBeenCalled();
     });
 
-    await enableActForResponse({ url: project._links.neededSkills.href }, projectSkillsResponse)
+    await enableActForResponse({ url: project._links.neededSkills.href }, projectSkillsResponse);
 }
 
 describe("Assignment skill list tests", () => {

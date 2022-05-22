@@ -18,7 +18,7 @@ import {
 } from "./TestEntityProvider";
 import { UserRole } from "../../src/api/entities/UserEntity";
 import { editionCollectionName } from "../../src/api/entities/EditionEntity";
-import {enableActForResponse} from "./Provide";
+import { enableActForResponse } from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -81,11 +81,11 @@ describe("Login page", () => {
         const edition = getBaseActiveEdition("2", "Edition 1");
         const user = getBaseUser("3", UserRole.coach, true);
 
-        await enableActForResponse(apiPaths.ownUser, getBaseOkResponse(user))
+        await enableActForResponse(apiPaths.ownUser, getBaseOkResponse(user));
         await enableActForResponse(
             apiPaths.editions,
             getBaseOkResponse(getBasePage(apiPaths.editions, editionCollectionName, [edition]))
-        )
+        );
 
         expect(errorSetter).toHaveBeenCalledWith(false);
         await waitFor(() => {

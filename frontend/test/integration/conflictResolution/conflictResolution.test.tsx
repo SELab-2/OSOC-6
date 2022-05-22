@@ -10,7 +10,7 @@ import {
     getBaseStudent,
     getBaseUser,
 } from "../TestEntityProvider";
-import {enableActForResponse, enableCurrentUser, makeCacheFree} from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
@@ -57,7 +57,7 @@ describe("conflict resolution", () => {
             await enableActForResponse(
                 assignmentsUrl,
                 getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, assignments))
-            )
+            );
 
             await Promise.all(
                 assignments.map((assignment, index) =>

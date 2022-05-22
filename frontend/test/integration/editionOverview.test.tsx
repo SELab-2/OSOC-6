@@ -5,7 +5,7 @@ import apiPaths from "../../src/properties/apiPaths";
 import { getBaseActiveEdition, getBaseOkResponse } from "./TestEntityProvider";
 import userEvent from "@testing-library/user-event";
 import { IEdition } from "../../src/api/entities/EditionEntity";
-import {enableActForResponse, makeCacheFree} from "./Provide";
+import { enableActForResponse, makeCacheFree } from "./Provide";
 import EditionInfo from "../../src/components/edition/editionInfo";
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -27,7 +27,7 @@ describe("Edition overview", () => {
             render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
-        await enableActForResponse({ method: "GET" }, editionResponse)
+        await enableActForResponse({ method: "GET" }, editionResponse);
 
         await waitFor(() => {
             expect(screen.getByTestId("edit-name")).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe("Edition overview", () => {
             render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
-        await enableActForResponse({ method: "GET" }, editionResponse)
+        await enableActForResponse({ method: "GET" }, editionResponse);
 
         await waitFor(() => {
             userEvent.click(screen.getByTestId("edit-name"));
@@ -104,7 +104,7 @@ describe("Edition overview", () => {
             render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
-        await enableActForResponse({ method: "GET" }, editionResponse)
+        await enableActForResponse({ method: "GET" }, editionResponse);
 
         await waitFor(() => {
             userEvent.click(screen.getByTestId("edit-year"));
@@ -133,7 +133,7 @@ describe("Edition overview", () => {
             render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
-        await enableActForResponse({ method: "GET" }, editionResponse)
+        await enableActForResponse({ method: "GET" }, editionResponse);
 
         await waitFor(() => {
             userEvent.click(screen.getByTestId("edit-year"));
@@ -159,7 +159,7 @@ describe("Edition overview", () => {
             render(makeCacheFree(() => <EditionInfo editionId={"1"} />));
         });
 
-        await enableActForResponse({ method: "GET" }, editionResponse)
+        await enableActForResponse({ method: "GET" }, editionResponse);
 
         await waitFor(() => {
             userEvent.click(screen.getByTestId("input-active"));

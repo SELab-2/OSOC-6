@@ -22,9 +22,7 @@ import { capitalize } from "../../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
 import { enableActForResponse, makeCacheFree } from "../Provide";
-import {
-    getValidAssignmentsUrlForProjectSkill,
-} from "../../../src/api/calls/AssignmentCalls";
+import { getValidAssignmentsUrlForProjectSkill } from "../../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

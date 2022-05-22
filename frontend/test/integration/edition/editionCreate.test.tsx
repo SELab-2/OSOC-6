@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
 import { render, screen, waitFor } from "@testing-library/react";
-import {enableActForResponse, makeCacheFree} from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import CreateEdition from "../../../src/pages/editions/create";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
