@@ -80,6 +80,7 @@ export function ProjectList() {
                         </div>
                         <div className="row">
                             <Button
+                                data-testid="skill-types-button"
                                 className={"capitalize justify-content-center " + styles.project_list_button}
                                 variant="outline-primary"
                                 size="sm"

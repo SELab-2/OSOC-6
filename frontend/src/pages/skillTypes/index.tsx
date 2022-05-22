@@ -37,6 +37,7 @@ export default function SkillTypeIndexPage() {
                     <h2 className="d-flex">{capitalize(t("skill types"))}</h2>
                     <div>
                         <Button
+                            data-testid="new-skill-type-button"
                             className="mt-2"
                             variant="outline-primary"
                             onClick={() => router.push(transformer("/" + applicationPaths.skillTypesCreate))}

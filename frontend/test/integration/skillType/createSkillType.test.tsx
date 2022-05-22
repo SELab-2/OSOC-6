@@ -1,11 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, waitFor } from "@testing-library/react";
+import {render, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
-import SkillTypeForm from "../../../src/components/skillType/skillTypeForm";
-import { SkillType } from "../../../src/api/entities/SkillTypeEntity";
+import {SkillType} from "../../../src/api/entities/SkillTypeEntity";
+import CreateSkillTypePage from "../../../src/pages/skillTypes/create";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -15,7 +15,7 @@ describe("create skillType", () => {
     });
 
     it("renders", () => {
-        const form = render(<SkillTypeForm />);
+        const form = render(<CreateSkillTypePage/>);
         expect(form.getByTestId("skill-type-create-form")).toBeInTheDocument();
     });
 
@@ -25,7 +25,7 @@ describe("create skillType", () => {
             "createSkillTypeSubmitHandler"
         );
 
-        const form = render(<SkillTypeForm />);
+        const form = render(<CreateSkillTypePage />);
 
         const nameElement = form.getByTestId("name");
         const colourElement = form.getByTestId("colour") as HTMLInputElement;

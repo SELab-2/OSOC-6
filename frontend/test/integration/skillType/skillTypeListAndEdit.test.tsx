@@ -1,13 +1,15 @@
 import "@testing-library/jest-dom";
-import { render, RenderResult, waitFor } from "@testing-library/react";
+import {render, RenderResult, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import { makeCacheFree } from "../Provide";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
-import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import {makeCacheFree} from "../Provide";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
+import {getBaseOkResponse, getBasePage, getBaseSkillType} from "../TestEntityProvider";
+import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
+import mockRouter from "next-router-mock";
+import applicationPaths from "../../../src/properties/applicationPaths";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -21,6 +23,15 @@ describe("skillType list", () => {
             const page = render(<SkillTypeIndexPage />);
             expect(page.getByTestId("skill-type-list")).toBeInTheDocument();
         });
+
+        it("create skill type button works", async () => {
+            const page = render(<SkillTypeIndexPage/>);
+
+            const addButton = page.getByTestId("new-skill-type-button");
+            await userEvent.click(addButton);
+
+            await expect(mockRouter.asPath).toEqual("/" + applicationPaths.skillTypesCreate);
+        })
     });
 
     describe("with data", () => {
