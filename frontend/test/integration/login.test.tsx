@@ -18,6 +18,7 @@ import {
 } from "./TestEntityProvider";
 import { UserRole } from "../../src/api/entities/UserEntity";
 import { editionCollectionName } from "../../src/api/entities/EditionEntity";
+import { enableActForResponse } from "./Provide";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -72,22 +73,18 @@ describe("Login page", () => {
 
         loginSubmitHandler(values, errorSetter, mockRouter, (() => {}) as any as ScopedMutator);
 
-        await waitFor(() => {
-            mockAxios.mockResponseFor(
-                { method: "post", url: apiPaths.login },
-                getBaseRedirectResponse(applicationPaths.home)
-            );
-        });
+        await enableActForResponse(
+            { method: "post", url: apiPaths.login },
+            getBaseRedirectResponse(applicationPaths.home)
+        );
 
         const edition = getBaseActiveEdition("2", "Edition 1");
         const user = getBaseUser("3", UserRole.coach, true);
 
-        await waitFor(() => mockAxios.mockResponseFor(apiPaths.ownUser, getBaseOkResponse(user)));
-        await waitFor(() =>
-            mockAxios.mockResponseFor(
-                apiPaths.editions,
-                getBaseOkResponse(getBasePage(apiPaths.editions, editionCollectionName, [edition]))
-            )
+        await enableActForResponse(apiPaths.ownUser, getBaseOkResponse(user));
+        await enableActForResponse(
+            apiPaths.editions,
+            getBaseOkResponse(getBasePage(apiPaths.editions, editionCollectionName, [edition]))
         );
 
         expect(errorSetter).toHaveBeenCalledWith(false);

@@ -109,9 +109,7 @@ describe("project info", () => {
         await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
 
         const project = getBaseProject(projectId);
-        await waitFor(() =>
-            mockAxios.mockResponseFor(apiPaths.projects + "/" + projectId, getBaseOkResponse(project))
-        );
+        await enableActForResponse(apiPaths.projects + "/" + projectId, getBaseOkResponse(project));
 
         window.confirm = jest.fn(() => true);
 

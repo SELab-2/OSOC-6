@@ -6,7 +6,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import applicationPaths from "../../../src/properties/applicationPaths";
 import { AxiosResponse } from "axios";
 import mockRouter from "next-router-mock";
-import { enableActForResponse, enableActForUserEvent, enableCurrentUser, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import { ProjectList } from "../../../src/components/project/projectList";
 import { getBaseOkResponse, getBasePage, getBaseProject, getBaseUser } from "../TestEntityProvider";
 import { UserRole } from "../../../src/api/entities/UserEntity";

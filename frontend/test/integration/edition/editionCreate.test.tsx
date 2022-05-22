@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
 import { render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import CreateEdition from "../../../src/pages/editions/create";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
@@ -43,7 +43,7 @@ describe("EditionCreate", () => {
         const id = "3";
         const edition: IEdition = getBaseActiveEdition(id, "edition 1");
 
-        mockAxios.mockResponseFor({ method: "post" }, getBaseOkResponse(edition));
+        await enableActForResponse({ method: "post" }, getBaseOkResponse(edition));
 
         await waitFor(() => {
             expect(mockRouter.pathname).toEqual("/" + applicationPaths.editionBase + "/" + id);

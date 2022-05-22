@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
+import { enableActForResponse, makeCacheFree } from "./Provide";
 import UsersOverview from "../../src/components/user/usersOverview";
 import UserComponent from "../../src/components/user/manageUserComponent";
 import { IUser, UserRole } from "../../src/api/entities/UserEntity";
@@ -64,7 +64,7 @@ describe("Users", () => {
 
             const new_user: IUser = getBaseUser("2", UserRole.admin, true);
             const response: AxiosResponse = getBaseOkResponse(new_user);
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            await enableActForResponse({ url: user._links.self.href }, response);
         });
 
         it("User role to disabled", async () => {
@@ -80,7 +80,7 @@ describe("Users", () => {
 
             const new_user: IUser = getBaseUser("2", UserRole.coach, false);
             const response: AxiosResponse = getBaseOkResponse(new_user);
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            await enableActForResponse({ url: user._links.self.href }, response);
         });
 
         it("User delete", async () => {
@@ -93,7 +93,7 @@ describe("Users", () => {
             await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
             const response: AxiosResponse = getBaseNoContentResponse();
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            await enableActForResponse({ url: user._links.self.href }, response);
         });
 
         it("User role to coach", async () => {
@@ -106,7 +106,7 @@ describe("Users", () => {
 
             const new_user: IUser = getBaseUser("2", UserRole.coach, true);
             const response: AxiosResponse = getBaseOkResponse(new_user);
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            await enableActForResponse({ url: user._links.self.href }, response);
         });
 
         it("Failed patch", async () => {
@@ -118,7 +118,7 @@ describe("Users", () => {
             await waitFor(() => expect(mockAxios.patch).toHaveBeenCalled());
 
             const response: AxiosResponse = getBaseBadRequestResponse();
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            await enableActForResponse({ url: user._links.self.href }, response);
         });
 
         it("delete fail", async () => {
@@ -131,7 +131,7 @@ describe("Users", () => {
             await waitFor(() => expect(mockAxios.delete).toHaveBeenCalled());
 
             const response: AxiosResponse = getBaseBadRequestResponse();
-            act(() => mockAxios.mockResponseFor({ url: user._links.self.href }, response));
+            await enableActForResponse({ url: user._links.self.href }, response);
         });
     });
 });

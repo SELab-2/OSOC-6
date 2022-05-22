@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
-import { makeCacheFree } from "./Provide";
+import { enableActForResponse, makeCacheFree } from "./Provide";
 import ChangeEmail from "../../src/pages/changeEmail";
 import ChangePassword from "../../src/pages/changePassword";
 import { getBaseOkResponse, getBaseUser } from "./TestEntityProvider";
@@ -24,7 +24,7 @@ async function renderNormalUser(toRender: Function, user: IUser) {
     });
 
     const response: AxiosResponse = getBaseOkResponse(user);
-    act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response));
+    await enableActForResponse({ url: apiPaths.ownUser }, response);
 }
 
 async function performPatch(string1: string, string2: string, toRender: Function, user: IUser) {
@@ -66,7 +66,7 @@ describe("Reset Component Tests", () => {
 
         // May be empty, we don't process the returned values
         const response: AxiosResponse = getBaseOkResponse({});
-        act(() => mockAxios.mockResponseFor({ method: "PATCH" }, response));
+        await enableActForResponse({ method: "PATCH" }, response);
     });
 
     it("changeEmail patch fail", async () => {
@@ -93,7 +93,7 @@ describe("Reset Component Tests", () => {
 
         // May be empty, we don't process the returned values
         const response: AxiosResponse = getBaseOkResponse({});
-        act(() => mockAxios.mockResponseFor({ method: "PATCH" }, response));
+        await enableActForResponse({ method: "PATCH" }, response);
     });
 
     it("changePassword patch fail", async () => {

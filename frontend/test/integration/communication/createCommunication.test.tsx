@@ -44,9 +44,7 @@ describe("create communication", () => {
         const form = render(
             makeCacheFree(() => <CreateCommunicationForm student={student} template={template} />)
         );
-        await waitFor(() => {
-            mockAxios.mockResponseFor({ url: apiPaths.ownUser }, getBaseForbiddenResponse());
-        });
+        await enableActForResponse({ url: apiPaths.ownUser }, getBaseForbiddenResponse());
 
         await waitFor(() => {
             expect(console.log).toHaveBeenCalled();

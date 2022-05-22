@@ -7,7 +7,7 @@ import apiPaths from "../../../src/properties/apiPaths";
 import { AxiosResponse } from "axios";
 import { capitalize } from "../../../src/utility/stringUtil";
 import { IProject } from "../../../src/api/entities/ProjectEntity";
-import { makeCacheFree } from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import { DropHandler } from "../../../src/pages/assignStudents";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -27,7 +27,7 @@ async function renderAssignProject(projectList: IProject[]) {
         expect(mockAxios.get).toHaveBeenCalled();
     });
 
-    act(() => mockAxios.mockResponseFor({ method: "GET" }, response));
+    await enableActForResponse({ method: "GET" }, response);
 }
 
 describe("Project assignment list", () => {

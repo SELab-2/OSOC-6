@@ -4,7 +4,7 @@ import React from "react";
 import { jest } from "@jest/globals";
 import mockRouter from "next-router-mock";
 import mockAxios from "jest-mock-axios";
-import { makeCacheFree } from "../Provide";
+import { enableActForResponse, makeCacheFree } from "../Provide";
 import RouteGuard from "../../../src/components/util/routeGuard";
 import AssignStudents from "../../../src/pages/assignStudents";
 import { getBaseMovedResponse } from "../TestEntityProvider";
@@ -24,7 +24,7 @@ afterEach(() => {
 });
 
 describe("RouteGuard", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         render(
             makeCacheFree(() => (
                 <RouteGuard>
@@ -34,7 +34,7 @@ describe("RouteGuard", () => {
         );
 
         const response: AxiosResponse = getBaseMovedResponse(ApiPaths.base + ApiPaths.loginRedirect);
-        mockAxios.mockResponseFor({ url: apiPaths.ownUser }, response);
+        await enableActForResponse({ url: apiPaths.ownUser }, response);
     });
 
     it("Should request the logged in user", () => {

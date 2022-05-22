@@ -9,13 +9,14 @@ import { AxiosResponse } from "axios";
 import { getBaseOkResponse, getBaseUser } from "../TestEntityProvider";
 import { UserRole } from "../../../src/api/entities/UserEntity";
 import apiPaths from "../../../src/properties/apiPaths";
+import { enableActForResponse } from "../Provide";
 
 it("Should be able to render.", async () => {
     render(<NavBar />);
 
     await waitFor(() => expect(mockAxios.get).toHaveBeenCalled());
     const responseUser: AxiosResponse = getBaseOkResponse(getBaseUser("5", UserRole.admin, true));
-    act(() => mockAxios.mockResponseFor({ url: apiPaths.ownUser }, responseUser));
+    await enableActForResponse({ url: apiPaths.ownUser }, responseUser);
 
     await waitFor(() => {
         expect(screen.getByTestId("navbar-brand")).toBeInTheDocument();

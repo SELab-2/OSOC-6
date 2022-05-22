@@ -10,7 +10,7 @@ import {
     getBaseStudent,
     getBaseUser,
 } from "../TestEntityProvider";
-import { enableCurrentUser, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import { studentCollectionName } from "../../../src/api/entities/StudentEntity";
@@ -48,19 +48,15 @@ describe("conflict resolution", () => {
             assignments[1].reason = "apple" + assignments[1].reason + "pear";
             projectSkills[1].name = "apple" + projectSkills[1].name + "pear";
 
-            await waitFor(() => {
-                mockAxios.mockResponseFor(
-                    apiPaths.studentConflict,
-                    getBaseOkResponse(getBasePage(apiPaths.studentConflict, studentCollectionName, [student]))
-                );
-            });
+            await enableActForResponse(
+                apiPaths.studentConflict,
+                getBaseOkResponse(getBasePage(apiPaths.studentConflict, studentCollectionName, [student]))
+            );
 
             const assignmentsUrl = getValidAssignmentsUrlForStudent(student._links.self.href);
-            await waitFor(() =>
-                mockAxios.mockResponseFor(
-                    assignmentsUrl,
-                    getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, assignments))
-                )
+            await enableActForResponse(
+                assignmentsUrl,
+                getBaseOkResponse(getBasePage(assignmentsUrl, assignmentCollectionName, assignments))
             );
 
             await Promise.all(
@@ -89,15 +85,10 @@ describe("conflict resolution", () => {
             );
         });
 
-        waitFor(() =>
-            mockAxios.mockResponseFor(assignments[0]._links.self.href, getBaseOkResponse(assignments[0]))
-        );
-
-        waitFor(() =>
-            mockAxios.mockResponseFor(assignments[1]._links.self.href, getBaseOkResponse(assignments[1]))
-        );
-
         it("renders correct data", async () => {
+            await enableActForResponse(assignments[0]._links.self.href, getBaseOkResponse(assignments[0]));
+            await enableActForResponse(assignments[1]._links.self.href, getBaseOkResponse(assignments[1]));
+
             await list.findByText(student.callName);
 
             for (const assignment of assignments) {
