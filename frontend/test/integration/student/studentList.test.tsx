@@ -17,7 +17,7 @@ import {
     getBaseOkResponse,
     getBasePage,
     getBaseSkillType,
-    getBaseStudent,
+    getBaseStudent, getBaseTeapot,
     getBaseUser,
 } from "../TestEntityProvider";
 import apiPaths from "../../../src/properties/apiPaths";
@@ -189,5 +189,23 @@ describe("student list", () => {
 
             expect(await list.queryByText(normalStudent.callName)).not.toBeInTheDocument();
         });
+    });
+
+    describe("when throwing error", () => {
+        it("should handle error", async () => {
+            const edition = getBaseActiveEdition("1", "edition 1");
+            console.log = jest.fn();
+
+            render(
+                makeCacheFree(() =>
+                    enableUseEditionComponentWrapper(() => <StudentList isDraggable={false} />, edition)
+                )
+            );
+            await enableActForResponse({ url: apiPaths.skillTypes }, getBaseTeapot());
+
+            await waitFor(() => {
+                expect(console.log).toHaveBeenCalled();
+            });
+        })
     });
 });
