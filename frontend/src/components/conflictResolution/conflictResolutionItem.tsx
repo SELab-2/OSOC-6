@@ -161,29 +161,6 @@ export default function ConflictResolutionItem({ student }: ConflictResolutionIt
                             {capitalize(t("confirm"))}
                         </button>
                     )}
-                    {!currentUserIsAdmin && (
-                        <OverlayTrigger
-                            key="bottom"
-                            placement="bottom"
-                            overlay={
-                                <Tooltip id={"tooltip-conflict-button"}>
-                                    {capitalize(t("only admins can resolve a conflict"))}
-                                </Tooltip>
-                            }
-                        >
-                            <span className="d-inline-block">
-                                <button
-                                    disabled
-                                    style={{ pointerEvents: "none" }}
-                                    className="btn btn-outline-primary"
-                                    data-testid="conflicts-submit-disabled"
-                                    type="submit"
-                                >
-                                    {capitalize(t("confirm"))}
-                                </button>
-                            </span>
-                        </OverlayTrigger>
-                    )}
                 </Form>
             </Formik>
         </div>
