@@ -44,16 +44,4 @@ describe("InvitationButton", () => {
 
         await enableActForResponse(apiPaths.invitations, getBaseOkResponse(baseInvitation));
     });
-
-    it("should handle error", async () => {
-        console.log = jest.fn();
-
-        makeCacheFree(render(<InvitationButton />));
-        await enableActForResponse(
-            {method: "GET"},
-            getBaseTeapot()
-        );
-
-        await waitFor(() => expect(console.log).toHaveBeenCalled());
-    });
 });
