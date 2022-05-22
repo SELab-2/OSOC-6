@@ -19,7 +19,15 @@ export function capitalize_complete(str: string): string {
  * @param uri uri that needs to be checked
  */
 export function isValidURIOrEmpty(uri: string): boolean {
-    const URIRegExp: RegExp =
-        /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+    const URIRegExp: RegExp = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol
+            "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
+            "((\\d{1,3}\\.){3}\\d{1,3}))" +
+            "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
+            "(\\?[;&a-z\\d%_.~+=-]*)?" +
+            "(\\#[-a-z\\d_]*)?$",
+        "i"
+    );
+    ///((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
     return URIRegExp.test(uri) || uri === "";
 }

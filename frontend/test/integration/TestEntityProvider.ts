@@ -142,7 +142,7 @@ export function getBaseProject(id: string): IProject {
         name: "Some project name",
         info: "some project info",
         goals: ["apples should grow on trees", "children play outside"],
-        versionManagement: "A VMS based on git",
+        versionManagement: "https://github.com/SELab-2/OSOC-6",
         partnerName: "a partner that is not git",
         partnerWebsite: "www.example.com/i-wish-i-was-i-was-git",
     };

@@ -51,6 +51,7 @@ export const dataInjectionHandler: MouseEventHandler<HTMLButtonElement> = async 
         containedUserSkills = userSkills._embedded["user-skills"];
     }
     console.log(containedUserSkills);
+    const simpleUserSkill: IUserSkill = containedUserSkills[0];
 
     const editions: IEditionsPage = (await axios.get(apiPaths.editions, AxiosConf)).data;
     console.log(editions);

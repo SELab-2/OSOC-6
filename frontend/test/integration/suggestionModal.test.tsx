@@ -6,7 +6,7 @@ import apiPaths from "../../src/properties/apiPaths";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import { UserRole } from "../../src/api/entities/UserEntity";
-import { getBaseTeapot, getBaseUser } from "./TestEntityProvider";
+import { getBaseTeapot, getBaseStudent, getBaseUser } from "./TestEntityProvider";
 import { capitalize } from "../../src/utility/stringUtil";
 import { enableActForResponse, enableCurrentUser, makeCacheFree } from "./Provide";
 import { SuggestionCount } from "../../src/components/student/suggestionCount";
@@ -17,13 +17,13 @@ afterEach(() => {
 });
 
 describe("SuggestionModal", () => {
-    let studentUrl = apiPaths.students + "/5";
+    const student = getBaseStudent("5");
     const currentUser = getBaseUser("10", UserRole.coach, true);
 
     it("should render", async () => {
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" student={student} />
             ))
         );
 
@@ -37,7 +37,7 @@ describe("SuggestionModal", () => {
     it("should render modal on click", async () => {
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" student={student} />
             ))
         );
         await enableCurrentUser(currentUser);
@@ -56,7 +56,7 @@ describe("SuggestionModal", () => {
     it("confirming modal should post suggestion", async () => {
         render(
             makeCacheFree(() => (
-                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" studentUrl={studentUrl} />
+                <SuggestionModal suggestion={SuggestionStrategy.yes} colour="blue" student={student} />
             ))
         );
         await enableCurrentUser(currentUser);

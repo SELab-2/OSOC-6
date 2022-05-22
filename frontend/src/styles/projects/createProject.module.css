@@ -49,3 +49,7 @@
     background: #0c083a;
     color: white;
 }
+
+.error_message {
+    color: orangered;
+}

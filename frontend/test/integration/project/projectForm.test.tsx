@@ -229,7 +229,7 @@ describe("Create project form", () => {
                             extractIdFromApiEntityUrl(projectResponse._links.self.href)
                     );
                 });
-            });
+            }, 20000);
 
             it("can remove an added goal", async () => {
                 const projectGoal = component.getByTestId("item-list-input");
