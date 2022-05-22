@@ -8,11 +8,13 @@ import Image from "next/image";
 import { useEditionApplicationPathTransformer } from "../../hooks/utilHooks";
 import { logoutUser } from "../../api/calls/userCalls";
 import { useRouter } from "next/router";
+import { useRouterPush } from "../../hooks/routerHooks";
+import { useSWRConfig } from "swr";
 
 export const OptionsMenu = () => {
     const { t } = useTranslation("common");
     const transformer = useEditionApplicationPathTransformer();
-    const router = useRouter();
+    const { mutate } = useSWRConfig();
 
     // All options are defined here
     // This gets shown when the image is clicked.
@@ -26,8 +28,8 @@ export const OptionsMenu = () => {
             </Nav.Link>
             <Nav.Link
                 onClick={async () => {
-                    await router.push(transformer("/" + applicationPaths.login));
                     await logoutUser();
+                    await mutate(apiPaths.ownUser, {});
                 }}
                 href={undefined}
                 className={styles.menu_option}

@@ -13,6 +13,7 @@ import { useEditionApplicationPathTransformer, useGlobalEditionSetter } from "..
 import { IEdition } from "../../api/entities/EditionEntity";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { useRouter } from "next/router";
+import { getQueryUrlFromParams } from "../../api/calls/baseCalls";
 import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 
 type EditionProps = {
@@ -36,7 +37,10 @@ export function EditionRowComponent(props: EditionProps) {
 
     async function useRightUrlAndGlobalContext() {
         await globalEditionSetter(edition);
-        await router.push("/" + applicationPaths.assignStudents);
+        // Normal push is needed here because edition is changed.
+        await router.push(
+            getQueryUrlFromParams("/" + applicationPaths.assignStudents, { edition: edition.name })
+        );
     }
 
     async function deleteEdition() {

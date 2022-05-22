@@ -28,6 +28,7 @@ import styles from "../../styles/students/studentList.module.css";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { getStudentQueryParamsFromQuery } from "./studentFilterComponent";
 import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
+import { useRouterPush, useRouterReplace } from "../../hooks/routerHooks";
 
 /**
  * Give an overview of all the studentinfo
@@ -35,6 +36,7 @@ import { ConfirmDeleteButton } from "../util/confirmDeleteButton";
 export function StudentInfo() {
     const { t } = useTranslation("common");
     const router = useRouter();
+    const routerAction = useRouterReplace();
     const transformer = useEditionApplicationPathTransformer();
     const isAdmin = useCurrentAdminUser();
     const { id } = router.query as { id: string };
@@ -74,8 +76,7 @@ export function StudentInfo() {
         const response = await deleteStudent(student!._links.self.href);
         if (response.status == StatusCodes.NO_CONTENT) {
             try {
-                const params = getParamsFromQueryUrl(router.asPath);
-                await router.push(getQueryUrlFromParams("/" + applicationPaths.students, params));
+                await routerAction({ pathname: "/" + applicationPaths.students, query: { ...router.query } });
             } catch (error) {
                 setShow(true);
             }
@@ -85,11 +86,9 @@ export function StudentInfo() {
     }
 
     async function openCommunications() {
-        const params = getStudentQueryParamsFromQuery(router.query);
         const studentCommUrl =
             "/" + applicationPaths.students + "/" + id + "/" + applicationPaths.communicationBase;
-        const studentCommUrlParams = getQueryUrlFromParams(studentCommUrl, params);
-        await router.push(studentCommUrlParams);
+        await routerAction({ pathname: studentCommUrl, query: { ...router.query } });
     }
 
     return (

@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import mockAxios from "jest-mock-axios";
 import { screen, render, waitFor } from "@testing-library/react";
-import { makeCacheFree } from "./Provide";
-import WarningToast from "../../src/components/util/warningToast";
+import { makeCacheFree } from "../Provide";
+import WarningToast from "../../../src/components/util/warningToast";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
