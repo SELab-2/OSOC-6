@@ -80,56 +80,59 @@ export default function CreateCommunicationForm({ student, template }: CreateCom
                 {({ values, setFieldValue }) => (
                     <Form>
                         <div data-testid="communication-form">
-                            <h2>{capitalize(t("communication"))}</h2>
+                            <h5>{capitalize(t("communication"))}</h5>
                             <hr />
-                            <div className="text-wrap">{capitalize(t("for")) + ": " + student?.email}</div>
-                            <div>
-                                <label htmlFor="communicationTemplateSubjectField">
-                                    {capitalize(t("subject")) + ":"}
-                                </label>
-                                <Field
-                                    type="text"
-                                    name="subject"
-                                    required
-                                    style={{
-                                        backgroundColor: "#1b1a31",
-                                        borderColor: "white",
-                                        borderWidth: 1,
-                                        color: "white",
-                                        marginLeft: 10,
-                                        marginBottom: 10,
-                                        marginTop: 5,
-                                        paddingLeft: 10,
-                                    }}
-                                    placeholder={capitalize(t("subject"))}
-                                    id="communicationTemplateSubjectField"
-                                    data-testid="subject"
-                                />
+                            <div style={{ marginLeft: "1rem" }}>
+                                <div className="text-wrap">
+                                    {capitalize(t("for")) + ": " + student?.email}
+                                </div>
+                                <div>
+                                    <label htmlFor="communicationTemplateSubjectField">
+                                        {capitalize(t("subject")) + ":"}
+                                    </label>
+                                    <Field
+                                        type="text"
+                                        name="subject"
+                                        required
+                                        style={{
+                                            backgroundColor: "#1b1a31",
+                                            borderColor: "white",
+                                            borderWidth: 1,
+                                            color: "white",
+                                            marginLeft: 10,
+                                            marginBottom: 10,
+                                            marginTop: 5,
+                                            paddingLeft: 10,
+                                        }}
+                                        placeholder={capitalize(t("subject"))}
+                                        id="communicationTemplateSubjectField"
+                                        data-testid="subject"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="communicationTemplateSubjectField">
+                                        {capitalize(t("medium")) + ":"}
+                                    </label>
+                                    <Field
+                                        type="text"
+                                        name="medium"
+                                        required
+                                        style={{
+                                            backgroundColor: "#1b1a31",
+                                            borderColor: "white",
+                                            borderWidth: 1,
+                                            color: "white",
+                                            marginLeft: 10,
+                                            marginBottom: 20,
+                                            marginTop: 5,
+                                            paddingLeft: 10,
+                                        }}
+                                        placeholder={capitalize(t("medium"))}
+                                        id="communicationTemplateSubjectField"
+                                        data-testid="medium"
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <label htmlFor="communicationTemplateSubjectField">
-                                    {capitalize(t("medium")) + ":"}
-                                </label>
-                                <Field
-                                    type="text"
-                                    name="medium"
-                                    required
-                                    style={{
-                                        backgroundColor: "#1b1a31",
-                                        borderColor: "white",
-                                        borderWidth: 1,
-                                        color: "white",
-                                        marginLeft: 10,
-                                        marginBottom: 20,
-                                        marginTop: 5,
-                                        paddingLeft: 10,
-                                    }}
-                                    placeholder={capitalize(t("medium"))}
-                                    id="communicationTemplateSubjectField"
-                                    data-testid="medium"
-                                />
-                            </div>
-
                             <div>
                                 <textarea
                                     placeholder={capitalize(t("template placeholder"))}

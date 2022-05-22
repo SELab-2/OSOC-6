@@ -70,9 +70,9 @@ export default function CreateCommunicationTemplateForm({
             {({ values, setFieldValue }) => (
                 <Form data-testid="template-form">
                     <div>
-                        <h2>
+                        <h5>
                             {template ? capitalize(t("edit template")) : capitalize(t("create new template"))}
-                        </h2>
+                        </h5>
                         <hr />
                         <label htmlFor="communicationTemplateNameField">{capitalize(t("name")) + ":"}</label>
 
