@@ -1,0 +1,31 @@
+.skill_types,
+.skill_types_box {
+    width: 50%;
+    margin: 10rem auto auto;
+}
+.skill_type_label .badge {
+    margin-left: 10px;
+}
+.skill_type_list li {
+    padding-left: 0;
+    border-bottom: 1px solid #333;
+}
+.create_form_container {
+    height: calc(100vh - 4rem);
+    overflow: auto;
+}
+
+.bg_color {
+    background-color: #1b1a31;
+}
+
+.input_field {
+    border-color: white;
+    background: #1a1a32;
+    color: white;
+}
+
+.input_field:focus {
+    background: #1a1a32;
+    color: white;
+}

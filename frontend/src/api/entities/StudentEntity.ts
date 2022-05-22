@@ -27,6 +27,14 @@ export enum EnglishProficiency {
     fluent = "FLUENT",
 }
 
+export const englishProficiencyAsString: { [proficiency in EnglishProficiency]: string } = {
+    [EnglishProficiency.readNotWrite]: "read not write",
+    [EnglishProficiency.simpleConversation]: "simple conversation",
+    [EnglishProficiency.expressive]: "expressive",
+    [EnglishProficiency.extensive]: "extensive",
+    [EnglishProficiency.fluent]: "fluent",
+};
+
 export enum Gender {
     female = "FEMALE",
     male = "MALE",
@@ -34,21 +42,32 @@ export enum Gender {
     not_specified = "NOT_SPECIFIED",
 }
 
-export enum OsocExpericience {
+export const genderAsString: { [gender in Gender]: string } = {
+    [Gender.female]: "female",
+    [Gender.male]: "male",
+    [Gender.transgender]: "transgender",
+    [Gender.not_specified]: "not specified",
+};
+
+export enum OsocExperience {
     none = "NONE",
     yes_noStudentCoach = "YES_NO_STUDENT_COACH",
     yes_studentCoach = "YES_STUDENT_COACH",
 }
 
-export enum PronounsType {
-    SHE = "SHE",
-    he = "HE",
-    they = "THEY",
-    ze = "ZE",
-    firstName = "FIRSTNAME",
-    callName = "CALLNAME",
-    other = "OTHER",
-    none = "NONE",
+export const osocExperienceAsString: { [experience in OsocExperience]: string } = {
+    [OsocExperience.none]: "none",
+    [OsocExperience.yes_noStudentCoach]: "yes, no student coach",
+    [OsocExperience.yes_studentCoach]: "yes, student coach",
+};
+
+export enum Status {
+    undecided = "UNDECIDED",
+    maybe = "MAYBE",
+    rejected = "REJECTED",
+    approved = "APPROVED",
+    contract_confirmed = "CONTRACT_CONFIRMED",
+    contract_declined = "CONTRACT_DECLINED",
 }
 
 export interface IStudent extends IBaseEntity {
@@ -59,7 +78,6 @@ export interface IStudent extends IBaseEntity {
     currentDiploma: string;
     curriculumVitaeURI: string;
     durationCurrentDegree: number;
-    educationLevel: string;
     englishProficiency: EnglishProficiency;
     firstName: string;
     gender: Gender;
@@ -67,17 +85,18 @@ export interface IStudent extends IBaseEntity {
     lastName: string;
     mostFluentLanguage: string;
     motivationURI: string;
-    osocExperience: OsocExpericience;
+    osocExperience: OsocExperience;
+    status: Status;
     phoneNumber: string;
+    workType: string;
+    daytimeResponsibilities: string;
     portfolioURI: string;
-    pronounsType: PronounsType;
+    pronouns: string;
+    funFact: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;
     yearInCourse: string;
-    subjectivePronoun: string;
-    possessivePronoun: string;
-    objectivePronoun: string;
     yesSuggestionCount: number;
     noSuggestionCount: number;
     maybeSuggestionCount: number;
@@ -91,9 +110,92 @@ export interface IStudent extends IBaseEntity {
     };
 }
 
+/**
+ * An [IStudent] that is completely empty. Using this we don't need as much ?. in our code.
+ */
+export const emptyStudent: IStudent = {
+    callName: "",
+    noSuggestionCount: 0,
+    maybeSuggestionCount: 0,
+    additionalStudentInfo: "",
+    yesSuggestionCount: 0,
+    bestSkill: "",
+    currentDiploma: "",
+    curriculumVitaeURI: "",
+    daytimeResponsibilities: "",
+    email: "",
+    durationCurrentDegree: 0,
+    englishProficiency: EnglishProficiency.readNotWrite,
+    firstName: "",
+    funFact: "",
+    gender: Gender.not_specified,
+    institutionName: "",
+    lastName: "",
+    mostFluentLanguage: "",
+    motivationURI: "",
+    osocExperience: OsocExperience.none,
+    phoneNumber: "",
+    portfolioURI: "",
+    pronouns: "",
+    skills: [],
+    status: Status.undecided,
+    studies: [],
+    workType: "",
+    writtenMotivation: "",
+    yearInCourse: "",
+    _links: {
+        student: { href: "" },
+        self: { href: "" },
+        assignments: { href: "" },
+        edition: { href: "" },
+        suggestions: { href: "" },
+    },
+};
+
 export const studentCollectionName: string = "students";
 export type IStudentPage = IPage<{ students: IStudent[] }>;
 export type IStudentLinks = IEntityLinks<{ students: IStudent[] }>;
+
+export function sortStudentsByName(students: IStudent[]) {
+    return students.sort((first, second) => first.callName.localeCompare(second.callName));
+}
+
+/**
+ * Create a student for the given edition from the given IStudent
+ * @param editionUrl the url of the edition to create the student for
+ * @param student the values of this IStudent object are used to create the student
+ */
+export function studentFromIStudent(editionUrl: string, student: IStudent) {
+    return new Student(
+        student.email,
+        student.additionalStudentInfo,
+        student.bestSkill,
+        student.callName,
+        student.currentDiploma,
+        student.curriculumVitaeURI,
+        student.durationCurrentDegree,
+        student.englishProficiency,
+        student.firstName,
+        student.gender,
+        student.institutionName,
+        student.lastName,
+        student.mostFluentLanguage,
+        student.motivationURI,
+        student.osocExperience,
+        student.status,
+        student.phoneNumber,
+        student.workType,
+        student.daytimeResponsibilities,
+        student.portfolioURI,
+        student.pronouns,
+        student.funFact,
+        student.skills,
+        student.studies,
+        student.writtenMotivation,
+        student.yearInCourse,
+        editionUrl
+    );
+}
 
 export class Student {
     constructor(
@@ -104,7 +206,6 @@ export class Student {
         currentDiploma: string,
         curriculumVitaeURI: string,
         durationCurrentDegree: number,
-        educationLevel: string,
         englishProficiency: EnglishProficiency,
         firstName: string,
         gender: Gender,
@@ -112,13 +213,14 @@ export class Student {
         lastName: string,
         mostFluentLanguage: string,
         motivationURI: string,
-        osocExperience: OsocExpericience,
+        osocExperience: OsocExperience,
+        status: Status,
         phoneNumber: string,
+        workType: string,
+        daytimeResponsibilities: string,
         portfolioURI: string,
-        subjectivePronoun: string,
-        possessivePronoun: string,
-        objectivePronoun: string,
-        pronounsType: PronounsType,
+        pronouns: string,
+        funFact: string,
         skills: string[],
         studies: string[],
         writtenMotivation: string,
@@ -132,7 +234,6 @@ export class Student {
         this.currentDiploma = currentDiploma;
         this.curriculumVitaeURI = curriculumVitaeURI;
         this.durationCurrentDegree = durationCurrentDegree;
-        this.educationLevel = educationLevel;
         this.englishProficiency = englishProficiency;
         this.firstName = firstName;
         this.gender = gender;
@@ -141,12 +242,13 @@ export class Student {
         this.mostFluentLanguage = mostFluentLanguage;
         this.motivationURI = motivationURI;
         this.osocExperience = osocExperience;
+        this.status = status;
         this.phoneNumber = phoneNumber;
+        this.workType = workType;
+        this.daytimeResponsibilities = daytimeResponsibilities;
         this.portfolioURI = portfolioURI;
-        this.subjectivePronoun = subjectivePronoun;
-        this.possessivePronoun = possessivePronoun;
-        this.objectivePronoun = objectivePronoun;
-        this.pronounsType = pronounsType;
+        this.pronouns = pronouns;
+        this.funFact = funFact;
         this.skills = skills;
         this.studies = studies;
         this.writtenMotivation = writtenMotivation;
@@ -160,7 +262,6 @@ export class Student {
     currentDiploma: string;
     curriculumVitaeURI: string;
     durationCurrentDegree: number;
-    educationLevel: string;
     email: string;
     englishProficiency: EnglishProficiency;
     firstName: string;
@@ -169,13 +270,14 @@ export class Student {
     lastName: string;
     mostFluentLanguage: string;
     motivationURI: string;
-    osocExperience: OsocExpericience;
+    osocExperience: OsocExperience;
+    status: Status;
     phoneNumber: string;
+    workType: string;
+    daytimeResponsibilities: string;
     portfolioURI: string;
-    subjectivePronoun: string;
-    possessivePronoun: string;
-    objectivePronoun: string;
-    pronounsType: PronounsType;
+    pronouns: string;
+    funFact: string;
     skills: string[];
     studies: string[];
     writtenMotivation: string;

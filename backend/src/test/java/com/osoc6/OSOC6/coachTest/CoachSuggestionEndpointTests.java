@@ -3,13 +3,12 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Suggestion;
-import com.osoc6.OSOC6.database.models.SuggestionStrategy;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Suggestion;
+import com.osoc6.OSOC6.entities.SuggestionStrategy;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.SuggestionDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.repository.SuggestionRepository;
-import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +32,10 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     /**
      * First sample student that gets loaded before every test.
      */
-    private final Student student = TestEntityProvider.getBaseStudentOther(this);
+    private final Student student = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
 
     /**
-     * First sample suggestions that gets loaded before every test.
+     * First sample suggestion that gets loaded before every test.
      */
     private final Suggestion suggestion1 = TestEntityProvider.getBaseYesSuggestion(getCoachUser(), student);
 
@@ -52,25 +51,19 @@ public class CoachSuggestionEndpointTests extends TestFunctionProvider<Suggestio
     private static final String TEST_STRING = "TEST REASON";
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Suggestion} in the database.
      */
     @Autowired
     private SuggestionRepository suggestionRepository;
 
     /**
-     * The repository which saves, searches, ... in the database
-     */
-    @Autowired
-    private UserRepository userRepository;
-
-    /**
-     * The repository which saves, searches, ... a student in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

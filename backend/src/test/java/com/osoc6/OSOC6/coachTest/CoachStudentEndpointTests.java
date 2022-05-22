@@ -3,7 +3,7 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.StudentDTO;
 import com.osoc6.OSOC6.repository.StudentRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -27,18 +27,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachStudentEndpointTests extends TestFunctionProvider<Student, Long, StudentRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Student} in the database.
      */
     @Autowired
     private StudentRepository studentRepository;
 
     /**
-     * The actual path editions are served on, with '/' as prefix.
+     * The actual path students are served on, with '/' as prefix.
      */
     private static final String STUDENTS_PATH = "/" + DumbledorePathWizard.STUDENT_PATH;
 
     /**
-     * A test user to allowing us to write test easily.
+     * A test student to allowing us to write test easily.
      */
     private final Student testStudent = TestEntityProvider.getBaseStudentHe(this);
 
@@ -49,7 +49,7 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
     private static final String TEST_STRING = "Bananas are my signature dish";
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -84,7 +84,7 @@ public final class CoachStudentEndpointTests extends TestFunctionProvider<Studen
 
     @Override
     public Student create_entity() {
-        Student student = TestEntityProvider.getBaseStudentOther(this);
+        Student student = TestEntityProvider.getBaseStudentNonFormattedPronouns(this);
         student.setAdditionalStudentInfo(TEST_STRING);
         return student;
     }

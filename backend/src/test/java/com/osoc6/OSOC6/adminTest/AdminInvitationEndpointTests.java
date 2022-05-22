@@ -2,7 +2,7 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Invitation;
+import com.osoc6.OSOC6.entities.Invitation;
 import com.osoc6.OSOC6.dto.InvitationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mockStatic;
 public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, Long, InvitationRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link Invitation} in the database.
      */
     @Autowired
     private InvitationRepository invitationRepository;
@@ -41,7 +41,7 @@ public class AdminInvitationEndpointTests extends AdminEndpointTest<Invitation, 
     private final Invitation unUsedInvitation = TestEntityProvider.getBaseUnusedInvitation(this);
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;

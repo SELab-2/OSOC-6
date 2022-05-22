@@ -1,0 +1,40 @@
+.conflict_radio_button {
+    margin-right: 1rem;
+    margin-top: 0.4em;
+}
+
+.conflict_project_name {
+}
+
+.conflict_skillbadge {
+    margin-left: auto;
+}
+
+.conflict_div_button_and_project {
+    display: flex;
+    margin-left: 5%;
+}
+
+.conflict_div_button_and_project span {
+    max-height: 1.5rem;
+    margin-right: 2rem;
+    margin-left: auto;
+}
+
+.conflict_reasons {
+    margin-left: 15%;
+    font-size: 14px;
+}
+
+.conflict_full_div {
+    margin: 1rem;
+}
+
+.conflict_inner_div {
+    margin: 1rem;
+}
+
+.conflict_reasons_list {
+    margin-left: 4rem;
+    list-style-type: circle;
+}

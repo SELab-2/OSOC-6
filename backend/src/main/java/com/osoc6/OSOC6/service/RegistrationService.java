@@ -1,8 +1,8 @@
 package com.osoc6.OSOC6.service;
 
-import com.osoc6.OSOC6.database.models.Invitation;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.Invitation;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.dto.RegistrationDTO;
 import com.osoc6.OSOC6.repository.InvitationRepository;
 import lombok.AllArgsConstructor;
@@ -28,9 +28,9 @@ public class RegistrationService {
     private final UserEntityService userEntityService;
 
     /**
-     * Check if the given token is a valid invitation token.
+     * Get the invitation corresponding to the given token.
      * @param token the token of an invitation
-     * @return whether the provided token is valid
+     * @return an invitation or Optional#empty if the token does not belong to an invitation.
      */
     public Optional<Invitation> getInvitationFromToken(final String token) {
         return invitationRepository.findByToken(token);

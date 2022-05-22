@@ -1,0 +1,43 @@
+.student_outer_div {
+    justify-content: center;
+    margin: auto;
+    align-items: center;
+    height: 100%;
+}
+
+.student_inner_div {
+    width: 50%;
+    margin-top: 4rem;
+}
+
+.input_field {
+    border-color: white;
+    background: #1a1a32;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.input_field:focus {
+    background: #1a1a32;
+    color: white;
+}
+
+.dropdown_field {
+    background-color: #1a1a32;
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='white' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.dropdown_field:focus {
+    background-color: #1a1a32;
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='white' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.error_message {
+    color: orangered;
+}

@@ -2,10 +2,10 @@ package com.osoc6.OSOC6.adminTest;
 
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Assignment;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
-import com.osoc6.OSOC6.database.models.student.Student;
+import com.osoc6.OSOC6.entities.Assignment;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.ProjectSkill;
+import com.osoc6.OSOC6.entities.student.Student;
 import com.osoc6.OSOC6.dto.AssignmentDTO;
 import com.osoc6.OSOC6.repository.AssignmentRepository;
 import com.osoc6.OSOC6.repository.ProjectRepository;
@@ -15,7 +15,9 @@ import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
@@ -39,19 +41,19 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     private AssignmentRepository assignmentRepository;
 
     /**
-     * The repository which saves, searches, ... {@link Project} in the database
+     * The repository which saves, searches, ... {@link Project} in the database.
      */
     @Autowired
     private ProjectRepository projectRepository;
 
     /**
-     * The repository which saves, searches, ... {@link ProjectSkill} in the database
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database.
      */
     @Autowired
     private ProjectSkillRepository projectSkillRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -79,7 +81,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     /**
      * Sample {@link Assignment} that gets loaded before every test.
      */
-    private final Assignment testAssignment = TestEntityProvider.getBaseSuggestionAssignment(getAdminUser(),
+    private final Assignment testAssignment = TestEntityProvider.getBaseValidAssignment1(getAdminUser(),
             testStudent, projectSkill1);
 
     /**
@@ -132,7 +134,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @Override
     public Assignment create_entity() {
         Assignment assignment = TestEntityProvider
-                .getBaseNonSuggestionAssignment(getAdminUser(), testStudent, projectSkill1);
+                .getBaseValidAssignment2(getAdminUser(), testStudent, projectSkill1);
         assignment.setReason(TEST_STRING);
         return assignment;
     }
@@ -155,7 +157,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     public void student_matching_query_over_assignment_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{testAssignment.getReason(),
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
@@ -167,7 +169,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     public void student_non_matching_query_over_assignment_reason_works() throws Exception {
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_QUERY_PATH,
-                new String[]{"reason", "edition"},
+                new String[]{"freeText", "edition"},
                 new String[]{"apple" + testAssignment.getReason() + "banana",
                         getBaseActiveUserEdition().getId().toString()})
                 .andExpect(status().isOk())
@@ -189,7 +191,7 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_matching_query_conflict_works() throws Exception {
         perform_post(getEntityPath(), TestEntityProvider
-                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill2));
+                .getBaseValidAssignment2(getCoachUser(), testStudent, projectSkill2));
 
         perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH,
@@ -203,11 +205,216 @@ public final class AdminAssignmentEndpointTests extends AdminEndpointTest<Assign
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void student_conflict_no_edition_works() throws Exception {
         perform_post(getEntityPath(), TestEntityProvider
-                .getBaseNonSuggestionAssignment(getCoachUser(), testStudent, projectSkill2));
+                .getBaseValidAssignment2(getCoachUser(), testStudent, projectSkill2));
 
         perform_get("/" + DumbledorePathWizard.STUDENT_PATH + "/search/"
                         + DumbledorePathWizard.STUDENT_CONFLICT_PATH)
                 .andExpect(status().isOk())
                 .andExpect(string_not_to_contains_string(testStudent.getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_no_results_when_true() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
+                        + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_true_and_invalid() throws Exception {
+        perform_patch(getEntityPath() + "/" + get_id(testAssignment), Map.of("isValid", Boolean.toString(false)));
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
+                        + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filtering_on_unmatched_works_results_when_false() throws Exception {
+        perform_queried_get("/" + DumbledorePathWizard.STUDENT_PATH
+                        + "/search/" + DumbledorePathWizard.STUDENT_QUERY_PATH,
+                new String[]{"edition", "unmatched"},
+                new String[]{getBaseActiveUserEdition().getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testStudent.getBestSkill()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_student_returns_nothing_when_not_providing_query() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{},
+                new String[]{})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_student_returns_nothing_when_not_valid() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"studentId"},
+                new String[]{testStudent.getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_student_works() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"studentId", "valid"},
+                new String[]{testStudent.getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_student_works_no_results_on_wrong_student() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"studentId", "valid"},
+                new String[]{Long.toString(getILLEGAL_ID()), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_non_valid_on_student_works() throws Exception {
+        Assignment nonValidAssignment = TestEntityProvider
+                .getBaseNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
+        assignmentRepository.save(nonValidAssignment);
+
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"studentId", "valid"},
+                new String[]{testStudent.getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(nonValidAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filter_non_valid_on_student_works() throws Exception {
+        Assignment nonValidAssignment = TestEntityProvider
+                .getBaseNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
+        assignmentRepository.save(nonValidAssignment);
+
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"studentId", "valid"},
+                new String[]{testStudent.getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(nonValidAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filter_valid_on_student_works() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill1.getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_returns_nothing_when_not_providing_query() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{},
+                new String[]{})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_returns_nothing_when_not_valid() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_STUDENT_PATH,
+                new String[]{"projectSkillId"},
+                new String[]{projectSkill1.getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_works() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill1.getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_valid_on_project_works_no_results_on_wrong_student() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{Long.toString(getILLEGAL_ID()), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void find_non_valid_on_project_works() throws Exception {
+        Assignment nonValidAssignment = TestEntityProvider
+                .getBaseNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
+        assignmentRepository.save(nonValidAssignment);
+
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill1.getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(nonValidAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filter_non_valid_on_project_works() throws Exception {
+        Assignment nonValidAssignment = TestEntityProvider
+                .getBaseNonValidAssignment(getAdminUser(), testStudent, projectSkill1);
+        assignmentRepository.save(nonValidAssignment);
+
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill1.getId().toString(), Boolean.toString(true)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(nonValidAssignment.getReason()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void filter_valid_on_project_works() throws Exception {
+        perform_queried_get(getEntityPath()
+                        + "/search/" + DumbledorePathWizard.ASSIGNMENT_VALID_OF_PROJECT_SKILL_PATH,
+                new String[]{"projectSkillId", "valid"},
+                new String[]{projectSkill1.getId().toString(), Boolean.toString(false)})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(testAssignment.getReason()));
     }
 }

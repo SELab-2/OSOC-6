@@ -3,8 +3,8 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.Project;
-import com.osoc6.OSOC6.database.models.ProjectSkill;
+import com.osoc6.OSOC6.entities.Project;
+import com.osoc6.OSOC6.entities.ProjectSkill;
 import com.osoc6.OSOC6.dto.ProjectSkillDTO;
 import com.osoc6.OSOC6.repository.ProjectRepository;
 import com.osoc6.OSOC6.repository.ProjectSkillRepository;
@@ -28,19 +28,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CoachProjectSkillEndpointTests extends TestFunctionProvider<ProjectSkill, Long, ProjectSkillRepository> {
     /**
-     * The repository which saves, searches, ... Projects in the database
+     * The repository which saves, searches, ... {@link ProjectSkill} in the database.
      */
     @Autowired
     private ProjectSkillRepository projectSkillRepository;
 
     /**
-     * The repository which saves, searches, ... Projects in the database
+     * The repository which saves, searches, ... {@link Project} in the database.
      */
     @Autowired
     private ProjectRepository projectRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -56,7 +56,7 @@ public class CoachProjectSkillEndpointTests extends TestFunctionProvider<Project
     private final ProjectSkill skill = new ProjectSkill("Walk on water", testProject, "just to be with you!");
 
     /**
-     * The actual path projects are served on, with '/' as prefix.
+     * The actual path project skills are served on, with '/' as prefix.
      */
     private static final String PROJECT_SKILL_PATH = "/" + DumbledorePathWizard.PROJECT_SKILL_PATH;
 

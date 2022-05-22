@@ -3,8 +3,8 @@ package com.osoc6.OSOC6.coachTest;
 import com.osoc6.OSOC6.TestEntityProvider;
 import com.osoc6.OSOC6.TestFunctionProvider;
 import com.osoc6.OSOC6.Util;
-import com.osoc6.OSOC6.database.models.UserEntity;
-import com.osoc6.OSOC6.database.models.UserRole;
+import com.osoc6.OSOC6.entities.UserEntity;
+import com.osoc6.OSOC6.entities.UserRole;
 import com.osoc6.OSOC6.dto.UserDTO;
 import com.osoc6.OSOC6.repository.UserRepository;
 import com.osoc6.OSOC6.winterhold.DumbledorePathWizard;
@@ -18,6 +18,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -28,13 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntity, Long, UserRepository> {
 
     /**
-     * The repository which saves, searches, ... in the database
+     * The repository which saves, searches, ... {@link UserEntity} in the database.
      */
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * Entity links, needed to get to link of an entity.
+     * Entity links, needed to get the link of an entity.
      */
     @Autowired
     private EntityLinks entityLinks;
@@ -49,6 +51,13 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
      * This string should be unique.
      */
     private static final String TEST_STRING = "Test Callname";
+
+    /**
+     * A coach test user.
+     */
+    private final UserEntity otherCoachUser =
+            new UserEntity("othercoach@test.com", "other coach", UserRole.COACH, "123456");
+
 
     @Override
     public UserEntity create_entity() {
@@ -90,12 +99,20 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     @Override
     public void removeSetUpRepository() {
         removeBasicData();
+        userRepository.deleteAll();
     }
 
     @Override
     public String transform_to_json(final UserEntity entity) {
         UserDTO helper = new UserDTO(entity, entityLinks);
         return Util.asJsonString(helper);
+    }
+
+    /**
+     * Add the other coach user to the database.
+     */
+    private void addOtherCoach() {
+        performAsAdmin(() -> userRepository.save(otherCoachUser));
     }
 
     @Test
@@ -197,9 +214,43 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
 
     @Test
     @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    public void coach_delete_user_is_forbidden() throws Exception {
-        perform_delete_with_id(USERS_PATH, getCoachUser().getId())
+    public void coach_update_password_updates_and_encrypts_new_password() throws Exception {
+        String oldPassword = getCoachUser().getPassword();
+        String newPassword = "mynewpw123";
+        Map<String, String> map = Map.of(
+                "password", newPassword
+        );
+        perform_patch(USERS_PATH + "/" + getCoachUser().getId(), map)
+                .andExpect(status().is2xxSuccessful());
+
+        // We check that the password no longer equals the previous one, and that the new one has been encrypted
+        UserEntity updatedUserEntity = get_repository_entity_by_id(getCoachUser().getId());
+        assertNotEquals(oldPassword, updatedUserEntity.getPassword());
+        assertNotEquals(newPassword, updatedUserEntity.getPassword());
+        assertTrue(updatedUserEntity.getPassword().length() > 0);
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_delete_admin_user_is_forbidden() throws Exception {
+        perform_delete_with_id(USERS_PATH, getAdminUser().getId())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_delete_other_coach_user_is_forbidden() throws Exception {
+        addOtherCoach();
+
+        perform_delete_with_id(USERS_PATH, otherCoachUser.getId())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_delete_self_succeeds() throws Exception {
+        perform_delete_with_id(USERS_PATH, getCoachUser().getId())
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -241,5 +292,49 @@ public final class CoachUserEndpointTests extends TestFunctionProvider<UserEntit
     public void coach_does_NOT_see_other_edition_by_id() throws Exception {
         perform_get(getEntityPath() + "/" + getCoachUser().getId())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_can_not_query_non_containing_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{Long.toString(getILLEGAL_ID())})
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_can_find_self_by_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_can_find_admin_by_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getAdminUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = MATCHING_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void coach_matching_by_editions() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_to_contains_string(getCoachUser().getCallName()));
+    }
+
+    @Test
+    @WithUserDetails(value = COACH_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void by_editions_does_filter_on_edition() throws Exception {
+        perform_queried_get(getEntityPath() + "/search/" + DumbledorePathWizard.FIND_ANYTHING_BY_EDITION_PATH,
+                new String[]{"edition"}, new String[]{getBaseActiveUserEdition().getId().toString()})
+                .andExpect(status().isOk())
+                .andExpect(string_not_to_contains_string(getOutsiderCoach().getCallName()));
     }
 }
