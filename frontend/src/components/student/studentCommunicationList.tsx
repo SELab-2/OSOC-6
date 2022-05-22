@@ -67,8 +67,8 @@ export default function StudentCommunicationList({ student }: CommunicationListP
     }
 
     return (
-        <div data-testid="student-communication" className={styles.student_communcation_list_outer_div}>
-            <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+        <div data-testid="student-communication" className={styles.student_communcation_list_outer_div + " h-100"}>
+            <div className={"overflow-auto p-3"} style={{ height: "100%" }}>
                 <div className={styles.student_info_button + " row"}>
                     <Button
                         variant="btn-outline"

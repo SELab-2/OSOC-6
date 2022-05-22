@@ -122,20 +122,18 @@ export function RegisterCommunication() {
                     </Button>
                 </Col>
             </Row>
-            <div>
-                {(create || edit) && (
-                    <CreateCommunicationTemplateForm
-                        template={selectedTemplate}
-                        studentId={extractIdFromStudentUrl(student._links.self.href)}
-                        setTemplate={setSelectedTemplate}
-                        setCreate={setCreate}
-                        setEdit={setEdit}
-                    />
-                )}
-                {selectedTemplate && !(edit || create) && (
-                    <CreateCommunicationForm student={student} template={selectedTemplate} />
-                )}
-            </div>
+            {(create || edit) && (
+                <CreateCommunicationTemplateForm
+                    template={selectedTemplate}
+                    studentId={extractIdFromStudentUrl(student._links.self.href)}
+                    setTemplate={setSelectedTemplate}
+                    setCreate={setCreate}
+                    setEdit={setEdit}
+                />
+            )}
+            {selectedTemplate && !(edit || create) && (
+                <CreateCommunicationForm student={student} template={selectedTemplate} />
+            )}
         </div>
     );
 }
