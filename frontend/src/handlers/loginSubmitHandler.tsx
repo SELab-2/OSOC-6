@@ -28,6 +28,7 @@ export async function loginSubmitHandler(
     const response = await postLoginFromForm(loginFormData);
     const errorOccurred =
         response.request.responseURL.split(applicationPaths.base)[1] === apiPaths.loginError;
+    console.log(errorOccurred)
 
     errorSetter(errorOccurred);
 
@@ -43,6 +44,8 @@ export async function loginSubmitHandler(
             router.query.returnUrl === undefined
                 ? "/" + applicationPaths.assignStudents
                 : "/" + router.query.returnUrl;
+        console.log("Redirecturl");
+        console.log(redirectUrl)
 
         await router.push(redirectUrl);
     }
