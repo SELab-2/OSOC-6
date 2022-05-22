@@ -10,12 +10,13 @@ import useTranslation from "next-translate/useTranslation";
 import { capitalize } from "../../utility/stringUtil";
 import { Button } from "react-bootstrap";
 import NavBar from "./navBar";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentAdminUser, useCurrentUser } from "../../hooks/useCurrentUser";
 import { pathIsAuthException } from "../../utility/pathUtil";
 import { useSwrForEntityList } from "../../hooks/utilHooks";
 
 export default function RouteInjector({ children }: any) {
     const router = useRouter();
+    const isAdmin = useCurrentAdminUser();
     // We cannot inject here, it will provide problems and race conditions.
     const routerAction = router.replace;
 
@@ -125,9 +126,11 @@ export default function RouteInjector({ children }: any) {
                         <div style={{ padding: "10px", fontWeight: "bold", fontSize: "130%" }}>
                             {capitalize(t("no edition"))}
                         </div>
-                        <Button href={applicationPaths.editionCreate}>
-                            {capitalize(t("create new edition"))}
-                        </Button>
+                        {isAdmin && (
+                            <Button href={applicationPaths.editionCreate}>
+                                {capitalize(t("create new edition"))}
+                            </Button>
+                        )}
                     </div>
                 </>
             );

@@ -21,7 +21,7 @@ import { IProjectSkill } from "../../../src/api/entities/ProjectSkillEntity";
 import { capitalize } from "../../../src/utility/stringUtil";
 import userEvent from "@testing-library/user-event";
 import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { enableActForResponse, makeCacheFree } from "../Provide";
+import { enableActForResponse, enableCurrentUser, makeCacheFree } from "../Provide";
 import { getValidAssignmentsUrlForProjectSkill } from "../../../src/api/calls/AssignmentCalls";
 
 jest.mock("next/router", () => require("next-router-mock"));
@@ -108,6 +108,8 @@ describe("Assignment item", () => {
             // Answer the assigner for each
             await enableActForResponse(assignment1._links.assigner.href, getBaseOkResponse(assigner));
             await enableActForResponse(assignment2._links.assigner.href, getBaseOkResponse(assigner));
+
+            await enableCurrentUser(assigner);
         });
 
         it("renders all data", async () => {
