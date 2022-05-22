@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
-import {render, RenderResult, waitFor} from "@testing-library/react";
+import { render, RenderResult, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import {enableActForResponse, makeCacheFree} from "../Provide";
-import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
-import {getBaseOkResponse, getBasePage, getBaseSkillType} from "../TestEntityProvider";
-import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
+import { enableActForResponse, makeCacheFree } from "../Provide";
+import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
+import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
+import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
 
@@ -45,7 +45,9 @@ describe("skillType list", () => {
 
             await enableActForResponse(
                 getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
-                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType, otherSkillType]))
+                getBaseOkResponse(
+                    getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType, otherSkillType])
+                )
             );
         });
 
