@@ -12,6 +12,7 @@ import mockAxios from "jest-mock-axios";
 import apiPaths from "../../src/properties/apiPaths";
 import { UserRole } from "../../src/api/entities/UserEntity";
 import {
+    enableActForResponse,
     enableCurrentUser,
     enableUseEditionAxiosCall,
     enableUseEditionComponentWrapper,
@@ -35,14 +36,11 @@ describe("InvitationButton", () => {
         const baseEdition = getBaseActiveEdition("5", "Active edition");
         render(makeCacheFree(() => enableUseEditionComponentWrapper(InvitationButton, baseEdition)));
         await enableCurrentUser(currentUser);
-        await enableUseEditionAxiosCall(baseEdition);
 
         const invitationToken = "mockToken";
         const baseInvitation = getBaseInvitation(invitationToken, "2");
         await userEvent.click(screen.getByTestId("invite-button"));
 
-        await waitFor(() => {
-            mockAxios.mockResponseFor(apiPaths.invitations, getBaseOkResponse(baseInvitation));
-        });
+        await enableActForResponse(apiPaths.invitations, getBaseOkResponse(baseInvitation));
     });
 });
