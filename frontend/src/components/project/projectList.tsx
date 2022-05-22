@@ -1,10 +1,10 @@
-import { ListGroup } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import styles from "../../styles/projects/projectList.module.css";
 import { NewProjectButton } from "./newProjectButton";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
 import { extractIdFromProjectUrl, getAllProjectsFromPage } from "../../api/calls/projectCalls";
-import { useEditionApplicationPathTransformer, useSwrWithEdition } from "../../hooks/utilHooks";
+import { useSwrWithEdition } from "../../hooks/utilHooks";
 import { useRouter } from "next/router";
 import { useCurrentAdminUser } from "../../hooks/useCurrentUser";
 import { useRouterPush } from "../../hooks/routerHooks";
@@ -82,7 +82,28 @@ export function ProjectList() {
                         </ListGroup.Item>
                     ))}
             </ListGroup>
-            {currentUserIsAdmin && <NewProjectButton />}
+            {currentUserIsAdmin && (
+                <>
+                    <div className={"container " + styles.bottom_page}>
+                        <div className="row">
+                            <NewProjectButton />
+                        </div>
+                        <div className="row">
+                            <Button
+                                data-testid="skill-types-button"
+                                className={"capitalize justify-content-center " + styles.project_list_button}
+                                variant="outline-primary"
+                                size="sm"
+                                onClick={() =>
+                                    routerAction("/" + applicationPaths.skillTypesBase)
+                                }
+                            >
+                                {t("skill types")}
+                            </Button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

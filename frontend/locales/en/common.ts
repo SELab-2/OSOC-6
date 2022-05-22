@@ -227,6 +227,8 @@ const common = {
     "edit colour": "edit colour",
     delete: "delete",
     skills: "skills",
+    "skill types": "skill types",
+    "create skill type": "create skill type",
 
     "input empty": "input field can not be empty",
 };

@@ -42,12 +42,19 @@ describe("Project", () => {
     });
 
     it("Should go to projects/create when clicking button", async () => {
-        const user = getBaseUser("10", UserRole.admin, true);
-        const list = render(<ProjectList />);
-        await enableCurrentUser(user);
-        await userEvent.click(await list.findByTestId("new-project-button"));
+        render(makeCacheFree(() => <ProjectList />));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+        await userEvent.click(screen.getByTestId("new-project-button"));
 
         await expect(mockRouter.pathname).toEqual("/" + applicationPaths.projectCreation);
+    });
+
+    it("Should go to skilltypes when clicking skilltypes button", async () => {
+        render(makeCacheFree(() => <ProjectList />));
+        await enableCurrentUser(getBaseUser("5", UserRole.admin, true));
+        await userEvent.click(screen.getByTestId("skill-types-button"));
+
+        await expect(mockRouter.pathname).toEqual("/" + applicationPaths.skillTypesBase);
     });
 
     it("Should go to project page when clicking item in list", async () => {
@@ -56,10 +63,10 @@ describe("Project", () => {
             getBasePage(apiPaths.projects, "projects", [baseProject])
         );
 
-        const list = render(makeCacheFree(ProjectList));
+        render(makeCacheFree(ProjectList));
 
         await enableActForResponse({ method: "GET" }, response);
-        await userEvent.click(await list.findByTestId("project-select-" + baseProject.name));
+        await userEvent.click(await screen.findByText(baseProject.name));
 
         await waitFor(() => {
             expect(mockRouter.asPath).toEqual("/" + applicationPaths.projects + "/5");
