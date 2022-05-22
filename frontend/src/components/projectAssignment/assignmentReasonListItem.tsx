@@ -7,6 +7,7 @@ import { capitalize } from "../../utility/stringUtil";
 import styles from "../../styles/assignments.module.css";
 import { CloseButton } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
+import { useCurrentAdminUser, useCurrentUser } from "../../hooks/useCurrentUser";
 
 export interface AssignmentReasonListItemProps {
     assignmentUrl: string;
@@ -18,6 +19,7 @@ export default function AssignmentReasonListItem({
     removeCallback,
 }: AssignmentReasonListItemProps) {
     const { t } = useTranslation("common");
+    const isAdmin = useCurrentAdminUser();
 
     const { data: receivedAssignment, error: assignmentError } = useSWR(assignmentUrl, getAssignmentOnUrl);
 
@@ -26,8 +28,10 @@ export default function AssignmentReasonListItem({
         getUserOnUrl
     );
 
-    if (assignmentError || assignerError) {
-        console.log(assignmentError || assignerError);
+    const { user: currentUser, error: userError } = useCurrentUser();
+
+    if (assignmentError || assignerError || userError) {
+        console.log(assignmentError || assignerError || userError);
         return null;
     }
 
@@ -42,18 +46,20 @@ export default function AssignmentReasonListItem({
                 </h6>
                 <p>{assignment.reason}</p>
             </div>
-            <CloseButton
-                aria-label={"Remove student from project"}
-                value={assignment._links.self.href}
-                onClick={(assignment: any) => {
-                    const result = confirm(capitalize(t("confirm delete assignment")));
-                    if (result) {
-                        removeCallback(assignment.target.value).then(console.log);
-                    }
-                }}
-                data-testid={"remove-assignment-button-" + assignment.reason}
-                className={styles.close_button}
-            />
+            {(isAdmin || assigner.email === currentUser?.email) && (
+                <CloseButton
+                    aria-label={"Remove student from project"}
+                    value={assignment._links.self.href}
+                    onClick={(assignment: any) => {
+                        const result = confirm(capitalize(t("confirm delete assignment")));
+                        if (result) {
+                            removeCallback(assignment.target.value).then(console.log);
+                        }
+                    }}
+                    data-testid={"remove-assignment-button-" + assignment.reason}
+                    className={styles.close_button}
+                />
+            )}
         </div>
     );
 }
