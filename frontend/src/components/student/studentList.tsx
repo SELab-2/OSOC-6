@@ -1,6 +1,6 @@
 import { Button, ListGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
-import styles from "../../styles/studentList.module.css";
+import styles from "../../styles/students/studentList.module.css";
 import useTranslation from "next-translate/useTranslation";
 import apiPaths from "../../properties/apiPaths";
 import {

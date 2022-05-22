@@ -38,7 +38,7 @@ export default function CreateStudentForm({ student }: CreateStudentFormProps) {
     const initialValues: Student = studentFromIStudent(editionUrl!, student ? student : emptyStudent);
 
     return (
-        <div className="container mt-3" data-testid="student-create-form">
+        <div className="container" data-testid="student-create-form" style={{width: "60%", marginLeft: "30rem", }}>
             <h2>{student ? capitalize(t("edit student")) : capitalize(t("create student"))}</h2>
             <Formik
                 initialValues={initialValues}

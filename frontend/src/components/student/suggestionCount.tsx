@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { getStudentOnUrl } from "../../api/calls/studentCalls";
-import styles from "../../styles/studentList.module.css";
+import styles from "../../styles/students/studentList.module.css";
 
 export function SuggestionCount(props: { studentUrl: string }) {
     const { data, error } = useSWR(props.studentUrl, getStudentOnUrl);
