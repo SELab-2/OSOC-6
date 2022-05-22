@@ -1,6 +1,9 @@
 import { Col, Row } from "react-bootstrap";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
+import styles from "../../styles/projects/createProject.module.css";
+import { capitalize } from "../../utility/stringUtil";
+import useTranslation from "next-translate/useTranslation";
 
 /**
  * Props needed for the ItemListForm component.
@@ -30,6 +33,7 @@ export default function ItemListForm({
     itemPlaceHolderText,
 }: StringListFormFormProps) {
     const [currentItem, setCurrentItem] = useState<string>("");
+    const { t } = useTranslation("common");
 
     function submitHandler() {
         setItems([...items, currentItem]);
@@ -38,45 +42,59 @@ export default function ItemListForm({
 
     return (
         <div>
-            <label htmlFor="item-input" className="form-label">
+            <label className={styles.label + " form-label"} htmlFor="item-input">
                 {itemInputText}
             </label>
-            {items.map((item: string, index: number) => (
-                <Row key={index}>
-                    <Col>{item}</Col>
-                    <Col xs={1}>
-                        <a
-                            onClick={() => setItems(items.filter((_, valIndex) => valIndex !== index))}
-                            data-testid={"item-list-delete-button"}
-                        >
-                            <Image
-                                layout="fixed"
-                                className="clickable"
-                                alt=""
-                                src={"/resources/delete.svg"}
-                                width="15"
-                                height="15"
-                            />
-                        </a>
-                    </Col>
-                </Row>
-            ))}
+            <ul style={{ listStyleType: "circle" }}>
+                {/*No items*/}
+                {items.length === 0 && (
+                    <Row style={{ justifyContent: "center" }}>{capitalize(t("no items added yet"))}</Row>
+                )}
+
+                {items.map((item: string, index: number) => (
+                    <li key={index} style={{ marginLeft: "3rem" }}>
+                        <Row>
+                            <Col>{item}</Col>
+                            <Col xs={1}>
+                                <a
+                                    onClick={() =>
+                                        setItems(items.filter((_, valIndex) => valIndex !== index))
+                                    }
+                                    data-testid={"item-list-delete-button"}
+                                >
+                                    <Image
+                                        layout="fixed"
+                                        className="clickable"
+                                        alt=""
+                                        src={"/resources/delete.svg"}
+                                        width="15"
+                                        height="15"
+                                    />
+                                </a>
+                            </Col>
+                        </Row>
+                    </li>
+                ))}
+            </ul>
             <input
                 id="item-input"
-                className="form-control mb-2 mt-2"
+                className={styles.input_field + " form-control mb-2"}
                 data-testid="item-list-input"
                 value={currentItem}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setCurrentItem(e.target.value)}
                 placeholder={itemPlaceHolderText ? itemPlaceHolderText : itemInputText}
             />
-            <button
-                className="btn btn-secondary"
-                type="button"
-                data-testid="item-list-add-button"
-                onClick={submitHandler}
-            >
-                {itemAddText}
-            </button>
+            <div style={{ display: "flex" }}>
+                <button
+                    style={{ marginLeft: "auto", marginRight: "0" }}
+                    className="btn btn-secondary"
+                    type="button"
+                    data-testid="item-list-add-button"
+                    onClick={submitHandler}
+                >
+                    {itemAddText}
+                </button>
+            </div>
         </div>
     );
 }
