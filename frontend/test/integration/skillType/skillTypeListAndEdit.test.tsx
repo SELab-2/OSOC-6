@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
-import { render, RenderResult, waitFor } from "@testing-library/react";
+import {render, RenderResult, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockAxios from "jest-mock-axios";
 import apiPaths from "../../../src/properties/apiPaths";
 import SkillTypeIndexPage from "../../../src/pages/skillTypes";
-import { enableActForResponse, makeCacheFree } from "../Provide";
-import { getQueryUrlFromParams } from "../../../src/api/calls/baseCalls";
-import { getBaseOkResponse, getBasePage, getBaseSkillType } from "../TestEntityProvider";
-import { skillTypeCollectionName } from "../../../src/api/entities/SkillTypeEntity";
+import {enableActForResponse, makeCacheFree} from "../Provide";
+import {getQueryUrlFromParams} from "../../../src/api/calls/baseCalls";
+import {getBaseOkResponse, getBasePage, getBaseSkillType} from "../TestEntityProvider";
+import {skillTypeCollectionName} from "../../../src/api/entities/SkillTypeEntity";
 import mockRouter from "next-router-mock";
 import applicationPaths from "../../../src/properties/applicationPaths";
 
@@ -37,13 +37,15 @@ describe("skillType list", () => {
     describe("with data", () => {
         let page: RenderResult;
         const skillType = getBaseSkillType("1");
+        const otherSkillType = getBaseSkillType("2");
+        otherSkillType.name = "different";
 
         beforeEach(async () => {
             page = render(makeCacheFree(SkillTypeIndexPage));
 
             await enableActForResponse(
                 getQueryUrlFromParams(apiPaths.skillTypes, { sort: "name" }),
-                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType]))
+                getBaseOkResponse(getBasePage(apiPaths.skillTypes, skillTypeCollectionName, [skillType, otherSkillType]))
             );
         });
 
@@ -52,18 +54,18 @@ describe("skillType list", () => {
         });
 
         it("can delete", async () => {
-            const deleteButton = await page.findByTestId("delete-item");
+            const deleteButtons = await page.findAllByTestId("delete-item");
 
             window.confirm = jest.fn(() => true);
 
-            await userEvent.click(deleteButton);
+            await userEvent.click(deleteButtons[0]);
 
             expect(mockAxios.delete).toHaveBeenCalledWith(skillType._links.self.href, expect.anything());
         });
 
         it("can edit", async () => {
-            const openEditButton = await page.findByTestId("start-edit");
-            await userEvent.click(openEditButton);
+            const openEditButtons = await page.findAllByTestId("start-edit");
+            await userEvent.click(openEditButtons[0]);
 
             const colourPick = (await page.findByTestId("colour")) as HTMLInputElement;
             // Just check if it takes the default colour. Setting it in the test is a pain.
@@ -71,6 +73,8 @@ describe("skillType list", () => {
 
             const submitButton = await page.findByTestId("submit-edit");
             await userEvent.click(submitButton);
+
+            await enableActForResponse(skillType._links.self.href, getBaseOkResponse(skillType));
 
             await waitFor(() => {
                 expect(mockAxios.patch).toHaveBeenCalledWith(
