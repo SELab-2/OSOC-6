@@ -5,7 +5,7 @@ const apiPaths = {
     base: "http://localhost/api/",
 
     loginRedirect: "login",
-    login: "login-processing",
+    login: "login",
     registration: "registration",
     loginError: "loginError",
     logout: "logout",

@@ -73,14 +73,9 @@ public final class DumbledorePathWizard {
     public static final String AUTH_PATH = "auth";
 
     /**
-     * Path for successful authentication backend. (Spring security uses this path internally)
-     */
-    public static final String AUTH_HOME_PATH = "home";
-
-    /**
      * Path for failed authentication backend. (Spring security uses this path internally)
      */
-    public static final String AUTH_FAIL_PATH = "failure";
+    public static final String AUTH_FAIL_PATH = "login?error";
 
     /**
      * Path for logging in to the backend. (Spring security uses this path internally. It's a default path)
@@ -90,7 +85,7 @@ public final class DumbledorePathWizard {
     /**
      * Path that login processing is served on.
      */
-    public static final String LOGIN_PROCESSING_PATH = "login-processing";
+    public static final String LOGIN_PROCESSING_PATH = "login";
 
     /**
      * Path that {@link com.osoc6.OSOC6.entities.CommunicationTemplate} is served on.
