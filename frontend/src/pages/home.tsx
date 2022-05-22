@@ -8,7 +8,7 @@ const Home: NextPage = () => {
     const { t } = useTranslation("common");
     return (
         <div>
-            <NavBar/>
+            <NavBar />
             <main className={styles.main}>
                 <div className="capitalize">
                     <h1 className={styles.title}>{t("tool name")}</h1>
