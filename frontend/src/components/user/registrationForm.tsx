@@ -41,7 +41,7 @@ const RegistrationForm: NextPage = () => {
                     router,
                     mutate
                 );
-                await router.push("/" + applicationPaths.home);
+                await router.push("/" + applicationPaths.assignStudents);
             } catch (error: any) {
                 setError(error.response.data);
                 setShowDanger(true);
