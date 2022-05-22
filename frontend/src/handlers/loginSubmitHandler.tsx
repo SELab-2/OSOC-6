@@ -27,9 +27,7 @@ export async function loginSubmitHandler(
     loginFormData.append("password", values.password);
 
     const response = await postLoginFromForm(loginFormData);
-    const errorOccurred =
-        response.request.responseURL.split(applicationPaths.base)[1] === apiPaths.loginError;
-    console.log(errorOccurred);
+    const errorOccurred = response.request.responseURL.split(apiPaths.base)[1] === apiPaths.loginError;
 
     errorSetter(errorOccurred);
 

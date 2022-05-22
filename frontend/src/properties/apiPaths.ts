@@ -7,7 +7,7 @@ const apiPaths = {
     loginRedirect: "login",
     login: "login",
     registration: "registration",
-    loginError: "loginError",
+    loginError: "login?error",
     logout: "logout",
 
     forgotPassword: "forgot-password",
