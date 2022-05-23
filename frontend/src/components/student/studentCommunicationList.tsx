@@ -69,9 +69,9 @@ export default function StudentCommunicationList({ student }: CommunicationListP
     return (
         <div
             data-testid="student-communication"
-            className={styles.student_communcation_list_outer_div + " h-100"}
+            className={styles.student_communcation_list_outer_div + " h-100 w-100"}
         >
-            <div className={"overflow-auto p-3"} style={{ height: "100%" }}>
+            <div className={"overflow-auto p-3 w-100"} style={{ height: "100%" }}>
                 <div className={styles.student_info_button + " row"}>
                     <Button
                         variant="btn-outline"
@@ -82,7 +82,7 @@ export default function StudentCommunicationList({ student }: CommunicationListP
                         {capitalize(t("student info"))}
                     </Button>
                 </div>
-                <div className="row w-100">
+                <div className="w-100">
                     <Row className={styles.student_row_add_communication}>
                         <Col>
                             <h1>{student?.callName}</h1>

@@ -4,7 +4,8 @@
 
 .users_full_div {
     position: fixed;
-    height: 100%;
+    height: calc(100% - 4rem);
+    overflow: auto;
     width: 100%;
     left: 0;
     z-index: 10;

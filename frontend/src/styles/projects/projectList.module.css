@@ -3,18 +3,13 @@
     height: 100%;
     background-color: #0a0839;
     overflow: auto;
-    position: relative;
-    padding-bottom: 3em;
+    display: flex;
+    flex-direction: column;
 }
 
 .project_list_button {
     width: 95%;
     margin: 0.5rem;
-}
-
-.bottom_page {
-    position: absolute;
-    bottom: 0;
 }
 
 .project_list_header {
@@ -44,4 +39,5 @@
 
 .project_list_list_group {
     border-radius: 0;
+    flex-grow: 1;
 }

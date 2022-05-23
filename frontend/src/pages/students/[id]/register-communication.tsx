@@ -20,9 +20,9 @@ export default function CommunicationInfoPage() {
                         <StudentList isDraggable={false} />
                     </div>
                     <div className={styles.info_field}>
-                        <div data-testid="student-communication">
+                        <div data-testid="student-communication" className={"h-100 overflow-auto"}>
                             <div className={"h-100"}>
-                                <div className={"overflow-auto p-3"} style={{ height: "calc(100% - 4rem)" }}>
+                                <div className={"overflow-auto p-3"}>
                                     <div className="row" style={{ paddingLeft: 25 }}>
                                         <RegisterCommunication />
                                     </div>
